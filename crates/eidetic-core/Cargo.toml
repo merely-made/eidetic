@@ -1,0 +1,24 @@
+[package]
+name = "eidetic"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Private local-memory lane for the Mere browser — typed blob request/response vocabulary and store trait, host-agnostic and storage-backend-agnostic."
+documentation = "https://docs.rs/eidetic"
+readme = "README.md"
+keywords = ["memory", "storage", "blob", "browser", "mere"]
+categories = ["data-structures"]
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+async-trait = "0.1"
+blake3 = "1.5"
+jsonschema = { version = "0.18", default-features = false }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[dev-dependencies]
+pollster = "0.4"
