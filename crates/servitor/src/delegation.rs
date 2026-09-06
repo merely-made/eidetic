@@ -91,7 +91,7 @@ pub fn cap_path(cap: &Cap) -> String {
             } else {
                 format!("{SCOPE_PATH}/{path}")
             }
-        }
+        },
         Cap::Facet(namespace) => {
             if namespace.segments().is_empty() {
                 FACET_PATH.to_string()
@@ -104,7 +104,7 @@ pub fn cap_path(cap: &Cap) -> String {
                     .join("/");
                 format!("{FACET_PATH}/{path}")
             }
-        }
+        },
     }
 }
 
@@ -289,7 +289,7 @@ impl DelegationTable {
                 } else {
                     Err(ChainError::WrongRoot(id))
                 }
-            }
+            },
             DelegationParent::Certificate(parent_id) => {
                 let parent = self
                     .certificates
@@ -301,7 +301,7 @@ impl DelegationTable {
                     return Err(ChainError::NotAttenuating(id));
                 }
                 self.verify_inner(parent, seen)
-            }
+            },
         }
     }
 

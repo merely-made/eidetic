@@ -253,7 +253,7 @@ mod tests {
             ClassMembership::Known(class) => {
                 assert_eq!(class.class_id, ClassId::new("mere.web-page"));
                 assert_eq!(class.label.as_deref(), Some("Web page"));
-            }
+            },
             other => panic!("expected Known, got {other:?}"),
         }
     }

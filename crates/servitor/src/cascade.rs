@@ -303,7 +303,7 @@ mod tests {
                             author(1),
                             vec![scope("notes/summary")],
                         )]
-                    }
+                    },
                     _ => {
                         assert_eq!(wakes[0].subject, subject(2), "B answers A");
                         vec![CommittedEntry::new(
@@ -311,7 +311,7 @@ mod tests {
                             author(2),
                             vec![scope("vault/key")],
                         )]
-                    }
+                    },
                 }
             },
         );

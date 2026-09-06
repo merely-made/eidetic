@@ -73,13 +73,13 @@ impl Feed {
                         Error::InvalidFeed(format!("{s:?}: file URL has no local path"))
                     })?;
                     return Ok(Self::Directory(path));
-                }
+                },
                 _ => {
                     return Err(Error::InvalidFeed(format!(
                         "{s:?}: unsupported scheme {:?}",
                         url.scheme()
                     )));
-                }
+                },
             }
         }
         // Not a URL: a plain filesystem path.

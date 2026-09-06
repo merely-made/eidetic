@@ -138,13 +138,13 @@ impl SchemaValidator for JsonLdValidator {
                     continue;
                 };
                 match object.get(name) {
-                    Some(value) if !value.is_null() => {}
+                    Some(value) if !value.is_null() => {},
                     _ => {
                         return Err(Error::new(format!(
                             "json-ld schema {}: payload missing required property `{}`",
                             definition.schema_id, name
                         )));
-                    }
+                    },
                 }
             }
         }

@@ -724,23 +724,23 @@ impl GroupSession {
         let needs_direct = match &control.action {
             GroupControlAction::Create { initial_members } => {
                 control.id.author != self.member && initial_members.contains(&self.member)
-            }
+            },
             GroupControlAction::Update => {
                 control.id.author != self.member && self.members()?.contains(&self.member)
-            }
+            },
             GroupControlAction::Add { added } => {
                 control.id.author != self.member && *added == self.member
-            }
+            },
             GroupControlAction::Remove { removed } => {
                 control.id.author != self.member
                     && self.members()?.contains(&self.member)
                     && *removed != self.member
-            }
+            },
         };
         match (needs_direct, direct) {
             (true, None) => return Err(GroupSessionError::MissingAddressedDirect(self.member)),
             (false, Some(_)) => return Err(GroupSessionError::UnexpectedDirect(self.member)),
-            _ => {}
+            _ => {},
         }
 
         let expected = self
@@ -829,7 +829,7 @@ impl GroupSession {
                 let epoch = secret.id();
                 self.keyring.install(secret);
                 vec![epoch]
-            }
+            },
             GroupSecretOutput::Bundle(bundle) => self.keyring.install_bundle(bundle),
         }
     }

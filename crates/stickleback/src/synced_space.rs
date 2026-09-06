@@ -115,21 +115,21 @@ impl SyncedSpace {
                         let mut s = task_status.lock().unwrap();
                         s.syncing = true;
                         s.last_activity_ms = Some(now_ms());
-                    }
+                    },
                     TopicLogSyncEvent::OperationReceived { operation, .. } => {
                         if accept(*operation).await {
                             let mut s = task_status.lock().unwrap();
                             s.ops_received += 1;
                             s.last_activity_ms = Some(now_ms());
                         }
-                    }
+                    },
                     TopicLogSyncEvent::SyncFinished { .. } => {
                         let mut s = task_status.lock().unwrap();
                         s.syncing = false;
                         s.sync_rounds += 1;
                         s.last_activity_ms = Some(now_ms());
-                    }
-                    _ => {}
+                    },
+                    _ => {},
                 }
             }
         });

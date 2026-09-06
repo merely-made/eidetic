@@ -552,7 +552,7 @@ mod tests {
         match prov.origin {
             ProvenanceOrigin::Imported { source } => {
                 assert_eq!(source, "hf:test-model");
-            }
+            },
             _ => panic!("expected Imported origin"),
         }
         assert!(prov.upstream.is_empty());

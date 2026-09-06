@@ -280,7 +280,7 @@ impl Update {
                 cmd.spawn().expect("installer failed to start");
 
                 std::process::exit(0);
-            }
+            },
             UpdateFormat::Wix => {
                 // Wrap the current exe path in quotes for Start-Process.
                 let mut current_exe_arg = std::ffi::OsString::new();
@@ -347,7 +347,7 @@ impl Update {
                 }
 
                 std::process::exit(0);
-            }
+            },
             _ => unreachable!(),
         }
     }
@@ -372,7 +372,7 @@ impl Update {
         use std::fs;
 
         match self.format {
-            UpdateFormat::AppImage => {}
+            UpdateFormat::AppImage => {},
             _ => return Err(Error::UnsupportedUpdateFormat),
         };
 

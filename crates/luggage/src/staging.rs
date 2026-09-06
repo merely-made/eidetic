@@ -81,7 +81,7 @@ impl StagedUpdate {
             Err(err) => {
                 log::warn!("ignoring unreadable staging record {record_path:?}: {err}");
                 Ok(None)
-            }
+            },
         }
     }
 
@@ -170,9 +170,9 @@ impl Update {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::UpdaterBuilder;
     use crate::config::{Config, Feed};
     use crate::release::MANIFEST_NAME;
-    use crate::UpdaterBuilder;
     use std::io::Write as _;
 
     /// Build a real `Update` (via a directory feed) for an artifact.

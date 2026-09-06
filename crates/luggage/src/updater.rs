@@ -16,14 +16,14 @@ use std::{
 
 use cargo_packager_utils::current_exe::current_exe;
 use http::{
-    header::{ACCEPT, USER_AGENT},
     HeaderName,
+    header::{ACCEPT, USER_AGENT},
 };
 use percent_encoding::{AsciiSet, CONTROLS};
 use reqwest::{
+    StatusCode,
     blocking::Client,
     header::{HeaderMap, HeaderValue},
-    StatusCode,
 };
 use semver::Version;
 use url::Url;
@@ -31,7 +31,7 @@ use url::Url;
 use crate::config::{Config, Feed};
 use crate::error::{Error, Result};
 use crate::install::Update;
-use crate::release::{RemoteRelease, MANIFEST_NAME};
+use crate::release::{MANIFEST_NAME, RemoteRelease};
 
 /// An [`Updater`] builder.
 pub struct UpdaterBuilder {
@@ -153,7 +153,7 @@ impl UpdaterBuilder {
                 } else {
                     current_exe()?
                 }
-            }
+            },
             #[cfg(any(windows, target_os = "macos"))]
             _ => current_exe()?,
         };
@@ -205,7 +205,7 @@ impl Updater {
                 Feed::GitHub { owner, repo } => {
                     let url: Url = Feed::github_manifest_url(owner, repo).parse()?;
                     self.fetch_http(url)
-                }
+                },
                 Feed::Directory(dir) => self.fetch_directory(dir),
             };
             match result {
@@ -215,11 +215,11 @@ impl Updater {
                     last_error = None;
                     remote_release = Some(release);
                     break;
-                }
+                },
                 Err(err) => {
                     log::error!("feed {feed} failed: {err}");
                     last_error = Some(err);
-                }
+                },
             }
         }
 
@@ -275,7 +275,7 @@ impl Updater {
             None => {
                 log::warn!("feed manifest is unsigned and verification is disabled");
                 Ok(())
-            }
+            },
         }
     }
 
@@ -357,11 +357,11 @@ impl Updater {
             Ok(response) => {
                 log::debug!("no manifest signature at {url}: {}", response.status());
                 None
-            }
+            },
             Err(err) => {
                 log::debug!("no manifest signature at {url}: {err}");
                 None
-            }
+            },
         }
     }
 

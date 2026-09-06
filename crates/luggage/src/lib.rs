@@ -83,9 +83,9 @@ mod release;
 #[cfg(feature = "native")]
 mod config;
 #[cfg(feature = "native")]
-mod signing;
-#[cfg(feature = "native")]
 mod install;
+#[cfg(feature = "native")]
+mod signing;
 #[cfg(feature = "native")]
 mod staging;
 #[cfg(feature = "native")]
@@ -93,8 +93,8 @@ mod updater;
 
 pub use error::{Error, Result};
 pub use release::{
-    ReleaseManifestPlatform, ReleaseRefV1, RemoteRelease, RemoteReleaseData, UpdateFormat,
-    MANIFEST_NAME,
+    MANIFEST_NAME, ReleaseManifestPlatform, ReleaseRefV1, RemoteRelease, RemoteReleaseData,
+    UpdateFormat,
 };
 
 #[cfg(feature = "native")]
@@ -104,7 +104,7 @@ pub use install::Update;
 #[cfg(feature = "native")]
 pub use staging::StagedUpdate;
 #[cfg(feature = "native")]
-pub use updater::{target, Updater, UpdaterBuilder};
+pub use updater::{Updater, UpdaterBuilder, target};
 
 pub use semver;
 pub use url;
@@ -131,10 +131,7 @@ pub use reqwest;
 /// }
 /// ```
 #[cfg(feature = "native")]
-pub fn check_update(
-    current_version: semver::Version,
-    config: Config,
-) -> Result<Option<Update>> {
+pub fn check_update(current_version: semver::Version, config: Config) -> Result<Option<Update>> {
     UpdaterBuilder::new(current_version, config)
         .build()?
         .check()

@@ -29,7 +29,7 @@
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
-use serde_json::{json, Map, Value};
+use serde_json::{Map, Value, json};
 
 const USAGE: &str = "\
 usage: luggage-manifest --artifact <path> --version <semver> --format <fmt> [options]
@@ -100,11 +100,11 @@ fn main() -> ExitCode {
         Ok(path) => {
             println!("wrote {}", path.display());
             ExitCode::SUCCESS
-        }
+        },
         Err(message) => {
             eprintln!("luggage-manifest: {message}");
             ExitCode::FAILURE
-        }
+        },
     }
 }
 

@@ -170,7 +170,7 @@ fn touched_nodes(spec: &EditSpec<Container, Relation>) -> Vec<&str> {
         EditSpec::Derive { node, .. } => vec![node.as_str()],
         EditSpec::SetFacet { node, .. } | EditSpec::RemoveFacet { node, .. } => {
             vec![node.as_str()]
-        }
+        },
     }
 }
 
@@ -180,7 +180,7 @@ fn touched_facet(spec: &EditSpec<Container, Relation>) -> Option<&str> {
     match spec {
         EditSpec::SetFacet { facet, .. } | EditSpec::RemoveFacet { facet, .. } => {
             Some(facet.as_str())
-        }
+        },
         _ => None,
     }
 }
@@ -770,7 +770,7 @@ mod tests {
                     stale + 1,
                     "the denizen learns the revision to rebase onto"
                 );
-            }
+            },
             other => panic!("expected a revision conflict, got {other:?}"),
         }
     }

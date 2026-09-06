@@ -163,7 +163,7 @@ pub async fn verify_required_members(
                     member.kind, member.manifest
                 ));
                 continue;
-            }
+            },
         };
         if let Err(e) = resolve_blob(store, fetcher, &manifest).await {
             missing.push(format!("{} ({})", member.kind, e));

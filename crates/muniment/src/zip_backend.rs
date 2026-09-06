@@ -275,10 +275,10 @@ impl Backend for ZipBackend {
             match op {
                 WriteOp::Put { key, value } => {
                     next.insert(key.clone(), value.clone());
-                }
+                },
                 WriteOp::Delete { key } => {
                     next.remove(key);
-                }
+                },
             }
         }
         write_entries(&inner.path, &next)?;

@@ -189,12 +189,12 @@ impl Backend for IndexedDbBackend {
                     store
                         .put_with_key(bytes.as_ref(), &JsValue::from_str(key))
                         .map_err(js_backend_error)?;
-                }
+                },
                 WriteOp::Delete { key } => {
                     store
                         .delete(&JsValue::from_str(key))
                         .map_err(js_backend_error)?;
-                }
+                },
             }
         }
         await_transaction(&transaction).await

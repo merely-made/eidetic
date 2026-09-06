@@ -187,14 +187,14 @@ where
                 EditSpec::InsertNode(node) => {
                     removed.remove(node.id());
                     added.insert(node.id().clone());
-                }
+                },
                 EditSpec::RemoveNode(id) => {
                     if !present(id, &added, &removed, self) {
                         return Err(CommitError::UnknownNode(id.clone()));
                     }
                     added.remove(id);
                     removed.insert(id.clone());
-                }
+                },
                 EditSpec::Connect { from, to, .. } => {
                     if !present(from, &added, &removed, self) {
                         return Err(CommitError::UnknownNode(from.clone()));
@@ -202,23 +202,23 @@ where
                     if !present(to, &added, &removed, self) {
                         return Err(CommitError::UnknownNode(to.clone()));
                     }
-                }
+                },
                 EditSpec::Disconnect(id) => {
                     if dropped_edges.contains(id) || self.edge_key(*id).is_none() {
                         return Err(CommitError::UnknownEdge(*id));
                     }
                     dropped_edges.insert(*id);
-                }
+                },
                 EditSpec::Derive { node, .. } => {
                     if !present(node, &added, &removed, self) {
                         return Err(CommitError::UnknownNode(node.clone()));
                     }
-                }
+                },
                 EditSpec::SetFacet { node, .. } | EditSpec::RemoveFacet { node, .. } => {
                     if !present(node, &added, &removed, self) {
                         return Err(CommitError::UnknownNode(node.clone()));
                     }
-                }
+                },
             }
         }
 
@@ -234,12 +234,12 @@ where
                     self.next_edge += 1;
                     minted.push(id);
                     GraphEdit::Connect { id, from, to, edge }
-                }
+                },
                 EditSpec::Disconnect(id) => GraphEdit::Disconnect(id),
                 EditSpec::Derive { node, from } => GraphEdit::Derive { node, from },
                 EditSpec::SetFacet { node, facet, value } => {
                     GraphEdit::SetFacet { node, facet, value }
-                }
+                },
                 EditSpec::RemoveFacet { node, facet } => GraphEdit::RemoveFacet { node, facet },
             });
         }

@@ -129,7 +129,7 @@ fn set_seal_marker(manifest: &mut BlobManifest, marker: &SealedBlobRef) -> Resul
     match &mut manifest.schema_metadata {
         serde_json::Value::Object(map) => {
             map.insert(SEAL_MARKER_KEY.to_string(), value);
-        }
+        },
         other => {
             // schema_metadata was Null (the common case) or a non-object; wrap
             // it in an object carrying just the marker. A non-object payload is
@@ -140,7 +140,7 @@ fn set_seal_marker(manifest: &mut BlobManifest, marker: &SealedBlobRef) -> Resul
             }
             map.insert(SEAL_MARKER_KEY.to_string(), value);
             *other = serde_json::Value::Object(map);
-        }
+        },
     }
     Ok(())
 }
@@ -163,7 +163,7 @@ pub fn seal_payload_for_store(
             let (sealed, marker) = sealer.seal(&manifest.content_hash, cleartext)?;
             set_seal_marker(manifest, &marker)?;
             Ok(sealed)
-        }
+        },
         _ => Ok(cleartext.to_vec()),
     }
 }
@@ -208,7 +208,7 @@ pub async fn resolve_sealed_blob(
             Err(err) => {
                 last_error = Some(err);
                 continue;
-            }
+            },
         };
         let actual = Hash::of(&cleartext);
         if actual != manifest.content_hash {

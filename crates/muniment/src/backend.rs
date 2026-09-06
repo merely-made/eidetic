@@ -203,10 +203,10 @@ impl Backend for MemoryBackend {
             match op {
                 WriteOp::Put { key, value } => {
                     map.insert(key.clone(), value.clone());
-                }
+                },
                 WriteOp::Delete { key } => {
                     map.remove(key);
-                }
+                },
             }
         }
         Ok(())

@@ -126,7 +126,7 @@ impl<N: Identified, E> GraphLog<N, E> {
             .filter_map(|edit| match edit {
                 GraphEdit::Connect { id, .. } if id.writer == writer => {
                     Some(id.counter.saturating_add(1))
-                }
+                },
                 _ => None,
             })
             .max()
@@ -189,7 +189,7 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
         match edit {
             GraphEdit::InsertNode(node) => {
                 self.graph.insert(node.clone());
-            }
+            },
             GraphEdit::RemoveNode(id) => {
                 if let Some(key) = self.graph.key_of(id) {
                     for edge_key in self.graph.incident_edges(key) {
@@ -201,7 +201,7 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
                 }
                 self.derivations.remove(id);
                 self.facets.remove_node(id);
-            }
+            },
             GraphEdit::Connect { id, from, to, edge } => {
                 if let (Some(from_key), Some(to_key)) =
                     (self.graph.key_of(from), self.graph.key_of(to))
@@ -217,31 +217,31 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
                 if id.writer == self.writer {
                     self.next_edge = self.next_edge.max(id.counter + 1);
                 }
-            }
+            },
             GraphEdit::Disconnect(id) => {
                 if let Some(edge_key) = self.by_edge_id.remove(id) {
                     self.by_edge_key.remove(&edge_key);
                     self.graph.disconnect(edge_key);
                 }
-            }
+            },
             GraphEdit::Derive { node, from } => {
                 self.derivations
                     .entry(node.clone())
                     .or_default()
                     .push(from.clone());
-            }
+            },
             GraphEdit::SetFacet { node, facet, value } => {
                 if self.graph.key_of(node).is_some() {
                     self.facets
                         .set(node.clone(), facet.clone(), value.clone(), &AcceptAll)
                         .expect("replay preserves an already-admitted facet value");
                 }
-            }
+            },
             GraphEdit::RemoveFacet { node, facet } => {
                 if self.graph.key_of(node).is_some() {
                     self.facets.remove(node, facet);
                 }
-            }
+            },
         }
     }
 
@@ -416,7 +416,7 @@ where
             Err(StoreError::Codec(_)) => {
                 let legacy: Journal<GraphEdit<N, E>> = Journal::load(slots, key).await?;
                 Ok(crate::commit::migrate_pre_gate(legacy))
-            }
+            },
             Err(other) => Err(other),
         }
     }

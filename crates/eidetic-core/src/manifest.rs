@@ -242,7 +242,7 @@ pub async fn load_manifest(store: &mut dyn Store, id: ManifestId) -> Result<Opti
             let manifest: BlobManifest = serde_json::from_slice(&bytes)
                 .map_err(|e| Error::new(format!("manifest deserialize: {e}")))?;
             Ok(Some(manifest))
-        }
+        },
     }
 }
 
@@ -280,7 +280,7 @@ pub async fn resolve_blob(
                 Err(error) => {
                     last_error = Some(error);
                     continue;
-                }
+                },
             },
         };
 

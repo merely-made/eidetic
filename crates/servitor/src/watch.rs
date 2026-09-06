@@ -78,7 +78,7 @@ impl std::fmt::Display for WatchError {
         match self {
             WatchError::Unauthorized { scope } => {
                 write!(f, "no read capability covers the watched scope `{scope}`")
-            }
+            },
             WatchError::Malformed { line } => write!(f, "malformed watch record `{line}`"),
             WatchError::BadScope(err) => write!(f, "bad watch scope: {err}"),
         }

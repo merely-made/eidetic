@@ -171,7 +171,7 @@ where
                         literal.insert("@type".to_string(), Value::String(datatype));
                     }
                     Value::Object(literal)
-                }
+                },
             };
             by_predicate.entry(predicate).or_default().push(entry);
         }
@@ -229,7 +229,7 @@ fn object_nq(term: &Term) -> String {
                 out.push_str(&format!("^^{}", angle(datatype)));
             }
             out
-        }
+        },
     }
 }
 

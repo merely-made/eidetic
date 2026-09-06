@@ -246,7 +246,7 @@ where
                             stats.policy_omitted += 1;
                             ordinal += 1;
                             continue;
-                        }
+                        },
                         DropExportDecision::Header { priority } => (false, priority),
                         DropExportDecision::Full { priority } => (true, priority),
                     };
@@ -796,7 +796,7 @@ fn assemble_content(records: &[DropRecord]) -> Result<AssembledContent, DropIoEr
                 .entry(*blob_hash)
                 .or_default()
                 .push((*offset, bytes)),
-            _ => {}
+            _ => {},
         }
     }
     let payloads = payload_chunks

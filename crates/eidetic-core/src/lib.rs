@@ -209,7 +209,7 @@ pub async fn dispatch(store: &mut dyn Store, request: &Request) -> Result<Respon
         Request::SaveBlob { key, value } => {
             store.put(key, value).await?;
             Ok(Response::BlobSaved { key: key.clone() })
-        }
+        },
     }
 }
 

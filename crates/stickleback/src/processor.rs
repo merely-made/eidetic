@@ -294,12 +294,12 @@ where
             });
         }
         match (operation.header.seq_num, latest.as_ref(), admission.history) {
-            (0, None, _) => {}
+            (0, None, _) => {},
             (seq_num, None, HistoryAction::Keep) => {
                 return Err(ProcessError::MissingPredecessor {
                     seq_num: u64::from(seq_num),
                 });
-            }
+            },
             (_, previous, history) => validate_prunable_backlink(
                 previous.map(|operation| &operation.header),
                 &operation.header,
@@ -403,12 +403,12 @@ where
                 });
             }
             match (operation.header.seq_num, latest, admission.history) {
-                (0, None, _) => {}
+                (0, None, _) => {},
                 (seq_num, None, HistoryAction::Keep) => {
                     return Err(ProcessError::MissingPredecessor {
                         seq_num: u64::from(seq_num),
                     });
-                }
+                },
                 (_, previous, history) => validate_prunable_backlink(
                     previous.map(|operation| &operation.header),
                     &operation.header,

@@ -118,7 +118,7 @@ impl<'de> Deserialize<'de> for EdgeId {
                         "counter" => counter = Some(map.next_value()?),
                         _ => {
                             let _ = map.next_value::<serde::de::IgnoredAny>()?;
-                        }
+                        },
                     }
                 }
                 Ok(EdgeId {

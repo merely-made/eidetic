@@ -68,7 +68,7 @@ impl BlobFetcher for CannedFetcher {
                 } else {
                     Ok(self.https_responses.get(url).cloned())
                 }
-            }
+            },
             _ => Ok(None),
         }
     }

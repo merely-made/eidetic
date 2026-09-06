@@ -16,7 +16,7 @@
 use std::{collections::HashMap, str::FromStr};
 
 use semver::Version;
-use serde::{de::Error as _, Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, de::Error as _};
 use time::OffsetDateTime;
 use url::Url;
 

@@ -137,7 +137,7 @@ pub fn propose_epoch_pruning(
             if !checkpoint.author_continuation_ready {
                 blockers.push(EpochProposalBlocker::MissingAuthorContinuation);
             }
-        }
+        },
     }
 
     let present: BTreeSet<_> = keyring.epoch_ids().into_iter().collect();

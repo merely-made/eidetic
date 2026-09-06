@@ -87,7 +87,7 @@ where
                 Some(next_visit) => {
                     visits.push(next_visit);
                     cursor = next_visit;
-                }
+                },
                 None => break,
             }
         }
