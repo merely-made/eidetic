@@ -20,7 +20,9 @@
 //!
 //! [`frecency`] folds the same corpus into the behavioural ranking — visit
 //! weight by transition kind under a half-life — which recall fuses beside its
-//! lexical and vector lanes (wiring plan W6b).
+//! lexical and vector lanes (wiring plan W6b). [`page`] folds it the other
+//! way: a page table keyed by a content fingerprint, so one visited page is
+//! one record and N events however many URLs reached it (W6d).
 //!
 //! Quota is a Layer-4 policy: [`BrowsingMemory::apply_quota`] keeps the N
 //! most recent *stored* traces and deletes older manifests (blob bytes await
@@ -29,6 +31,7 @@
 pub mod frecency;
 #[cfg(feature = "lineage")]
 pub mod lineage;
+pub mod page;
 
 use serde::{Deserialize, Serialize};
 
