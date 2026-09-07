@@ -18,10 +18,15 @@
 //! saves **LocalOnly** — promotion to a wider audience is always a separate,
 //! explicit act (design pass §8), never a side effect of remembering.
 //!
+//! [`frecency`] folds the same corpus into the behavioural ranking — visit
+//! weight by transition kind under a half-life — which recall fuses beside its
+//! lexical and vector lanes (wiring plan W6b).
+//!
 //! Quota is a Layer-4 policy: [`BrowsingMemory::apply_quota`] keeps the N
 //! most recent *stored* traces and deletes older manifests (blob bytes await
 //! the explicit GC pass, per the manifest-deletion doctrine).
 
+pub mod frecency;
 #[cfg(feature = "lineage")]
 pub mod lineage;
 

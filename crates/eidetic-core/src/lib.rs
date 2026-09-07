@@ -78,6 +78,9 @@ pub mod schema_def;
 pub mod seal;
 pub mod typed;
 
+// `frecency::ranked` stays behind its module path: the bare name says nothing
+// at the crate root.
+pub use browsing::frecency::{FrecencyConfig, TransitionWeights, frecency, frecency_by};
 pub use browsing::{
     BROWSING_TRACE_SCHEMA_REF, BrowsingMemory, BrowsingTrace, PageRef, TraceEvent, TraceTransition,
     bootstrap_browsing_schema, save_trace,
