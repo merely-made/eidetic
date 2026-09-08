@@ -12,10 +12,11 @@
 //! The fingerprint is both the dedup key and the index key, so one visited
 //! page is one record and N visit events (wiring plan W6d).
 //!
-//! Text is not captured yet — W6c attaches it — so the fingerprint falls back
-//! to the [`canonical_url`]. The fallback is named in the type
-//! ([`PageFingerprint::source`]), never silent: a URL-keyed identity is a
-//! weaker claim than a content-keyed one and the caller can see which it holds.
+//! Text comes from the host through the `text_for` supplier
+//! ([`text`](super::text)'s store, W6c); an address with none falls back to the [`canonical_url`]. The
+//! fallback is named in the type ([`PageFingerprint::source`]), never silent:
+//! a URL-keyed identity is a weaker claim than a content-keyed one and the
+//! caller can see which it holds.
 //!
 //! Everything the fold decides comes from [`PageTableConfig`]; nothing here
 //! reads a clock or a store.
@@ -280,16 +281,48 @@ impl Default for PageTableConfig {
     }
 }
 
+/// The projection: one record per page, and the address memo that reached it.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct PageTable {
+    /// One record per page, keyed by its fingerprint.
+    pub records: BTreeMap<PageFingerprint, PageRecord>,
+    /// Every raw address the corpus carried, mapped to the page it resolved
+    /// to. Keyed by the address **as visited**, so a second fold over the same
+    /// events (frecency, an index corpus) canonicalizes nothing again — the
+    /// fold already paid for that, once per distinct address.
+    pub by_address: BTreeMap<String, PageFingerprint>,
+}
+
+impl PageTable {
+    /// The page an event's address resolved to. An address this table never
+    /// saw scores under its own fingerprint rather than being dropped: a
+    /// missing key would read as "never visited".
+    pub fn page_of(&self, raw_url: &str) -> PageFingerprint {
+        self.by_address
+            .get(raw_url)
+            .copied()
+            .unwrap_or_else(|| PageFingerprint::of_url(&canonical_url(raw_url)))
+    }
+
+    pub fn len(&self) -> usize {
+        self.records.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.records.is_empty()
+    }
+}
+
 /// The page table over a trace corpus, at the default policy.
 ///
 /// `text_for(url)` supplies extracted main text for a visited URL — the same
 /// shape `TrailIndex::rebuild_with_text` takes — and is called once per
-/// distinct address. `|_| None` is the honest answer until W6c lands, and
-/// yields a table of URL-sourced fingerprints.
+/// distinct address. `browsing::text::PageTexts::lookup` is the supplier the
+/// host wires in (W6c); `|_| None` yields a table of URL-sourced fingerprints.
 pub fn page_table(
     traces: &[BrowsingTrace],
     text_for: impl Fn(&str) -> Option<String>,
-) -> BTreeMap<PageFingerprint, PageRecord> {
+) -> PageTable {
     page_table_with(traces, text_for, &PageTableConfig::default())
 }
 
@@ -298,7 +331,7 @@ pub fn page_table_with(
     traces: &[BrowsingTrace],
     text_for: impl Fn(&str) -> Option<String>,
     config: &PageTableConfig,
-) -> BTreeMap<PageFingerprint, PageRecord> {
+) -> PageTable {
     // Canonicalizing and fingerprinting are per *address*, not per visit: a
     // corpus is mostly revisits, and hashing a page body again per visit is
     // the fold's whole cost.
@@ -354,21 +387,38 @@ pub fn page_table_with(
         }
     }
 
-    collapse_near(records, &title_at, config)
+    let (records, merged) = collapse_near(records, &title_at, config);
+    let by_address = seen
+        .into_iter()
+        .map(|(raw, (_, _, fingerprint))| {
+            let page = merged.get(&fingerprint).copied().unwrap_or(fingerprint);
+            (raw, page)
+        })
+        .collect();
+    PageTable {
+        records,
+        by_address,
+    }
 }
 
 /// Merge records whose near-hashes agree within the threshold, oldest first,
-/// so the surviving key is the fingerprint of the page as first seen.
+/// so the surviving key is the fingerprint of the page as first seen. Returns
+/// the surviving records and, for each fingerprint that was merged away, the
+/// one it merged into — the remap the address memo follows.
 ///
 /// Quadratic in the number of records that pass the source gate. Exact
 /// matches never reach here (they share a key), so this walks only genuine
 /// near-duplicate candidates; a corpus large enough to feel it wants a
 /// banded index, which is a change to this function alone.
+#[allow(clippy::type_complexity)]
 fn collapse_near(
     records: BTreeMap<PageFingerprint, PageRecord>,
     title_at: &BTreeMap<PageFingerprint, u64>,
     config: &PageTableConfig,
-) -> BTreeMap<PageFingerprint, PageRecord> {
+) -> (
+    BTreeMap<PageFingerprint, PageRecord>,
+    BTreeMap<PageFingerprint, PageFingerprint>,
+) {
     let mut ordered: Vec<PageRecord> = records.into_values().collect();
     ordered.sort_by(|left, right| {
         left.first_seen_ms
@@ -378,6 +428,7 @@ fn collapse_near(
 
     let mut kept: Vec<PageRecord> = Vec::new();
     let mut kept_title_at: Vec<u64> = Vec::new();
+    let mut merged: BTreeMap<PageFingerprint, PageFingerprint> = BTreeMap::new();
     for record in ordered {
         let stamp = title_at.get(&record.fingerprint).copied().unwrap_or(0);
         // Only content signatures collapse. Two canonical URLs a few
@@ -392,6 +443,7 @@ fn collapse_near(
             .flatten();
         match target {
             Some(index) => {
+                merged.insert(record.fingerprint, kept[index].fingerprint);
                 let target = &mut kept[index];
                 target.visits += record.visits;
                 target.first_seen_ms = target.first_seen_ms.min(record.first_seen_ms);
@@ -416,44 +468,26 @@ fn collapse_near(
             },
         }
     }
-    kept.into_iter()
+    let records = kept
+        .into_iter()
         .map(|record| (record.fingerprint, record))
-        .collect()
-}
-
-/// Canonical URL to the page it resolved to — the reverse of a record's
-/// `urls`, and the lookup an event-keyed fold goes through.
-pub fn fingerprint_index(
-    table: &BTreeMap<PageFingerprint, PageRecord>,
-) -> BTreeMap<String, PageFingerprint> {
-    table
-        .values()
-        .flat_map(|record| {
-            record
-                .urls
-                .iter()
-                .map(|url| (url.clone(), record.fingerprint))
-        })
-        .collect()
+        .collect();
+    (records, merged)
 }
 
 /// Frecency keyed by page rather than by address: every visit to any URL that
-/// collapsed into a record sums into that record's score. An event whose page
-/// is not in `table` scores under its own URL fingerprint rather than being
-/// dropped — a missing key would read as "never visited".
+/// collapsed into a record sums into that record's score.
+///
+/// Takes the table the projection already built, so the fold reads
+/// [`PageTable::page_of`] per event and canonicalizes nothing.
 pub fn frecency_by_page(
     traces: &[BrowsingTrace],
     now_ms: u64,
     config: &FrecencyConfig,
-    table: &BTreeMap<PageFingerprint, PageRecord>,
+    table: &PageTable,
 ) -> BTreeMap<PageFingerprint, f64> {
-    let index = fingerprint_index(table);
     frecency_by(traces, now_ms, config, |event: &TraceEvent| {
-        let canonical = canonical_url(&event.to.url);
-        index
-            .get(&canonical)
-            .copied()
-            .unwrap_or_else(|| PageFingerprint::of_url(&canonical))
+        table.page_of(&event.to.url)
     })
 }
 
@@ -501,7 +535,7 @@ mod tests {
         ]);
         let table = page_table(&traces, |_| None);
         assert_eq!(table.len(), 1, "one page, two addresses");
-        let record = table.values().next().unwrap();
+        let record = table.records.values().next().unwrap();
         assert_eq!(record.urls.len(), 1, "both canonicalize to one key");
         assert_eq!(
             record.urls.iter().next().unwrap(),
@@ -539,7 +573,7 @@ mod tests {
         ]);
         let table = page_table(&traces, |_| Some(ARTICLE.to_string()));
         assert_eq!(table.len(), 1);
-        let record = table.values().next().unwrap();
+        let record = table.records.values().next().unwrap();
         assert_eq!(record.fingerprint.source, FingerprintSource::Text);
         assert_eq!(record.urls.len(), 2, "both addresses reached one page");
         assert_eq!(record.visits, 2);
@@ -570,7 +604,18 @@ mod tests {
 
         let default = page_table(&traces, text_for);
         assert_eq!(default.len(), 1, "an edit is not a new page");
-        assert_eq!(default.values().next().unwrap().visits, 2);
+        assert_eq!(default.records.values().next().unwrap().visits, 2);
+        assert_eq!(
+            default.by_address.len(),
+            2,
+            "both addresses point at the surviving record"
+        );
+        for page in default.by_address.values() {
+            assert!(
+                default.records.contains_key(page),
+                "the memo follows the merge"
+            );
+        }
 
         let strict = page_table_with(&traces, text_for, &PageTableConfig::EXACT);
         assert_eq!(strict.len(), 2, "exact identity keeps the edit apart");
@@ -591,7 +636,7 @@ mod tests {
             })
         });
         assert_eq!(table.len(), 2);
-        let fingerprints: Vec<_> = table.keys().collect();
+        let fingerprints: Vec<_> = table.records.keys().collect();
         assert!(
             fingerprints[0].hamming(fingerprints[1]) > 4 * PageTableConfig::default().near_hamming,
             "unrelated pages sit far outside the threshold, not just outside it"
@@ -609,6 +654,7 @@ mod tests {
             url.contains("//known.").then(|| ARTICLE.to_string())
         });
         let sources: BTreeSet<FingerprintSource> = table
+            .records
             .values()
             .map(|record| record.fingerprint.source)
             .collect();
@@ -617,7 +663,7 @@ mod tests {
             BTreeSet::from([FingerprintSource::Text, FingerprintSource::CanonicalUrl]),
             "a text-keyed page and a URL-keyed one are distinguishable"
         );
-        for record in table.values() {
+        for record in table.records.values() {
             assert_eq!(
                 record.text.is_some(),
                 record.fingerprint.source == FingerprintSource::Text,
@@ -647,6 +693,7 @@ mod tests {
         let scores = frecency_by_page(&traces, 1_000, &config, &table);
         assert_eq!(scores.len(), 2);
         let split = table
+            .records
             .values()
             .find(|record| record.urls.iter().any(|url| url.contains("split")))
             .unwrap();
@@ -655,10 +702,10 @@ mod tests {
             (scores[&split.fingerprint] - 3.0 * config.weights.link_click).abs() < 1e-9,
             "three visits to one page, one score"
         );
-        // And the lookup the caller uses to get there.
-        let index = fingerprint_index(&table);
+        // And the lookup the caller uses to get there: keyed by the address
+        // as visited, so the fold canonicalizes nothing.
         assert_eq!(
-            index.get("https://split.example/x").copied(),
+            table.by_address.get("https://split.example/x#top").copied(),
             Some(split.fingerprint)
         );
     }

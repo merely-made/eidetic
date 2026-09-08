@@ -81,12 +81,13 @@ pub mod typed;
 // `frecency::ranked` stays behind its module path: the bare name says nothing
 // at the crate root.
 pub use browsing::frecency::{FrecencyConfig, TransitionWeights, frecency, frecency_by};
-// `page::simhash`, `normalize_text` and `fingerprint_index` stay behind the
-// module path for the same reason `ranked` does.
+// `page::simhash` and `normalize_text` stay behind the module path for the
+// same reason `ranked` does.
 pub use browsing::page::{
-    FingerprintSource, PageFingerprint, PageRecord, PageTableConfig, canonical_url,
+    FingerprintSource, PageFingerprint, PageRecord, PageTable, PageTableConfig, canonical_url,
     frecency_by_page, page_table, page_table_with,
 };
+pub use browsing::text::{PageTextRef, PageTextStore, PageTexts};
 pub use browsing::{
     BROWSING_TRACE_SCHEMA_REF, BrowsingMemory, BrowsingTrace, PageRef, TraceEvent, TraceTransition,
     bootstrap_browsing_schema, save_trace,

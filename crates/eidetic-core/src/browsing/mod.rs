@@ -22,7 +22,9 @@
 //! weight by transition kind under a half-life — which recall fuses beside its
 //! lexical and vector lanes (wiring plan W6b). [`page`] folds it the other
 //! way: a page table keyed by a content fingerprint, so one visited page is
-//! one record and N events however many URLs reached it (W6d).
+//! one record and N events however many URLs reached it (W6d). [`text`] is
+//! where the bodies that fingerprint comes from are kept — blob for the
+//! storage, one slot per address for the index (W6c).
 //!
 //! Quota is a Layer-4 policy: [`BrowsingMemory::apply_quota`] keeps the N
 //! most recent *stored* traces and deletes older manifests (blob bytes await
@@ -32,6 +34,7 @@ pub mod frecency;
 #[cfg(feature = "lineage")]
 pub mod lineage;
 pub mod page;
+pub mod text;
 
 use serde::{Deserialize, Serialize};
 

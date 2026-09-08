@@ -23,7 +23,7 @@ identity = { workspace = true, optional = true }
 # declared twice — same get/put/delete/list seam. Eidetic now consumes it, and
 # `eidetic::Store` is an alias so the layers above (manifests, schemas, engrams)
 # read unchanged. Plan: design_docs/…/2026-07-12_eidetic_on_muniment_plan.md.
-muniment = { path = "../muniment", version = "0.1.0" }
+muniment = { path = "../muniment", version = "0.1.0", features = ["json"] }
 async-trait = "0.1"
 blake3 = "1.5"
 jsonschema = { version = "0.18", default-features = false, optional = true }

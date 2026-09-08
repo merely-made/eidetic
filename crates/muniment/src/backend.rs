@@ -125,6 +125,41 @@ impl<B: Backend + Sync + ?Sized> Backend for Box<B> {
     }
 }
 
+/// A **borrowed** backend is a backend, so a consumer that owns one store
+/// handle can layer several muniment stores over it without cloning or moving
+/// it — a `BlobStore` and a `SlotStore` on the same keyspace, which is how a
+/// blob-plus-slot index is written.
+///
+/// `Sync` for the same reason `Box<B>` needs it: the native bound makes the
+/// returned futures `Send`, so `&B` has to cross threads.
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
+impl<B: Backend + Sync + ?Sized> Backend for &B {
+    async fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError> {
+        (**self).get(key).await
+    }
+
+    async fn put(&self, key: &str, bytes: &[u8]) -> Result<(), StoreError> {
+        (**self).put(key, bytes).await
+    }
+
+    async fn delete(&self, key: &str) -> Result<(), StoreError> {
+        (**self).delete(key).await
+    }
+
+    async fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError> {
+        (**self).list(prefix).await
+    }
+
+    async fn scan(&self, start: &str, end: &str) -> Result<Vec<String>, StoreError> {
+        (**self).scan(start, end).await
+    }
+
+    async fn apply(&self, ops: &[WriteOp]) -> Result<(), StoreError> {
+        (**self).apply(ops).await
+    }
+}
+
 /// An in-memory [`Backend`], the deterministic test and development floor. Not
 /// durable: state lives only as long as the handle. Cheap to clone (a shared
 /// handle), so one instance can seed both a `SlotStore` and a `BlobStore`, the
@@ -229,6 +264,19 @@ mod tests {
         assert_send(b.get("k"));
         assert_send(b.put("k", b"v"));
         assert_send(b.apply(&[]));
+    }
+
+    /// A borrowed backend reaches the same keyspace as the owned one, so two
+    /// stores can share one handle.
+    #[test]
+    fn a_borrowed_backend_shares_the_keyspace() {
+        pollster::block_on(async {
+            let owned = MemoryBackend::new();
+            let borrowed: &MemoryBackend = &owned;
+            borrowed.put("k", b"v").await.unwrap();
+            assert_eq!(owned.get("k").await.unwrap(), Some(b"v".to_vec()));
+            assert_eq!(borrowed.list("").await.unwrap(), vec!["k".to_string()]);
+        });
     }
 
     /// A backend seeded with two logs, entries inserted out of order.
