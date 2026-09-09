@@ -43,7 +43,7 @@ use async_trait::async_trait;
 use ::zip::write::SimpleFileOptions;
 use ::zip::{CompressionMethod, ZipArchive, ZipWriter};
 
-use crate::backend::{Backend, WriteOp};
+use crate::backend::{Backend, TransactFn, WriteOp};
 use crate::error::StoreError;
 
 /// Wrap any zip or I/O error as a backend failure, keeping the seam agnostic.
@@ -284,6 +284,21 @@ impl Backend for ZipBackend {
         write_entries(&inner.path, &next)?;
         inner.entries = next;
         Ok(())
+    }
+
+    /// Refuses: [`transact`](Backend::transact)'s guarantee is that nothing
+    /// else observes or mutates state between `f`'s reads and its writes'
+    /// commit, and this backend cannot promise that across processes. Its
+    /// in-process `Mutex` serializes calls from one `ZipBackend` handle, but
+    /// two processes that opened the same archive each hold their own
+    /// in-memory copy with no file lock between them (module doc above); the
+    /// later writer's whole-archive rewrite silently wins and the earlier
+    /// process's writes are lost, exactly the race `transact` exists to close.
+    /// A caller needing that guarantee wants [`RedbBackend`](crate::RedbBackend)
+    /// instead.
+    async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+        let _ = f;
+        Err(StoreError::NotTransactional)
     }
 }
 

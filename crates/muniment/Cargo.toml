@@ -75,3 +75,10 @@ serde_json = "1"
 postcard = { version = "1", features = ["alloc"] }
 # A scratch directory for the redb backend's on-disk round-trip tests.
 tempfile = "3"
+
+# S10: an actual runtime check of whether redb's write lock is cross-process on
+# Windows, not just within one process's handle. See the doc comment in
+# examples/redb_cross_process_lock.rs.
+[[example]]
+name = "redb_cross_process_lock"
+required-features = ["redb"]

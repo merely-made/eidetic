@@ -23,9 +23,9 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 // Leading `::` so this resolves to the external crate, not this module.
-use ::redb::{Database, TableDefinition};
+use ::redb::{Database, ReadableTable, TableDefinition};
 
-use crate::backend::{Backend, WriteOp};
+use crate::backend::{Backend, TransactFn, TransactionReader, WriteOp};
 use crate::error::StoreError;
 
 /// The single key/value table: opaque string keys, raw byte values.
@@ -139,6 +139,59 @@ impl Backend for RedbBackend {
             }
         }
         // One commit for the whole batch: it lands atomically, or not at all.
+        txn.commit().map_err(backend)?;
+        Ok(())
+    }
+
+    /// Honest: one `begin_write`, `f`'s reads and the writes it returns both
+    /// happen against that same open transaction, one `commit`. redb write
+    /// transactions are single-writer and ACID, so nothing else can observe or
+    /// mutate the table between `f`'s reads and this commit.
+    async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+        let txn = self.db.begin_write().map_err(backend)?;
+        {
+            let mut table = txn.open_table(TABLE).map_err(backend)?;
+            let ops = {
+                struct Reader<'r, 'txn>(&'r ::redb::Table<'txn, &'static str, &'static [u8]>);
+                impl TransactionReader for Reader<'_, '_> {
+                    fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError> {
+                        match self.0.get(key).map_err(backend)? {
+                            Some(value) => Ok(Some(value.value().to_vec())),
+                            None => Ok(None),
+                        }
+                    }
+
+                    fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError> {
+                        let mut keys = Vec::new();
+                        for entry in self.0.range(prefix..).map_err(backend)? {
+                            let (key, _value) = entry.map_err(backend)?;
+                            let key = key.value();
+                            if !key.starts_with(prefix) {
+                                break;
+                            }
+                            keys.push(key.to_string());
+                        }
+                        Ok(keys)
+                    }
+                }
+                // The reader borrows `table` immutably only for this call; it is
+                // dropped before the mutable insert/remove calls below, so the
+                // borrow checker sees two sequential borrows, not an overlap.
+                f(&Reader(&table))
+            };
+            for op in ops {
+                match op {
+                    WriteOp::Put { key, value } => {
+                        table
+                            .insert(key.as_str(), value.as_slice())
+                            .map_err(backend)?;
+                    },
+                    WriteOp::Delete { key } => {
+                        table.remove(key.as_str()).map_err(backend)?;
+                    },
+                }
+            }
+        }
         txn.commit().map_err(backend)?;
         Ok(())
     }

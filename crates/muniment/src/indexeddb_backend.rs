@@ -34,6 +34,9 @@ use web_sys::{
     Event, IdbDatabase, IdbFactory, IdbObjectStore, IdbRequest, IdbTransaction, IdbTransactionMode,
 };
 
+use std::collections::HashMap;
+
+use crate::backend::{TransactFn, TransactionReader};
 use crate::{Backend, StoreError, WriteOp};
 
 const DATABASE_VERSION: u32 = 1;
@@ -101,6 +104,53 @@ impl IndexedDbBackend {
         Ok(Array::from(&value)
             .iter()
             .filter_map(|key| key.as_string())
+            .collect())
+    }
+
+    /// Every key and its bytes, fetched from an already-open `store`. Used by
+    /// [`transact`](Backend::transact) to snapshot the whole object store
+    /// before calling the caller's closure: `get_all_keys`/`get_all` are two
+    /// requests against the same store within the same transaction, so both
+    /// see the state the transaction opened with, before any of this call's
+    /// own writes land.
+    async fn all_entries(store: &IdbObjectStore) -> Result<HashMap<String, Vec<u8>>, StoreError> {
+        let keys_request = store.get_all_keys().map_err(js_backend_error)?;
+        let keys_value = await_request(&keys_request).await?;
+        let values_request = store.get_all().map_err(js_backend_error)?;
+        let values_value = await_request(&values_request).await?;
+
+        let keys: Vec<String> = Array::from(&keys_value)
+            .iter()
+            .filter_map(|key| key.as_string())
+            .collect();
+        let values = Array::from(&values_value);
+        let mut entries = HashMap::with_capacity(keys.len());
+        for (key, value) in keys.into_iter().zip(values.iter()) {
+            let bytes = Uint8Array::new(&value);
+            let mut output = vec![0; bytes.length() as usize];
+            bytes.copy_to(&mut output);
+            entries.insert(key, output);
+        }
+        Ok(entries)
+    }
+}
+
+/// An in-memory snapshot of an object store, fetched up front so
+/// [`IndexedDbBackend::transact`]'s closure can read synchronously against a
+/// fixed point in time rather than awaiting a JS promise per read.
+struct SnapshotReader(HashMap<String, Vec<u8>>);
+
+impl TransactionReader for SnapshotReader {
+    fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError> {
+        Ok(self.0.get(key).cloned())
+    }
+
+    fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError> {
+        Ok(self
+            .0
+            .keys()
+            .filter(|k| k.starts_with(prefix))
+            .cloned()
             .collect())
     }
 }
@@ -193,6 +243,36 @@ impl Backend for IndexedDbBackend {
                 WriteOp::Delete { key } => {
                     store
                         .delete(&JsValue::from_str(key))
+                        .map_err(js_backend_error)?;
+                },
+            }
+        }
+        await_transaction(&transaction).await
+    }
+
+    /// Honest: one `Readwrite` transaction. `get_all_keys`/`get_all` (the
+    /// gets) resolve into an in-memory snapshot before `f` runs, and the
+    /// `put`/`delete` requests `f`'s writes describe are then issued against
+    /// the *same* still-open transaction, before this awaits its
+    /// `oncomplete`. No JS event-loop turn separates the reads from the
+    /// writes' commit, so nothing else can interleave: an IndexedDB
+    /// transaction only auto-closes once control returns to the browser event
+    /// loop with no pending request, which never happens here.
+    async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+        let (transaction, store) = self.transaction(IdbTransactionMode::Readwrite)?;
+        let snapshot = SnapshotReader(Self::all_entries(&store).await?);
+        let ops = f(&snapshot);
+        for op in ops {
+            match op {
+                WriteOp::Put { key, value } => {
+                    let bytes = Uint8Array::from(value.as_slice());
+                    store
+                        .put_with_key(bytes.as_ref(), &JsValue::from_str(&key))
+                        .map_err(js_backend_error)?;
+                },
+                WriteOp::Delete { key } => {
+                    store
+                        .delete(&JsValue::from_str(&key))
                         .map_err(js_backend_error)?;
                 },
             }

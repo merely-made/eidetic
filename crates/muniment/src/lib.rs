@@ -33,6 +33,8 @@
 pub mod backend;
 pub mod blob;
 pub mod codec;
+#[cfg(test)]
+mod custody_transact_tests;
 pub mod error;
 #[cfg(all(feature = "indexeddb", target_arch = "wasm32"))]
 pub mod indexeddb_backend;
@@ -43,7 +45,7 @@ pub mod slot;
 #[cfg(feature = "zip")]
 pub mod zip_backend;
 
-pub use backend::{Backend, MemoryBackend, WriteOp};
+pub use backend::{Backend, MemoryBackend, TransactFn, TransactionReader, WriteOp};
 pub use blob::{BlobStore, Hash};
 pub use codec::Codec;
 pub use error::StoreError;

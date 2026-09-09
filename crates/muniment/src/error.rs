@@ -16,6 +16,13 @@ pub enum StoreError {
     Backend(String),
     /// Encoding or decoding a typed value through a [`Codec`](crate::Codec) failed.
     Codec(String),
+    /// This backend cannot honor [`Backend::transact`](crate::Backend::transact):
+    /// it has no way to run a caller's read-then-write closure against one
+    /// consistent snapshot and commit atomically. Distinct from `Backend` so a
+    /// caller can match on it and fall back deliberately (e.g. refuse custody
+    /// operations rather than risk a stale read) instead of treating it as an
+    /// ordinary I/O failure.
+    NotTransactional,
 }
 
 impl fmt::Display for StoreError {
@@ -23,6 +30,9 @@ impl fmt::Display for StoreError {
         match self {
             StoreError::Backend(msg) => write!(f, "backend: {msg}"),
             StoreError::Codec(msg) => write!(f, "codec: {msg}"),
+            StoreError::NotTransactional => {
+                write!(f, "backend does not support transactional read-then-write")
+            },
         }
     }
 }

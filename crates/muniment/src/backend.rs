@@ -30,6 +30,41 @@ pub enum WriteOp {
     },
 }
 
+/// A consistent read view inside a [`transact`](Backend::transact) closure.
+///
+/// Every `get`/`list` call against this reader observes the same snapshot the
+/// closure's returned [`WriteOp`]s will commit against: no other `apply` or
+/// `transact` interleaves between the reader's reads and the eventual commit.
+/// This is the seam that lets a caller recheck a fact (a reference prefix is
+/// empty, an owner key is absent) and act on it atomically, closing the gap a
+/// separate `get` then `delete`/`apply` leaves open.
+pub trait TransactionReader {
+    /// The bytes at `key` in this transaction's snapshot, or `None` if absent.
+    fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError>;
+
+    /// Every key beginning with `prefix` in this transaction's snapshot, in
+    /// unspecified order. The read a collection recheck needs: "is any
+    /// reference under this prefix still live".
+    fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError>;
+}
+
+/// The caller closure [`transact`](Backend::transact) runs against a
+/// [`TransactionReader`], returning the writes to commit.
+///
+/// Boxed rather than a generic `impl FnOnce`, so [`Backend`] stays object-safe
+/// (`Box<dyn Backend>` is a real, exercised shape below) — a generic method
+/// parameter is not expressible on a trait object. `FnOnce` because the
+/// closure runs exactly once, synchronously, inside the open transaction; it
+/// cannot itself `.await` (an async backend that needs its reads to complete
+/// first, like IndexedDB, resolves them before calling the closure, not
+/// inside it). Native requires `Send` for the same reason `apply`'s futures
+/// do; wasm relaxes it since nothing here crosses a thread.
+#[cfg(not(target_arch = "wasm32"))]
+pub type TransactFn = Box<dyn FnOnce(&dyn TransactionReader) -> Vec<WriteOp> + Send>;
+/// See the native [`TransactFn`] doc; wasm drops the `Send` bound.
+#[cfg(target_arch = "wasm32")]
+pub type TransactFn = Box<dyn FnOnce(&dyn TransactionReader) -> Vec<WriteOp>>;
+
 /// A host-supplied key/value byte store. The host realizes it as the filesystem
 /// on desktop, OPFS in the browser, or an embedded store (redb, fjall). muniment
 /// defines the contract; it never picks a backend.
@@ -85,6 +120,31 @@ pub trait Backend {
     /// Required, not defaulted, for the same reason as [`scan`](Backend::scan): a
     /// default body would leak a `Self: Sync` bound to every generic caller.
     async fn apply(&self, ops: &[WriteOp]) -> Result<(), StoreError>;
+
+    /// Run `f` against one consistent snapshot and commit the [`WriteOp`]s it
+    /// returns atomically, or apply nothing.
+    ///
+    /// This is `apply` with the read half restored: `f` can `get` an owner key
+    /// and `list` a reference prefix, then decide what to write, all inside the
+    /// same transaction — so a competing claim, transfer, or collection that
+    /// lands between the read and the write cannot happen, because there is no
+    /// gap between them for it to land in. `Backend::apply` alone cannot express
+    /// this: a caller that reads first via `get`/`list` and calls `apply` second
+    /// has two separate operations with an interval between them another
+    /// `transact` or `apply` can act inside.
+    ///
+    /// No other `apply`/`transact` call interleaves with this one's reads and
+    /// writes: single-writer, or serialized under one lock, per backend.
+    ///
+    /// Defaulted to a typed refusal ([`StoreError::NotTransactional`]) so an
+    /// external `Backend` implementor keeps compiling without adding this;
+    /// callers that need the guarantee (custody claims, transfers, collection)
+    /// must check for the error and refuse rather than fall back to a racy
+    /// `apply`.
+    async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+        let _ = f;
+        Err(StoreError::NotTransactional)
+    }
 }
 
 /// A boxed backend is a backend, so a host can **choose** one at runtime.
@@ -123,6 +183,10 @@ impl<B: Backend + Sync + ?Sized> Backend for Box<B> {
     async fn apply(&self, ops: &[WriteOp]) -> Result<(), StoreError> {
         (**self).apply(ops).await
     }
+
+    async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+        (**self).transact(f).await
+    }
 }
 
 /// A **borrowed** backend is a backend, so a consumer that owns one store
@@ -157,6 +221,10 @@ impl<B: Backend + Sync + ?Sized> Backend for &B {
 
     async fn apply(&self, ops: &[WriteOp]) -> Result<(), StoreError> {
         (**self).apply(ops).await
+    }
+
+    async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+        (**self).transact(f).await
     }
 }
 
@@ -241,6 +309,41 @@ impl Backend for MemoryBackend {
                 },
                 WriteOp::Delete { key } => {
                     map.remove(key);
+                },
+            }
+        }
+        Ok(())
+    }
+
+    /// Honest under the single mutex: it stays locked from the read `f` makes
+    /// through the writes it returns, so no other `apply`/`transact` call can
+    /// land between them.
+    async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+        struct MapReader<'a>(&'a HashMap<String, Vec<u8>>);
+        impl TransactionReader for MapReader<'_> {
+            fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError> {
+                Ok(self.0.get(key).cloned())
+            }
+
+            fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError> {
+                Ok(self
+                    .0
+                    .keys()
+                    .filter(|k| k.starts_with(prefix))
+                    .cloned()
+                    .collect())
+            }
+        }
+
+        let mut map = self.map.lock().unwrap();
+        let ops = f(&MapReader(&map));
+        for op in ops {
+            match op {
+                WriteOp::Put { key, value } => {
+                    map.insert(key, value);
+                },
+                WriteOp::Delete { key } => {
+                    map.remove(&key);
                 },
             }
         }
