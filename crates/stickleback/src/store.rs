@@ -43,7 +43,9 @@ use std::sync::Arc;
 use futures_util::{StreamExt, stream, stream::BoxStream};
 use muniment::{Backend, StoreError, WriteOp};
 use p2panda_core::cbor::{decode_cbor, encode_cbor};
-use p2panda_core::{AnyOperation, Body, Extensions, Hash, Header, LogId, Operation, Topic, VerifyingKey};
+use p2panda_core::{
+    AnyOperation, Body, Extensions, Hash, Header, LogId, Operation, Topic, VerifyingKey,
+};
 use p2panda_store::logs::{LogStore, StreamItem};
 use p2panda_store::operations::OperationStore;
 use p2panda_store::topics::TopicStore;
@@ -286,7 +288,7 @@ where
         until: Option<u32>,
     ) -> Result<BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>>, StoreError>
     where
-        B: Clone,
+        B: Clone + Send + 'static,
         E: Send + 'static,
         L: Send + 'static,
     {
@@ -1071,7 +1073,7 @@ where
 
 impl<B, E, L> LogStore<Operation<E>, VerifyingKey, L, u32, Hash> for MunimentStore<B, E>
 where
-    B: Backend + Clone,
+    B: Backend + Clone + Send + 'static,
     E: Extensions + Send + 'static,
     L: LogId + Send + 'static,
 {
@@ -1151,7 +1153,8 @@ where
         log_id: &L,
         after: Option<u32>,
         until: Option<u32>,
-    ) -> Result<BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>>, StoreError> {
+    ) -> Result<BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>>, StoreError>
+    {
         let store = self.clone();
         let author = *author;
         let log_id = log_id.clone();
@@ -1163,33 +1166,37 @@ where
         .flat_map(move |result| {
             let stream: BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>> =
                 match result {
-                    Ok((store, prefix, log_id, keys)) => Box::pin(stream::iter(keys).filter_map(
-                        move |key| async move {
+                    Ok((store, prefix, log_id, keys)) => {
+                        Box::pin(stream::iter(keys).filter_map(move |key| {
                             let store = store.clone();
                             let prefix = prefix.clone();
                             let log_id = log_id.clone();
-                            let result: Result<Option<StreamItem<Operation<E>, L>>, StoreError> = async move {
-                                if !in_range(seq_from_key(&key, &prefix)?, after, until) {
-                                    return Ok(None);
+                            async move {
+                                let result: Result<
+                                    Option<StreamItem<Operation<E>, L>>,
+                                    StoreError,
+                                > = async move {
+                                    if !in_range(seq_from_key(&key, &prefix)?, after, until) {
+                                        return Ok(None);
+                                    }
+                                    let blob = store.backend.get(&key).await?.ok_or_else(|| {
+                                        codec("log entry disappeared during scan")
+                                    })?;
+                                    let op = decode_op::<E>(&blob)?;
+                                    Ok(Some(StreamItem {
+                                        bytes: op.header.encode(),
+                                        entry: op,
+                                        log_id,
+                                    }))
                                 }
-                                let blob = store
-                                    .backend
-                                    .get(&key)
-                                    .await?
-                                    .ok_or_else(|| codec("log entry disappeared during scan"))?;
-                                let op = decode_op::<E>(&blob)?;
-                                Ok(Some(StreamItem {
-                                    bytes: op.header.encode(),
-                                    entry: op,
-                                    log_id,
-                                }))
-                            }.await;
-                            match result {
-                                Ok(item) => item.map(Ok),
-                                Err(error) => Some(Err(error)),
+                                .await;
+                                match result {
+                                    Ok(item) => item.map(Ok),
+                                    Err(error) => Some(Err(error)),
+                                }
                             }
-                        },
-                    )),
+                        }))
+                    },
                     Err(err) => Box::pin(stream::once(async move { Err(err) })),
                 };
             stream
@@ -1214,8 +1221,8 @@ where
 /// type; both views decode the same stored header/body bytes.
 impl<B, E, L> LogStore<AnyOperation, VerifyingKey, L, u32, Hash> for MunimentStore<B, E>
 where
-    B: Backend + Clone,
-    E: Extensions,
+    B: Backend + Clone + Send + 'static,
+    E: Extensions + 'static,
     L: LogId + Send + 'static,
 {
     type Error = StoreError;
@@ -1262,7 +1269,11 @@ where
                 heights.insert(log_id.clone(), seq_from_key(key, &prefix)?);
             }
         }
-        if heights.is_empty() { Ok(None) } else { Ok(Some(heights)) }
+        if heights.is_empty() {
+            Ok(None)
+        } else {
+            Ok(Some(heights))
+        }
     }
 
     async fn get_log_size(
@@ -1277,7 +1288,9 @@ where
         let mut count = 0;
         let mut bytes = 0;
         for key in &keys {
-            if !in_range(seq_from_key(key, &prefix)?, after, until) { continue; }
+            if !in_range(seq_from_key(key, &prefix)?, after, until) {
+                continue;
+            }
             if let Some(blob) = self.backend.get(key).await? {
                 let op = decode_any_op(&blob)?;
                 bytes += op.header.size() + op.header.payload_size;
@@ -1293,7 +1306,8 @@ where
         log_id: &L,
         after: Option<u32>,
         until: Option<u32>,
-    ) -> Result<BoxStream<'static, Result<StreamItem<AnyOperation, L>, StoreError>>, StoreError> {
+    ) -> Result<BoxStream<'static, Result<StreamItem<AnyOperation, L>, StoreError>>, StoreError>
+    {
         let store = self.clone();
         let author = *author;
         let log_id = log_id.clone();
@@ -1305,33 +1319,37 @@ where
         .flat_map(move |result| {
             let stream: BoxStream<'static, Result<StreamItem<AnyOperation, L>, StoreError>> =
                 match result {
-                    Ok((store, prefix, log_id, keys)) => Box::pin(stream::iter(keys).filter_map(
-                        move |key| async move {
+                    Ok((store, prefix, log_id, keys)) => {
+                        Box::pin(stream::iter(keys).filter_map(move |key| {
                             let store = store.clone();
                             let prefix = prefix.clone();
                             let log_id = log_id.clone();
-                            let result: Result<Option<StreamItem<AnyOperation, L>>, StoreError> = async move {
-                                if !in_range(seq_from_key(&key, &prefix)?, after, until) {
-                                    return Ok(None);
+                            async move {
+                                let result: Result<
+                                    Option<StreamItem<AnyOperation, L>>,
+                                    StoreError,
+                                > = async move {
+                                    if !in_range(seq_from_key(&key, &prefix)?, after, until) {
+                                        return Ok(None);
+                                    }
+                                    let blob = store.backend.get(&key).await?.ok_or_else(|| {
+                                        codec("log entry disappeared during scan")
+                                    })?;
+                                    let op = decode_any_op(&blob)?;
+                                    Ok(Some(StreamItem {
+                                        bytes: op.header.encode(),
+                                        entry: op,
+                                        log_id,
+                                    }))
                                 }
-                                let blob = store
-                                    .backend
-                                    .get(&key)
-                                    .await?
-                                    .ok_or_else(|| codec("log entry disappeared during scan"))?;
-                                let op = decode_any_op(&blob)?;
-                                Ok(Some(StreamItem {
-                                    bytes: op.header.encode(),
-                                    entry: op,
-                                    log_id,
-                                }))
-                            }.await;
-                            match result {
-                                Ok(item) => item.map(Ok),
-                                Err(error) => Some(Err(error)),
+                                .await;
+                                match result {
+                                    Ok(item) => item.map(Ok),
+                                    Err(error) => Some(Err(error)),
+                                }
                             }
-                        },
-                    )),
+                        }))
+                    },
                     Err(err) => Box::pin(stream::once(async move { Err(err) })),
                 };
             stream
@@ -1426,11 +1444,11 @@ where
             let Some((author_hex, log_hex)) = rest.split_once('/') else {
                 continue;
             };
-            let key_author = VerifyingKey::try_from(
-                hex::decode(author_hex).map_err(codec)?.as_slice(),
-            )
-            .map_err(codec)?;
-            let key_log: L = decode_cbor(&hex::decode(log_hex).map_err(codec)?[..]).map_err(codec)?;
+            let key_author =
+                VerifyingKey::try_from(hex::decode(author_hex).map_err(codec)?.as_slice())
+                    .map_err(codec)?;
+            let key_log: L =
+                decode_cbor(&hex::decode(log_hex).map_err(codec)?[..]).map_err(codec)?;
             if &key_author != author || &key_log != data_id {
                 continue;
             }
@@ -1589,18 +1607,28 @@ mod tests {
             // The second tuple element is the encoded header.
             assert_eq!(entries[0].1, op0.header.encode());
 
-            let heights = store
-                .get_log_heights(&author, &[log_id])
-                .await
-                .unwrap()
-                .unwrap();
+            let heights = <MunimentStore<MemoryBackend, Ext> as LogStore<
+                Operation<Ext>,
+                VerifyingKey,
+                u64,
+                u32,
+                Hash,
+            >>::get_log_heights(&store, &author, &[log_id])
+            .await
+            .unwrap()
+            .unwrap();
             assert_eq!(heights.get(&log_id), Some(&1));
 
-            let (count, _bytes) = store
-                .get_log_size(&author, &log_id, None, None)
-                .await
-                .unwrap()
-                .unwrap();
+            let (count, _bytes) = <MunimentStore<MemoryBackend, Ext> as LogStore<
+                Operation<Ext>,
+                VerifyingKey,
+                u64,
+                u32,
+                Hash,
+            >>::get_log_size(&store, &author, &log_id, None, None)
+            .await
+            .unwrap()
+            .unwrap();
             assert_eq!(count, 2);
 
             // Range: after seq 0 leaves only op1.
@@ -1651,7 +1679,15 @@ mod tests {
             }
 
             // Prune below seq 2: op0 and op1 go, op2 stays.
-            let pruned = store.prune_entries(&author, &log_id, &2).await.unwrap();
+            let pruned = <MunimentStore<MemoryBackend, Ext> as LogStore<
+                Operation<Ext>,
+                VerifyingKey,
+                u64,
+                u32,
+                Hash,
+            >>::prune_entries(&store, &author, &log_id, &2)
+            .await
+            .unwrap();
             assert_eq!(pruned, 2);
             assert!(!store.has_operation(&op0.hash).await.unwrap());
             assert!(store.has_operation(&op2.hash).await.unwrap());

@@ -189,7 +189,7 @@ fn valid_prune_flag_removes_prefix_and_blocks_replay() {
             );
         }
 
-        let pruner: LogPrune<_, LogPruneArgs<VerifyingKey, u64, u32>, u64, PrunableExtension> =
+        let pruner: LogPrune<_, LogPruneArgs<VerifyingKey, u64, u32>, u64> =
             LogPrune::new(store.clone());
         pruner
             .process(LogPruneArgs::PruneEntriesUntil {
