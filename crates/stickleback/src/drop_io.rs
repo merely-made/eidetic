@@ -20,7 +20,6 @@ use std::path::Path;
 use muniment::{Backend, StoreError, WriteOp};
 use p2panda_core::cbor::{decode_cbor, encode_cbor};
 use p2panda_core::{Body, Extensions, Hash, Header, LogId, Operation, Topic, VerifyingKey};
-use p2panda_store::logs::LogStore;
 use p2panda_store::topics::TopicStore;
 use serde::{Deserialize, Serialize};
 

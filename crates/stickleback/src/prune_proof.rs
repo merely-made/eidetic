@@ -9,7 +9,6 @@
 use muniment::MemoryBackend;
 use p2panda_core::prune::{PruneFlag, validate_prunable_backlink};
 use p2panda_core::{Body, Hash, Header, Operation, SigningKey, Topic, VerifyingKey};
-use p2panda_store::logs::LogStore;
 use p2panda_stream::Processor;
 use p2panda_stream::log_prune::{LogPrune, LogPruneArgs, LogPruneResult};
 use serde::{Deserialize, Serialize};

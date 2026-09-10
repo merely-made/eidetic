@@ -40,10 +40,11 @@ use std::collections::BTreeSet;
 use std::marker::PhantomData;
 use std::sync::Arc;
 
+use futures_util::{StreamExt, stream, stream::BoxStream};
 use muniment::{Backend, StoreError, WriteOp};
 use p2panda_core::cbor::{decode_cbor, encode_cbor};
-use p2panda_core::{Body, Extensions, Hash, Header, LogId, Operation, Topic, VerifyingKey};
-use p2panda_store::logs::LogStore;
+use p2panda_core::{AnyOperation, Body, Extensions, Hash, Header, LogId, Operation, Topic, VerifyingKey};
+use p2panda_store::logs::{LogStore, StreamItem};
 use p2panda_store::operations::OperationStore;
 use p2panda_store::topics::TopicStore;
 use proofs::{BlobRef, DigestAlg};
@@ -254,6 +255,73 @@ impl<B, E> MunimentStore<B, E> {
     }
 }
 
+// These typed conveniences keep existing domain readers unambiguous now that
+// the same store also implements p2panda 0.7.3's `LogStore<AnyOperation>`.
+impl<B, E> MunimentStore<B, E>
+where
+    B: Backend,
+    E: Extensions,
+{
+    pub async fn get_latest_entry<L: LogId>(
+        &self,
+        author: &VerifyingKey,
+        log_id: &L,
+    ) -> Result<Option<Operation<E>>, StoreError> {
+        let prefix = log_prefix(author, log_id)?;
+        let keys = self.backend.scan(&prefix, &scan_end(&prefix)).await?;
+        match keys.last() {
+            Some(key) => match self.backend.get(key).await? {
+                Some(blob) => Ok(Some(decode_op(&blob)?)),
+                None => Ok(None),
+            },
+            None => Ok(None),
+        }
+    }
+
+    pub fn log_entries<L: LogId>(
+        &self,
+        author: &VerifyingKey,
+        log_id: &L,
+        after: Option<u32>,
+        until: Option<u32>,
+    ) -> Result<BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>>, StoreError>
+    where
+        B: Clone,
+        E: Send + 'static,
+        L: Send + 'static,
+    {
+        <Self as LogStore<Operation<E>, VerifyingKey, L, u32, Hash>>::log_entries(
+            self, author, log_id, after, until,
+        )
+    }
+
+    /// Compatibility collector for domain code that wants an owned typed
+    /// history. The p2panda trait itself is now streaming; this helper keeps
+    /// the materialized view explicit at the application boundary.
+    pub async fn get_log_entries<L: LogId>(
+        &self,
+        author: &VerifyingKey,
+        log_id: &L,
+        after: Option<u32>,
+        until: Option<u32>,
+    ) -> Result<Option<Vec<(Operation<E>, Vec<u8>)>>, StoreError> {
+        let prefix = log_prefix(author, log_id)?;
+        let keys = self.backend.scan(&prefix, &scan_end(&prefix)).await?;
+        let mut out = Vec::new();
+        for key in &keys {
+            if !in_range(seq_from_key(key, &prefix)?, after, until) {
+                continue;
+            }
+            if let Some(blob) = self.backend.get(key).await? {
+                let op = decode_op::<E>(&blob)?;
+                let header = op.header.encode();
+                out.push((op, header));
+            }
+        }
+        Ok((!out.is_empty()).then_some(out))
+    }
+}
+
 // ── key helpers ───────────────────────────────────────────────────────────────
 
 /// The `op/<hash>` pointer key for an operation id.
@@ -378,6 +446,19 @@ fn decode_op<E: Extensions>(bytes: &[u8]) -> Result<Operation<E>, StoreError> {
     let (header, body) = decode_blob(bytes)?;
     Ok(Operation {
         hash: header.hash(),
+        header,
+        body: body.map(Body::from),
+    })
+}
+
+/// Decode a stored blob without knowing its application extension type.
+fn decode_any_op(bytes: &[u8]) -> Result<AnyOperation, StoreError> {
+    let (header_bytes, body): (serde_bytes::ByteBuf, Option<Vec<u8>>) =
+        decode_cbor(bytes).map_err(stale_blob)?;
+    let header = p2panda_core::AnyHeader::decode(&header_bytes).map_err(stale_blob)?;
+    let hash = header.hash();
+    Ok(AnyOperation {
+        hash,
         header,
         body: body.map(Body::from),
     })
@@ -990,9 +1071,9 @@ where
 
 impl<B, E, L> LogStore<Operation<E>, VerifyingKey, L, u32, Hash> for MunimentStore<B, E>
 where
-    B: Backend,
-    E: Extensions,
-    L: LogId,
+    B: Backend + Clone,
+    E: Extensions + Send + 'static,
+    L: LogId + Send + 'static,
 {
     type Error = StoreError;
 
@@ -1064,31 +1145,198 @@ where
         Ok(Some((count, bytes)))
     }
 
-    async fn get_log_entries(
+    fn log_entries(
         &self,
         author: &VerifyingKey,
         log_id: &L,
         after: Option<u32>,
         until: Option<u32>,
-    ) -> Result<Option<Vec<(Operation<E>, Vec<u8>)>>, StoreError> {
+    ) -> Result<BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>>, StoreError> {
+        let store = self.clone();
+        let author = *author;
+        let log_id = log_id.clone();
+        let stream = stream::once(async move {
+            let prefix = log_prefix(&author, &log_id)?;
+            let keys = store.backend.scan(&prefix, &scan_end(&prefix)).await?;
+            Ok::<_, StoreError>((store, prefix, log_id, keys))
+        })
+        .flat_map(move |result| {
+            let stream: BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>> =
+                match result {
+                    Ok((store, prefix, log_id, keys)) => Box::pin(stream::iter(keys).filter_map(
+                        move |key| async move {
+                            let store = store.clone();
+                            let prefix = prefix.clone();
+                            let log_id = log_id.clone();
+                            let result: Result<Option<StreamItem<Operation<E>, L>>, StoreError> = async move {
+                                if !in_range(seq_from_key(&key, &prefix)?, after, until) {
+                                    return Ok(None);
+                                }
+                                let blob = store
+                                    .backend
+                                    .get(&key)
+                                    .await?
+                                    .ok_or_else(|| codec("log entry disappeared during scan"))?;
+                                let op = decode_op::<E>(&blob)?;
+                                Ok(Some(StreamItem {
+                                    bytes: op.header.encode(),
+                                    entry: op,
+                                    log_id,
+                                }))
+                            }.await;
+                            match result {
+                                Ok(item) => item.map(Ok),
+                                Err(error) => Some(Err(error)),
+                            }
+                        },
+                    )),
+                    Err(err) => Box::pin(stream::once(async move { Err(err) })),
+                };
+            stream
+        });
+        Ok(Box::pin(stream))
+    }
+
+    async fn prune_entries(
+        &self,
+        author: &VerifyingKey,
+        log_id: &L,
+        until: &u32,
+    ) -> Result<u64, StoreError> {
+        let (writes, pruned) = self.prefix_prune_writes(author, log_id, *until).await?;
+        self.backend.apply(&writes).await?;
+        Ok(pruned)
+    }
+}
+
+/// Any-operation view required by p2panda-net 0.7.3's LogSync. The typed
+/// implementation above remains for domain readers that need their extension
+/// type; both views decode the same stored header/body bytes.
+impl<B, E, L> LogStore<AnyOperation, VerifyingKey, L, u32, Hash> for MunimentStore<B, E>
+where
+    B: Backend + Clone,
+    E: Extensions,
+    L: LogId + Send + 'static,
+{
+    type Error = StoreError;
+
+    async fn get_latest_entry(
+        &self,
+        author: &VerifyingKey,
+        log_id: &L,
+    ) -> Result<Option<AnyOperation>, StoreError> {
         let prefix = log_prefix(author, log_id)?;
         let keys = self.backend.scan(&prefix, &scan_end(&prefix)).await?;
-        let mut entries = Vec::new();
+        match keys.last() {
+            Some(key) => self
+                .backend
+                .get(key)
+                .await?
+                .map(|blob| decode_any_op(&blob))
+                .transpose(),
+            None => Ok(None),
+        }
+    }
+
+    async fn get_latest_entry_tx(
+        &self,
+        author: &VerifyingKey,
+        log_id: &L,
+    ) -> Result<Option<AnyOperation>, StoreError> {
+        <Self as LogStore<AnyOperation, VerifyingKey, L, u32, Hash>>::get_latest_entry(
+            self, author, log_id,
+        )
+        .await
+    }
+
+    async fn get_log_heights(
+        &self,
+        author: &VerifyingKey,
+        logs: &[L],
+    ) -> Result<Option<BTreeMap<L, u32>>, StoreError> {
+        let mut heights = BTreeMap::new();
+        for log_id in logs {
+            let prefix = log_prefix(author, log_id)?;
+            let keys = self.backend.scan(&prefix, &scan_end(&prefix)).await?;
+            if let Some(key) = keys.last() {
+                heights.insert(log_id.clone(), seq_from_key(key, &prefix)?);
+            }
+        }
+        if heights.is_empty() { Ok(None) } else { Ok(Some(heights)) }
+    }
+
+    async fn get_log_size(
+        &self,
+        author: &VerifyingKey,
+        log_id: &L,
+        after: Option<u32>,
+        until: Option<u32>,
+    ) -> Result<Option<(u32, u32)>, StoreError> {
+        let prefix = log_prefix(author, log_id)?;
+        let keys = self.backend.scan(&prefix, &scan_end(&prefix)).await?;
+        let mut count = 0;
+        let mut bytes = 0;
         for key in &keys {
-            if !in_range(seq_from_key(key, &prefix)?, after, until) {
-                continue;
-            }
+            if !in_range(seq_from_key(key, &prefix)?, after, until) { continue; }
             if let Some(blob) = self.backend.get(key).await? {
-                let op = decode_op::<E>(&blob)?;
-                let header = op.header.encode();
-                entries.push((op, header));
+                let op = decode_any_op(&blob)?;
+                bytes += op.header.size() + op.header.payload_size;
+                count += 1;
             }
         }
-        if entries.is_empty() {
-            Ok(None)
-        } else {
-            Ok(Some(entries))
-        }
+        Ok(Some((count, bytes)))
+    }
+
+    fn log_entries(
+        &self,
+        author: &VerifyingKey,
+        log_id: &L,
+        after: Option<u32>,
+        until: Option<u32>,
+    ) -> Result<BoxStream<'static, Result<StreamItem<AnyOperation, L>, StoreError>>, StoreError> {
+        let store = self.clone();
+        let author = *author;
+        let log_id = log_id.clone();
+        let stream = stream::once(async move {
+            let prefix = log_prefix(&author, &log_id)?;
+            let keys = store.backend.scan(&prefix, &scan_end(&prefix)).await?;
+            Ok::<_, StoreError>((store, prefix, log_id, keys))
+        })
+        .flat_map(move |result| {
+            let stream: BoxStream<'static, Result<StreamItem<AnyOperation, L>, StoreError>> =
+                match result {
+                    Ok((store, prefix, log_id, keys)) => Box::pin(stream::iter(keys).filter_map(
+                        move |key| async move {
+                            let store = store.clone();
+                            let prefix = prefix.clone();
+                            let log_id = log_id.clone();
+                            let result: Result<Option<StreamItem<AnyOperation, L>>, StoreError> = async move {
+                                if !in_range(seq_from_key(&key, &prefix)?, after, until) {
+                                    return Ok(None);
+                                }
+                                let blob = store
+                                    .backend
+                                    .get(&key)
+                                    .await?
+                                    .ok_or_else(|| codec("log entry disappeared during scan"))?;
+                                let op = decode_any_op(&blob)?;
+                                Ok(Some(StreamItem {
+                                    bytes: op.header.encode(),
+                                    entry: op,
+                                    log_id,
+                                }))
+                            }.await;
+                            match result {
+                                Ok(item) => item.map(Ok),
+                                Err(error) => Some(Err(error)),
+                            }
+                        },
+                    )),
+                    Err(err) => Box::pin(stream::once(async move { Err(err) })),
+                };
+            stream
+        });
+        Ok(Box::pin(stream))
     }
 
     async fn prune_entries(
@@ -1160,13 +1408,72 @@ where
         }
         Ok(out)
     }
+
+    async fn resolve_topics(
+        &self,
+        author: &VerifyingKey,
+        data_id: &L,
+    ) -> Result<Vec<Topic>, StoreError> {
+        let keys = self.backend.list("topic/").await?;
+        let mut topics = Vec::new();
+        for key in keys {
+            let Some(rest) = key.strip_prefix("topic/") else {
+                continue;
+            };
+            let Some((topic_hex, rest)) = rest.split_once('/') else {
+                continue;
+            };
+            let Some((author_hex, log_hex)) = rest.split_once('/') else {
+                continue;
+            };
+            let key_author = VerifyingKey::try_from(
+                hex::decode(author_hex).map_err(codec)?.as_slice(),
+            )
+            .map_err(codec)?;
+            let key_log: L = decode_cbor(&hex::decode(log_hex).map_err(codec)?[..]).map_err(codec)?;
+            if &key_author != author || &key_log != data_id {
+                continue;
+            }
+            let topic_bytes: [u8; 32] = hex::decode(topic_hex)
+                .map_err(codec)?
+                .try_into()
+                .map_err(|_| codec("topic key has an invalid length"))?;
+            let topic = Topic::from(topic_bytes);
+            if !topics.contains(&topic) {
+                topics.push(topic);
+            }
+        }
+        Ok(topics)
+    }
+
+    async fn topics(&self) -> Result<Vec<Topic>, StoreError> {
+        let keys = self.backend.list("topic/").await?;
+        let mut topics = Vec::new();
+        for key in keys {
+            let Some(rest) = key.strip_prefix("topic/") else {
+                continue;
+            };
+            let Some((topic_hex, _)) = rest.split_once('/') else {
+                continue;
+            };
+            let topic_bytes: [u8; 32] = hex::decode(topic_hex)
+                .map_err(codec)?
+                .try_into()
+                .map_err(|_| codec("topic key has an invalid length"))?;
+            let topic = Topic::from(topic_bytes);
+            if !topics.contains(&topic) {
+                topics.push(topic);
+            }
+        }
+        Ok(topics)
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use muniment::MemoryBackend;
-    use p2panda_core::{Body, Header, Operation, SigningKey};
+    use p2panda_core::{AnyOperation, Body, Header, Operation, SigningKey};
 
     type Ext = ();
 
@@ -1175,7 +1482,7 @@ mod tests {
     /// backend. If any part regresses, this stops compiling.
     fn _log_sync_ready<S>()
     where
-        S: LogStore<Operation<Ext>, VerifyingKey, u64, u32, Hash>
+        S: LogStore<AnyOperation, VerifyingKey, u64, u32, Hash>
             + TopicStore<Topic, VerifyingKey, u64>
             + Clone
             + Send

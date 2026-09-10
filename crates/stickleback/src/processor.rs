@@ -18,7 +18,6 @@ use muniment::{Backend, StoreError, WriteOp};
 use p2panda_core::operation::validate_operation;
 use p2panda_core::prune::validate_prunable_backlink;
 use p2panda_core::{Extensions, Hash, LogId, Operation, Topic};
-use p2panda_store::logs::LogStore;
 
 use crate::MunimentStore;
 use crate::store::IndexedOperation;

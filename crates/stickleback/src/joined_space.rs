@@ -34,7 +34,7 @@ use std::fmt::Debug;
 use std::future::Future;
 use std::pin::Pin;
 
-use p2panda_core::{Extensions, Hash, LogId, Operation, SeqNum, Topic, VerifyingKey};
+use p2panda_core::{AnyOperation, Extensions, Hash, LogId, Operation, SeqNum, Topic, VerifyingKey};
 use p2panda_net::sync::SyncHandle;
 use p2panda_net::{Endpoint, Gossip, LogSync};
 use p2panda_store::logs::LogStore;
@@ -91,7 +91,7 @@ trait LogSyncLifetime: Send + Sync {
 
 impl<S, L, E> LogSyncLifetime for LogSync<S, L, E>
 where
-    S: LogStore<Operation<E>, VerifyingKey, L, SeqNum, Hash>
+    S: LogStore<AnyOperation, VerifyingKey, L, SeqNum, Hash>
         + TopicStore<Topic, VerifyingKey, L>
         + Clone
         + Send
@@ -139,7 +139,7 @@ where
         accept: A,
     ) -> Result<Self, JoinError>
     where
-        S: LogStore<Operation<E>, VerifyingKey, L, SeqNum, Hash>
+        S: LogStore<AnyOperation, VerifyingKey, L, SeqNum, Hash>
             + TopicStore<Topic, VerifyingKey, L>
             + Clone
             + Send
