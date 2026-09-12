@@ -96,7 +96,7 @@ pub trait ContentBearing {
 
 /// A node that contains a graph: the payload carries the log identity of a
 /// *nested graph*, a graph within the node. This is the containment sense of
-/// "subgraph" (a graphlet-style scope over peer nodes is not this). Bearing is
+/// "subgraph" (a subgraph-style scope over peer nodes is not this). Bearing is
 /// a reference, never an embedding: the nested graph is an ordinary
 /// [`GraphLog`](crate::GraphLog) persisted under the slot convention in
 /// [`nested`](crate::nested), loaded on demand. Its lifecycle is owned by the
