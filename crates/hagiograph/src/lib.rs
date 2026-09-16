@@ -4,23 +4,30 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Name reservation for **hagiograph**, the legend and memorial layer.
+//! **hagiograph**, the history organ: which events were significant, and the
+//! past they are judged against.
 //!
-//! A hagiograph is what memory makes of history: legends, memorials, epithets,
-//! and the manifestations of the dead. Its substance is attention: its
-//! presence scales with how often it is retold, and a legend nobody tells
-//! fades.
+//! A journal records everything that happened; this crate answers what a
+//! journal cannot answer by itself. It keeps **standing marks** along axes a
+//! product defines, with their holders, merging by maximum so forked worlds
+//! join without a protocol. It judges **feats**: a feat beats a mark that
+//! stood before the reckoning, and a first mark on an empty record is not
+//! one. It gives a generated world a **past** by running the product's own
+//! simulation through a seam for a set span before anyone steps in. Later it
+//! holds what memory keeps: legends, memorials and epithets, whose presence
+//! scales with retelling.
 //!
-//! The boundaries are the point, and they mirror `fili`'s:
+//! The boundaries are the point:
 //!
-//! - **Not ordinary event history.** That is a `muniment::Journal`, the
-//!   append-only record of what actually happened. A hagiograph is a *view*
-//!   over such history, holding the retold subset.
+//! - **Not the storage of event history.** That is a `muniment::Journal` or a
+//!   product's own log; this crate judges and generates history.
+//! - **Not a simulation.** Deep time drives the product's simulation and never
+//!   simulates anything itself.
 //! - **Not an immutable exchange record.** That is an `eidetic::Codicil`.
 //! - **Not descent.** That is `fili`, which records continuity of line across
-//!   worlds. Where `fili` tracks who carried the line, hagiograph holds what is
-//!   remembered when nobody did.
+//!   worlds.
 //!
-//! No implementation yet.
+//! Rescoped 2026-09-16; see the hagiograph history organ plan under
+//! `design_docs/eidetic_docs/implementation_strategy/`.
 
 #![doc(html_no_source)]
