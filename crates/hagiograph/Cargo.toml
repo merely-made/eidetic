@@ -11,3 +11,7 @@ categories = ["data-structures"]
 exclude = ["design_docs/"]
 
 [dependencies]
+serde = { workspace = true }
+
+[dev-dependencies]
+postcard = { version = "1", default-features = false, features = ["alloc"] }

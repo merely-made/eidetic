@@ -31,3 +31,11 @@
 //! `design_docs/eidetic_docs/implementation_strategy/`.
 
 #![doc(html_no_source)]
+
+mod deep_time;
+mod reckoning;
+mod record;
+
+pub use deep_time::{DeepTime, DeepTimeError, Epochal, Handover, run};
+pub use reckoning::{Entry, Judgement};
+pub use record::{Mark, Record};
