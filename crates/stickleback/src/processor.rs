@@ -327,6 +327,37 @@ where
         })
     }
 
+    /// Validate, authorize, continuity-check and commit one operation together
+    /// with the caller's own writes, in a single backend batch.
+    ///
+    /// A lane that stages a record outside the store -- a parked record
+    /// waiting on an epoch this member does not hold, a staged drop -- retires
+    /// its staging key through `writes`, in the commit that stores the record,
+    /// so no crash can leave the record both stored and staged. The writes
+    /// land whenever the batch commits, an already stored operation included;
+    /// an invalid, refused or discontinuous operation returns the error and
+    /// applies nothing. Calls for one author log are serialized as in
+    /// [`process`](Self::process).
+    ///
+    /// Returns whether this call stored a new operation. Prune and erase
+    /// counts are not reported, because the batch write does not return them.
+    pub async fn process_with_writes(
+        &self,
+        operation: &Operation<E>,
+        writes: &[WriteOp],
+    ) -> Result<bool, ProcessError> {
+        let admission = self.preflight(operation)?;
+        let ingress = self
+            .store
+            .ingress_lock(&operation.header.verifying_key, &admission.target.log_id)
+            .await?;
+        let _guard = ingress.lock().await;
+        let outcome = self
+            .process_batch_atomic(std::slice::from_ref(operation), &[], writes)
+            .await?;
+        Ok(outcome.inserted == 1)
+    }
+
     /// Validate and commit an operation corpus in one backend batch.
     ///
     /// Duplicate ids are reported but omitted from the write set. New
@@ -596,6 +627,75 @@ mod tests {
                     .unwrap()
                     .is_some_and(|operation| operation.body.is_some())
             );
+        });
+    }
+
+    /// The staging key a lane retires and the operation it stores commit
+    /// together, and a refusal applies neither: the record stays staged
+    /// instead of being stored and left staged by a crash in between.
+    #[test]
+    fn process_with_writes_applies_the_insert_and_the_writes_together() {
+        pollster::block_on(async {
+            let processor = processor();
+            let signing_key = SigningKey::generate();
+            let backend = processor.store().backend().clone();
+            let staged = |operation: &Operation<TestExt>| WriteOp::Delete {
+                key: format!("staged/{}", operation.hash.to_hex()),
+            };
+            let stage = async |operation: &Operation<TestExt>| {
+                let WriteOp::Delete { key } = staged(operation) else {
+                    unreachable!()
+                };
+                backend.put(&key, b"parked").await.unwrap();
+                key
+            };
+
+            let refused = make_op(&signing_key, 9, 0, None);
+            let refused_key = stage(&refused).await;
+            assert!(matches!(
+                processor
+                    .process_with_writes(&refused, &[staged(&refused)])
+                    .await,
+                Err(ProcessError::Rejected(Reject {
+                    code: "wrong-space",
+                    ..
+                }))
+            ));
+            assert!(processor.store().is_empty().await.unwrap());
+            assert!(
+                backend.get(&refused_key).await.unwrap().is_some(),
+                "a refused batch leaves its writes unapplied"
+            );
+
+            let operation = make_op(&signing_key, 7, 0, None);
+            let key = stage(&operation).await;
+            assert!(
+                processor
+                    .process_with_writes(&operation, &[staged(&operation)])
+                    .await
+                    .unwrap()
+            );
+            assert!(
+                processor
+                    .store()
+                    .get_operation(&operation.hash)
+                    .await
+                    .unwrap()
+                    .is_some()
+            );
+            assert!(backend.get(&key).await.unwrap().is_none());
+
+            // The same record offered twice: stored once, and the writes of the
+            // second call still commit.
+            let again = stage(&operation).await;
+            assert!(
+                !processor
+                    .process_with_writes(&operation, &[staged(&operation)])
+                    .await
+                    .unwrap()
+            );
+            assert!(backend.get(&again).await.unwrap().is_none());
+            assert_eq!(processor.store().operation_count().await.unwrap(), 1);
         });
     }
 

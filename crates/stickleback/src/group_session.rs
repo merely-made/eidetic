@@ -453,17 +453,29 @@ impl GroupSession {
     }
 
     /// The recipient `root` is known by, from the pre-keys this session
-    /// registered plus its own. Any other root is `None`, and so is a root
-    /// that registered more than one recipient. Resolving is not membership:
-    /// a removed member still resolves, so check [`Self::members`].
+    /// registered plus its own. An unregistered root is `None`.
+    ///
+    /// A root that registered several recipients -- it reinstalled, or joined
+    /// twice -- resolves to the one that is a current member, and to `None`
+    /// when none or several of them are. A root with one recipient resolves to
+    /// it either way, so resolving is still not membership: a removed sole
+    /// member resolves, and callers check [`Self::members`].
     pub fn recipient_for_root(&self, root: [u8; 32]) -> Option<GroupRecipientId> {
-        let mut bound = self
+        let bound: Vec<_> = self
             .prekey_roots
             .iter()
             .filter(|(_, bound_root)| **bound_root == root)
-            .map(|(recipient, _)| *recipient);
-        let recipient = bound.next()?;
-        bound.next().is_none().then_some(recipient)
+            .map(|(recipient, _)| *recipient)
+            .collect();
+        if let [only] = bound[..] {
+            return Some(only);
+        }
+        let members = self.members().ok()?;
+        let mut current = bound
+            .into_iter()
+            .filter(|recipient| members.contains(recipient));
+        let recipient = current.next()?;
+        current.next().is_none().then_some(recipient)
     }
 
     pub fn members(&self) -> Result<BTreeSet<GroupRecipientId>, GroupSessionError> {
@@ -1251,20 +1263,49 @@ mod tests {
     }
 
     #[test]
-    fn a_root_with_two_registered_recipients_is_ambiguous() {
+    fn a_root_with_two_recipients_resolves_to_the_current_member() {
         let alice_identity = InMemoryProvider::from_seed([0xa1; 32]);
         let bob_identity = InMemoryProvider::from_seed([0xb2; 32]);
         let (mut alice, _) = GroupSession::new(LOOKUP_GROUP, &alice_identity).unwrap();
         let (first, first_prekey) = GroupSession::new(LOOKUP_GROUP, &bob_identity).unwrap();
         let (second, second_prekey) = GroupSession::new(LOOKUP_GROUP, &bob_identity).unwrap();
+        let bob_root = first.personae_root();
         alice.register_prekey(&first_prekey).unwrap();
         assert_eq!(
-            alice.recipient_for_root(first.personae_root()),
-            Some(first.member())
+            alice.recipient_for_root(bob_root),
+            Some(first.member()),
+            "one recipient resolves before the group exists"
         );
+
         alice.register_prekey(&second_prekey).unwrap();
         assert_ne!(first.member(), second.member());
-        assert_eq!(alice.recipient_for_root(first.personae_root()), None);
+        assert_eq!(
+            alice.recipient_for_root(bob_root),
+            None,
+            "two recipients, neither of them a member"
+        );
+
+        alice.create(&[]).unwrap();
+        alice.add(second.member()).unwrap();
+        assert_eq!(
+            alice.recipient_for_root(bob_root),
+            Some(second.member()),
+            "the member among the two"
+        );
+
+        alice.add(first.member()).unwrap();
+        assert_eq!(
+            alice.recipient_for_root(bob_root),
+            None,
+            "two recipients, both of them members"
+        );
+
+        alice.remove(first.member()).unwrap();
+        assert_eq!(
+            alice.recipient_for_root(bob_root),
+            Some(second.member()),
+            "one member again"
+        );
     }
 
     const FORGET_GROUP: GroupSessionId = GroupSessionId([0x48; 32]);
