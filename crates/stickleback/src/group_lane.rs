@@ -26,10 +26,10 @@
 //! after the host has persisted the session, so a reopen neither reprocesses
 //! frames nor loses a transition to a crash.
 //!
-//! The sync protocol id is `lane_id(GROUP_KEY_LANE, group)`. The sync topic is
-//! derived from the group id rather than equal to it, because hosts commonly
-//! reuse one 32-byte id (a Moot id, say) as the group id and as other lanes'
-//! topic.
+//! The sync protocol id is `lane_id(GROUP_KEY_LANE, group)`. The sync topic,
+//! [`group_key_sync_topic`], is derived from the group id rather than equal to
+//! it, because hosts commonly reuse one 32-byte id (a Moot id, say) as the
+//! group id and as other lanes' topic.
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
@@ -190,7 +190,8 @@ fn group_key_writer_salt(group: GroupSessionId) -> Vec<u8> {
     [GROUP_KEY_WRITER_DOMAIN, &group.0].concat()
 }
 
-fn group_key_topic(group: GroupSessionId) -> [u8; 32] {
+/// This group's key-lane LogSync topic, which a dialer tags as an overlay.
+pub fn group_key_sync_topic(group: GroupSessionId) -> [u8; 32] {
     *blake3::hash(&[GROUP_KEY_TOPIC_DOMAIN, &group.0].concat()).as_bytes()
 }
 
@@ -234,7 +235,7 @@ impl OperationPolicy<GroupKeyExt> for GroupKeyPolicy {
         .map_err(|error| Reject::new("invalid-group-key-causality", error.to_string()))?;
         open_record(operation, self.group, &self.limits)?;
         Ok(Admission::keep(StoreTarget::new(
-            Topic::from(group_key_topic(self.group)),
+            Topic::from(group_key_sync_topic(self.group)),
             GROUP_KEY_LOG,
         )))
     }
@@ -297,7 +298,7 @@ async fn load_operations<B: Backend>(
     store: &MunimentStore<B, GroupKeyExt>,
     group: GroupSessionId,
 ) -> Result<Vec<Operation<GroupKeyExt>>, GroupKeyLaneError> {
-    let topic = Topic::from(group_key_topic(group));
+    let topic = Topic::from(group_key_sync_topic(group));
     let logs: BTreeMap<VerifyingKey, Vec<u64>> = store.resolve(&topic).await?;
     let mut operations = Vec::new();
     for author in logs.keys() {
@@ -669,7 +670,7 @@ impl<B: Backend + Clone + Send + Sync + 'static> GroupKeyLane<B> {
             self.sync_store(),
             endpoint,
             gossip,
-            group_key_topic(self.group),
+            group_key_sync_topic(self.group),
             move |operation: Operation<GroupKeyExt>| {
                 let processor = processor.clone();
                 async move {
@@ -824,6 +825,25 @@ mod tests {
         let rotation = founded.a.session.update().unwrap();
         let rotation = block_on(founded.a.lane.author_dispatch(&rotation)).unwrap();
         (removal, rotation)
+    }
+
+    /// Hosts copy this value into their overlay tags; it must never move.
+    #[test]
+    fn the_sync_topic_is_pinned_and_is_the_topic_records_store_under() {
+        let expected = "c9e8ae9fc574d4a2612db89bf5e15958e57ec31f2fce04701fa7f1ca55802236";
+        let topic = group_key_sync_topic(GROUP);
+        assert_eq!(hex::encode(topic), expected);
+        let derived =
+            blake3::hash(&[b"stickleback/group-key-topic/v1/".as_slice(), &GROUP.0].concat());
+        assert_eq!(topic, *derived.as_bytes());
+
+        let f = founded();
+        let keys = block_on(f.a.lane.sync_store().backend().list("topic/")).unwrap();
+        let prefix = format!("topic/{}/", hex::encode(topic));
+        assert!(
+            !keys.is_empty() && keys.iter().all(|key| key.starts_with(&prefix)),
+            "{keys:?}"
+        );
     }
 
     #[test]

@@ -452,6 +452,20 @@ impl GroupSession {
         self.keyring.to_bytes().map_err(GroupSessionError::Crypto)
     }
 
+    /// The recipient `root` is known by, from the pre-keys this session
+    /// registered plus its own. Any other root is `None`, and so is a root
+    /// that registered more than one recipient. Resolving is not membership:
+    /// a removed member still resolves, so check [`Self::members`].
+    pub fn recipient_for_root(&self, root: [u8; 32]) -> Option<GroupRecipientId> {
+        let mut bound = self
+            .prekey_roots
+            .iter()
+            .filter(|(_, bound_root)| **bound_root == root)
+            .map(|(recipient, _)| *recipient);
+        let recipient = bound.next()?;
+        bound.next().is_none().then_some(recipient)
+    }
+
     pub fn members(&self) -> Result<BTreeSet<GroupRecipientId>, GroupSessionError> {
         let state = self.state()?;
         let members =
@@ -1176,6 +1190,81 @@ mod tests {
         assert_eq!(dave.current_epoch(), alice.current_epoch());
         assert_eq!(dave.members().unwrap(), alice.members().unwrap());
         assert_eq!(dave.open(&after_removal).unwrap(), b"after removal");
+    }
+
+    const LOOKUP_GROUP: GroupSessionId = GroupSessionId([0x49; 32]);
+
+    #[test]
+    fn a_founder_resolves_an_invited_root_to_its_recipient() {
+        let alice_identity = InMemoryProvider::from_seed([0xa1; 32]);
+        let bob_identity = InMemoryProvider::from_seed([0xb2; 32]);
+        let (mut alice, alice_prekey) = GroupSession::new(LOOKUP_GROUP, &alice_identity).unwrap();
+        let (mut bob, bob_prekey) = GroupSession::new(LOOKUP_GROUP, &bob_identity).unwrap();
+        let bob_root = bob_prekey.personae_root().unwrap();
+        assert_eq!(
+            alice.recipient_for_root(bob_root),
+            None,
+            "not registered yet"
+        );
+
+        alice.register_prekey(&bob_prekey).unwrap();
+        bob.register_prekey(&alice_prekey).unwrap();
+        alice.create(&[]).unwrap();
+        let welcome = alice.add(bob.member()).unwrap();
+        bob.process(
+            alice.personae_root(),
+            &welcome.control,
+            welcome.direct_for(bob.member()),
+        )
+        .unwrap();
+
+        assert_eq!(alice.recipient_for_root(bob_root), Some(bob.member()));
+        assert_eq!(
+            alice.recipient_for_root(alice.personae_root()),
+            Some(alice.member())
+        );
+        assert_eq!(
+            bob.recipient_for_root(alice.personae_root()),
+            Some(alice.member())
+        );
+        let stranger = InMemoryProvider::from_seed([0xee; 32]);
+        assert_eq!(
+            alice.recipient_for_root(stranger.master_public_key().to_bytes()),
+            None
+        );
+    }
+
+    #[test]
+    fn a_removed_member_still_resolves_but_is_not_a_member() {
+        let alice_identity = InMemoryProvider::from_seed([0xa1; 32]);
+        let bob_identity = InMemoryProvider::from_seed([0xb2; 32]);
+        let (mut alice, _) = GroupSession::new(LOOKUP_GROUP, &alice_identity).unwrap();
+        let (bob, bob_prekey) = GroupSession::new(LOOKUP_GROUP, &bob_identity).unwrap();
+        alice.register_prekey(&bob_prekey).unwrap();
+        alice.create(&[]).unwrap();
+        alice.add(bob.member()).unwrap();
+        alice.remove(bob.member()).unwrap();
+
+        let bob_root = bob.personae_root();
+        assert_eq!(alice.recipient_for_root(bob_root), Some(bob.member()));
+        assert!(!alice.members().unwrap().contains(&bob.member()));
+    }
+
+    #[test]
+    fn a_root_with_two_registered_recipients_is_ambiguous() {
+        let alice_identity = InMemoryProvider::from_seed([0xa1; 32]);
+        let bob_identity = InMemoryProvider::from_seed([0xb2; 32]);
+        let (mut alice, _) = GroupSession::new(LOOKUP_GROUP, &alice_identity).unwrap();
+        let (first, first_prekey) = GroupSession::new(LOOKUP_GROUP, &bob_identity).unwrap();
+        let (second, second_prekey) = GroupSession::new(LOOKUP_GROUP, &bob_identity).unwrap();
+        alice.register_prekey(&first_prekey).unwrap();
+        assert_eq!(
+            alice.recipient_for_root(first.personae_root()),
+            Some(first.member())
+        );
+        alice.register_prekey(&second_prekey).unwrap();
+        assert_ne!(first.member(), second.member());
+        assert_eq!(alice.recipient_for_root(first.personae_root()), None);
     }
 
     const FORGET_GROUP: GroupSessionId = GroupSessionId([0x48; 32]);

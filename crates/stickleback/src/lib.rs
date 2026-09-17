@@ -66,7 +66,7 @@ pub use group_crypto::{
 };
 pub use group_lane::{
     AppliedGroupFrame, GROUP_KEY_LANE, GroupKeyAdmission, GroupKeyDrain, GroupKeyExt, GroupKeyLane,
-    GroupKeyLaneError, GroupKeyLimits, RefusedGroupFrame,
+    GroupKeyLaneError, GroupKeyLimits, RefusedGroupFrame, group_key_sync_topic,
 };
 pub use group_session::{
     GroupControlAction, GroupControlFrame, GroupControlId, GroupDirectFrame, GroupPrekeyBundle,
