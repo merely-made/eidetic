@@ -607,6 +607,23 @@ impl GroupSession {
         Ok(output)
     }
 
+    /// Forget retained data epochs the host has released, all or nothing. The
+    /// exported keyring and later welcomes stop carrying them.
+    pub fn forget_epochs(&mut self, epochs: &[GroupSecretId]) -> Result<(), GroupSessionError> {
+        let mut next = self.try_clone()?;
+        for epoch in epochs {
+            if next.keyring.current_epoch() == Some(*epoch) {
+                return Err(GroupSessionError::CurrentEpochNotForgettable(*epoch));
+            }
+            if !next.keyring.forget_authorized(epoch) {
+                return Err(GroupSessionError::EpochNotHeld(*epoch));
+            }
+        }
+        next.validate()?;
+        *self = next;
+        Ok(())
+    }
+
     pub fn seal_random(&self, plaintext: &[u8]) -> Result<GroupCiphertext, GroupSessionError> {
         self.keyring
             .seal_random(plaintext)
@@ -910,6 +927,10 @@ pub enum GroupSessionError {
     MemberAlreadyPresent(GroupRecipientId),
     #[error("group recipient {0} is not a current member")]
     UnknownMember(GroupRecipientId),
+    #[error("cannot forget the current data epoch {}", hex::encode(.0))]
+    CurrentEpochNotForgettable(GroupSecretId),
+    #[error("group session does not hold data epoch {}", hex::encode(.0))]
+    EpochNotHeld(GroupSecretId),
     #[error("missing authenticated pre-key for group recipient {0}")]
     MissingPrekey(GroupRecipientId),
     #[error("conflicting pre-key for group recipient {0}")]
@@ -1155,5 +1176,127 @@ mod tests {
         assert_eq!(dave.current_epoch(), alice.current_epoch());
         assert_eq!(dave.members().unwrap(), alice.members().unwrap());
         assert_eq!(dave.open(&after_removal).unwrap(), b"after removal");
+    }
+
+    const FORGET_GROUP: GroupSessionId = GroupSessionId([0x48; 32]);
+
+    /// A founder alone through three epochs, with one ciphertext per epoch.
+    fn rotated_founder() -> (
+        GroupSession,
+        GroupPrekeyBundle,
+        Vec<(GroupSecretId, GroupCiphertext)>,
+    ) {
+        let identity = InMemoryProvider::from_seed([0xa1; 32]);
+        let (mut alice, prekey) = GroupSession::new(FORGET_GROUP, &identity).unwrap();
+        alice.create(&[]).unwrap();
+        let mut sealed = Vec::new();
+        for turn in 0..3u8 {
+            if turn > 0 {
+                alice.update().unwrap();
+            }
+            let epoch = alice.current_epoch().unwrap();
+            sealed.push((epoch, alice.seal_random(&[turn]).unwrap()));
+        }
+        (alice, prekey, sealed)
+    }
+
+    fn exported_epochs(session: &GroupSession) -> Vec<GroupSecretId> {
+        DataKeyring::from_bytes(&session.data_keyring_state().unwrap())
+            .unwrap()
+            .epochs_oldest_first()
+            .unwrap()
+            .to_vec()
+    }
+
+    #[test]
+    fn forgetting_refuses_the_current_epoch() {
+        let (mut alice, _, sealed) = rotated_founder();
+        let current = alice.current_epoch().unwrap();
+        assert!(matches!(
+            alice.forget_epochs(&[current]),
+            Err(GroupSessionError::CurrentEpochNotForgettable(epoch)) if epoch == current
+        ));
+        assert_eq!(
+            exported_epochs(&alice),
+            sealed.iter().map(|(epoch, _)| *epoch).collect::<Vec<_>>()
+        );
+    }
+
+    #[test]
+    fn forgetting_refuses_an_epoch_the_session_does_not_hold() {
+        let (mut alice, _, _) = rotated_founder();
+        let unheld = [0xee; 32];
+        assert!(matches!(
+            alice.forget_epochs(&[unheld]),
+            Err(GroupSessionError::EpochNotHeld(epoch)) if epoch == unheld
+        ));
+        assert_eq!(alice.epoch_count(), 3);
+    }
+
+    #[test]
+    fn a_mixed_forget_list_changes_nothing() {
+        let (mut alice, _, sealed) = rotated_founder();
+        let all: Vec<_> = sealed.iter().map(|(epoch, _)| *epoch).collect();
+        let (first, current) = (all[0], all[2]);
+        for (list, refused) in [
+            (vec![first, [0xee; 32]], [0xee; 32]),
+            (vec![first, current], current),
+            (vec![first, first], first),
+        ] {
+            let error = alice.forget_epochs(&list).unwrap_err();
+            assert!(
+                matches!(
+                    error,
+                    GroupSessionError::EpochNotHeld(epoch)
+                        | GroupSessionError::CurrentEpochNotForgettable(epoch)
+                        if epoch == refused
+                ),
+                "{error}"
+            );
+            assert_eq!(
+                exported_epochs(&alice),
+                all,
+                "the valid prefix did not apply"
+            );
+        }
+        assert_eq!(alice.open(&sealed[0].1).unwrap(), [0]);
+    }
+
+    #[test]
+    fn a_forgotten_epoch_leaves_exported_state_and_later_welcomes() {
+        let (mut alice, alice_prekey, sealed) = rotated_founder();
+        let [
+            (first, under_first),
+            (second, under_second),
+            (third, under_third),
+        ] = <[_; 3]>::try_from(sealed).unwrap();
+        alice.forget_epochs(&[first]).unwrap();
+
+        assert_eq!(exported_epochs(&alice), [second, third]);
+        let reopened = GroupSession::from_bytes(&alice.to_bytes().unwrap()).unwrap();
+        assert_eq!(exported_epochs(&reopened), [second, third]);
+        assert!(matches!(
+            reopened.open(&under_first),
+            Err(GroupSessionError::Crypto(GroupCryptoError::UnknownEpoch(epoch))) if epoch == first
+        ));
+        assert_eq!(reopened.open(&under_second).unwrap(), [1]);
+        assert_eq!(reopened.open(&under_third).unwrap(), [2]);
+
+        let dave_identity = InMemoryProvider::from_seed([0xd4; 32]);
+        let (mut dave, dave_prekey) = GroupSession::new(FORGET_GROUP, &dave_identity).unwrap();
+        alice.register_prekey(&dave_prekey).unwrap();
+        dave.register_prekey(&alice_prekey).unwrap();
+        let welcome = alice.add(dave.member()).unwrap();
+        let welcomed = dave
+            .process(
+                alice.personae_root(),
+                &welcome.control,
+                welcome.direct_for(dave.member()),
+            )
+            .unwrap();
+        assert_eq!(welcomed.installed_epochs, [second, third]);
+        assert_eq!(exported_epochs(&dave), [second, third]);
+        assert!(dave.open(&under_first).is_err());
+        assert_eq!(dave.open(&under_second).unwrap(), [1]);
     }
 }
