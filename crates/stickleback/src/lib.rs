@@ -25,6 +25,7 @@ pub mod drop;
 mod drop_io;
 mod epoch_retention;
 mod group_crypto;
+mod group_lane;
 mod group_session;
 mod joined_space;
 mod processor;
@@ -62,6 +63,10 @@ pub use epoch_retention::{
 };
 pub use group_crypto::{
     DataKeyring, GroupCiphertext, GroupCryptoError, GroupEncryptionMode, GroupEncryptionProfile,
+};
+pub use group_lane::{
+    AppliedGroupFrame, GROUP_KEY_LANE, GroupKeyAdmission, GroupKeyDrain, GroupKeyExt, GroupKeyLane,
+    GroupKeyLaneError, GroupKeyLimits, RefusedGroupFrame,
 };
 pub use group_session::{
     GroupControlAction, GroupControlFrame, GroupControlId, GroupDirectFrame, GroupPrekeyBundle,
