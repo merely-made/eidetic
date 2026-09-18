@@ -1,7 +1,7 @@
-# mere-eidetic
+# eidetic
 
-Package `mere-eidetic`; the library is `eidetic`, so consumers write
-`use eidetic::…`.
+Package and library are both `eidetic`. It was published as `mere-eidetic`
+through 0.0.2; that name is frozen.
 
 The owner-scoped local memory lane for the [mere](https://crates.io/crates/mere)
 browser. It owns the durable typed vocabulary: blob manifests, typed payloads,
@@ -50,10 +50,10 @@ stores return ready futures.
 
 ## Companions
 
-- `mere-eidetic-fjall`: `FjallStore`, the production-default native backend.
-- `mere-eidetic-https-fetcher`, `mere-eidetic-iroh-fetcher`: `BlobFetcher`
+- `eidetic-fjall`: `FjallStore`, the production-default native backend.
+- `eidetic-https-fetcher`, `eidetic-iroh-fetcher`: `BlobFetcher`
   implementations for non-local `BlobSource` variants.
-- `mere-eidetic-search`: a tantivy `TrailIndex` minted from `BrowsingTrace`
+- `eidetic-search`: a tantivy `TrailIndex` minted from `BrowsingTrace`
   codicils. Lives at `crates/intel/eidetic-search`, not in the eidetic
   directory: the index is a Mere product concern reaching `esp` and `import`,
   and the eidetic directory is the portable core.
