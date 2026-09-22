@@ -8,7 +8,7 @@
 //!
 //! B0.5 of the participant gate + packs plan (mere design_docs, 2026-07-17):
 //! the journal's entry type is an attributed batch, committed atomically
-//! against an expected revision. A petition from any denizen and a keystroke
+//! against an expected revision. A petition from any participant and a keystroke
 //! from the trusted UI travel the same path: the UI's convenience mutators on
 //! [`GraphLog`] are single-spec commits at the current revision (no conflict
 //! possible, no optimistic retry), while a gate calls
@@ -38,7 +38,7 @@ use crate::edit::{DerivationRecord, EdgeId, GraphEdit};
 use crate::facet::FacetId;
 use crate::spine::GraphLog;
 
-/// An opaque author identity for journal attribution: a denizen id, a personae
+/// An opaque author identity for journal attribution: a participant id, a personae
 /// fingerprint, `"ui"`, or the migration's `"pre-gate"`. Caller-chosen, like
 /// [`LogId`].
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]

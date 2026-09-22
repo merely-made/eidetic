@@ -6,15 +6,19 @@
 
 //! Capability-scoped resident helpers for graph applications.
 //!
-//! A **denizen** is anything admitted to act on a graph through the gate: a
+//! Terminology (2026-09-20): participant is the platform admission role;
+//! denizen belongs to Isometry's simulation vocabulary. Existing wire and
+//! persisted spellings, including `mere.denizen` and `denizen:`, are stable.
+//!
+//! A **participant** is anything admitted to act on a graph through the gate: a
 //! resident helper (a servitor), a script, a scenario runner, a remote peer,
 //! an agent. It holds an identity (a keyholder [`Subject`]) and a scoped
 //! structural capability, and it proposes changes as **petitions** that the
 //! [`gate`] validates against the capability and applies through chartulary's
 //! attributed, revision-checked commit. Every applied change is attributed to
-//! the denizen in the journal.
+//! the participant in the journal.
 //!
-//! This crate is the denizen-residency **core**, headless and app-agnostic:
+//! This crate is the participant residency **core**, headless and app-agnostic:
 //!
 //! - [`Subject`] — a keyholder identity (a 32-byte public key), the same shape
 //!   the moot authorization seam uses (`gemot::MootAuthorizationRequest.subject`).
@@ -32,19 +36,23 @@
 //! - [`deadband`] — how often a behavior may actuate: a declared minimum
 //!   output change and minimum interval, enforced before another journal
 //!   commit and driven by host-supplied time.
-//! - [`tick`] — when a denizen runs *on the clock*: a schedule rather than a
+//! - [`tick`] — when a participant runs *on the clock*: a schedule rather than a
 //!   subscription, because time is not a journal and has no cursor to hold.
 //!   The clock is the host's, as it is for grant expiry, so a replay fires the
 //!   same behaviors at the same points.
-//! - [`watch`] — when a denizen runs: a standing subscription to a scope,
+//! - [`watch`] — when a participant runs: a standing subscription to a scope,
 //!   contained by what its subject may read, matched against a journal's
 //!   committed entries. The gate says whether a body may write; a watch says
 //!   what wakes it.
+//! - [`resident`] — binding snapshots and run admission for a resident; each
+//!   action still passes through its own authoritative gate.
+//! - [`run`] — pure reduction of recorded intents, results, budgets and
+//!   interruptions; hosts execute work and reconcile uncertain effects.
 //!
-//! A denizen's inner world (its grant projections, storage markers, registered
+//! A participant's inner world (its grant projections, storage markers, registered
 //! commands, journal cursors) is an ordinary [`chartulary::GraphLog`]: the
 //! nested graph a graph-bearing node points at. The gate operates on that
-//! nested graph; wiring a denizen node in a host graph to bear it is the host's
+//! nested graph; wiring a participant node in a host graph to bear it is the host's
 //! job (mere's `Node` implementing `chartulary::GraphBearing`).
 //!
 //! The capability model is typed but still small: [`Cap`] carries the three
@@ -63,6 +71,8 @@ pub mod deadband;
 pub mod delegation;
 pub mod gate;
 pub mod grant;
+pub mod resident;
+pub mod run;
 pub mod tick;
 pub mod watch;
 
@@ -78,6 +88,14 @@ pub use gate::{
     read_projection,
 };
 pub use grant::{AuthorityProvider, Grant, GrantTable, Mode};
+pub use resident::{
+    admit, revalidate, AdmissionError, BodyRevision, Lifecycle, ResidentBinding, ResidentId,
+    RunTicket, Trigger,
+};
+pub use run::{
+    Correlation, Effect, EffectKind, ResultKind, RunError, RunEvent, RunHeader, RunId, RunLimits,
+    RunPhase, RunReducer, TerminalOutcome, Usage,
+};
 pub use tick::{Period, TimeWatch, TimeWatchTable};
 pub use watch::{Wake, Watch, WatchError, WatchEvent, WatchTable};
 

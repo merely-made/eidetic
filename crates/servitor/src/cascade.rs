@@ -31,7 +31,7 @@
 //! offering a way to hang the application quietly.
 //!
 //! This module runs no bodies. The host supplies a runner closure, because
-//! what "run a denizen" means (a piccolo script under a step budget, a wasm
+//! what "run a participant" means (a piccolo script under a step budget, a wasm
 //! component, a scenario step) is the host's business, and because a headless
 //! cascade is testable while an embedded one is not.
 

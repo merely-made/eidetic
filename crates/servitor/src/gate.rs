@@ -6,13 +6,13 @@
 
 //! The gate: one authority pipeline for every petition.
 //!
-//! A denizen proposes a **petition** (a batch of [`EditSpec`]s against its
+//! A participant proposes a **petition** (a batch of [`EditSpec`]s against its
 //! nested graph, claiming to act under a [`ScopePath`]). A petition is always
 //! scope-claimed, never power-claimed: powers name app abilities, scopes name
 //! places in a graph, and only the second can contain a node id. The gate:
 //!
 //! 1. refuses any spec that would touch a **grant projection** (the reserved
-//!    [`GRANT_PREFIX`] namespace) — a denizen can read its grants but never
+//!    [`GRANT_PREFIX`] namespace) — a participant can read its grants but never
 //!    edit them, so it cannot escalate itself;
 //! 2. checks **authority**: the [`AuthorityProvider`] must cover the claimed
 //!    path at [`Mode::Write`];
@@ -20,13 +20,13 @@
 //!    path;
 //! 4. checks **facet authority**: every facet write needs a covering
 //!    [`Cap::Facet`] at [`Mode::Write`] as well as node scope;
-//! 5. **commits** the batch attributed to the denizen, revision-checked, atomic
+//! 5. **commits** the batch attributed to the participant, revision-checked, atomic
 //!    (chartulary's `commit_batch`).
 //!
 //! Authority is materialized elsewhere and *projected* here read-only:
 //! [`Gate::project_grant`] renders a [`Grant`] into the nested graph as a
 //! reserved-namespace node, committed by the gate's own author, so "what may
-//! this denizen do" is a browsable question answered from the graph itself.
+//! this participant do" is a browsable question answered from the graph itself.
 
 use chartulary::{Author, CommitError, Committed, Container, EditSpec, GraphLog, Relation};
 
@@ -36,7 +36,7 @@ use crate::deadband::{Actuation, DeadbandRefusal, DeadbandTable};
 use crate::grant::{AuthorityProvider, Grant, Mode};
 
 /// The reserved node-id prefix for grant projections. The gate writes these and
-/// refuses any petition that touches them, so a denizen cannot rewrite its own
+/// refuses any petition that touches them, so a participant cannot rewrite its own
 /// authority.
 ///
 /// This one IS a string-prefix test, correctly: it reserves an id namespace
@@ -155,7 +155,7 @@ pub enum GateError {
     },
     /// The underlying attributed commit refused (revision conflict, unknown
     /// node, and so on). Carries chartulary's error, including the current
-    /// revision on a conflict so the denizen can rebase.
+    /// revision on a conflict so the participant can rebase.
     Commit(CommitError<String>),
 }
 
@@ -216,7 +216,7 @@ impl<'a> BehaviorPetition<'a> {
 }
 
 /// The authority gate. Holds the author it commits **grant projections** under
-/// (distinct from any denizen), so projections are attributable to the gate,
+/// (distinct from any participant), so projections are attributable to the gate,
 /// not to the helper they describe.
 #[derive(Clone, Debug)]
 pub struct Gate {
@@ -265,7 +265,7 @@ impl Gate {
     }
 
     /// Render `grant` into `nested` as a read-only projection node, committed by
-    /// the gate's own author. A browsable record of what the denizen may do.
+    /// the gate's own author. A browsable record of what the participant may do.
     ///
     /// The record is **lossless**: every field rides an explicit `key:value`
     /// tag, so [`read_projection`] reconstructs the grant exactly. (Before the
@@ -338,7 +338,7 @@ impl Gate {
         claimed: &ScopePath,
         specs: &[EditSpec<Container, Relation>],
     ) -> Result<(), GateError> {
-        // 1. Projection guard: a denizen may never touch its own grants.
+        // 1. Projection guard: a participant may never touch its own grants.
         for spec in specs {
             for node in touched_nodes(spec) {
                 if node.starts_with(GRANT_PREFIX) {
@@ -698,8 +698,8 @@ mod tests {
     fn a_denizen_cannot_touch_its_own_grant_projection() {
         let gate = Gate::new();
         let sub = subject(1);
-        // Grant the denizen the reserved namespace itself — the guard still bites.
-        // Grant the denizen the reserved namespace as a scope; the guard still bites.
+        // Grant the participant the reserved namespace itself — the guard still bites.
+        // Grant the participant the reserved namespace as a scope; the guard still bites.
         let auth = GrantTable::new().with_grant(Grant::new(
             sub,
             Cap::scope("grant:").unwrap(),

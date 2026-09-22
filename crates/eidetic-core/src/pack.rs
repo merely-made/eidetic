@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The pack schema (participant gate B4): a portable denizen as an eidetic
+//! The pack schema (participant gate B4): a portable participant as an eidetic
 //! codicil under `mere.pack/v1`.
 //!
 //! The envelope was never the work — an eidetic [`Codicil`](crate::Codicil) /

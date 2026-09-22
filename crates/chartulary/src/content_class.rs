@@ -8,7 +8,7 @@
 //!
 //! A **content class** is the node-side analog of the edge
 //! [`taxonomy`](crate::taxonomy): it names a kind of node (a web page, a note, a
-//! denizen, a media item) by the [facets](crate::facet) its members carry. A
+//! participant, a media item) by the [facets](crate::facet) its members carry. A
 //! class is *data*, not code: `class_id` + the facets a member must carry +
 //! each facet's schema reference. So a modder ships a new content class the way
 //! they ship anything else (a pack carrying the class document plus its facet

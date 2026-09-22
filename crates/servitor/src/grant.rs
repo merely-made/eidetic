@@ -118,7 +118,7 @@ impl GrantTable {
         self.grants.push(grant);
     }
 
-    /// The grants held (for projection into a denizen's nested graph).
+    /// The grants held (for projection into a participant's nested graph).
     pub fn grants(&self) -> &[Grant] {
         &self.grants
     }
@@ -128,7 +128,7 @@ impl GrantTable {
     ///
     /// Staleness window: a grant that expires between two calls keeps
     /// answering until the next one, so a host must tick this at every moment
-    /// authority is consulted (turnstone does it per denizen run).
+    /// authority is consulted (turnstone does it per participant run).
     pub fn set_now(&mut self, now_ms: u64) {
         self.now_ms = now_ms;
     }
@@ -228,7 +228,7 @@ mod tests {
     #[test]
     fn a_power_grant_never_widens_when_a_new_power_appears() {
         // The hazard the typed capability exists to kill, at the authority
-        // level: a denizen granted `navigate` gains nothing when a later build
+        // level: a participant granted `navigate` gains nothing when a later build
         // adds a power whose name extends it.
         let authority = GrantTable::new().with_grant(Grant::new(
             subject(1),

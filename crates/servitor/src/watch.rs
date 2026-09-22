@@ -4,10 +4,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Standing subscriptions: **when** a denizen runs.
+//! Standing subscriptions: **when** a participant runs.
 //!
 //! [`gate`](crate::gate) answers "may it write". This module answers the other
-//! half: a **watch** is a scope whose committed changes wake a denizen's body,
+//! half: a **watch** is a scope whose committed changes wake a participant's body,
 //! so a helper can react to the world instead of waiting to be invoked.
 //!
 //! Three properties, each enforced here rather than left to a host:
@@ -32,7 +32,7 @@
 //!
 //! | journal | author label | set by |
 //! |---|---|---|
-//! | chartulary (a denizen's nested world) | `denizen:abcd1234` | [`Subject::to_author`] |
+//! | chartulary (a participant's nested world) | `denizen:abcd1234` | [`Subject::to_author`] |
 //! | mere's `GraphJournal` (the main graph) | the full 64-char hex | turnstone `remote_projection.rs` |
 //!
 //! Deriving the self-author here would therefore be right on one tier and
@@ -173,7 +173,7 @@ impl Watch {
 /// Which subjects a drain woke, and on what.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Wake {
-    /// The denizen to run.
+    /// The participant to run.
     pub subject: Subject,
     /// The journal positions that woke it, ascending. Handed to the body as
     /// its trigger context (the plan's W2).
@@ -227,7 +227,7 @@ impl WatchTable {
         self.watches.push(watch);
     }
 
-    /// Drop every watch held by `subject`. Uninstalling a denizen removes its
+    /// Drop every watch held by `subject`. Uninstalling a participant removes its
     /// watches with it; leaving one behind would wake a body that is gone.
     pub fn remove_subject(&mut self, subject: Subject) {
         self.watches.retain(|watch| watch.subject != subject);
@@ -440,7 +440,7 @@ mod tests {
     #[test]
     fn the_self_author_label_is_whatever_the_journal_uses() {
         // The hazard the explicit label exists for: mere's main journal
-        // attributes a denizen by full hex, chartulary's by `denizen:` plus
+        // attributes a participant by full hex, chartulary's by `denizen:` plus
         // eight. A watch registered for one journal must refuse self-wake in
         // that journal's own terms.
         let alice = subject(1);

@@ -1,13 +1,19 @@
 # servitor
 
-Capability-scoped resident helpers for graph applications: a **denizen** holds a
+Terminology (2026-09-20): **participant** is the platform admission role;
+**servitor** is a resident helper. **Denizen** now belongs to Isometry's
+simulation vocabulary. Existing `DENIZEN_DOMAIN`, `denizen.binding`, and
+`denizen:` author spellings remain compatibility identifiers. See Mere's
+[canonical terminology](../../design_docs/TERMINOLOGY.md).
+
+Capability-scoped resident helpers for graph applications: a **participant** holds a
 scoped structural capability and proposes changes through a validating gate,
 attributed and revision-checked.
 
-A denizen is anything admitted to act on a graph, a resident helper (a
+A participant is anything admitted to act on a graph, a resident helper (a
 servitor), a script, a scenario runner, a remote peer, an agent. It holds a
 keyholder identity and a capability, and proposes **petitions** that the gate
-validates and commits. A denizen's inner world is an ordinary
+validates and commits. A participant's inner world is an ordinary
 `chartulary::GraphLog`, the nested graph a graph-bearing node points at; wiring
 a host-graph node to bear it is the host's job.
 
@@ -24,6 +30,48 @@ leaf for the shared algebra, `chartulary` for the nested-graph substrate, and
 | `grant` | `Grant`, `Mode`, `AuthorityProvider`, `GrantTable` |
 | `gate` | `Gate`, `GateError`, `read_projection`, `GRANT_PREFIX`, `PROJECTION_TAG`, `PROJECTION_MEDIA_TYPE` |
 | `delegation` | `DelegationTable`, `ChainError`, `cap_path`, `mode_action`, `mode_actions`, `scope_for`, `root_certificate`, `DENIZEN_DOMAIN` |
+| `resident` | `ResidentId`, `BodyRevision`, `Lifecycle`, `ResidentBinding`, `Trigger`, `RunTicket`, `AdmissionError`, `admit`, `revalidate` |
+| `run` | `RunHeader`, `RunId`, `Correlation`, `RunLimits`, `Usage`, `Effect`, `EffectKind`, `RunEvent`, `ResultKind`, `RunPhase`, `TerminalOutcome`, `RunError`, `RunReducer` |
+
+## Resident admission
+
+`resident` separates an installed instance (`ResidentId`), its authority
+principal (`Subject`), and its body revision (`BodyRevision`). The host supplies
+those identities, a binding generation, lifecycle state and a manual, journal
+or clock trigger. The module mints no keys, reads no clock and adds no runtime
+or model dependency.
+
+`admit` checks an active binding, a well-formed trigger and every required
+capability against the current provider. Its `RunTicket` is a snapshot, not a
+capability: `revalidate` checks the current binding, lifecycle and authority
+again, retaining the original permission requirements alongside any added by
+the caller. Hosts must still gate individual actions and persist their own lifecycle
+decisions. Tickets neither dispatch nor replay effects.
+
+This is the R1a source implementation described in the
+[resident/run redesign](../../design_docs/mere_docs/implementation_strategy/2026-08-13_graph_behaviors_plan.md#8-servitor-resident-and-run-redesign-2026-09-20).
+Cargo validation remains pending under the user's build hold. Procedural
+guidance and evaluated adoption are later slices.
+
+## Run outcomes
+
+`run` reduces recorded events without executing work. Its immutable header
+retains the ticket, host-assigned run ID, start time and limits. Correlations
+bind each result to its run, step, attempt and generation. Run IDs belong to
+a host namespace; consumers must also retain the session or equivalent owner.
+
+Hosts persist accepted intents before dispatch and observed results afterward.
+Every intent consumes a positive decision charge and must fit the remaining
+budget. Results remain recordable after spending a budget. Cancellation and
+interruption retain unresolved consequential operations for explicit
+reconciliation; replay never retries them. A ticket still needs live authority
+and binding revalidation at dispatch.
+
+R1b includes source tests using a deterministic provider stub, stale replies,
+budget accounting and recovery. These tests have not been executed under the
+Cargo hold. A persisted host observation does not itself prove external effect
+completion or durable graph persistence; those acknowledgements belong to the
+consumer's ports.
 
 ## Capabilities
 
@@ -71,7 +119,7 @@ returns `None` if the node is not fully understood.
 ## Delegation
 
 Certificates, attenuation, chains, and revocation live in `personae`. This crate
-contributes the typed capability view over the same certificates, so the denizen
+contributes the typed capability view over the same certificates, so the participant
 tier and the moot tier share one delegation system. `DelegationTable` holds a
 root key, adopts `SignedDelegationCertificate`s, revokes by `DelegationId`, and
 verifies chains (`verify_chain`, `ChainError`). `cap_path`, `mode_action`,

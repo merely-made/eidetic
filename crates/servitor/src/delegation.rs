@@ -57,9 +57,11 @@ use crate::Subject;
 use crate::cap::Cap;
 use crate::grant::{AuthorityProvider, Mode};
 
-/// The application family servitor's denizen capabilities live under, in
-/// personae's `domain` dimension. Keeps denizen certificates from ever being
+/// The application family servitor's participant capabilities live under, in
+/// personae's `domain` dimension. Keeps participant certificates from ever being
 /// confused with a moot's or a mesh's.
+/// Compatibility spelling retained after the 2026-09-20 participant rename:
+/// changing this signed domain would invalidate existing delegation scopes.
 pub const DENIZEN_DOMAIN: &str = "mere.denizen";
 
 const POWER_PATH: &str = "power";
@@ -133,7 +135,7 @@ pub fn mode_actions(mode: Mode) -> BTreeSet<String> {
 }
 
 /// Build the personae scope for `cap` at `mode` over `resource` (the opaque
-/// id of the governed space — a session graph, a denizen's world).
+/// id of the governed space — a session graph, a participant's world).
 pub fn scope_for(cap: &Cap, mode: Mode, resource: Vec<u8>) -> CapabilityScope {
     CapabilityScope {
         domain: DENIZEN_DOMAIN.to_string(),
