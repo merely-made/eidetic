@@ -51,8 +51,9 @@ stores return ready futures.
 ## Companions
 
 - `eidetic-fjall`: `FjallStore`, the production-default native backend.
-- `eidetic-https-fetcher`, `eidetic-iroh-fetcher`: `BlobFetcher`
-  implementations for non-local `BlobSource` variants.
+- Features `https-fetcher` and `iroh-fetcher`: `BlobFetcher`
+  implementations for non-local `BlobSource` variants, in
+  `eidetic::https_fetcher` and `eidetic::iroh_fetcher`.
 - `eidetic-search`: a tantivy `TrailIndex` minted from `BrowsingTrace`
   codicils. Lives at `crates/intel/eidetic-search`, not in the eidetic
   directory: the index is a Mere product concern reaching `esp` and `import`,

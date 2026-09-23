@@ -65,6 +65,10 @@ pub mod browsing;
 pub mod bundle;
 pub mod codicil;
 pub mod deleted;
+#[cfg(feature = "https-fetcher")]
+pub mod https_fetcher;
+#[cfg(feature = "iroh-fetcher")]
+pub mod iroh_fetcher;
 /// Compatibility surface for pre-rename readers. New code uses [`crate::codicil`].
 #[deprecated(since = "0.0.3", note = "renamed to eidetic::codicil")]
 pub mod engram {
