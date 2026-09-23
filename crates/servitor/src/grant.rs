@@ -17,7 +17,7 @@
 
 use crate::Subject;
 use crate::cap::{Cap, Capability};
-pub use capability::Mode;
+pub use crate::cap::Mode;
 
 /// A structural capability: `subject` may act under `cap` with `mode`.
 /// Coverage delegates to the capability's own order, so what "covers" means

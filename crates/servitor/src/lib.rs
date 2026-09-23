@@ -22,9 +22,8 @@
 //!
 //! - [`Subject`] — a keyholder identity (a 32-byte public key), the same shape
 //!   the moot authorization seam uses (`gemot::MootAuthorizationRequest.subject`).
-//! - [`cap`] — compatibility re-exports from the dependency-free
-//!   `mere-capability` leaf crate: [`Cap`] carries closed powers, node scopes,
-//!   and facet namespaces under one coverage order.
+//! - [`cap`] — the capability algebra: [`Cap`] carries closed powers, node
+//!   scopes, and facet namespaces under one coverage order.
 //! - [`grant`] — a scoped structural capability ([`Grant`]) and the replaceable
 //!   [`AuthorityProvider`] seam that answers "does this subject's capability
 //!   cover this one?", mirroring `gemot::MootAuthorizationProvider`.
