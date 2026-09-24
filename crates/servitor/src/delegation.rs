@@ -361,6 +361,7 @@ pub fn root_certificate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use identity::delegation::Issue;
     use identity::{IdentityProvider, InMemoryProvider};
 
     fn provider(seed: u8) -> InMemoryProvider {
