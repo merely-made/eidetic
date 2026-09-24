@@ -50,7 +50,8 @@ stores return ready futures.
 
 ## Companions
 
-- `eidetic-fjall`: `FjallStore`, the production-default native backend.
+- Feature `fjall`: `FjallStore` in `eidetic::fjall`, the production-default
+  native backend.
 - Features `https-fetcher` and `iroh-fetcher`: `BlobFetcher`
   implementations for non-local `BlobSource` variants, in
   `eidetic::https_fetcher` and `eidetic::iroh_fetcher`.

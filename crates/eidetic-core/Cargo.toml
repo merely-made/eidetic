@@ -37,6 +37,7 @@ serde_json = "1.0"
 # `.cargo/config.toml` patch.
 chartulary = { path = "../chartulary", version = "0.2.0", optional = true }
 # Blob fetchers (features `https-fetcher`, `iroh-fetcher`).
+fjall = { version = "2", optional = true }
 transport = { workspace = true, optional = true }
 ureq = { version = "2.10", default-features = false, features = ["tls"], optional = true }
 
@@ -53,6 +54,8 @@ pack-signing = ["dep:identity"]
 json-schema = ["dep:jsonschema"]
 lineage = ["dep:chartulary"]
 # Blob fetchers for eidetic::resolve_blob, one per source kind.
+# The Fjall LSM store, the production-default native backend (`eidetic::fjall`).
+fjall = ["dep:fjall"]
 https-fetcher = ["dep:ureq"]
 iroh-fetcher = ["dep:transport"]
 
@@ -62,6 +65,7 @@ identity.workspace = true
 mockito = "1.4"
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 pollster = "0.4"
+tempfile = "3"
 # Reference sealer for the encrypt-at-rest seam tests (`seal` module). Runtime
 # stays crypto-free: the production PayloadSealer lives in the host, which owns
 # the wallet epoch keys.

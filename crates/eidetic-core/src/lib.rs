@@ -65,6 +65,8 @@ pub mod browsing;
 pub mod bundle;
 pub mod codicil;
 pub mod deleted;
+#[cfg(feature = "fjall")]
+pub mod fjall;
 #[cfg(feature = "https-fetcher")]
 pub mod https_fetcher;
 #[cfg(feature = "iroh-fetcher")]
@@ -191,7 +193,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 /// `delete`/`list` are required rather than `Err`-by-default, muniment's
 /// `scan` (ordered range) and `apply` (atomic batch) come along, and every
 /// muniment backend (memory, redb) is now an eidetic store — while
-/// eidetic-fjall becomes a backend the whole family can reuse.
+/// the `fjall` feature's `FjallStore` is a backend the whole family can reuse.
 pub use muniment::{Backend, Backend as Store, MemoryBackend, WriteOp};
 
 /// muniment's store errors flow into eidetic's owned error vocabulary, so the
