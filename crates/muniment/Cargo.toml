@@ -59,6 +59,9 @@ postcard = ["dep:postcard"]
 redb = ["dep:redb"]
 # The zip-archive [`ZipBackend`], the portable, inspectable desktop store.
 zip = ["dep:zip"]
+# The [`DirectoryBackend`], a folder with one file per key and one line per log
+# entry: inspectable like zip, but incremental. No extra dependencies.
+directory = []
 # The [`IndexedDbBackend`], the browser store. No-op off wasm32: the deps it
 # names are declared for that target only, so enabling this in a shared
 # feature set does not pull a JS bridge into a desktop build.

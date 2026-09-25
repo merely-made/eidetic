@@ -72,6 +72,22 @@ impl<T> Journal<T> {
         Self::default()
     }
 
+    /// A fresh, empty log that starts where `provenance` says another left
+    /// off, without copying that log's entries: its keeper holds what they
+    /// built as a snapshot. A cheap fork for a consumer that checkpoints.
+    pub fn starting_from(id: LogId, provenance: Provenance) -> Self {
+        Self::with_identity(Some(id), Some(provenance))
+    }
+
+    /// An empty log carrying an identity its keeper recorded elsewhere.
+    pub(crate) fn with_identity(id: Option<LogId>, provenance: Option<Provenance>) -> Self {
+        Self {
+            id,
+            provenance,
+            ..Self::default()
+        }
+    }
+
     /// A fresh, empty log with a stable identity.
     pub fn with_id(id: LogId) -> Self {
         Self {

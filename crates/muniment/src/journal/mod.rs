@@ -15,8 +15,10 @@
 //! mutations. Each stamps entries with a monotonic [`Seq`] that stays valid for
 //! the life of the log, so a reader or peer can hold one as a durable cursor and
 //! catch up with [`from`](Journal::from) / [`replay_from`](Journal::replay_from).
-//! Journals persist through a muniment slot. They are transport-neutral: shipping
-//! the replayable sequence to peers remains the consumer's job.
+//! Journals persist whole through a muniment slot ([`persist`]), or one entry
+//! per key so an append is one small write ([`entries`]). They are
+//! transport-neutral: shipping the replayable sequence to peers remains the
+//! consumer's job.
 //!
 //! # Storage is a sequence; shape is a graph
 //!
@@ -33,12 +35,14 @@
 //! linear one.
 
 pub mod causal;
+pub mod entries;
 pub mod fork;
 pub mod log;
 pub mod persist;
 pub mod seq;
 
 pub use causal::CausalError;
+pub use entries::entry_key;
 pub use fork::{LogId, Provenance};
 pub use log::Journal;
 pub use seq::Seq;

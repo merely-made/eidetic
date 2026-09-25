@@ -37,6 +37,9 @@ impl LogId {
 pub struct Provenance {
     /// The log this one forked from, if that log had an identity.
     pub source: Option<LogId>,
-    /// The source's length at the fork point: entries `[0, at)` were copied in.
+    /// The source's length at the fork point. [`fork`](super::Journal::fork)
+    /// copies entries `[0, at)` in; a log made with
+    /// [`starting_from`](super::Journal::starting_from) holds none of them, and
+    /// its keeper holds their result as a snapshot instead.
     pub at: Seq,
 }

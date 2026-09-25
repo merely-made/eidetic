@@ -33,6 +33,8 @@
 pub mod backend;
 pub mod blob;
 pub mod codec;
+#[cfg(feature = "directory")]
+pub mod directory_backend;
 #[cfg(test)]
 mod custody_transact_tests;
 pub mod error;
@@ -48,6 +50,8 @@ pub mod zip_backend;
 pub use backend::{Backend, MemoryBackend, TransactFn, TransactionReader, WriteOp};
 pub use blob::{BlobStore, Hash};
 pub use codec::Codec;
+#[cfg(feature = "directory")]
+pub use directory_backend::DirectoryBackend;
 pub use error::StoreError;
 pub use journal::{CausalError, Journal, LogId, Provenance, Seq};
 pub use slot::SlotStore;

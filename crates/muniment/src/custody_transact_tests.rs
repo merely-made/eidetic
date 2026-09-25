@@ -179,6 +179,43 @@ mod redb_backend {
     }
 }
 
+#[cfg(feature = "directory")]
+mod directory_backend {
+    #[allow(unused_imports)]
+    use super::*;
+    use crate::DirectoryBackend;
+
+    fn temp_backend() -> (tempfile::TempDir, DirectoryBackend) {
+        let dir = tempfile::tempdir().unwrap();
+        let backend = DirectoryBackend::open(dir.path().join("custody")).unwrap();
+        (dir, backend)
+    }
+
+    #[test]
+    fn collection_refuses_a_claim_that_landed_before_the_transaction() {
+        let (_dir, backend) = temp_backend();
+        pollster::block_on(super::collection_refuses_a_claim_that_landed_before_the_transaction(
+            backend,
+        ));
+    }
+
+    #[test]
+    fn claim_after_commit_sees_the_blob_gone_with_no_dangling_reference() {
+        let (_dir, backend) = temp_backend();
+        pollster::block_on(
+            super::claim_after_commit_sees_the_blob_gone_with_no_dangling_reference(backend),
+        );
+    }
+
+    #[test]
+    fn negative_control_apply_alone_does_not_recheck_a_new_owner() {
+        let (_dir, backend) = temp_backend();
+        pollster::block_on(super::negative_control_apply_alone_does_not_recheck_a_new_owner(
+            backend,
+        ));
+    }
+}
+
 /// A `Backend` that does not override `transact`, so it falls back to the
 /// default body — the refusal every external implementor gets for free until
 /// it adds a real one.
