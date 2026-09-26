@@ -7,12 +7,13 @@
 //! Stable Personae writer binding shared by replicated domains.
 
 use identity::{AttestationKeys, DerivedKeyAttestation};
+use insigne::CheckFault;
 
 /// A derived operation signer could not be bound to its stable Personae root.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum WriterBindingError {
-    #[error("derived writer attestation does not verify for this domain")]
-    InvalidAttestation,
+    #[error("derived writer attestation does not check for this domain: {0}")]
+    InvalidAttestation(CheckFault),
     #[error("derived writer attestation contains an invalid key")]
     InvalidDerivedWriter,
     #[error("derived writer attestation does not bind the operation signer")]
@@ -25,7 +26,7 @@ impl WriterBindingError {
     /// Stable refusal code for domain admission receipts.
     pub fn code(self) -> &'static str {
         match self {
-            Self::InvalidAttestation => "invalid-writer-attestation",
+            Self::InvalidAttestation(_) => "invalid-writer-attestation",
             Self::InvalidDerivedWriter => "invalid-derived-writer",
             Self::SignerMismatch => "writer-attestation-mismatch",
             Self::InvalidWriterRoot => "invalid-writer-root",
@@ -46,9 +47,9 @@ pub fn stable_writer_subject(
     let Some(attestation) = attestation else {
         return Ok(signer);
     };
-    if !attestation.verify(salt) {
-        return Err(WriterBindingError::InvalidAttestation);
-    }
+    let checked = attestation
+        .check(salt)
+        .map_err(WriterBindingError::InvalidAttestation)?;
     let derived = attestation
         .derived_public_key()
         .map_err(|_| WriterBindingError::InvalidDerivedWriter)?
@@ -56,10 +57,8 @@ pub fn stable_writer_subject(
     if derived != signer {
         return Err(WriterBindingError::SignerMismatch);
     }
-    attestation
-        .master_public_key()
-        .map(|key| key.to_bytes())
-        .map_err(|_| WriterBindingError::InvalidWriterRoot)
+    // The check decoded the master key, so the root is well formed.
+    Ok(*checked.master())
 }
 
 #[cfg(test)]
@@ -88,7 +87,9 @@ mod tests {
                 Some(&attestation),
                 b"other-domain",
             ),
-            Err(WriterBindingError::InvalidAttestation)
+            Err(WriterBindingError::InvalidAttestation(
+                CheckFault::BadSignature
+            ))
         );
     }
 }

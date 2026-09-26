@@ -16,7 +16,8 @@ use std::collections::{BTreeMap, BTreeSet, HashSet};
 use std::convert::Infallible;
 use std::fmt;
 
-use identity::{AttestationKeys, DerivedKeyAttestation, Ed25519Signature, IdentityProvider};
+use identity::{DerivedKeyAttestation, Ed25519PublicKey, Ed25519Signature, IdentityProvider};
+use insigne::CheckFault;
 use p2panda_core::cbor::{decode_cbor, encode_cbor};
 use p2panda_encryption::Rng;
 use p2panda_encryption::crypto::x25519::SecretKey;
@@ -215,17 +216,12 @@ impl GroupPrekeyBundle {
 
     fn verify_identity(&self) -> Result<[u8; 32], GroupSessionError> {
         let salt = group_prekey_identity_salt(self.group);
-        if !self.attestation.verify(&salt) {
-            return Err(GroupSessionError::InvalidPersonaeAttestation);
-        }
-        let root = self
+        let attestation = self
             .attestation
-            .master_public_key()
-            .map_err(|error| GroupSessionError::Identity(error.to_string()))?
-            .to_bytes();
-        let derived = self
-            .attestation
-            .derived_public_key()
+            .check(&salt)
+            .map_err(GroupSessionError::InvalidPersonaeAttestation)?;
+        let root = *attestation.master();
+        let derived = Ed25519PublicKey::from_bytes(attestation.derived())
             .map_err(|error| GroupSessionError::Identity(error.to_string()))?;
         let signature_bytes: [u8; 64] = self
             .identity_signature
@@ -966,8 +962,8 @@ pub enum GroupSessionError {
         claimed: GroupRecipientId,
         derived: GroupRecipientId,
     },
-    #[error("group pre-key has an invalid Personae derived-key attestation")]
-    InvalidPersonaeAttestation,
+    #[error("group pre-key has an invalid Personae derived-key attestation: {0}")]
+    InvalidPersonaeAttestation(CheckFault),
     #[error("group pre-key has an invalid Personae binding signature")]
     InvalidPersonaeSignature,
     #[error("group session has inconsistent pre-key identity bindings")]

@@ -8,6 +8,8 @@ keywords = ["extension", "plugin", "capability", "agent"]
 repository = "https://github.com/merely-made/mere"
 
 [dependencies]
+# The check conclusions and faults, named directly (insigne proofs plan, B).
+insigne = { workspace = true, features = ["verify"] }
 # The nested-graph substrate: a participant's inner world is a chartulary GraphLog,
 # and petitions commit through its attributed, revision-checked batch seam.
 chartulary = { version = "0.2.0", path = "../eidetic/chartulary" }

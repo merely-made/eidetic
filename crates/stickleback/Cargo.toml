@@ -13,6 +13,8 @@ categories = ["network-programming", "database"]
 path = "src/lib.rs"
 
 [dependencies]
+# The check conclusions and faults, named directly (insigne proofs plan, B).
+insigne = { workspace = true, features = ["verify"] }
 identity.workspace = true
 muniment.workspace = true
 p2panda-core = "0.7.0"

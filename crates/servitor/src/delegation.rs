@@ -53,6 +53,8 @@ use identity::delegation::{
     SignedDelegationCertificate,
 };
 
+use insigne::CheckFault;
+
 use crate::Subject;
 use crate::cap::Cap;
 use crate::grant::{AuthorityProvider, Mode};
@@ -149,8 +151,8 @@ pub fn scope_for(cap: &Cap, mode: Mode, resource: Vec<u8>) -> CapabilityScope {
 /// broken delegation is attributable.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ChainError {
-    /// The certificate's own signature or identity proof did not verify.
-    BadSignature(DelegationId),
+    /// The certificate did not check; the fault says which step failed.
+    BadSignature(DelegationId, CheckFault),
     /// A parent certificate the chain names is not held.
     MissingParent(DelegationId),
     /// A link does not attenuate its parent (widening, depth, or expiry).
@@ -279,11 +281,11 @@ impl DelegationTable {
         if self.revoked.contains(&id) {
             return Err(ChainError::Revoked(id));
         }
-        // personae owns the cryptography: signature, derived-key attestation,
-        // and issuer binding all verify here, not in servitor.
-        if !signed.verify() {
-            return Err(ChainError::BadSignature(id));
-        }
+        // insigne owns the cryptography: signature, derived-key attestation,
+        // and issuer binding all check there, not in servitor.
+        signed
+            .check()
+            .map_err(|fault| ChainError::BadSignature(id, fault))?;
         match signed.certificate.parent {
             DelegationParent::Root(root) => {
                 if root == self.root {
@@ -517,7 +519,7 @@ mod tests {
             [3; 32],
         );
         let signed = SignedDelegationCertificate::issue(&intruder, cert).unwrap();
-        assert!(signed.verify(), "it is a validly SIGNED certificate");
+        signed.check().expect("it is a validly SIGNED certificate");
         table.adopt(signed);
         table.set_now(2_000);
         assert!(
@@ -562,10 +564,9 @@ mod tests {
             [12; 32],
         );
         let wide_signed = SignedDelegationCertificate::issue(&helper, wide).unwrap();
-        assert!(
-            wide_signed.verify(),
-            "signed correctly, but still not authorized"
-        );
+        wide_signed
+            .check()
+            .expect("signed correctly, but still not authorized");
         let err = table.verify_chain(&wide_signed).unwrap_err();
         assert!(matches!(err, ChainError::NotAttenuating(_)), "{err:?}");
     }
