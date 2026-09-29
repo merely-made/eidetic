@@ -6,8 +6,9 @@
 
 //! Stable Personae writer binding shared by replicated domains.
 
-use identity::{AttestationKeys, DerivedKeyAttestation};
+use identity::AttestationKeys;
 use insigne::CheckFault;
+use insigne::DerivedKeyAttestation;
 
 /// A derived operation signer could not be bound to its stable Personae root.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]

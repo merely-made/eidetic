@@ -48,7 +48,7 @@
 
 use std::collections::{BTreeSet, HashMap, HashSet};
 
-use identity::delegation::{
+use insigne::delegation::{
     CapabilityScope, DelegationCertificate, DelegationId, DelegationParent,
     SignedDelegationCertificate,
 };

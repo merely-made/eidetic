@@ -16,8 +16,9 @@ use std::collections::{BTreeMap, BTreeSet, HashSet};
 use std::convert::Infallible;
 use std::fmt;
 
-use identity::{DerivedKeyAttestation, Ed25519PublicKey, Ed25519Signature, IdentityProvider};
+use identity::{Ed25519PublicKey, Ed25519Signature, IdentityProvider};
 use insigne::CheckFault;
+use insigne::DerivedKeyAttestation;
 use p2panda_core::cbor::{decode_cbor, encode_cbor};
 use p2panda_encryption::Rng;
 use p2panda_encryption::crypto::x25519::SecretKey;

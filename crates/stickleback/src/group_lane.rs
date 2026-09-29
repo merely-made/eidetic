@@ -34,7 +34,8 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
-use identity::{DerivedKeyAttestation, IdentityError, IdentityProvider};
+use identity::{IdentityError, IdentityProvider};
+use insigne::DerivedKeyAttestation;
 use muniment::{Backend, StoreError, WriteOp};
 use p2panda_core::cbor::{decode_cbor, encode_cbor};
 use p2panda_core::{Body, Hash, Header, Operation, SigningKey, Topic, VerifyingKey};
