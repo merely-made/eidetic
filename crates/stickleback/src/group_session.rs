@@ -19,7 +19,7 @@ use std::fmt;
 use identity::{Ed25519PublicKey, Ed25519Signature, IdentityProvider};
 use insigne::CheckFault;
 use insigne::DerivedKeyAttestation;
-use p2panda_core::cbor::{decode_cbor, encode_cbor};
+use p2panda_core::cbor::{decode_cbor, decode_cbor_strict, encode_cbor};
 use p2panda_encryption::Rng;
 use p2panda_encryption::crypto::x25519::SecretKey;
 use p2panda_encryption::data_scheme::GroupSecretId;
@@ -110,8 +110,8 @@ impl GroupControlFrame {
     }
 
     pub fn from_bytes(bytes: &[u8]) -> Result<Self, GroupSessionError> {
-        let frame: Self =
-            decode_cbor(bytes).map_err(|error| GroupSessionError::Decode(error.to_string()))?;
+        let frame: Self = decode_cbor_strict(bytes)
+            .map_err(|error| GroupSessionError::Decode(error.to_string()))?;
         frame.validate()?;
         Ok(frame)
     }
@@ -140,8 +140,8 @@ impl GroupDirectFrame {
     }
 
     pub fn from_bytes(bytes: &[u8]) -> Result<Self, GroupSessionError> {
-        let frame: Self =
-            decode_cbor(bytes).map_err(|error| GroupSessionError::Decode(error.to_string()))?;
+        let frame: Self = decode_cbor_strict(bytes)
+            .map_err(|error| GroupSessionError::Decode(error.to_string()))?;
         frame.validate()?;
         Ok(frame)
     }
@@ -192,8 +192,8 @@ impl GroupPrekeyBundle {
     }
 
     pub fn from_bytes(bytes: &[u8]) -> Result<Self, GroupSessionError> {
-        let bundle: Self =
-            decode_cbor(bytes).map_err(|error| GroupSessionError::Decode(error.to_string()))?;
+        let bundle: Self = decode_cbor_strict(bytes)
+            .map_err(|error| GroupSessionError::Decode(error.to_string()))?;
         bundle.decode_bundle()?;
         Ok(bundle)
     }
@@ -202,7 +202,7 @@ impl GroupPrekeyBundle {
         if self.version != GROUP_PREKEY_VERSION {
             return Err(GroupSessionError::UnsupportedPrekeyVersion(self.version));
         }
-        let bundle: LongTermKeyBundle = decode_cbor(self.payload.as_slice())
+        let bundle: LongTermKeyBundle = decode_cbor_strict(self.payload.as_slice())
             .map_err(|error| GroupSessionError::Decode(error.to_string()))?;
         let derived = GroupRecipientId(bundle.identity_key().to_bytes());
         if self.recipient != derived {
@@ -851,7 +851,7 @@ impl GroupSession {
                 actual: direct.recipient,
             });
         }
-        let message: SessionDirect = decode_cbor(direct.payload.as_slice())
+        let message: SessionDirect = decode_cbor_strict(direct.payload.as_slice())
             .map_err(|error| GroupSessionError::Decode(error.to_string()))?;
         if message.recipient != direct.recipient {
             return Err(GroupSessionError::DirectRecipientMismatch {
@@ -1031,6 +1031,42 @@ mod tests {
                 session.register_prekey(bundle).unwrap();
             }
         }
+    }
+
+    // Strictness control for the wire decodes (device pairing plan, ruling 24):
+    // the same frame with `version` in a non-shortest integer form is valid
+    // CBOR that a lenient decode accepts, and a peer frame must be refused.
+    #[test]
+    fn control_frame_refuses_non_canonical_cbor() {
+        let frame = GroupControlFrame {
+            version: GROUP_CONTROL_VERSION,
+            group: GroupSessionId([0x47; 32]),
+            id: GroupControlId {
+                author: GroupRecipientId([0xa1; 32]),
+                sequence: 7,
+            },
+            action: GroupControlAction::Update,
+        };
+        let canonical = frame.to_bytes().unwrap();
+        assert_eq!(GroupControlFrame::from_bytes(&canonical).unwrap(), frame);
+
+        let key = b"\x67version";
+        let at = canonical
+            .windows(key.len())
+            .position(|window| window == key)
+            .unwrap()
+            + key.len();
+        assert_eq!(canonical[at], GROUP_CONTROL_VERSION as u8);
+        let mut long_form = canonical[..at].to_vec();
+        long_form.extend_from_slice(&[0x19, 0x00, GROUP_CONTROL_VERSION as u8]);
+        long_form.extend_from_slice(&canonical[at + 1..]);
+
+        let lenient: GroupControlFrame = decode_cbor(long_form.as_slice()).unwrap();
+        assert_eq!(lenient, frame);
+        assert!(matches!(
+            GroupControlFrame::from_bytes(&long_form),
+            Err(GroupSessionError::Decode(_))
+        ));
     }
 
     #[test]

@@ -13,7 +13,7 @@
 
 use std::io::{Read, Write};
 
-use p2panda_core::cbor::{decode_cbor, encode_cbor};
+use p2panda_core::cbor::{decode_cbor_strict, encode_cbor};
 use serde::{Deserialize, Serialize};
 
 use crate::DropId;
@@ -64,7 +64,7 @@ impl DropReceipt {
 
     /// Decode canonical semantic bytes. Non-canonical encodings fail closed.
     pub fn from_canonical_bytes(bytes: &[u8]) -> Result<Self, DropReceiptError> {
-        let receipt: Self = decode_cbor(bytes).map_err(codec)?;
+        let receipt: Self = decode_cbor_strict(bytes).map_err(codec)?;
         if receipt.to_canonical_bytes()? != bytes {
             return Err(DropReceiptError::NonCanonical);
         }

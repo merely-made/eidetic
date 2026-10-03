@@ -46,7 +46,7 @@ use p2panda_core::cbor::{decode_cbor, encode_cbor};
 use p2panda_core::{
     AnyOperation, Body, Extensions, Hash, Header, LogId, Operation, Topic, VerifyingKey,
 };
-use p2panda_store::logs::{LogStore, StreamItem};
+use p2panda_store::logs::{LogEntry, LogStore};
 use p2panda_store::operations::OperationStore;
 use p2panda_store::topics::TopicStore;
 use proofs::{BlobRef, DigestAlg};
@@ -286,7 +286,7 @@ where
         log_id: &L,
         after: Option<u32>,
         until: Option<u32>,
-    ) -> Result<BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>>, StoreError>
+    ) -> Result<BoxStream<'static, Result<LogEntry<Operation<E>, L>, StoreError>>, StoreError>
     where
         B: Clone + Send + 'static,
         E: Send + 'static,
@@ -1153,8 +1153,7 @@ where
         log_id: &L,
         after: Option<u32>,
         until: Option<u32>,
-    ) -> Result<BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>>, StoreError>
-    {
+    ) -> Result<BoxStream<'static, Result<LogEntry<Operation<E>, L>, StoreError>>, StoreError> {
         let store = self.clone();
         let author = *author;
         let log_id = log_id.clone();
@@ -1164,7 +1163,7 @@ where
             Ok::<_, StoreError>((store, prefix, log_id, keys))
         })
         .flat_map(move |result| {
-            let stream: BoxStream<'static, Result<StreamItem<Operation<E>, L>, StoreError>> =
+            let stream: BoxStream<'static, Result<LogEntry<Operation<E>, L>, StoreError>> =
                 match result {
                     Ok((store, prefix, log_id, keys)) => {
                         Box::pin(stream::iter(keys).filter_map(move |key| {
@@ -1172,24 +1171,23 @@ where
                             let prefix = prefix.clone();
                             let log_id = log_id.clone();
                             async move {
-                                let result: Result<
-                                    Option<StreamItem<Operation<E>, L>>,
-                                    StoreError,
-                                > = async move {
-                                    if !in_range(seq_from_key(&key, &prefix)?, after, until) {
-                                        return Ok(None);
+                                let result: Result<Option<LogEntry<Operation<E>, L>>, StoreError> =
+                                    async move {
+                                        if !in_range(seq_from_key(&key, &prefix)?, after, until) {
+                                            return Ok(None);
+                                        }
+                                        let blob =
+                                            store.backend.get(&key).await?.ok_or_else(|| {
+                                                codec("log entry disappeared during scan")
+                                            })?;
+                                        let op = decode_op::<E>(&blob)?;
+                                        Ok(Some(LogEntry {
+                                            bytes: op.header.encode(),
+                                            entry: op,
+                                            log_id,
+                                        }))
                                     }
-                                    let blob = store.backend.get(&key).await?.ok_or_else(|| {
-                                        codec("log entry disappeared during scan")
-                                    })?;
-                                    let op = decode_op::<E>(&blob)?;
-                                    Ok(Some(StreamItem {
-                                        bytes: op.header.encode(),
-                                        entry: op,
-                                        log_id,
-                                    }))
-                                }
-                                .await;
+                                    .await;
                                 match result {
                                     Ok(item) => item.map(Ok),
                                     Err(error) => Some(Err(error)),
@@ -1306,8 +1304,7 @@ where
         log_id: &L,
         after: Option<u32>,
         until: Option<u32>,
-    ) -> Result<BoxStream<'static, Result<StreamItem<AnyOperation, L>, StoreError>>, StoreError>
-    {
+    ) -> Result<BoxStream<'static, Result<LogEntry<AnyOperation, L>, StoreError>>, StoreError> {
         let store = self.clone();
         let author = *author;
         let log_id = log_id.clone();
@@ -1317,7 +1314,7 @@ where
             Ok::<_, StoreError>((store, prefix, log_id, keys))
         })
         .flat_map(move |result| {
-            let stream: BoxStream<'static, Result<StreamItem<AnyOperation, L>, StoreError>> =
+            let stream: BoxStream<'static, Result<LogEntry<AnyOperation, L>, StoreError>> =
                 match result {
                     Ok((store, prefix, log_id, keys)) => {
                         Box::pin(stream::iter(keys).filter_map(move |key| {
@@ -1325,24 +1322,23 @@ where
                             let prefix = prefix.clone();
                             let log_id = log_id.clone();
                             async move {
-                                let result: Result<
-                                    Option<StreamItem<AnyOperation, L>>,
-                                    StoreError,
-                                > = async move {
-                                    if !in_range(seq_from_key(&key, &prefix)?, after, until) {
-                                        return Ok(None);
+                                let result: Result<Option<LogEntry<AnyOperation, L>>, StoreError> =
+                                    async move {
+                                        if !in_range(seq_from_key(&key, &prefix)?, after, until) {
+                                            return Ok(None);
+                                        }
+                                        let blob =
+                                            store.backend.get(&key).await?.ok_or_else(|| {
+                                                codec("log entry disappeared during scan")
+                                            })?;
+                                        let op = decode_any_op(&blob)?;
+                                        Ok(Some(LogEntry {
+                                            bytes: op.header.encode(),
+                                            entry: op,
+                                            log_id,
+                                        }))
                                     }
-                                    let blob = store.backend.get(&key).await?.ok_or_else(|| {
-                                        codec("log entry disappeared during scan")
-                                    })?;
-                                    let op = decode_any_op(&blob)?;
-                                    Ok(Some(StreamItem {
-                                        bytes: op.header.encode(),
-                                        entry: op,
-                                        log_id,
-                                    }))
-                                }
-                                .await;
+                                    .await;
                                 match result {
                                     Ok(item) => item.map(Ok),
                                     Err(error) => Some(Err(error)),

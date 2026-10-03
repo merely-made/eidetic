@@ -13,7 +13,7 @@
 
 use std::io::{Read, Write};
 
-use p2panda_core::cbor::{decode_cbor, encode_cbor};
+use p2panda_core::cbor::{decode_cbor_strict, encode_cbor};
 use serde::{Deserialize, Serialize};
 
 const MAGIC: [u8; 8] = *b"MEREDRP\0";
@@ -424,7 +424,7 @@ pub fn visit_plain_drop<R: Read, F: FnMut(DropRecord) -> Result<(), NativeDropEr
         &mut body_hasher,
         &mut consumed,
     )?;
-    let manifest: DropManifest = decode_cbor(&manifest_bytes[..]).map_err(codec)?;
+    let manifest: DropManifest = decode_cbor_strict(&manifest_bytes[..]).map_err(codec)?;
     if encode_cbor(&manifest).map_err(codec)? != manifest_bytes {
         return Err(NativeDropError::Codec(
             "manifest is not in canonical struct encoding".into(),
@@ -474,7 +474,7 @@ pub fn visit_plain_drop<R: Read, F: FnMut(DropRecord) -> Result<(), NativeDropEr
             skipped_optional_records += 1;
             continue;
         }
-        let record: DropRecord = decode_cbor(&bytes[..]).map_err(codec)?;
+        let record: DropRecord = decode_cbor_strict(&bytes[..]).map_err(codec)?;
         if record.kind() != entry.kind
             || record.critical() != entry.critical
             || encode_cbor(&record).map_err(codec)? != bytes

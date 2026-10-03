@@ -37,7 +37,7 @@ use std::fmt;
 use identity::{IdentityError, IdentityProvider};
 use insigne::DerivedKeyAttestation;
 use muniment::{Backend, StoreError, WriteOp};
-use p2panda_core::cbor::{decode_cbor, encode_cbor};
+use p2panda_core::cbor::{decode_cbor, decode_cbor_strict, encode_cbor};
 use p2panda_core::{Body, Hash, Header, Operation, SigningKey, Topic, VerifyingKey};
 use p2panda_net::{Endpoint, Gossip};
 use p2panda_store::topics::TopicStore;
@@ -254,8 +254,8 @@ fn open_record(
         .body
         .as_ref()
         .ok_or_else(|| invalid("record body is absent".into()))?;
-    let record: GroupKeyRecord =
-        decode_cbor(body.to_bytes().as_slice()).map_err(|error| invalid(error.to_string()))?;
+    let record: GroupKeyRecord = decode_cbor_strict(body.to_bytes().as_slice())
+        .map_err(|error| invalid(error.to_string()))?;
     if record.version != GROUP_KEY_RECORD_VERSION {
         return Err(invalid(format!("unsupported version {}", record.version)));
     }
