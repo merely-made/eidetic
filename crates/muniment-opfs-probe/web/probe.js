@@ -1243,7 +1243,10 @@ async function runLane(n, resumeMarker = null) {
     conclude();
     saveReceipt();
     showReceipt();
-    setState(result.ok ? "complete" : "stop", `lane ${n}: ${result.ok ? "done" : "a done-condition failed; see the receipt"}`);
+    const gateOk = receiptGateFailures.length === 0;
+    setState(result.ok && gateOk ? "complete" : "stop", `lane ${n}: ${!gateOk
+      ? "the receipt gate saw a page error; see the receipt"
+      : result.ok ? "done" : "a done-condition failed; see the receipt"}`);
     return result;
   } catch (error) {
     const key = `lane${String(n).replace(/[ab]$/, "")}`;
@@ -1268,8 +1271,11 @@ async function runAll(fromLane = 1, resumeMarker = null) {
     await runLane(n, n === 4 ? resumeMarker : null);
   }
   sessionStorage.removeItem(`${RESUME_KEY}.all`);
-  setState(receipt.conclusions.stop_condition_hit ? "stop" : "complete",
-    receipt.conclusions.stop_condition_hit ? "STOP CONDITION: an unrecoverable database was observed" : "Every lane ran; read the conclusions.");
+  const { stop_condition_hit: stopHit, receipt_gate_passed: gatePassed } = receipt.conclusions;
+  setState(stopHit || !gatePassed ? "stop" : "complete",
+    stopHit ? "STOP CONDITION: an unrecoverable database was observed"
+      : !gatePassed ? "RECEIPT GATE: an uncaught page error or rejection was recorded; see the conclusions"
+        : "Every lane ran; read the conclusions.");
   return receipt;
 }
 
