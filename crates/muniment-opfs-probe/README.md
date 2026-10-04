@@ -44,7 +44,7 @@ ports/muniment-opfs-probe/run-probe.ps1
 ```
 
 This builds the wasm, writes `fixtures/portability.redb` natively, runs
-wasm-bindgen 0.2.126 (the CLI on this machine; pass `-WasmBindgen` for another
+wasm-bindgen 0.2.129 (the CLI the tree pins; pass `-WasmBindgen` for another
 path), and serves the mere root on port 8733. Open the printed URL in a headed
 Chromium and press **Run every lane**, or drive it:
 

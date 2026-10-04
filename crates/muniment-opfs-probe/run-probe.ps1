@@ -107,8 +107,8 @@ Write-Host "muniment src  sha256: $env:MUNIMENT_OPFS_PROBE_MUNIMENT_SHA256"
 Write-Host "Cargo.lock    sha256: $env:MUNIMENT_OPFS_PROBE_LOCK_SHA256"
 
 $bindgenVersion = (& $WasmBindgen --version).Trim()
-if ($bindgenVersion -ne 'wasm-bindgen 0.2.126') {
-    throw "The probe pins wasm-bindgen 0.2.126; got '$bindgenVersion'. Pass -WasmBindgen with the matching executable."
+if ($bindgenVersion -ne 'wasm-bindgen 0.2.129') {
+    throw "The probe pins wasm-bindgen 0.2.129; got '$bindgenVersion'. Pass -WasmBindgen with the matching executable."
 }
 
 # Build from the neutral directory so `--locked` holds.

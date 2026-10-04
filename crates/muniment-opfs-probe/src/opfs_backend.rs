@@ -602,7 +602,7 @@ impl Drop for ProgressFile {
 
 /// Whether this browser exposes `FileSystemFileHandle.move()`. It is a
 /// vendor-implemented extension, not in the core WHATWG File System IDL, and
-/// web-sys 0.3.103 has no binding for it, so it is called through `Reflect`
+/// web-sys 0.3.106 has no binding for it, so it is called through `Reflect`
 /// and feature-detected.
 pub async fn move_supported() -> bool {
     let Ok((_, file, _)) = file_handle("muniment-probe/.move-probe", true).await else {
