@@ -45,6 +45,7 @@
 //! `2026-07-18_one_node_facets_layer_map.md`): `Container` is the node, and
 //! everything else is a facet.
 
+pub mod canonical;
 pub mod caps;
 pub mod commit;
 pub mod container;
@@ -66,6 +67,7 @@ pub mod spine;
 pub mod stemma;
 pub mod taxonomy;
 
+pub use canonical::canonical_url;
 pub use caps::{
     Address, Addressed, Classified, ContentBearing, GraphBearing, Identified, Labeled, Predicated,
 };
