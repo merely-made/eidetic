@@ -102,6 +102,8 @@ pub use bundle::{
     BUNDLE_SCHEMA_REF, Bundle, BundleMember, bundle_schema_ref, load_bundle, save_bundle,
     verify_required_members,
 };
+/// Stable resource identity from the shared canonical IRI.
+pub use chartulary::resource_id;
 pub use codicil::{Codicil, TimeBounds};
 pub use deleted::{DeletedNode, clear_deleted, list_deleted, purge_deleted, record_deleted};
 /// Compatibility name for serialized and source consumers written before the

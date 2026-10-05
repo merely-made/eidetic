@@ -26,6 +26,8 @@ muniment = { path = "../muniment", version = "0.1.0", default-features = false }
 # zero-copy snapshot, slotmap for the visit arena.
 rkyv = { version = "0.8", features = ["std"] }
 slotmap = { version = "1.0", features = ["serde"] }
+# Deterministic resource identity; v5 needs no random-number backend.
+uuid = { version = "1", features = ["v5"] }
 
 [dev-dependencies]
 pollster = "0.4"

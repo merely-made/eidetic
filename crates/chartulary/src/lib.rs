@@ -67,7 +67,7 @@ pub mod spine;
 pub mod stemma;
 pub mod taxonomy;
 
-pub use canonical::canonical_url;
+pub use canonical::{canonical_url, resource_id};
 pub use caps::{
     Address, Addressed, Classified, ContentBearing, GraphBearing, Identified, Labeled, Predicated,
 };

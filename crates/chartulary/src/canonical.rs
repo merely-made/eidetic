@@ -6,6 +6,8 @@
 
 //! Canonical resource addresses shared by graph and storage consumers.
 
+use uuid::Uuid;
+
 /// Query keys dropped as campaign noise: these name the click, not the page.
 const TRACKING_PARAMS: [&str; 9] = [
     "fbclid", "gclid", "dclid", "gbraid", "wbraid", "msclkid", "mc_cid", "mc_eid", "igshid",
@@ -51,6 +53,11 @@ pub fn canonical_url(raw: &str) -> String {
         canonical.push_str(&query);
     }
     canonical
+}
+
+/// Deterministic resource UUIDv5 over its canonical IRI in the URL namespace.
+pub fn resource_id(raw_iri: &str) -> Uuid {
+    Uuid::new_v5(&Uuid::NAMESPACE_URL, canonical_url(raw_iri).as_bytes())
 }
 
 fn canonical_authority(authority: &str, scheme: &str) -> String {
@@ -102,7 +109,52 @@ fn canonical_query(query: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::canonical_url;
+    use super::{canonical_url, resource_id};
+
+    #[test]
+    fn resource_aliases_share_the_pinned_url_namespace_identity() {
+        // Independently computed with Python's standard-library uuid5.
+        let expected = "7150c543-9bc5-5b2f-bb82-bc18fd0ea48d";
+        let canonical = "https://example.com/notes/?id=7";
+        let id = resource_id(canonical);
+        assert_eq!(id.to_string(), expected);
+        assert_eq!(id.get_version_num(), 5);
+        for alias in [
+            "https://Example.COM:443/notes/?utm_source=news&id=7#section-2",
+            "https://example.com/notes/?id=7&fbclid=abc123",
+            " https://example.com/notes/?id=7#another-fragment ",
+        ] {
+            assert_eq!(resource_id(alias), id);
+            assert_eq!(
+                resource_id(&canonical_url(alias)),
+                id,
+                "canonical input is idempotent"
+            );
+        }
+        assert_ne!(resource_id("https://example.com/notes/?id=8"), id);
+        assert_ne!(resource_id("https://example.com/other/?id=7"), id);
+    }
+
+    #[test]
+    fn resource_identity_preserves_meaningful_address_differences() {
+        let id = resource_id("https://example.com");
+        assert_eq!(id.to_string(), "4fd35a71-71ef-5a55-a9d9-aa75c889a6d0");
+        assert_eq!(resource_id("https://EXAMPLE.COM:443/#part"), id);
+        assert_ne!(resource_id("http://example.com"), id);
+        assert_ne!(resource_id("https://example.com:8443"), id);
+        assert_eq!(
+            resource_id("https://example.com/a?x=1&x=2&utm_medium=mail"),
+            resource_id("https://example.com/a?x=1&x=2")
+        );
+        assert_ne!(
+            resource_id("https://example.com/a?x=1&x=2"),
+            resource_id("https://example.com/a?x=2&x=1")
+        );
+        assert_ne!(
+            resource_id("https://example.com/A"),
+            resource_id("https://example.com/a")
+        );
+    }
 
     #[test]
     fn aliases_share_an_address_but_meaningful_parameters_do_not() {
