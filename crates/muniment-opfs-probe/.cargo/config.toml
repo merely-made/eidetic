@@ -1,0 +1,14 @@
+# Committed, portable build configuration for this standalone wasm workspace
+# (burn migration plan 13.44, ruling 558). Portable means no [patch], paths,
+# source or include tables. The same cfg is committed in every standalone wasm
+# workspace, so every build of a commit makes the same bundle. Cargo reads this
+# file only from a working directory at or below here, so the runner, which
+# builds from a neutral directory, passes it with --config.
+#
+# Only graphshell-web compiles getrandom 0.3, whose `wasm_js` backend needs the
+# cfg; here it changes no behaviour. It still changes the compiled bytes, so
+# builds of one commit agree only if all of them carry it. Do not also export
+# CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUSTFLAGS: Cargo joins that variable with
+# this array, and the duplicate flag changes the bundle.
+[target.wasm32-unknown-unknown]
+rustflags = ['--cfg', 'getrandom_backend="wasm_js"']

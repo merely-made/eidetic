@@ -116,7 +116,9 @@ Push-Location $NeutralDir
 try {
     cargo fmt --manifest-path $manifest --check
     if ($LASTEXITCODE -ne 0) { throw 'cargo fmt --check failed; run cargo fmt.' }
-    cargo build --locked --manifest-path $manifest --lib --release --target wasm32-unknown-unknown
+    # The committed wasm cfg (.cargo/config.toml, ruling 558); the neutral
+    # directory would not find it.
+    cargo build --locked --manifest-path $manifest --config (Join-Path $probeRoot '.cargo\config.toml') --lib --release --target wasm32-unknown-unknown
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     cargo test --locked --manifest-path $manifest --release
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
