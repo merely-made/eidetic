@@ -174,11 +174,11 @@ mod native {
                 } else {
                     1
                 }
-            }
+            },
             Err(error) => {
                 println!("{}", json!({ "ok": false, "error": error }));
                 2
-            }
+            },
         }
     }
 }

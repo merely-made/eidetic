@@ -181,7 +181,7 @@ pub async fn run<B: Backend>(
                 timer.op(256);
             }
             timer.phase("overwrite");
-        }
+        },
         Workload::OrderedLog => {
             // A fixed permutation: stride through the sequence so insertion
             // order is far from key order.
@@ -211,7 +211,7 @@ pub async fn run<B: Backend>(
                 timer.op(keys.len() * 32);
             }
             timer.phase("scan_windows");
-        }
+        },
         Workload::LogBatched => {
             // stickleback::MunimentStore::insert_operation writes the log
             // entry, the id → log-key pointer, and (when the header carries a
@@ -267,7 +267,7 @@ pub async fn run<B: Backend>(
                 "one `apply` per operation, matching stickleback's insert_operation; compare with ordered_log's one `put` per key"
                     .into(),
             );
-        }
+        },
         Workload::AtomicBatches => {
             for b in 0..100 {
                 let payload = fill(&format!("batch/{b}/payload"), 2048);
@@ -307,7 +307,7 @@ pub async fn run<B: Backend>(
                 timer.op(2048 + 96);
             }
             timer.phase("verify");
-        }
+        },
         Workload::LargeBlobs => {
             let sizes: Vec<(usize, usize)> = (0..8)
                 .map(|i| (i, 1 << 20))
@@ -335,7 +335,7 @@ pub async fn run<B: Backend>(
                 "two 8 MiB values sit far under redb's 3 GiB value ceiling; IndexedDB stores each as one Uint8Array"
                     .into(),
             );
-        }
+        },
     }
     let total_ops = timer.phases.iter().map(|p| p.ops).sum();
     let total_bytes = timer.phases.iter().map(|p| p.bytes).sum();

@@ -149,7 +149,7 @@ async fn open_db(
             let faulty = FaultBackend::new(backend, plan);
             let watch = faulty.watch();
             (builder.create_with_backend(faulty), Some(watch))
-        }
+        },
     };
     // On failure redb has already called `close()`: the handle is released.
     let db = outcome.map_err(|err| OpenFailure {
@@ -244,7 +244,7 @@ async fn reopen(path: &str, shape: ChurnShape) -> ReopenReport {
                 io,
                 ms: now_ms() - started,
             }
-        }
+        },
     }
 }
 
@@ -283,7 +283,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 "redb transactions against InMemoryBackend in this worker",
             )?;
             Ok(ProbeReport::InMemorySmoke(in_memory_smoke()?))
-        }
+        },
         ProbeCommand::OpfsRoundTrip {
             path,
             reset,
@@ -315,7 +315,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 io,
                 ms: now_ms() - started,
             }))
-        }
+        },
         ProbeCommand::Churn {
             path,
             reset,
@@ -365,7 +365,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 io,
                 ms: now_ms() - started,
             }))
-        }
+        },
         ProbeCommand::Progress { path } => {
             let found = ProgressFile::read(&path)
                 .await
@@ -375,14 +375,14 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 committed: found.map(|(c, _)| c),
                 committing: found.map(|(_, c)| c),
             }))
-        }
+        },
         ProbeCommand::Reopen { path, shape } => {
             post_state(
                 "reopening",
                 &format!("{path}: integrity check and invariant"),
             )?;
             Ok(ProbeReport::Reopen(reopen(&path, shape).await))
-        }
+        },
         ProbeCommand::Fault {
             path,
             plan,
@@ -412,7 +412,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                                 failed_generation = Some(generation);
                                 error = Some(err.to_string());
                                 break;
-                            }
+                            },
                         }
                     }
                 }
@@ -434,7 +434,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 counters,
                 reopen,
             }))
-        }
+        },
         ProbeCommand::Hold {
             path,
             reset,
@@ -463,7 +463,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 held_ms,
                 closed_cleanly: true,
             }))
-        }
+        },
         ProbeCommand::TryOpen { path } => match open_db(&path, false, false, None).await {
             Ok(opened) => {
                 let generation = churn::current_generation(&opened.db).ok();
@@ -473,7 +473,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                     dom_exception: None,
                     generation,
                 }))
-            }
+            },
             Err(failure) => Ok(ProbeReport::TryOpen(TryOpenReport {
                 open: failure.report,
                 dom_exception: failure.dom_exception,
@@ -494,7 +494,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 blake3: blake3::hash(&bytes).to_hex().to_string(),
                 ms: now_ms() - started,
             }))
-        }
+        },
         ProbeCommand::Export { path } => {
             let bytes = opfs::read_all(&path).await.map_err(|e| e.to_string())?;
             Ok(ProbeReport::Export(ExportReport {
@@ -502,7 +502,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 bytes: bytes.len() as u64,
                 blake3: blake3::hash(&bytes).to_hex().to_string(),
             }))
-        }
+        },
         ProbeCommand::Digest { path } => {
             let mut opened = open_db(&path, false, false, None)
                 .await
@@ -520,7 +520,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 keys,
                 file_len: opfs::size(&path).await.map_err(|e| e.to_string())?,
             }))
-        }
+        },
         ProbeCommand::Bench {
             backend,
             workload,
@@ -543,7 +543,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                     let io = counters.snapshot();
                     drop(store);
                     (outcome, phases, Some(io))
-                }
+                },
                 BenchBackend::IndexedDb => {
                     let store = IndexedDbBackend::open(&name, "muniment")
                         .await
@@ -552,7 +552,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                         .await
                         .map_err(|e| e.to_string())?;
                     (outcome, phases, None)
-                }
+                },
                 BenchBackend::IndexedDbRange => {
                     let store = IndexedDbRangeBackend::open(&name, "muniment")
                         .await
@@ -561,14 +561,14 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                         .await
                         .map_err(|e| e.to_string())?;
                     (outcome, phases, None)
-                }
+                },
                 BenchBackend::Memory => {
                     let store = MemoryBackend::new();
                     let (outcome, phases) = workload::run(&store, workload, &clock)
                         .await
                         .map_err(|e| e.to_string())?;
                     (outcome, phases, None)
-                }
+                },
             };
             Ok(ProbeReport::Bench(BenchReport {
                 backend,
@@ -578,11 +578,11 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 total_ms: now_ms() - started,
                 io,
             }))
-        }
+        },
         ProbeCommand::Remove { path } => {
             let existed = opfs::remove(&path).await.map_err(|e| e.to_string())?;
             Ok(ProbeReport::Removed { path, existed })
-        }
+        },
         ProbeCommand::AsciiContract { name } => {
             post_state("contract", "ASCII key contract on the range backend")?;
             let store = IndexedDbRangeBackend::open(&name, "muniment")
@@ -663,7 +663,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 final_keys,
                 ok,
             }))
-        }
+        },
         ProbeCommand::Exists { path } => {
             let exists = opfs::exists(&path).await.map_err(|e| e.to_string())?;
             let len = if exists {
@@ -672,7 +672,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 0
             };
             Ok(ProbeReport::Exists(ExistsReport { path, exists, len }))
-        }
+        },
         ProbeCommand::StagedCreate {
             path,
             plan,
@@ -712,10 +712,10 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                                     staged_ok = false;
                                     error = Some(err.to_string());
                                     break;
-                                }
+                                },
                             }
                         }
-                    }
+                    },
                 }
                 drop(db);
             }
@@ -737,7 +737,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                     Ok(atomic) => {
                         atomic_move = Some(atomic);
                         promoted = true;
-                    }
+                    },
                     Err(err) => error = Some(format!("promote: {err}")),
                 }
             }
@@ -770,7 +770,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                         && r.integrity_ok == Some(true)
                         && r.check.as_ref().map(|c| c.ok).unwrap_or(false)
                         && r.check.as_ref().map(|c| c.generation) == Some(commits as u64)
-                }
+                },
             };
             Ok(ProbeReport::StagedCreate(StagedCreateReport {
                 path,
@@ -789,7 +789,7 @@ async fn execute(command: ProbeCommand) -> Result<ProbeReport, String> {
                 staging_len,
                 ok,
             }))
-        }
+        },
     }
 }
 
@@ -805,7 +805,7 @@ pub async fn run_command(command_json: String) -> Result<String, JsValue> {
         Err(error) => {
             let _ = post_state("failed", &error);
             Err(JsValue::from_str(&error))
-        }
+        },
     }
 }
 

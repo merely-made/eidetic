@@ -370,12 +370,12 @@ mod tests {
                             Err(err) => {
                                 error = Some(format!("generation {generation}: {err}"));
                                 break;
-                            }
+                            },
                         }
                     }
                 }
                 drop(db);
-            }
+            },
             Err(err) => error = Some(format!("open: {err}")),
         }
         Run {
@@ -407,12 +407,12 @@ mod tests {
                 let integrity = db.check_integrity().expect("integrity check must run");
                 let check = verify(&db, SHAPE).expect("the invariant must be checkable");
                 Recovery::Reopened { integrity, check }
-            }
+            },
             Err(DatabaseError::Storage(StorageError::Io(err)))
                 if err.kind() == ErrorKind::InvalidData =>
             {
                 Recovery::Uninitialized(err.to_string())
-            }
+            },
             Err(err) => Recovery::Failed(err.to_string()),
         }
     }
@@ -436,7 +436,7 @@ mod tests {
                     run.completed + 1
                 );
                 Some(check)
-            }
+            },
             Recovery::Uninitialized(message) => {
                 assert!(
                     !run.created && run.completed == 0,
@@ -444,7 +444,7 @@ mod tests {
                     run.completed
                 );
                 None
-            }
+            },
             Recovery::Failed(message) => panic!("{label}: unrecoverable: {message}"),
         }
     }
@@ -504,7 +504,7 @@ mod tests {
                         None => {
                             outcomes[2] += 1;
                             uninitialized_cuts.push(label);
-                        }
+                        },
                     }
                     trials += 1;
                 }
@@ -522,7 +522,7 @@ mod tests {
                     None => {
                         outcomes[2] += 1;
                         uninitialized_cuts.push(label);
-                    }
+                    },
                 }
                 trials += 1;
             }

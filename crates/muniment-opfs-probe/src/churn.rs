@@ -164,7 +164,7 @@ pub fn verify(db: &Database, shape: ChurnShape) -> Result<GenerationCheck, redb:
                 stale_keys: 0,
                 ok: generation == 0,
             });
-        }
+        },
         Err(err) => return Err(err.into()),
     };
     let mut keys_present = 0;
