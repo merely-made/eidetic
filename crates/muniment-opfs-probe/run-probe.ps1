@@ -22,6 +22,10 @@ param(
 $ErrorActionPreference = 'Stop'
 $probeRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $mereRoot = (Resolve-Path (Join-Path $probeRoot '..\..')).Path
+# The repository's pinned toolchain (rust-toolchain.toml; burn plan 13.45),
+# not whatever rustup picks in the neutral directory below.
+. (Join-Path $mereRoot 'scripts\repo-toolchain.ps1')
+Use-RepoToolchain -MereRoot $mereRoot
 $manifest = Join-Path $probeRoot 'Cargo.toml'
 $munimentRoot = Join-Path $mereRoot 'crates\eidetic\muniment'
 $env:CARGO_TARGET_DIR = $TargetDir
