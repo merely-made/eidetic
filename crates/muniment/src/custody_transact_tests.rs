@@ -13,7 +13,7 @@
 //! transaction.
 //!
 //! Ported from the actual-backend custody probe
-//! (`design_docs/mere_docs/testing/receipts/2026-09-08_stack_pillar_probes/custody-backend/RECEIPT.md`,
+//! (`design_docs/mere_docs/testing/receipts/2026-09-08_stack_pillar_probes/custody-backend/2026-09-08_custody_backend_receipt.md`,
 //! `src/lib.rs`), which ran the same shapes against real Muniment/redb through
 //! a research adapter that serialized commands itself. These versions run
 //! directly against `Backend::transact`, no adapter, and turn the probe's
