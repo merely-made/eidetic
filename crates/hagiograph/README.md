@@ -33,7 +33,7 @@ The boundaries are the point:
 
 Rescoped 2026-09-16. The record, the feat rule and the deep-time seam are
 planned in
-`design_docs/eidetic_docs/implementation_strategy/2026-09-16_hagiograph_history_organ_plan.md`.
+`design_docs/archive_docs/2026-10-06_completed_plans/2026-09-16_hagiograph_history_organ_plan.md`.
 
 ## License
 
