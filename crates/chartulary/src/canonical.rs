@@ -57,7 +57,12 @@ pub fn canonical_url(raw: &str) -> String {
 
 /// Deterministic resource UUIDv5 over its canonical IRI in the URL namespace.
 pub fn resource_id(raw_iri: &str) -> Uuid {
-    Uuid::new_v5(&Uuid::NAMESPACE_URL, canonical_url(raw_iri).as_bytes())
+    resource_id_from_canonical_iri(&canonical_url(raw_iri))
+}
+
+/// Hash an already prepared identity IRI, without changing its bytes.
+pub fn resource_id_from_canonical_iri(canonical_iri: &str) -> Uuid {
+    Uuid::new_v5(&Uuid::NAMESPACE_URL, canonical_iri.as_bytes())
 }
 
 fn canonical_authority(authority: &str, scheme: &str) -> String {
