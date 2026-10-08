@@ -10,8 +10,8 @@
 //! A thin adapter over the two muniment stores eidetic already sits on: the
 //! **blob** is the storage (content-addressed, so one body under two addresses
 //! is stored once and a re-visit that changed nothing writes nothing), and one
-//! **slot per address** is the index. Nothing else is invented here — no
-//! second authority, no cache format.
+//! **slot per address** is the current index. Resource/content references keep
+//! earlier versions addressable through [`ResourceCaptureStore`].
 //!
 //! Keys: text bytes at muniment's own `blob/<blake3-hex>`; the index at
 //! `page-text/<blake3-hex of the canonical URL>`. The slot key is hashed
@@ -26,6 +26,7 @@ use std::collections::BTreeMap;
 use muniment::{Backend, BlobStore, Hash, JsonSlots};
 use serde::{Deserialize, Serialize};
 
+use super::captures::{CaptureContent, ResourceCaptureStore};
 use super::page::canonical_url;
 use crate::Result;
 
@@ -74,9 +75,11 @@ impl<B: Backend + Clone> PageTextStore<B> {
         let current: Option<PageTextRef> = self.slots.load(&key).await?;
         if current.is_some_and(|entry| entry.blob == hash.to_hex()) && self.blobs.has(&hash).await?
         {
+            self.record_version(&canonical, text, stored_at_ms).await?;
             return Ok(hash);
         }
         self.blobs.put(text.as_bytes()).await?;
+        self.record_version(&canonical, text, stored_at_ms).await?;
         self.slots
             .save(
                 &key,
@@ -88,6 +91,18 @@ impl<B: Backend + Clone> PageTextStore<B> {
             )
             .await?;
         Ok(hash)
+    }
+
+    async fn record_version(&self, canonical: &str, text: &str, stored_at_ms: u64) -> Result<()> {
+        ResourceCaptureStore::new(self.slots.backend())
+            .record(
+                canonical,
+                crate::Hash::of(text.as_bytes()),
+                CaptureContent::PageText,
+                stored_at_ms,
+            )
+            .await?;
+        Ok(())
     }
 
     /// The stored body of the page at `url`, or `None` if none was kept. The
@@ -104,10 +119,13 @@ impl<B: Backend + Clone> PageTextStore<B> {
         Ok(self.slots.load(&slot_key(&canonical_url(url))).await?)
     }
 
-    /// Forget the page at `url`. The blob stays for the GC pass, the way a
+    /// Forget the current text and text-version references at `url`. The blob stays for the GC pass, the way a
     /// deleted manifest's bytes do — another address may share it.
     pub async fn forget(&self, url: &str) -> Result<()> {
-        Ok(self.slots.delete(&slot_key(&canonical_url(url))).await?)
+        self.slots.delete(&slot_key(&canonical_url(url))).await?;
+        ResourceCaptureStore::new(self.slots.backend())
+            .forget(url, CaptureContent::PageText)
+            .await
     }
 
     /// Every stored body, canonical URL to text — the snapshot a projection
@@ -237,8 +255,8 @@ mod tests {
                 .put("https://origin.example/post", BODY, 3)
                 .await
                 .unwrap();
-            // One blob, two slots.
-            assert_eq!(backend.len(), 3);
+            // One blob, two current-address slots and two resource versions.
+            assert_eq!(backend.len(), 5);
             let entry = store
                 .reference("https://origin.example/post")
                 .await
@@ -251,7 +269,7 @@ mod tests {
                 .put("https://origin.example/post", "different words", 4)
                 .await
                 .unwrap();
-            assert_eq!(backend.len(), 4);
+            assert_eq!(backend.len(), 7);
             let entry = store
                 .reference("https://origin.example/post")
                 .await
@@ -290,6 +308,18 @@ mod tests {
 
             store.forget("https://a.example/").await.unwrap();
             assert_eq!(store.load_all().await.unwrap().len(), 1);
+            let versions = ResourceCaptureStore::new(store.slots.backend());
+            assert!(
+                versions
+                    .for_url("https://a.example/")
+                    .await
+                    .unwrap()
+                    .is_empty()
+            );
+            assert_eq!(
+                versions.for_url("https://b.example/").await.unwrap().len(),
+                1
+            );
         });
     }
 

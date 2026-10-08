@@ -89,6 +89,7 @@ pub mod typed;
 pub use browsing::frecency::{FrecencyConfig, TransitionWeights, frecency, frecency_by};
 // `page::simhash` and `normalize_text` stay behind the module path for the
 // same reason `ranked` does.
+pub use browsing::captures::{CaptureContent, ResourceCaptureRef, ResourceCaptureStore};
 pub use browsing::page::{
     FingerprintSource, PageFingerprint, PageRecord, PageTable, PageTableConfig, canonical_url,
     frecency_by_page, page_table, page_table_with,
