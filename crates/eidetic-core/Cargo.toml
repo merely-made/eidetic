@@ -29,13 +29,8 @@ blake3 = "1.5"
 jsonschema = { version = "0.18", default-features = false, optional = true }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-# The browsing lineage bridge (`browsing::lineage`, feature `lineage`):
-# projects stemma's live visit authority into durable BrowsingTrace engrams.
-# Optional so wasm/OPFS consumers that only read memory skip the lineage crate.
-# stemma is the promoted (MIT/Apache) successor to the retired in-tree
-# node-lineage. Git sibling; local checkout via the gitignored
-# `.cargo/config.toml` patch.
-chartulary = { path = "../chartulary", version = "0.2.0", optional = true }
+# Shared resource-address identity and the optional browsing lineage bridge.
+chartulary = { path = "../chartulary", version = "0.2.0" }
 # Blob fetchers (features `https-fetcher`, `iroh-fetcher`).
 fjall = { version = "2", optional = true }
 transport = { workspace = true, optional = true }
@@ -52,7 +47,7 @@ pack-signing = ["dep:identity"]
 # cone while preserving a clear "validator unavailable" error for stored JSON
 # Schema definitions.
 json-schema = ["dep:jsonschema"]
-lineage = ["dep:chartulary"]
+lineage = []
 # Blob fetchers for eidetic::resolve_blob, one per source kind.
 # The Fjall LSM store, the production-default native backend (`eidetic::fjall`).
 fjall = ["dep:fjall"]

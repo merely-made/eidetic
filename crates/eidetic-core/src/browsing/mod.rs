@@ -30,6 +30,7 @@
 //! most recent *stored* traces and deletes older manifests (blob bytes await
 //! the explicit GC pass, per the manifest-deletion doctrine).
 
+pub mod captures;
 pub mod frecency;
 #[cfg(feature = "lineage")]
 pub mod lineage;

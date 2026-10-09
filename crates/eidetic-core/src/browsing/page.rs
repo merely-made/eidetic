@@ -26,99 +26,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use super::frecency::{FrecencyConfig, frecency_by};
 use super::{BrowsingTrace, TraceEvent};
 
-/// Query keys dropped as campaign noise: these name the click, not the page.
-const TRACKING_PARAMS: [&str; 9] = [
-    "fbclid", "gclid", "dclid", "gbraid", "wbraid", "msclkid", "mc_cid", "mc_eid", "igshid",
-];
-
-/// Whole families dropped by prefix (Urchin's `utm_source`, `utm_medium`, …).
-const TRACKING_PARAM_PREFIXES: [&str; 1] = ["utm_"];
-
-/// The port a scheme already implies, and so need not carry.
-fn default_port(scheme: &str) -> Option<&'static str> {
-    match scheme {
-        "http" | "ws" => Some("80"),
-        "https" | "wss" => Some("443"),
-        _ => None,
-    }
-}
-
-/// Collapse a URL to the page it names: lowercase scheme and host, no
-/// fragment, no default port, no trailing slash on an empty path, no tracking
-/// parameters. Everything else is kept verbatim — percent-encoding, case in
-/// the path and in surviving query values, and parameter order all carry
-/// meaning on real sites.
-///
-/// A string with no `scheme://` (a `data:` or `about:` form, a bare path)
-/// keeps its shape; only the fragment comes off. There is no URL crate here
-/// on purpose: the WHATWG parser belongs to the engine, and this key must be
-/// computable in the storage layer.
-pub fn canonical_url(raw: &str) -> String {
-    let raw = raw.trim();
-    let without_fragment = raw.split_once('#').map_or(raw, |(head, _)| head);
-    let Some((scheme, rest)) = without_fragment.split_once("://") else {
-        return without_fragment.to_string();
-    };
-    let scheme = scheme.to_lowercase();
-    let (authority, tail) = rest.split_at(rest.find(['/', '?']).unwrap_or(rest.len()));
-    let (path, query) = tail.split_once('?').map_or((tail, ""), |(p, q)| (p, q));
-    let authority = canonical_authority(authority, &scheme);
-    let path = if path == "/" { "" } else { path };
-    let query = canonical_query(query);
-    let mut canonical = format!("{scheme}://{authority}{path}");
-    if !query.is_empty() {
-        canonical.push('?');
-        canonical.push_str(&query);
-    }
-    canonical
-}
-
-fn canonical_authority(authority: &str, scheme: &str) -> String {
-    let (userinfo, host_port) = match authority.rsplit_once('@') {
-        Some((user, host)) => (Some(user), host),
-        None => (None, authority),
-    };
-    // An IPv6 literal keeps its brackets; its port is whatever follows them.
-    let (host, port) = match host_port.rfind(']') {
-        Some(end) => {
-            let (host, rest) = host_port.split_at(end + 1);
-            (host, rest.strip_prefix(':'))
-        },
-        None => match host_port.rsplit_once(':') {
-            Some((host, port)) => (host, Some(port)),
-            None => (host_port, None),
-        },
-    };
-    let mut canonical = String::new();
-    if let Some(userinfo) = userinfo {
-        canonical.push_str(userinfo);
-        canonical.push('@');
-    }
-    canonical.push_str(&host.to_lowercase());
-    if let Some(port) = port.filter(|p| !p.is_empty() && Some(*p) != default_port(scheme)) {
-        canonical.push(':');
-        canonical.push_str(port);
-    }
-    canonical
-}
-
-fn canonical_query(query: &str) -> String {
-    query
-        .split('&')
-        .filter(|pair| !pair.is_empty())
-        .filter(|pair| {
-            let key = pair
-                .split_once('=')
-                .map_or(*pair, |(key, _)| key)
-                .to_lowercase();
-            !TRACKING_PARAMS.contains(&key.as_str())
-                && !TRACKING_PARAM_PREFIXES
-                    .iter()
-                    .any(|prefix| key.starts_with(prefix))
-        })
-        .collect::<Vec<_>>()
-        .join("&")
-}
+pub use chartulary::canonical_url;
 
 /// Whitespace-collapsed page text — the exact hash's input.
 ///
@@ -546,21 +454,6 @@ mod tests {
         assert_eq!(
             record.last_url, "https://example.com/notes/?id=7&fbclid=abc123",
             "a hit opens the address actually visited"
-        );
-        // The rules, one at a time.
-        assert_eq!(
-            canonical_url("HTTP://Example.com:80/"),
-            "http://example.com"
-        );
-        assert_eq!(
-            canonical_url("https://example.com/a/"),
-            "https://example.com/a/",
-            "only an empty path loses its slash"
-        );
-        assert_eq!(
-            canonical_url("https://example.com/a?Q=Keep&gclid=x"),
-            "https://example.com/a?Q=Keep",
-            "case and order of surviving parameters are kept"
         );
     }
 
