@@ -19,4 +19,4 @@ chartulary = { version = "0.2.0", path = "../eidetic/chartulary" }
 # not reimplement any of that; it contributes the TYPED capability view (`Cap`)
 # over the same certificates, so the participant tier and the moot tier share one
 # delegation system rather than two.
-identity = { package = "personae", version = "0.2.0", path = "../dramatis/personae" }
+identity.workspace = true
