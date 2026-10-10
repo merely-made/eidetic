@@ -157,7 +157,8 @@ pub enum ChainError {
     MissingParent(DelegationId),
     /// A link does not attenuate its parent (widening, depth, or expiry).
     NotAttenuating(DelegationId),
-    /// A root link names an authority other than this table's root.
+    /// A root link names an authority other than this table's root, or was
+    /// issued by a key other than the root it names.
     WrongRoot(DelegationId),
     /// The certificate, or one of its ancestors, is revoked.
     Revoked(DelegationId),
@@ -288,7 +289,9 @@ impl DelegationTable {
             .map_err(|fault| ChainError::BadSignature(id, fault))?;
         match signed.certificate.parent {
             DelegationParent::Root(root) => {
-                if root == self.root {
+                // `check` binds the signer to `issuer`; this binds `issuer`
+                // to the root, so only the root can issue a root link.
+                if root == self.root && signed.certificate.issuer == root {
                     Ok(())
                 } else {
                     Err(ChainError::WrongRoot(id))
@@ -526,6 +529,36 @@ mod tests {
             !table.covers(subject_of(&helper), &scope("trail/x"), Mode::Write),
             "signed by the wrong authority: not this table's root"
         );
+    }
+
+    #[test]
+    fn a_root_link_issued_by_another_key_is_refused() {
+        // The intruder names THIS table's root as parent but issues and signs
+        // as itself: well signed, but it holds no root authority.
+        let user = provider(0);
+        let intruder = provider(5);
+        let helper = provider(1);
+        let mut table = DelegationTable::new(root_key(&user));
+        let cert = DelegationCertificate::new(
+            DelegationParent::Root(root_key(&user)),
+            root_key(&intruder),
+            subject_of(&helper).0,
+            scope_for(&scope("trail"), Mode::Write, b"session-1".to_vec()),
+            1_000,
+            1_000,
+            None,
+            0,
+            [4; 32],
+        );
+        let signed = SignedDelegationCertificate::issue(&intruder, cert).unwrap();
+        signed.check().expect("it is a validly SIGNED certificate");
+        table.adopt(signed.clone());
+        table.set_now(2_000);
+        assert!(matches!(
+            table.verify_chain(&signed).unwrap_err(),
+            ChainError::WrongRoot(_)
+        ));
+        assert!(!table.covers(subject_of(&helper), &scope("trail/x"), Mode::Write));
     }
 
     #[test]
