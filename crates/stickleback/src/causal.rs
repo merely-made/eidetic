@@ -294,6 +294,29 @@ pub fn observed_frontier<L: Clone + Ord>(
         .collect())
 }
 
+/// Minimal frontier of the causally complete retained subset.
+///
+/// Unlike [`observed_frontier`], an author's head already covered by another
+/// complete operation is omitted. Pending records do not acknowledge missing
+/// history. The resulting references plus their ancestors cover every complete
+/// retained entry, without making parent fan-out grow with total membership.
+pub fn complete_frontier<L: Clone + Ord>(
+    entries: &[CausalEntry<L>],
+) -> Result<Vec<[u8; 32]>, CausalError> {
+    let projection = causal_projection(entries)?;
+    let covered: BTreeSet<_> = projection
+        .order
+        .iter()
+        .flat_map(|index| entries[*index].dependencies())
+        .collect();
+    Ok(projection
+        .order
+        .into_iter()
+        .map(|index| entries[index].operation)
+        .filter(|operation| !covered.contains(operation))
+        .collect())
+}
+
 /// Recover the next sequence and backlink for one author/log.
 pub fn author_head<L: Clone + Ord>(
     entries: &[CausalEntry<L>],
@@ -472,6 +495,18 @@ mod tests {
             author_head(&entries, [1; 32], &0).unwrap(),
             (2, Some([2; 32]))
         );
+    }
+
+    #[test]
+    fn complete_frontier_omits_covered_heads_and_pending_records() {
+        let entries = vec![
+            entry(1, 1, 0, None, &[]),
+            entry(2, 2, 0, None, &[1]),
+            entry(3, 3, 0, None, &[]),
+            entry(4, 4, 0, None, &[99]),
+        ];
+        assert_eq!(complete_frontier(&entries).unwrap(), vec![[2; 32], [3; 32]]);
+        assert_eq!(observed_frontier(&entries).unwrap().len(), 4);
     }
 
     #[test]
