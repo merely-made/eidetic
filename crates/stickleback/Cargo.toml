@@ -39,7 +39,7 @@ blake3 = "1.5"
 serde = { version = "1", features = ["derive"] }
 serde_bytes = "0.11"
 proofs.workspace = true
-tokio = { version = "1", features = ["rt", "sync", "time"] }
+tokio = { version = "1", features = ["io-util", "rt", "sync", "time"] }
 tokio-stream = "0.1"
 thiserror = "1"
 

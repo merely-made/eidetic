@@ -16,9 +16,9 @@ published as `murm-replication` through 0.1.0.
 
 ## Public surface
 
-`drop` is the only public module; the rest are private and re-exported at the
-crate root, so a caller writes `stickleback::MunimentStore`. The `Source` column
-names the source file.
+`address_book`, `drop` and `object_stream` are public modules; the other
+surfaces are re-exported at the crate root, so a caller writes
+`stickleback::MunimentStore`. The `Source` column names the source file.
 
 | Source | Contents |
 | --- | --- |
@@ -31,6 +31,7 @@ names the source file.
 | `drop` | `DropId`, `DropManifest`, `DropRecord`, `DropLimits`, `DropProtector`, `DropReadReport`, `DropWriteReceipt`, `ManifestEntry`, `EvidenceKind`, `NativeDropError`, and the `write_` / `read_` / `visit_` plain and protected entry points |
 | `drop_io` | `DropExportProfile`, `DropExportSelector`, `DropExportBudget`, `DropExportDecision`, `DropExportStats`, `DropImportReport`, `DropFileExportReport`, `StagedDrop`, `DropIoError`, plus `export_topic_operations*`, `import_*_drop*`, the file helpers, and staged-drop and receipt management |
 | `receipt` | `DropReceipt`, `DropReceiptLimits`, `DropReceiptError`, `ReceiptPeer`, `read_drop_receipt`, `write_drop_receipt` |
+| `object_stream` | `ObjectStreamLimits`, `ObjectStreamError`, `read_object`, `write_object`; one bounded opaque object per asynchronous stream half |
 | `epoch_retention` | `propose_epoch_pruning`, `EpochPruningProposal`, `EpochRetentionFacts`, `EpochCheckpointBasis`, `EpochHold`, `EpochHoldReason`, `EpochProposalBlocker`, `EpochRetentionReason`, `RetainedEpoch` |
 | `group_crypto` | `DataKeyring`, `GroupCiphertext`, `GroupEncryptionMode`, `GroupEncryptionProfile`, `GroupCryptoError` |
 | `group_session` | `GroupSession`, `GroupSessionId`, `GroupSessionDispatch`, `GroupSessionProcess`, `GroupControlFrame`, `GroupControlAction`, `GroupControlId`, `GroupDirectFrame`, `GroupPrekeyBundle`, `GroupRecipientId`, `GroupSessionError` |
@@ -84,6 +85,23 @@ caller-directed cleanup. The peer service derives that scope from its
 authenticated carrier identity, so a remote claim cannot become a local import
 marker or bypass domain admission.
 
+## Opaque object streams
+
+`read_object` and `write_object` carry exact opaque bytes over a generic Tokio
+stream. An object has a four-byte big-endian length, its payload and a clean
+write-half end. The read checks length before allocation and requires EOF after
+the payload; the deadline covers the entire call including FIN/EOF. Configured
+limits must be nonzero and no larger than 64 KiB and 60 seconds. A caller may
+choose a smaller profile; the mesh handoff example uses 16 KiB and 10 seconds.
+
+This leaf does not decode operations, authenticate the carrier or mutate a
+store. The receiving host selects the protocol/peer and concurrency/total
+budget, then hands a complete object to its existing domain admission path.
+An application acknowledgement follows that owner's result; transport receipt
+and domain admission remain separate observations. The selected real QUIC
+composition is documented in the
+[mesh receive example](../mesh/mesh/examples/retained_receive/README.md).
+
 ## Dependencies
 
 | Crate | Why |
@@ -97,7 +115,7 @@ marker or bypass domain admission.
 | `identity` (`personae`) | `IdentityProvider`, `DerivedKeyAttestation`, signature types for writer binding and prekey bundles. |
 | `proofs` (`mere-proofs`) | `Digest`, used for authority revisions and retention facts. |
 | `blake3`, `hex`, `serde` | Drop ids, framing, and CBOR payloads. |
-| `tokio`, `tokio-stream` | The drain task and status handles. |
+| `tokio`, `tokio-stream` | The drain task, status handles and bounded asynchronous object streams. |
 
 ## Examples and tests
 

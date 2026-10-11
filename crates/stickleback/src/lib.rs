@@ -28,6 +28,7 @@ mod group_crypto;
 mod group_lane;
 mod group_session;
 mod joined_space;
+pub mod object_stream;
 mod processor;
 #[cfg(test)]
 mod prune_proof;
@@ -75,6 +76,10 @@ pub use group_session::{
     GroupSessionProcess,
 };
 pub use joined_space::{JoinError, JoinedSpace, lane_id};
+pub use object_stream::{
+    MAX_OBJECT_STREAM_BYTES, MAX_OBJECT_STREAM_TIMEOUT, ObjectStreamError, ObjectStreamLimits,
+    read_object, write_object,
+};
 /// The operation type [`JoinedSpace::publish`] takes, re-exported for the same
 /// reason: a host names it to push what it authored, and should not have to
 /// adopt p2panda-core to do so.
