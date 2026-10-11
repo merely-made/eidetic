@@ -40,7 +40,8 @@ pub use address_book::MunimentAddressBook;
 pub use authority::CheckpointAuthority;
 pub use causal::{
     CausalEntry, CausalError, CausalIndex, CausalLimits, CausalProjection, PendingCausalOperation,
-    author_head, causal_projection, happens_before, observed_frontier, validate_causal_metadata,
+    author_head, causal_projection, complete_frontier, happens_before, observed_frontier,
+    validate_causal_metadata,
 };
 pub use drop::{
     DropId, DropLimits, DropManifest, DropProtector, DropReadReport, DropRecord, DropWriteReceipt,
