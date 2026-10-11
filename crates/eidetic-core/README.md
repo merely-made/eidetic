@@ -6,7 +6,10 @@ through 0.0.2; that name is frozen.
 The owner-scoped local memory lane for the [mere](https://crates.io/crates/mere)
 browser. It owns the durable typed vocabulary: blob manifests, typed payloads,
 schemas, codicils, bundles, packs, encrypt-at-rest markers, browsing traces, and
-content-addressed model artifacts. Storage-backend-agnostic and host-agnostic.
+content-addressed model artifacts. Portable intake retains original source bytes
+and reports conversion losses; content caching, image bytes and facet-schema
+validation also live here. Backends and application-session authority stay with
+Muniment and Pandect respectively.
 
 ## Modules
 
@@ -22,6 +25,9 @@ content-addressed model artifacts. Storage-backend-agnostic and host-agnostic.
 | `pack` | `PackManifest`, `PackPart`, `PackPartRole`, `PackVerdict`, `canonical_bytes`, `sign_pack`, `verify_pack` |
 | `seal` | `PayloadSealer`, `SealEpochId`, `SealedBlobRef`, `seal_marker`, `seal_payload_for_store`, `resolve_sealed_blob`, `is_private_lane` |
 | `browsing` | `BrowsingTrace`, `BrowsingMemory`, `TraceEvent`, `TraceTransition`, `PageRef`, `save_trace`, `bootstrap_browsing_schema`; `browsing::lineage::project_lineage` behind the `lineage` feature |
+| `import` | Portable browser interchange, `Intake<T>`, original source bytes, provenance and conversion notices |
+| `content_store` / `image_content` | Store-neutral fetched-content cache and content-addressed image bytes, with stable existing keys |
+| `schema_facets` | Eidetic schema registration and Chartulary facet validation |
 | `deleted` | `DeletedNode`, `record_deleted`, `list_deleted`, `purge_deleted`, `clear_deleted` |
 | `models` | `ModelManifest`, `ModelLibrary`, `ModelComponents`, `OpaqueBlob` |
 
@@ -45,19 +51,21 @@ stores return ready futures.
 
 ## Dependencies
 
-`muniment` (path), `async-trait`, `blake3`, `serde`, `serde_json`. Optional:
-`personae` (as `identity`), `jsonschema`, `chartulary`.
+`muniment` (path), `chartulary`, `async-trait`, `blake3`, `serde`, `serde_json`,
+`url`. Optional: `personae` (as `identity`), `jsonschema`.
 
 ## Companions
 
-- Feature `fjall`: `FjallStore` in `eidetic::fjall`, the production-default
-  native backend.
-- Features `https-fetcher` and `iroh-fetcher`: `BlobFetcher`
-  implementations for non-local `BlobSource` variants, in
-  `eidetic::https_fetcher` and `eidetic::iroh_fetcher`.
+- `muniment::FjallStore` (Muniment feature `fjall`): the native LSM backend.
+  Existing stores keep their `eidetic` partition and opaque keys.
+- `fetch::https_blob::HttpsFetcher` and `fetch::iroh_blob::IrohFetcher`
+  (Mere Fetch features `https-blobs` and `iroh-blobs`): optional native
+  implementations of Eidetic's `BlobFetcher` contract. `resolve_blob` retains
+  content-hash verification and local caching; Eidetic has no concrete network
+  or database implementation in its runtime dependency cone.
 - `eidetic-search`: a tantivy `TrailIndex` minted from `BrowsingTrace`
   codicils. Lives at `crates/intel/eidetic-search`, not in the eidetic
-  directory: the index is a Mere product concern reaching `esp` and `import`,
+  directory: the index is a Mere product concern reaching `esp` and Eidetic intake,
   and the eidetic directory is the portable core.
 
 ## License

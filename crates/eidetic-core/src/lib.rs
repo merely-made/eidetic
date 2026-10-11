@@ -7,8 +7,8 @@
 //! # Eidetic
 //!
 //! Private local-memory lane for the [`mere`](https://crates.io/crates/mere)
-//! browser. Eidetic owns the vocabulary for owner-scoped local blobs, caches,
-//! and accumulated browsing memory — the lane that "keeps the impressions
+//! browser. Eidetic owns portable intake, typed retained content, owner-scoped
+//! local blobs, caches, and accumulated browsing memory — the lane that "keeps the impressions
 //! over time" in Mere's printing-press metaphor (engines → inker → platen →
 //! eidetic).
 //!
@@ -16,8 +16,7 @@
 //! trait that storage backends implement (fjall, redb, OPFS, …), and a
 //! [`dispatch`] helper that routes requests to a store. Eidetic does not pick
 //! a storage backend, mount filesystems, or know about graphs — it is the
-//! pure boundary between reducer-emitted memory requests and concrete blob
-//! storage.
+//! portable intake and durable-content layer over caller-selected stores.
 //!
 //! ## Why async
 //!
@@ -64,13 +63,11 @@ use serde::{Deserialize, Serialize};
 pub mod browsing;
 pub mod bundle;
 pub mod codicil;
+pub mod content_store;
 pub mod deleted;
-#[cfg(feature = "fjall")]
-pub mod fjall;
-#[cfg(feature = "https-fetcher")]
-pub mod https_fetcher;
-#[cfg(feature = "iroh-fetcher")]
-pub mod iroh_fetcher;
+pub mod image_content;
+pub mod import;
+pub mod schema_facets;
 /// Compatibility surface for pre-rename readers. New code uses [`crate::codicil`].
 #[deprecated(since = "0.0.3", note = "renamed to eidetic::codicil")]
 pub mod engram {
@@ -195,8 +192,8 @@ pub type Result<T> = std::result::Result<T, Error>;
 /// What the swap buys beyond deleting a duplicate: backends take `&self`,
 /// `delete`/`list` are required rather than `Err`-by-default, muniment's
 /// `scan` (ordered range) and `apply` (atomic batch) come along, and every
-/// muniment backend (memory, redb) is now an eidetic store — while
-/// the `fjall` feature's `FjallStore` is a backend the whole family can reuse.
+/// muniment backend (memory, redb, Fjall) is now an eidetic store. Concrete
+/// databases live in Muniment; network blob acquisition lives in Fetch.
 pub use muniment::{Backend, Backend as Store, MemoryBackend, WriteOp};
 
 /// muniment's store errors flow into eidetic's owned error vocabulary, so the

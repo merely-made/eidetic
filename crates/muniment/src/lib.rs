@@ -33,11 +33,15 @@
 pub mod backend;
 pub mod blob;
 pub mod codec;
-#[cfg(feature = "directory")]
-pub mod directory_backend;
 #[cfg(test)]
 mod custody_transact_tests;
+#[cfg(feature = "directory")]
+pub mod directory_backend;
 pub mod error;
+#[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
+pub mod fjall_backend;
+#[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
+pub use fjall_backend::FjallStore;
 #[cfg(all(feature = "indexeddb", target_arch = "wasm32"))]
 pub mod indexeddb_backend;
 pub mod journal;
