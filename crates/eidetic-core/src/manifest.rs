@@ -143,7 +143,7 @@ impl BlobManifest {
 /// Eidetic itself only knows how to load `Local` blobs from the Store and
 /// return `Embedded` bytes inline. Anything else (`Iroh`, `Https`, `LocalFile`)
 /// is delegated to a `BlobFetcher` provided by the host wiring. The
-/// `https-fetcher` and `iroh-fetcher` features implement it for those sources.
+/// Fetch's `https-blobs` and `iroh-blobs` features implement it for those sources.
 ///
 /// Return semantics:
 /// - `Ok(Some(bytes))` — fetched successfully. Caller hash-verifies.

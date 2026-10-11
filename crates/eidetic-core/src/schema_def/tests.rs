@@ -102,6 +102,7 @@ fn mere_native_enum_field_validates_against_values() {
 // --- JSON Schema ------------------------------------------------------
 
 #[test]
+#[cfg(feature = "json-schema")]
 fn json_schema_validates_simple_object() {
     let definition = SchemaDefinition {
         format: SchemaFormat::JsonSchema,
@@ -120,6 +121,7 @@ fn json_schema_validates_simple_object() {
 }
 
 #[test]
+#[cfg(feature = "json-schema")]
 fn json_schema_rejects_constraint_violation() {
     let definition = SchemaDefinition {
         format: SchemaFormat::JsonSchema,
@@ -133,6 +135,18 @@ fn json_schema_rejects_constraint_violation() {
     let result = validate_payload(&definition, br#"{"age": -5}"#);
     assert!(result.is_err());
     assert!(format!("{}", result.unwrap_err()).contains("json-schema validation failed"));
+}
+
+#[test]
+#[cfg(not(feature = "json-schema"))]
+fn json_schema_reports_unavailable_without_the_validator_feature() {
+    let definition = SchemaDefinition {
+        format: SchemaFormat::JsonSchema,
+        schema_id: "person/v1".into(),
+        body: serde_json::json!({"type": "object"}),
+    };
+    let error = validate_payload(&definition, br#"{}"#).unwrap_err();
+    assert!(error.message.contains("json-schema validation unavailable"));
 }
 
 // --- JSON-LD ----------------------------------------------------------

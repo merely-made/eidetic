@@ -4,27 +4,25 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Fjall LSM [`muniment::Backend`] — eidetic's production-default native store,
-//! and (since 2026-07-12) a backend any muniment consumer can use.
+//! Fjall LSM [`Backend`], available to native Muniment consumers with `fjall`.
 //!
-//! Persists eidetic blobs and manifests under a single fjall keyspace
-//! partition, opened at a directory path the caller provides. The
-//! production-default native backend.
+//! Persists opaque byte keys in a single Fjall keyspace partition, opened at
+//! a directory path the caller provides. The default partition remains
+//! `eidetic`, preserving existing retained content across the ownership move.
 //!
 //! ## Async-but-blocking
 //!
-//! Fjall is sync-blocking. `FjallStore` implements the async `Store`
+//! Fjall is sync-blocking. `FjallStore` implements the async [`Backend`]
 //! trait by performing the blocking call inline and returning the
 //! ready future — this matches the design-pass commitment that native
 //! impls return ready futures (`?Send`-friendly, no real async work).
 //! For workloads where blocking the executor is unacceptable, wrap the
 //! call in `tokio::task::spawn_blocking` at the call site.
 
-
+use crate::error::StoreError;
+use crate::{Backend, WriteOp};
 use async_trait::async_trait;
 use fjall::{Config, Keyspace, PartitionCreateOptions, PartitionHandle};
-use muniment::error::StoreError;
-use muniment::{Backend, WriteOp};
 use std::path::Path;
 
 /// Default partition name used by [`FjallStore::open`]. Callers that want
@@ -32,7 +30,7 @@ use std::path::Path;
 /// [`FjallStore::open_partition`] with distinct names.
 pub const DEFAULT_PARTITION: &str = "eidetic";
 
-/// Fjall-backed [`Store`].
+/// Fjall-backed [`Backend`].
 ///
 /// Holds a fjall [`Keyspace`] (the on-disk database) and a
 /// [`PartitionHandle`] (the column-family-shaped sub-store within it).
@@ -67,9 +65,6 @@ impl FjallStore {
     }
 }
 
-// A **muniment backend** (2026-07-12), not an eidetic-only store: fjall now
-// serves every family crate that speaks the seam (eidetic, mooting, future
-// stores), which is the point of collapsing the duplicate trait.
 #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
 #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 impl Backend for FjallStore {
@@ -153,45 +148,12 @@ impl Backend for FjallStore {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::manifest::{load_manifest, save_manifest};
-    use crate::{
-        BlobManifest, BlobSource, Hash, ManifestId, ModerationState, PrivacyClass,
-        ProvenanceOrigin, ProvenanceRecord, SchemaRef, Timestamp, TrustEnvelope, TrustLevel,
-    };
     use tempfile::TempDir;
 
     fn open_store() -> (FjallStore, TempDir) {
         let dir = TempDir::new().expect("tempdir");
         let store = FjallStore::open(dir.path()).expect("fjall open");
         (store, dir)
-    }
-
-    fn test_manifest(blob: &[u8]) -> BlobManifest {
-        BlobManifest {
-            id: ManifestId::of_blob(blob),
-            schema: SchemaRef::from_id(ManifestId::of_blob(b"test-schema")),
-            content_hash: Hash::of(blob),
-            byte_size: blob.len() as u64,
-            created_at: Timestamp(1_700_000_000_000),
-            last_accessed: None,
-            sources: vec![BlobSource::Local {
-                key: format!("blob:{}", Hash::of(blob).to_hex()),
-            }],
-            privacy: PrivacyClass::LocalOnly,
-            provenance: ProvenanceRecord {
-                origin: ProvenanceOrigin::Generated,
-                upstream: Vec::new(),
-                tooling: Some("eidetic-fjall-test".to_string()),
-                generated_at: Timestamp(1_700_000_000_000),
-            },
-            trust: TrustEnvelope {
-                level: TrustLevel::SelfAsserted,
-                signatures: Vec::new(),
-                moderation_state: ModerationState::Unreviewed,
-            },
-            schema_metadata: serde_json::Value::Null,
-            manifest_version: BlobManifest::CURRENT_VERSION,
-        }
     }
 
     #[test]
@@ -225,22 +187,6 @@ mod tests {
     }
 
     #[test]
-    fn manifest_round_trips_through_fjall_store() {
-        pollster::block_on(async {
-            let (mut store, _dir) = open_store();
-            let blob = b"test-payload";
-            let manifest = test_manifest(blob);
-
-            save_manifest(&mut store, &manifest).await.unwrap();
-            let loaded = load_manifest(&mut store, manifest.id)
-                .await
-                .unwrap()
-                .expect("manifest present after save");
-            assert_eq!(loaded, manifest);
-        });
-    }
-
-    #[test]
     fn data_persists_across_store_reopen() {
         pollster::block_on(async {
             let dir = TempDir::new().expect("tempdir");
@@ -253,6 +199,22 @@ mod tests {
                 let got = store.get("persistent").await.unwrap();
                 assert_eq!(got, Some(b"survive".to_vec()));
             }
+        });
+    }
+
+    #[test]
+    fn default_partition_preserves_existing_eidetic_keys() {
+        pollster::block_on(async {
+            let dir = TempDir::new().expect("tempdir");
+            {
+                let legacy = FjallStore::open_partition(dir.path(), "eidetic").unwrap();
+                legacy.put("manifest:existing", b"retained").await.unwrap();
+            }
+            let migrated = FjallStore::open(dir.path()).unwrap();
+            assert_eq!(
+                migrated.get("manifest:existing").await.unwrap(),
+                Some(b"retained".to_vec())
+            );
         });
     }
 

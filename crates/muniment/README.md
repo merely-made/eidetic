@@ -33,6 +33,7 @@ assert_eq!(blobs.get(&hash).await?.unwrap(), b"media bytes");
 | `error` | `StoreError` |
 | `journal` | `Journal<T>`, `Seq`, causal links, fork provenance, and slot-backed persistence |
 | `redb_backend` | `RedbBackend` (feature `redb`) |
+| `fjall_backend` | `FjallStore` (feature `fjall`, native only) |
 | `zip_backend` | `ZipBackend` (feature `zip`) |
 | `indexeddb_backend` | `IndexedDbBackend` (feature `indexeddb`, wasm32 only) |
 
@@ -46,6 +47,7 @@ matching codec.
 | `json` | yes | `JsonCodec` and `JsonSlots` via `serde_json` |
 | `postcard` | no | `PostcardCodec` and `PostcardSlots` |
 | `redb` | no | `RedbBackend`, the durable desktop store |
+| `fjall` | no | `FjallStore`, a native LSM key/value backend. Its default partition remains `eidetic` for existing stores; `open_partition` accepts other names |
 | `zip` | no | `ZipBackend`, a zip archive whose entries are the store's keys |
 | `indexeddb` | no | `IndexedDbBackend`. Its `js-sys` / `wasm-bindgen` / `web-sys` / `futures-channel` deps are declared for wasm32 only, so enabling it in a shared feature set is a no-op on desktop |
 
