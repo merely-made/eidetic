@@ -49,6 +49,21 @@ stores return ready futures.
 | `json-schema` | yes | Full JSON Schema validation via `jsonschema`. Without it, stored JSON Schema definitions return a "validator unavailable" error |
 | `lineage` | no | `browsing::lineage`, which projects a `chartulary::stemma` into `BrowsingTrace` codicils (`dep:chartulary`) |
 
+## Explicit retained copies
+
+`retention::retain` stores one verified, owner-scoped payload, local manifest and
+copy receipt through a single Muniment transaction. Callers supply copy permission,
+payload/stored-byte ceilings, policy revision, clock and wallet sealer. Repeating
+the same copy preserves its receipt and does not charge it twice. Stored-byte
+quota includes encryption overhead; metadata and other namespaces are outside it.
+Backend reads still materialize values before verification and size checks.
+
+Private copies require a `PayloadSealer`; keyless plaintext fallback is refused.
+`retention::read` verifies the actual held bytes, identity and seal metadata rather
+than inferring custody from a receipt. Redb supports the required transaction;
+the current Fjall backend refuses this operation. Retaining is separate from
+URL caches, public export, hosting, expiry and permission to erase.
+
 ## Dependencies
 
 `muniment` (path), `chartulary`, `async-trait`, `blake3`, `serde`, `serde_json`,

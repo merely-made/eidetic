@@ -61,4 +61,4 @@ tempfile = "3"
 chacha20poly1305 = "0.11"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
-muniment = { path = "../muniment", features = ["fjall"] }
+muniment = { path = "../muniment", features = ["fjall", "redb"] }

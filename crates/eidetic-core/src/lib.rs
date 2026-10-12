@@ -75,6 +75,7 @@ pub mod engram {
     pub use crate::codicil::{Codicil as Engram, TimeBounds};
 }
 pub mod manifest;
+pub mod retention;
 pub mod models;
 pub mod pack;
 pub mod schema;
