@@ -1,4 +1,5 @@
 [package]
+rust-version = "1.97.1"
 name = "chartulary"
 # 0.2.0: `EdgeId` becomes `(writer, counter)`. Breaking, and deliberately taken
 # before any shared container carries data; 0.1.x journals still load, since a
