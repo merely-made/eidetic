@@ -4,6 +4,7 @@
 # muniment stays on redb 2 and is untouched; this crate pins redb 4.2.0 and
 # never enables muniment's own `redb` feature, so the two majors never meet.
 [package]
+rust-version = "1.97.1"
 name = "muniment-opfs-probe"
 version = "0.0.1"
 edition = "2024"
@@ -78,3 +79,6 @@ pollster = "0.4"
 [dev-dependencies]
 pollster = "0.4"
 tempfile = "3"
+
+[workspace.package]
+rust-version = "1.97.1"

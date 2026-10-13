@@ -12,3 +12,6 @@
 # this array, and the duplicate flag changes the bundle.
 [target.wasm32-unknown-unknown]
 rustflags = ['--cfg', 'getrandom_backend="wasm_js"']
+
+[build]
+build-dir = "{workspace-root}/target/build"
