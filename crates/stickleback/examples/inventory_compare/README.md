@@ -106,6 +106,12 @@ handshake from the object-first QUIC example. A candidate list is not a transfer
 permit. The initial Retinue producer may retain only four objects/64 KiB while
 the policy supports its larger maximum.
 
+The later [exact live composition](../../../mesh/mesh/examples/inventory_ingress/README.md)
+implements that proposal with the four-object producer, separately admitted
+inventory/submission actions and the existing resident endpoint/mesh owner.
+Its actual session, signed-byte and decoder evidence is separate from this
+finite policy comparison.
+
 The existing [`read_object` / `write_object`](../../src/object_stream.rs) helper
 can carry bounded opaque messages. Live dispatch must acquire owning service
 capacity, retrieve current exact bytes, verify their whole-record digest, then

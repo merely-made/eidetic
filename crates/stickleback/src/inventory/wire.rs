@@ -21,6 +21,11 @@ pub struct ExactPage {
 }
 
 impl ExactPage {
+    /// Sorted whole-record digests in this immutable page.
+    pub fn ids(&self) -> &[ObjectDigest] {
+        &self.ids
+    }
+
     pub fn start(&self) -> usize {
         self.start
     }
