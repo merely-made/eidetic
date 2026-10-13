@@ -1,0 +1,26 @@
+{
+  "schema": "mere.inventory-policy-provenance/v1",
+  "base_revision": "088555735e4c82e423188feab1f395dec7f92a1e",
+  "source_dirty": true,
+  "toolchain": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: aarch64-apple-darwin\nrelease: 1.98.1\nLLVM version: 22.1.8\n",
+  "platform": "macOS-26.5.1-arm64-arm-64bit",
+  "source_sha256": {
+    "crates/stickleback/src/inventory/filter.rs": "06029aa86f2b85f8d750b3ce2f2c460b12346cfaeeecb66f4d73b7efcce2388f",
+    "crates/stickleback/src/inventory/mod.rs": "5ff9061455723c7e925537f04bb302095087f879c97c10d0eb9ace7bcf7ec4e1",
+    "crates/stickleback/src/inventory/peers.rs": "a76a002717a98f7387032e6f5e46257c78dae588e824b9e8da51a6eff0f7c099",
+    "crates/stickleback/src/inventory/tests.rs": "76dd1f48165777f7ed0388ab541ce576efa4f4906aae81514fab05c6ddcb987d",
+    "crates/stickleback/src/inventory/wire.rs": "a42f0e3bc3607fee038f37f921d4258522688552428ca781326b6c2d3c2904b4",
+    "crates/stickleback/examples/inventory_compare/main.rs": "fa38ea9206f9ccfd1442587c7808840b337740b3511f5ea81abdf875e706b558",
+    "crates/stickleback/examples/inventory_compare/model.rs": "3ede7b794311edcda78e8f570c0e606561c2e428696645078e18dcf71f359b01",
+    "crates/stickleback/examples/inventory_compare/run.py": "ee150cf18c7a29d4a84eeb6545140faf8a72e7d60dedb3ed439f9d544b24c313",
+    "Cargo.lock": "235f7d8961e7c13654d213a7e4de28873574d369752f8a6b65a83bc830bd4886",
+    "crates/stickleback/Cargo.toml": "c7842881e3ff00a68444cadf25b3104008e443b8e9facd8691c75230ca8e3118",
+    "crates/stickleback/src/lib.rs": "32bf0a888ee410d47bf426ec898b14c4120229f74ed0a17f34f9406a3a7c029d"
+  },
+  "executable_sha256": "c2d7ba151499805453a7ac03ea053af132129d1386465b9fda315c0cbc763e7b",
+  "report_sha256": "b73feb7d38760432ae32b9a010546c0291481bc5fc4d49c8fe222f4c140507d2",
+  "compiled_source_blake3": "cfed495768b9969f154c1f91093a4e98a90a3408085fdd7984cc9bf8233cad88",
+  "compiled_lock_blake3": "ea420e77a476f5b460680a242e653092bb4651c025f9a6505ce61cd22f00704a",
+  "independent_process_replay_equal": true,
+  "runs": 105
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "mere.inventory-policy-validation/v1",
+  "baseline_revision": "088555735e4c82e423188feab1f395dec7f92a1e",
+  "library_tests": {
+    "command": "cargo test --locked --offline -p stickleback --lib",
+    "passed": 99,
+    "failed": 0
+  },
+  "comparison": {
+    "runs": 105,
+    "independent_process_replay_equal": true,
+    "outcomes_equal_before_after_main_refresh": true
+  },
+  "format": "cargo fmt -p stickleback -- --check: passed",
+  "whitespace": "git diff --check: passed",
+  "clippy": {
+    "scope": "stickleback lib, tests, inventory_compare example",
+    "baseline_failure_count": 4,
+    "baseline_lint_allowlist": [
+      "multiple_bound_locations",
+      "type_complexity",
+      "cloned_ref_to_slice_refs",
+      "let_and_return"
+    ],
+    "command": "cargo clippy --locked --offline -p stickleback --lib --tests --example inventory_compare -- -D warnings -A clippy::multiple_bound_locations -A clippy::type_complexity -A clippy::cloned_ref_to_slice_refs -A clippy::let_and_return",
+    "passed_with_baseline_allowlist": true
+  },
+  "documentation": {
+    "baseline_counts": {
+      "active_docs": 268,
+      "indexed_active_docs": 267,
+      "index_orphans": 0,
+      "index_ghosts": 0,
+      "memory_directory_links": 0,
+      "statusless_plans": 0,
+      "broken_relative_links": 32,
+      "historical_broken_relative_links": 245,
+      "planned_broken_relative_links": 0,
+      "ambiguous_known_root_paths": 101,
+      "ignored_known_root_patterns": 23,
+      "reserved_identifier_paths": 24,
+      "missing_known_root_paths": 224,
+      "historical_missing_known_root_paths": 237,
+      "planned_missing_known_root_paths": 6,
+      "invalid_historical_annotations": 0,
+      "stale_historical_annotations": 0,
+      "unheaded_owned_sources": 4,
+      "exhibit_b_sources": 0
+    },
+    "after_counts": {
+      "active_docs": 268,
+      "indexed_active_docs": 267,
+      "index_orphans": 0,
+      "index_ghosts": 0,
+      "memory_directory_links": 0,
+      "statusless_plans": 0,
+      "broken_relative_links": 32,
+      "historical_broken_relative_links": 245,
+      "planned_broken_relative_links": 0,
+      "ambiguous_known_root_paths": 101,
+      "ignored_known_root_patterns": 23,
+      "reserved_identifier_paths": 24,
+      "missing_known_root_paths": 224,
+      "historical_missing_known_root_paths": 237,
+      "planned_missing_known_root_paths": 6,
+      "invalid_historical_annotations": 0,
+      "stale_historical_annotations": 0,
+      "unheaded_owned_sources": 4,
+      "exhibit_b_sources": 0
+    },
+    "new_findings": {}
+  }
+}

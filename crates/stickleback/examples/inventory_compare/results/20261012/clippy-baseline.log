@@ -1,0 +1,72 @@
+warning: patch `boa_engine v1.0.0-dev (https://github.com/mark-ik/boa.git?branch=genet#52cfb6ff)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/mark-ik/boa.git
+warning: patch `boa_gc v1.0.0-dev (https://github.com/mark-ik/boa.git?branch=genet#52cfb6ff)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/mark-ik/boa.git
+    Checking muniment v0.1.2 (/Users/markik/Code/testing/inventory-policy-20261012/baseline/crates/eidetic/muniment)
+    Checking mere-proofs v0.1.0 (/Users/markik/Code/testing/inventory-policy-20261012/baseline/crates/system/proofs)
+    Checking stickleback v0.1.1 (/Users/markik/Code/testing/inventory-policy-20261012/baseline/crates/stickleback)
+error: bound is defined in more than one place
+   --> crates/stickleback/src/store.rs:283:24
+    |
+283 |     pub fn log_entries<L: LogId>(
+    |                        ^
+...
+293 |         L: Send + 'static,
+    |         ^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#multiple_bound_locations
+    = note: `-D clippy::multiple-bound-locations` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::multiple_bound_locations)]`
+
+error: very complex type used. Consider factoring parts into `type` definitions
+   --> crates/stickleback/src/store.rs:289:10
+    |
+289 |     ) -> Result<BoxStream<'static, Result<LogEntry<Operation<E>, L>, StoreError>>, StoreError>
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#type_complexity
+    = note: `-D clippy::type-complexity` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::type_complexity)]`
+
+error: could not compile `stickleback` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: unnecessary use of `clone` to create a slice from a reference
+   --> crates/stickleback/src/processor.rs:616:39
+    |
+616 |                 .process_batch_atomic(&[full.clone()], &[], &[])
+    |                                       ^^^^^^^^^^^^^^^ help: try: `std::slice::from_ref(&full)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#cloned_ref_to_slice_refs
+    = note: `-D clippy::cloned-ref-to-slice-refs` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::cloned_ref_to_slice_refs)]`
+
+error: returning the result of a `let` binding from a block
+  --> crates/stickleback/src/prune_proof.rs:89:5
+   |
+84 | /     let header = Header::builder()
+85 | |         .body(body.as_bytes())
+86 | |         .seq_num(0)
+87 | |         .backlink(None)
+88 | |         .build(signing_key, extensions);
+   | |________________________________________- unnecessary `let` binding
+89 |       header
+   |       ^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#let_and_return
+   = note: `-D clippy::let-and-return` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::let_and_return)]`
+help: return the expression directly
+   |
+84 ~     
+85 ~     Header::builder()
+86 +         .body(body.as_bytes())
+87 +         .seq_num(0)
+88 +         .backlink(None)
+89 +         .build(signing_key, extensions)
+   |
+
+error: could not compile `stickleback` (lib test) due to 4 previous errors

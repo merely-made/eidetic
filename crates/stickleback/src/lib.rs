@@ -27,6 +27,7 @@ mod epoch_retention;
 mod group_crypto;
 mod group_lane;
 mod group_session;
+pub mod inventory;
 mod joined_space;
 pub mod object_stream;
 mod processor;

@@ -1,0 +1,115 @@
+warning: patch `boa_engine v1.0.0-dev (https://github.com/mark-ik/boa.git?branch=genet#52cfb6ff)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/mark-ik/boa.git
+warning: patch `boa_gc v1.0.0-dev (https://github.com/mark-ik/boa.git?branch=genet#52cfb6ff)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/mark-ik/boa.git
+   Compiling stickleback v0.1.1 (/Users/markik/Code/testing/inventory-policy-20261012/mere/crates/stickleback)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.25s
+     Running unittests src/lib.rs (target/debug/deps/stickleback-aed53b92ef77b2db)
+
+running 99 tests
+test address_book::tests::remove_reports_whether_it_existed ... ok
+test address_book::tests::remove_older_than_keeps_same_second_entries ... ok
+test address_book::tests::insert_if_absent_writes_only_a_missing_record ... ok
+test address_book::tests::insert_reports_new_then_update ... ok
+test address_book::tests::insert_if_absent_keeps_a_record_already_there ... ok
+test address_book::tests::remove_older_than_takes_topics_with_it ... ok
+test address_book::tests::remove_older_than_ages_by_local_stamp ... ok
+test address_book::tests::bootstrap_nodes_are_counted_and_pickable ... ok
+test address_book::tests::random_node_skips_stale_ones ... ok
+test address_book::tests::lookup_by_topic_matches_any_of_them ... ok
+test address_book::tests::removing_a_node_takes_its_topics ... ok
+test address_book::tests::set_topics_overwrites_rather_than_extends ... ok
+test address_book::tests::selected_node_infos_skips_unknown_ids ... ok
+test causal::tests::frontiers_and_author_heads_are_recovered ... ok
+test causal::tests::an_author_log_fork_is_rejected ... ok
+test causal::tests::concurrent_records_use_stable_author_order ... ok
+test causal::tests::a_complete_cycle_fails_closed ... ok
+test causal::tests::complete_frontier_omits_covered_heads_and_pending_records ... ok
+test causal::tests::missing_history_blocks_only_its_descendants ... ok
+test causal::tests::a_causal_child_follows_its_parent_despite_author_key_rank ... ok
+test drop::tests::golden_vector_freezes_manifest_identity_and_cover ... ok
+test drop::tests::unknown_optional_records_skip_and_unknown_critical_records_fail ... ok
+test drop::tests::limits_are_checked_before_record_allocation ... ok
+test drop::tests::plaintext_drop_round_trips_and_visits_in_order ... ok
+test drop::tests::operation_headers_can_arrive_before_their_payload_chunks ... ok
+test drop::tests::protected_drop_requires_and_round_trips_through_its_suite ... ok
+test drop::tests::unsupported_protection_and_false_body_length_fail_closed ... ok
+test drop_io::tests::blob_chunks_land_in_the_content_addressed_store ... ok
+test drop::tests::corruption_and_truncation_fail_closed ... ok
+test drop_io::tests::completed_receipt_round_trips_and_stays_peer_scoped ... ok
+test drop_io::tests::payload_chunks_complete_a_header_in_the_same_drop ... ok
+test drop_io::tests::continuity_failure_keeps_a_durable_stage_and_commits_nothing_live ... ok
+test drop_io::tests::payload_only_drop_waits_for_its_header ... ok
+test epoch_retention::tests::every_global_gate_blocks_every_candidate ... ok
+test epoch_retention::tests::keeps_current_profile_suffix_and_domain_holds ... ok
+test epoch_retention::tests::stale_authority_incomplete_continuation_and_unknown_holds_are_visible ... ok
+test group_crypto::tests::a_profile_makes_history_semantics_explicit ... ok
+test group_crypto::tests::a_legacy_keyring_stays_decryptable_but_cannot_invent_epoch_order ... ok
+test group_crypto::tests::authorized_forgetting_updates_the_persisted_order ... ok
+test drop_io::tests::header_only_drop_accepts_its_payload_later ... ok
+test group_crypto::tests::durable_epochs_reopen_and_removed_members_miss_the_rotated_key ... ok
+test drop_io::tests::export_import_is_idempotent_and_uses_the_processor ... ok
+test drop_io::tests::staged_drop_resumes_after_its_predecessor_arrives ... ok
+test drop_io::tests::unauthorized_batch_is_rejected_before_any_operation_lands ... ok
+test drop_io::tests::effectful_drop_prunes_and_erases_in_the_same_receipted_commit ... ok
+test drop_io::tests::plaintext_file_moves_one_topic_between_fresh_profiles ... ok
+test drop_io::tests::domain_selector_enforces_privacy_priority_and_radio_budget ... ok
+test group_session::tests::a_founder_resolves_an_invited_root_to_its_recipient ... ok
+test group_lane::tests::the_sync_topic_is_pinned_and_is_the_topic_records_store_under ... ok
+test group_session::tests::a_mixed_forget_list_changes_nothing ... ok
+test group_session::tests::a_forgotten_epoch_leaves_exported_state_and_later_welcomes ... ok
+test group_session::tests::a_removed_member_still_resolves_but_is_not_a_member ... ok
+test group_session::tests::control_frame_refuses_non_canonical_cbor ... ok
+test group_session::tests::forgetting_refuses_an_epoch_the_session_does_not_hold ... ok
+test group_lane::tests::founded_members_open_a_message_sealed_before_removal ... ok
+test inventory::tests::bounded_offers_rotate_when_replies_are_lost ... ok
+test inventory::tests::capacity_refusal_is_transactional_and_expiry_removes_offers ... ok
+test group_session::tests::a_root_with_two_recipients_resolves_to_the_current_member ... ok
+test inventory::tests::false_positive_is_repaired_by_exact_fallback ... ok
+test inventory::tests::malformed_wire_and_incomplete_snapshot_never_become_inventory ... ok
+test inventory::tests::pagination_is_atomic_idempotent_and_binds_one_snapshot ... ok
+test group_session::tests::forgetting_refuses_the_current_epoch ... ok
+test inventory::tests::peer_idle_capacity_namespace_and_payload_budgets_are_enforced ... ok
+test object_stream::tests::exact_exchange_preserves_bytes_and_reverse_ack_direction ... ok
+test group_lane::tests::a_frame_ahead_of_its_author_sequence_stays_pending ... ok
+test object_stream::tests::oversize_prefix_is_refused_before_payload_and_write_before_io ... ok
+test object_stream::tests::truncated_prefix_or_payload_and_trailing_bytes_are_refused ... ok
+test processor::tests::accepts_once_and_indexes_atomically ... ok
+test processor::tests::an_invalid_operation_leaves_the_store_unchanged ... ok
+test processor::tests::atomic_batch_reports_payload_hydration_of_a_duplicate_header ... ok
+test processor::tests::concurrent_forks_share_one_serialized_author_frontier ... ok
+test processor::tests::duplicate_full_operation_hydrates_a_retained_header ... ok
+test group_lane::tests::a_record_whose_author_attestation_does_not_verify_is_refused ... ok
+test processor::tests::mismatched_operation_id_leaves_the_store_unchanged ... ok
+test processor::tests::enforces_predecessor_and_backlink_continuity ... ok
+test processor::tests::policy_rejection_leaves_the_store_unchanged ... ok
+test prune_proof::default_prune_flag_preserves_pre_field_header ... ok
+test prune_proof::processor_accepts_an_authorized_prune_point_without_its_predecessor ... ok
+test processor::tests::process_with_writes_applies_the_insert_and_the_writes_together ... ok
+test prune_proof::unapproved_prune_flag_leaves_the_store_unchanged ... ok
+test group_lane::tests::out_of_order_delivery_applies_in_causal_order ... ok
+test prune_proof::processor_commits_prune_point_and_prefix_in_one_batch ... ok
+test prune_proof::valid_prune_flag_removes_prefix_and_blocks_replay ... ok
+test group_lane::tests::replayed_records_are_ignored ... ok
+test receipt::tests::receipt_frame_rejects_corruption_and_limits ... ok
+test store::tests::blob_collection_keeps_only_domain_traced_references ... ok
+test receipt::tests::receipt_frame_round_trips ... ok
+test store::tests::legacy_operation_bytes_report_the_reauthoring_boundary ... ok
+test store::tests::associates_and_resolves_a_topic ... ok
+test store::tests::current_stored_operations_round_trip_through_the_v7_codec ... ok
+test inventory::tests::pathological_bucket_pair_saturates_into_exact_without_dropping_ids ... ok
+test store::tests::prunes_below_a_sequence ... ok
+test store::tests::round_trips_and_orders_a_log ... ok
+test group_lane::tests::rotation_after_removal_reaches_b_and_not_c ... ok
+test writer::tests::direct_and_attested_writers_resolve_to_stable_subjects ... ok
+test group_lane::tests::a_reopened_store_does_not_reprocess_frames ... ok
+test group_session::tests::addressed_welcome_update_removal_and_sealed_restart ... ok
+test object_stream::tests::one_deadline_covers_progressive_reads_eof_and_write_shutdown ... ok
+test inventory::tests::eviction_churn_rebuilds_without_losing_any_retained_membership ... ok
+
+test result: ok. 99 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+

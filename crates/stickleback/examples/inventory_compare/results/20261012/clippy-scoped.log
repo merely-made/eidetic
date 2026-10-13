@@ -1,0 +1,12 @@
+warning: patch `boa_engine v1.0.0-dev (https://github.com/mark-ik/boa.git?branch=genet#52cfb6ff)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/mark-ik/boa.git
+warning: patch `boa_gc v1.0.0-dev (https://github.com/mark-ik/boa.git?branch=genet#52cfb6ff)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/mark-ik/boa.git
+    Checking mere-proofs v0.1.0 (/Users/markik/Code/testing/inventory-policy-20261012/mere/crates/system/proofs)
+    Checking muniment v0.1.2 (/Users/markik/Code/testing/inventory-policy-20261012/mere/crates/eidetic/muniment)
+    Checking stickleback v0.1.1 (/Users/markik/Code/testing/inventory-policy-20261012/mere/crates/stickleback)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.25s
