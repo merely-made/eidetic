@@ -7,6 +7,32 @@
 use super::*;
 use serde::{Deserialize, Serialize};
 
+#[test]
+fn explicit_parent_admission_preserves_a_live_cursor_and_forward_choice() {
+    let mut memory = Stemma::<String, String, String, ()>::new();
+    let owner = memory.ensure_owner("live".into(), None);
+    let a = memory.resolve_or_create_entry("a".into(), "a".into(), 100, EntryPrivacy::LocalOnly);
+    let b = memory.resolve_or_create_entry("b".into(), "b".into(), 200, EntryPrivacy::LocalOnly);
+    let root = memory
+        .visit_entry(owner, a, (), TransitionKind::UrlTyped, 100)
+        .unwrap();
+    let forward = memory
+        .visit_entry(owner, b, (), TransitionKind::LinkClick, 200)
+        .unwrap();
+    memory.back(owner, 1, 300).unwrap();
+    let admitted = memory
+        .admit_visit(owner, b, Some(root), (), TransitionKind::Imported, 150)
+        .unwrap();
+    assert_eq!(memory.current_visit_of_owner(owner), Some(root));
+    assert_eq!(memory.owner(owner).unwrap().origin, Some(root));
+    assert_eq!(
+        memory.visit(root).unwrap().bindings[&owner].forward_child,
+        Some(forward)
+    );
+    assert_eq!(memory.visit(admitted).unwrap().parent, Some(root));
+    assert_eq!(memory.visit(root).unwrap().children.len(), 2);
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 struct EntryData {
     url: String,

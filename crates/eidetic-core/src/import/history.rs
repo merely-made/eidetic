@@ -71,7 +71,10 @@ pub fn history_event(item: &ImportedHistoryVisitItem) -> TraceEvent {
             .transition
             .as_ref()
             .map_or(TraceTransition::Imported, TraceTransition::from),
-        at_ms: item.visited_at_unix_secs.max(0) as u64 * 1_000,
+        at_ms: item.visited_at_unix_micros.map_or_else(
+            || (item.visited_at_unix_secs.max(0) as u64).saturating_mul(1_000),
+            |micros| micros.max(0) as u64 / 1_000,
+        ),
         dwell_ms: item.view_time_ms,
         candidates: Vec::new(),
     }
@@ -84,9 +87,8 @@ pub fn history_to_traces(items: &[ImportedHistoryVisitItem], owner: &str) -> Vec
 
 /// [`history_to_traces`] under a caller's segment size.
 ///
-/// The sort is stable on `visited_at_unix_secs` alone: imported stamps are
-/// second-granular, so a redirect chain inside one second keeps the order the
-/// source listed it in rather than being reshuffled by a tie-break.
+/// Preserve original microsecond ordering when supplied; legacy second stamps
+/// keep source order for ties. Neither ordering creates navigation parentage.
 pub fn history_to_traces_with(
     items: &[ImportedHistoryVisitItem],
     owner: &str,
@@ -94,7 +96,13 @@ pub fn history_to_traces_with(
 ) -> Vec<BrowsingTrace> {
     let mut events: Vec<(i64, TraceEvent)> = items
         .iter()
-        .map(|item| (item.visited_at_unix_secs, history_event(item)))
+        .map(|item| {
+            (
+                item.visited_at_unix_micros
+                    .unwrap_or_else(|| item.visited_at_unix_secs.saturating_mul(1_000_000)),
+                history_event(item),
+            )
+        })
         .collect();
     events.sort_by_key(|(at, _)| *at);
     events
@@ -129,6 +137,9 @@ mod tests {
                 favicon_url: None,
             },
             visit_id: None,
+            source_scope: None,
+            parent: Default::default(),
+            visited_at_unix_micros: None,
             visited_at_unix_secs: at,
             visit_count_hint: Some(3),
             transition: Some(transition),

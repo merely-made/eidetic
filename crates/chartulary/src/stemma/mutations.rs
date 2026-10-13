@@ -157,6 +157,58 @@ where
         Ok(visit_id)
     }
 
+    /// Admit a historical occurrence with its observed parent. Unlike live
+    /// navigation this does not change origin/current/forward cursor bindings.
+    /// The caller owns stable source identity and resolves parents before entry.
+    pub fn admit_visit(
+        &mut self,
+        owner_id: OwnerId,
+        entry_id: EntryId,
+        parent: Option<VisitId>,
+        context: X,
+        transition: TransitionKind,
+        at_ms: u64,
+    ) -> Result<VisitId, StemmaError> {
+        if !self.owners.contains_key(owner_id) {
+            return Err(StemmaError::MissingOwner(owner_id));
+        }
+        if !self.entries.contains_key(entry_id) {
+            return Err(StemmaError::MissingEntry(entry_id));
+        }
+        if let Some(parent) = parent
+            && !self.visits.contains_key(parent)
+        {
+            return Err(StemmaError::MissingVisit(parent));
+        }
+        let visit = self.visits.insert(VisitRecord {
+            entry: entry_id,
+            parent,
+            children: Vec::new(),
+            created_at_ms: at_ms,
+            context,
+            inbound: Some(TransitionRecord {
+                kind: transition,
+                at_ms,
+            }),
+            bindings: HashMap::from([(
+                owner_id,
+                OwnerBinding {
+                    forward_child: None,
+                    last_accessed_at_ms: at_ms,
+                },
+            )]),
+        });
+        if let Some(parent) = parent {
+            self.visits[parent].children.push(visit);
+        }
+        self.owners[owner_id].owned_visits.insert(visit);
+        let entry = &mut self.entries[entry_id];
+        entry.first_seen_at_ms = entry.first_seen_at_ms.min(at_ms);
+        entry.last_seen_at_ms = entry.last_seen_at_ms.max(at_ms);
+        entry.visit_count += 1;
+        Ok(visit)
+    }
+
     pub fn back(
         &mut self,
         owner_id: OwnerId,

@@ -27,6 +27,7 @@
 
 use serde::{Deserialize, Serialize};
 
+pub mod encounters;
 pub mod history;
 pub mod intake;
 
@@ -135,6 +136,12 @@ pub enum BookmarkLocation {
 pub struct ImportedHistoryVisitItem {
     pub page: ImportedPageSeed,
     pub visit_id: Option<String>,
+    #[serde(default)]
+    pub source_scope: Option<encounters::BrowserSourceScope>,
+    #[serde(default)]
+    pub parent: encounters::BrowserParent,
+    #[serde(default)]
+    pub visited_at_unix_micros: Option<i64>,
     pub visited_at_unix_secs: i64,
     pub visit_count_hint: Option<u32>,
     pub transition: Option<HistoryTransitionKind>,
