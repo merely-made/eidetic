@@ -11,6 +11,7 @@
 //! model components (config, weights, tokenizer) from an eidetic store.
 
 pub mod adapter;
+pub mod inference;
 pub mod library;
 pub mod training;
 
