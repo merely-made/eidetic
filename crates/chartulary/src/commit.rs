@@ -33,6 +33,7 @@ use muniment::{Journal, LogId};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+use crate::assertion::AssertionBasis;
 use crate::caps::Identified;
 use crate::edit::{DerivationRecord, EdgeId, GraphEdit};
 use crate::facet::FacetId;
@@ -97,6 +98,35 @@ pub enum EditSpec<N: Identified, E> {
         /// The edge payload.
         edge: E,
     },
+    /// Assert one relation with caller-supplied source metadata and time.
+    Assert {
+        /// The source node.
+        from: N::Id,
+        /// The target node.
+        to: N::Id,
+        /// The edge payload.
+        edge: E,
+        /// Source-provided asserter; distinct from the batch author.
+        asserter: Option<Author>,
+        /// Caller-supplied admission time in Unix milliseconds, if known.
+        at_ms: Option<u64>,
+        /// Basis of the assertion.
+        basis: AssertionBasis,
+    },
+    /// Confirm an assertion that is still held.
+    ConfirmAssertion {
+        /// The stable assertion id.
+        id: EdgeId,
+        /// Caller-supplied confirmation time, if known.
+        at_ms: Option<u64>,
+    },
+    /// Withdraw an assertion that is still held. This is terminal.
+    WithdrawAssertion {
+        /// The stable assertion id.
+        id: EdgeId,
+        /// Caller-supplied withdrawal time, if known.
+        at_ms: Option<u64>,
+    },
     /// Retract a pre-existing edge by its stable id.
     Disconnect(EdgeId),
     /// Record that a node derives from a node in another graph.
@@ -139,18 +169,22 @@ pub enum CommitError<Id> {
     /// A `Disconnect` referenced an edge that is not live (or was already
     /// disconnected earlier in the batch).
     UnknownEdge(EdgeId),
+    /// An explicit lifecycle operation referenced no known assertion.
+    UnknownAssertion(EdgeId),
+    /// An explicit lifecycle operation attempted to revive a withdrawn assertion.
+    AssertionAlreadyWithdrawn(EdgeId),
     /// A node tried to bear the graph it lives in (see
     /// [`commit_bearing_batch`](GraphLog::commit_bearing_batch)).
     SelfBearing(LogId),
 }
 
 /// A successful commit's receipt: the batch id plus the edge ids minted for
-/// the batch's connects, in spec order.
+/// its `Connect` and `Assert` specs, in spec order.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Committed {
     /// The journal position the batch landed at.
     pub batch: BatchId,
-    /// Minted edge ids, one per `Connect` spec, in order.
+    /// Minted edge ids, one per `Connect` or `Assert` spec, in order.
     pub edges: Vec<EdgeId>,
 }
 
@@ -178,6 +212,7 @@ where
         let mut added: HashSet<N::Id> = HashSet::new();
         let mut removed: HashSet<N::Id> = HashSet::new();
         let mut dropped_edges: HashSet<EdgeId> = HashSet::new();
+        let mut withdrawn_assertions: HashSet<EdgeId> = HashSet::new();
         let present =
             |id: &N::Id, added: &HashSet<N::Id>, removed: &HashSet<N::Id>, this: &Self| {
                 !removed.contains(id) && (added.contains(id) || this.graph().key_of(id).is_some())
@@ -202,6 +237,44 @@ where
                     if !present(to, &added, &removed, self) {
                         return Err(CommitError::UnknownNode(to.clone()));
                     }
+                },
+                EditSpec::Assert { from, to, .. } => {
+                    if !present(from, &added, &removed, self) {
+                        return Err(CommitError::UnknownNode(from.clone()));
+                    }
+                    if !present(to, &added, &removed, self) {
+                        return Err(CommitError::UnknownNode(to.clone()));
+                    }
+                },
+                EditSpec::ConfirmAssertion { id, .. } => {
+                    if withdrawn_assertions.contains(id) || dropped_edges.contains(id) {
+                        return Err(CommitError::AssertionAlreadyWithdrawn(*id));
+                    }
+                    let record = self
+                        .assertion(*id)
+                        .ok_or(CommitError::UnknownAssertion(*id))?;
+                    if !record.is_held()
+                        || !present(&record.from, &added, &removed, self)
+                        || !present(&record.to, &added, &removed, self)
+                    {
+                        return Err(CommitError::AssertionAlreadyWithdrawn(*id));
+                    }
+                },
+                EditSpec::WithdrawAssertion { id, .. } => {
+                    if withdrawn_assertions.contains(id) || dropped_edges.contains(id) {
+                        return Err(CommitError::AssertionAlreadyWithdrawn(*id));
+                    }
+                    let record = self
+                        .assertion(*id)
+                        .ok_or(CommitError::UnknownAssertion(*id))?;
+                    if !record.is_held()
+                        || !present(&record.from, &added, &removed, self)
+                        || !present(&record.to, &added, &removed, self)
+                    {
+                        return Err(CommitError::AssertionAlreadyWithdrawn(*id));
+                    }
+                    withdrawn_assertions.insert(*id);
+                    dropped_edges.insert(*id);
                 },
                 EditSpec::Disconnect(id) => {
                     if dropped_edges.contains(id) || self.edge_key(*id).is_none() {
@@ -234,6 +307,33 @@ where
                     self.next_edge += 1;
                     minted.push(id);
                     GraphEdit::Connect { id, from, to, edge }
+                },
+                EditSpec::Assert {
+                    from,
+                    to,
+                    edge,
+                    asserter,
+                    at_ms,
+                    basis,
+                } => {
+                    let id = EdgeId::new(self.writer, self.next_edge);
+                    self.next_edge += 1;
+                    minted.push(id);
+                    GraphEdit::Assert {
+                        id,
+                        from,
+                        to,
+                        edge,
+                        asserter,
+                        at_ms,
+                        basis,
+                    }
+                },
+                EditSpec::ConfirmAssertion { id, at_ms } => {
+                    GraphEdit::ConfirmAssertion { id, at_ms }
+                },
+                EditSpec::WithdrawAssertion { id, at_ms } => {
+                    GraphEdit::WithdrawAssertion { id, at_ms }
                 },
                 EditSpec::Disconnect(id) => GraphEdit::Disconnect(id),
                 EditSpec::Derive { node, from } => GraphEdit::Derive { node, from },
@@ -686,6 +786,115 @@ mod tests {
     }
 
     #[test]
+    fn assertion_keeps_source_metadata_and_withdrawal_is_terminal() {
+        let mut log = seeded();
+        let batch_author = Author::new("local-importer");
+        let source_author = Author::new("remote-source");
+        let basis = AssertionBasis {
+            note: Some("copied from source record".into()),
+            method: Some(crate::AssertionMethod {
+                iri: "https://example.test/method/import".into(),
+                version: Some("1".into()),
+            }),
+            evidence: vec!["urn:evidence:one".into(), "urn:evidence:two".into()],
+        };
+        let id = log
+            .assert_relation(
+                batch_author.clone(),
+                "a".to_string(),
+                "b".to_string(),
+                cites(),
+                Some(source_author.clone()),
+                Some(10),
+                basis.clone(),
+            )
+            .unwrap();
+        assert_eq!(log.assertion(id).unwrap().asserter, Some(source_author));
+        assert_eq!(log.assertion(id).unwrap().span.first_asserted_ms, Some(10));
+        assert_eq!(log.assertion(id).unwrap().basis, basis);
+        assert_eq!(log.log().entries().last().unwrap().author, batch_author);
+        let independent_id = log
+            .assert_relation(
+                Author::new("another-importer"),
+                "a".to_string(),
+                "b".to_string(),
+                cites(),
+                Some(Author::new("another-source")),
+                Some(11),
+                AssertionBasis {
+                    note: Some("independent reason".into()),
+                    ..Default::default()
+                },
+            )
+            .unwrap();
+        assert_ne!(id, independent_id);
+        assert_eq!(
+            log.graph().edge_count(),
+            2,
+            "parallel reasons remain separate"
+        );
+
+        assert!(log.confirm_assertion(&Author::new("reviewer"), id, Some(20)));
+        assert_eq!(log.assertion(id).unwrap().span.last_asserted_ms, Some(20));
+        assert!(log.withdraw_assertion(&Author::new("moderator"), id, Some(30)));
+        assert_eq!(
+            log.graph().edge_count(),
+            1,
+            "the independent assertion remains held"
+        );
+        let record = log.assertion(id).unwrap();
+        assert_eq!(record.span.withdrawn.as_ref().unwrap().at_ms, Some(30));
+        assert_eq!(
+            record.span.withdrawn.as_ref().unwrap().by.as_str(),
+            "moderator"
+        );
+        assert!(!log.confirm_assertion(&Author::new("reviewer"), id, Some(40)));
+        assert_eq!(log.assertion(id).unwrap().span.last_asserted_ms, Some(20));
+    }
+
+    #[test]
+    fn invalid_late_assertion_spec_refuses_the_whole_batch_and_does_not_mint() {
+        let mut log = seeded();
+        let before_revision = log.revision();
+        let result = log.commit_batch(
+            gate(),
+            before_revision,
+            vec![
+                EditSpec::Assert {
+                    from: "a".into(),
+                    to: "b".into(),
+                    edge: cites(),
+                    asserter: Some(Author::new("source")),
+                    at_ms: Some(1),
+                    basis: AssertionBasis::default(),
+                },
+                EditSpec::ConfirmAssertion {
+                    id: EdgeId::local(99),
+                    at_ms: Some(2),
+                },
+            ],
+        );
+        assert_eq!(
+            result.unwrap_err(),
+            CommitError::UnknownAssertion(EdgeId::local(99))
+        );
+        assert_eq!(log.revision(), before_revision);
+        assert_eq!(log.graph().edge_count(), 0);
+        let first = log
+            .assert_relation(
+                gate(),
+                "a".into(),
+                "b".into(),
+                cites(),
+                None,
+                None,
+                AssertionBasis::default(),
+            )
+            .unwrap();
+        assert_eq!(first, EdgeId::local(0), "refused batches consume no IDs");
+    }
+
+    #[test]
     fn a_committed_batch_reads_back_attributed_with_minted_edges() {
         let mut log = seeded();
         let committed = log
@@ -772,15 +981,31 @@ mod tests {
                 to: "b".to_string(),
                 edge: cites(),
             });
+            legacy.append(GraphEdit::Disconnect(EdgeId::local(0)));
             legacy.save(&slots, "log").await.unwrap();
 
-            let loaded = GraphLog::<Container, Relation>::load_full(&slots, "log")
+            let mut loaded = GraphLog::<Container, Relation>::load_full(&slots, "log")
                 .await
                 .unwrap();
             assert_eq!(loaded.graph().node_count(), 2);
-            assert_eq!(loaded.graph().edge_count(), 1);
+            assert_eq!(loaded.graph().edge_count(), 0);
             assert_eq!(loaded.id(), Some(&LogId::new("old")), "identity carried");
-            assert_eq!(loaded.revision(), 3, "one batch per legacy edit");
+            assert_eq!(loaded.revision(), 4, "one batch per legacy edit");
+            let assertion = loaded.assertion(EdgeId::local(0)).unwrap().clone();
+            assert_eq!(assertion.asserter, Some(Author::pre_gate()));
+            assert_eq!(assertion.span.first_asserted_ms, None);
+            assert_eq!(assertion.span.withdrawn.as_ref().unwrap().at_ms, None);
+            assert_eq!(
+                assertion.span.withdrawn.as_ref().unwrap().by,
+                Author::pre_gate()
+            );
+            let revision = loaded.revision();
+            assert!(!loaded.confirm_assertion(&gate(), EdgeId::local(0), Some(55)));
+            assert_eq!(
+                loaded.revision(),
+                revision,
+                "stale confirmations do not append"
+            );
             assert!(
                 loaded
                     .log()
@@ -795,7 +1020,8 @@ mod tests {
             let reloaded = GraphLog::<Container, Relation>::load_full(&slots, "log")
                 .await
                 .unwrap();
-            assert_eq!(reloaded.revision(), 3);
+            assert_eq!(reloaded.revision(), 4);
+            assert_eq!(reloaded.assertion(EdgeId::local(0)), Some(&assertion));
         });
     }
 }

@@ -41,6 +41,7 @@ an app that needs more implements the traits on its own types.
 | `edit` | `GraphEdit`, `EdgeId`, `WriterId`, `DerivationKind`, `DerivationRecord` |
 | `spine` | `GraphLog`: graph edits as a muniment journal, with snapshots for checkpoint-plus-tail loading |
 | `commit` | `Batch`, `BatchId`, `Author`, `EditSpec`, `Committed`, `CommitError` |
+| `assertion` | `AssertionRecord`, `AssertionSpan`, `AssertionWithdrawal`, `AssertionBasis`, `AssertionMethod`: retained, source-attributed relations keyed by `EdgeId` |
 | `facet` | `NodeFacets`, `FacetStore`, `FacetId`, `FacetValidator`, `AcceptAll`, `FacetError`, `ExpiringFacet`. Runtime typed node metadata, validated through an injected seam; revision-indexed shelf life stays a read predicate and never mutates stored state |
 | `content_class` | `ContentClass`, `ClassId`, `ClassRegistry`, `ClassMembership`, `CLASS_FACET`, `ClassError` |
 | `stemma` | `Stemma`, `StemmaSnapshot`, `EntryRecord`, `VisitRecord`, `OwnerRecord`, `TransitionKind`, `EntryPrivacy`, `OwnerBranchProjection`, `GcReport`. Owner-scoped descent of content through branching visits |
@@ -48,6 +49,20 @@ an app that needs more implements the traits on its own types.
 
 `muniment::LogId` and `muniment::Provenance` are re-exported so a consumer can
 fork a log and inspect provenance through the same storage floor.
+
+`GraphLog::assert_relation` creates an independently addressable assertion,
+with a source asserter separate from the admitting batch author. Explicit
+confirmation and withdrawal use its `EdgeId` through the same atomic batch
+seam. Withdrawal retains the assertion and its explanation while removing it
+from the held graph; a later assertion receives a new id. The caller supplies
+record times, and `None` remains unknown. Replay never samples a clock.
+
+Legacy connections recover their known batch author and unknown times. Old
+JSON checkpoints without a ledger reconstruct it from the full retained
+journal, so that migration requires the append-only prefix. New checkpoints
+materialize the held graph from the ledger and retain withdrawn ids. The
+graph-only RDF functions still export held semantic triples; assertion
+reifiers and explicit retained-history RDF export remain a separate adapter.
 
 Dependencies: `petgraph` (with `serde-1`), `muniment` (default features off, for
 the blake3 `Hash` and append-only journal), `rkyv` and `slotmap` (the stemma snapshot and visit
