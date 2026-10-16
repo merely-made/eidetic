@@ -13,6 +13,7 @@
 pub mod adapter;
 pub mod inference;
 pub mod library;
+pub mod recall;
 pub mod training;
 
 pub use adapter::{AdapterRuntimeCompat, MODEL_ADAPTER_MANIFEST_SCHEMA_REF, ModelAdapterManifest};

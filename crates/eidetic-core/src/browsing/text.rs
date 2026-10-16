@@ -128,6 +128,41 @@ impl<B: Backend + Clone> PageTextStore<B> {
             .await
     }
 
+    /// Current references, in stable address order, without copying retained bodies.
+    pub async fn references(&self) -> Result<Vec<PageTextRef>> {
+        let mut refs = Vec::new();
+        for key in self.slots.keys(SLOT_PREFIX).await? {
+            if let Some(entry) = self.slots.load::<PageTextRef>(&key).await? {
+                if slot_key(&canonical_url(&entry.url)) != key
+                    || canonical_url(&entry.url) != entry.url
+                {
+                    return Err(crate::Error::new(
+                        "page-text reference has an invalid address",
+                    ));
+                }
+                refs.push(entry);
+            }
+        }
+        refs.sort_by(|a, b| a.url.cmp(&b.url));
+        Ok(refs)
+    }
+
+    /// Resolve precisely this retained blob; never substitute the current body.
+    pub async fn text_at(&self, entry: &PageTextRef) -> Result<Option<String>> {
+        let Some(hash) = Hash::from_hex(&entry.blob) else {
+            return Err(crate::Error::new("invalid page-text blob reference"));
+        };
+        let Some(bytes) = self.blobs.get(&hash).await? else {
+            return Ok(None);
+        };
+        if Hash::of(&bytes) != hash {
+            return Err(crate::Error::new("page-text blob hash mismatch"));
+        }
+        String::from_utf8(bytes)
+            .map(Some)
+            .map_err(|_| crate::Error::new("retained page text is not UTF-8"))
+    }
+
     /// Every stored body, canonical URL to text — the snapshot a projection
     /// reads once and then closes over. One store round trip per address, so
     /// a caller that wants many reads this rather than calling

@@ -15,6 +15,7 @@ name = "eidetic"
 path = "src/lib.rs"
 
 [dependencies]
+zeroize = "1"
 # The personae signing binding for pack engrams (participant gate B4): the
 # identity crate IS the "concrete shape lands with identity" note on
 # SignatureRef, landed.
