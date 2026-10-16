@@ -28,13 +28,14 @@
 //! stand, plus the edge-id bookkeeping and the log length it reflects), stored
 //! in a muniment slot. It is an optimization; the log is the authority.
 
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 
 use muniment::{Backend, Codec, SlotStore, StoreError};
 use muniment::{Journal, LogId, Provenance, Seq};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::Value;
 
+use crate::assertion::{AssertionBasis, AssertionRecord, AssertionSpan, AssertionWithdrawal};
 use crate::caps::Identified;
 use crate::commit::{Author, Batch, EditSpec};
 use crate::edit::{DerivationRecord, EdgeId, GraphEdit, WriterId};
@@ -50,6 +51,9 @@ pub struct GraphLog<N: Identified, E> {
     pub(crate) by_edge_key: HashMap<EdgeKey, EdgeId>,
     pub(crate) derivations: HashMap<N::Id, Vec<DerivationRecord<N::Id>>>,
     pub(crate) facets: FacetStore<N::Id>,
+    /// Authoritative assertion history keyed by the stable edge id. `graph`
+    /// and edge indexes remain the held-only projection.
+    pub(crate) assertions: BTreeMap<EdgeId, AssertionRecord<N::Id, E>>,
     /// This replica's identity, the writer half of every id it mints.
     pub(crate) writer: WriterId,
     /// This replica's own counter. Advanced only past ids **this** writer
@@ -76,6 +80,11 @@ struct Snapshot<N: Identified, E> {
     next_edge: u64,
     /// The number of log entries baked into this snapshot; replay resumes here.
     at_seq: u64,
+    /// `None` means a legacy snapshot with no assertion ledger. It must be
+    /// reconstructed from the retained journal before use. Kept last so the
+    /// existing snapshot field order remains stable for self-describing stores.
+    #[serde(default)]
+    assertions: Option<Vec<AssertionRecord<N::Id, E>>>,
 }
 
 impl<N: Identified, E> Default for GraphLog<N, E> {
@@ -87,6 +96,7 @@ impl<N: Identified, E> Default for GraphLog<N, E> {
             by_edge_key: HashMap::new(),
             derivations: HashMap::new(),
             facets: FacetStore::new(),
+            assertions: BTreeMap::new(),
             writer: WriterId::LOCAL,
             next_edge: 0,
         }
@@ -124,7 +134,9 @@ impl<N: Identified, E> GraphLog<N, E> {
             .iter()
             .flat_map(|batch| batch.edits.iter())
             .filter_map(|edit| match edit {
-                GraphEdit::Connect { id, .. } if id.writer == writer => {
+                GraphEdit::Connect { id, .. } | GraphEdit::Assert { id, .. }
+                    if id.writer == writer =>
+                {
                     Some(id.counter.saturating_add(1))
                 },
                 _ => None,
@@ -180,12 +192,23 @@ impl<N: Identified, E> GraphLog<N, E> {
     pub fn facets(&self) -> &FacetStore<N::Id> {
         &self.facets
     }
+
+    /// The retained assertion record for a stable edge id, whether held or
+    /// withdrawn.
+    pub fn assertion(&self, id: EdgeId) -> Option<&AssertionRecord<N::Id, E>> {
+        self.assertions.get(&id)
+    }
+
+    /// All assertion records in stable id order, including withdrawals.
+    pub fn assertions(&self) -> impl Iterator<Item = &AssertionRecord<N::Id, E>> {
+        self.assertions.values()
+    }
 }
 
 impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
     /// Apply one edit to the materialized graph and its bookkeeping. The single
     /// mutation path, shared by live editing and replay, so the two never diverge.
-    fn apply_edit(&mut self, edit: &GraphEdit<N, E>) {
+    fn apply_edit(&mut self, edit: &GraphEdit<N, E>, author: &Author) {
         match edit {
             GraphEdit::InsertNode(node) => {
                 self.graph.insert(node.clone());
@@ -195,6 +218,13 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
                     for edge_key in self.graph.incident_edges(key) {
                         if let Some(edge_id) = self.by_edge_key.remove(&edge_key) {
                             self.by_edge_id.remove(&edge_id);
+                            self.graph.disconnect(edge_key);
+                            if let Some(assertion) = self.assertions.get_mut(&edge_id) {
+                                assertion.span.withdrawn = Some(AssertionWithdrawal {
+                                    at_ms: None,
+                                    by: author.clone(),
+                                });
+                            }
                         }
                     }
                     self.graph.remove(key);
@@ -203,12 +233,29 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
                 self.facets.remove_node(id);
             },
             GraphEdit::Connect { id, from, to, edge } => {
-                if let (Some(from_key), Some(to_key)) =
-                    (self.graph.key_of(from), self.graph.key_of(to))
-                {
-                    let edge_key = self.graph.connect(from_key, to_key, edge.clone());
-                    self.by_edge_id.insert(*id, edge_key);
-                    self.by_edge_key.insert(edge_key, *id);
+                // Assertion identity is first-write-wins. A stale duplicate
+                // connect in a merged/replayed journal cannot replace a
+                // retained tombstone and revive the edge.
+                if !self.assertions.contains_key(id) {
+                    if let (Some(from_key), Some(to_key)) =
+                        (self.graph.key_of(from), self.graph.key_of(to))
+                    {
+                        let edge_key = self.graph.connect(from_key, to_key, edge.clone());
+                        self.by_edge_id.insert(*id, edge_key);
+                        self.by_edge_key.insert(edge_key, *id);
+                        self.assertions.insert(
+                            *id,
+                            AssertionRecord {
+                                id: *id,
+                                from: from.clone(),
+                                to: to.clone(),
+                                edge: edge.clone(),
+                                asserter: Some(author.clone()),
+                                span: AssertionSpan::new(None),
+                                basis: AssertionBasis::default(),
+                            },
+                        );
+                    }
                 }
                 // Advance past this id even on a dangling connect, so replay keeps
                 // assigning ids monotonically. Only for ids THIS replica minted:
@@ -218,10 +265,73 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
                     self.next_edge = self.next_edge.max(id.counter + 1);
                 }
             },
+            GraphEdit::Assert {
+                id,
+                from,
+                to,
+                edge,
+                asserter,
+                at_ms,
+                basis,
+            } => {
+                if !self.assertions.contains_key(id) {
+                    if let (Some(from_key), Some(to_key)) =
+                        (self.graph.key_of(from), self.graph.key_of(to))
+                    {
+                        let edge_key = self.graph.connect(from_key, to_key, edge.clone());
+                        self.by_edge_id.insert(*id, edge_key);
+                        self.by_edge_key.insert(edge_key, *id);
+                        self.assertions.insert(
+                            *id,
+                            AssertionRecord {
+                                id: *id,
+                                from: from.clone(),
+                                to: to.clone(),
+                                edge: edge.clone(),
+                                asserter: asserter.clone(),
+                                span: AssertionSpan::new(*at_ms),
+                                basis: basis.clone(),
+                            },
+                        );
+                    }
+                }
+                if id.writer == self.writer {
+                    self.next_edge = self.next_edge.max(id.counter.saturating_add(1));
+                }
+            },
             GraphEdit::Disconnect(id) => {
                 if let Some(edge_key) = self.by_edge_id.remove(id) {
                     self.by_edge_key.remove(&edge_key);
                     self.graph.disconnect(edge_key);
+                    if let Some(assertion) = self.assertions.get_mut(id) {
+                        assertion.span.withdrawn = Some(AssertionWithdrawal {
+                            at_ms: None,
+                            by: author.clone(),
+                        });
+                    }
+                }
+            },
+            GraphEdit::ConfirmAssertion { id, at_ms } => {
+                if let Some(assertion) = self.assertions.get_mut(id) {
+                    if assertion.is_held() {
+                        if at_ms.is_some() {
+                            assertion.span.last_asserted_ms = *at_ms;
+                        }
+                    }
+                }
+            },
+            GraphEdit::WithdrawAssertion { id, at_ms } => {
+                if let Some(edge_key) = self.by_edge_id.remove(id) {
+                    self.by_edge_key.remove(&edge_key);
+                    self.graph.disconnect(edge_key);
+                }
+                if let Some(assertion) = self.assertions.get_mut(id) {
+                    if assertion.is_held() {
+                        assertion.span.withdrawn = Some(AssertionWithdrawal {
+                            at_ms: *at_ms,
+                            by: author.clone(),
+                        });
+                    }
                 }
             },
             GraphEdit::Derive { node, from } => {
@@ -248,7 +358,7 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
     /// Apply every edit in a batch, in order.
     pub(crate) fn apply_batch(&mut self, batch: &Batch<N, E>) {
         for edit in &batch.edits {
-            self.apply_edit(edit);
+            self.apply_edit(edit, &batch.author);
         }
     }
 
@@ -301,6 +411,47 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
     /// present.
     pub fn disconnect(&mut self, author: &Author, id: EdgeId) -> bool {
         self.commit_one(author, EditSpec::Disconnect(id)).is_some()
+    }
+
+    /// Assert a relation with explicit source metadata. Time and asserter are
+    /// supplied by the caller; Chartulary does not consult a clock or infer
+    /// source identity from the batch author.
+    pub fn assert_relation(
+        &mut self,
+        author: Author,
+        from: N::Id,
+        to: N::Id,
+        edge: E,
+        asserter: Option<Author>,
+        at_ms: Option<u64>,
+        basis: AssertionBasis,
+    ) -> Result<EdgeId, crate::commit::CommitError<N::Id>> {
+        let committed = self.commit_batch(
+            author,
+            self.revision(),
+            vec![EditSpec::Assert {
+                from,
+                to,
+                edge,
+                asserter,
+                at_ms,
+                basis,
+            }],
+        )?;
+        Ok(committed.edges[0])
+    }
+
+    /// Confirm a currently held assertion. A withdrawn assertion cannot be
+    /// revived; `None` preserves its last known confirmation time.
+    pub fn confirm_assertion(&mut self, author: &Author, id: EdgeId, at_ms: Option<u64>) -> bool {
+        self.commit_one(author, EditSpec::ConfirmAssertion { id, at_ms })
+            .is_some()
+    }
+
+    /// Withdraw a currently held assertion with caller-supplied optional time.
+    pub fn withdraw_assertion(&mut self, author: &Author, id: EdgeId, at_ms: Option<u64>) -> bool {
+        self.commit_one(author, EditSpec::WithdrawAssertion { id, at_ms })
+            .is_some()
     }
 
     /// Record that `node` derives from a node in another graph, attributed. A
@@ -374,27 +525,106 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
         this
     }
 
-    fn from_snapshot(snapshot: Snapshot<N, E>) -> (Self, u64) {
-        let mut this = Self::new();
-        for node in snapshot.nodes {
-            this.graph.insert(node);
+    fn from_snapshot(snapshot: Snapshot<N, E>) -> Result<(Self, u64), StoreError>
+    where
+        N::Id: Serialize,
+        E: Serialize,
+    {
+        let Snapshot {
+            nodes,
+            edges,
+            derivations,
+            facets,
+            writer,
+            next_edge,
+            at_seq,
+            assertions,
+        } = snapshot;
+        let assertions = assertions.ok_or_else(|| {
+            StoreError::Codec(
+                "snapshot has no assertion ledger; replay the retained journal".into(),
+            )
+        })?;
+
+        let node_ids: std::collections::BTreeSet<_> =
+            nodes.iter().map(|node| node.id().clone()).collect();
+        let mut records = BTreeMap::new();
+        let mut expected_edges = BTreeMap::new();
+        for record in assertions {
+            let id = record.id;
+            if records.contains_key(&id) {
+                return Err(StoreError::Codec(format!(
+                    "snapshot contains duplicate assertion id {id:?}"
+                )));
+            }
+            if record.is_held() {
+                if !node_ids.contains(&record.from) || !node_ids.contains(&record.to) {
+                    return Err(StoreError::Codec(format!(
+                        "held assertion {id:?} references an endpoint absent from the snapshot"
+                    )));
+                }
+                expected_edges.insert(id, (record.from.clone(), record.to.clone()));
+            }
+            records.insert(id, record);
         }
-        for (id, from, to, edge) in snapshot.edges {
-            if let (Some(from_key), Some(to_key)) =
-                (this.graph.key_of(&from), this.graph.key_of(&to))
-            {
-                let edge_key = this.graph.connect(from_key, to_key, edge);
-                this.by_edge_id.insert(id, edge_key);
-                this.by_edge_key.insert(edge_key, id);
+
+        // The compatibility edge tuples are validated only for their identity
+        // and endpoints, then ignored for materialization. Their payloads may
+        // have nondeterministic serialization (for example, HashMap iteration)
+        // and the retained ledger is the authoritative payload source.
+        let mut serialized_edges = BTreeMap::new();
+        for (id, from, to, _edge) in edges {
+            if serialized_edges.insert(id, (from, to)).is_some() {
+                return Err(StoreError::Codec(format!(
+                    "snapshot contains duplicate held edge id {id:?}"
+                )));
             }
         }
-        for (node, record) in snapshot.derivations {
+        if serialized_edges != expected_edges {
+            return Err(StoreError::Codec(
+                "snapshot held edge tuples do not match its assertion ledger".into(),
+            ));
+        }
+
+        // The local writer counter is a mint frontier, not just a hint. A
+        // retained record remains reserved after withdrawal, so the next id
+        // must be strictly above every retained id owned by this writer.
+        if let Some((id, _)) = records
+            .iter()
+            .filter(|(id, _)| id.writer == writer)
+            .max_by_key(|(id, _)| id.counter)
+        {
+            let minimum_next = id.counter.checked_add(1).ok_or_else(|| {
+                StoreError::Codec(format!(
+                    "snapshot assertion id {id:?} exhausts its writer counter"
+                ))
+            })?;
+            if next_edge < minimum_next {
+                return Err(StoreError::Codec(format!(
+                    "snapshot next_edge {next_edge} would reuse retained assertion id {id:?}"
+                )));
+            }
+        }
+
+        let mut this = Self::new();
+        for node in nodes {
+            this.graph.insert(node);
+        }
+        for record in records.values().filter(|record| record.is_held()) {
+            let from_key = this.graph.key_of(&record.from).expect("validated endpoint");
+            let to_key = this.graph.key_of(&record.to).expect("validated endpoint");
+            let edge_key = this.graph.connect(from_key, to_key, record.edge.clone());
+            this.by_edge_id.insert(record.id, edge_key);
+            this.by_edge_key.insert(edge_key, record.id);
+        }
+        for (node, record) in derivations {
             this.derivations.entry(node).or_default().push(record);
         }
-        this.facets = snapshot.facets;
-        this.writer = snapshot.writer;
-        this.next_edge = snapshot.next_edge;
-        (this, snapshot.at_seq)
+        this.facets = facets;
+        this.assertions = records;
+        this.writer = writer;
+        this.next_edge = next_edge;
+        Ok((this, at_seq))
     }
 }
 
@@ -469,6 +699,7 @@ where
             facets: self.facets.clone(),
             writer: self.writer,
             next_edge: self.next_edge,
+            assertions: Some(self.assertions.values().cloned().collect()),
             at_seq: self.log.len() as u64,
         };
         slots.save(key, &snapshot).await
@@ -506,9 +737,28 @@ where
         let snapshot: Option<Snapshot<N, E>> = slots.load(snap_key).await?;
         let log = Self::load_log(slots, log_key).await?;
         let (mut this, tail_start) = match snapshot {
-            Some(snapshot) => Self::from_snapshot(snapshot),
+            Some(snapshot) if snapshot.assertions.is_none() => {
+                // Legacy snapshots had no retained assertion metadata. The full
+                // journal is retained by this store, so replay it rather than
+                // reconstructing historical lifecycle values from the snapshot.
+                if snapshot.at_seq > log.len() as u64 {
+                    return Err(StoreError::Codec(format!(
+                        "legacy snapshot sequence {} exceeds journal length {}",
+                        snapshot.at_seq,
+                        log.len()
+                    )));
+                }
+                return Ok(Self::replay_for_writer(log, snapshot.writer));
+            },
+            Some(snapshot) => Self::from_snapshot(snapshot)?,
             None => (Self::new(), 0),
         };
+        if tail_start > log.len() as u64 {
+            return Err(StoreError::Codec(format!(
+                "snapshot sequence {tail_start} exceeds journal length {}",
+                log.len()
+            )));
+        }
         for batch in log.from(Seq(tail_start)) {
             this.apply_batch(batch);
         }
@@ -585,6 +835,271 @@ mod tests {
             "the edge went with the node"
         );
         assert_eq!(fingerprint(replayed.graph()), fingerprint(live.graph()));
+        let assertion = live
+            .assertion(EdgeId::local(0))
+            .expect("edge is retained as history");
+        assert_eq!(assertion.from, "a");
+        assert_eq!(assertion.to, "b");
+        assert_eq!(assertion.span.withdrawn.as_ref().unwrap().at_ms, None);
+        assert_eq!(assertion.span.withdrawn.as_ref().unwrap().by, me());
+        assert_eq!(replayed.assertion(EdgeId::local(0)), Some(assertion));
+    }
+
+    #[test]
+    fn stale_replay_with_duplicate_assertion_ids_cannot_revive_tombstones() {
+        let author = me();
+        let explicit_id = EdgeId::local(70);
+        let legacy_id = EdgeId::local(71);
+        let mut log = Journal::new();
+        log.append(Batch {
+            author: author.clone(),
+            edits: vec![
+                GraphEdit::InsertNode(Container::new("a")),
+                GraphEdit::InsertNode(Container::new("b")),
+                GraphEdit::Assert {
+                    id: explicit_id,
+                    from: "a".into(),
+                    to: "b".into(),
+                    edge: cites(),
+                    asserter: Some(Author::new("original-source")),
+                    at_ms: Some(10),
+                    basis: AssertionBasis::default(),
+                },
+                GraphEdit::WithdrawAssertion {
+                    id: explicit_id,
+                    at_ms: Some(20),
+                },
+                GraphEdit::Assert {
+                    id: explicit_id,
+                    from: "b".into(),
+                    to: "a".into(),
+                    edge: cites(),
+                    asserter: Some(Author::new("stale-source")),
+                    at_ms: Some(30),
+                    basis: AssertionBasis::default(),
+                },
+                GraphEdit::Connect {
+                    id: legacy_id,
+                    from: "a".into(),
+                    to: "b".into(),
+                    edge: cites(),
+                },
+                GraphEdit::Disconnect(legacy_id),
+                GraphEdit::Connect {
+                    id: legacy_id,
+                    from: "b".into(),
+                    to: "a".into(),
+                    edge: cites(),
+                },
+            ],
+        });
+
+        let replayed = GraphLog::replay(log);
+        assert_eq!(replayed.graph().edge_count(), 0);
+        let explicit = replayed.assertion(explicit_id).unwrap();
+        assert_eq!(explicit.from, "a");
+        assert_eq!(explicit.to, "b");
+        assert_eq!(
+            explicit.asserter.as_ref().unwrap().as_str(),
+            "original-source"
+        );
+        assert_eq!(explicit.span.withdrawn.as_ref().unwrap().at_ms, Some(20));
+        let legacy = replayed.assertion(legacy_id).unwrap();
+        assert_eq!(legacy.from, "a");
+        assert_eq!(legacy.to, "b");
+        assert!(legacy.span.withdrawn.is_some());
+    }
+
+    #[test]
+    fn legacy_snapshot_without_assertion_ledger_replays_history_from_journal() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut live = GraphLog::new();
+            live.insert_node(&me(), Container::new("a"));
+            live.insert_node(&me(), Container::new("b"));
+            let id = live
+                .connect(&me(), &"a".into(), &"b".into(), cites())
+                .unwrap();
+            live.disconnect(&me(), id);
+            live.save_log(&slots, "log").await.unwrap();
+
+            // This is the old snapshot shape: it has only materialized nodes,
+            // held edges, derivations, facets, writer/counter and sequence.
+            let legacy = Snapshot::<Container, Relation> {
+                nodes: vec![Container::new("a"), Container::new("b")],
+                edges: vec![],
+                derivations: vec![],
+                facets: FacetStore::new(),
+                writer: WriterId::LOCAL,
+                next_edge: 1,
+                assertions: None,
+                at_seq: live.log().len() as u64,
+            };
+            let mut value = serde_json::to_value(legacy).unwrap();
+            value.as_object_mut().unwrap().remove("assertions");
+            slots.save("snap", &value).await.unwrap();
+
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .unwrap();
+            let record = loaded
+                .assertion(id)
+                .expect("full retained journal reconstructs it");
+            assert_eq!(
+                record.span.first_asserted_ms, None,
+                "legacy time stays unknown"
+            );
+            let withdrawal = record.span.withdrawn.as_ref().unwrap();
+            assert_eq!(
+                withdrawal.at_ms, None,
+                "legacy disconnect has no invented time"
+            );
+            assert_eq!(withdrawal.by, me());
+            assert_eq!(loaded.graph().edge_count(), 0);
+        });
+    }
+
+    #[test]
+    fn new_empty_assertion_ledger_is_encoded_distinctly_from_legacy_absence() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let empty = GraphLog::<Container, Relation>::new();
+            empty.save_log(&slots, "log").await.unwrap();
+            empty.snapshot(&slots, "snap").await.unwrap();
+
+            let raw: serde_json::Value = slots.load("snap").await.unwrap().unwrap();
+            assert_eq!(raw.get("assertions"), Some(&serde_json::json!([])));
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .unwrap();
+            assert_eq!(loaded.assertions().count(), 0);
+        });
+    }
+
+    #[test]
+    fn malformed_assertion_snapshots_are_refused_instead_of_loaded_partially() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut live = GraphLog::new();
+            live.insert_node(&me(), Container::new("a"));
+            live.insert_node(&me(), Container::new("b"));
+            live.connect(&me(), &"a".into(), &"b".into(), cites())
+                .unwrap();
+            live.save_log(&slots, "log").await.unwrap();
+            live.snapshot(&slots, "valid").await.unwrap();
+            let base: serde_json::Value = slots.load("valid").await.unwrap().unwrap();
+
+            for malformed_kind in [
+                "duplicate assertion id",
+                "missing ledger record",
+                "missing held endpoint",
+                "mismatched endpoint tuple",
+            ] {
+                let mut malformed = base.clone();
+                match malformed_kind {
+                    "duplicate assertion id" => {
+                        let assertions = malformed["assertions"].as_array_mut().unwrap();
+                        let duplicate = assertions[0].clone();
+                        assertions.push(duplicate);
+                    },
+                    "missing ledger record" => {
+                        malformed["assertions"].as_array_mut().unwrap().clear()
+                    },
+                    "missing held endpoint" => {
+                        malformed["assertions"][0]["from"] = serde_json::json!("ghost")
+                    },
+                    "mismatched endpoint tuple" => {
+                        malformed["assertions"][0]["from"] = serde_json::json!("b")
+                    },
+                    _ => unreachable!(),
+                }
+                slots.save("bad", &malformed).await.unwrap();
+                let error =
+                    GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "bad")
+                        .await
+                        .err()
+                        .expect("malformed checkpoint must be refused");
+                assert!(
+                    matches!(&error, StoreError::Codec(_)),
+                    "{malformed_kind}: unexpected error {error:?}"
+                );
+            }
+
+            // The retained assertion ledger owns the payload. A divergent
+            // compatibility tuple cannot override it or cause codec-dependent
+            // false refusal (notably for unordered payloads).
+            let mut divergent_compatibility_payload = base;
+            divergent_compatibility_payload["edges"][0][3]["label"] =
+                serde_json::json!("compatibility payload must be ignored");
+            slots
+                .save("divergent-payload", &divergent_compatibility_payload)
+                .await
+                .unwrap();
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(
+                &slots,
+                "log",
+                "divergent-payload",
+            )
+            .await
+            .expect("the authoritative ledger payload determines materialization");
+            assert_eq!(loaded.assertions().next().unwrap().edge, cites());
+        });
+    }
+
+    #[test]
+    fn checkpoint_round_trips_unordered_hash_map_edge_payloads() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut live = GraphLog::<Container, HashMap<String, String>>::new();
+            live.insert_node(&me(), Container::new("a"));
+            live.insert_node(&me(), Container::new("b"));
+            let payload: HashMap<_, _> = (0..256)
+                .map(|index| (format!("key-{index:03}"), format!("value-{index:03}")))
+                .collect();
+            let id = live
+                .connect(&me(), &"a".into(), &"b".into(), payload.clone())
+                .unwrap();
+
+            live.save_log(&slots, "hash-map-log").await.unwrap();
+            live.snapshot(&slots, "hash-map-snapshot").await.unwrap();
+            for _ in 0..16 {
+                let loaded = GraphLog::<Container, HashMap<String, String>>::load_checkpointed(
+                    &slots,
+                    "hash-map-log",
+                    "hash-map-snapshot",
+                )
+                .await
+                .expect("unordered payload serialization must not create false mismatch");
+                assert_eq!(loaded.assertion(id).unwrap().edge, payload);
+            }
+        });
+    }
+
+    #[test]
+    fn checkpoint_refuses_counter_that_would_reuse_withdrawn_assertion_id() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut live = GraphLog::new();
+            live.insert_node(&me(), Container::new("a"));
+            live.insert_node(&me(), Container::new("b"));
+            let id = live
+                .connect(&me(), &"a".into(), &"b".into(), cites())
+                .unwrap();
+            assert!(live.withdraw_assertion(&me(), id, Some(10)));
+            live.save_log(&slots, "log").await.unwrap();
+            live.snapshot(&slots, "valid").await.unwrap();
+
+            let mut malformed: serde_json::Value = slots.load("valid").await.unwrap().unwrap();
+            assert_eq!(malformed["assertions"][0]["span"]["withdrawn"]["at_ms"], 10);
+            malformed["next_edge"] = serde_json::json!(id.counter);
+            slots.save("bad", &malformed).await.unwrap();
+
+            let error = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "bad")
+                .await
+                .err()
+                .expect("withdrawn IDs stay reserved by their writer");
+            assert!(matches!(error, StoreError::Codec(_)), "{error:?}");
+        });
     }
 
     #[test]
@@ -599,7 +1114,9 @@ mod tests {
             let e_ab = live
                 .connect(&me(), &"a".to_string(), &"b".to_string(), cites())
                 .unwrap();
-            live.connect(&me(), &"a".to_string(), &"c".to_string(), cites());
+            let e_ac = live
+                .connect(&me(), &"a".to_string(), &"c".to_string(), cites())
+                .unwrap();
 
             // Snapshot mid-history.
             live.snapshot(&slots, "snap").await.unwrap();
@@ -608,7 +1125,22 @@ mod tests {
             // a pre-snapshot node (which reaps another pre-snapshot edge).
             live.remove_node(&me(), &"c".to_string());
             live.insert_node(&me(), Container::new("d"));
-            live.connect(&me(), &"a".to_string(), &"d".to_string(), cites());
+            let e_ad = live
+                .assert_relation(
+                    me(),
+                    "a".to_string(),
+                    "d".to_string(),
+                    cites(),
+                    Some(Author::new("source-agent")),
+                    Some(500),
+                    AssertionBasis {
+                        note: Some("independent source note".into()),
+                        method: None,
+                        evidence: vec!["urn:evidence:checkpoint".into()],
+                    },
+                )
+                .unwrap();
+            assert!(live.confirm_assertion(&Author::new("reviewer"), e_ad, Some(600)));
             live.disconnect(&me(), e_ab);
 
             live.save_log(&slots, "log").await.unwrap();
@@ -635,6 +1167,19 @@ mod tests {
             // Final state: nodes a, b, d; only the a->d edge survives.
             assert_eq!(checkpointed.graph().node_count(), 3);
             assert_eq!(checkpointed.graph().edge_count(), 1);
+            for id in [e_ab, e_ac] {
+                assert_eq!(checkpointed.assertion(id), full.assertion(id));
+                assert!(checkpointed.assertion(id).unwrap().span.withdrawn.is_some());
+            }
+            let explicit = checkpointed.assertion(e_ad).unwrap();
+            assert_eq!(explicit.span.first_asserted_ms, Some(500));
+            assert_eq!(explicit.span.last_asserted_ms, Some(600));
+            assert_eq!(explicit.asserter.as_ref().unwrap().as_str(), "source-agent");
+            assert_eq!(
+                explicit.basis.note.as_deref(),
+                Some("independent source note")
+            );
+            assert_eq!(explicit.basis.evidence, vec!["urn:evidence:checkpoint"]);
         });
     }
 

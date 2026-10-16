@@ -159,14 +159,25 @@ pub enum GateError {
     Commit(CommitError<String>),
 }
 
-/// The node ids a spec touches (for scope and projection checks). Edge-level
-/// specs ([`EditSpec::Disconnect`]) touch no node id.
-fn touched_nodes(spec: &EditSpec<Container, Relation>) -> Vec<&str> {
+/// The node ids a spec touches (for scope and projection checks). Exact-ID
+/// edge operations are checked against the retained assertion record so they
+/// cannot bypass endpoint policy merely by naming an edge id.
+fn touched_nodes<'a>(
+    nested: &'a GraphLog<Container, Relation>,
+    spec: &'a EditSpec<Container, Relation>,
+) -> Vec<&'a str> {
     match spec {
         EditSpec::InsertNode(node) => vec![node.id.as_str()],
         EditSpec::RemoveNode(id) => vec![id.as_str()],
-        EditSpec::Connect { from, to, .. } => vec![from.as_str(), to.as_str()],
-        EditSpec::Disconnect(_) => Vec::new(),
+        EditSpec::Connect { from, to, .. } | EditSpec::Assert { from, to, .. } => {
+            vec![from.as_str(), to.as_str()]
+        },
+        EditSpec::Disconnect(id)
+        | EditSpec::ConfirmAssertion { id, .. }
+        | EditSpec::WithdrawAssertion { id, .. } => nested
+            .assertion(*id)
+            .map(|record| vec![record.from.as_str(), record.to.as_str()])
+            .unwrap_or_default(),
         EditSpec::Derive { node, .. } => vec![node.as_str()],
         EditSpec::SetFacet { node, .. } | EditSpec::RemoveFacet { node, .. } => {
             vec![node.as_str()]
@@ -303,7 +314,7 @@ impl Gate {
         expected: u64,
         specs: Vec<EditSpec<Container, Relation>>,
     ) -> Result<Committed, GateError> {
-        self.validate_petition(provider, subject, claimed, &specs)?;
+        self.validate_petition(provider, nested, subject, claimed, &specs)?;
         nested
             .commit_batch(subject.to_author(), expected, specs)
             .map_err(GateError::Commit)
@@ -320,7 +331,7 @@ impl Gate {
         subject: Subject,
         petition: BehaviorPetition<'_>,
     ) -> Result<Committed, GateError> {
-        self.validate_petition(provider, subject, petition.claimed, &petition.specs)?;
+        self.validate_petition(provider, nested, subject, petition.claimed, &petition.specs)?;
         let admission = deadbands
             .check(subject, petition.actuation)
             .map_err(GateError::Deadband)?;
@@ -334,13 +345,14 @@ impl Gate {
     fn validate_petition(
         &self,
         provider: &impl AuthorityProvider,
+        nested: &GraphLog<Container, Relation>,
         subject: Subject,
         claimed: &ScopePath,
         specs: &[EditSpec<Container, Relation>],
     ) -> Result<(), GateError> {
         // 1. Projection guard: a participant may never touch its own grants.
         for spec in specs {
-            for node in touched_nodes(spec) {
+            for node in touched_nodes(nested, spec) {
                 if node.starts_with(GRANT_PREFIX) {
                     return Err(GateError::TouchesProjection {
                         node: node.to_string(),
@@ -360,7 +372,7 @@ impl Gate {
         //    not a well-formed scope fails closed rather than being compared as
         //    a raw string.
         for spec in specs {
-            for node in touched_nodes(spec) {
+            for node in touched_nodes(nested, spec) {
                 let inside = ScopePath::parse(node)
                     .is_ok_and(|node_scope| claimed.covers_scope(&node_scope));
                 if !inside {
@@ -395,7 +407,7 @@ impl Gate {
 mod tests {
     use super::*;
     use crate::grant::GrantTable;
-    use chartulary::{Container, FacetId};
+    use chartulary::{AssertionBasis, Container, FacetId, RelationClass};
 
     fn subject(tag: u8) -> Subject {
         Subject::new([tag; 32])
@@ -424,6 +436,49 @@ mod tests {
 
     fn insert(id: &str) -> EditSpec<Container, Relation> {
         EditSpec::InsertNode(Container::new(id))
+    }
+
+    fn assert_relation(from: &str, to: &str) -> EditSpec<Container, Relation> {
+        EditSpec::Assert {
+            from: from.to_string(),
+            to: to.to_string(),
+            edge: Relation::new(RelationClass::app("servitor-test", 0)),
+            asserter: Some(Author::new("source-owner")),
+            at_ms: Some(7),
+            basis: AssertionBasis::default(),
+        }
+    }
+
+    /// Seed a source-owned assertion directly so the gate tests admission of
+    /// later exact-ID operations against a record already in the graph.
+    fn seed_assertion(
+        nested: &mut GraphLog<Container, Relation>,
+        from: &str,
+        to: &str,
+    ) -> chartulary::EdgeId {
+        let mut specs: Vec<EditSpec<Container, Relation>> = Vec::new();
+        for id in [from, to] {
+            if nested.graph().key_of(&id.to_string()).is_none()
+                && !specs
+                    .iter()
+                    .any(|spec| matches!(spec, EditSpec::InsertNode(node) if node.id == id))
+            {
+                specs.push(insert(id));
+            }
+        }
+        specs.push(assert_relation(from, to));
+        nested
+            .commit_batch(Author::new("source-owner"), nested.revision(), specs)
+            .expect("seed assertion commits")
+            .edges[0]
+    }
+
+    fn exact_id_operations(id: chartulary::EdgeId) -> [EditSpec<Container, Relation>; 3] {
+        [
+            EditSpec::Disconnect(id),
+            EditSpec::ConfirmAssertion { id, at_ms: Some(8) },
+            EditSpec::WithdrawAssertion { id, at_ms: Some(9) },
+        ]
     }
 
     #[test]
@@ -514,6 +569,179 @@ mod tests {
             "the journal attributes the change to the denizen"
         );
         assert_eq!(nested.graph().node_count(), 2);
+    }
+
+    #[test]
+    fn an_assertion_must_keep_both_endpoints_inside_the_claimed_scope() {
+        let gate = Gate::new();
+        let sub = subject(1);
+        let auth = authority(sub);
+        let mut nested = GraphLog::<Container, Relation>::new();
+        let revision = nested.revision();
+
+        let error = gate
+            .petition(
+                &auth,
+                &mut nested,
+                sub,
+                &trail_scope(),
+                revision,
+                vec![assert_relation("trail/inside", "notes/outside")],
+            )
+            .unwrap_err();
+
+        assert_eq!(
+            error,
+            GateError::OutOfScope {
+                node: "notes/outside".into(),
+                path: "trail".into(),
+            }
+        );
+        assert_eq!(nested.revision(), revision);
+        assert_eq!(nested.graph().node_count(), 0);
+        assert_eq!(nested.assertions().count(), 0);
+    }
+
+    #[test]
+    fn an_in_scope_denizen_can_assert_with_separate_source_attribution() {
+        let gate = Gate::new();
+        let sub = subject(1);
+        let auth = authority(sub);
+        let mut nested = GraphLog::<Container, Relation>::new();
+        let mut assertion = assert_relation("trail/one", "trail/two");
+        if let EditSpec::Assert {
+            asserter,
+            at_ms,
+            basis,
+            ..
+        } = &mut assertion
+        {
+            *asserter = Some(Author::new("independent-source"));
+            *at_ms = Some(12);
+            basis.note = Some("because the source says so".into());
+        }
+
+        let committed = gate
+            .petition(
+                &auth,
+                &mut nested,
+                sub,
+                &trail_scope(),
+                0,
+                vec![insert("trail/one"), insert("trail/two"), assertion],
+            )
+            .unwrap();
+        let id = committed.edges[0];
+        let record = nested.assertion(id).expect("assertion is retained");
+        assert_eq!(record.asserter, Some(Author::new("independent-source")));
+        assert_eq!(record.span.first_asserted_ms, Some(12));
+        assert_eq!(
+            record.basis.note.as_deref(),
+            Some("because the source says so")
+        );
+        assert_eq!(
+            nested.log().entries()[committed.batch.0 as usize].author,
+            sub.to_author(),
+            "the gate still attributes admission to the acting denizen"
+        );
+    }
+
+    #[test]
+    fn exact_id_edits_check_both_recorded_endpoints_for_scope() {
+        let gate = Gate::new();
+        let sub = subject(1);
+        let auth = authority(sub);
+
+        let mut nested = GraphLog::<Container, Relation>::new();
+        let id = seed_assertion(&mut nested, "trail/inside", "notes/outside");
+        let revision = nested.revision();
+        for operation in exact_id_operations(id) {
+            let error = gate
+                .petition(
+                    &auth,
+                    &mut nested,
+                    sub,
+                    &trail_scope(),
+                    revision,
+                    vec![operation],
+                )
+                .unwrap_err();
+
+            assert_eq!(
+                error,
+                GateError::OutOfScope {
+                    node: "notes/outside".into(),
+                    path: "trail".into(),
+                }
+            );
+            assert_eq!(nested.revision(), revision, "refusal is atomic");
+            assert!(nested.assertion(id).unwrap().is_held());
+        }
+    }
+
+    #[test]
+    fn exact_id_edits_cannot_touch_grant_projection_endpoints() {
+        let gate = Gate::new();
+        let sub = subject(1);
+        let auth = authority(sub);
+        let projection = Gate::projection_id(&trail());
+        let mut nested = GraphLog::<Container, Relation>::new();
+        gate.project_grant(&mut nested, &Grant::new(subject(2), trail(), Mode::Write))
+            .unwrap();
+        let id = seed_assertion(&mut nested, "trail/inside", &projection);
+        let revision = nested.revision();
+        for operation in exact_id_operations(id) {
+            let error = gate
+                .petition(
+                    &auth,
+                    &mut nested,
+                    sub,
+                    &trail_scope(),
+                    revision,
+                    vec![operation],
+                )
+                .unwrap_err();
+
+            assert_eq!(
+                error,
+                GateError::TouchesProjection {
+                    node: projection.clone()
+                }
+            );
+            assert_eq!(nested.revision(), revision, "refusal is atomic");
+            assert!(nested.assertion(id).unwrap().is_held());
+        }
+    }
+
+    #[test]
+    fn an_unknown_assertion_id_reaches_the_atomic_commit_error() {
+        let gate = Gate::new();
+        let sub = subject(1);
+        let auth = authority(sub);
+        let mut nested = GraphLog::<Container, Relation>::new();
+        let unknown = chartulary::EdgeId::local(99);
+        let revision = nested.revision();
+
+        let error = gate
+            .petition(
+                &auth,
+                &mut nested,
+                sub,
+                &trail_scope(),
+                revision,
+                vec![EditSpec::WithdrawAssertion {
+                    id: unknown,
+                    at_ms: Some(3),
+                }],
+            )
+            .unwrap_err();
+
+        assert!(matches!(
+            error,
+            GateError::Commit(CommitError::UnknownAssertion(id)) if id == unknown
+        ));
+        assert_eq!(nested.revision(), revision);
+        assert_eq!(nested.assertions().count(), 0);
     }
 
     #[test]

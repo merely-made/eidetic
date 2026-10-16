@@ -17,6 +17,7 @@ use muniment::LogId;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+use crate::assertion::AssertionBasis;
 use crate::caps::Identified;
 use crate::facet::FacetId;
 
@@ -207,4 +208,25 @@ pub enum GraphEdit<N: Identified, E> {
         /// The stable, namespaced facet identity.
         facet: FacetId,
     },
+    /// Assert one relation with explicit source metadata and optional caller time.
+    Assert {
+        /// Stable assertion id assigned by the commit.
+        id: EdgeId,
+        /// Source node.
+        from: N::Id,
+        /// Target node.
+        to: N::Id,
+        /// Edge payload.
+        edge: E,
+        /// Source-provided asserter, independent of the batch author.
+        asserter: Option<crate::commit::Author>,
+        /// Caller-supplied admission time in Unix milliseconds, if known.
+        at_ms: Option<u64>,
+        /// Assertion basis supplied by the caller.
+        basis: AssertionBasis,
+    },
+    /// Confirm a currently held assertion without changing its identity.
+    ConfirmAssertion { id: EdgeId, at_ms: Option<u64> },
+    /// Withdraw a currently held assertion. Withdrawals are terminal.
+    WithdrawAssertion { id: EdgeId, at_ms: Option<u64> },
 }
