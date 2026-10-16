@@ -22,6 +22,9 @@ pub enum RecallSourceKind {
 #[serde(deny_unknown_fields)]
 pub struct RecallSourceId {
     pub kind: RecallSourceKind,
+    /// Source-owner namespace, such as an application session; absent for a local borrowed corpus.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub owner: Option<String>,
     pub source: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub node: Option<String>,
@@ -45,6 +48,9 @@ impl Drop for RetainedSourceText {
         }
         self.text.zeroize();
         self.source.source.zeroize();
+        if let Some(owner) = &mut self.source.owner {
+            owner.zeroize();
+        }
         if let Some(node) = &mut self.source.node {
             node.zeroize();
         }
@@ -82,6 +88,9 @@ impl Drop for InferencePassage {
         use zeroize::Zeroize;
         self.text.zeroize();
         self.source.source.zeroize();
+        if let Some(owner) = &mut self.source.owner {
+            owner.zeroize();
+        }
         if let Some(node) = &mut self.source.node {
             node.zeroize();
         }
