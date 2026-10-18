@@ -259,7 +259,9 @@ where
         let mut by_id = HashMap::new();
         for key in inner.node_indices() {
             if let Some(node) = inner.node_weight(key) {
-                by_id.insert(node.id().clone(), key);
+                if by_id.insert(node.id().clone(), key).is_some() {
+                    return Err(serde::de::Error::custom("duplicate stable node identity"));
+                }
             }
         }
         Ok(Self { inner, by_id })
@@ -355,6 +357,23 @@ mod tests {
         g.remove(a);
         assert_eq!(g.node_count(), 2);
         assert!(g.get(&"a".to_string()).is_none(), "identity index updated");
+    }
+
+    #[test]
+    fn deserialization_refuses_duplicate_stable_node_identities() {
+        let mut inner = StableGraph::<Container, Relation>::new();
+        let first = inner.add_node(Container::new("same").with_title("first"));
+        let second = inner.add_node(Container::new("same").with_title("second"));
+        inner.add_edge(
+            first,
+            second,
+            Relation::new(RelationClass::recognized(Recognized::Cites)),
+        );
+        let encoded = serde_json::to_string(&inner).unwrap();
+        let result = serde_json::from_str::<Graph<Container, Relation>>(&encoded);
+        assert!(
+            matches!(result, Err(error) if error.to_string().contains("duplicate stable node identity"))
+        );
     }
 
     #[test]
