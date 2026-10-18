@@ -37,5 +37,8 @@ Rowan nor a TOML policy is imposed on other consumers.
 The proposal is not deserializable: deserialize strict `TextEdit` inputs, then
 prepare them against the host's observed stamp/source. Untrusted serialized
 previews and receipts cannot bypass preparation. Hosts still own source size,
-history, authority and platform limits. `publish = false` until distribution is
-explicitly selected; the API is being qualified against both consumers.
+history, authority and platform limits. Distribution uses the canonical Mere Git
+source with committed consumer locks; hosts may select `main` or a published
+revision when a separate source identity is needed to preserve existing pins.
+`publish = false` prevents a crates.io release; it does not prevent this Git
+distribution.
