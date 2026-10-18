@@ -221,7 +221,8 @@ fn object_nq(term: &Term) -> String {
             let escaped = value
                 .replace('\\', "\\\\")
                 .replace('"', "\\\"")
-                .replace('\n', "\\n");
+                .replace('\n', "\\n")
+                .replace('\r', "\\r");
             let mut out = format!("\"{escaped}\"");
             if let Some(lang) = lang {
                 out.push_str(&format!("@{lang}"));
@@ -320,6 +321,16 @@ mod tests {
         assert_eq!(
             a["urn:chart:rel:cites"],
             json!([{ "@id": "https://b.example/" }])
+        );
+    }
+
+    #[test]
+    fn nquads_escapes_multiline_labels_without_creating_extra_triples() {
+        let mut graph = Graph::<Container, Relation>::new();
+        graph.insert(Container::new("label").with_title("first\r\nsecond\"\\last"));
+        assert_eq!(
+            to_nquads(&graph),
+            r#"<urn:chart:label> <https://schema.org/name> "first\r\nsecond\"\\last" ."#
         );
     }
 

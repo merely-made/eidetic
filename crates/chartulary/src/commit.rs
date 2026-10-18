@@ -227,6 +227,16 @@ where
                     if !present(id, &added, &removed, self) {
                         return Err(CommitError::UnknownNode(id.clone()));
                     }
+                    // Applying removal withdraws every incident assertion.
+                    // Reinserting the same node identity cannot revive them.
+                    if let Some(key) = self.graph().key_of(id) {
+                        for edge_key in self.graph().incident_edges(key) {
+                            if let Some(edge_id) = self.by_edge_key.get(&edge_key) {
+                                dropped_edges.insert(*edge_id);
+                                withdrawn_assertions.insert(*edge_id);
+                            }
+                        }
+                    }
                     added.remove(id);
                     removed.insert(id.clone());
                 },
@@ -892,6 +902,84 @@ mod tests {
             )
             .unwrap();
         assert_eq!(first, EdgeId::local(0), "refused batches consume no IDs");
+    }
+
+    #[test]
+    fn node_removal_invalidates_incident_operations_before_anything_commits() {
+        for endpoint in ["a", "b"] {
+            for reinsert in [false, true] {
+                for operation in 0..3 {
+                    let mut log = seeded();
+                    let id = log
+                        .connect(&gate(), &"a".into(), &"b".into(), cites())
+                        .unwrap();
+                    let revision = log.revision();
+                    let mut specs = vec![
+                        EditSpec::Connect {
+                            from: "a".into(),
+                            to: "b".into(),
+                            edge: cites(),
+                        },
+                        EditSpec::RemoveNode(endpoint.into()),
+                    ];
+                    if reinsert {
+                        specs.push(EditSpec::InsertNode(Container::new(endpoint)));
+                    }
+                    specs.push(match operation {
+                        0 => EditSpec::Disconnect(id),
+                        1 => EditSpec::ConfirmAssertion {
+                            id,
+                            at_ms: Some(10),
+                        },
+                        _ => EditSpec::WithdrawAssertion {
+                            id,
+                            at_ms: Some(10),
+                        },
+                    });
+                    let expected = if operation == 0 {
+                        CommitError::UnknownEdge(id)
+                    } else {
+                        CommitError::AssertionAlreadyWithdrawn(id)
+                    };
+                    assert_eq!(log.commit_batch(gate(), revision, specs), Err(expected));
+                    assert_eq!(log.revision(), revision, "refusal appends nothing");
+                    assert_eq!(log.graph().node_count(), 2);
+                    assert_eq!(log.graph().edge_count(), 1);
+                    assert!(log.assertion(id).unwrap().is_held());
+                    assert_eq!(log.assertion(id).unwrap().span.last_asserted_ms, None);
+                    let next = log
+                        .connect(&gate(), &"a".into(), &"b".into(), cites())
+                        .unwrap();
+                    assert_eq!(next.counter, id.counter + 1, "refusal consumes no IDs");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn reinserted_node_can_receive_a_new_assertion() {
+        let mut log = seeded();
+        let old = log
+            .connect(&gate(), &"a".into(), &"b".into(), cites())
+            .unwrap();
+        let committed = log
+            .commit_batch(
+                gate(),
+                log.revision(),
+                vec![
+                    EditSpec::RemoveNode("a".into()),
+                    EditSpec::InsertNode(Container::new("a")),
+                    EditSpec::Connect {
+                        from: "a".into(),
+                        to: "b".into(),
+                        edge: cites(),
+                    },
+                ],
+            )
+            .unwrap();
+        assert!(!log.assertion(old).unwrap().is_held());
+        assert!(log.assertion(committed.edges[0]).unwrap().is_held());
+        assert_eq!(log.graph().edge_count(), 1);
     }
 
     #[test]
