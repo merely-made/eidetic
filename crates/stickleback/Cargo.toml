@@ -2,50 +2,101 @@
 rust-version = "1.97.1"
 name = "stickleback"
 version = "0.1.1"
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
+repository = "https://github.com/merely-made/eidetic"
 description = "A shared replicated-space runtime for signed peer domains: joined p2panda spaces and their drain, policy-before-insert operation processing, muniment-backed storage, retention checkpoints, and native drop carriage. The domain supplies its own grammar, addressing, and authorization."
 readme = "README.md"
-keywords = ["p2p", "replication", "local-first", "sync"]
-categories = ["network-programming", "database"]
+keywords = [
+    "p2p",
+    "replication",
+    "local-first",
+    "sync",
+]
+categories = [
+    "network-programming",
+    "database",
+]
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
 
 [lib]
 path = "src/lib.rs"
 
 [dependencies]
-# The check conclusions and faults, named directly (insigne proofs plan, B).
-insigne = { workspace = true, features = ["verify"] }
-identity.workspace = true
-muniment.workspace = true
 p2panda-core = "0.7.0"
-p2panda-encryption = { version = "0.7.0", features = ["data_scheme", "message_scheme"] }
-# Every p2panda-net feature except `sqlite`. The address book runs on
-# stickleback's muniment-backed store, so p2panda-store's bundled SQLite
-# backend (and sqlx with it) stays out of the graph entirely. Feature
-# unification means EVERY consumer has to opt out, not just one.
-p2panda-net = { package = "mere-p2panda-net", version = "=0.7.5", default-features = false, features = [
-  "address_book",
-  "iroh_endpoint",
-  "iroh_mdns",
-  "discovery",
-  "gossip",
-  "sync",
-] }
-p2panda-store = { version = "0.7.0", default-features = false }
 p2panda-sync = "0.7.0"
 futures-util = "0.3"
 hex = "0.4"
 blake3 = "1.5"
-serde = { version = "1", features = ["derive"] }
 serde_bytes = "0.11"
-proofs.workspace = true
-tokio = { version = "1", features = ["io-util", "rt", "sync", "time"] }
 tokio-stream = "0.1"
 thiserror = "1"
+
+[dependencies.insigne]
+workspace = true
+features = [
+    "verify",
+]
+
+[dependencies.identity]
+workspace = true
+
+[dependencies.muniment]
+workspace = true
+
+[dependencies.p2panda-encryption]
+version = "0.7.0"
+features = [
+    "data_scheme",
+    "message_scheme",
+]
+
+[dependencies.p2panda-net]
+package = "mere-p2panda-net"
+version = "=0.7.5"
+default-features = false
+features = [
+    "address_book",
+    "iroh_endpoint",
+    "iroh_mdns",
+    "discovery",
+    "gossip",
+    "sync",
+]
+
+[dependencies.p2panda-store]
+version = "0.7.0"
+default-features = false
+
+[dependencies.serde]
+version = "1"
+features = [
+    "derive",
+]
+
+[dependencies.proofs]
+workspace = true
+
+[dependencies.tokio]
+version = "1"
+features = [
+    "io-util",
+    "rt",
+    "sync",
+    "time",
+]
 
 [dev-dependencies]
 serde_json = "1"
 pollster = "0.4"
-p2panda-stream = { version = "0.7.0", default-features = false, features = ["log_prune"] }
 tempfile = "3"
+
+[dev-dependencies.p2panda-stream]
+version = "0.7.0"
+default-features = false
+features = [
+    "log_prune",
+]

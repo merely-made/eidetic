@@ -3,21 +3,26 @@ rust-version = "1.97.1"
 name = "servitor"
 version = "0.0.2"
 edition = "2024"
-license.workspace = true
 description = "Capability-scoped resident helpers for graph applications: a participant holds a scoped structural capability and proposes changes through a validating gate, attributed and revision-checked."
-keywords = ["extension", "plugin", "capability", "agent"]
-repository = "https://github.com/merely-made/mere"
+keywords = [
+    "extension",
+    "plugin",
+    "capability",
+    "agent",
+]
+repository = "https://github.com/merely-made/eidetic"
 
-[dependencies]
-# The check conclusions and faults, named directly (insigne proofs plan, B).
-insigne = { workspace = true, features = ["verify"] }
-# The nested-graph substrate: a participant's inner world is a chartulary GraphLog,
-# and petitions commit through its attributed, revision-checked batch seam.
-chartulary = { version = "0.2.0", path = "../eidetic/chartulary" }
-# The SIGNED delegation grammar (2026-07-24 ruling): personae owns capability
-# delegation — certificates, attenuation, chains, revocation, and the identity
-# proof under them — and gemot's moot store already consumes it. Servitor does
-# not reimplement any of that; it contributes the TYPED capability view (`Cap`)
-# over the same certificates, so the participant tier and the moot tier share one
-# delegation system rather than two.
-identity.workspace = true
+[package.license]
+workspace = true
+
+[dependencies.insigne]
+workspace = true
+features = [
+    "verify",
+]
+
+[dependencies.chartulary]
+workspace = true
+
+[dependencies.identity]
+workspace = true

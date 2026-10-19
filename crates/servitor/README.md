@@ -17,16 +17,16 @@ validates and commits. A participant's inner world is an ordinary
 `chartulary::GraphLog`, the nested graph a graph-bearing node points at; wiring
 a host-graph node to bear it is the host's job.
 
-Headless and app-agnostic. Depends on the dependency-free `mere-capability`
-leaf for the shared algebra, `chartulary` for the nested-graph substrate, and
-`personae` (imported as `identity`) for the signed delegation grammar.
+Headless and app-agnostic. Owns the shared capability algebra and depends on
+`chartulary` for the nested-graph substrate, plus Personae and Insigne from
+Dramatis for signed delegation and proof checking.
 
 ## Modules
 
 | Module | Public items |
 | --- | --- |
 | root | `Subject` (a 32-byte public key; `new`, `from_hex`, `to_hex`, `to_author`) |
-| `cap` | compatibility re-exports of `Cap`, `Capability`, `ScopePath`, `FacetNamespace`, `CapError`, `assert_capability_laws` from `mere-capability` |
+| `cap` | `Cap`, `Capability`, `ScopePath`, `FacetNamespace`, `CapError`, and `assert_capability_laws` |
 | `grant` | `Grant`, `Mode`, `AuthorityProvider`, `GrantTable` |
 | `gate` | `Gate`, `GateError`, `read_projection`, `GRANT_PREFIX`, `PROJECTION_TAG`, `PROJECTION_MEDIA_TYPE` |
 | `delegation` | `DelegationTable`, `ChainError`, `cap_path`, `mode_action`, `mode_actions`, `scope_for`, `root_certificate`, `DENIZEN_DOMAIN` |
@@ -50,7 +50,7 @@ decisions. Tickets neither dispatch nor replay effects.
 
 This is the R1a source implementation described in the
 [resident/run redesign](../../design_docs/mere_docs/implementation_strategy/2026-08-13_graph_behaviors_plan.md#8-servitor-resident-and-run-redesign-2026-09-20).
-Cargo validation remains pending under the user's build hold. Procedural
+The independent Eidetic promotion gate on 2026-10-19 passed Servitor's 98 unit tests. Procedural
 guidance and evaluated adoption are later slices.
 
 ## Run outcomes
@@ -68,8 +68,7 @@ reconciliation; replay never retries them. A ticket still needs live authority
 and binding revalidation at dispatch.
 
 R1b includes source tests using a deterministic provider stub, stale replies,
-budget accounting and recovery. These tests have not been executed under the
-Cargo hold. A persisted host observation does not itself prove external effect
+budget accounting and recovery. These tests passed in the independent Eidetic promotion gate on 2026-10-19. A persisted host observation does not itself prove external effect
 completion or durable graph persistence; those acknowledgements belong to the
 consumer's ports.
 
