@@ -2,17 +2,35 @@
 rust-version = "1.97.1"
 name = "hagiograph"
 version = "0.0.1"
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
+repository = "https://github.com/merely-made/eidetic"
 description = "The history organ: standing marks along product-defined axes, feats judged against them, and deep time that gives a generated world its past. Judges and generates history; storage stays in journals."
 readme = "README.md"
-keywords = ["memory", "legend", "memorial", "history", "provenance"]
-categories = ["data-structures"]
-exclude = ["design_docs/"]
+keywords = [
+    "memory",
+    "legend",
+    "memorial",
+    "history",
+    "provenance",
+]
+categories = [
+    "data-structures",
+]
+exclude = [
+    "design_docs/",
+]
 
-[dependencies]
-serde = { workspace = true }
+[package.edition]
+workspace = true
 
-[dev-dependencies]
-postcard = { version = "1", default-features = false, features = ["alloc"] }
+[package.license]
+workspace = true
+
+[dependencies.serde]
+workspace = true
+
+[dev-dependencies.postcard]
+version = "1"
+default-features = false
+features = [
+    "alloc",
+]

@@ -2,13 +2,25 @@
 rust-version = "1.97.1"
 name = "mere-proofs"
 version = "0.1.0"
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
+repository = "https://github.com/merely-made/eidetic"
 description = "Typed digests, commitments, blob references, and proof envelopes for Mere domains."
 documentation = "https://docs.rs/mere-proofs"
-keywords = ["proofs", "digest", "commitment", "local-first"]
-categories = ["data-structures", "cryptography"]
+keywords = [
+    "proofs",
+    "digest",
+    "commitment",
+    "local-first",
+]
+categories = [
+    "data-structures",
+    "cryptography",
+]
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
 
 [lib]
 name = "proofs"
@@ -16,5 +28,10 @@ path = "src/lib.rs"
 
 [dependencies]
 blake3 = "1.5"
-serde = { version = "1", features = ["derive"] }
 thiserror = "1"
+
+[dependencies.serde]
+version = "1"
+features = [
+    "derive",
+]

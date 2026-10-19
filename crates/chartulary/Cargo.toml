@@ -1,35 +1,65 @@
 [package]
 rust-version = "1.97.1"
 name = "chartulary"
-# 0.2.0: `EdgeId` becomes `(writer, counter)`. Breaking, and deliberately taken
-# before any shared container carries data; 0.1.x journals still load, since a
-# bare counter reads back as `WriterId::LOCAL`.
 version = "0.2.2"
 edition = "2024"
-license.workspace = true
 description = "The generic content-addressed container graph (aka chart). Graph<N, E> on petgraph with capability traits, default Container/Relation payloads, RDF projection (`chartulary::rdf`), and the lineage layer (`chartulary::stemma`). The substrate binds muniment's blobs and journals into an app-agnostic graph."
-repository = "https://github.com/merely-made/mere"
-keywords = ["graph", "content-addressed", "knowledge-graph", "petgraph"]
-categories = ["data-structures"]
+repository = "https://github.com/merely-made/eidetic"
+keywords = [
+    "graph",
+    "content-addressed",
+    "knowledge-graph",
+    "petgraph",
+]
+categories = [
+    "data-structures",
+]
+
+[package.license]
+workspace = true
 
 [dependencies]
-petgraph = { version = "0.8", features = ["serde-1"] }
-serde = { version = "1", features = ["derive"] }
-# The facet payload (`facet::Facet::value`) is a JSON value: structured,
-# schema-agnostic node metadata. Matches eidetic's `SchemaDefinition` body type,
-# so the mere-side validator seam lines up without an encode/decode boundary.
 serde_json = "1"
-# For the content reference in ContentBearing (the blake3 Hash). default-features
-# off so chartulary does not pull muniment's JSON/postcard codecs, only its Hash.
-muniment = { path = "../muniment", version = "0.1.0", default-features = false }
-# The edit spine (G1): graph edits are a muniment journal.
-# The lineage layer (`chartulary::stemma`, folded in 2026-07-12): rkyv for the
-# zero-copy snapshot, slotmap for the visit arena.
-rkyv = { version = "0.8", features = ["std"] }
-slotmap = { version = "1.0", features = ["serde"] }
-# Deterministic resource identity; v5 needs no random-number backend.
-uuid = { version = "1", features = ["v5"] }
+
+[dependencies.petgraph]
+version = "0.8"
+features = [
+    "serde-1",
+]
+
+[dependencies.serde]
+version = "1"
+features = [
+    "derive",
+]
+
+[dependencies.muniment]
+workspace = true
+default-features = false
+
+[dependencies.rkyv]
+version = "0.8"
+features = [
+    "std",
+]
+
+[dependencies.slotmap]
+version = "1.0"
+features = [
+    "serde",
+]
+
+[dependencies.uuid]
+version = "1"
+features = [
+    "v5",
+]
 
 [dev-dependencies]
 pollster = "0.4"
-muniment = { path = "../muniment", version = "0.1.2", features = ["json"] }
+
+[dev-dependencies.muniment]
+workspace = true
+features = [
+    "json",
+]

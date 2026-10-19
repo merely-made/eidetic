@@ -3,82 +3,114 @@ rust-version = "1.97.1"
 name = "luggage"
 version = "0.1.0"
 edition = "2021"
-license.workspace = true
 description = "Self-update for packaged apps: signed manifests over pluggable feeds (HTTP, directory, GitHub Releases). A fork of cargo-packager-updater carrying the Merely family's update posture."
-repository = "https://github.com/merely-made/mere"
+repository = "https://github.com/merely-made/eidetic"
 
-# Forked 2026-07-24 from cargo-packager-updater 0.2.3 (Tauri Programme /
-# CrabNebula Ltd, MIT OR Apache-2.0), per the auto-update plan ruling: a
-# Rust-native update pipeline with no .NET anywhere. Divergences are additive
-# and recorded in README.md; upstream copyright headers are preserved on
-# derived files. Packing still uses upstream's cargo-packager CLI unchanged.
+[package.license]
+workspace = true
 
-# `native` carries everything that touches the network, the filesystem, or the
-# host process — the whole update pipeline. It is on by default, so every
-# existing consumer builds exactly as before.
-#
-# Turning it off leaves the release-identity core: what a release *is* (its
-# version, targets, artifact URLs, digests and signatures) and how to verify a
-# signature over it, with no I/O and no way to perform an update. That subset
-# compiles for wasm32, which is what lets the browser WebRTC carrier name a
-# release without either duplicating the type or dragging an updater into a
-# browser. See `design_docs/.../2026-08-25_browser_webrtc_carrier_plan.md` §6.
 [features]
-default = ["native"]
+default = [
+    "native",
+]
 native = [
-  "dep:base64",
-  "dep:blake3",
-  "dep:cargo-packager-utils",
-  "dep:dirs",
-  "dep:flate2",
-  "dep:http",
-  "dep:log",
-  "dep:minisign-verify",
-  "dep:percent-encoding",
-  "dep:reqwest",
-  "dep:tar",
-  "dep:tempfile",
+    "dep:base64",
+    "dep:blake3",
+    "dep:cargo-packager-utils",
+    "dep:dirs",
+    "dep:flate2",
+    "dep:http",
+    "dep:log",
+    "dep:minisign-verify",
+    "dep:percent-encoding",
+    "dep:reqwest",
+    "dep:tar",
+    "dep:tempfile",
 ]
 
-# ── Core: release identity and signature verification. Wasm-clean. ──────────
 [dependencies]
 semver = "1"
-serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 thiserror = "1"
-time = { version = "0.3", features = ["parsing", "formatting"] }
-url = { version = "2", features = ["serde"] }
 
-# ── Native: the update pipeline. ────────────────────────────────────────────
-base64 = { version = "0.22", optional = true }
-blake3 = { version = "1.5", optional = true }
-# `current_exe` that resolves symlinks/AppImage correctly; upstream's tiny
-# shared crate, consumed as published rather than forked.
-cargo-packager-utils = { version = "0.1.1", optional = true }
-dirs = { version = "5.0", optional = true }
-http = { version = "1", optional = true }
-log = { version = "0.4", optional = true }
-minisign-verify = { version = "0.2", optional = true }
-percent-encoding = { version = "2", optional = true }
-# rustls instead of upstream's default-features TLS: avoids the OpenSSL
-# system dependency on Linux and keeps the stack pure Rust.
-reqwest = { version = "0.12", default-features = false, features = [
-  "blocking",
-  "json",
-  "rustls-tls",
-], optional = true }
-tempfile = { version = "3.12", optional = true }
+[dependencies.serde]
+version = "1"
+features = [
+    "derive",
+]
 
-[target.'cfg(target_os = "macos")'.dependencies]
-flate2 = { version = "1.0", optional = true }
-tar = { version = "0.4", optional = true }
+[dependencies.time]
+version = "0.3"
+features = [
+    "parsing",
+    "formatting",
+]
+
+[dependencies.url]
+version = "2"
+features = [
+    "serde",
+]
+
+[dependencies.base64]
+version = "0.22"
+optional = true
+
+[dependencies.blake3]
+version = "1.5"
+optional = true
+
+[dependencies.cargo-packager-utils]
+version = "0.1.1"
+optional = true
+
+[dependencies.dirs]
+version = "5.0"
+optional = true
+
+[dependencies.http]
+version = "1"
+optional = true
+
+[dependencies.log]
+version = "0.4"
+optional = true
+
+[dependencies.minisign-verify]
+version = "0.2"
+optional = true
+
+[dependencies.percent-encoding]
+version = "2"
+optional = true
+
+[dependencies.reqwest]
+version = "0.12"
+default-features = false
+features = [
+    "blocking",
+    "json",
+    "rustls-tls",
+]
+optional = true
+
+[dependencies.tempfile]
+version = "3.12"
+optional = true
+
+[target."cfg(target_os = \"macos\")".dependencies.flate2]
+version = "1.0"
+optional = true
+
+[target."cfg(target_os = \"macos\")".dependencies.tar]
+version = "0.4"
+optional = true
 
 [dev-dependencies]
-# In-process minisign signing so tests exercise the real verification path.
 minisign = "0.7"
 
-# The manifest tool is part of the native pipeline: it hashes and signs files
-# on disk.
 [[bin]]
 name = "luggage-manifest"
-required-features = ["native"]
+required-features = [
+    "native",
+]
