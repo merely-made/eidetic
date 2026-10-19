@@ -79,6 +79,6 @@ Build phases and their done conditions live in the canonical plan, mere's
 `design_docs/mere_docs/technical_architecture/2026-07-08_generic_graph_substrate_plan.md`,
 and are not restated here: the module table above is what the crate actually
 ships, and a phase ladder copied into a README drifts from it.
-See [`design_docs/`](design_docs/).
+See [`design_docs/`](https://github.com/merely-made/eidetic/blob/main/crates/chartulary/design_docs).
 
 License: MPL-2.0 (see LICENSE).

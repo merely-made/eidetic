@@ -59,7 +59,7 @@ ownership of the events' domain meaning.
 
 Built from a survey of four consumers (woodshed, hocket, isometry, mere), each
 of which was hand-rolling this seam. The former standalone `codicil` log now
-lives here as the plainly named `Journal<T>`. See [`design_docs/`](design_docs/).
+lives here as the plainly named `Journal<T>`. See [`design_docs/`](https://github.com/merely-made/eidetic/blob/main/crates/muniment/design_docs).
 
 The name: a muniment room is where a household keeps its deeds and records, the
 documents preserved as evidence.

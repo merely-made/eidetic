@@ -100,7 +100,7 @@ budget, then hands a complete object to its existing domain admission path.
 An application acknowledgement follows that owner's result; transport receipt
 and domain admission remain separate observations. The selected real QUIC
 composition is documented in the
-[mesh receive example](../mesh/mesh/examples/retained_receive/README.md).
+[mesh receive example](https://github.com/merely-made/mere/blob/main/crates/mesh/mesh/examples/retained_receive/README.md).
 
 ## Advisory retained-object inventory
 
@@ -108,7 +108,7 @@ The `inventory` module supplies bounded exact/Cuckoo availability summaries and
 candidate selection. The caller owns retained bytes, namespace/read authority,
 peer authentication, expiry and service admission. Summaries are advisory;
 snapshot pagination and exact fallback remain explicit. The
-[finite comparison](examples/inventory_compare/README.md) records the policy,
+[finite comparison](https://github.com/merely-made/eidetic/blob/main/crates/stickleback/examples/inventory_compare/README.md) records the policy,
 initial bounds and current shared-ingress proposal with reproducible host inputs.
 
 ## Dependencies
