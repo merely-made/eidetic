@@ -155,7 +155,7 @@ Tests use `minisign` to sign in-process.
 
 ## License
 
-MPL-2.0 (see [`LICENSE`](../../../LICENSE)).
+MPL-2.0 (see [`LICENSE`](https://github.com/merely-made/mere/blob/main/LICENSE)).
 
 A substantial derivative of
 [`cargo-packager-updater`](https://crates.io/crates/cargo-packager-updater)
@@ -163,7 +163,7 @@ A substantial derivative of
 MIT OR Apache-2.0), relicensed under the 2026-08-22 license posture ruling
 with the upstream copyright notices retained verbatim on every derived file.
 Both MIT and Apache-2.0 permit this provided the notice travels with the work.
-Recorded in [`LICENSES.md`](../../../LICENSES.md).
+Recorded in [`LICENSES.md`](https://github.com/merely-made/mere/blob/main/LICENSES.md).
 
 Published version 0.1.0 carries MIT OR Apache-2.0 permanently; MPL-2.0 ships
 at the next functional bump.

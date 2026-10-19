@@ -1,6 +1,6 @@
 # Advisory inventory policy and finite comparison
 
-Stickleback's [`inventory`](../../src/inventory/mod.rs) module produces bounded
+Stickleback's [`inventory`](https://github.com/merely-made/eidetic/blob/main/crates/stickleback/src/inventory/mod.rs) module produces bounded
 availability hints for opaque retained objects. The caller owns original bytes,
 retention, namespace/read authority, authenticated peers and delivery admission.
 The leaf stores metadata, generates summaries and selects bounded offers. It
@@ -18,8 +18,8 @@ The output directory must be new. The runner builds the current Cargo-reported
 example executable and executes it twice in independent processes. Reports
 must be byte-identical. It saves one complete report, grouped summary, build/run
 logs, toolchain, source/lock/executable hashes and replay evidence. The selected
-[comparison](results/20261012/comparison.json), [summary](results/20261012/summary.json)
-and [provenance](results/20261012/metadata.json) are exploratory observations.
+[comparison](https://github.com/merely-made/eidetic/blob/main/crates/stickleback/examples/inventory_compare/results/20261012/comparison.json), [summary](https://github.com/merely-made/eidetic/blob/main/crates/stickleback/examples/inventory_compare/results/20261012/summary.json)
+and [provenance](https://github.com/merely-made/eidetic/blob/main/crates/stickleback/examples/inventory_compare/results/20261012/metadata.json) are exploratory observations.
 
 ## Policy contract
 
@@ -106,18 +106,18 @@ handshake from the object-first QUIC example. A candidate list is not a transfer
 permit. The initial Retinue producer may retain only four objects/64 KiB while
 the policy supports its larger maximum.
 
-The later [exact live composition](../../../mesh/mesh/examples/inventory_ingress/README.md)
+The later [exact live composition](https://github.com/merely-made/mere/blob/main/crates/mesh/mesh/examples/inventory_ingress/README.md)
 implements that proposal with the four-object producer, separately admitted
 inventory/submission actions and the existing resident endpoint/mesh owner.
 Its actual session, signed-byte and decoder evidence is separate from this
 finite policy comparison.
 
-The existing [`read_object` / `write_object`](../../src/object_stream.rs) helper
+The existing [`read_object` / `write_object`](https://github.com/merely-made/eidetic/blob/main/crates/stickleback/src/object_stream.rs) helper
 can carry bounded opaque messages. Live dispatch must acquire owning service
 capacity, retrieve current exact bytes, verify their whole-record digest, then
 freshly decode and invoke the existing operation/domain owner. Selected live QUIC
 and signed-operation evidence remains with the
-[mesh receive example](../../../mesh/mesh/examples/retained_receive/README.md).
+[mesh receive example](https://github.com/merely-made/mere/blob/main/crates/mesh/mesh/examples/retained_receive/README.md).
 
 ## Evidence boundary
 

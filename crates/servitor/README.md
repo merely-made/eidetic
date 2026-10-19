@@ -4,7 +4,7 @@ Terminology (2026-09-20): **participant** is the platform admission role;
 **servitor** is a resident helper. **Denizen** now belongs to Isometry's
 simulation vocabulary. Existing `DENIZEN_DOMAIN`, `denizen.binding`, and
 `denizen:` author spellings remain compatibility identifiers. See Mere's
-[canonical terminology](../../design_docs/TERMINOLOGY.md).
+[canonical terminology](https://github.com/merely-made/mere/blob/main/design_docs/TERMINOLOGY.md).
 
 Capability-scoped resident helpers for graph applications: a **participant** holds a
 scoped structural capability and proposes changes through a validating gate,
@@ -49,7 +49,7 @@ the caller. Hosts must still gate individual actions and persist their own lifec
 decisions. Tickets neither dispatch nor replay effects.
 
 This is the R1a source implementation described in the
-[resident/run redesign](../../design_docs/mere_docs/implementation_strategy/2026-08-13_graph_behaviors_plan.md#8-servitor-resident-and-run-redesign-2026-09-20).
+[resident/run redesign](https://github.com/merely-made/mere/blob/main/design_docs/mere_docs/implementation_strategy/2026-08-13_graph_behaviors_plan.md#8-servitor-resident-and-run-redesign-2026-09-20).
 The independent Eidetic promotion gate on 2026-10-19 passed Servitor's 98 unit tests. Procedural
 guidance and evaluated adoption are later slices.
 
