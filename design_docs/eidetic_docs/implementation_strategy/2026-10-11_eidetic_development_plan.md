@@ -1,14 +1,19 @@
 # Eidetic development: content, encounters and computed memory
 
 **Date:** 2026-10-11
-**Status (2026-10-19):** active plan, now owned by the independent Eidetic
+**Status (2026-10-20):** active plan, owned by the independent Eidetic
 repository. The bounded custody connection and first producer-to-retention
 paths below have published suppliers and locally qualified Turnstone integration.
 Focused checks and bounded headed macOS receipt runs qualify saved-document
 keyboard selection, sealed selected-text/voice receiving, cold playback and
 onward export through a synthetic wallet-backed custodian. The Turnstone
-consumer implementation and tested pins are published. Personal-vault migration
-and broader host gates remain separate.
+consumer implementation and tested pins are published. The October 20
+continuations also qualify embedded Knot primary-pointer selection and embedded
+Redshank text-note retention, source-absent cold reopening and onward export.
+These remain bounded native receipts over their recorded source cohort; the
+text-note fixture supplies existing owner-model notes, rather than headed
+full-owner authoring. Personal-vault migration and broader host gates remain
+separate.
 Turnstone's complete saved-source research workflow and authored Knot note
 join have bounded macOS receipts, distinct from portable selected-content
 transfer. The first Fleece portable-clip draft has
@@ -75,6 +80,81 @@ additional store of truth. Hagiograph remains the domain-defined history and
 significance organ; ordinary browsing visits do not acquire significance merely
 because they were recorded.
 
+### Post-extraction stack review, 2026-10-20
+
+This review separates the independent source home from the program's behavioral
+gates. Eidetic is a family of headless memory, graph, distribution and admission
+libraries; the `eidetic` crate is its durable-content member. Its normal
+first-party dependencies use its own libraries and Dramatis identity primitives.
+Murm is an Eidetic-core dev/carrier integration. Mere's shell, Fleece, session
+composition and ESP execution are not production back edges of these libraries.
+Fresh `rustup run 1.99.1 cargo metadata --locked --offline` confirms that the
+resolved normal/build closure has no Mere application source: its external
+first-party/fork sources are Dramatis and the patched p2panda source. This checks
+layering in the workspace resolver configuration, not isolated feature costs or
+browser execution.
+
+The three principal compositions remain:
+
+| Composition | Retained authority | Neighbor responsibility |
+|---|---|---|
+| Content and encounters | Muniment bytes/journals; Chartulary assertions and Stemma encounters; Eidetic manifests, typed content and evidence | Inker exposes document capabilities; Fleece extracts/assembles selected packages; Pandect and the host admit session attachments |
+| Recall and model work | Eidetic source/passage/run artifacts; derived indexes cite those artifacts and versions | `eidetic-search` supplies BM25/fusion; ESP supplies execution/embeddings; Distillery/Djinn supervise and retain runs |
+| Replication and acting participants | Stickleback accepted-operation storage/retention and Servitor scoped petitions/run reduction | Murm carries traffic, Gemot/domain policies authorize it, Dramatis supplies identity, and hosts execute admitted work |
+
+Hagiograph's product-defined significance and Luggage's signed release/update
+mechanics are additional independent consumers of this family's durable-history
+and artifact concerns. They do not turn a visit into a significant event or a
+content snapshot into an installable release.
+
+**Published-source checkpoint.** Fetched main refs are Eidetic `738ef159`, Mere
+`21deb0cb2`, Knot `aa81a33`, Woodshed `b2fe4df`, Isocosm `94d44212` and Turnstone
+`a08444e`. The first four consumer root locks resolve the extracted packages at
+one `738ef159` source each. Turnstone retains one `543f5ff3` source for its
+qualified host cohort. Between those Eidetic revisions, changes are plan/docs
+and Cargo feature inheritance; no Rust implementation changes. A pin difference
+alone does not invalidate a frozen native receipt or justify a blanket relock.
+The latest independent [library CI run](https://github.com/merely-made/eidetic/actions/runs/39381563909)
+passes at `738ef159`: workspace tests and a no-default-features workspace check.
+The promotion's 539-test receipt remains historical, not a new test count.
+Primary checkouts may be older or dirty; this checkpoint uses published Git
+objects, not their uncommitted state.
+
+**Evidence and open boundaries.** Turnstone's
+`docs/receipts/2026-10-20_knot_drag_retention/` and
+`docs/receipts/2026-10-20_redshank_text_retention/` add native selection,
+sealed retention, source removal, custodian/receiver restart and selected-only
+onward export. The latter binds 36 focused cases, four shipping-process phases
+and eight reviewed captures to `09a9ee68`; the source cohort remains explicit.
+The custodian is synthetic and wallet-backed. Full-owner authoring, installed
+personal custody, broader platforms and every P6 semantic checkpoint do not
+follow from these passes.
+
+Existing code already supplies `ClipTagV1` concept owner, statement and asserter
+fields, Chartulary's assertion journal and the graph resource-tag adapter. The
+new text receipt has empty tags; it does not qualify equal labels under distinct
+owners, suggestion acceptance or a reviewed reconnect edit. Fleece's bounded
+part traversal is implemented, while the native/browser heterogeneous collection
+with required assets and preserved external relations remains a separate gate.
+Muniment's Redb, directory and IndexedDB backends implement `transact`; Fjall and
+ZIP refuse it. An IndexedDB implementation or browser compile pass is not a
+headed browser durability/quota receipt. Deletion/reference policy and recovery
+remain named P6 decisions.
+
+**Recall re-entry cue.** In ESP `809deb6b` (the current Mere consumer pin),
+`crates/esp/src/embed/persistence.rs` still stores numerical dimensions, metric
+and entries without an embedding-space identity; `search.rs` checks dimensions
+when attaching an index. P4 and resident I10 therefore remain a live shared
+slice: persist model/algorithm, tokenizer/preprocessing, pooling/prefix/
+normalization, metric, dimensions, chunker and source revisions; accept a matching
+index after restart and refuse a same-dimension foreign space. Eidetic owns
+retained evidence/schema, ESP owns provider/index compatibility, and the resident
+recall consumer supplies the forcing end-to-end gate with lexical-versus-fused
+measurement. Keep generic numerical indexes usable independently. This boundary
+has higher shared value than another repository move or another equivalent
+text-copy receipt. Attributed tag/suggestion qualification is the smaller next
+extension when the immediate focus is portable-content semantics.
+
 ### Portable collections across meres
 
 This is a concrete outcome of the program. A person selects content gathered by
@@ -109,7 +189,8 @@ the shared profile, owner-adapter and tag design to this Eidetic/Fleece lane.
 The four verbatim [clip policy rulings](https://github.com/merely-made/mere/blob/main/design_docs/2026-08-12_family_composition_thesis_brief.md#clip-policy-rulings-2026-10-11)
 live once in the family brief: private source backing, note/body-first media,
 generated tags as queryable suggestions, and reviewed queued edits. They inform
-this draft; no schema is frozen and no headed mixed-runtime receipt exists yet.
+this draft. The schema remains a draft; the October 19 and 20 bounded native
+receipts below qualify their specific producer/receiver paths.
 
 #### First transfer draft (2026-10-11)
 
@@ -1081,3 +1162,16 @@ The implementation proposals still need these concrete decisions:
   main in [01658c739dd1f566b0317578ff5c94efa74720fe](https://github.com/merely-made/turnstone/commit/01658c739dd1f566b0317578ff5c94efa74720fe).
   The earlier local-state checkpoint records the state at qualification time.
   Publication preserves its source hashes and qualification limits.
+
+
+- **2026-10-20, post-extraction stack checkpoint.** Reviewed published supplier
+  and consumer manifests/locks, normal versus dev edges, backend transaction
+  capabilities, current recall persistence and independent CI. The stack review
+  above records ownership, bounded evidence and open contracts. Fresh locked,
+  offline metadata verifies the normal/build closure excludes Mere's application
+  source; local README links and `git diff --check` pass. Refreshed the
+  repository and core READMEs: lexical recall is BM25 and its ESP edge is
+  example/dev-only. No runtime formats, APIs, pins or implementation changed.
+  The October 20 Turnstone Knot and Redshank receipts extend the native host
+  evidence without closing all P4/P5/P6 requirements. This is source/receipt
+  assessment and documentation work, not a renewed build or host qualification.

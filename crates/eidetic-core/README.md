@@ -3,8 +3,8 @@
 Package and library are both `eidetic`. It was published as `mere-eidetic`
 through 0.0.2; that name is frozen.
 
-The owner-scoped local memory lane for the [mere](https://crates.io/crates/mere)
-browser. It owns the durable typed vocabulary: blob manifests, typed payloads,
+The owner-scoped durable-content library used by Mere and other hosts. It owns
+the durable typed vocabulary: blob manifests, typed payloads,
 schemas, codicils, bundles, packs, encrypt-at-rest markers, browsing traces, and
 content-addressed model artifacts. Portable intake retains original source bytes
 and reports conversion losses; content caching, image bytes and facet-schema
@@ -47,7 +47,7 @@ stores return ready futures.
 |---|---|---|
 | `pack-signing` | yes | Pack signing and verification via `personae` (`dep:identity`) |
 | `json-schema` | yes | Full JSON Schema validation via `jsonschema`. Without it, stored JSON Schema definitions return a "validator unavailable" error |
-| `lineage` | no | `browsing::lineage`, which projects a `chartulary::stemma` into `BrowsingTrace` codicils (`dep:chartulary`) |
+| `lineage` | no | `browsing::lineage`, which projects a `chartulary::stemma` into `BrowsingTrace` codicils |
 
 ## Explicit retained copies
 
@@ -78,10 +78,12 @@ URL caches, public export, hosting, expiry and permission to erase.
   implementations of Eidetic's `BlobFetcher` contract. `resolve_blob` retains
   content-hash verification and local caching; Eidetic has no concrete network
   or database implementation in its runtime dependency cone.
-- `eidetic-search`: a tantivy `TrailIndex` minted from `BrowsingTrace`
-  codicils. Lives at `crates/intel/eidetic-search`, not in the eidetic
-  directory: the index is a Mere product concern reaching `esp` and Eidetic intake,
-  and the eidetic directory is the portable core.
+- `eidetic-search`: derived lexical recall in Mere's
+  `crates/intel/eidetic-search`. Its production library uses in-tree weighted
+  BM25, Genet text segmentation and Eidetic records; the caller supplies vector
+  rankings to its fusion seam. ESP is an example/dev integration, not a
+  production dependency of the lexical library. Indexes are rebuildable views
+  over retained evidence.
 
 ## License
 
