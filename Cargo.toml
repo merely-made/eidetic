@@ -24,6 +24,7 @@ authors = [
 [workspace.dependencies.muniment]
 version = "0.1.2"
 path = "crates/muniment"
+default-features = false
 
 [workspace.dependencies.identity]
 package = "personae"

@@ -46,6 +46,9 @@ workspace = true
 
 [dependencies.muniment]
 workspace = true
+features = [
+    "json",
+]
 
 [dependencies.p2panda-encryption]
 version = "0.7.0"

@@ -98,5 +98,6 @@ features = [
 workspace = true
 features = [
     "fjall",
+    "json",
     "redb",
 ]
