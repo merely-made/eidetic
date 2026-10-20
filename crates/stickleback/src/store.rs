@@ -135,6 +135,17 @@ impl<E> Default for BatchPlan<E> {
 }
 
 impl<E: Extensions> BatchPlan<E> {
+    /// Lower the final overlay into one backend write per key.
+    fn into_writes(self) -> Vec<WriteOp> {
+        self.writes
+            .into_iter()
+            .map(|(key, value)| match value {
+                Some(value) => WriteOp::Put { key, value },
+                None => WriteOp::Delete { key },
+            })
+            .collect()
+    }
+
     /// Fold one caller-supplied write into the plan, last decision winning.
     fn record(&mut self, write: WriteOp) {
         match write {
@@ -619,14 +630,7 @@ where
         for write in trailing_writes {
             plan.record(write.clone());
         }
-        let writes: Vec<_> = plan
-            .writes
-            .into_iter()
-            .map(|(key, value)| match value {
-                Some(value) => WriteOp::Put { key, value },
-                None => WriteOp::Delete { key },
-            })
-            .collect();
+        let writes = plan.into_writes();
         self.backend.apply(&writes).await
     }
 
@@ -638,8 +642,8 @@ where
         plan: &mut BatchPlan<E>,
         entry: &IndexedOperation<'_, E, L>,
         prefix: &str,
-    ) -> Result<(), StoreError> {
-        let (live_prune, _) = self
+    ) -> Result<u64, StoreError> {
+        let (live_prune, pruned_entries) = self
             .prefix_prune_writes(
                 &entry.operation.header.verifying_key,
                 entry.log_id,
@@ -650,7 +654,7 @@ where
             plan.record(write);
         }
         plan.prune_planned(prefix, entry.operation.header.seq_num);
-        Ok(())
+        Ok(pruned_entries)
     }
 
     /// Plan the erasure of one operation's payload, keeping its signed header.
@@ -658,13 +662,13 @@ where
     /// This reads through the batch's own pending writes before the backend, so
     /// an operation this batch is still assembling is erased in place rather
     /// than read back stale. That overlay is why the single-operation path in
-    /// [`Self::insert_indexed_operation_with_effects`] cannot simply call this:
-    /// it plans into an ordered `Vec<WriteOp>` with no overlay to consult.
+    /// [`Self::insert_indexed_operation_with_effects`] uses this same overlay,
+    /// so pruning and erasure compose with identical last-write semantics.
     async fn plan_payload_erasure(
         &self,
         plan: &mut BatchPlan<E>,
         id: &Hash,
-    ) -> Result<(), StoreError> {
+    ) -> Result<bool, StoreError> {
         let id_hex = id.to_hex();
         if let Some(operation) = plan.planned.get_mut(&id_hex) {
             if let Some(payload_ref) = operation.payload_ref.as_ref() {
@@ -676,15 +680,16 @@ where
                     Some(encode_blob(&operation.header, None)?),
                 );
                 operation.has_body = false;
+                return Ok(true);
             }
-            return Ok(());
+            return Ok(false);
         }
         let payload_pointer = op_ptr(id);
         if matches!(plan.writes.get(&payload_pointer), Some(None)) {
-            return Ok(());
+            return Ok(false);
         }
         let Some(payload_log_key) = self.log_key_for(id).await? else {
-            return Ok(());
+            return Ok(false);
         };
         let payload_blob = match plan.writes.get(&payload_log_key) {
             Some(Some(bytes)) => Some(bytes.clone()),
@@ -692,17 +697,18 @@ where
             None => self.backend.get(&payload_log_key).await?,
         };
         let Some(payload_blob) = payload_blob else {
-            return Ok(());
+            return Ok(false);
         };
         let (header, body) = decode_blob::<E>(&payload_blob[..])?;
         if let Some(payload_hash) = header.payload_hash.as_ref() {
             plan.writes.insert(payload_ref_key(payload_hash, id), None);
         }
-        if body.is_some() {
+        let erased = body.is_some();
+        if erased {
             plan.writes
                 .insert(payload_log_key.clone(), Some(encode_blob(&header, None)?));
         }
-        Ok(())
+        Ok(erased)
     }
 
     /// Atomically index one operation and optionally remove its preceding log.
@@ -739,65 +745,28 @@ where
         if self.backend.get(&ptr).await?.is_some() {
             return Ok((false, 0, 0));
         }
-        let topic = topic_key(topic, &operation.header.verifying_key, log_id)?;
+        let topic_key = topic_key(topic, &operation.header.verifying_key, log_id)?;
         let prefix = log_prefix(&operation.header.verifying_key, log_id)?;
         let log_key = format!("{prefix}{:016x}", operation.header.seq_num);
-        let blob = encode_op(operation)?;
-        let (mut writes, pruned_entries) = if prune_before_current {
-            self.prefix_prune_writes(
-                &operation.header.verifying_key,
-                log_id,
-                operation.header.seq_num,
-            )
-            .await?
+        let indexed = IndexedOperation {
+            topic,
+            operation,
+            log_id,
+            prune_before_current,
+            erase_payloads,
+        };
+        let mut plan = BatchPlan::<E>::default();
+        let pruned_entries = if prune_before_current {
+            self.plan_prune_writes(&mut plan, &indexed, &prefix).await?
         } else {
-            (Vec::new(), 0)
+            0
         };
         let mut erased_payloads = 0;
         for id in erase_payloads {
-            let Some(payload_log_key) = self.log_key_for(id).await? else {
-                continue;
-            };
-            let Some(payload_blob) = self.backend.get(&payload_log_key).await? else {
-                continue;
-            };
-            let (header, body) = decode_blob::<E>(&payload_blob[..])?;
-            if let Some(payload_hash) = header.payload_hash.as_ref() {
-                writes.push(WriteOp::Delete {
-                    key: payload_ref_key(payload_hash, id),
-                });
-            }
-            if body.is_none() {
-                continue;
-            }
-            let stripped = encode_blob(&header, None)?;
-            writes.push(WriteOp::Put {
-                key: payload_log_key.clone(),
-                value: stripped,
-            });
-            erased_payloads += 1;
+            erased_payloads += u64::from(self.plan_payload_erasure(&mut plan, id).await?);
         }
-        writes.extend([
-            WriteOp::Put {
-                key: topic,
-                value: Vec::new(),
-            },
-            WriteOp::Put {
-                key: log_key.clone(),
-                value: blob,
-            },
-            WriteOp::Put {
-                key: ptr,
-                value: log_key.clone().into_bytes(),
-            },
-        ]);
-        if let Some(payload_hash) = operation.header.payload_hash.as_ref() {
-            writes.push(WriteOp::Put {
-                key: payload_ref_key(payload_hash, &operation.hash),
-                value: log_key.into_bytes(),
-            });
-        }
-        self.backend.apply(&writes).await?;
+        plan.plan_operation(&indexed, topic_key, prefix, log_key, ptr)?;
+        self.backend.apply(&plan.into_writes()).await?;
         Ok((true, pruned_entries, erased_payloads))
     }
 

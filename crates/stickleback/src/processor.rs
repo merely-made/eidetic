@@ -507,6 +507,59 @@ mod tests {
         }
     }
 
+    #[derive(Clone)]
+    struct RetentionPolicy {
+        erase: p2panda_core::Hash,
+    }
+
+    impl OperationPolicy<TestExt> for RetentionPolicy {
+        type LogId = u64;
+
+        fn admit(&self, operation: &Operation<TestExt>) -> Result<Admission<u64>, Reject> {
+            let target = StoreTarget::new(
+                Topic::from([operation.header.extensions.space as u8; 32]),
+                operation.header.extensions.space,
+            );
+            if operation.header.seq_num == 1 {
+                // Repeating an authorized id must not inflate the erased
+                // header count or apply the same erasure more than once.
+                Ok(Admission::prune_before_current(target)
+                    .erasing_payloads([self.erase.clone(), self.erase.clone()]))
+            } else {
+                Ok(Admission::keep(target))
+            }
+        }
+    }
+
+    fn retention_processor(
+        erase: &p2panda_core::Hash,
+    ) -> OperationProcessor<MemoryBackend, TestExt, RetentionPolicy> {
+        OperationProcessor::new(
+            MunimentStore::new(MemoryBackend::new()),
+            RetentionPolicy {
+                erase: erase.clone(),
+            },
+        )
+    }
+
+    async fn retention_snapshot(
+        processor: &OperationProcessor<MemoryBackend, TestExt, RetentionPolicy>,
+    ) -> Vec<(String, Option<Vec<u8>>)> {
+        let backend = processor.store().backend();
+        let mut keys = Vec::new();
+        for prefix in ["log/", "op/", "payload-ref/"] {
+            keys.extend(backend.list(prefix).await.unwrap());
+        }
+        keys.sort();
+        keys.dedup();
+        let mut snapshot = Vec::new();
+        for key in keys {
+            let value = backend.get(&key).await.unwrap();
+            snapshot.push((key, value));
+        }
+        snapshot
+    }
+
     fn make_op(
         signing_key: &SigningKey,
         space: u64,
@@ -548,6 +601,120 @@ mod tests {
                 require_body: false,
             },
         )
+    }
+
+    /// A checkpoint that both prunes sequence 0 and names its payload for
+    /// erasure must leave the same durable keys through either processor path.
+    /// Pruning removes the operation entirely, so it contributes one prune
+    /// and zero retained-payload erasures to the single-operation outcome.
+    #[test]
+    fn retention_single_and_batch_compose_prune_with_overlapping_erasure() {
+        pollster::block_on(async {
+            let signing_key = SigningKey::generate();
+            let payload = make_op(&signing_key, 7, 0, None);
+            let checkpoint = make_op(&signing_key, 7, 1, Some(payload.hash));
+
+            let single = retention_processor(&payload.hash);
+            assert!(single.process(&payload).await.unwrap().inserted());
+            let single_outcome = single.process(&checkpoint).await.unwrap();
+
+            let batch = retention_processor(&payload.hash);
+            let outcome = batch
+                .process_batch_atomic(&[payload.clone(), checkpoint.clone()], &[], &[])
+                .await
+                .unwrap();
+            assert_eq!(
+                retention_snapshot(&single).await,
+                retention_snapshot(&batch).await
+            );
+            assert_eq!(outcome.inserted, 2);
+            assert_eq!(outcome.duplicate, 0);
+            assert_eq!(
+                single_outcome,
+                ProcessOutcome::Inserted {
+                    pruned_entries: 1,
+                    erased_payloads: 0,
+                }
+            );
+            assert!(
+                single
+                    .store()
+                    .get_operation(&checkpoint.hash)
+                    .await
+                    .unwrap()
+                    .is_some()
+            );
+            assert!(
+                single
+                    .store()
+                    .get_operation(&checkpoint.hash)
+                    .await
+                    .unwrap()
+                    .unwrap()
+                    .body
+                    .is_some()
+            );
+            assert!(
+                single
+                    .store()
+                    .get_operation(&payload.hash)
+                    .await
+                    .unwrap()
+                    .is_none()
+            );
+        });
+    }
+
+    /// An erase target in another log survives prefix pruning and is stripped
+    /// exactly once in both paths. BatchProcessOutcome intentionally reports
+    /// admission totals only; retention counts remain on ProcessOutcome.
+    #[test]
+    fn retention_single_and_batch_erase_payload_outside_pruned_prefix() {
+        pollster::block_on(async {
+            let signing_key = SigningKey::generate();
+            let outside = make_op(&signing_key, 8, 0, None);
+            let base = make_op(&signing_key, 7, 0, None);
+            let checkpoint = make_op(&signing_key, 7, 1, Some(base.hash));
+
+            let single = retention_processor(&outside.hash);
+            assert!(single.process(&outside).await.unwrap().inserted());
+            assert!(single.process(&base).await.unwrap().inserted());
+            assert_eq!(
+                single.process(&checkpoint).await.unwrap(),
+                ProcessOutcome::Inserted {
+                    pruned_entries: 1,
+                    erased_payloads: 1,
+                }
+            );
+
+            let batch = retention_processor(&outside.hash);
+            assert!(batch.process(&outside).await.unwrap().inserted());
+            let outcome = batch
+                .process_batch_atomic(&[base, checkpoint.clone()], &[], &[])
+                .await
+                .unwrap();
+            assert_eq!(outcome.inserted, 2);
+            assert_eq!(outcome.duplicate, 0);
+            assert_eq!(
+                retention_snapshot(&single).await,
+                retention_snapshot(&batch).await
+            );
+            let retained = single
+                .store()
+                .get_operation(&outside.hash)
+                .await
+                .unwrap()
+                .unwrap();
+            assert!(retained.body.is_none());
+            assert!(
+                single
+                    .store()
+                    .get_operation(&checkpoint.hash)
+                    .await
+                    .unwrap()
+                    .is_some()
+            );
+        });
     }
 
     #[test]
