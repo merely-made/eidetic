@@ -29,7 +29,7 @@ Muniment and Pandect respectively.
 | `content_store` / `image_content` | Store-neutral fetched-content cache and content-addressed image bytes, with stable existing keys |
 | `schema_facets` | Eidetic schema registration and Chartulary facet validation |
 | `deleted` | `DeletedNode`, `record_deleted`, `list_deleted`, `purge_deleted`, `clear_deleted` |
-| `models` | `ModelManifest`, `ModelLibrary`, `ModelComponents`, `OpaqueBlob` |
+| `models` | `ModelManifest`, `ModelLibrary`, `ModelComponents`, `OpaqueBlob`; `models::embedding` binds an exact embedding space, chunker and source revisions for compatible derived indexes |
 
 ## The store seam
 
