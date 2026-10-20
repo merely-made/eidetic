@@ -13,9 +13,10 @@
 
 use std::cmp::Reverse;
 use std::collections::{BTreeMap, BTreeSet};
-use std::fs::File;
+use std::fs::{self, File, OpenOptions};
 use std::io::{BufReader, BufWriter, Read, Write};
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicU64, Ordering};
 
 use muniment::{Backend, StoreError, WriteOp};
 use p2panda_core::cbor::{decode_cbor, encode_cbor};
@@ -111,6 +112,85 @@ pub struct DropImportReport {
 pub struct StagedDrop {
     pub drop_id: DropId,
     pub record_count: u64,
+}
+
+static NEXT_EXPORT_TEMP_ID: AtomicU64 = AtomicU64::new(0);
+
+/// Write a complete drop beside its destination and publish it with rename.
+/// Validation, write, flush, and sync failures leave the old destination alone.
+/// Platforms that cannot rename over an existing destination return that
+/// publication error with the old file intact. On Unix, existing permission
+/// bits are retained; new files use the usual `0666` mode filtered by umask.
+fn write_staged_drop<T>(
+    target: &Path,
+    write: impl FnOnce(&mut BufWriter<File>) -> Result<T, NativeDropError>,
+) -> Result<T, NativeDropError> {
+    let (temporary, file, existing_permissions) = create_export_temporary(target)?;
+    let result = (|| {
+        let mut writer = BufWriter::new(file);
+        let result = write(&mut writer)?;
+        writer.flush()?;
+        if let Some(permissions) = existing_permissions {
+            writer.get_ref().set_permissions(permissions)?;
+        }
+        writer.get_ref().sync_all()?;
+        drop(writer);
+        fs::rename(&temporary, target)?;
+        Ok(result)
+    })();
+    if result.is_err() {
+        let _ = fs::remove_file(&temporary);
+    }
+    result
+}
+
+fn create_export_temporary(
+    target: &Path,
+) -> std::io::Result<(PathBuf, File, Option<std::fs::Permissions>)> {
+    let parent = target
+        .parent()
+        .filter(|parent| !parent.as_os_str().is_empty())
+        .unwrap_or(Path::new("."));
+    let name = target.file_name().ok_or_else(|| {
+        std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "drop export path has no file name",
+        )
+    })?;
+    let existing_permissions = match fs::metadata(target) {
+        Ok(metadata) if metadata.is_file() => Some(metadata.permissions()),
+        Ok(_) => None,
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => None,
+        Err(error) => return Err(error),
+    };
+
+    loop {
+        let mut temporary_name = name.to_os_string();
+        temporary_name.push(format!(
+            ".{}.{}.tmp",
+            std::process::id(),
+            NEXT_EXPORT_TEMP_ID.fetch_add(1, Ordering::Relaxed)
+        ));
+        let temporary = parent.join(temporary_name);
+        let mut options = OpenOptions::new();
+        options.write(true).create_new(true);
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::{OpenOptionsExt, PermissionsExt};
+            let mode = existing_permissions
+                .as_ref()
+                .map(|permissions| (permissions.mode() & 0o7777) | 0o200)
+                .unwrap_or(0o666);
+            options.mode(mode);
+        }
+        match options.open(&temporary) {
+            Ok(file) => {
+                return Ok((temporary, file, existing_permissions));
+            },
+            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => continue,
+            Err(error) => return Err(error),
+        }
+    }
 }
 
 // Keep the local marker schema stable. The semantic DropId remains in its key;
@@ -295,12 +375,9 @@ where
     L: LogId,
 {
     let records = export_topic_operations::<B, E, L>(store, topic, profile).await?;
-    let file = File::create(path).map_err(NativeDropError::Io)?;
-    let mut writer = BufWriter::new(file);
-    let receipt = write_plain_drop(&mut writer, &records, limits)?;
-    writer.flush().map_err(NativeDropError::Io)?;
-    writer.get_ref().sync_all().map_err(NativeDropError::Io)?;
-    Ok(receipt)
+    Ok(write_staged_drop(path.as_ref(), |writer| {
+        write_plain_drop(writer, &records, limits)
+    })?)
 }
 
 /// Export one topic after domain privacy/priority selection.
@@ -320,11 +397,9 @@ where
 {
     let (records, selection) =
         export_topic_operations_selected::<B, E, L, S>(store, topic, selector, budget).await?;
-    let file = File::create(path).map_err(NativeDropError::Io)?;
-    let mut writer = BufWriter::new(file);
-    let drop = write_plain_drop(&mut writer, &records, limits)?;
-    writer.flush().map_err(NativeDropError::Io)?;
-    writer.get_ref().sync_all().map_err(NativeDropError::Io)?;
+    let drop = write_staged_drop(path.as_ref(), |writer| {
+        write_plain_drop(writer, &records, limits)
+    })?;
     Ok(DropFileExportReport { drop, selection })
 }
 
@@ -348,11 +423,9 @@ where
 {
     let (records, selection) =
         export_topic_operations_selected::<B, E, L, S>(store, topic, selector, budget).await?;
-    let file = File::create(path).map_err(NativeDropError::Io)?;
-    let mut writer = BufWriter::new(file);
-    let drop = write_protected_drop(&mut writer, &records, limits, protector)?;
-    writer.flush().map_err(NativeDropError::Io)?;
-    writer.get_ref().sync_all().map_err(NativeDropError::Io)?;
+    let drop = write_staged_drop(path.as_ref(), |writer| {
+        write_protected_drop(writer, &records, limits, protector)
+    })?;
     Ok(DropFileExportReport { drop, selection })
 }
 
@@ -922,6 +995,27 @@ mod tests {
         }
     }
 
+    struct TestProtector;
+
+    impl DropProtector for TestProtector {
+        fn suite_id(&self) -> u16 {
+            1
+        }
+
+        fn protect(&self, plaintext: &[u8], _aad: &[u8]) -> Result<Vec<u8>, NativeDropError> {
+            Ok(plaintext.to_vec())
+        }
+
+        fn unprotect(
+            &self,
+            protected: &[u8],
+            _aad: &[u8],
+            _max_plaintext_bytes: u64,
+        ) -> Result<Vec<u8>, NativeDropError> {
+            Ok(protected.to_vec())
+        }
+    }
+
     #[derive(Clone)]
     struct EffectPolicy {
         erase: p2panda_core::Hash,
@@ -1057,6 +1151,12 @@ mod tests {
                     .unwrap()
                     .as_nanos()
             ));
+            std::fs::write(&path, b"previous export").unwrap();
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o600)).unwrap();
+            }
             let written = export_plain_topic_file::<_, _, u64>(
                 &path,
                 source.store(),
@@ -1067,6 +1167,15 @@ mod tests {
             .await
             .unwrap();
             assert!(written.total_bytes > 52);
+            assert_ne!(std::fs::read(&path).unwrap(), b"previous export");
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                assert_eq!(
+                    std::fs::metadata(&path).unwrap().permissions().mode() & 0o777,
+                    0o600
+                );
+            }
 
             let destination =
                 OperationProcessor::new(MunimentStore::new(MemoryBackend::new()), Policy);
@@ -1084,6 +1193,122 @@ mod tests {
             assert_eq!(repeated.duplicate, 2);
             std::fs::remove_file(path).unwrap();
         });
+    }
+
+    #[test]
+    fn refused_file_exports_preserve_existing_destination() {
+        pollster::block_on(async {
+            let key = SigningKey::generate();
+            let operation = operation(&key, 0, None);
+            let source = OperationProcessor::new(MunimentStore::new(MemoryBackend::new()), Policy);
+            source.process(&operation).await.unwrap();
+
+            let directory = tempfile::tempdir().unwrap();
+            let path = directory.path().join("existing.meredrop");
+            let sentinel = b"preserve this prior export";
+            let mut limits = DropLimits::default();
+            limits.max_protected_bytes = 0;
+
+            std::fs::write(&path, sentinel).unwrap();
+            assert!(
+                export_plain_topic_file::<_, _, u64>(
+                    &path,
+                    source.store(),
+                    &Topic::from([7; 32]),
+                    DropExportProfile::default(),
+                    limits,
+                )
+                .await
+                .is_err()
+            );
+            assert_eq!(std::fs::read(&path).unwrap(), sentinel);
+
+            std::fs::write(&path, sentinel).unwrap();
+            assert!(
+                export_selected_plain_topic_file::<_, _, u64, _>(
+                    &path,
+                    source.store(),
+                    &Topic::from([7; 32]),
+                    &DropExportProfile::default(),
+                    DropExportBudget::default(),
+                    limits,
+                )
+                .await
+                .is_err()
+            );
+            assert_eq!(std::fs::read(&path).unwrap(), sentinel);
+
+            std::fs::write(&path, sentinel).unwrap();
+            assert!(
+                export_protected_topic_file::<_, _, u64, _, _>(
+                    &path,
+                    source.store(),
+                    &Topic::from([7; 32]),
+                    &DropExportProfile::default(),
+                    DropExportBudget::default(),
+                    limits,
+                    &TestProtector,
+                )
+                .await
+                .is_err()
+            );
+            assert_eq!(std::fs::read(&path).unwrap(), sentinel);
+
+            let entries = std::fs::read_dir(directory.path())
+                .unwrap()
+                .map(|entry| entry.unwrap().file_name())
+                .collect::<Vec<_>>();
+            assert_eq!(entries, vec![std::ffi::OsString::from("existing.meredrop")]);
+        });
+    }
+
+    #[test]
+    fn staged_write_failure_preserves_destination_and_cleans_temporary() {
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("existing.meredrop");
+        let sentinel = b"preserve this prior export";
+        std::fs::write(&path, sentinel).unwrap();
+
+        let result: Result<(), NativeDropError> = write_staged_drop(&path, |writer| {
+            writer.write_all(b"partial replacement")?;
+            Err(NativeDropError::Io(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                "injected write failure",
+            )))
+        });
+        assert!(result.is_err());
+        assert_eq!(std::fs::read(&path).unwrap(), sentinel);
+        assert_eq!(
+            std::fs::read_dir(directory.path()).unwrap().count(),
+            1,
+            "failed export should remove its staged sibling"
+        );
+    }
+
+    #[test]
+    fn refused_publication_preserves_directory_destination_and_cleans_temporary() {
+        let parent = tempfile::tempdir().unwrap();
+        let destination = parent.path().join("occupied.meredrop");
+        std::fs::create_dir(&destination).unwrap();
+        std::fs::write(destination.join("sentinel"), b"keep directory contents").unwrap();
+
+        let result = write_staged_drop(&destination, |writer| {
+            writer.write_all(b"complete staged export")?;
+            Ok(())
+        });
+        assert!(
+            result.is_err(),
+            "renaming a file onto a directory must be refused"
+        );
+        assert_eq!(
+            std::fs::read(destination.join("sentinel")).unwrap(),
+            b"keep directory contents"
+        );
+        assert_eq!(
+            std::fs::read_dir(parent.path()).unwrap().count(),
+            1,
+            "refused publication should remove its staged sibling"
+        );
     }
 
     #[test]
