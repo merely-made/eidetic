@@ -659,6 +659,17 @@ numerical index usable independently. Review existing lexical recall and ranking
 fusion before choosing further indexing dependencies. Derived indexes are
 rebuildable projections, and changed source versions invalidate affected results.
 
+**Embedding continuation (2026-10-20): landed and qualified through resident
+I10.** `models::embedding` owns the retained contract; ESP's opt-in guarded index
+binds the provider's exact loaded bytes and transforms. Mere's separate native
+processes accept the same private projection after cold reopen over retained
+page text with the origin corpus absent, refuse foreign same-dimension spaces
+and changed source/chunker/legacy records, and measure lexical/vector/fused
+recall on a frozen corpus. Canonical metrics, hashes, commands and qualification
+limits live in `mere/support/receipts/resident-embedding-20261020/qualification.json`
+and Mere's resident inference plan, I10. This completes the envelope consumer
+slice; P4's traversal, assessment/tag and review requirements remain distinct.
+
 Compose one real goal/query consumer with Fleece traversal and ESP assessment.
 Distillery's inference surface uses exact model sessions and retains input
 references, settings, output references and terminal status in Eidetic. Cancelled
@@ -1192,3 +1203,14 @@ The implementation proposals still need these concrete decisions:
   thirteen same-dimension identity/settings changes, unknown versions, duplicate
   source identities and missing revisions). This publishes the retained schema
   for downstream ESP integration; resident qualification remains in progress.
+
+- **2026-10-20, embedding envelope consumer qualified.** The published retained
+  contract `34105d63` and ESP guarded implementation `6d371901` compose in Mere
+  `fb56a2ae1`. The resident I10 gate passes matching separate-process cold reopen,
+  exact retained-source passage identity, same-dimension foreign-space refusal,
+  source/chunker/legacy refusal, a bounded vector index and the fixed
+  lexical/vector/fused comparison. The canonical receipt is
+  `mere/support/receipts/resident-embedding-20261020/qualification.json`.
+  The real MiniLM retriever is paired with a tiny exact-session decoder fixture;
+  this receipt measures retrieval and native IPC, without a new trained-answer,
+  headed UI, browser, assessment/tag or second-device verdict.
