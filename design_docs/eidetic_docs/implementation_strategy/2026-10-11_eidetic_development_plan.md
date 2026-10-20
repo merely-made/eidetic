@@ -6,8 +6,9 @@ repository. The bounded custody connection and first producer-to-retention
 paths below have published suppliers and locally qualified Turnstone integration.
 Focused checks and bounded headed macOS receipt runs qualify saved-document
 keyboard selection, sealed selected-text/voice receiving, cold playback and
-onward export through a synthetic wallet-backed custodian. Consumer publication,
-personal-vault migration and broader host gates remain separate.
+onward export through a synthetic wallet-backed custodian. The Turnstone
+consumer implementation and tested pins are published. Personal-vault migration
+and broader host gates remain separate.
 Turnstone's complete saved-source research workflow and authored Knot note
 join have bounded macOS receipts, distinct from portable selected-content
 transfer. The first Fleece portable-clip draft has
@@ -1074,3 +1075,9 @@ The implementation proposals still need these concrete decisions:
   headed embedded Redshank text-note retention and broader browser/structured
   receiving keep their own gates. No whole-P6 or heterogeneous-collection
   completion is claimed, and frozen earlier packets are unchanged.
+
+- **2026-10-19, consumer publication follow-up.** Turnstone's qualified custody
+  integration, tested supplier pins and frozen receipts are now published on
+  main in [01658c739dd1f566b0317578ff5c94efa74720fe](https://github.com/merely-made/turnstone/commit/01658c739dd1f566b0317578ff5c94efa74720fe).
+  The earlier local-state checkpoint records the state at qualification time.
+  Publication preserves its source hashes and qualification limits.
