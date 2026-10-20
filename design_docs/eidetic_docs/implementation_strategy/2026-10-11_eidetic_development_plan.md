@@ -1175,3 +1175,20 @@ The implementation proposals still need these concrete decisions:
   The October 20 Turnstone Knot and Redshank receipts extend the native host
   evidence without closing all P4/P5/P6 requirements. This is source/receipt
   assessment and documentation work, not a renewed build or host qualification.
+
+
+- **2026-10-20, embedding envelope implementation started.** The retained
+  contract lives in `models::embedding`: exact provider/transform identity,
+  artifact digests and settings, numerical shape/metric and a versioned chunker
+  over unique exact source revisions. ESP supplies the provider-bound guarded
+  index path; the resident consumes it without changing the generic numerical
+  index API. Qualification requires a real provider over retained source text,
+  separate-process cold reopen, same-dimension foreign-space refusal, stale
+  source/chunker refusal and a fixed held-out lexical/fused comparison. Runtime
+  source authority and private custody stay with the existing owners. This
+  checkpoint is in progress; no acceptance claim is made yet.
+
+  The contract's focused checks pass (two cases covering matching serialization,
+  thirteen same-dimension identity/settings changes, unknown versions, duplicate
+  source identities and missing revisions). This publishes the retained schema
+  for downstream ESP integration; resident qualification remains in progress.
