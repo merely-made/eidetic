@@ -543,9 +543,15 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
     /// Apply every ready, unsettled frame to `session` in causal order.
     ///
     /// When anything was applied, `persist` receives the advanced session
-    /// before the settled marks are written. If it fails, no mark is written
-    /// and the next pass judges those frames again: the session's own sequence
-    /// check finds them superseded, or applies them to a reloaded session.
+    /// before the settled marks are written. The frames are applied to an
+    /// in-memory working copy. If persistence fails, the caller's live session
+    /// remains unchanged. An error can leave the save outcome uncertain, so the
+    /// callback must make a same-session retry safe (for example, by saving
+    /// idempotently), or the host must reload persisted state before retrying.
+    /// A successful return means the advanced session is recoverable. The live
+    /// session is then advanced before awaiting the settled-mark write, so it
+    /// continues to match persisted state if that write fails or the future is
+    /// cancelled.
     pub async fn drain_ready<F, E>(
         &self,
         session: &mut GroupSession,
@@ -561,6 +567,9 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
                 actual: session.group(),
             });
         }
+        // Keep the caller's session transactional across persistence failure.
+        // This codec copy contains secret state and remains in memory only.
+        let mut working_session = session.try_clone()?;
         let operations = load_operations(&self.store, self.group).await?;
         let entries = causal_entries(&operations);
         let causal = causal_projection(&entries)?;
@@ -572,7 +581,7 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
             .await?
             .into_iter()
             .collect();
-        let member = session.member();
+        let member = working_session.member();
         let mut drain = GroupKeyDrain::default();
         let mut blocked = BTreeSet::new();
         let mut marks = Vec::new();
@@ -595,7 +604,11 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
             let frame = match open_record(&operations[index], self.group, &self.limits) {
                 Err(reject) => SettledFrame::Refused(reject.to_string()),
                 Ok((root, dispatch)) => {
-                    match session.process(root, &dispatch.control, dispatch.direct_for(member)) {
+                    match working_session.process(
+                        root,
+                        &dispatch.control,
+                        dispatch.direct_for(member),
+                    ) {
                         Ok(process) => {
                             drain.applied.push(AppliedGroupFrame {
                                 operation: entry.operation,
@@ -645,7 +658,9 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
             }
         }
         if !drain.applied.is_empty() {
-            persist(session).map_err(|error| GroupKeyLaneError::Persist(error.to_string()))?;
+            persist(&working_session)
+                .map_err(|error| GroupKeyLaneError::Persist(error.to_string()))?;
+            *session = working_session;
         }
         if !marks.is_empty() {
             self.store.backend().apply(&marks).await?;
@@ -1004,6 +1019,45 @@ mod tests {
             block_on(unmarked.drain_ready(&mut session, |_| Ok::<_, GroupSessionError>(())))
                 .unwrap();
         assert_eq!(judged.superseded.len(), 4);
+    }
+
+    #[test]
+    fn failed_persist_can_retry_same_live_session_before_settling() {
+        let mut f = caught_up();
+        let (removal, rotation) = remove_and_rotate(&mut f);
+        f.b.receive([&removal, &rotation]);
+        let before = f.b.session.to_bytes().unwrap();
+
+        let failed = block_on(
+            f.b.lane
+                .drain_ready(&mut f.b.session, |_| Err::<(), _>("injected save failure")),
+        );
+        assert!(matches!(failed, Err(GroupKeyLaneError::Persist(_))));
+        assert_eq!(f.b.session.to_bytes().unwrap(), before);
+
+        // The same live session must apply and save the transition on retry.
+        let mut saved = None;
+        let retried = block_on(f.b.lane.drain_ready(&mut f.b.session, |session| {
+            saved = Some(session.to_bytes()?);
+            Ok::<_, GroupSessionError>(())
+        }))
+        .unwrap();
+        assert_eq!(retried.applied.len(), 2);
+        assert!(retried.superseded.is_empty());
+        let saved = saved.expect("retry must persist before settling");
+
+        // A fresh lane/session sees the settled marks and can decrypt data in
+        // the epoch installed by the retried transition.
+        let after = f.a.session.seal_random(b"after retry").unwrap();
+        let Member {
+            identity, backend, ..
+        } = f.b;
+        let lane = GroupKeyLane::for_identity(backend, GROUP, &identity).unwrap();
+        let mut reopened = GroupSession::from_bytes(&saved).unwrap();
+        let drain =
+            block_on(lane.drain_ready(&mut reopened, |_| Ok::<_, GroupSessionError>(()))).unwrap();
+        assert_eq!(drain, GroupKeyDrain::default());
+        assert_eq!(reopened.open(&after).unwrap(), b"after retry");
     }
 
     #[test]
