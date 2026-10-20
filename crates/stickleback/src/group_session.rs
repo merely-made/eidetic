@@ -874,7 +874,7 @@ impl GroupSession {
         }
     }
 
-    fn try_clone(&self) -> Result<Self, GroupSessionError> {
+    pub(crate) fn try_clone(&self) -> Result<Self, GroupSessionError> {
         Self::from_bytes(&self.to_bytes()?)
     }
 
