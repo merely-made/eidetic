@@ -1,7 +1,16 @@
 # Eidetic development: content, encounters and computed memory
 
 **Date:** 2026-10-11
-**Status (2026-10-16):** active plan. The first Fleece portable-clip draft has
+**Status (2026-10-19):** active plan, now owned by the independent Eidetic
+repository. The bounded custody connection and first producer-to-retention
+paths below have published suppliers and locally qualified Turnstone integration.
+Focused checks and bounded headed macOS receipt runs qualify saved-document
+keyboard selection, sealed selected-text/voice receiving, cold playback and
+onward export through a synthetic wallet-backed custodian. Consumer publication,
+personal-vault migration and broader host gates remain separate.
+Turnstone's complete saved-source research workflow and authored Knot note
+join have bounded macOS receipts, distinct from portable selected-content
+transfer. The first Fleece portable-clip draft has
 native transfer tests and browser compilation. Turnstone now qualifies native
 selected text/WAV receiving, restart, local playback and onward copy; the broader phases
 and remaining host checkpoints stay open. The first browser encounter slice
@@ -16,6 +25,10 @@ moves are already complete in the
 with Chartulary/Stemma, Muniment, Pandect, Inker, Fleece, ESP and lexical recall.
 Graphshell and Turnstone supply the browsing consumers; Distillery supplies the
 model-work consumer. Extend existing modules before proposing further crates.
+The 2026-10-19 foundation promotion moved the portable core, Muniment,
+Chartulary, Hagiograph, Stickleback, Luggage, proofs and Servitor to this
+repository. Fleece, lexical recall, Pandect, Inker and application adapters keep
+their existing homes. Source promotion does not close a behavioral gate.
 **Supersedes:** the
 [June deferred-phases plan](https://github.com/merely-made/mere/blob/main/design_docs/archive_docs/2026-10-11_superseded_plans/2026-06-09_eidetic_deferred_phases_plan.md).
 Its OPFS measurements and old index proposals remain historical evidence; their
@@ -146,7 +159,7 @@ retained WAV body through its existing Inker/Redshank seams. Committed-source
 native import, fresh-process restart with the package paths unavailable, and
 missing-content refusal pass. Original recording bytes remain unavailable;
 source selectors and unknown source-tag attribution stay distinct from playback.
-The receiver uses an explicitly unsealed store and makes no encrypted-custody
+That receipt uses an explicitly unsealed store and makes no encrypted-custody
 claim. Its exact source, nine reviewed captures and limits are recorded in
 `turnstone/docs/receipts/2026-10-11_retained_clip_receiver/README.md`
 (Turnstone `bb09931`, implementation `d2fb07c`). Complete source-backing adapters,
@@ -155,6 +168,114 @@ generated suggestions and reviewed reconnect queues remain under the host gate
 below. This partial native receipt does not close that gate. See the
 [Fleece fixture receipt](https://github.com/merely-made/mere/blob/main/crates/fleece/tests/fixtures/portable_clip/README.md)
 for producer generation and qualification scope.
+
+#### Native producer-to-retention continuation, 2026-10-19
+
+The owner accepted the native receiving-host direction after a fresh source
+assessment. Keep this plan as the shared contract; Turnstone's existing
+`turnstone/design_docs/2026-10-11_retained_clip_receiver_plan.md` owns its host
+actions and acceptance. Extend the existing APIs and one receiving path.
+
+**Current baseline.** Turnstone `e3e94ce` joins saved passages to authored Knot
+notes through Knot `ceaf41f`. Ordinary authoring, exact saved-source citations,
+newer captures and offline cold return have a bounded macOS receipt at
+`turnstone/docs/receipts/research_notes_20261018/README.md`. It records 1,077
+workspace tests passing, 13 ignored, 12 reviewed captures and independent reads
+of the exited source and evidence stores. R4's earlier receipt covers scoped
+real-model Answers and both app and resident process restarts. Neither receipt
+qualifies deliberate sharing or the broader Knot/Redshank portability gate.
+The later foundation cutover is a separate dependency baseline: Turnstone
+`9c8420d`, Knot `2a4a204`, Eidetic `de6b1dce` and Mere `4a7909be7` were the
+receiving sources inspected here. Historical receipts retain their exact pins.
+
+**Missing seams at the inspected baseline.** Knot composition's `selected_export` and Redshank
+model's `export_selected_note` are owner APIs, but their inspected call sites
+are examples/tests. Turnstone production imports prepared packages; its direct
+Fleece owner-conversion calls are tests. Its newer Knot citation insertion is
+a separate existing contract, which must preserve exact source evidence.
+Fleece retains bounded selected parts and optional private backing, but its
+current `check_record` refuses schema-bearing parts. Mere's shared
+`document-lanes::retained_clip::read_store` accepts one plain-text or WAV body
+and refuses additional required parts. Unknown selector/evidence values being
+preserved does not establish unknown typed-schema support.
+
+**Custody prerequisite at that baseline.** Turnstone imports and reads its retained
+clip store with no `PayloadSealer`. Pandect supplies `WalletEpochSealer`, and
+the resident keeper owns wallet epochs; the inspected Turnstone custody client
+offers identity/signing and scoped derived keys, not the wallet-epoch adapter
+needed by this path. Private source backing must use the existing custody
+owner. Do not substitute a newly minted local key, silently omit available
+backing, or expand the unsealed fixture receipt into a private-custody claim.
+The foundation plan's custody-process design remains independently owned;
+process extraction is not a prerequisite for using the current custodian.
+
+**Implementation choice (2026-10-19).** The current custody route gains bounded
+seal/unseal operations for the admitted Turnstone app. `content.retained_persona`
+in Djinn's profile owner settings explicitly binds the wallet namespace; absent
+configuration or missing epoch refuses, without creating a wallet or local key.
+Each call carries the connected profile and expected public root. The custodian
+holds its vault/profile guard through the bounded cryptographic operation, so a
+lock or switch waits for an already admitted call; later calls recheck authority.
+An application/profile/retained-clip scope joins the canonical content hash in
+AEAD associated data. No epoch key crosses the application door. The first
+operation accepts at most 512 KiB cleartext (plus the standard seal overhead),
+within the existing 1 MiB native message limit. Larger source backing refuses.
+The sealer loader must retain reads of every available historical wallet epoch.
+
+Turnstone's production clip reads, imports, native retention and onward exports
+use this adapter. Existing unsealed payloads cannot be silently reused as a new
+private retention: they need explicit custody migration. Memory preflight checks
+custody and supported presentation before the disk store opens. Source writes,
+immutable deposits and receiving graph/session admission remain separate gates.
+Redshank's host-blob playback adapter must decode supplied verified voice bytes
+in memory; private clip playback must not produce the former plaintext WAV cache.
+
+The native producer continuation captures the observed Knot selection, saved
+source hash and document address before invoking the native composition export.
+It rechecks that offer at execution. Redshank's standalone host offers a selected
+note package only for shareable notes, resolves a voice body within its own
+content-hash namespace, checks its bytes before output creation, and publishes
+without replacing an existing export. The receiving host never acquires the
+original recording to satisfy a voice-note body. The embedded Redshank host can
+retain shareable text notes directly; a voice body absent from that owner must
+arrive through the source owner's explicit package export.
+
+Implementation order and done-conditions:
+
+1. **Bind a real selection.** Join one explicitly selected Knot composition
+   item and one shareable Redshank text note to their existing exporters and
+   Fleece adapters. Capture owner/entity/revision evidence where the owner can
+   establish it; keep runtime save/playback tokens out of durable identity.
+   Done when ordinary host actions operate on the displayed selection, stale
+   or changed destinations refuse, private Redshank notes refuse, and no
+   acquisition or source write is implicit.
+2. **Retain under the chosen custody.** Reuse the receiving host's authorized
+   placement and current custody owner for selected content, available private
+   backing and readback. Make supported retained parts, external recording
+   references and unavailable operations inspectable. Done when real
+   close/reopen resolves exact text, native selector units and provenance;
+   locked/unavailable custody refuses private retention; and selection-only
+   export excludes backing, custody metadata and unselected material.
+3. **Qualify source-absent use and onward copy.** Stop source applications and
+   origin services, remove package-path availability, restart the receiver and
+   then copy the selection to an independent mere. Done when both receiving
+   stores preserve declared identities, selectors and source evidence, no
+   acquisition occurs, and failure/retry cannot acknowledge missing required
+   bytes or duplicate admitted content. Record store writes separately from
+   application graph/session admission.
+4. **Add an owner-produced voice body.** Use Redshank's actual note and supplied
+   audio bytes. Turnstone can play retained WAV bodies but explicitly lacks a
+   microphone adapter; this work does not require adding recording there.
+   Done when source-absent restart plays the held body and still reports an
+   unavailable referenced recording honestly. Recording excerpts and acoustic
+   quality keep their separate gates.
+
+Signed source tags, accepted generated suggestions and reviewed reconnect edits
+remain requirements of the whole host gate, with their own admission evidence.
+Required images, a recognized structured export, browser receiving and peer
+delivery follow the bounded native slice; they are not advertised by a
+successful text/WAV transfer. This continuation changes no stored format or
+public API by itself.
 
 The draft profile describes meaningful portable material using existing Eidetic
 bundles/manifests and graph identity. It does not serialize an application's
@@ -813,6 +934,15 @@ The implementation proposals still need these concrete decisions:
 
 ## 6. Progress
 
+- **2026-10-19, extracted ownership and native continuation.** Refreshed the
+  supplier/consumer source homes and recorded the accepted producer-to-retention
+  order, existing authored-note/R4 receipts, missing production exporter calls,
+  receiving format limits and custody prerequisite above. Rechecked all 413
+  Turnstone source hashes for the authored-note receipt, its 71 packet hashes
+  and the original receiver's 110 packet hashes with no mismatches before the
+  source cutover. The cutover itself does not inherit those runtime receipts.
+  This is preparation and source/evidence review; no new native run, runtime
+  implementation, stored format or qualification result is claimed.
 - **2026-10-11.** Expanded the Eidetic development direction with Mark's visit,
   related-crate and dependency-use requirements. Reviewed current intake,
   branching, capture, session, model and storage seams. Archived the June
@@ -891,3 +1021,56 @@ The implementation proposals still need these concrete decisions:
   Chromium/Firefox adapters pass, the browser target compiles, and a restored
   parent-removal control demonstrates branch-test sensitivity. Qualified scope
   and open custody, multi-writer and headed-browser gates are recorded under P5.
+
+- **2026-10-19, custody and first producer slice verified locally.** Mere's
+  scoped custody adapter, explicit keeper namespace configuration, stable
+  profile/lock admission and historical-epoch loading are implemented.
+  Pandect's optional purpose scope preserves the canonical content hash and
+  existing unscoped associated data. Native checks pass: endpoint 43, wallet
+  sealer 6, and actual custody IPC/existing route 3. The receiver's 54 focused
+  retained-name regressions and two captured producer-action cases pass;
+  Redshank's owner export 2, playback 32 and surfaces 103 pass. Process/device
+  helpers remain separately scoped from ordinary sweeps.
+  The separate wallet-backed process receipt exports a real owner voice body,
+  removes the source blob and transfer packages, restarts both custodian and
+  receiver, and reopens selected Knot and voice content with preserved UTF-8
+  and millisecond selectors. Source hashes, artifact hashes and scope live in
+  `turnstone/docs/receipts/2026-10-19_retained_custody/qualification.json`.
+  Turnstone work remains isolated in `Code/worktrees/turnstone-eidetic-retention`;
+  Redshank work is in `Code/worktrees/woodshed-eidetic-retention`, preserving
+  shared concurrent edits and divergent Woodshed main. The receiver used
+  explicit local supplier overrides, without changing canonical product pins.
+  Publication/pin refresh, renewed headed interactions, installed personal
+  custody/migration and physical audio remain open. This checkpoint does not
+  close P6, typed/browser receiving, signed tags or reviewed reconnect edits.
+
+- **2026-10-19, suppliers published and bounded headed continuation accepted.**
+  Mere custody `e122a071` is published and consumed through `48fd338`; Knot's
+  Eidetic-family alignment is `6e721d3`; Woodshed's selected voice exporter and
+  missing-recording menu-layout repair are consumed through `62dde4c`.
+  Turnstone's refreshed canonical Git lock uses Eidetic `543f5ff` and Genet
+  `83114ac2`, without local supplier overrides. The implementation and consumer
+  pins remain uncommitted in `Code/worktrees/turnstone-eidetic-headed`; this
+  checkpoint records completed supplier publication and local acceptance.
+  Standalone Redshank exports its selected shareable owner WAV through visible
+  controls. The embedded saved-document keyboard path selects `café` at UTF-8
+  bytes 16–21; full source backing remains private and onward transfer contains
+  only the selected text. A second isolated receiving store reads that selection
+  and plays the selected voice after source applications stop. With source
+  files and all transfer packages removed, a fresh receiving process plays to
+  `Ended 100 ms` and exports both clips again with unchanged selected package
+  data and zero acquisition attempts. A custodian restart also succeeds, and
+  retained-store checks find no clear full-source/WAV bytes or WAV cache files.
+  The final shipping build, 15 focused clip checks and four selector/action
+  cases pass. The earlier 56-case integration sweep and its different lock are
+  preserved separately. Five native consumer phases, twelve reviewed captures,
+  exact source/binary hashes and limits are in
+  `turnstone/docs/receipts/2026-10-19_retained_custody/headed/qualification.json`
+  within that local worktree; the standalone owner receipt lives in
+  `woodshed/docs/receipts/2026-10-19_selected_note_export/qualification.json`.
+  Embedded document drag selection forwarding remains open; this acceptance
+  uses the normal keyboard input path. The native destination dialog,
+  installed personal custody/migration, microphone/acoustic quality, renewed
+  headed embedded Redshank text-note retention and broader browser/structured
+  receiving keep their own gates. No whole-P6 or heterogeneous-collection
+  completion is claimed, and frozen earlier packets are unchanged.
