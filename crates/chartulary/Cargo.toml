@@ -35,7 +35,6 @@ features = [
 
 [dependencies.muniment]
 workspace = true
-default-features = false
 
 [dependencies.rkyv]
 version = "0.8"
