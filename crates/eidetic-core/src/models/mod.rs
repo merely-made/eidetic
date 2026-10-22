@@ -11,6 +11,8 @@
 //! model components (config, weights, tokenizer) from an eidetic store.
 
 pub mod adapter;
+/// Retained claim-to-passage support without semantic certification.
+pub mod answer;
 pub mod embedding;
 pub mod inference;
 pub mod library;

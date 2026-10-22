@@ -702,6 +702,17 @@ and explains traversal choices. One reusable Distillery surface streams a real
 run, cancels it and reopens its retained record. A meaningful recall/latency
 comparison measures the selected dependency use; stub-provider success alone
 does not qualify this phase.
+**Bounded answer continuation (2026-10-22, implementation).**
+`models::answer::AnswerSupport` binds model-declared claims to exact supplied
+passage identities and canonical Unicode quotation ranges, with the raw output
+hash, reproducible structural issues and explicit unreviewed semantic state.
+Distillery retains the typed artifact through its existing sealed journal and
+Turnstone exposes the opt-in evidence answer and source inspection. Insufficient
+and conflicting are model declarations, not proofs of absence or contradiction.
+Malformed output, invented quotations and repeated claims remain recoverable.
+The library contract has focused coverage; model and headed/cold qualification
+are tracked separately in Turnstone's `cross_source_answers_20261022` packet.
+
 Generated tag suggestions are queryable with their run/input evidence. Accepting
 one creates a personal assertion; rejecting or regenerating suggestions cannot
 rewrite existing personal tags. CP3's evidence and review state survive reopening.
