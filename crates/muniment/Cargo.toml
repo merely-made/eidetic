@@ -1,7 +1,7 @@
 [package]
 rust-version = "1.97.1"
 name = "muniment"
-version = "0.1.2"
+version = "0.2.0"
 edition = "2024"
 description = "A portable persistence floor: host-supplied byte backends, typed mutable slots, content-addressed immutable blobs, and append-only journals. Format-agnostic and wasm-friendly."
 repository = "https://github.com/merely-made/eidetic"
