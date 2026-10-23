@@ -9,6 +9,8 @@ members = [
     "crates/luggage",
     "crates/proofs",
     "crates/servitor",
+    "crates/wing-impresa",
+    "crates/wing-decisions",
 ]
 
 [workspace.package]
