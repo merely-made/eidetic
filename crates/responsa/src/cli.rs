@@ -1,11 +1,11 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! `wing-decisions regen [--stage]` rebuilds the manifest, the register (once
+//! `responsa regen [--stage]` rebuilds the manifest, the register (once
 //! the fields lines carry areas and summaries) and the journal cache.
-//! `wing-decisions lookup <key | plan keyword | path | --area NAME | --history KEY>`.
-//! `wing-decisions anchors (--index FILE.scip | --scip CRATE_DIR)...`.
-//! `wing-decisions check` fails when the committed manifest is stale, and
+//! `responsa lookup <key | plan keyword | path | --area NAME | --history KEY>`.
+//! `responsa anchors (--index FILE.scip | --scip CRATE_DIR)...`.
+//! `responsa check` fails when the committed manifest is stale, and
 //! reports the doctrine's budget overruns without failing.
 
 use std::path::{Path, PathBuf};
@@ -23,7 +23,7 @@ pub fn main() -> ExitCode {
     match run(&args) {
         Ok(code) => code,
         Err(e) => {
-            eprintln!("wing-decisions: {e}");
+            eprintln!("responsa: {e}");
             ExitCode::from(2)
         }
     }
@@ -37,7 +37,7 @@ fn run(args: &[String]) -> Result<ExitCode, String> {
         Some("check") => check(&repo),
         Some("lookup") => lookup(&repo, rest),
         Some("anchors") => anchors(&repo, rest),
-        _ => Err("usage: wing-decisions regen [--stage] | check | lookup <key|plan|path|--area NAME|--history KEY> | anchors (--index FILE | --scip DIR)...".into()),
+        _ => Err("usage: responsa regen [--stage] | check | lookup <key|plan|path|--area NAME|--history KEY> | anchors (--index FILE | --scip DIR)...".into()),
     }
 }
 
@@ -53,7 +53,7 @@ fn regen(repo: &Repo, stage: bool) -> Result<ExitCode, String> {
     let m = snap.manifest();
     let mut written = vec![MANIFEST.to_string()];
     write(&repo.root.join(MANIFEST), &m.to_toml(true))?;
-    let cache = repo.root.join("target").join("wing-decisions");
+    let cache = repo.root.join("target").join("responsa");
     std::fs::create_dir_all(&cache).map_err(|e| e.to_string())?;
     write(&cache.join("derived.toml"), &m.to_toml(false))?;
     let reg_path = register_path(&snap);
@@ -91,7 +91,7 @@ fn check(repo: &Repo) -> Result<ExitCode, String> {
     if current {
         println!("manifest is current");
     } else {
-        println!("manifest is stale: run `wing-decisions regen --stage`");
+        println!("manifest is stale: run `responsa regen --stage`");
     }
     let doctrine = snap.files.iter().find(|(p, _)| p == DOCTRINE).map_or("", |(_, t)| t.as_str());
     match repo.git(&["show", &format!(":{BUDGET}")]) {
@@ -159,7 +159,7 @@ fn history(repo: &Repo, key: &str) -> Result<String, String> {
     let id = k.id();
     let mut s = String::new();
     for r in j.entries().iter().filter(|r| r.subject == id || r.object == id) {
-        let stance = if r.stance == wing_impresa::Stance::Lapse { "lapse" } else { "assoc" };
+        let stance = if r.stance == impresa::Stance::Lapse { "lapse" } else { "assoc" };
         s.push_str(&format!("{} {stance} {} {} {} (rev {})\n", &r.cause[..10], r.subject, r.kind, r.object, r.canon_revision));
     }
     Ok(if s.is_empty() { format!("no records for {k}\n") } else { s })
@@ -213,7 +213,7 @@ fn anchors(repo: &Repo, rest: &[String]) -> Result<ExitCode, String> {
 /// Runs rust-analyzer's SCIP indexer over one crate directory.
 fn scip(repo: &Repo, dir: &Path) -> Result<PathBuf, String> {
     let name = dir.file_name().and_then(|n| n.to_str()).unwrap_or("crate");
-    let out = repo.root.join("target").join("wing-decisions").join(format!("{name}.scip"));
+    let out = repo.root.join("target").join("responsa").join(format!("{name}.scip"));
     std::fs::create_dir_all(out.parent().unwrap()).map_err(|e| e.to_string())?;
     let status = std::process::Command::new("rust-analyzer")
         .arg("scip")

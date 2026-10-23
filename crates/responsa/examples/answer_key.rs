@@ -7,7 +7,7 @@
 //! `cargo run --release --example answer_key -- <index.scip> <truth.json>`
 
 use std::collections::BTreeMap;
-use wing_decisions::anchors::{Found, Index};
+use responsa::anchors::{Found, Index};
 
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();

@@ -4,5 +4,5 @@
 //! The decisions tool's command line; `cli` holds it.
 
 fn main() -> std::process::ExitCode {
-    wing_decisions::cli::main()
+    responsa::cli::main()
 }

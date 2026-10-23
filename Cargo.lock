@@ -2228,6 +2228,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "impresa"
+version = "0.0.1"
+dependencies = [
+ "serde",
+ "serde_json",
+ "toml",
+]
+
+[[package]]
 name = "indexmap"
 version = "2.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4755,6 +4764,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "responsa"
+version = "0.0.1"
+dependencies = [
+ "impresa",
+ "muniment",
+ "pollster",
+ "regex",
+ "serde",
+ "serde_json",
+ "toml",
+]
+
+[[package]]
 name = "ring"
 version = "0.17.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6550,28 +6572,6 @@ name = "windows_x86_64_msvc"
 version = "0.52.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "589f6da84c646204747d1270a2a5661ea66ed1cced2631d546fdfb155959f9ec"
-
-[[package]]
-name = "wing-decisions"
-version = "0.0.1"
-dependencies = [
- "muniment",
- "pollster",
- "regex",
- "serde",
- "serde_json",
- "toml",
- "wing-impresa",
-]
-
-[[package]]
-name = "wing-impresa"
-version = "0.0.1"
-dependencies = [
- "serde",
- "serde_json",
- "toml",
-]
 
 [[package]]
 name = "winnow"

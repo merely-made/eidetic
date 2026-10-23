@@ -6,7 +6,7 @@
 # shape as `[seeded]` below, never by mutating a set already in hand.
 
 schema = 1
-owner = "wing-impresa"
+owner = "impresa"
 consumer = "every world's impresa records (KindSet::seeded)"
 status = "authored"
 
