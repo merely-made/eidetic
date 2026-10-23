@@ -19,8 +19,8 @@ and its historical receipts:
 | [luggage](crates/luggage) | Signed application-release identity and optional native update/install mechanics | The release-identity core is usable without the native updater |
 | [mere-proofs](crates/proofs) | Typed commitments, digests and content references | Operation identity and application commitments remain distinct |
 | [servitor](crates/servitor) | Scoped participant petitions, graph admission, watches and recorded run reduction | Hosts execute work, supply time and reconcile outcomes; this is not an execution supervisor |
-| [wing-impresa](crates/wing-impresa) | Validated association records for anything pointable, and their lapses | Products store the records in their own accepted history and derive readings from them |
-| [wing-decisions](crates/wing-decisions) | Decisions as linked structure (DOC_POLICY core §11): manifest, register, lookup, budget, links across repositories | Repositories keep their own cases and doctrine; both names wait on a naming round, so neither publishes |
+| [impresa](crates/impresa) | Validated association records for anything pointable, and their lapses | Products store the records in their own accepted history and derive readings from them |
+| [responsa](crates/responsa) | Answers kept as cases and reconciled into a doctrine (DOC_POLICY core §11): manifest, register, lookup, budget, links across repositories | Repositories keep their own cases and doctrine; the tool generates, never decides |
 
 Fleece extraction/selected-package adapters, lexical recall, Pandect sessions,
 Inker document routing and application adapters remain in Mere. ESP owns model

@@ -1,10 +1,12 @@
 [package]
 rust-version = "1.97.1"
-name = "wing-decisions"
+name = "responsa"
 version = "0.0.1"
 repository = "https://github.com/merely-made/eidetic"
-description = "Decisions as linked structure (DOC_POLICY core section 11): manifest, register, journal, lookup, budget and anchor check"
-publish = false
+description = "Answers kept as cases and reconciled into a doctrine: manifest, register, link journal, lookup, budget and links across repositories"
+readme = "README.md"
+keywords = ["decisions", "documentation", "doctrine", "provenance"]
+categories = ["development-tools", "command-line-utilities"]
 
 [package.edition]
 workspace = true
@@ -13,7 +15,7 @@ workspace = true
 workspace = true
 
 [dependencies]
-wing-impresa = { path = "../wing-impresa" }
+impresa = { path = "../impresa", version = "0.0.1" }
 muniment = { workspace = true, features = ["json", "directory"] }
 pollster = "0.4"
 regex = "1"

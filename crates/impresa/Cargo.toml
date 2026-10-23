@@ -1,0 +1,20 @@
+[package]
+rust-version = "1.97.1"
+name = "impresa"
+version = "0.0.1"
+repository = "https://github.com/merely-made/eidetic"
+description = "The association organ: validated records of what a pointable thing has come to be associated with, and what has lapsed, over time"
+readme = "README.md"
+keywords = ["association", "provenance", "records", "emblem"]
+categories = ["data-structures"]
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "1"

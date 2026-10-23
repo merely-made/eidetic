@@ -3,7 +3,7 @@
 
 //! The link journal: every association and lapse, rebuilt from git history as
 //! impresa records in a muniment journal. A local cache under
-//! `target/wing-decisions/`, never committed; rebuilt when missing or when
+//! `target/responsa/`, never committed; rebuilt when missing or when
 //! HEAD no longer descends from where it stopped.
 
 use crate::cite::Citer;
@@ -12,7 +12,7 @@ use crate::scan::{self, KINDS};
 use muniment::{DirectoryBackend, Journal, JsonSlots};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
-use wing_impresa::{KindSet, KindSetLimits, KindSetSpec, Record, Stance};
+use impresa::{KindSet, KindSetLimits, KindSetSpec, Record, Stance};
 
 const DOCTRINE: &str = "design_docs/doctrine.md";
 
@@ -33,7 +33,7 @@ struct State {
 
 pub fn kinds() -> KindSet {
     KindSet::new(KindSetSpec {
-        version: wing_impresa::SCHEMA_VERSION,
+        version: impresa::SCHEMA_VERSION,
         id: "wing:decision-links".into(),
         kinds: KINDS.iter().map(|k| k.to_string()).collect(),
         limits: KindSetLimits::default(),
@@ -49,7 +49,7 @@ pub struct Updated {
 
 /// Brings the journal up to HEAD and returns it.
 pub fn update(repo: &Repo, citer: &Citer) -> Result<(Journal<Record>, Updated), String> {
-    let dir = repo.root.join("target").join("wing-decisions");
+    let dir = repo.root.join("target").join("responsa");
     std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
     let slots = JsonSlots::new(DirectoryBackend::open(&dir).map_err(|e| e.to_string())?);
     let load = || -> Result<(Journal<Record>, State), String> {
