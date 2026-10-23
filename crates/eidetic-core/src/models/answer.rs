@@ -4,6 +4,7 @@
 //! Reproducible claim-to-passage evidence. These are structural and verbatim
 //! checks, never an entailment judgment or an owner assertion.
 use super::recall::{InferencePassage, PassageSelector};
+use super::requested::{RequestedFact, RequestedFactSet};
 use crate::{ManifestId, SchemaRef, TypedPayload};
 use serde::{Deserialize, Serialize};
 
@@ -27,6 +28,8 @@ pub struct AnswerDocument {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct AnswerClaim {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub fact: Option<RequestedFact>,
     pub status: ClaimStatus,
     pub text: String,
     pub evidence: Vec<ClaimEvidence>,
@@ -51,6 +54,8 @@ pub struct PassageSupport {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct AssessedClaim {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub fact: Option<RequestedFact>,
     pub status: ClaimStatus,
     pub text: String,
     pub evidence: Vec<PassageSupport>,
@@ -65,6 +70,8 @@ pub enum SemanticReview {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct AnswerSupport {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub requested_facts: Option<ManifestId>,
     pub method: String,
     pub raw_output: ManifestId,
     pub semantic_review: SemanticReview,
@@ -75,13 +82,27 @@ impl AnswerSupport {
     /// Strict whole-document parse; no extraction of a plausible JSON fragment
     /// from otherwise unassessed output. Code fences must enclose the whole body.
     pub fn assess(raw: &str, passages: &[(u32, &InferencePassage)]) -> Self {
+        Self::assess_requested(raw, passages, None)
+    }
+    /// Validate exact count and ordered fact identities before admitting claims.
+    /// The caller validates the fact set against the retained question first.
+    pub fn assess_requested(
+        raw: &str,
+        passages: &[(u32, &InferencePassage)],
+        facts: Option<&RequestedFactSet>,
+    ) -> Self {
         let mut result = Self {
+            requested_facts: facts.map(|s| s.id()),
             method: SUPPORT_METHOD.into(),
             raw_output: ManifestId::of_blob(raw.as_bytes()),
             semantic_review: SemanticReview::Unreviewed,
             claims: vec![],
             error: None,
         };
+        if facts.is_some_and(|s| s.validate_identity().is_err()) {
+            result.error = Some("Invalid requested-fact set.".into());
+            return result;
+        }
         let body = raw.trim();
         let body = body
             .strip_prefix("```json")
@@ -100,8 +121,21 @@ impl AnswerSupport {
             result.error = Some("An answer must contain between one and sixteen claims.".into());
             return result;
         }
+        if facts.is_some_and(|s| {
+            s.facts.len() != document.claims.len()
+                || document
+                    .claims
+                    .iter()
+                    .zip(&s.facts)
+                    .any(|(c, f)| c.fact.as_ref() != Some(f))
+        }) || (facts.is_none() && document.claims.iter().any(|c| c.fact.is_some()))
+        {
+            result.error=Some("Answer claim count or ordered requested-fact identities do not match the retained request.".into());
+            return result;
+        }
         for claim in &document.claims {
             let mut assessed = AssessedClaim {
+                fact: claim.fact.clone(),
                 status: claim.status,
                 text: claim.text.clone(),
                 evidence: vec![],
@@ -234,6 +268,32 @@ mod tests {
             text: text.into(),
         }
     }
+    #[test]
+    fn requested_facts_refuse_missing_extra_and_reordered_claims() {
+        let q = "What are the opening time and the ticket cost? Give one claim for each, in that order.";
+        let facts = RequestedFactSet::derive(q).unwrap();
+        let claims:Vec<_>=facts.facts.iter().map(|f|serde_json::json!({"fact":f,"status":"insufficient","text":format!("No supplied {}.",f.text),"evidence":[]})).collect();
+        let raw = serde_json::json!({"claims":claims}).to_string();
+        let support = AnswerSupport::assess_requested(&raw, &[], Some(&facts));
+        assert!(support.error.is_none());
+        assert_eq!(support.requested_facts, Some(facts.id()));
+        assert_eq!(support.claims[0].fact.as_ref(), Some(&facts.facts[0]));
+        assert!(AnswerSupport::assess(&raw, &[]).error.is_some());
+        for bad in [
+            vec![claims[0].clone()],
+            vec![claims[1].clone(), claims[0].clone()],
+            vec![claims[0].clone(), claims[1].clone(), claims[1].clone()],
+        ] {
+            let s = AnswerSupport::assess_requested(
+                &serde_json::json!({"claims":bad}).to_string(),
+                &[],
+                Some(&facts),
+            );
+            assert!(s.error.is_some());
+            assert!(s.claims.is_empty());
+        }
+    }
+
     #[test]
     fn exact_links_use_unicode_offsets_and_do_not_certify_entailment() {
         let p = passage("a", "🦉 élan: the launch is on Thursday.");
