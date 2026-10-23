@@ -1,0 +1,24 @@
+[package]
+rust-version = "1.97.1"
+name = "wing-decisions"
+version = "0.0.1"
+repository = "https://github.com/merely-made/eidetic"
+description = "Decisions as linked structure (DOC_POLICY core section 11): manifest, register, journal, lookup, budget and anchor check"
+publish = false
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[dependencies]
+wing-impresa = { path = "../wing-impresa" }
+muniment = { workspace = true, features = ["json", "directory"] }
+pollster = "0.4"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+toml = "1"
+
+[dev-dependencies]
+serde_json = "1"
