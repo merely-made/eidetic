@@ -90,7 +90,7 @@ commons-spine = { git = "https://github.com/merely-made/gemot.git", rev = "8ffdc
 dict-protocol = { git = "https://github.com/merely-made/errand.git", rev = "1155897e6debc61102ea219cced245d0abccb658" }
 eidetic = { git = "https://github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
 errand = { git = "https://github.com/merely-made/errand.git", rev = "1155897e6debc61102ea219cced245d0abccb658" }
-esp = { git = "https://github.com/merely-made/esp.git", rev = "f27bee8eb5152618ab91fa8676d62c72ebfcb4fc" }
+esp = { git = "https://github.com/merely-made/esp.git", rev = "cd73d12cefd2c2719f9afdf99ac5666ee8bc045c" }
 finger-protocol = { git = "https://github.com/merely-made/errand.git", rev = "1155897e6debc61102ea219cced245d0abccb658" }
 fsp-protocol = { git = "https://github.com/merely-made/errand.git", rev = "1155897e6debc61102ea219cced245d0abccb658" }
 gemini-protocol = { git = "https://github.com/merely-made/errand.git", rev = "1155897e6debc61102ea219cced245d0abccb658" }
