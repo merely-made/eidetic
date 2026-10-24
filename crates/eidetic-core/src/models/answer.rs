@@ -56,7 +56,22 @@ pub struct CandidateReview {
 #[serde(deny_unknown_fields)]
 pub struct CandidateDecision {
     pub handle: u32,
+    /// Repeat the exact requested property beside its candidate, without a
+    /// second interpretation or a new requested-fact identity.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub requested: Option<String>,
+    /// Exact candidate text placed before the decision in quoted-review tasks.
+    /// Absent on historical handle-only reviews.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quote: Option<String>,
     pub answers: bool,
+}
+impl Drop for CandidateDecision {
+    fn drop(&mut self) {
+        use zeroize::Zeroize;
+        self.requested.zeroize();
+        self.quote.zeroize();
+    }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -83,6 +98,11 @@ impl CandidateReview {
                 .iter()
                 .zip(passages)
                 .any(|(d, (h, _))| d.handle != *h)
+            || self
+                .candidates
+                .iter()
+                .zip(passages)
+                .any(|(d, (_, p))| d.quote.as_ref().is_some_and(|q| q != &p.text))
             || passages
                 .iter()
                 .enumerate()
@@ -234,6 +254,17 @@ impl AnswerSupport {
         }
         for claim in &document.claims {
             if let Some(review) = &claim.review {
+                if review.candidates.iter().any(|d| {
+                    d.requested
+                        .as_ref()
+                        .is_some_and(|text| claim.fact.as_ref().map(|f| &f.text) != Some(text))
+                }) {
+                    result.error = Some(
+                        "Candidate review requested property differs from its claim fact.".into(),
+                    );
+                    result.claims.clear();
+                    return result;
+                }
                 if let Err(error) = review.validate(claim.status, &claim.evidence, passages) {
                     result.error = Some(error);
                     result.claims.clear();
@@ -407,6 +438,43 @@ mod tests {
         duplicate[1].0 = 7;
         assert!(
             AnswerSupport::assess(&raw.to_string(), &duplicate)
+                .error
+                .is_some()
+        );
+    }
+    #[test]
+    fn quoted_candidate_decisions_preserve_exact_text_and_refuse_a_foreign_quote() {
+        let p = passage("source", "The orchard crop is pears.");
+        let ps = vec![(4, &p)];
+        let mut raw = serde_json::json!({"claims":[{"review":{"candidates":[{"handle":4,"quote":p.text,"answers":true}],"agreement":"single"},"status":"supported","text":p.text,"evidence":[{"handle":4,"quote":p.text}]}]});
+        let support = AnswerSupport::assess(&raw.to_string(), &ps);
+        assert!(support.error.is_none());
+        assert_eq!(
+            support.claims[0].review.as_ref().unwrap().candidates[0]
+                .quote
+                .as_deref(),
+            Some(p.text.as_str())
+        );
+        let reopened: AnswerSupport =
+            serde_json::from_slice(&serde_json::to_vec(&support).unwrap()).unwrap();
+        assert_eq!(reopened, support);
+        raw["claims"][0]["review"]["candidates"][0]["quote"] =
+            serde_json::json!("The orchard crop is apples.");
+        assert!(AnswerSupport::assess(&raw.to_string(), &ps).error.is_some());
+        let facts = RequestedFactSet::derive("What is the orchard crop?").unwrap();
+        raw["claims"][0]["fact"] = serde_json::json!(facts.facts[0]);
+        raw["claims"][0]["review"]["candidates"][0]["quote"] = serde_json::json!(p.text);
+        raw["claims"][0]["review"]["candidates"][0]["requested"] =
+            serde_json::json!(facts.facts[0].text);
+        assert!(
+            AnswerSupport::assess_requested(&raw.to_string(), &ps, Some(&facts))
+                .error
+                .is_none()
+        );
+        raw["claims"][0]["review"]["candidates"][0]["requested"] =
+            serde_json::json!("the orchard owner");
+        assert!(
+            AnswerSupport::assess_requested(&raw.to_string(), &ps, Some(&facts))
                 .error
                 .is_some()
         );
