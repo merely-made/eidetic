@@ -30,6 +30,9 @@ pub struct AnswerDocument {
 pub struct AnswerClaim {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fact: Option<RequestedFact>,
+    /// Model-authored relevance and agreement decisions, never an entailment proof.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub review: Option<CandidateReview>,
     pub status: ClaimStatus,
     pub text: String,
     pub evidence: Vec<ClaimEvidence>,
@@ -39,6 +42,100 @@ pub struct AnswerClaim {
 pub struct ClaimEvidence {
     pub handle: u32,
     pub quote: String,
+}
+
+/// Every supplied candidate is considered in its retained order. This makes
+/// the model's relevance decisions inspectable, including rejected passages.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CandidateReview {
+    pub candidates: Vec<CandidateDecision>,
+    pub agreement: CandidateAgreement,
+}
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CandidateDecision {
+    pub handle: u32,
+    pub answers: bool,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CandidateAgreement {
+    None,
+    Single,
+    Same,
+    Different,
+}
+impl CandidateReview {
+    /// Checks completeness and the decision-to-claim relationship only. It
+    /// cannot establish that an `answers` or agreement judgment is correct.
+    pub fn validate(
+        &self,
+        status: ClaimStatus,
+        links: &[ClaimEvidence],
+        passages: &[(u32, &InferencePassage)],
+    ) -> Result<(), String> {
+        use CandidateAgreement::*;
+        if passages.len() > 8
+            || self.candidates.len() != passages.len()
+            || self
+                .candidates
+                .iter()
+                .zip(passages)
+                .any(|(d, (h, _))| d.handle != *h)
+            || passages
+                .iter()
+                .enumerate()
+                .any(|(i, (h, _))| passages[..i].iter().any(|(other, _)| h == other))
+        {
+            return Err(
+                "Candidate review must cover every unique supplied handle in order.".into(),
+            );
+        }
+        let relevant: Vec<_> = self
+            .candidates
+            .iter()
+            .filter(|d| d.answers)
+            .map(|d| d.handle)
+            .collect();
+        let shape = match self.agreement {
+            None => relevant.is_empty() && status == ClaimStatus::Insufficient && links.is_empty(),
+            Single => relevant.len() == 1 && status == ClaimStatus::Supported && links.len() == 1,
+            Same => relevant.len() >= 2 && status == ClaimStatus::Supported && links.len() == 1,
+            Different => {
+                relevant.len() >= 2
+                    && status == ClaimStatus::Conflicting
+                    && links.len() == 2
+                    && links[0].handle != links[1].handle
+            }
+        };
+        if !shape
+            || links.iter().any(|link| {
+                !relevant.contains(&link.handle)
+                    || !passages
+                        .iter()
+                        .any(|(handle, p)| *handle == link.handle && p.text == link.quote)
+            })
+        {
+            return Err(
+                "Claim status and exact quotations must follow the candidate review.".into(),
+            );
+        }
+        if self.agreement == Different {
+            let source = |h| {
+                &passages
+                    .iter()
+                    .find(|(handle, _)| *handle == h)
+                    .unwrap()
+                    .1
+                    .source
+            };
+            if source(links[0].handle) == source(links[1].handle) {
+                return Err("Conflicting review requires two distinct sources.".into());
+            }
+        }
+        Ok(())
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -56,6 +153,8 @@ pub struct PassageSupport {
 pub struct AssessedClaim {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fact: Option<RequestedFact>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub review: Option<CandidateReview>,
     pub status: ClaimStatus,
     pub text: String,
     pub evidence: Vec<PassageSupport>,
@@ -134,8 +233,16 @@ impl AnswerSupport {
             return result;
         }
         for claim in &document.claims {
+            if let Some(review) = &claim.review {
+                if let Err(error) = review.validate(claim.status, &claim.evidence, passages) {
+                    result.error = Some(error);
+                    result.claims.clear();
+                    return result;
+                }
+            }
             let mut assessed = AssessedClaim {
                 fact: claim.fact.clone(),
+                review: claim.review.clone(),
                 status: claim.status,
                 text: claim.text.clone(),
                 evidence: vec![],
@@ -250,6 +357,60 @@ impl Drop for PassageSupport {
 mod tests {
     use super::*;
     use crate::models::recall::{RecallSourceId, RecallSourceKind};
+    #[test]
+    fn candidate_review_binds_all_decisions_to_status_and_links_without_claiming_truth() {
+        let a = passage("a", "The ship departs on Monday.");
+        let b = passage("b", "The ship departs on Tuesday.");
+        let irrelevant = passage("c", "The museum opens at ten.");
+        let ps = vec![(7, &a), (2, &b), (9, &irrelevant)];
+        let raw = serde_json::json!({"claims":[{"review":{"candidates":[{"handle":7,"answers":true},{"handle":2,"answers":true},{"handle":9,"answers":false}],"agreement":"different"},"status":"conflicting","text":"The sources disagree: Monday or Tuesday.","evidence":[{"handle":7,"quote":a.text},{"handle":2,"quote":b.text}]}]});
+        let check = |v: &serde_json::Value| AnswerSupport::assess(&v.to_string(), &ps);
+        let support = check(&raw);
+        assert!(support.error.is_none());
+        assert_eq!(support.semantic_review, SemanticReview::Unreviewed);
+        assert_eq!(
+            support.claims[0].review.as_ref().unwrap().candidates.len(),
+            3
+        );
+        let restored: AnswerSupport =
+            serde_json::from_slice(&serde_json::to_vec(&support).unwrap()).unwrap();
+        assert_eq!(restored, support);
+        for mutation in 0..7 {
+            let mut bad = raw.clone();
+            let c = &mut bad["claims"][0];
+            match mutation {
+                0 => {
+                    c["review"]["candidates"].as_array_mut().unwrap().pop();
+                }
+                1 => {
+                    c["review"]["candidates"].as_array_mut().unwrap().swap(0, 1);
+                }
+                2 => c["review"]["agreement"] = serde_json::json!("same"),
+                3 => c["status"] = serde_json::json!("supported"),
+                4 => c["review"]["candidates"][0]["answers"] = serde_json::json!(false),
+                5 => c["evidence"][1] = serde_json::json!({"handle":9,"quote":irrelevant.text}),
+                _ => c["evidence"][0]["quote"] = serde_json::json!("The ship departs on Friday."),
+            }
+            let failed = check(&bad);
+            assert!(failed.error.is_some(), "mutation {mutation}");
+            assert!(failed.claims.is_empty());
+        }
+        // The structural checker must not silently certify a false relevance
+        // decision: the model can still label an unrelated passage as relevant.
+        let false_judgment = serde_json::json!({"claims":[{"review":{"candidates":[{"handle":7,"answers":false},{"handle":2,"answers":false},{"handle":9,"answers":true}],"agreement":"single"},"status":"supported","text":irrelevant.text,"evidence":[{"handle":9,"quote":irrelevant.text}]}]});
+        let checked = check(&false_judgment);
+        assert!(checked.error.is_none());
+        assert_eq!(checked.semantic_review, SemanticReview::Unreviewed);
+        let none = serde_json::json!({"claims":[{"review":{"candidates":[{"handle":7,"answers":false},{"handle":2,"answers":false},{"handle":9,"answers":false}],"agreement":"none"},"status":"insufficient","text":"The supplied evidence does not state the fare.","evidence":[]}]});
+        assert!(check(&none).error.is_none());
+        let mut duplicate = ps.clone();
+        duplicate[1].0 = 7;
+        assert!(
+            AnswerSupport::assess(&raw.to_string(), &duplicate)
+                .error
+                .is_some()
+        );
+    }
     fn passage(source: &str, text: &str) -> InferencePassage {
         InferencePassage {
             source: RecallSourceId {
