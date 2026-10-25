@@ -1,5 +1,5 @@
 [package]
-name = "mere-source-edit"
+name = "mere-edit"
 version = "0.1.0"
 rust-version = "1.97.1"
 edition.workspace = true
@@ -7,6 +7,9 @@ license.workspace = true
 repository.workspace = true
 publish = false
 description = "Revision-bound UTF-8 edit proposals without parser, editor or storage authority."
+
+[lib]
+name = "mere_source_edit"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }

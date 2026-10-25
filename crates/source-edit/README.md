@@ -1,6 +1,6 @@
 # Source edit proposals
 
-`mere-source-edit` prepares and checks UTF-8 text-edit proposals. It has no
+`mere-edit` prepares and checks UTF-8 text-edit proposals. It has no
 parser, mutable editor, filesystem, save, undo or application-admission owner.
 The first consumers are Isocosm's preset proposals and Knot's source-authored
 local document links.
