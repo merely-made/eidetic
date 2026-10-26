@@ -25,14 +25,23 @@ workspace = true
 [lib]
 path = "src/lib.rs"
 
+[features]
+default = ["net"]
+# The peer-networking half: joined and synced spaces, the muniment address book
+# for p2panda-net, and the group-key lane's `join`/`publish`. It is the only
+# thing that links p2panda-net, and so iroh and QUIC. On by default so existing
+# consumers build unchanged; a build that never joins a peer space turns the
+# default off.
+net = ["dep:p2panda-net", "dep:p2panda-sync", "dep:tokio-stream"]
+
 [dependencies]
 p2panda-core = "0.7.0"
-p2panda-sync = "0.7.0"
+p2panda-sync = { version = "0.7.0", optional = true }
 futures-util = "0.3"
 hex = "0.4"
 blake3 = "1.5"
 serde_bytes = "0.11"
-tokio-stream = "0.1"
+tokio-stream = { version = "0.1", optional = true }
 thiserror = "1"
 
 [dependencies.insigne]
@@ -60,6 +69,7 @@ features = [
 [dependencies.p2panda-net]
 package = "mere-p2panda-net"
 version = "=0.7.5"
+optional = true
 default-features = false
 features = [
     "address_book",

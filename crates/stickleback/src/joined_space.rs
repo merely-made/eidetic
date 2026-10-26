@@ -41,35 +41,8 @@ use p2panda_store::logs::LogStore;
 use p2panda_store::topics::TopicStore;
 use p2panda_sync::protocols::TopicLogSyncEvent;
 
+use crate::JoinError;
 use crate::synced_space::{SyncRound, SyncStatus, SyncedSpace};
-
-/// Derive a lane's sync protocol id from its kind and its space.
-///
-/// One canonical spelling so both peers agree by construction:
-/// `<kind>/<space-hex>`, e.g. `gemot/constitution/v1/6d6d…`. The kind names
-/// the lane's wire grammar and should carry its own version segment; the
-/// space id keeps two spaces of the same kind on one endpoint from colliding.
-pub fn lane_id(kind: &str, space: [u8; 32]) -> String {
-    let hex: String = space.iter().map(|byte| format!("{byte:02x}")).collect();
-    format!("{kind}/{hex}")
-}
-
-/// A join failure, staged: session spawn, stream open, subscription, or a
-/// later live publish. Sources are formatted to strings at the boundary so
-/// the error stays free of p2panda's generic parameters.
-#[derive(Debug, thiserror::Error)]
-pub enum JoinError {
-    #[error("logsync spawn: {0}")]
-    Spawn(String),
-    #[error("logsync stream: {0}")]
-    Stream(String),
-    #[error("logsync subscribe: {0}")]
-    Subscribe(String),
-    #[error("publish: {0}")]
-    Publish(String),
-    #[error("logsync shutdown: {0}")]
-    Shutdown(String),
-}
 
 /// A joined reconciling-log session: the LogSync session, its live stream
 /// handle, and the [`SyncedSpace`] drain, held together with the correct

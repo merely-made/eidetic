@@ -14,16 +14,29 @@ infers authority from transport access or visible membership.
 Consumed by `murm`, `mesh`, `gemot`, `moothold`, and `commons-spine`. It was
 published as `murm-replication` through 0.1.0.
 
+## Features
+
+`net` is on by default. It is the peer-networking half: `JoinedSpace`,
+`SyncedSpace`, `MunimentAddressBook`, the `Endpoint`/`Gossip` re-exports, and
+`GroupKeyLane::join`/`publish`. It is the only feature that links `p2panda-net`
+and, through it, iroh and QUIC. Everything else (the operation store and
+processor, the causal index, group crypto and sessions, drop carriage, epoch
+retention) is local, so a consumer that never joins a peer space depends on
+stickleback with `default-features = false` and links no network. A consumer
+that joins names `features = ["net"]` (or leaves the default on).
+
 ## Public surface
 
-`address_book`, `drop` and `object_stream` are public modules; the other
+`address_book` (`net`), `drop` and `object_stream` are public modules; the other
 surfaces are re-exported at the crate root, so a caller writes
-`stickleback::MunimentStore`. The `Source` column names the source file.
+`stickleback::MunimentStore`. The `Source` column names the source file, and
+`(net)` marks what only exists with the `net` feature (see Features).
 
 | Source | Contents |
 | --- | --- |
-| `synced_space` | `SyncedSpace`, `SyncStatus`, `SyncRound`; the LogSync drain loop with real counters and a settle-based `resync` |
-| `joined_space` | `JoinedSpace<E>`, `JoinError`, `lane_id`; the join ceremony (session, live stream, subscription, drive) as one call |
+| `synced_space` (`net`) | `SyncedSpace`, `SyncStatus`, `SyncRound`; the LogSync drain loop with real counters and a settle-based `resync` |
+| `joined_space` (`net`) | `JoinedSpace<E>`; the join ceremony (session, live stream, subscription, drive) as one call |
+| `lane` | `JoinError`, `lane_id`; the lane naming and join failures that need no transport |
 | `store` | `MunimentStore<B, E>`, `BlobGcReport`; `OperationStore` + `LogStore` + `TopicStore` over a muniment `Backend` |
 | `processor` | `OperationProcessor<B, E, P>`, `OperationPolicy`, `Admission<L>`, `StoreTarget<L>`, `HistoryAction`, `Reject`, `ProcessOutcome`, `ProcessError` |
 | `authority` | `CheckpointAuthority`, the domain gate for retention trust-root transitions |
@@ -37,7 +50,7 @@ surfaces are re-exported at the crate root, so a caller writes
 | `group_session` | `GroupSession`, `GroupSessionId`, `GroupSessionDispatch`, `GroupSessionProcess`, `GroupControlFrame`, `GroupControlAction`, `GroupControlId`, `GroupDirectFrame`, `GroupPrekeyBundle`, `GroupRecipientId`, `GroupSessionError` |
 | `writer` | `stable_writer_subject`, `WriterBindingError` |
 
-Root also re-exports `p2panda_net::{Endpoint, Gossip}` (what
+Root also re-exports `p2panda_net::{Endpoint, Gossip}` (with `net`; what
 `JoinedSpace::join` takes), `p2panda_core::Operation` (what
 `JoinedSpace::publish` takes), and `p2panda_encryption::data_scheme::GroupSecretId`,
 so a domain crate can call the join and publish seams without adopting a
@@ -117,9 +130,9 @@ initial bounds and current shared-ingress proposal with reproducible host inputs
 | --- | --- |
 | `muniment` | The `Backend` trait and `WriteOp` batches under `MunimentStore`. |
 | `p2panda-core` | `Operation`, `Header`, `Topic`, structural validation, prune backlinks. |
-| `p2panda-net` | `Endpoint`, `Gossip`, and the LogSync stream `SyncedSpace` drains. |
+| `p2panda-net` (`net`) | `Endpoint`, `Gossip`, and the LogSync stream `SyncedSpace` drains. |
 | `p2panda-store` | The `OperationStore` / `LogStore` / `TopicStore` traits `MunimentStore` implements. |
-| `p2panda-sync` | Sync event types on the drain. |
+| `p2panda-sync` (`net`) | Sync event types on the drain. |
 | `p2panda-encryption` (`data_scheme`, `message_scheme`) | Group secrets and DCGKA sessions behind `group_crypto` and `group_session`. |
 | `identity` (`personae`) | `IdentityProvider`, `DerivedKeyAttestation`, signature types for writer binding and prekey bundles. |
 | `proofs` (`mere-proofs`) | `Digest`, used for authority revisions and retention facts. |

@@ -15,9 +15,20 @@
 //! [`CheckpointAuthority`]. Stickleback never infers authority from transport
 //! access or visible membership: it supplies the erasure mechanics and calls
 //! the domain's gate.
+//!
+//! ## Features
+//!
+//! `net` (on by default) is the peer-networking half: `JoinedSpace`,
+//! `SyncedSpace`, `MunimentAddressBook`, `Endpoint`/`Gossip`, and
+//! `GroupKeyLane::join`/`publish`. It is the only thing that links
+//! `p2panda-net` and, through it, iroh and QUIC. Everything else here (the
+//! operation store and processor, causal index, group crypto and sessions,
+//! drop carriage, epoch retention) is local, so a consumer that never joins a
+//! peer space builds with `default-features = false`.
 
 #![doc(html_root_url = "https://docs.rs/stickleback/0.1.0")]
 
+#[cfg(feature = "net")]
 pub mod address_book;
 mod authority;
 mod causal;
@@ -28,16 +39,20 @@ mod group_crypto;
 mod group_lane;
 mod group_session;
 pub mod inventory;
+#[cfg(feature = "net")]
 mod joined_space;
+mod lane;
 pub mod object_stream;
 mod processor;
 #[cfg(test)]
 mod prune_proof;
 mod receipt;
 mod store;
+#[cfg(feature = "net")]
 mod synced_space;
 mod writer;
 
+#[cfg(feature = "net")]
 pub use address_book::MunimentAddressBook;
 pub use authority::CheckpointAuthority;
 pub use causal::{
@@ -76,18 +91,21 @@ pub use group_session::{
     GroupRecipientId, GroupSession, GroupSessionDispatch, GroupSessionError, GroupSessionId,
     GroupSessionProcess,
 };
-pub use joined_space::{JoinError, JoinedSpace, lane_id};
+#[cfg(feature = "net")]
+pub use joined_space::JoinedSpace;
+pub use lane::{JoinError, lane_id};
 pub use object_stream::{
     MAX_OBJECT_STREAM_BYTES, MAX_OBJECT_STREAM_TIMEOUT, ObjectStreamError, ObjectStreamLimits,
     read_object, write_object,
 };
-/// The operation type [`JoinedSpace::publish`] takes, re-exported for the same
+/// The operation type `JoinedSpace::publish` takes, re-exported for the same
 /// reason: a host names it to push what it authored, and should not have to
 /// adopt p2panda-core to do so.
 pub use p2panda_core::Operation;
 pub use p2panda_encryption::data_scheme::GroupSecretId;
 /// The transport parts [`JoinedSpace::join`] takes, re-exported so a domain
 /// crate can offer a join helper without importing a p2panda crate itself.
+#[cfg(feature = "net")]
 pub use p2panda_net::{Endpoint, Gossip};
 pub use processor::{
     Admission, HistoryAction, OperationPolicy, OperationProcessor, ProcessError, ProcessOutcome,
@@ -98,6 +116,7 @@ pub use receipt::{
     write_drop_receipt,
 };
 pub use store::{BlobGcReport, MunimentStore};
+#[cfg(feature = "net")]
 pub use synced_space::{SyncRound, SyncStatus, SyncedSpace};
 pub use writer::{WriterBindingError, stable_writer_subject};
 

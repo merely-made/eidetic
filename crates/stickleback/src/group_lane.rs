@@ -39,6 +39,7 @@ use insigne::DerivedKeyAttestation;
 use muniment::{Backend, StoreError, WriteOp};
 use p2panda_core::cbor::{decode_cbor, decode_cbor_strict, encode_cbor};
 use p2panda_core::{Body, Hash, Header, Operation, SigningKey, Topic, VerifyingKey};
+#[cfg(feature = "net")]
 use p2panda_net::{Endpoint, Gossip};
 use p2panda_store::topics::TopicStore;
 use serde::{Deserialize, Serialize};
@@ -48,11 +49,13 @@ use crate::drop::DropRecord;
 use crate::{
     Admission, CausalEntry, CausalError, CausalLimits, GroupControlFrame, GroupControlId,
     GroupDirectFrame, GroupSession, GroupSessionDispatch, GroupSessionError, GroupSessionId,
-    GroupSessionProcess, JoinError, JoinedSpace, MunimentStore, OperationPolicy,
-    OperationProcessor, ProcessError, Reject, StoreTarget, WriterBindingError, author_head,
-    causal_projection, decode_operation_record, lane_id, observed_frontier, operation_record,
-    stable_writer_subject, validate_causal_metadata,
+    GroupSessionProcess, JoinError, MunimentStore, OperationPolicy, OperationProcessor,
+    ProcessError, Reject, StoreTarget, WriterBindingError, author_head, causal_projection,
+    decode_operation_record, observed_frontier, operation_record, stable_writer_subject,
+    validate_causal_metadata,
 };
+#[cfg(feature = "net")]
+use crate::{JoinedSpace, lane_id};
 
 /// This lane's kind. The protocol id is `lane_id(GROUP_KEY_LANE, group.0)`.
 pub const GROUP_KEY_LANE: &str = "stickleback/group-key/v1";
@@ -669,6 +672,7 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
     }
 }
 
+#[cfg(feature = "net")]
 impl<B: Backend + Clone + Send + Sync + 'static> GroupKeyLane<B> {
     /// Join this group's key lane, admitting arrivals through [`Self::accept`].
     ///
