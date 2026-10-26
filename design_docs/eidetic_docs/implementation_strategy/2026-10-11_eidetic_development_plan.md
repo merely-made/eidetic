@@ -34,11 +34,10 @@ model-work consumer. Extend existing modules before proposing further crates.
 The 2026-10-19 foundation promotion moved the portable core, Muniment,
 Chartulary, Hagiograph, Stickleback, Luggage, proofs and Servitor to this
 repository. Fleece, Pandect, Inker and application adapters keep their existing
-homes. Lexical recall has now been copied into this workspace as
-`crates/eidetic-search`; its source and membership are present, while the
-workspace lock resolves offline. The promotion is prepared locally and has not
-been published. Downstream consumer repins and behavioral qualification remain
-in progress.
+homes. Lexical recall now lives in `crates/eidetic-search`. Its package tests
+and optional recall example compile check pass on locked, offline Rust 1.99.1;
+the model backends remain opt-in. Downstream consumer repins remain in progress,
+and these package checks do not close model or product acceptance gates.
 **Supersedes:** the
 [June deferred-phases plan](https://github.com/merely-made/mere/blob/main/design_docs/archive_docs/2026-10-11_superseded_plans/2026-06-09_eidetic_deferred_phases_plan.md).
 Its OPFS measurements and old index proposals remain historical evidence; their
@@ -1048,14 +1047,17 @@ The implementation proposals still need these concrete decisions:
   Genet commit matches the donor tree recorded in
   `Code/output/graphshell-components/validation-resumed/search-supplier-equivalence.json`.
   That receipt records ESP candidate `7062f467`; it does not establish tree
-  equivalence for the current ESP pin `bd0468c5`. The model-recall example now
-  requires an explicit feature that enables optional
-  ESP BERT, WGPU and persistence support; default test builds use ESP without
-  those model backends, as confirmed by its locked dependency tree. Offline
-  metadata resolves the new workspace; existing lock entries remain intact,
-  with new package entries for the ESP dependency graph. This source promotion
-  is prepared locally and has not been published. Builds and consumer cutover
-  remain in progress.
+  equivalence for the current ESP pin `bd0468c5`. All eight library Rust files
+  are byte-identical to their Mere donor; differences are confined to example
+  and test documentation. The locked, offline Rust 1.99.1 package test receipt
+  records 40 passed and 3 ignored. Existing package identities and dependency
+  edges were preserved, with optional ESP dependency edges added. The locked,
+  offline Rust 1.99.1 `eidetic-recall` example check passes with the
+  `recall-example` feature; it verifies compilation only. The source transfer and package
+  checks are complete, while downstream consumer cutover remains in progress.
+  These results do not qualify trained-model retrieval, semantic answer quality
+  or WGPU execution, and do not close the broader P4 model, assessment and
+  tag-work requirements.
 
 - **2026-10-19, extracted ownership and native continuation.** Refreshed the
   supplier/consumer source homes and recorded the accepted producer-to-retention
