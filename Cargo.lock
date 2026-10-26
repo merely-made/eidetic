@@ -2276,7 +2276,7 @@ dependencies = [
 [[package]]
 name = "insigne"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/dramatis.git?branch=main#6cc339f360a7d423f9466dd5cb7504ab5d2f71d8"
+source = "git+https://github.com/merely-made/dramatis.git?branch=main#6325ee8f4aa1ec6f4d41939ff2a3327578de1ae5"
 dependencies = [
  "blake3",
  "ed25519-dalek",
@@ -3042,7 +3042,7 @@ dependencies = [
 [[package]]
 name = "mere-transport"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/murm.git?branch=main#6ea211bda1427c00c18c382e25715ed30f34940c"
+source = "git+https://github.com/merely-made/murm.git?branch=main#aecc4e607937336c10c4e65bce838851da9f3148"
 dependencies = [
  "bytes",
  "iroh",
@@ -3981,7 +3981,7 @@ checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
 [[package]]
 name = "personae"
 version = "0.3.0"
-source = "git+https://github.com/merely-made/dramatis.git?branch=main#6cc339f360a7d423f9466dd5cb7504ab5d2f71d8"
+source = "git+https://github.com/merely-made/dramatis.git?branch=main#6325ee8f4aa1ec6f4d41939ff2a3327578de1ae5"
 dependencies = [
  "blake3",
  "chacha20poly1305 0.11.0",
