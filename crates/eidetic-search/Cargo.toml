@@ -1,0 +1,44 @@
+[package]
+rust-version = "1.97.1"
+name = "eidetic-search"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+description = "Lexical and hybrid search over Eidetic browsing traces: in-tree BM25, prefix candidates, reports and ranking fusion."
+
+[lib]
+name = "eidetic_search"
+path = "src/lib.rs"
+
+[dependencies]
+eidetic = { workspace = true }
+# The only engine dependency: versioned UAX #29 word segmentation from
+# Genet (see `src/tokenize.rs`). The scorer itself is
+# in-tree — no mmap, no threads, no C, so the crate reaches wasm/OPFS.
+genet-text = { workspace = true }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+esp = { workspace = true, optional = true }
+
+[dev-dependencies]
+sha2 = "0.11"
+# The example's store is a muniment backend (2026-07-12).
+muniment = { workspace = true, features = ["fjall"] }
+pollster = "0.4"
+tempfile = "3"
+# Lightweight ESP API for the CPU lexical-ranking integration fixture. Model
+# backends stay behind `recall-example` and do not enter default test builds.
+esp = { workspace = true }
+
+# Example tests are included only when its model-backed feature is selected.
+[[example]]
+name = "eidetic-recall"
+test = true
+required-features = ["recall-example"]
+
+[features]
+recall-example = ["dep:esp", "esp/bert", "esp/bert-wgpu", "esp/persistence"]
+bert = ["dep:esp", "esp/bert"]

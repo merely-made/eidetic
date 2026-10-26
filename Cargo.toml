@@ -4,6 +4,7 @@ members = [
     "crates/muniment",
     "crates/chartulary",
     "crates/eidetic-core",
+    "crates/eidetic-search",
     "crates/hagiograph",
     "crates/stickleback",
     "crates/luggage",
@@ -37,6 +38,23 @@ branch = "main"
 [workspace.dependencies.chartulary]
 version = "0.2.0"
 path = "crates/chartulary"
+
+[workspace.dependencies.eidetic]
+version = "0.0.2"
+path = "crates/eidetic-core"
+default-features = false
+
+[workspace.dependencies.genet-text]
+version = "0.1.0"
+git = "https://github.com/merely-made/genet.git"
+# Match the existing family source identity; Cargo.lock fixes the revision.
+branch = "main"
+
+[workspace.dependencies.esp]
+version = "0.1.0"
+git = "https://github.com/merely-made/esp.git"
+rev = "bd0468c5c44c0b098494d30b3cfd0aa283cecf48"
+default-features = false
 
 [workspace.dependencies.transport]
 package = "mere-transport"

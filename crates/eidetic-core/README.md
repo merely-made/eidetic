@@ -78,8 +78,8 @@ URL caches, public export, hosting, expiry and permission to erase.
   implementations of Eidetic's `BlobFetcher` contract. `resolve_blob` retains
   content-hash verification and local caching; Eidetic has no concrete network
   or database implementation in its runtime dependency cone.
-- `eidetic-search`: derived lexical recall in Mere's
-  `crates/intel/eidetic-search`. Its production library uses in-tree weighted
+- `eidetic-search`: derived lexical recall in this workspace's
+  `crates/eidetic-search`. Its production library uses in-tree weighted
   BM25, Genet text segmentation and Eidetic records; the caller supplies vector
   rankings to its fusion seam. ESP is an example/dev integration, not a
   production dependency of the lexical library. Indexes are rebuildable views
