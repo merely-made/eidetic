@@ -11,10 +11,13 @@
 //! model components (config, weights, tokenizer) from an eidetic store.
 
 pub mod adapter;
+/// Retained claim-to-passage support without semantic certification.
+pub mod answer;
 pub mod embedding;
 pub mod inference;
 pub mod library;
 pub mod recall;
+pub mod requested;
 pub mod training;
 
 pub use adapter::{AdapterRuntimeCompat, MODEL_ADAPTER_MANIFEST_SCHEMA_REF, ModelAdapterManifest};
