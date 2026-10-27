@@ -280,6 +280,14 @@ where
             .ok_or(StemmaError::MissingOwner(owner_id))?;
         self.owner_index.remove(&owner.identity);
 
+        // Owners it created descend from its creator now, or from no one when it
+        // had none, so no survivor names an owner that is gone.
+        for survivor in self.owners.values_mut() {
+            if survivor.creator == Some(owner_id) {
+                survivor.creator = owner.creator;
+            }
+        }
+
         let owned_visits: Vec<_> = owner.owned_visits.into_iter().collect();
         // Drop this owner's bindings from *every* visit, not only its owned ones:
         // a spawned owner also leaves a forward-child binding on the creator's
@@ -300,6 +308,15 @@ where
         for root in roots {
             if self.branch_is_ownerless(root) {
                 self.delete_branch(root, &mut deleted)?;
+            }
+        }
+        // An owner spawned under a collected visit has no parent left to attach to.
+        for survivor in self.owners.values_mut() {
+            if survivor
+                .pending_origin_parent
+                .is_some_and(|visit| !self.visits.contains_key(visit))
+            {
+                survivor.pending_origin_parent = None;
             }
         }
 
