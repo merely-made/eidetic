@@ -7,6 +7,14 @@
 use super::*;
 use std::collections::{HashMap, HashSet};
 
+/// Hash order is not navigation state: a snapshot lists what a map or set holds
+/// by snapshot index, so equal state always writes an equal snapshot.
+fn sorted_by_key<T, I: Ord>(items: impl Iterator<Item = T>, key: impl Fn(&T) -> I) -> Vec<T> {
+    let mut items: Vec<T> = items.collect();
+    items.sort_by_key(key);
+    items
+}
+
 impl<K, E, O, X> Stemma<K, E, O, X>
 where
     K: EntryIdentityKey,
@@ -167,15 +175,19 @@ where
                     created_at_ms: visit.created_at_ms,
                     context: visit.context.clone(),
                     inbound: visit.inbound,
-                    bindings: visit
-                        .bindings
-                        .iter()
-                        .map(|(owner_id, binding)| BindingSnapshot {
-                            owner: owner_index[owner_id],
-                            forward_child: binding.forward_child.map(|visit| visit_index[&visit]),
-                            last_accessed_at_ms: binding.last_accessed_at_ms,
-                        })
-                        .collect(),
+                    bindings: sorted_by_key(
+                        visit
+                            .bindings
+                            .iter()
+                            .map(|(owner_id, binding)| BindingSnapshot {
+                                owner: owner_index[owner_id],
+                                forward_child: binding
+                                    .forward_child
+                                    .map(|visit| visit_index[&visit]),
+                                last_accessed_at_ms: binding.last_accessed_at_ms,
+                            }),
+                        |binding| binding.owner,
+                    ),
                 })
                 .collect(),
             owners: owners
@@ -188,11 +200,10 @@ where
                     pending_origin_parent: owner
                         .pending_origin_parent
                         .map(|visit| visit_index[&visit]),
-                    owned_visits: owner
-                        .owned_visits
-                        .iter()
-                        .map(|visit| visit_index[visit])
-                        .collect(),
+                    owned_visits: sorted_by_key(
+                        owner.owned_visits.iter().map(|visit| visit_index[visit]),
+                        |index| *index,
+                    ),
                 })
                 .collect(),
         }
