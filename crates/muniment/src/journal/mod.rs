@@ -35,6 +35,7 @@
 //! linear one.
 
 pub mod causal;
+mod digest;
 pub mod entries;
 pub mod fork;
 pub mod log;
