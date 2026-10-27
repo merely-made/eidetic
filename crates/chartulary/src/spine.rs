@@ -29,9 +29,10 @@
 //! in a muniment slot. It is an optimization; the log is the authority, so a
 //! snapshot names the log prefix it summarizes by the muniment digest of that
 //! prefix ([`Journal::prefix_digest`]). A checkpointed load trusts a snapshot
-//! only when the journal beside it still begins with that prefix, refuses one
-//! whose prefix is not this journal's, and replays in full past one that names
-//! no prefix at all.
+//! only when the journal beside it still begins with that prefix. A snapshot
+//! that cannot be shown to (it names no prefix, names another journal's, or runs
+//! past the end of this one) is a cache the journal outranks: the log is
+//! replayed in full and the next snapshot names its prefix.
 
 use std::collections::{BTreeMap, HashMap};
 
@@ -742,36 +743,26 @@ where
         Ok(Self::replay_for_writer(log, writer))
     }
 
-    /// Whether `snapshot` summarizes the first `at_seq` entries of `log`: it must
-    /// not run past the log, and the digest it stored must be that prefix's.
-    fn check_names_prefix_of(
+    /// Whether `snapshot` is a checkpoint of this journal: it names the digest of
+    /// the first `at_seq` entries, and `log` still begins with them.
+    fn summarizes_prefix_of(
         snapshot: &Snapshot<N, E>,
         log: &Journal<Batch<N, E>>,
-    ) -> Result<(), StoreError> {
-        let at = snapshot.at_seq;
-        let prefix = usize::try_from(at)
+    ) -> Result<bool, StoreError> {
+        let Some(stored) = snapshot.journal_digest.as_deref() else {
+            return Ok(false);
+        };
+        let prefix = usize::try_from(snapshot.at_seq)
             .ok()
             .and_then(|at| log.prefix_digest(at).transpose())
             .transpose()?;
-        let Some(prefix) = prefix else {
-            return Err(StoreError::Codec(format!(
-                "snapshot sequence {at} exceeds journal length {}",
-                log.len()
-            )));
-        };
-        if snapshot.journal_digest.as_deref() != Some(prefix.to_hex().as_str()) {
-            return Err(StoreError::Codec(format!(
-                "snapshot at sequence {at} does not match the first {at} entries of this journal"
-            )));
-        }
-        Ok(())
+        Ok(prefix.is_some_and(|prefix| prefix.to_hex() == stored))
     }
 
     /// Load from a snapshot at `snap_key` plus the tail of the log at `log_key`. If
     /// no snapshot is present, this is a full replay. A snapshot is used only if it
-    /// names this journal's first `at_seq` entries by digest: one that names a
-    /// different prefix is an error, and one that names none is skipped for a full
-    /// replay.
+    /// names this journal's first `at_seq` entries by digest; one that names none,
+    /// names another journal's, or runs past this one is skipped for a full replay.
     pub async fn load_checkpointed<B: Backend, C: Codec>(
         slots: &SlotStore<B, C>,
         log_key: &str,
@@ -793,16 +784,13 @@ where
                 }
                 return Ok(Self::replay_for_writer(log, snapshot.writer));
             },
-            Some(snapshot) if snapshot.journal_digest.is_none() => {
-                // A snapshot that names no journal prefix cannot be shown to
-                // summarize this one, so the log is replayed in full; the next
-                // snapshot names its prefix.
+            Some(snapshot) if !Self::summarizes_prefix_of(&snapshot, &log)? => {
+                // A snapshot that cannot be shown to summarize this journal's
+                // prefix is a cache the journal outranks, so the log is replayed
+                // in full; the next snapshot names its prefix.
                 return Ok(Self::replay_for_writer(log, snapshot.writer));
             },
-            Some(snapshot) => {
-                Self::check_names_prefix_of(&snapshot, &log)?;
-                Self::from_snapshot(snapshot)?
-            },
+            Some(snapshot) => Self::from_snapshot(snapshot)?,
             None => (Self::new(), 0),
         };
         if tail_start > log.len() as u64 {
@@ -1162,7 +1150,7 @@ mod tests {
     }
 
     #[test]
-    fn a_snapshot_of_another_graph_is_refused_in_place_of_the_durable_journal() {
+    fn a_snapshot_of_another_graph_is_replayed_past_in_favour_of_the_durable_journal() {
         pollster::block_on(async {
             let slots = JsonSlots::new(MemoryBackend::new());
             let mut durable = GraphLog::<Container, Relation>::new();
@@ -1173,23 +1161,17 @@ mod tests {
             foreign.insert_node(&me(), Container::new("foreign"));
             foreign.snapshot(&slots, "snap").await.unwrap();
 
-            let full = GraphLog::<Container, Relation>::load_full(&slots, "log")
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
                 .await
-                .unwrap();
-            assert_eq!(names(&full), ["durable"]);
-            let error = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
-                .await
-                .err()
-                .expect("a snapshot of another journal's prefix is not this journal's checkpoint");
-            assert!(
-                matches!(&error, StoreError::Codec(message) if message.contains("sequence 1")),
-                "{error:?}"
-            );
+                .expect("a snapshot of another journal's prefix is skipped, not trusted");
+            assert_eq!(names(&loaded), ["durable"]);
+            assert_eq!(loaded.revision(), 1);
         });
     }
 
     #[test]
-    fn a_snapshot_of_a_rewritten_journal_prefix_is_refused() {
+    fn a_snapshot_of_a_rewritten_journal_prefix_is_replayed_past_and_the_next_one_names_the_new_prefix()
+    {
         pollster::block_on(async {
             let slots = JsonSlots::new(MemoryBackend::new());
             let mut before = GraphLog::<Container, Relation>::new();
@@ -1203,11 +1185,40 @@ mod tests {
             after.insert_node(&me(), Container::new("c"));
             after.save_log(&slots, "log").await.unwrap();
 
-            let error = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
                 .await
-                .err()
-                .expect("the checkpoint's prefix is no longer the journal's");
-            assert!(matches!(error, StoreError::Codec(_)), "{error:?}");
+                .unwrap();
+            assert_eq!(names(&loaded), ["a", "c"]);
+            loaded.snapshot(&slots, "snap").await.unwrap();
+            let again = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .unwrap();
+            assert_eq!(names(&again), ["a", "c"]);
+            let stored: Snapshot<Container, Relation> = slots.load("snap").await.unwrap().unwrap();
+            assert_eq!(
+                stored.journal_digest,
+                Some(after.log().prefix_digest(2).unwrap().unwrap().to_hex())
+            );
+        });
+    }
+
+    #[test]
+    fn a_snapshot_past_the_end_of_the_journal_is_replayed_past() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut long = GraphLog::<Container, Relation>::new();
+            long.insert_node(&me(), Container::new("a"));
+            long.insert_node(&me(), Container::new("b"));
+            long.snapshot(&slots, "snap").await.unwrap();
+            // Only the first entry is durable.
+            let mut short = GraphLog::<Container, Relation>::new();
+            short.insert_node(&me(), Container::new("a"));
+            short.save_log(&slots, "log").await.unwrap();
+
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .expect("a snapshot the journal has not reached is skipped");
+            assert_eq!(names(&loaded), ["a"]);
         });
     }
 
