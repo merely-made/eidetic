@@ -1041,7 +1041,7 @@ The implementation proposals still need these concrete decisions:
 
 ## 6. Progress
 
-- **2026-10-26, lexical recall source home.** Copied the tracked `eidetic-search`
+- **2026-10-26, lexical recall source home.** Promoted the tracked `eidetic-search`
   package into `crates/eidetic-search`, added it to the workspace, and wired
   Eidetic's local core plus Genet `01d3f528` and ESP `bd0468c5`; the rewritten
   Genet commit matches the donor tree recorded in
@@ -1053,8 +1053,14 @@ The implementation proposals still need these concrete decisions:
   records 40 passed and 3 ignored. Existing package identities and dependency
   edges were preserved, with optional ESP dependency edges added. The locked,
   offline Rust 1.99.1 `eidetic-recall` example check passes with the
-  `recall-example` feature; it verifies compilation only. The source transfer and package
-  checks are complete, while downstream consumer cutover remains in progress.
+  `recall-example` feature; it verifies compilation only. Provider source is
+  published at `354ab71`; Mere `b232631f3` removes the donor and consumes that
+  exact provider. Turnstone `309ea73` also consumes it directly and passes all
+  nine inspection-pane tests after the source-owner cutover. The other receiving
+  hosts consume the qualified Mere source; no compatibility Search facade remains
+  in Mere. Raw checks and publication receipts are retained in
+  `Code/output/graphshell-components/validation-resumed/`. The source transfer,
+  provider checks and direct receiving cutovers are complete.
   These results do not qualify trained-model retrieval, semantic answer quality
   or WGPU execution, and do not close the broader P4 model, assessment and
   tag-work requirements.
