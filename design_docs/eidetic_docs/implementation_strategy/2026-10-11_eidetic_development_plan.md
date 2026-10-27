@@ -2,7 +2,8 @@
 
 **Date:** 2026-10-11
 **Status (2026-10-26):** active plan, owned by the independent Eidetic
-repository. The bounded custody connection and first producer-to-retention
+repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), planned and not yet implemented or qualified.**
+The preceding producer and model receipts keep their bounded historical scope. The bounded custody connection and first producer-to-retention
 paths below have published suppliers and locally qualified Turnstone integration.
 Focused checks and bounded headed macOS receipt runs qualify saved-document
 keyboard selection, sealed selected-text/voice receiving, cold playback and
@@ -36,8 +37,8 @@ Chartulary, Hagiograph, Stickleback, Luggage, proofs and Servitor to this
 repository. Fleece, Pandect, Inker and application adapters keep their existing
 homes. Lexical recall now lives in `crates/eidetic-search`. Its package tests
 and optional recall example compile check pass on locked, offline Rust 1.99.1;
-the model backends remain opt-in. Downstream consumer repins remain in progress,
-and these package checks do not close model or product acceptance gates.
+the model backends remain opt-in. Direct Mere and Turnstone lexical-source receiving is recorded in the October 26
+progress entry; these package checks do not close model or product acceptance gates.
 **Supersedes:** the
 [June deferred-phases plan](https://github.com/merely-made/mere/blob/main/design_docs/archive_docs/2026-10-11_superseded_plans/2026-06-09_eidetic_deferred_phases_plan.md).
 Its OPFS measurements and old index proposals remain historical evidence; their
@@ -660,7 +661,9 @@ deterministic algorithm, tokenizer/preprocessing, pooling/prefix/normalization,
 dimensions, metric and source corpus revisions as applicable. Keep the generic
 numerical index usable independently. Review existing lexical recall and ranking
 fusion before choosing further indexing dependencies. Derived indexes are
-rebuildable projections, and changed source versions invalidate affected results.
+rebuildable projections. Changed source versions invalidate claims that affected
+results describe the current head; authorized historical evidence remains tied
+to its exact retained version, as specified in P4a.
 
 **Embedding continuation (2026-10-20): landed and qualified through resident
 I10.** `models::embedding` owns the retained contract; ESP's opt-in guarded index
@@ -722,6 +725,416 @@ rewrite existing personal tags. CP3's evidence and review state survive reopenin
 Runtime observations, retained clips/notes and rebuildable indexes keep separate
 lifecycles. A suggestion can be queryable at its declared keeping tier without
 becoming a personal tag or requiring an explicit clip-promotion operation.
+
+### P4a. Next milestone: model-free retained research
+
+**Status (2026-10-26): plan; implementation and qualification are open.**
+This is the next Eidetic milestone. It advances P4's evidence and retrieval
+capabilities independently of model execution; it does not close the remaining
+P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
+
+**Goal:** with no model files present and network access disabled, a person can
+retain captures, selections and notes, restart Turnstone, search their admitted
+material, reopen exact cited versions, compare revisions, and answer a documented
+set of structured questions with inspectable inputs.
+
+**Architecture:** Eidetic owns portable records and evidence; `eidetic-search`
+owns derived retrieval, comparison and query evaluation. Turnstone composes its
+existing source owners and presents the results. Distillery consumes the same
+retrieval primitives for optional inference, while keeping model jobs, prompts,
+embedding providers and model-authored reviews in their existing owners.
+
+**Tech stack:** existing Rust 1.99.1 workspaces, Eidetic typed/sealed storage,
+Chartulary attribution and facets, the in-tree BM25/tokenizer, and Turnstone's
+existing Actions, research bridge, saved-source reader and Cambium surfaces.
+No new database, query-language runtime or execution supervisor is required.
+
+**Spec and decision:** the goal and behavioral contract in this subsection are
+the implementation spec. **eidetic_development D1 (2026-10-26, new):** Mark:
+"Yes, let's make that the next Eidetic milestone. Write up the model-free baseline
+plan, grounded in the current code and the cross-source work we should keep. be
+sure to check upstream first!" The milestone follows the preceding agreed
+model-free baseline. The API names, phase boundaries and initial query profile
+below are planning choices, not additional quoted rulings.
+Links: area recall · plans P4a · summary Model-free retained research is the next milestone.
+
+For implementation, use `superpowers:executing-plans` or the user's chosen
+execution workflow task by task. Checkboxes below remain open until their
+specific deliverables and checks pass. This document-only pass starts no
+implementation.
+
+#### Findings: upstream basis and retained work, 2026-10-26
+
+Fetched upstream before planning and fast-forwarded clean consumer checkouts.
+The inspected main snapshots are Eidetic
+`d964d664900ca8cb157e1fd38059ae46eb432916`, Mere
+`7740abc107e15abb54dfa478bcca6a16c4d47173`, and Turnstone
+`309ea73f734c618a987393b2c6b10fd2ff4951b7`. These identify inspected source,
+not a newly tested executable. Refresh them again before implementation.
+
+- Lexical recall moved from Mere to this repository at `098e8a1`, with source
+  qualification at `354ab71` and receiving recorded at `d964d66`.
+  `crates/eidetic-search/src/{document,index,candidates,tokenize,fusion}.rs`
+  already supplies weighted BM25, exact-address lookup, prefix candidates,
+  reports and optional ranking fusion. Default production lexical dependencies
+  do not require an embedding runtime; ESP remains an optional/example/test edge.
+- Both rewritten `codex/cross-source-answers-20261022` tips are ancestors of
+  their current consumer mains. Preserve the integrated history. Do not merge
+  old pre-rewrite branches or cherry-pick this work a second time.
+  `turnstone/docs/receipts/eidetic_main_integration_20261026/README.md` records
+  331 focused passing software checks and source-coherence checks. That receipt
+  explicitly does not qualify a new model-free product path.
+- Keep `crates/eidetic-core/src/models/recall.rs`: source identity, immutable
+  version, full canonical-text hash, half-open Unicode-scalar selectors and
+  content-addressed passages. Keep the existing schema bytes and passage IDs.
+  Their historical `models` path is not a reason to rewrite stored records.
+- Keep cross-source scoped admission and source reopening in
+  `turnstone/src/research.rs`, `src/retained_clip.rs`,
+  `src/trail_memory/saved_sources.rs`, `src/app/contributed_pane_arms.rs` and
+  `src/shell/saved_sources.rs`. Captures and sealed retained text already have
+  concrete admission and exact-reader paths. Selections and notes can share
+  a text representation without becoming the same producer kind.
+- `turnstone/src/saved_sources.rs::search` already works without a model, but
+  covers admitted captures using exact-case substring search. It is not the
+  unified, ranked three-source path. Extend its consumer rather than adding
+  another independently maintained saved-source browser.
+- `mere/ports/distillery/src/inference/recall.rs::RecallIndex` supplies chunking,
+  scoped rankings, current-head observations and content-before-identity score
+  tie ordering. The lexical part needs extraction: its module and callers are
+  under `inference-model`, and `ask_internal_planned` requires a durable model
+  session. `inference_protocol/recall.rs` is runtime-free wire data, but its
+  generation contract and four-passage defaults are not a search product API.
+- Keep `models/{answer,requested}.rs`, Distillery's
+  `inference/{answer_contract,candidate_review}.rs`, sealed run journals and
+  Turnstone's claim/source inspection for optional generation. Requested-fact
+  spans identify parts of a question; they do not implement typed query parsing.
+  `SemanticReview::Unreviewed` must remain so for existing model judgments.
+- Keep the original successful and failed packets, especially Turnstone's
+  `quoted_review_20261024`, `semantic_challenge_20261026` and integration receipt.
+  The challenge records 8/15 semantic passes despite 15/15 structural passes.
+  It used synthetic PageText sources and does not qualify native producer intake.
+  Neither that failure nor the four-case success is a verdict on all models.
+
+Current consumers deliberately name different Eidetic revisions: Mere's core
+pin is `af17fe7`, Turnstone's core pin is `f599ffe`, and both search pins are
+`354ab71`. Reconcile the actual resolved type-bearing dependency graph when
+receiving the implementation. Do not blanket-relock unrelated suppliers or
+assume these manifest differences alone imply duplicated runtime types.
+
+#### Behavioral contract and global constraints
+
+1. **One ordinary path.** Search, inspect, compare and structured-query controls
+   work without connecting to an inference resident, locating model weights or
+   acquiring a GPU. Existing custody access can still require unlocking. Model
+   actions are explicit additions; absence of a model cannot disable research.
+2. **Three source kinds.** The first native gate uses a retained document capture,
+   a real selected-text clip, and a retained note. Show actual producer metadata;
+   do not infer a note from arbitrary prose or from `RecallSourceKind::Fleece`.
+   Preserve selected-only disclosure and distinguish a retained snapshot from
+   its originating live application document.
+3. **Authority precedes computation.** Scope is an explicit admitted set plus
+   its session/admission generation. Empty selection means no selected sources
+   at the product boundary. An explicit “all admitted sources” control enumerates
+   that set; it does not inherit the old empty-slice-means-all convention.
+   Recheck admission before returning results and before reopening evidence.
+4. **Exact evidence and historical access.** Search normalization never changes
+   canonical text or quotation offsets. An authorized old retained version is
+   valid historical evidence even when a newer head exists. “Current”, “older
+   version”, “head unknown”, “unavailable” and “withdrawn from scope” are separate
+   states. Missing old bytes cannot be substituted with a current page fetch.
+   This historical inspection path does not weaken the existing generated-answer
+   route's requirement for current admitted inputs.
+5. **Bounded absence.** Search reports “No passages matched this query in this
+   scope.” Structured queries report “No matching records in this scope” only
+   after a complete enumeration of the selected supported records. Unavailable,
+   refused or limit-exceeded inputs produce incomplete/refused results, never
+   a zero count or an absence claim. Result pagination is distinct from corpus
+   truncation. A top-k lexical shortlist is never the domain of a count or sum.
+6. **Reproducibility.** Retain operation/version, resolved query, scope and input
+   revisions, tokenizer/chunker or property-schema identity, settings, output
+   and exclusions. Replaying frozen inputs reproduces the result; rerunning
+   against current sources is a separate action with a new input snapshot.
+   Existing owners retain sealed bytes; projections remain disposable.
+7. **Small structured vocabulary.** First support source lookup, counts by kind
+   or source, capture/record timelines, explicit tag membership, typed property
+   lookup, grouping equal values, comparison and sum of compatible numeric
+   records. Joins use explicit entity/source IDs. Date ranges, status and unit
+   filters are explicit controls. Free-form questions continue to return lexical
+   evidence unless the user selects a supported structured operation.
+8. **Typed assertions.** Reuse Chartulary's attribution/withdrawal journal and
+   Eidetic typed payloads. A property record binds an explicit entity ID,
+   namespaced property/schema revision, typed value, optional valid-time interval,
+   explicit status, author/method and evidence reference. Record time and valid
+   time stay distinct. Unknown time/status is unknown, never implicitly current
+   or approved. Evidence is an exact passage or a typed field in a named record;
+   a producer timestamp does not need an invented prose quotation.
+9. **Comparison rules.** Property definitions specify single/multiple values,
+   value type and units. Different values are a disagreement only within the
+   same entity/property/context, overlapping known valid time and comparable
+   status. Otherwise present distinct or non-comparable values. Preserve all
+   references when grouping equality. Copied text and multiple references do
+   not imply independent corroboration. Never infer common entity identity from
+   matching names. Never infer a version chain from a shared URL alone.
+10. **Configurable bounds.** Expose search weights, result count, snippet context,
+    corpus/operation limits and alias expansion through existing host settings;
+    retain their effective values. Use current safe bounds as named defaults
+    where applicable, not an unexplained generation-context cap. Limits refuse
+    or report incomplete work explicitly. Keep current storage, custody, deletion
+    and transport policies; this milestone does not grant new access or retention.
+
+Advanced fuzzy matching, general Boolean/proximity syntax, automatic prose fact
+extraction, extractive briefs and new federated search are follow-ons. Baseline
+search includes ranked terms, exact phrases, exact addresses, explicit prefix
+mode and metadata filters. A user-maintained alias list may expand terms only
+with the expansion visible; it never establishes entity equality. The useful
+baseline does not wait for general NLP, TextRank, SQL or SPARQL adoption.
+
+#### File ownership and proposed interfaces
+
+Extend existing crates; create focused modules, not a new foundation crate.
+Paths here are relative to their named repositories. New APIs below are
+**illustrative signatures to implement**, not existing or compile-ready code.
+
+| Owner/files | Change |
+|---|---|
+| Eidetic `crates/eidetic-core/src/recall.rs` (new), `src/lib.rs`, existing `src/models/recall.rs` | Neutral operation/evidence envelopes using the existing source/passage types; retain their serialized identity. |
+| Eidetic `crates/eidetic-core/src/records.rs` (new), existing `typed.rs`, Chartulary `assertion.rs` and `facet.rs` | Typed property/profile and operation-result schemas; use existing sealed save/load and attributed lifecycle, without a second fact database. |
+| Eidetic `crates/eidetic-search/src/{retained,query,compare,records}.rs` (new), `lib.rs`, existing `document.rs`/`tokenize.rs` | Shared retained-text retrieval, explicit query evaluation, text comparison and structured evaluation. |
+| Mere `ports/distillery/src/inference/recall.rs`, `inference/recall_embedding.rs`, `inference_protocol/recall.rs`, relevant Cargo manifests | Delegate lexical work to Eidetic; keep embeddings, prompt assembly, generated-answer validation and existing wire formats in Distillery. |
+| Turnstone `src/research.rs`, `saved_sources.rs`, `inference_service.rs`, `app/{saved_source_arms,contributed_pane_arms,research_note_arms}.rs` | One admitted retained-source adapter; reuse exact capture/clip readers and note ownership; separate it from model connection state. |
+| Turnstone `src/research_service.rs`, `research_surface.rs` (new), existing `inference_surface.rs`, `action.rs`, settings and `shell/drive.rs` | Model-free operations/state and presentation integrated into the existing research surface; optional generated-answer view keeps its existing pane/source serialization. |
+
+Proposed shared boundary:
+
+```rust
+// Illustrative; operation structs are specified below.
+trait RetainedSourceOwner: Send + Sync {
+    fn snapshot(&self, scope: &ResearchScope) -> Result<ResearchSnapshot, ResearchError>;
+    fn read_exact(&self, key: &SourceVersion) -> Result<RetainedSourceText, ResearchError>;
+    fn observe(&self, scope: &ResearchScope) -> Result<SourceObservations, ResearchError>;
+}
+fn search(snapshot: &ResearchSnapshot, query: &SearchQuery,
+          settings: &SearchSettings) -> Result<SearchResult, ResearchError>;
+fn compare(left: &RetainedSourceText, right: &RetainedSourceText,
+           settings: &CompareSettings) -> Result<Comparison, ResearchError>;
+fn evaluate(snapshot: &RecordSnapshot, query: &RecordQuery)
+    -> Result<RecordResult, ResearchError>;
+```
+
+`ResearchScope` carries the owner/session generation and explicit source IDs;
+`SourceVersion` pairs a `RecallSourceId` with its exact version. `ResearchSnapshot`
+holds admitted texts, producer metadata, observations and enumeration coverage.
+`SourceObservations` records current head and access state separately.
+`SearchQuery` is one of ranked terms, exact phrase, exact address or prefix,
+with kind/source/date/tag filters and resolved alias expansion. `SearchResult`
+carries ranked exact passages, match ranges, pagination and coverage.
+`Comparison` carries both version/hash identities and exact unchanged/inserted/
+removed scalar ranges, or an explicit limit refusal.
+
+`PropertyDefinitionV1` fixes property ID/revision, type, unit and cardinality.
+`PropertyRecordV1` carries the assertion fields in constraint 8 and links its
+lifecycle to the existing owner journal. Initially accept text, boolean, integer,
+fixed-scale decimal with unit, civil date and offset-qualified timestamp; reject
+non-finite, ambiguous or incompatible values instead of coercing them.
+`RecordSnapshot` contains admitted property/metadata records, their schema
+revisions, lifecycle observations and coverage. `RecordQuery` enumerates the
+operations in constraint 7; property definitions also enumerate supported status
+IDs, and tag filters use concept/owner identity rather than label equality; `RecordResult` retains every contributing record ID,
+operation parameters, grouping keys, result and completeness. Arithmetic checks
+overflow and units; undated rows stay visible in an unknown-time group.
+`ResearchError` distinguishes denied/withdrawn, unavailable, invalid, unsupported,
+changed-during-operation and limit-exceeded. Existing host adapters can translate
+these values without silently collapsing them into an empty result.
+
+Saved operation records contain the exact inputs or durable references to them,
+including full-set identity for aggregate queries. If policy later removes an
+input, the saved result can be displayed as historical but cannot claim fresh
+verification; reopening or replay reports which input is unavailable.
+
+#### Review focus
+
+- A scope/session changes during work: old results must not appear in the new
+  session or disclose removed text (M1/M2).
+- Emoji, combining marks and phrase matches across chunk boundaries: the exact
+  retained quote must reopen without byte/scalar confusion (M1/M2).
+- A source is superseded, withdrawn or physically missing: distinguish those
+  outcomes while preserving authorized old evidence (M3/M5).
+- Repeated sources, unknown times/statuses, different units and multi-valued
+  properties: avoid double counts and invented disagreements (M4).
+- A corpus exceeds a bound or an owner refuses enumeration: show incomplete work
+  rather than authoritative absence or totals (M2/M4/M5).
+
+#### M1. Extract and receive the model-free retrieval boundary
+
+**Files/interfaces:** shared `recall.rs`/`retained.rs` and Distillery files above;
+produce `RetainedSourceOwner`, snapshots and `search`, while preserving existing
+`InferencePassage`, model protocol and passage IDs.
+
+- [ ] Add focused `model_free_` tests for exact scope, empty selection, head
+  observations, stable content-first ties, duplicate source/version handling,
+  Unicode selectors and admission changes. Assert the same retained source
+  bytes produce unchanged passage IDs before/after the extraction.
+- [ ] Run the focused tests and record the missing-boundary failure; extract the
+  lexical code once. Keep model-specific `prepare` and `RecallEvidence` assessment
+  in Distillery; adapt its corpus and embedding path to the shared result.
+- [ ] Receive one coherent provider revision through Mere and Turnstone. Inspect
+  the resolved normal/build feature tree: the shared baseline does not activate
+  `esp/bert`, `esp/decoder-flex`, `esp/model-session` or a GPU backend. Other
+  unrelated application features are not evidence of a retrieval dependency.
+- [ ] Run the focused shared tests, the existing Distillery recall tests and
+  provider no-default-features check using the commands below; commit the
+  passing source cut and explicit receiving pins. Keep historical JSON readable.
+
+**Done when:** a model-free test caller retrieves cited passages through the
+shared API, and the existing inference caller uses that same lexical code.
+
+#### M2. Search all three retained source kinds in Turnstone
+
+**Files/interfaces:** `query.rs`, existing `document.rs`/`tokenize.rs`, Turnstone
+research service/surface, saved-source actions and research adapters. Consume M1;
+produce searchable admitted snapshots and exact clickable results.
+
+- [ ] Add `model_free_` library cases for capture, selection and note in one
+  admitted set, source/type/date/tag filters, phrases crossing chunk boundaries,
+  explicit prefix and alias modes, metadata-only matches, pagination and
+  incomplete enumeration. A metadata-only hit must not fabricate a body quote.
+- [ ] Run the new tests to establish failure, then implement the query modes
+  over the existing index and exact canonical text. Evaluate phrases against
+  complete admitted text before extracting snippets; never join across sources.
+- [ ] Extend the existing source chooser/search flow with mode and filter
+  controls. Reuse exact reader actions and owner-scoped asynchronous work;
+  cancel/discard results on admission-generation changes. Show effective scope,
+  expansion and coverage. Register Actions/semantics once for UI and automation.
+- [ ] Run focused shared and Turnstone tests, including the existing saved-reader
+  and research suites; commit the unified path and retire duplicated search
+  logic only after its behavior is represented by the shared implementation.
+
+**Done when:** all three kinds can be searched and inspected with no inference
+service connection, including exact source/title-only and Unicode controls.
+
+#### M3. Compare exact retained versions
+
+**Files/interfaces:** shared `compare.rs`, Turnstone service/surface and exact
+source readers. Consume M1's `read_exact`; produce `Comparison`.
+
+- [ ] Add `model_free_` cases for equal text, insertion/deletion, repeated lines,
+  Unicode ranges, old/current versions, missing old bytes and a limit refusal.
+  Assert comparison has both version/hash IDs and reconstructs each input from
+  the reported spans. Different source IDs require an explicit two-source
+  comparison, not an inferred revision relationship.
+- [ ] Run the failures, then implement a bounded deterministic line diff with
+  scalar ranges into canonical text; use hashes for exact equality. Show old
+  and new sides with their own citations, and distinguish an explicit comparison
+  from a source-owner-declared version sequence.
+- [ ] Run shared comparison and Turnstone open/withdrawal controls; commit.
+
+**Done when:** an authorized older snapshot opens and compares offline, while
+withdrawn or missing material produces its precise state rather than a fetch.
+
+#### M4. Answer the supported structured questions
+
+**Files/interfaces:** core `records.rs`, shared search `records.rs`, existing
+sealed typed storage and owner attribution; Turnstone research service/surface
+and annotation actions. Produce the property schemas, snapshots, `RecordQuery`
+and `evaluate` described above. No arbitrary-prose extractor enters this task.
+
+- [ ] Add `model_free_` cases for source counts/timelines/tags, typed lookup,
+  equality grouping, explicit-ID joins, comparisons and checked sums. Include
+  two records of 09:30, a comparable 10:15, a former interval, unknown timezone,
+  guessed versus approved status, two same-named entities, copied sources,
+  multi-valued properties, incompatible units and arithmetic overflow.
+- [ ] Assert that all contributing IDs and settings survive sealed save/load;
+  duplicate projection of one assertion counts once, while distinct assertions
+  remain individually inspectable. Assert incomplete input refuses totals and
+  absence claims even when a lexical shortlist happens to contain all matches.
+- [ ] Run the failing tests; implement metadata adapters and explicit typed
+  annotation authoring through the existing graph owner, schema validator,
+  journal and sealed payload storage. Withdrawal updates the existing lifecycle;
+  derived query indexes never become the authority. Validate references and
+  scope again when a query runs or a typed annotation is committed.
+- [ ] Implement structured query controls and templated result sentences/tables,
+  with visible input records and schema/status/time/unit filters. Unsupported
+  free text returns passages and the supported-query choices, not a guessed
+  structured answer. Preserve unknown values instead of defaulting them.
+- [ ] Run core/storage, shared evaluator and Turnstone focused tests; commit.
+
+**Done when:** a user can enter an explicit sourced property, reopen it, run
+these queries, and inspect the exact records and operations behind each result.
+The ferry fixture demonstrates typed comparison, not general ferry prose reading.
+
+#### M5. Qualify offline restart and ordinary product use
+
+**Files:** new Turnstone `scenarios/model_free_research_{seed,reopen}.scn`,
+`scripts/verify_model_free_research.py`, existing `src/scenario.rs` and
+`src/shell/drive.rs`; receipts under
+`turnstone/docs/receipts/model_free_research_20261026/`. The script validates a
+receipt from a run; it cannot stand in for performing that run.
+
+- [ ] Extend existing real producer fixtures to retain a capture, actual selected
+  text and an authored note through their ordinary controls. Record producer
+  provenance and source boundaries; do not substitute three synthetic PageText
+  rows. Preserve full-source backing privacy during selection and onward export.
+- [ ] Start from isolated model-free stores/configuration, record that model
+  directories are absent, disable acquisition/network access, and stop the
+  inference resident while retaining the required existing custody service.
+  Record process IDs, exact executable/lock/source hashes and attempted network
+  acquisition. Never remove the user's models or personal stores for this gate.
+- [ ] Exercise search, exact source opening, comparison, typed annotation and
+  every structured operation. Save and exit. Remove original fixture sources
+  and restart Turnstone and its test custody process; reopen retained sources
+  and saved results. Show old/current, missing, withdrawn, scope-switch,
+  model-unavailable and over-limit controls through the same UI/actions.
+- [ ] Require reviewed headed evidence and independent byte/record assertions:
+  exact quotations and selected-only retention, replayed totals/groups,
+  unchanged historical inputs, zero model-load/generation/acquisition requests,
+  bounded no-match wording and no cross-scope rows. A parser-only scenario pass
+  or a log line saying “ready” is insufficient.
+- [ ] Freeze the new receipt and commit it with a source-bound report. Run the
+  existing generated-answer compatibility cases separately; keep the 8/15
+  semantic result and other platform limits unchanged.
+
+**Done when:** all of the milestone goal passes in fresh native processes on
+the recorded platform. Portable shared-library/browser compilation is a separate
+check; broader headed browser, Windows/macOS/Linux and installed personal-custody
+claims require their own runs. The initial native gate can use this Linux host.
+
+#### Verification and delivery
+
+Run focused new tests after implementation, under the existing machine-heavy
+lock and the current workspace build/cache guard. Reuse approved targets, check
+available capacity, and serialize builds. Commands below are **planned commands**,
+not checks executed during this documentation pass; every test filter must run
+a positive test count. Use each repository's pinned toolchain and lockfile.
+
+```sh
+# Eidetic: new pure logic plus the existing package regressions.
+cargo test --locked -p eidetic --lib model_free_
+cargo test --locked -p eidetic-search --lib model_free_
+cargo test --locked -p eidetic-search
+cargo check --locked -p eidetic-search --no-default-features
+cargo check --locked -p eidetic-search --no-default-features --target wasm32-unknown-unknown
+cargo tree --locked -p eidetic-search -e normal,build,features
+# Mere: retained generated-answer adapter remains compatible.
+cargo test --locked -p distillery --features inference-model --lib inference::recall::tests
+# Turnstone: unified research and existing exact readers.
+cargo test --locked -p turnstone --lib model_free_
+cargo test --locked -p turnstone --lib saved_source
+cargo test --locked -p turnstone --lib research
+cargo test --locked -p turnstone --lib inference
+```
+
+The M5 verifier must fail on a missing phase, zero exercised source kinds, absent
+restart evidence or any failed assertion. It records software checks, source
+preservation, native UI/restart evidence and publication separately. Pin updates
+are delivered provider-first, then Mere, then Turnstone, directly to main after
+focused final checks. Refresh upstream before each integration, preserve active
+worktrees and original receipts, and rerun affected checks after source changes.
+
+Milestone completion requires M1–M5. Each phase has an independently reviewable
+result, but a library pass alone does not complete the product milestone.
+Optional embeddings and generation remain comparable additions measured against
+this frozen lexical/structured baseline for retrieval coverage, supported
+question forms and explanation quality.
 
 ### P5. Qualify adding browsing in a browser
 
@@ -1002,7 +1415,12 @@ remains a later heterogeneous extension rather than an entry prerequisite.
 
 ## 5. Order and decisions still to make
 
-Start **P0 -> P1 -> P2** with the bounded visit-preservation slice. P3 can follow
+**Priority update, 2026-10-26:** P4a is the next milestone, in M1–M5 order.
+Its current-code foundation is already integrated; optional model-quality work
+does not block it. The broader dependency order below remains background for
+the other open phases, not an instruction to redo their completed slices.
+
+Original dependency order: **P0 -> P1 -> P2** with the bounded visit-preservation slice. P3 can follow
 the identity/admission contract; P4 consumes P1/P2 evidence and P3 captures.
 P5 first qualifies metadata intake after P2, then content capture after P3.
 Storage/custody review in P6 accompanies all durable changes; new backends and
@@ -1040,6 +1458,14 @@ The implementation proposals still need these concrete decisions:
    an attributable action; that copying policy remains a named checkpoint.
 
 ## 6. Progress
+
+- **2026-10-26, model-free milestone planned.** Refreshed Eidetic, Mere and
+  Turnstone upstream, checked integrated cross-source ancestry and current
+  source owners, and specified P4a M1–M5 in this existing plan. The plan keeps
+  exact evidence/admission and optional inference contracts, separates current
+  head from historical availability, and defines bounded structured operations
+  with an offline three-source native restart gate. Source, documentation and
+  receipt inspection only; no implementation, build or new runtime qualification.
 
 - **2026-10-26, lexical recall source home.** Promoted the tracked `eidetic-search`
   package into `crates/eidetic-search`, added it to the workspace, and wired
