@@ -71,12 +71,23 @@ pub struct Container<Id = String, A = Address> {
     #[serde(default, deserialize_with = "deserialize_title")]
     pub title: String,
     /// Semantic tags.
-    #[serde(default)]
+    #[serde(default, serialize_with = "serialize_sorted")]
     pub tags: HashSet<String>,
     /// The log identity of a nested graph contained within this node, if any.
     /// Absent in pre-nesting data, so old slots load unchanged.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub nested: Option<LogId>,
+}
+
+/// A set serializes in sorted order, so the same tags encode the same bytes
+/// every time and a journal entry that holds them has a stable digest.
+fn serialize_sorted<S: serde::Serializer>(
+    tags: &HashSet<String>,
+    serializer: S,
+) -> Result<S::Ok, S::Error> {
+    let mut sorted: Vec<&String> = tags.iter().collect();
+    sorted.sort();
+    serializer.collect_seq(sorted)
 }
 
 fn deserialize_title<'de, D>(deserializer: D) -> Result<String, D::Error>
@@ -250,5 +261,28 @@ impl Classified for Relation {
 impl Predicated for Relation {
     fn predicate(&self) -> Option<&str> {
         self.class.predicate()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn tags_serialize_in_sorted_order() {
+        let mut container = Container::new("a");
+        container.tags = (0..32).map(|n| format!("tag-{:02}", 31 - n)).collect();
+        let value = serde_json::to_value(&container).unwrap();
+        let tags: Vec<&str> = value["tags"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|tag| tag.as_str().unwrap())
+            .collect();
+        let mut sorted = tags.clone();
+        sorted.sort();
+        assert_eq!(tags, sorted);
+        let back: Container = serde_json::from_value(value).unwrap();
+        assert_eq!(back, container);
     }
 }
