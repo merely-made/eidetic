@@ -47,7 +47,7 @@ def validate_gui(inp, all_scope, before_click, before, after, runtime):
         return found[0]
     a, b = reader(before, inp['a1_target']), reader(after, inp['a2_target'])
     verify_all_scope(all_scope, inp['a1_target'], before_click)
-    verify_click_interval(before_click, before, inp['a1_target'])
+    verify_click_interval(before_click, before, inp['a1_target'], inp['a1_content']['raw_manifest'])
     if a['phase'] != 'Error' or a['content'] is not None or not a['error']:
         raise ValueError('exact A1 open did not refuse')
     if b['phase'] != 'Ready' or b['content'] != inp['a2_content']:

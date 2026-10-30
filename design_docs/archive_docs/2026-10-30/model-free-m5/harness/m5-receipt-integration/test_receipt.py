@@ -48,10 +48,14 @@ class ReceiptChecks(unittest.TestCase):
             with self.assertRaises(ValueError):
                 verify.load_pinned_module(path, sha(b'different'), 'frozen_test')
 
-    def test_finished_verification_remains_draft(self):
+    def test_receipt_rejects_missing_or_wrong_schema(self):
         verify = module('verify')
-        with self.assertRaisesRegex(ValueError, 'DRAFT'):
-            verify.refuse_unreviewed_acceptance()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for manifest in ({}, {'schema':'turnstone.m5-receipt/v1','status':'draft'},
+                             {'schema':'wrong','status':'collected-awaiting-verification'}):
+                (root/'manifest.json').write_text(json.dumps(manifest))
+                with self.assertRaises(ValueError): verify.verify_receipt(root)
 
     def test_missing_fault_file_ledger_refuses(self):
         assemble = module('assemble')
@@ -439,11 +443,18 @@ class CitationEvidence(unittest.TestCase):
         with self.assertRaises(ValueError): v.check_citation_text('```knot.clip.provenance\n'+json.dumps(data)+'\n```',target,text,exact)
 
 class ReviewCoverage(unittest.TestCase):
-    def test_review_requires_outcomes_for_each_specific_frame(self):
-        v=module('verify'); frames={'a.png','b.png'}
-        v.check_review_coverage({'reviewer':'reviewer','reviewed_frames':['a.png','b.png'],'outcomes':{'a.png':'pass','b.png':'pass'}},frames,frames)
-        with self.assertRaises(ValueError): v.check_review_coverage({'reviewer':'reviewer','reviewed_frames':['a.png'],'outcomes':{'a.png':'pass'}},frames,frames)
-        with self.assertRaises(ValueError): v.check_review_coverage({'reviewer':'reviewer','reviewed_frames':['a.png','b.png'],'outcomes':{'a.png':'pass','b.png':'fail'}},frames,frames)
+    def test_review_requires_outcomes_and_exact_hashes_for_each_frame(self):
+        v=module('verify'); frames={'a.png','b.png'}; ledger={'a.png':'a'*64,'b.png':'b'*64}
+        review={'reviewer':'reviewer','reviewed_frames':list(frames),'outcomes':{x:'pass' for x in frames},'sha256':dict(ledger)}
+        v.check_review_coverage(review,frames,ledger)
+        import copy
+        for mutation in ('missing_frame','failed','missing_digest','wrong_digest'):
+            bad=copy.deepcopy(review)
+            if mutation == 'missing_frame': bad['reviewed_frames'].remove('a.png')
+            if mutation == 'failed': bad['outcomes']['a.png']='fail'
+            if mutation == 'missing_digest': del bad['sha256']['a.png']
+            if mutation == 'wrong_digest': bad['sha256']['a.png']='c'*64
+            with self.assertRaises(ValueError): v.check_review_coverage(bad,frames,ledger)
 
 class ContributorSourceCoverage(unittest.TestCase):
     def test_row_sources_match_all_and_only_record_sources(self):

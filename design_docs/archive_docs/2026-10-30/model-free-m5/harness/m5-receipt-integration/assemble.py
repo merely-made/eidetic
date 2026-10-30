@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Copy verified M5 collection evidence to a separate, draft-only receipt."""
+"""Copy verified M5 collection evidence to a separate receipt awaiting verification."""
 import argparse
 import hashlib
 import json
@@ -8,7 +8,7 @@ from pathlib import Path
 import stat
 import types
 
-VERIFY_SHA256 = 'bfbcb982f04a2db835eb78317ec6fd874da31505c2346e612323a8a0c63bc890'
+VERIFY_SHA256 = '4f5e6a08546ceb5497c80c5694aa1bb8ce3d05f92271961c63d5b97e287f1501'
 verify_path = Path(__file__).with_name('verify.py')
 if verify_path.is_symlink() or not verify_path.is_file(): raise ValueError('missing validation module')
 verify_bytes = verify_path.read_bytes()
@@ -146,9 +146,9 @@ def assemble(intact, fault, review, output):
         source = verify.regular(intact, rel)
         if snapshot.get(rel) != verify.sha(source): raise ValueError('fault refers to another intact collection: ' + rel)
     review = Path(review)
-    if review.is_symlink() or not review.is_file(): raise ValueError('human review missing')
+    if review.is_symlink() or not review.is_file(): raise ValueError('reviewer evidence missing')
     review_data = json.loads(review.read_text())
-    if not review_data.get('reviewer') or not review_data.get('reviewed_frames'): raise ValueError('human review incomplete')
+    if not review_data.get('reviewer') or not review_data.get('reviewed_frames'): raise ValueError('reviewer evidence incomplete')
     tools = {}
     for name, (rel, digest) in TOOLS.items():
         source = (Path(__file__).parent / rel).resolve(strict=True)
@@ -174,7 +174,7 @@ def assemble(intact, fault, review, output):
     # Recheck actual frozen binaries after all copying before recording the
     # assembly-time binary observation; they are intentionally not copied.
     check_builds(intact, intact_files)
-    manifest = {'schema':'turnstone.m5-receipt-integration-draft/v1','status':'draft',
+    manifest = {'schema':'turnstone.m5-receipt/v1','status':'collected-awaiting-verification',
                 'fault_run_id':fault_doc['run_id'],
                 'binary_hashes_checked_at_assembly':{n:verify.sha(verify.regular(intact,'frozen/'+n)) for n in COMMANDS},
                 'files':files}
@@ -186,6 +186,6 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('intact','fault','review','output'): p.add_argument('--'+name, type=Path, required=True)
     a=p.parse_args(); assemble(a.intact,a.fault,a.review,a.output)
-    print('Draft evidence copied; semantic and headed acceptance remain unverified.')
+    print('Evidence copied; semantic and headed verification remain pending.')
 
 if __name__ == '__main__': main()

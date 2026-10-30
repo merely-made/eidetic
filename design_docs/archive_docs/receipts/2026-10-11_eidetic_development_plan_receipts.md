@@ -1521,3 +1521,111 @@ exact Mere `845fe1c4` was unavailable; that checkout has since been fetched and
 a locked build is running with Cargo.lock unchanged. No current-source gate result
 is available yet. V's fault result remains failed; M1–M4 are landed and M5 remains
 in progress.
+
+
+### Current upstream Turnstone host gate, 2026-10-30
+
+After Eidetic `0c89079`, Turnstone `554f323f` and Genet `b7c0bef` were merged,
+the exact Mere `845fe1c4` checkout became available. The warm locked host suite
+passed 1,403 tests, 0 failures and 21 ignored in 289.10 seconds (292.05 seconds
+elapsed, 382,356 KiB peak RSS, zero swaps, exit 0). The raw log
+`/home/markik/Code/testing/custody-contract-20261029/m5-host-fetch-full-6.log`
+has SHA-256
+`9817f8a90cdd15d7745f11639762ab46aae3b56fc20f6a9480878c465c4e7afc`. The
+preceding full-5 attempt reached the 600-second cap (exit 124, no recorded test
+failure); its raw log remains preserved with SHA-256
+`fd671ca493914c14e17dcceec2f9e25e5b8102bc6d11c1ee6f1e7b5a535238a4`.
+
+This host suite is software evidence for current upstream; it does not qualify
+M5 native or headed use. Existing intact V and its failed fault attempt used the
+older frozen Turnstone `61c25b0c` source. A fresh native collection W on the
+current source remains pending. M1–M4 are landed; M5 remains in progress and no
+final acceptance is claimed.
+
+
+### M5 intact W and failed fault attempts W/W2, 2026-10-30
+
+W completed the intact seed and cold run on current Turnstone `554f323f`. Its
+collection record is `/home/markik/Code/testing/m5-intact-collection-20261030-w/collection.json`
+(SHA-256 `8f6121ce89db8178064da916d9dba49d526b2329d2fc568c8b5fb6188fa4adf1`). All
+58 actual frames were reviewed. Codex Luna's 38-frame structured/negative review
+is `.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-w-structured.json`
+(SHA-256 `3f34ec2f5c9e38e0b7444232e5c7a07772b3df928a402e3ea80e3f6786478982`). This
+visual record is separate from cold and producer-frame review. W is intact evidence,
+not final acceptance.
+
+W's missing-source fault attempt failed because the citation was not reached while
+the palette remained open. W2 added Escape, editor-body focus and Maximize; its
+scenario assertions all passed, but the collection aggregate rejected a
+pre-existing locked-profile reader. W2 remains failed. A narrow reviewed validator
+now accepts only the exact unlock-error to deleted-raw-blob-error transition for
+the same canonical URL, node and target with null content, exactly one reader-open
+event, unchanged address and scope, and no fallback reader. This event evidence
+does not establish request-ID causality. At this dated checkpoint, a fresh W3 copy was running; the following final W3 receipt section records its completion.
+
+The copied harness now includes the curated W2 observation fixture required by
+the regression test. The copied missing-source suite passed 25 tests and the then-current receipt-
+integration suite passed 44 tests. These were Python helper checks only; they did
+not turn W or W2 into a fault pass. The later W3 result is recorded below.
+
+
+### M5 final W3 receipt and independent audit, 2026-10-30
+
+W is the completed intact collection and W3 is the matching completed
+missing-source collection for the recorded cohort: Turnstone `554f323f`, Mere `845fe1c4`, Genet `b7c0bef`, on Linux. The frozen
+collection is `/home/markik/Code/testing/m5-final-receipt-20261030-w3`; run ID
+`b89d9c89-8738-4653-93f4-3bb90fcf08be`. The W3 collection SHA-256 is
+`e544e6fd72caccb8a0959f368588d588b4a2665a720e0b5a260d8624a6ce9cb2`. The manifest
+SHA-256 is `88c30c6ca8e40964d0dd606f1cf4965c75eeec5f7746fc69949a7621449900f7`; its
+status remains `collected-awaiting-verification`. The receipt binds 206
+ledger-bound files and 62 actual reviewed frames. The review bundle SHA-256 is
+`612f268fc7cff96071e7ec8630cda342896823592083b02de740ae851ce5b7b9`.
+
+The separate adopted verifier
+`m5-receipt-integration/verify.py` has SHA-256
+`4f5e6a08546ceb5497c80c5694aa1bb8ce3d05f92271961c63d5b97e287f1501`. The external
+independent audit at
+`.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-final-w3-independent-audit.json`
+has SHA-256
+`b48e0b4e0f46738828d10dc4549ca842886a9b0d05dd2fc04754747f0c28fd1a` and reports
+PASS. It verifies the manifest, ledger bindings, process/owner/source semantics
+and reviewed-frame hashes. The manifest status is intentionally distinct from
+the verifier/audit result. The original executable binaries remain in the frozen
+collection, not the standalone receipt; the assembler checked their hashes against
+the frozen originals. Later standalone verification checks recorded provenance
+bindings rather than rehashing absent binaries.
+
+W and W2 failed attempts remain preserved in their earlier entries. The specific
+missing-source result is bounded to the checked target and observed reader-open
+event; it is not request-ID causal proof. The current-source host suite passed
+1,403 tests, 0 failures and 21 ignored. M5/P4a is complete for this recorded Linux
+source cohort only. Model semantic quality remains 8/15; non-Linux, hardware,
+personal-custody, power-loss and general accessibility claims remain unqualified.
+Follow-ups outside M5 are improved clipped labels and automatic restored-pane
+recovery. A later Turnstone fetch at `47809a2b` postdates the W3 source and is
+not qualified by this receipt; it changes receiving tests and shared accessibility
+production code, so it is a separate source cohort. Raw evidence stays under `/home/markik/Code/testing`;
+this is the one canonical narrative receipt.
+
+
+### Later upstream receiving check, 2026-10-30
+
+After freezing the passing W intact plus W3 missing-source receipt at Turnstone
+`554f323f`, the clean checkout was fast-forwarded to `47809a2b`. This upstream
+delta adds fetch-actor receiving tests and shares a surface plan across
+accessibility publication. Source review found no direct change to source
+authority, recall or retained-reader behavior. The locked/offline focused gates
+passed under the unchanged resource guard:
+
+- Fetch receiving: 3 passed, 0 failed;
+  `/home/markik/Code/testing/custody-contract-20261029/m5-upstream-fetch-receiving-1.log`,
+  SHA-256 `e950d3f83dd4c364ab1b444e4832e16a36bb4470ab0a59e7b8047f080662325b`.
+- Accessibility-focused host tests: 69 passed, 0 failed;
+  `/home/markik/Code/testing/custody-contract-20261029/m5-upstream-a11y-1.log`,
+  SHA-256 `d7d40bd52762e116410097a75542788ccbbd7deefbde5bcdb4964bc09d6b4727`.
+
+The host source-size check passes. These receiving results do not extend the
+W/W3 native receipt, screen-reader or hardware qualification to `47809a2b`.
+The frozen receipt and its executable/source bindings remain unchanged.
+Eidetic also received `7971d14`, a line-ceiling documentation update that does
+not alter the qualified dependency revisions.

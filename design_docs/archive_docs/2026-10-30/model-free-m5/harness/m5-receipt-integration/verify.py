@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validation primitives for a draft receipt; never grants final acceptance."""
+"""Validate a complete M5 receipt and return bounded evidence summary."""
 import hashlib
 import json
 from pathlib import Path
@@ -42,7 +42,7 @@ INTACT_REQUIRED = {'inputs.json','processes.json','seed-launcher.json','reopen-l
                    'sandbox/reopen/22_reopen_A1.saved-sources.json','sandbox/reopen/23_reopen_A2.saved-sources.json'}
 TOOLS = {
     'verify_receipt.py': ('../m5-draft/verify_receipt.py','e521c6f2bb538976fabc482f991354f720fb79e5c886ac33dd81d2e21cd9fc47'),
-    'verify_missing.py': ('../m5-missing-draft/verify_missing.py','ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939'),
+    'verify_missing.py': ('../m5-missing-draft/verify_missing.py','4f381f9c20693edaf0885e31254284386ccdf7a8233c276e1a7fc9d6b67197e8'),
     'run_missing.py': ('../m5-missing-draft/run_missing.py','a84eee8f010426dbad6f700acc1358e8c0820fb68f2ef7a7b8afc3a798f4a89c'),
 }
 
@@ -126,10 +126,6 @@ def load_pinned_module(path, expected, name):
     module.__file__ = str(path)
     exec(compile(data, str(path), 'exec'), module.__dict__)
     return module
-
-
-def refuse_unreviewed_acceptance():
-    raise ValueError('DRAFT ONLY: final receipt integration awaits scoped review and actual evidence')
 
 
 def check_group_rows(records, rows):
@@ -618,6 +614,8 @@ def check_review_coverage(review, required_frames, ledger):
         raise ValueError('headed review does not cover required frames')
     if any(review.get('outcomes',{}).get(frame) != 'pass' for frame in required_frames):
         raise ValueError('headed frame outcomes incomplete')
+    if any(review.get('sha256', {}).get(frame) != ledger[frame] for frame in required_frames):
+        raise ValueError('reviewed frame hash differs')
 
 
 def required_review_frames():
@@ -630,7 +628,7 @@ def required_review_frames():
                 'scope_before','scope_empty_selector','scope_empty_search','scope_empty_before_run','scope_empty_fresh',
                 'negative_no_match','negative_over_limit')}
     frames |= {seed+'authored_'+str(i)+'.png' for i in range(14)}
-    frames |= {reopen+name+'.png' for name in ('22_reopen_A1','23_reopen_A2','24_reopen_selection','24_reopen_selection_reader',
+    frames |= {reopen+name+'.png' for name in ('21_reopen_A1_search','22_reopen_A1','23_reopen_A2','24_reopen_selection','24_reopen_selection_reader',
                                                 '25_reopen_note','25_reopen_note_reader','cold_sum','model_unavailable')}
     frames |= {fault+name+'.png' for name in ('missing_before_click','missing_A1_peek','missing_A1_refusal','missing_A2_ready')}
     return frames
@@ -673,13 +671,13 @@ def check_limit_refusal(status, current, graph):
         raise ValueError('independent current input does not exceed record limit')
 
 
-def verify_draft(base):
-    """Run available checks, then refuse acceptance pending the final review gate."""
+def verify_receipt(base):
+    """Verify all bound evidence before returning its summary."""
     import ast
     import copy
     base = Path(base).resolve(strict=True)
     manifest = json.loads(regular(base, 'manifest.json').read_text())
-    if manifest.get('schema') != 'turnstone.m5-receipt-integration-draft/v1' or manifest.get('status') != 'draft':
+    if manifest.get('schema') != 'turnstone.m5-receipt/v1' or manifest.get('status') != 'collected-awaiting-verification':
         raise ValueError('wrong receipt schema')
     files = validate_ledger(base, manifest.get('files'), {'review.json','intact/collection.json','fault/collection.json',
                             'tools/verify_receipt.py','tools/verify_missing.py','tools/run_missing.py'})
@@ -916,13 +914,15 @@ def verify_draft(base):
     scope['verify_bound_case'](case, bound, files)
     review = bound('review.json')
     check_review_coverage(review, required_review_frames(), files)
-    refuse_unreviewed_acceptance()
+    return {'fault_run_id': manifest['fault_run_id'], 'reviewer': review['reviewer'], 'reviewed_frame_count': len(required_review_frames())}
 
 
 def main():
     import sys
     if len(sys.argv) != 2: raise SystemExit('usage: verify.py RECEIPT')
-    try: verify_draft(Path(sys.argv[1]))
+    try:
+        summary = verify_receipt(Path(sys.argv[1]))
+        print('PASS: '+json.dumps(summary, sort_keys=True))
     except (ValueError,KeyError,TypeError,OSError,json.JSONDecodeError) as exc:
         print('FAIL: ' + str(exc),file=sys.stderr); raise SystemExit(1)
 

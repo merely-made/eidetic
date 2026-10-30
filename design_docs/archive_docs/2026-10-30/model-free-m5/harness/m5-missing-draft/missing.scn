@@ -18,9 +18,16 @@ choose-suggestion Back
 choose-suggestion Back to results
 wait-research-search 600
 record-saved-sources missing_all_scope
+key escape
+assert omnibar closed
 act Open research note
 act Read document
 settle 20
+# Focus the editor body, away from the citation button, before maximizing.
+click .knot-editor-wrap
+act Maximize pane
+settle 10
+assert maximized
 assert content-live
 assert text Read saved passage 1:
 record-saved-sources missing_before_click
