@@ -728,7 +728,7 @@ becoming a personal tag or requiring an explicit clip-promotion operation.
 
 ### P4a. Next milestone: model-free retained research
 
-**Status (2026-10-26): plan; implementation and qualification are open.**
+**Status (2026-10-29): in progress; M1 shared retrieval and receiving.**
 This is the next Eidetic milestone. It advances P4's evidence and retrieval
 capabilities independently of model execution; it does not close the remaining
 P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
@@ -760,30 +760,21 @@ Links: area recall · plans P4a · summary Model-free retained research is the n
 
 For implementation, use `superpowers:executing-plans` or the user's chosen
 execution workflow task by task. Checkboxes below remain open until their
-specific deliverables and checks pass. This document-only pass starts no
-implementation.
+specific deliverables and checks pass. M2–M5 remain open during the M1 extraction.
 
 #### Findings: upstream basis and retained work, 2026-10-26
 
-Fetched upstream before planning and fast-forwarded clean consumer checkouts.
-The inspected main snapshots are Eidetic
-`d964d664900ca8cb157e1fd38059ae46eb432916`, Mere
-`7740abc107e15abb54dfa478bcca6a16c4d47173`, and Turnstone
-`309ea73f734c618a987393b2c6b10fd2ff4951b7`. These identify inspected source,
-not a newly tested executable. Refresh them again before implementation.
+The integrated cross-source foundation remains the basis of this milestone.
+Prior source snapshots and software evidence are recorded in the
+[receipt archive](../../archive_docs/2026-10-29/2026-10-11_eidetic_development_plan_receipts.md).
 
-- Lexical recall moved from Mere to this repository at `098e8a1`, with source
-  qualification at `354ab71` and receiving recorded at `d964d66`.
-  `crates/eidetic-search/src/{document,index,candidates,tokenize,fusion}.rs`
-  already supplies weighted BM25, exact-address lookup, prefix candidates,
-  reports and optional ranking fusion. Default production lexical dependencies
-  do not require an embedding runtime; ESP remains an optional/example/test edge.
-- Both rewritten `codex/cross-source-answers-20261022` tips are ancestors of
-  their current consumer mains. Preserve the integrated history. Do not merge
-  old pre-rewrite branches or cherry-pick this work a second time.
-  `turnstone/docs/receipts/eidetic_main_integration_20261026/README.md` records
-  331 focused passing software checks and source-coherence checks. That receipt
-  explicitly does not qualify a new model-free product path.
+- `crates/eidetic-search/src/{document,index,candidates,tokenize,fusion}.rs`
+  supplies weighted BM25, exact-address lookup, prefix candidates, reports and
+  optional ranking fusion. Its normal lexical dependencies require no embedding
+  runtime; ESP remains an optional/example/test edge.
+- Both rewritten cross-source answer branches were integrated into their
+  consumer mains. Preserve that history and its original successful and failed
+  packets. Existing software receipts do not qualify a model-free product path.
 - Keep `crates/eidetic-core/src/models/recall.rs`: source identity, immutable
   version, full canonical-text hash, half-open Unicode-scalar selectors and
   content-addressed passages. Keep the existing schema bytes and passage IDs.
@@ -815,11 +806,33 @@ not a newly tested executable. Refresh them again before implementation.
   It used synthetic PageText sources and does not qualify native producer intake.
   Neither that failure nor the four-case success is a verdict on all models.
 
-Current consumers deliberately name different Eidetic revisions: Mere's core
-pin is `af17fe7`, Turnstone's core pin is `f599ffe`, and both search pins are
-`354ab71`. Reconcile the actual resolved type-bearing dependency graph when
-receiving the implementation. Do not blanket-relock unrelated suppliers or
-assume these manifest differences alone imply duplicated runtime types.
+#### Findings: current receiving and workshop boundary, 2026-10-29
+
+- Refresh upstream and inspect the resolved type-bearing dependency graph when
+  receiving the implementation. The supplier's source identity and the consumer
+  patch tables must agree; preserve unrelated locked dependencies.
+- Alembic now owns shared selected-source proposals, review and acceptance
+  (`mere/crates/distillery/alembic/src/workshop.rs` and
+  `turnstone/src/alembic_workshop.rs`). Ordinary search stays directly callable;
+  creating a durable draft can reuse that workshop. Do not build a second review
+  and acceptance surface or require an agent job for every search.
+- Alembic source selectors use UTF-8 byte offsets. Eidetic passage selectors use
+  Unicode scalar offsets. Any M2 handoff must convert against the exact retained
+  bytes with boundary checks; neither serialized contract changes.
+- The workshop's bounded selected-passage brief is an adjacent capability. Its
+  private text limit and selected-source count are not search corpus limits.
+  Its capture fixtures do not replace the three real producer kinds or fresh
+  offline restart required by M5.
+- Scene responsiveness and synchronous owner journal writes remain a separate
+  Turnstone investigation. Follow the existing owner queue; detached saving must
+  not overwrite a newer graph snapshot. This is not a prerequisite for extracting
+  the portable retrieval code.
+- M1 keeps `InferencePassage` and the existing wire types. Its shared API needs
+  only an owner, explicit source IDs, admission revision and character bounds;
+  neutral operation envelopes, rich query modes and saved operation records
+  remain M2–M4 work. Low-level ranking over supplied head observations does not
+  itself grant authority. The public search operation rechecks admission and
+  heads; legacy generation retains its existing evidence-assessment boundary.
 
 #### Behavioral contract and global constraints
 
@@ -899,7 +912,7 @@ Paths here are relative to their named repositories. New APIs below are
 |---|---|
 | Eidetic `crates/eidetic-core/src/recall.rs` (new), `src/lib.rs`, existing `src/models/recall.rs` | Neutral operation/evidence envelopes using the existing source/passage types; retain their serialized identity. |
 | Eidetic `crates/eidetic-core/src/records.rs` (new), existing `typed.rs`, Chartulary `assertion.rs` and `facet.rs` | Typed property/profile and operation-result schemas; use existing sealed save/load and attributed lifecycle, without a second fact database. |
-| Eidetic `crates/eidetic-search/src/{retained,query,compare,records}.rs` (new), `lib.rs`, existing `document.rs`/`tokenize.rs` | Shared retained-text retrieval, explicit query evaluation, text comparison and structured evaluation. |
+| Eidetic `crates/eidetic-search/src/{recall,query,compare,records}.rs` (new), `lib.rs`, existing `document.rs`/`tokenize.rs` | Shared retained-text retrieval, explicit query evaluation, text comparison and structured evaluation. |
 | Mere `ports/distillery/src/inference/recall.rs`, `inference/recall_embedding.rs`, `inference_protocol/recall.rs`, relevant Cargo manifests | Delegate lexical work to Eidetic; keep embeddings, prompt assembly, generated-answer validation and existing wire formats in Distillery. |
 | Turnstone `src/research.rs`, `saved_sources.rs`, `inference_service.rs`, `app/{saved_source_arms,contributed_pane_arms,research_note_arms}.rs` | One admitted retained-source adapter; reuse exact capture/clip readers and note ownership; separate it from model connection state. |
 | Turnstone `src/research_service.rs`, `research_surface.rs` (new), existing `inference_surface.rs`, `action.rs`, settings and `shell/drive.rs` | Model-free operations/state and presentation integrated into the existing research surface; optional generated-answer view keeps its existing pane/source serialization. |
@@ -966,11 +979,11 @@ verification; reopening or replay reports which input is unavailable.
 
 #### M1. Extract and receive the model-free retrieval boundary
 
-**Files/interfaces:** shared `recall.rs`/`retained.rs` and Distillery files above;
-produce `RetainedSourceOwner`, snapshots and `search`, while preserving existing
+**Files/interfaces:** `eidetic-search::recall` and Distillery files above;
+produce `RetainedSourceOwner`, `RecallIndex` and `search`, while preserving existing
 `InferencePassage`, model protocol and passage IDs.
 
-- [ ] Add focused `model_free_` tests for exact scope, empty selection, head
+- [x] Add focused `model_free_` tests for exact scope, empty selection, head
   observations, stable content-first ties, duplicate source/version handling,
   Unicode selectors and admission changes. Assert the same retained source
   bytes produce unchanged passage IDs before/after the extraction.
@@ -1015,7 +1028,7 @@ service connection, including exact source/title-only and Unicode controls.
 #### M3. Compare exact retained versions
 
 **Files/interfaces:** shared `compare.rs`, Turnstone service/surface and exact
-source readers. Consume M1's `read_exact`; produce `Comparison`.
+source readers. Consume M2's exact-source reader; produce `Comparison`.
 
 - [ ] Add `model_free_` cases for equal text, insertion/deletion, repeated lines,
   Unicode ranges, old/current versions, missing old bytes and a limit refusal.

@@ -51,6 +51,7 @@ pub mod candidates;
 pub mod document;
 pub mod fusion;
 pub mod index;
+pub mod recall;
 pub mod spec;
 pub mod tokenize;
 
