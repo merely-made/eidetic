@@ -728,7 +728,7 @@ becoming a personal tag or requiring an explicit clip-promotion operation.
 
 ### P4a. Next milestone: model-free retained research
 
-**Status (2026-10-29): in progress; M1 shared retrieval and receiving.**
+**Status (2026-10-29): M1 landed; M2–M5 open.**
 This is the next Eidetic milestone. It advances P4's evidence and retrieval
 capabilities independently of model execution; it does not close the remaining
 P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
@@ -791,9 +791,10 @@ Prior source snapshots and software evidence are recorded in the
   another independently maintained saved-source browser.
 - `mere/ports/distillery/src/inference/recall.rs::RecallIndex` supplies chunking,
   scoped rankings, current-head observations and content-before-identity score
-  tie ordering. The lexical part needs extraction: its module and callers are
-  under `inference-model`, and `ask_internal_planned` requires a durable model
-  session. `inference_protocol/recall.rs` is runtime-free wire data, but its
+  tie ordering. M1 now delegates the lexical part to `eidetic-search::recall`.
+  The optional generation callers remain under `inference-model`, and
+  `ask_internal_planned` requires a durable model session.
+  `inference_protocol/recall.rs` is runtime-free wire data, but its
   generation contract and four-passage defaults are not a search product API.
 - Keep `models/{answer,requested}.rs`, Distillery's
   `inference/{answer_contract,candidate_review}.rs`, sealed run journals and
@@ -834,11 +835,24 @@ Prior source snapshots and software evidence are recorded in the
   itself grant authority. The public search operation rechecks admission and
   heads; legacy generation retains its existing evidence-assessment boundary.
 
+- The initial Turnstone library-test build exceeded the compiler memory budget.
+  After receiving the concurrent optional-service/source split, the cold build
+  reached its time limit; a warm bounded run passed the saved-source and research
+  suites. The guard stayed unchanged. Keep those earlier limits in their receipts;
+  neither focused software tests nor compilation qualify native restart.
+
+- Turnstone's concurrent upstream composition cut keeps `research`,
+  `retained_clip` and `saved_sources` in the default build while gating the live
+  inference service and surface behind `inference`. Preserve that split in M2;
+  ordinary search must remain in the default product. Its new source-size and
+  selected-feature dependency boundary checks apply to subsequent work.
+
 #### Behavioral contract and global constraints
 
 1. **One ordinary path.** Search, inspect, compare and structured-query controls
    work without connecting to an inference resident, locating model weights or
-   acquiring a GPU. Existing custody access can still require unlocking. Model
+   acquiring a device for model execution. Turnstone retains its ordinary shared
+   graphics device for rendering. Existing custody access can still require unlocking. Model
    actions are explicit additions; absence of a model cannot disable research.
 2. **Three source kinds.** The first native gate uses a retained document capture,
    a real selected-text clip, and a retained note. Show actual producer metadata;
@@ -917,7 +931,10 @@ Paths here are relative to their named repositories. New APIs below are
 | Turnstone `src/research.rs`, `saved_sources.rs`, `inference_service.rs`, `app/{saved_source_arms,contributed_pane_arms,research_note_arms}.rs` | One admitted retained-source adapter; reuse exact capture/clip readers and note ownership; separate it from model connection state. |
 | Turnstone `src/research_service.rs`, `research_surface.rs` (new), existing `inference_surface.rs`, `action.rs`, settings and `shell/drive.rs` | Model-free operations/state and presentation integrated into the existing research surface; optional generated-answer view keeps its existing pane/source serialization. |
 
-Proposed shared boundary:
+Richer operation boundary for M2–M4 (illustrative). M1 uses the smaller
+`eidetic_search::recall::{RetainedSourceOwner, RecallIndex, RecallIndexConfig}`
+boundary; exact reading and saved operation envelopes remain later work.
+
 
 ```rust
 // Illustrative; operation structs are specified below.
@@ -987,19 +1004,27 @@ produce `RetainedSourceOwner`, `RecallIndex` and `search`, while preserving exis
   observations, stable content-first ties, duplicate source/version handling,
   Unicode selectors and admission changes. Assert the same retained source
   bytes produce unchanged passage IDs before/after the extraction.
-- [ ] Run the focused tests and record the missing-boundary failure; extract the
+- [x] Run the focused tests and record the missing-boundary failure; extract the
   lexical code once. Keep model-specific `prepare` and `RecallEvidence` assessment
   in Distillery; adapt its corpus and embedding path to the shared result.
-- [ ] Receive one coherent provider revision through Mere and Turnstone. Inspect
+- [x] Receive one coherent provider revision through Mere and Turnstone. Inspect
   the resolved normal/build feature tree: the shared baseline does not activate
   `esp/bert`, `esp/decoder-flex`, `esp/model-session` or a GPU backend. Other
   unrelated application features are not evidence of a retrieval dependency.
-- [ ] Run the focused shared tests, the existing Distillery recall tests and
+- [x] Run the focused shared tests, the existing Distillery recall tests and
   provider no-default-features check using the commands below; commit the
   passing source cut and explicit receiving pins. Keep historical JSON readable.
 
 **Done when:** a model-free test caller retrieves cited passages through the
 shared API, and the existing inference caller uses that same lexical code.
+
+#### Progress, 2026-10-29
+
+- M1 provider, Distillery adapter and Turnstone receiving landed. Shared tests,
+  legacy lexical/embedding recall checks and native/Wasm provider checks pass.
+  Turnstone's rebased saved-source/research tests and optional-inference compile
+  check pass under the unchanged guard. Evidence and prior failed attempts live in the linked receipt archive.
+  M2–M5 remain open; next is ordinary three-source search and exact inspection.
 
 #### M2. Search all three retained source kinds in Turnstone
 
@@ -1120,16 +1145,18 @@ not checks executed during this documentation pass; every test filter must run
 a positive test count. Use each repository's pinned toolchain and lockfile.
 
 ```sh
-# Eidetic: new pure logic plus the existing package regressions.
-cargo test --locked -p eidetic --lib model_free_
-cargo test --locked -p eidetic-search --lib model_free_
+# Eidetic M1: current shared integration tests and package regressions.
+cargo test --locked -p eidetic-search --test model_free_recall
 cargo test --locked -p eidetic-search
 cargo check --locked -p eidetic-search --no-default-features
 cargo check --locked -p eidetic-search --no-default-features --target wasm32-unknown-unknown
 cargo tree --locked -p eidetic-search -e normal,build,features
 # Mere: retained generated-answer adapter remains compatible.
 cargo test --locked -p distillery --features inference-model --lib inference::recall::tests
-# Turnstone: unified research and existing exact readers.
+# Eidetic M4: add the core filter only once matching record tests exist.
+# cargo test --locked -p eidetic --lib model_free_
+# Turnstone M2–M5: unified research and existing exact readers.
+# Add the model_free_ filter only once matching product tests exist.
 cargo test --locked -p turnstone --lib model_free_
 cargo test --locked -p turnstone --lib saved_source
 cargo test --locked -p turnstone --lib research

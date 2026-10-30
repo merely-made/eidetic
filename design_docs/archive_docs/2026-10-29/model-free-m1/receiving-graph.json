@@ -1,0 +1,74 @@
+{
+  "mere": {
+    "head": "e964db71abae92fac98669f5d1174b954b706034",
+    "lock_sha256": "222041a3d67e8aebf2067850b65532f1105eb72302d0fd8897fd12d989a06913",
+    "providers": {
+      "eidetic": [
+        {
+          "version": "0.0.2",
+          "source": "git+https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0b95d679430986dffd54c64ce9b3b5ea3"
+        }
+      ],
+      "eidetic-search": [
+        {
+          "version": "0.0.1",
+          "source": "git+https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0b95d679430986dffd54c64ce9b3b5ea3"
+        }
+      ],
+      "chartulary": [
+        {
+          "version": "0.2.2",
+          "source": "git+https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0b95d679430986dffd54c64ce9b3b5ea3"
+        }
+      ],
+      "muniment": [
+        {
+          "version": "0.2.0",
+          "source": "git+https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0b95d679430986dffd54c64ce9b3b5ea3"
+        }
+      ],
+      "distillery": [
+        {
+          "version": "0.0.1",
+          "source": "workspace"
+        }
+      ]
+    }
+  },
+  "turnstone": {
+    "head": "5c06e1ad7223c090ce327e36e492e9c5ccc30f03",
+    "lock_sha256": "ca3ef693dfb73fbe0aabd0bfb7829e792f233e09c083201c53297949ffe11bbc",
+    "providers": {
+      "eidetic": [
+        {
+          "version": "0.0.2",
+          "source": "git+https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0b95d679430986dffd54c64ce9b3b5ea3"
+        }
+      ],
+      "eidetic-search": [
+        {
+          "version": "0.0.1",
+          "source": "git+https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0b95d679430986dffd54c64ce9b3b5ea3"
+        }
+      ],
+      "chartulary": [
+        {
+          "version": "0.2.2",
+          "source": "git+https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0b95d679430986dffd54c64ce9b3b5ea3"
+        }
+      ],
+      "muniment": [
+        {
+          "version": "0.2.0",
+          "source": "git+https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0b95d679430986dffd54c64ce9b3b5ea3"
+        }
+      ],
+      "distillery": [
+        {
+          "version": "0.0.1",
+          "source": "git+https://github.com/merely-made/mere.git?branch=main#f631d1ec8909b978f1a31bce9e30f3e5bf65be78"
+        }
+      ]
+    }
+  }
+}

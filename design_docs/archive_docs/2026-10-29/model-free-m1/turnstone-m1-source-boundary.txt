@@ -1,0 +1,1 @@
+PASS: owned Rust source and tests are within 600 physical lines

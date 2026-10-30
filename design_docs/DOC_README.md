@@ -2,11 +2,13 @@
 
 Preserve host-owned authority, existing formats and independent crate feature boundaries. Read [documentation policy](DOC_POLICY.md) before editing.
 
+Supplier receiving audits compare complete locked dependency edges as well as package identities; preserve unrelated selections when updating a source revision.
+
 Canonical migration and current receipts: `mere/design_docs/mere_docs/implementation_strategy/2026-10-19_family_promotion_plan.md`.
 
 ## Family documents
 
-- [2026-10-11_eidetic_development_plan](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md) — active; next milestone is [P4a model-free retained research](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#p4a-next-milestone-model-free-retained-research): shared lexical retrieval, exact evidence, version comparison, bounded structured queries and offline Turnstone restart qualification. Upstream refreshed 2026-10-29; M1 extraction and receiving in progress, M2–M5 open. Earlier producer, embedding and inference receipts retain their separate limits.
+- [2026-10-11_eidetic_development_plan](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md) — active; next milestone is [P4a model-free retained research](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#p4a-next-milestone-model-free-retained-research): shared lexical retrieval, exact evidence, version comparison, bounded structured queries and offline Turnstone restart qualification. Upstream refreshed 2026-10-29; M1 extraction and receiving landed; M2–M5 open. Rebased Turnstone saved-source and research tests pass; native product and restart qualification remain open. Earlier producer, embedding and inference receipts retain their separate limits.
 - [2026-10-23_responsa_plan](eidetic_docs/implementation_strategy/2026-10-23_responsa_plan.md) — active; fading of doctrine statements and the answer-key rerun on toolchain bumps, both owed by isocosm's decision-links plan; nothing built.
 - [2026-05-09_eidetic_design_pass](eidetic_docs/research/2026-05-09_eidetic_design_pass.md)
 - [2026-07-08_codicil_founding_proposal](eidetic_docs/research/2026-07-08_codicil_founding_proposal.md)

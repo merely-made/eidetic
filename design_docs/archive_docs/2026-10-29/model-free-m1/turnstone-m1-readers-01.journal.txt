@@ -1,0 +1,4 @@
+Oct 29 20:44:14 T-PC systemd[2369]: Started custody-contract-turnstone-m1-readers-01.scope - [systemd-run] /usr/bin/env CARGO_TARGET_DIR=/home/markik/Code/target CARGO_BUILD_BUILD_DIR=/home/markik/Code/target CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0 RUST_TEST_THREADS=1 nice -n 10 /usr/bin/time -v timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p turnstone --lib saved_source.
+Oct 29 20:50:09 T-PC systemd[2369]: custody-contract-turnstone-m1-readers-01.scope: The kernel OOM killer killed some processes in this unit.
+Oct 29 20:50:09 T-PC systemd[2369]: custody-contract-turnstone-m1-readers-01.scope: Failed with result 'oom-kill'.
+Oct 29 20:50:09 T-PC systemd[2369]: custody-contract-turnstone-m1-readers-01.scope: Consumed 5min 44.341s CPU time over 5min 55.701s wall clock time, 3G memory peak.
