@@ -12,6 +12,7 @@ members = [
     "crates/servitor",
     "crates/impresa",
     "crates/responsa",
+    "crates/line-ceiling",
 ]
 
 [workspace.package]

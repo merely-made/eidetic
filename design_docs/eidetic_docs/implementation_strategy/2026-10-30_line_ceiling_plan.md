@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-30
 
-**Status, 2026-10-30:** plan, ruled (D1 to D3); nothing built. Opened by mere's house-style plan
+**Status, 2026-10-30:** in progress. E1 landed; E2 next. Opened by mere's house-style plan
 (`mere/design_docs/mere_docs/implementation_strategy/2026-10-30_house_style_plan.md`),
 whose phase H1 this carries for its first repository.
 
@@ -118,3 +118,9 @@ An entry without a reason is a configuration error. A physical line is a
 ## Progress
 
 - 2026-10-30: plan written; forks ruled as D1 to D3.
+- 2026-10-30: **E1 landed.** `crates/line-ceiling` (lib, binary, 11 tests,
+  Clippy clean), default extensions isocosm's set, a missing
+  `line-ceiling.toml` meaning the defaults. Control over each repository's
+  tracked files: isocosm 0 over (agrees with its own script), eidetic 20,
+  mere 411 (the house-style count's 407 plus the html, css and other
+  extensions it did not count).

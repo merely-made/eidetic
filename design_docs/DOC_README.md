@@ -8,7 +8,7 @@ Canonical migration and current receipts: `mere/design_docs/mere_docs/implementa
 
 - [2026-10-11_eidetic_development_plan](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md) — active; post-extraction ownership/source-cohort review, independent CI, native Knot drag and Redshank text-note continuation receipts, embedding compatibility envelope and resident cold/fused recall slice qualified; attributed tags/edits, personal custody and browser/collection gates distinguished; refreshed 2026-10-20.
 - [2026-10-23_responsa_plan](eidetic_docs/implementation_strategy/2026-10-23_responsa_plan.md) — active; fading of doctrine statements and the answer-key rerun on toolchain bumps, both owed by isocosm's decision-links plan; nothing built.
-- [2026-10-30_line_ceiling_plan](eidetic_docs/implementation_strategy/2026-10-30_line_ceiling_plan.md) — plan; the shared 600-line check as an eidetic binary, eidetic as a prek hook repository for it and `responsa check`, isocosm first to adopt; nothing built.
+- [2026-10-30_line_ceiling_plan](eidetic_docs/implementation_strategy/2026-10-30_line_ceiling_plan.md) — plan; the shared 600-line check as an eidetic binary, eidetic as a prek hook repository for it and `responsa check`, isocosm first to adopt; E1 (the binary) landed 2026-10-30.
 - [2026-05-09_eidetic_design_pass](eidetic_docs/research/2026-05-09_eidetic_design_pass.md)
 - [2026-07-08_codicil_founding_proposal](eidetic_docs/research/2026-07-08_codicil_founding_proposal.md)
 - [2026-07-08_muniment_founding_proposal](eidetic_docs/research/2026-07-08_muniment_founding_proposal.md)

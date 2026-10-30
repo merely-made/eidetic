@@ -1,0 +1,22 @@
+[package]
+rust-version = "1.97.1"
+name = "line-ceiling"
+version = "0.0.1"
+repository = "https://github.com/merely-made/eidetic"
+description = "Fails source files over a line ceiling unless excluded by declared path or excepted with a reason"
+readme = "README.md"
+keywords = ["lint", "pre-commit", "source-size"]
+categories = ["development-tools", "command-line-utilities"]
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+toml = "1"
+
+[lints]
+workspace = true
