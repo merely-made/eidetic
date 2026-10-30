@@ -23,3 +23,26 @@ reason = "a generated lookup table checked in for build speed"
 ```
 
 Exits 1 on a finding, 2 on a configuration or usage error.
+
+A repository runs it, and `responsa check`, from its `.pre-commit-config.yaml`,
+pinned by eidetic's release tags (prek cannot install from eidetic's workspace
+root, so eidetic serves no hook manifest):
+
+```yaml
+repos:
+  - repo: local
+    hooks:
+      - id: line-ceiling
+        name: line ceiling
+        entry: line-ceiling
+        language: rust
+        types: [text]
+        additional_dependencies: ["cli:https://github.com/merely-made/eidetic:line-ceiling-v0.0.1:line-ceiling"]
+      - id: responsa-check
+        name: responsa check
+        entry: responsa check
+        language: rust
+        pass_filenames: false
+        always_run: true
+        additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.1:responsa"]
+```

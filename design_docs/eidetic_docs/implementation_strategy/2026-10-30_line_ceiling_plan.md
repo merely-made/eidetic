@@ -2,12 +2,13 @@
 
 **Date:** 2026-10-30
 
-**Status, 2026-10-30:** in progress. E1 landed; E2 next. Opened by mere's house-style plan
+**Status, 2026-10-30:** in progress. E1 landed; E2 at its checkpoint (install
+form awaits a ruling). Opened by mere's house-style plan
 (`mere/design_docs/mere_docs/implementation_strategy/2026-10-30_house_style_plan.md`),
 whose phase H1 this carries for its first repository.
 
-**Scope:** a line-ceiling binary in eidetic, a `.pre-commit-hooks.yaml` at
-eidetic's root exposing it and `responsa check`, and isocosm as the first
+**Scope:** a line-ceiling binary in eidetic, tagged releases of it and of
+responsa that repositories install through prek (D4), and isocosm as the first
 repository to run both through prek, locally and in CI. The Clippy lint set
 (house-style D6) and `cargo deny` hooks are later phases of the house-style
 plan, not this one.
@@ -78,12 +79,11 @@ An entry without a reason is a configuration error. A physical line is a
   would; an exclude or exception without a reason is refused; an excepted file
   passes; and a stale exception fails (D2).
   `cargo test --workspace --locked` stays green in eidetic's CI.
-- **E2. eidetic as a hook repository.** `.pre-commit-hooks.yaml` declares
-  `line-ceiling` and `responsa-check` (`language: rust`). Done when prek
-  installs both from a pinned eidetic rev on Windows and on a Mac or Linux
-  machine, with the install time and the packages built recorded here; if a
-  virtual-workspace install builds every eidetic binary, the measurement comes
-  back as a checkpoint before E3.
+- **E2. Tagged tool releases (D4).** eidetic tags `line-ceiling-v0.0.1` and
+  `responsa-v0.0.1`; the line-ceiling README carries the hook stanza a
+  repository copies. Done when prek installs both from their tags on Windows,
+  with install times recorded here; Linux is proven by E3's CI run, and a Mac
+  run is recorded when one is reachable.
 - **E3. isocosm adopts.** `.pre-commit-config.yaml` pins eidetic's rev for both
   hooks; pack-json is ported to Rust in isocosm and runs as a hook (D3), its
   wiring (a local `language: rust` hook or a `system` hook on a workspace
@@ -115,6 +115,16 @@ An entry without a reason is a configuration error. A physical line is a
 
   Links: summary isocosm's pack-json check is ported to Rust in isocosm and runs as a prek hook.
 
+- **D4. Tagged eidetic releases (Mark, 2026-10-30):** "Tagged eidetic releases",
+  over publishing to crates.io or a system hook with a pinned bootstrap install.
+  eidetic pushes a tag per tool release (`line-ceiling-v0.0.1`,
+  `responsa-v0.0.1`); each repository's prek config carries a local hook naming
+  the tag and package (`cli:https://github.com/merely-made/eidetic:<tag>:<package>`).
+  eidetic serves no `.pre-commit-hooks.yaml`, since prek cannot install from its
+  workspace root. A tag, once pushed, is never moved.
+
+  Links: amends line-ceiling E2 · summary Repositories install eidetic's tools by tag through prek's cli form; eidetic is not a hook repository.
+
 ## Progress
 
 - 2026-10-30: plan written; forks ruled as D1 to D3.
@@ -124,3 +134,13 @@ An entry without a reason is a configuration error. A physical line is a
   tracked files: isocosm 0 over (agrees with its own script), eidetic 20,
   mere 411 (the house-style count's 407 plus the html, css and other
   extensions it did not count).
+- 2026-10-30: **E2 checkpoint.** prek 0.5.9 installed (`cargo install --locked`).
+  As a hook repository, eidetic does not install: prek ran `cargo install --bins
+  --path .` at the virtual-workspace root, without `--locked`, and cargo spent
+  over ten minutes (589 s of its own CPU, no `rustc` started) before it was
+  stopped. A package-selecting install, `cargo install --locked --git <eidetic>
+  --rev <sha> line-ceiling`, builds and installs in 38 s. prek's own
+  package-selecting form, `additional_dependencies: ["cli:<url>:<tag>:<package>"]`,
+  passes the pin to cargo as `--tag`, so it pins by tag only: a commit sha
+  fails with "failed to find tag". Ruled as D4; the unpushed
+  `.pre-commit-hooks.yaml` commit was dropped.
