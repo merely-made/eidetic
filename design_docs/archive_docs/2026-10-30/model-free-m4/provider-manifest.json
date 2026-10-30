@@ -1,0 +1,169 @@
+{
+  "provider_commit": "2f55c137f25e619e8f7be2b7dbb76d15e081bc32",
+  "provider_files": {
+    "crates/eidetic-core/src/lib.rs": "cc61ab25929247c177c39510897fb3b5f8dc4c188963d4fb43f8c590282a5fd9",
+    "crates/eidetic-core/src/records/mod.rs": "8154f51ce969d3cbc81d1a80dd2c42bbd3af30e7d4ea9f9318a5129c96168d6d",
+    "crates/eidetic-core/src/records/schemas.rs": "4a63474cca0ccaba70f0052cb01416d26d537de43fc7867cd14db1010e4a21dc",
+    "crates/eidetic-core/src/records/validate.rs": "4074ec5355f611c34152d29d11778cb1b0fe794ec59b462245afba4dc5cfab95",
+    "crates/eidetic-core/tests/model_free_records.rs": "1c115ce6af1952067e68f36a79c9dc599e716d938064962e22fc39bed19eba63",
+    "crates/eidetic-search/src/lib.rs": "68896616014f337010ba5272565eb6a80ad7863de46e8e925ffc214c96936f2e",
+    "crates/eidetic-search/src/records/mod.rs": "403ed4de54368d1ec3bc92652177f091d52c3237ff82759c32943028bbb98622",
+    "crates/eidetic-search/src/records/operations.rs": "d9bddcc8b6ffec605b3d65df002acf83bc6b728e6a51f503816d40045077ca6b",
+    "crates/eidetic-search/src/records/output.rs": "47bd4dbd247a2ac64f66454511e92e3ea30abe8f4734f15d8f2c67a9faa8857a",
+    "crates/eidetic-search/tests/model_free_records.rs": "d2ea69eb6b7147005600924d7226f3eff416608f94a835ad5469010338457b9c",
+    "crates/eidetic-search/tests/records_bounds/mod.rs": "253e52f0b0fd54088193d66f717e957b5c9baf9641668a9781d916b4c19abeb2"
+  },
+  "provider_packets": [
+    {
+      "name": "eidetic-m4-core-final",
+      "exit_code": 0,
+      "log_sha256": "8f8e42ac9d4749f0ad8b398d770ef70874b90ec771776531c7258c764bd4e0b7"
+    },
+    {
+      "name": "eidetic-m4-core-green",
+      "exit_code": 0,
+      "log_sha256": "3753b2f03a4cd8d99a944b7b21ebfb5ce2db7a54bc9d854ec711fa3c1696943e"
+    },
+    {
+      "name": "eidetic-m4-core-sealed-final2",
+      "exit_code": 0,
+      "log_sha256": "27385da601714363ef03821a506aaf6425872a0893c7571393a31a840bd1248a"
+    },
+    {
+      "name": "eidetic-m4-core-storage",
+      "exit_code": 101,
+      "log_sha256": "453a037852830c57197c6c2ad6e32e95e50664802768738bc658fc6aafa5c2c7"
+    },
+    {
+      "name": "eidetic-m4-filter-red",
+      "exit_code": 101,
+      "log_sha256": "5bdd1c66b8395b9a59132305790b565d12b27cccf733db2a39259433b6e21897"
+    },
+    {
+      "name": "eidetic-m4-full-final",
+      "exit_code": 0,
+      "log_sha256": "e60c32b21d011ee1066797b7f1c60880d8e9fc7fe325bd404a2204431464c35d"
+    },
+    {
+      "name": "eidetic-m4-full-final2",
+      "exit_code": 0,
+      "log_sha256": "e8371f54f9525f82cb936c2dd592ac5b5f986652e622663e5d8043760f4b17fa"
+    },
+    {
+      "name": "eidetic-m4-group-count-red",
+      "exit_code": 101,
+      "log_sha256": "775ea8028da2936aef12cd863bd457f8e96aa439ebc175f3d1994c861e748e0f"
+    },
+    {
+      "name": "eidetic-m4-group-key-red",
+      "exit_code": 101,
+      "log_sha256": "6c8e08ea35eaded692b34e0f6dd6c725e1b64c4049a57ad2339a7a58e24d6c45"
+    },
+    {
+      "name": "eidetic-m4-output-red",
+      "exit_code": 101,
+      "log_sha256": "a17499380522e27fcdb3e9f913acb4ed2379891f70f3a522547c6fddccbf2576"
+    },
+    {
+      "name": "eidetic-m4-query-red",
+      "exit_code": 101,
+      "log_sha256": "a05ae5fa6c6fc66a6f7817a4a29737ffdf01b7bf7438b337bfd64b192d098c18"
+    },
+    {
+      "name": "eidetic-m4-records-count-green",
+      "exit_code": 0,
+      "log_sha256": "fa9184a498a789d53f2408695436705e5c6499dc564d5af41a0c7d6648e070c3"
+    },
+    {
+      "name": "eidetic-m4-records-count-red",
+      "exit_code": 101,
+      "log_sha256": "c6eef9299cdbf337f1d81897cbb993c7c1efc9ff23b9b594361ed7104d60ac5c"
+    },
+    {
+      "name": "eidetic-m4-records-green",
+      "exit_code": 101,
+      "log_sha256": "ad6ce79d31fd24ecb7691f387737d4db8f004f14d8930035e7d5ad98c9685fbd"
+    },
+    {
+      "name": "eidetic-m4-records-green2",
+      "exit_code": 0,
+      "log_sha256": "576989e9037bb0829b3f8438a567537b2ab81ed1c5019ce678ff181bb56fd426"
+    },
+    {
+      "name": "eidetic-m4-records-red",
+      "exit_code": 101,
+      "log_sha256": "512ec9b626efea79965cba4f6c918841f4ec18a25d2031a242e99f9835486e23"
+    },
+    {
+      "name": "eidetic-m4-review1-core",
+      "exit_code": 0,
+      "log_sha256": "e3f85dd3619ba53803bfe5a21ea6fbb9b9cdb5dcbd9f343cc82891661d4da328"
+    },
+    {
+      "name": "eidetic-m4-review1-full",
+      "exit_code": 0,
+      "log_sha256": "930135563350945be20ba177129b7f8ff64136be8eb714e7a5c0a60f65201042"
+    },
+    {
+      "name": "eidetic-m4-review1-green",
+      "exit_code": 0,
+      "log_sha256": "fb4d730b357e01aeb3997292978cf80a54eb32ca66df03c94352ebc9d2ccc452"
+    },
+    {
+      "name": "eidetic-m4-review1-red",
+      "exit_code": 101,
+      "log_sha256": "198434dd42aacb8abc519c6545fb532cb4b9babac0c95552f30fea03e63587fa"
+    },
+    {
+      "name": "eidetic-m4-review1-wasm",
+      "exit_code": 0,
+      "log_sha256": "65050b3d03da98d36cad9a7f96481af0e338c2e83dfbd226f46609a419ca88ad"
+    },
+    {
+      "name": "eidetic-m4-schema-red",
+      "exit_code": 101,
+      "log_sha256": "4966e3345ca0b4f23896d69042d99d585146fd1490afb0d89213bf0f60f00547"
+    },
+    {
+      "name": "eidetic-m4-search-final",
+      "exit_code": 0,
+      "log_sha256": "e5050a08c0f0465b04e464fa0ba6638b0c9a468790abb4521e819ade668801b4"
+    },
+    {
+      "name": "eidetic-m4-search-full",
+      "exit_code": 101,
+      "log_sha256": "9f5e2ddac5dacbd4a5170c443b4fd29a478d8590e49c9bb2b4d920e199efc42b"
+    },
+    {
+      "name": "eidetic-m4-search-green",
+      "exit_code": 101,
+      "log_sha256": "b538f7e547e9c74bdfdc04a7fe2d53e3eaaff8874f6284c89629ec1a8d2aff77"
+    },
+    {
+      "name": "eidetic-m4-validation-work-green",
+      "exit_code": 0,
+      "log_sha256": "707629be9cb95eacef5aefcef0d308c7d241441fedcd017e056a345984942293"
+    },
+    {
+      "name": "eidetic-m4-validation-work-red",
+      "exit_code": 101,
+      "log_sha256": "4a5e4cef47f2609d78306103ab8c2654eeaf36d3069e8dac26e64823839a3f6b"
+    },
+    {
+      "name": "eidetic-m4-wasm-final",
+      "exit_code": 0,
+      "log_sha256": "2c9f0600de613613c5e7b9ace2a707854368c86ceb7e103513989b596cf3abec"
+    },
+    {
+      "name": "eidetic-m4-wasm-final2",
+      "exit_code": 0,
+      "log_sha256": "b643ab5b707b92ebd37169f403fe4334808bf585e7867b17cc35d227bc667c57"
+    },
+    {
+      "name": "eidetic-m4-wasm",
+      "exit_code": 0,
+      "log_sha256": "dc5fc47d46b2424f4401f4a899a225cb0cf88c03290ba5b2c4d34407e33c1449"
+    }
+  ],
+  "boundary": "Provider software checks only. Host integration and M5 product restart qualification are not established by these packets."
+}

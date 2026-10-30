@@ -1,4 +1,4 @@
-# Model-free retained comparison receipts, 2026-10-30
+# Model-free retained research receipts, 2026-10-30
 
 Canonical plan: [P4a M3](../../eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#m3-compare-exact-retained-versions).
 Earlier M1/M2 evidence remains in the [October 29 archive](../2026-10-29/2026-10-11_eidetic_development_plan_receipts.md).
@@ -105,3 +105,62 @@ M3 is complete at its implementation/software-check boundary. M4 structured
 queries and M5 headed operation with a fresh, network-disabled, model-free
 restart remain open. Existing generated-answer current-input requirements and
 all earlier successful/failed qualification packets are preserved.
+
+
+## M4 provider checkpoint
+
+Canonical continuation: [P4a M4](../../eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#m4-answer-the-supported-structured-questions).
+This checkpoint establishes the portable provider. Turnstone host authoring and
+query integration remain in progress; it does not close M4 or M5.
+
+Upstream was fetched and fast-forward eligibility checked before work. The
+provider started at `848a4bdbfbce62d952cf46a9ae87d785fb949405`; implementation
+`b24c580` and review correction
+`2f55c137f25e619e8f7be2b7dbb76d15e081bc32` are published on Eidetic main.
+The Turnstone receiving base is `cce607d38f5084a8b1ddec3361f7fd04e301b000`.
+All Eidetic pins were advanced together. Parsed Cargo.lock package and dependency
+selections exactly match the host base after substituting the intended Eidetic
+revision. Default and inference dependency-boundary checks passed for 649 and
+797 package names.
+
+The portable provider defines typed properties, exact definition-manifest
+references, sourced assertions, lifecycle observations, complete snapshots,
+explicit queries/settings and frozen results. Its evaluator supports source
+metadata, assertion counts, lookups, equality groups, explicit-ID joins,
+comparison and checked sums. Incomplete enumeration refuses totals and absence;
+counts never consume a lexical shortlist. Comparison preserves entity, context,
+status, cardinality and valid-time distinctions. It does not interpret arbitrary
+prose. The operation version is `eidetic.structured-records/v2`.
+
+All 30 provider gate packets and their original logs are retained in
+[model-free-m4](model-free-m4/). The packet log hashes were verified before
+copying. `provider-manifest.json` records the final 11 source-file hashes and
+all packet statuses. The final reviewed-source gates are:
+
+| Packet | Command after guarded wrapper | Result |
+| --- | --- | --- |
+| `eidetic-m4-review1-green` | `cargo test --locked -p eidetic-search --no-default-features --test model_free_records` | 19 passed |
+| `eidetic-m4-review1-core` | `cargo test --locked -p eidetic --no-default-features --test model_free_records` | 2 passed |
+| `eidetic-m4-review1-full` | `cargo test --locked -p eidetic-search --no-default-features` | 91 passed, 3 ignored |
+| `eidetic-m4-review1-wasm` | `cargo check --locked -p eidetic-search --no-default-features --target wasm32-unknown-unknown` | passed |
+
+The first red tests failed on missing interfaces. Subsequent red cases exposed
+ignored filters, collapsed grouping distinctions, missing strict schema helpers
+and insufficient repeated-validation accounting. Initial review found pairwise
+value work omitted from the bound and aggregate rows cloned before their output
+budget check. The final fix charges identity/value bytes before comparisons,
+compares typed values directly, and measures borrowed row representations before
+materializing output. Scoped re-review approved both corrections. Exact and
+undersized output-budget regressions cover counts, groups, long identities and
+numeric sums; source review establishes the allocation ordering.
+
+These gates used the shared machine-heavy lock and unchanged limits:
+MemoryMax=3G, MemorySwapMax=0, CPUQuota=150%, one Cargo job and test thread,
+disabled incremental/debug output, and 600-second execution/queue bounds. The
+existing unused p2panda-auth patch warning remains. A read-only SSH resource
+check found s-pc idle; no remote M4 build or transfer was needed.
+
+The core save/load fixture uses an XOR test sealer. It verifies schema and
+sealed-storage plumbing, not cryptographic confidentiality. Host custody,
+durable journal integration, headed product use and network-disabled fresh
+restart require their own evidence.

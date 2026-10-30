@@ -1,0 +1,47 @@
+Running as unit: custody-contract-eidetic-m4-output-red.scope; invocation ID: fb4d715492d14882acd022d2143f2296
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling genet-text v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+error[E0560]: struct `eidetic::records::RecordSettings` has no field named `max_output_bytes`
+   --> crates/eidetic-search/tests/model_free_records.rs:475:9
+    |
+475 |         max_output_bytes: 4096,
+    |         ^^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+475 -         max_output_bytes: 4096,
+475 +         max_input_bytes: 4096,
+    |
+
+For more information about this error, try `rustc --explain E0560`.
+error: could not compile `eidetic-search` (test "model_free_records") due to 1 previous error
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic-search --no-default-features --test model_free_records model_free_pair_results_refuse_multiplied_output_bytes"
+	User time (seconds): 6.16
+	System time (seconds): 1.39
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:07.87
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 464728
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 140
+	Minor (reclaiming a frame) page faults: 218868
+	Voluntary context switches: 668
+	Involuntary context switches: 207
+	Swaps: 0
+	File system inputs: 175600
+	File system outputs: 102392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

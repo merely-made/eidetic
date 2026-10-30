@@ -1,0 +1,169 @@
+Running as unit: custody-contract-eidetic-m4-query-red.scope; invocation ID: 254e751a548e4c61afd0570e9596fc46
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+error[E0277]: the trait bound `eidetic::records::RecordQuery: TypedPayload` is not satisfied
+   --> crates/eidetic-core/tests/model_free_records.rs:140:31
+    |
+140 |         roundtrip(&mut store, &result.query).await;
+    |         ---------             ^^^^^^^^^^^^^ the trait `TypedPayload` is not implemented for `eidetic::records::RecordQuery`
+    |         |
+    |         required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `TypedPayload`:
+              AnswerSupport
+              BrowsingTrace
+              Bundle
+              ContentClassCodicil
+              DeletedNode
+              EmbeddingEnvelopeV1
+              EvalReport
+              InferencePassage
+            and 14 others
+note: required by a bound in `roundtrip`
+   --> crates/eidetic-core/tests/model_free_records.rs:64:23
+    |
+ 64 | async fn roundtrip<T: TypedPayload + std::fmt::Debug + PartialEq>(
+    |                       ^^^^^^^^^^^^ required by this bound in `roundtrip`
+
+error[E0277]: the trait bound `eidetic::records::RecordQuery: TypedPayload` is not satisfied
+   --> crates/eidetic-core/tests/model_free_records.rs:140:9
+    |
+140 |         roundtrip(&mut store, &result.query).await;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `TypedPayload` is not implemented for `eidetic::records::RecordQuery`
+    |
+    = help: the following other types implement trait `TypedPayload`:
+              AnswerSupport
+              BrowsingTrace
+              Bundle
+              ContentClassCodicil
+              DeletedNode
+              EmbeddingEnvelopeV1
+              EvalReport
+              InferencePassage
+            and 14 others
+note: required by a bound in `roundtrip`
+   --> crates/eidetic-core/tests/model_free_records.rs:64:23
+    |
+ 64 | async fn roundtrip<T: TypedPayload + std::fmt::Debug + PartialEq>(
+    |                       ^^^^^^^^^^^^ required by this bound in `roundtrip`
+
+error[E0277]: the trait bound `eidetic::records::RecordQuery: TypedPayload` is not satisfied
+   --> crates/eidetic-core/tests/model_free_records.rs:140:46
+    |
+140 |         roundtrip(&mut store, &result.query).await;
+    |                                              ^^^^^ the trait `TypedPayload` is not implemented for `eidetic::records::RecordQuery`
+    |
+    = help: the following other types implement trait `TypedPayload`:
+              AnswerSupport
+              BrowsingTrace
+              Bundle
+              ContentClassCodicil
+              DeletedNode
+              EmbeddingEnvelopeV1
+              EvalReport
+              InferencePassage
+            and 14 others
+note: required by a bound in `roundtrip`
+   --> crates/eidetic-core/tests/model_free_records.rs:64:23
+    |
+ 64 | async fn roundtrip<T: TypedPayload + std::fmt::Debug + PartialEq>(
+    |                       ^^^^^^^^^^^^ required by this bound in `roundtrip`
+
+error[E0277]: the trait bound `eidetic::records::RecordQuery: TypedPayload` is not satisfied
+   --> crates/eidetic-core/tests/model_free_records.rs:163:80
+    |
+163 |         eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &query).await.unwrap();
+    |         ------------------------------------------                             ^^^^^^ the trait `TypedPayload` is not implemented for `eidetic::records::RecordQuery`
+    |         |
+    |         required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `TypedPayload`:
+              AnswerSupport
+              BrowsingTrace
+              Bundle
+              ContentClassCodicil
+              DeletedNode
+              EmbeddingEnvelopeV1
+              EvalReport
+              InferencePassage
+            and 14 others
+note: required by a bound in `validate_required_schema`
+   --> crates/eidetic-core/src/records/schemas.rs:152:42
+    |
+152 | pub async fn validate_required_schema<T: TypedPayload>(
+    |                                          ^^^^^^^^^^^^ required by this bound in `validate_required_schema`
+
+error[E0277]: the trait bound `eidetic::records::RecordQuery: TypedPayload` is not satisfied
+   --> crates/eidetic-core/tests/model_free_records.rs:163:9
+    |
+163 |         eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &query).await.unwrap();
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `TypedPayload` is not implemented for `eidetic::records::RecordQuery`
+    |
+    = help: the following other types implement trait `TypedPayload`:
+              AnswerSupport
+              BrowsingTrace
+              Bundle
+              ContentClassCodicil
+              DeletedNode
+              EmbeddingEnvelopeV1
+              EvalReport
+              InferencePassage
+            and 14 others
+note: required by a bound in `validate_required_schema`
+   --> crates/eidetic-core/src/records/schemas.rs:152:42
+    |
+152 | pub async fn validate_required_schema<T: TypedPayload>(
+    |                                          ^^^^^^^^^^^^ required by this bound in `validate_required_schema`
+
+error[E0277]: the trait bound `eidetic::records::RecordQuery: TypedPayload` is not satisfied
+   --> crates/eidetic-core/tests/model_free_records.rs:163:88
+    |
+163 |         eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &query).await.unwrap();
+    |                                                                                        ^^^^^ the trait `TypedPayload` is not implemented for `eidetic::records::RecordQuery`
+    |
+    = help: the following other types implement trait `TypedPayload`:
+              AnswerSupport
+              BrowsingTrace
+              Bundle
+              ContentClassCodicil
+              DeletedNode
+              EmbeddingEnvelopeV1
+              EvalReport
+              InferencePassage
+            and 14 others
+note: required by a bound in `validate_required_schema`
+   --> crates/eidetic-core/src/records/schemas.rs:152:42
+    |
+152 | pub async fn validate_required_schema<T: TypedPayload>(
+    |                                          ^^^^^^^^^^^^ required by this bound in `validate_required_schema`
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `eidetic` (test "model_free_records") due to 6 previous errors
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic --no-default-features --test model_free_records"
+	User time (seconds): 4.82
+	System time (seconds): 0.93
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:05.91
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 467176
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 37
+	Minor (reclaiming a frame) page faults: 173530
+	Voluntary context switches: 645
+	Involuntary context switches: 161
+	Swaps: 0
+	File system inputs: 34176
+	File system outputs: 74072
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

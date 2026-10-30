@@ -728,7 +728,7 @@ becoming a personal tag or requiring an explicit clip-promotion operation.
 
 ### P4a. Next milestone: model-free retained research
 
-**Status (2026-10-30): M1–M3 landed; M4–M5 open.**
+**Status (2026-10-30): M1–M3 landed; M4 in progress; M5 open.**
 This is the next Eidetic milestone. It advances P4's evidence and retrieval
 capabilities independently of model execution; it does not close the remaining
 P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
@@ -889,8 +889,8 @@ Prior source snapshots and software evidence are recorded in the
    records. Joins use explicit entity/source IDs. Date ranges, status and unit
    filters are explicit controls. Free-form questions continue to return lexical
    evidence unless the user selects a supported structured operation.
-8. **Typed assertions.** Reuse Chartulary's attribution/withdrawal journal and
-   Eidetic typed payloads. A property record binds an explicit entity ID,
+8. **Typed assertions.** Reuse the source owner's existing attribution/withdrawal
+   journal and Eidetic typed payloads. A property record binds an explicit entity ID,
    namespaced property/schema revision, typed value, optional valid-time interval,
    explicit status, author/method and evidence reference. Record time and valid
    time stay distinct. Unknown time/status is unknown, never implicitly current
@@ -926,7 +926,7 @@ Paths here are relative to their named repositories. New APIs below are
 | Owner/files | Change |
 |---|---|
 | Eidetic `crates/eidetic-core/src/recall.rs` (new), `src/lib.rs`, existing `src/models/recall.rs` | Neutral operation/evidence envelopes using the existing source/passage types; retain their serialized identity. |
-| Eidetic `crates/eidetic-core/src/records.rs` (new), existing `typed.rs`, Chartulary `assertion.rs` and `facet.rs` | Typed property/profile and operation-result schemas; use existing sealed save/load and attributed lifecycle, without a second fact database. |
+| Eidetic `crates/eidetic-core/src/records.rs` (new), existing `typed.rs` and host graph assertion APIs | Typed property/profile and operation-result schemas; use existing sealed save/load and attributed lifecycle, without a second fact database. |
 | Eidetic `crates/eidetic-search/src/{recall,query,compare,records}.rs` (new), `lib.rs`, existing `document.rs`/`tokenize.rs` | Shared retained-text retrieval, explicit query evaluation, text comparison and structured evaluation. |
 | Mere `ports/distillery/src/inference/recall.rs`, `inference/recall_embedding.rs`, `inference_protocol/recall.rs`, relevant Cargo manifests | Delegate lexical work to Eidetic; keep embeddings, prompt assembly, generated-answer validation and existing wire formats in Distillery. |
 | Turnstone `src/research.rs`, `saved_sources.rs`, `inference_service.rs`, `app/{saved_source_arms,contributed_pane_arms,research_note_arms}.rs` | One admitted retained-source adapter; reuse exact capture/clip readers and note ownership; separate it from model connection state. |
@@ -1122,17 +1122,31 @@ those remain M5. M4 structured queries are next.
 
 #### M4. Answer the supported structured questions
 
+**Findings (2026-10-30):** Turnstone's live graph uses Mere graph-kernel's
+semantic statements and recorded-delta journal, not Chartulary `GraphLog`.
+Bind sealed typed payloads to that existing owner's attributed assertions and
+withdrawal lifecycle. A reserved immutable manifest reference in assertion basis
+can name the payload; typed values remain in sealed storage. Using the live
+owner avoids introducing a second fact journal. A later journal migration will
+need to preserve this binding explicitly.
+
+Record identity must be available before sealed deposit; graph statement IDs
+are minted afterward. Keep an authored record nonce in the body and project
+its namespaced journal identity as a lifecycle observation. This avoids an
+identity/hash cycle. Require the exact schema codicil to exist before invoking
+schema validation, whose general API otherwise tolerates missing schemas.
+
 **Files/interfaces:** core `records.rs`, shared search `records.rs`, existing
 sealed typed storage and owner attribution; Turnstone research service/surface
 and annotation actions. Produce the property schemas, snapshots, `RecordQuery`
 and `evaluate` described above. No arbitrary-prose extractor enters this task.
 
-- [ ] Add `model_free_` cases for source counts/timelines/tags, typed lookup,
+- [x] Add `model_free_` cases for source counts/timelines/tags, typed lookup,
   equality grouping, explicit-ID joins, comparisons and checked sums. Include
   two records of 09:30, a comparable 10:15, a former interval, unknown timezone,
   guessed versus approved status, two same-named entities, copied sources,
   multi-valued properties, incompatible units and arithmetic overflow.
-- [ ] Assert that all contributing IDs and settings survive sealed save/load;
+- [x] Assert that all contributing IDs and settings survive sealed save/load;
   duplicate projection of one assertion counts once, while distinct assertions
   remain individually inspectable. Assert incomplete input refuses totals and
   absence claims even when a lexical shortlist happens to contain all matches.
@@ -1150,6 +1164,14 @@ and `evaluate` described above. No arbitrary-prose extractor enters this task.
 **Done when:** a user can enter an explicit sourced property, reopen it, run
 these queries, and inspect the exact records and operations behind each result.
 The ferry fixture demonstrates typed comparison, not general ferry prose reading.
+
+**Progress (2026-10-30):** portable definitions, sourced assertions, complete
+snapshots and the structured evaluator are published. Core schema/sealed-helper,
+evaluator and Wasm checks pass. Counts, grouping and comparison preserve explicit
+identity, status and time distinctions; joins and output materialization are
+bounded before allocation. Turnstone authoring, owner persistence, query controls
+and real-host reopen/withdrawal tests remain in progress. The portable store test
+uses a test sealer and does not establish native product qualification.
 
 #### M5. Qualify offline restart and ordinary product use
 
