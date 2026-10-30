@@ -1,0 +1,47 @@
+Running as unit: custody-contract-eidetic-m2-query-green-01.scope; invocation ID: 37d9770bcf0d49a6a9f33790c075b8b6
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `test` profile [unoptimized] target(s) in 2.47s
+     Running tests/model_free_query.rs (/home/markik/Code/target/debug/deps/model_free_query-0a191acb59b1d4f8)
+
+running 10 tests
+test model_free_empty_and_incomplete_scope_remain_distinct ... ok
+test model_free_invalid_bounds_and_duplicate_sources_are_rejected ... ok
+test model_free_invalid_metadata_and_nonfinite_weights_are_rejected ... ok
+test model_free_metadata_only_hits_have_no_body_passage ... ok
+test model_free_missing_scoped_source_downgrades_coverage_and_filter_cannot_widen_scope ... ok
+test model_free_mixed_kinds_and_filters_use_explicit_metadata ... ok
+test model_free_pagination_is_stable_and_does_not_change_coverage ... ok
+test model_free_phrase_checks_whole_source_and_never_joins_sources ... ok
+test model_free_prefix_is_explicit_and_alias_expansion_is_visible ... ok
+test model_free_unicode_ranges_and_hash_retain_exact_source ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic-search --no-default-features --test model_free_query"
+	User time (seconds): 1.61
+	System time (seconds): 0.90
+	Percent of CPU this job got: 98%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.56
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 270880
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 126
+	Minor (reclaiming a frame) page faults: 108533
+	Voluntary context switches: 862
+	Involuntary context switches: 80
+	Swaps: 0
+	File system inputs: 184880
+	File system outputs: 25664
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

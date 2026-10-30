@@ -728,7 +728,7 @@ becoming a personal tag or requiring an explicit clip-promotion operation.
 
 ### P4a. Next milestone: model-free retained research
 
-**Status (2026-10-29): M1 landed; M2–M5 open.**
+**Status (2026-10-29): M1 landed; M2 in progress; M3–M5 open.**
 This is the next Eidetic milestone. It advances P4's evidence and retrieval
 capabilities independently of model execution; it does not close the remaining
 P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
@@ -1028,15 +1028,22 @@ shared API, and the existing inference caller uses that same lexical code.
 
 #### M2. Search all three retained source kinds in Turnstone
 
+**Findings (2026-10-29):** upstream refreshed before implementation. The existing
+clip-opening action checks admission but does not consume its hash or selector;
+M2 must carry exact passage validation through that reader. Retained clip date
+metadata is not currently exposed by the portable clip body; unknown dates stay
+unknown. Existing capture enumeration and retained-clip owner queues remain the
+authority for the default-build search path.
+
 **Files/interfaces:** `query.rs`, existing `document.rs`/`tokenize.rs`, Turnstone
 research service/surface, saved-source actions and research adapters. Consume M1;
 produce searchable admitted snapshots and exact clickable results.
 
-- [ ] Add `model_free_` library cases for capture, selection and note in one
+- [x] Add `model_free_` library cases for capture, selection and note in one
   admitted set, source/type/date/tag filters, phrases crossing chunk boundaries,
   explicit prefix and alias modes, metadata-only matches, pagination and
   incomplete enumeration. A metadata-only hit must not fabricate a body quote.
-- [ ] Run the new tests to establish failure, then implement the query modes
+- [x] Run the new tests to establish failure, then implement the query modes
   over the existing index and exact canonical text. Evaluate phrases against
   complete admitted text before extracting snippets; never join across sources.
 - [ ] Extend the existing source chooser/search flow with mode and filter
@@ -1049,6 +1056,11 @@ produce searchable admitted snapshots and exact clickable results.
 
 **Done when:** all three kinds can be searched and inspected with no inference
 service connection, including exact source/title-only and Unicode controls.
+
+**Progress (2026-10-29):** the shared query provider landed with explicit modes,
+filters, optional exact passages, stable pages and bounded frozen-input records.
+Shared regression and Wasm checks pass. Turnstone receiving and exact clip
+inspection remain in progress; native restart remains M5.
 
 #### M3. Compare exact retained versions
 

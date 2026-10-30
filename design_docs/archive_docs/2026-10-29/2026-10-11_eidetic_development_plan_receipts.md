@@ -157,3 +157,11 @@ Turnstone optional-inference compilation passed. The shared normal/build feature
 tree activates no model or GPU runtime. All compiler gates kept the same resource
 limits. Broader application suites, native producer UI, model-free restart and
 M2–M5 product completion remain unclaimed.
+
+## M2 shared query provider, 2026-10-29
+
+Provider source commit `20c9793181723a40858487d9d14623c81837eb57` adds frozen admitted-snapshot queries, explicit modes and filters, exact optional body passages, pagination, recorded input metadata and bounds. It preserves existing recall schemas and passage identities.
+
+The final guarded run `model-free-m2/eidetic-m2-query-final-01.json` ran the full no-default-feature search suite and the wasm32-unknown-unknown check successfully. The query suite has fifteen passing cases; existing recall and lexical suites also pass. Three measurement harnesses remain ignored. Initial red failed on the absent query module. Earlier lock-acquisition timeouts started no compiler. Raw command, resource and hash records are retained beside each log.
+
+Static review corrected quadratic scalar-offset scans, materialization of off-page match ranges, omitted metadata identities and incomplete operation bounds. Final scoped review found those issues addressed. This is shared-library evidence; Turnstone controls, default consumer tests and exact clip reader are still in progress. It is not a headed product or offline restart receipt.
