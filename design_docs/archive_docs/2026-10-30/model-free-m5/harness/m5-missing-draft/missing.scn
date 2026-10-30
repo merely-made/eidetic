@@ -43,6 +43,8 @@ type violet compass
 wait-research-search 600
 choose-suggestion Capture: M5 A
 wait-saved-reader 600
+act Read document
+settle 15
 assert snap saved-reader-text ~ M5 A2 archive
 record-saved-sources missing_A2_open
 capture missing_A2_ready

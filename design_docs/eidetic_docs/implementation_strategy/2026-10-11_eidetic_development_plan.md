@@ -767,7 +767,7 @@ product/restart qualification remains open.
 
 The integrated cross-source foundation remains the basis of this milestone.
 Prior source snapshots and software evidence are recorded in the
-[receipt archive](../../archive_docs/2026-10-29/2026-10-11_eidetic_development_plan_receipts.md).
+[receipt archive](../../archive_docs/receipts/2026-10-11_eidetic_development_plan_receipts.md#2026-10-26-through-2026-10-29-model-free-retrieval).
 
 - `crates/eidetic-search/src/{document,index,candidates,tokenize,fusion}.rs`
   supplies weighted BM25, exact-address lookup, prefix candidates, reports and
@@ -1114,7 +1114,7 @@ traverses each side at most once per page. Withdrawal and unavailable bytes have
 distinct messages. Existing settings files receive default comparison bounds.
 Provider, host regression, Wasm and optional-inference checks pass, with scoped
 review fixes covered separately in the
-[M3 receipt archive](../../archive_docs/2026-10-30/2026-10-11_eidetic_development_plan_receipts.md).
+[M3 receipt archive](../../archive_docs/receipts/2026-10-11_eidetic_development_plan_receipts.md#2026-10-30-retained-research).
 Stored capture and clip fixtures establish exact local reads and withdrawal
 refusal. They do not establish headed use or network-disabled cold restart;
 those remain M5. M4 structured queries are described below.

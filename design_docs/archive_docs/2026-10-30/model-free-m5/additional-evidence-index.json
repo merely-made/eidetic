@@ -20182,6 +20182,46 @@
       "bytes": 38056,
       "copied_now": true,
       "kind": "refreshed archived harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-composed.draft.scn",
+      "archive_file": "harness/m5-draft/seed-composed.draft.scn",
+      "sha256": "125d6affefbdf1b8d611c51c6192f591190f1e9b740ec9d7c18ba5b37d5a2271",
+      "bytes": 25459,
+      "copied_now": true,
+      "status": "approved/adopted current provisional harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/reopen.scn",
+      "archive_file": "harness/m5-draft/reopen.scn",
+      "sha256": "ed8f4d0350ee317645ae63ef99b512953cd1621003868d23ab2b55b85327f66d",
+      "bytes": 2795,
+      "copied_now": true,
+      "status": "approved/adopted current provisional harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/missing.scn",
+      "archive_file": "harness/m5-missing-draft/missing.scn",
+      "sha256": "25ed5d23586a3bf7b29ba9d2e97db524968177f7febcf7293cfe5a5e463c55ab",
+      "bytes": 1673,
+      "copied_now": true,
+      "status": "approved/adopted current provisional harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
+      "archive_file": "harness/m5-missing-draft/registration-lock.json",
+      "sha256": "a42cfaaeef21e64c455b1ac1ec8d8019de07f7b750d06e05e10b6731de59643b",
+      "bytes": 1880,
+      "copied_now": true,
+      "status": "approved/adopted current provisional harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/README.md",
+      "archive_file": "harness/m5-receipt-integration/README.md",
+      "sha256": "4b7b37bb8ab89a07500ff03111f52cf078f727d396386a908365c3de6d1dfe10",
+      "bytes": 5856,
+      "copied_now": true,
+      "status": "approved/adopted current provisional harness source"
     }
   ],
   "pin_and_fault_review_packet_status": {
@@ -20195,27 +20235,54 @@
   "archive_harness_refresh_outputs": [
     {
       "source": "derived from approved SDD sources and copied-harness verification",
-      "archive_file": "harness/source-manifest.json",
       "sha256": "035a31b6da191290b0635b0bc8b51cff1e3c4bd3be72c9262fda4ff909bed72c",
       "bytes": 12225,
+      "copied_now": false,
+      "kind": "refreshed source manifest",
+      "status": "historical generated harness output retained under /testing",
+      "external_path": "/home/markik/Code/testing/m5-harness-source-manifest-before-adoption-20261030.json"
+    },
+    {
+      "source": "derived from approved SDD sources and copied-harness verification",
+      "sha256": "38b63a66666b6006bd2e75191a2da367dfbdcb31c61c19791c9c4ca57704163d",
+      "bytes": 2088,
+      "copied_now": false,
+      "kind": "lightweight copied-harness test summary",
+      "status": "historical generated harness output retained under /testing",
+      "external_path": "/home/markik/Code/testing/m5-harness-python-checks-before-adoption-20261030.json"
+    },
+    {
+      "source": "derived from approved SDD sources and copied-harness verification",
+      "sha256": "37e6e7aedf4ff9ff040d70e238971a9caeeb5be92f37b0c1664a1db38cc362fe",
+      "bytes": 10760,
+      "copied_now": false,
+      "kind": "lightweight copied-harness test log",
+      "status": "historical generated harness output retained under /testing",
+      "external_path": "/home/markik/Code/testing/m5-harness-test-log-before-adoption-20261030.log"
+    },
+    {
+      "source": "derived from approved SDD sources and copied-harness verification",
+      "archive_file": "harness/source-manifest.json",
+      "sha256": "553a436ce3a1dcc2a680500f9c7769f9101ce9535a1857d653406aa1c6d53683",
+      "bytes": 12251,
       "copied_now": true,
-      "kind": "refreshed source manifest"
+      "status": "current 41-entry source manifest for adopted provisional harness"
     },
     {
       "source": "derived from approved SDD sources and copied-harness verification",
       "archive_file": "harness/python-checks.json",
-      "sha256": "38b63a66666b6006bd2e75191a2da367dfbdcb31c61c19791c9c4ca57704163d",
-      "bytes": 2088,
+      "sha256": "0acf977e92e6b8a9ecc16718158f65d7ddf5935ed14c38d1b9332455a8519dcd",
+      "bytes": 1871,
       "copied_now": true,
-      "kind": "lightweight copied-harness test summary"
+      "status": "72 copied Python tests passed; no native acceptance run"
     },
     {
       "source": "derived from approved SDD sources and copied-harness verification",
-      "archive_file": "harness/cold-copy-refresh-checks.log",
-      "sha256": "37e6e7aedf4ff9ff040d70e238971a9caeeb5be92f37b0c1664a1db38cc362fe",
-      "bytes": 10760,
-      "copied_now": true,
-      "kind": "lightweight copied-harness test log"
+      "sha256": "167812d30a67490ec5d76e05a1a9f898300472712f571dc0049294690b3913be",
+      "bytes": 10582,
+      "copied_now": false,
+      "status": "raw provisional harness test log retained under /testing",
+      "external_path": "/home/markik/Code/testing/m5-harness-adopted-scenario-checks-20261030.log"
     }
   ],
   "preserved_test_missing_source": {
@@ -20911,27 +20978,213 @@
   "cold_owner_publication_metadata_and_script_only": [
     {
       "source": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/publication.json",
-      "archive_file": "publication/cold-owner-metadata-script-only/publication.json",
       "sha256": "7110937176f6c71675d532db8bf05c036542c1e334357a7fab404cd508b9943e",
       "bytes": 527,
-      "copied_now": true,
-      "status": "publication metadata/script only; no bundle copied"
+      "copied_now": false,
+      "status": "publication metadata/script retained at original /testing path; bundle not copied into docs",
+      "external_path": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/publication.json"
     },
     {
       "source": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/bundles.json",
-      "archive_file": "publication/cold-owner-metadata-script-only/bundles.json",
       "sha256": "3d2fdd087b57fc0bc8ab730338d84e6b0019e90e627b18c73fdce062282ab9f4",
       "bytes": 237,
-      "copied_now": true,
-      "status": "publication metadata/script only; no bundle copied"
+      "copied_now": false,
+      "status": "publication metadata/script retained at original /testing path; bundle not copied into docs",
+      "external_path": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/bundles.json"
     },
     {
       "source": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/publish_existing.py",
-      "archive_file": "publication/cold-owner-metadata-script-only/publish_existing.py",
       "sha256": "dd9185dfa12b9a8d48e7928140e37ecd68d2700d15f9ebff92d88e7baf2ba0ad",
       "bytes": 2011,
-      "copied_now": true,
-      "status": "publication metadata/script only; no bundle copied"
+      "copied_now": false,
+      "status": "publication metadata/script retained at original /testing path; bundle not copied into docs",
+      "external_path": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/publish_existing.py"
+    }
+  ],
+  "adopted_scenario_and_registration_refresh": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-scenario-adoption.json",
+      "sha256": "fa13b304924520d4b046484b7587ea4fceb29f374a05c62f034b0df01fe240e8",
+      "bytes": 834,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/adopted-scenario-registration-refresh/m5-owner-scenario-adoption.json"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-scenario-review.md",
+      "sha256": "d70fd74046f14e76141a305cb855cd62389eb88de2d59fb18c098a6f1ec1d0d5",
+      "bytes": 2599,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/adopted-scenario-registration-refresh/m5-owner-scenario-review.md"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock-before-waits.json",
+      "sha256": "ba1887031f1d19911fd0d6160aa747542f51b7a8b3d512b09319a091cf7cbc14",
+      "bytes": 1598,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/adopted-scenario-registration-refresh/registration-lock-before-waits.json"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock-waits.diff",
+      "sha256": "a625753a377a770391df017dd3b7acf822292ea9629a5c55b80e18d698acec16",
+      "bytes": 1741,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/adopted-scenario-registration-refresh/registration-lock-waits.diff"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.before-owner.json",
+      "sha256": "f4e152aab6b325bf42e124db8c5134de32327afdad84e6a206cec1d243e6a2b7",
+      "bytes": 1701,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/adopted-scenario-registration-refresh/registration-lock.before-owner.json"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
+      "sha256": "a42cfaaeef21e64c455b1ac1ec8d8019de07f7b750d06e05e10b6731de59643b",
+      "bytes": 1880,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/adopted-scenario-registration-refresh/registration-lock.json"
+    }
+  ],
+  "scenario_candidate_diffs_and_review": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-owner-waits-candidate.scn",
+      "sha256": "125d6affefbdf1b8d611c51c6192f591190f1e9b740ec9d7c18ba5b37d5a2271",
+      "bytes": 25459,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/scenario-candidates/seed-owner-waits-candidate.scn"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-owner-waits-candidate.diff",
+      "sha256": "8a018b5702d958bd2793f6a7d3fa5cbe57119a4135834f1608daeaf65d7100f0",
+      "bytes": 591,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/scenario-candidates/seed-owner-waits-candidate.diff"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/reopen-owner-waits-candidate.scn",
+      "sha256": "ed8f4d0350ee317645ae63ef99b512953cd1621003868d23ab2b55b85327f66d",
+      "bytes": 2795,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/scenario-candidates/reopen-owner-waits-candidate.scn"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/reopen-owner-waits-candidate.diff",
+      "sha256": "5382a7f5ece182c7b212a1441df32a96276cdeb7969ef5f9e1ca60c3e29df3ee",
+      "bytes": 1814,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/scenario-candidates/reopen-owner-waits-candidate.diff"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/missing-visible-a2-candidate.scn",
+      "sha256": "25ed5d23586a3bf7b29ba9d2e97db524968177f7febcf7293cfe5a5e463c55ab",
+      "bytes": 1673,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/scenario-candidates/missing-visible-a2-candidate.scn"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/missing-visible-a2-candidate.diff",
+      "sha256": "ab01b9d417abffbbfecb8267242efdea4f4a2da1210cf87a9d418683236aff1a",
+      "bytes": 273,
+      "copied_now": false,
+      "status": "source-review/candidate packet preserved byte-for-byte under /testing; not copied into documentation archive",
+      "external_path": "/home/markik/Code/testing/m5-doc-policy-migration-20261030/scenario-candidates/missing-visible-a2-candidate.diff"
+    }
+  ],
+  "worker_lease_publication_metadata_and_script_only": [
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-worker-lease/publication.json",
+      "sha256": "cb1b6d63d68c76b0ce7752d9dc35481b3bc0c341b5c4927c9638074198143b0d",
+      "bytes": 526,
+      "copied_now": false,
+      "status": "publication metadata/script retained at original /testing path; no bundle copied into docs",
+      "external_path": "/home/markik/Code/testing/m5-publication-20261030-worker-lease/publication.json"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-worker-lease/bundles.json",
+      "sha256": "42654213f53e030cfd7b00b233dba2ded139fedcb592471b31d00e6204c931fd",
+      "bytes": 236,
+      "copied_now": false,
+      "status": "publication metadata/script retained at original /testing path; no bundle copied into docs",
+      "external_path": "/home/markik/Code/testing/m5-publication-20261030-worker-lease/bundles.json"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-worker-lease/publish_existing.py",
+      "sha256": "bc8af76859ea82d58dd74b0093b0ad68e762c424fa163a54d99782f91f104676",
+      "bytes": 2013,
+      "copied_now": false,
+      "status": "publication metadata/script retained at original /testing path; no bundle copied into docs",
+      "external_path": "/home/markik/Code/testing/m5-publication-20261030-worker-lease/publish_existing.py"
+    }
+  ],
+  "current_turnstone_host_gate_and_publication_external": [
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-host-pin-full-1.json",
+      "external_path": "/home/markik/Code/testing/custody-contract-20261029/m5-host-pin-full-1.json",
+      "sha256": "3a3f40dd6d69f1f95af7f85e2350d918fa9085b24f5bbbdc3275b33226d853dd",
+      "bytes": 1395,
+      "copied": false,
+      "status": "completed Turnstone host software gate; 1302 passed, 0 failed, 21 ignored"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-host-pin-full-1.log",
+      "external_path": "/home/markik/Code/testing/custody-contract-20261029/m5-host-pin-full-1.log",
+      "sha256": "acbcdf40819bbbbb66d883100ed6939ef9d25b1c108b72f9d2c8860bdefed958",
+      "bytes": 216952,
+      "copied": false,
+      "status": "completed Turnstone host software gate; 1302 passed, 0 failed, 21 ignored"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-clip-owner/publication.json",
+      "external_path": "/home/markik/Code/testing/m5-publication-20261030-clip-owner/publication.json",
+      "sha256": "8321536b4572882e4fc8683d5b935c6d38d4db9ab1a1309c2de40230d6648712",
+      "bytes": 528,
+      "copied": false,
+      "status": "publication metadata; Turnstone HEAD/origin clean at 9ec0da11be9d4bf458a27f288ffa3d92f4f1e69a"
+    }
+  ],
+  "failed_intact_R_external_safe_receipts": [
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-r/failure.json",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-r/failure.json",
+      "sha256": "e93e9d40a2115e53a8515c040f16c8a6a7166cdbc41959e06674d66c2af03aed",
+      "bytes": 101,
+      "copied": false,
+      "status": "M5 collection R failed partial seed; external raw diagnostic receipt under /testing"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-r/inputs.json",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-r/inputs.json",
+      "sha256": "5885218467c3444661006975d3d9cfe22f3cd819685ce6c9ba060565b799546c",
+      "bytes": 3951,
+      "copied": false,
+      "status": "M5 collection R failed partial seed; external raw diagnostic receipt under /testing"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-r/seed-launcher.cleanup.json",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-r/seed-launcher.cleanup.json",
+      "sha256": "feb578ca2613bea74a5ecd84ade76b21522d4dab5601bb50f4ffeb68356bc2c6",
+      "bytes": 365,
+      "copied": false,
+      "status": "M5 collection R failed partial seed; external raw diagnostic receipt under /testing"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-r/seed-launcher.log",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-r/seed-launcher.log",
+      "sha256": "e04995eabdbca4102118d600b567596657fc7bb37f7915695c5f507683029ce6",
+      "bytes": 681,
+      "copied": false,
+      "status": "M5 collection R failed partial seed; external raw diagnostic receipt under /testing"
     }
   ]
 }

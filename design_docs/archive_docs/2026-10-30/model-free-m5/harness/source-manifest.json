@@ -1,5 +1,5 @@
 {
-  "status": "provisional; intact/fault qualification pending",
+  "status": "provisional; adopted scenarios copied; intact/fault qualification pending",
   "files": {
     "acceptance-draft/run_acceptance.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_acceptance.py",
@@ -39,11 +39,11 @@
     },
     "m5-draft/seed-composed.draft.scn": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-composed.draft.scn",
-      "sha256": "23e326774d820047cb8c86239630ae675cefd6e3a13bafe8c155277f05d5ebd8"
+      "sha256": "125d6affefbdf1b8d611c51c6192f591190f1e9b740ec9d7c18ba5b37d5a2271"
     },
     "m5-draft/reopen.scn": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/reopen.scn",
-      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204"
+      "sha256": "ed8f4d0350ee317645ae63ef99b512953cd1621003868d23ab2b55b85327f66d"
     },
     "m5-draft/test_distinct_verifier.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/test_distinct_verifier.py",
@@ -87,7 +87,7 @@
     },
     "m5-missing-draft/missing.scn": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/missing.scn",
-      "sha256": "542e00d4438ecc9348bd249ccc6aadcec1387577dfc777d253fa26bd773d8c90"
+      "sha256": "25ed5d23586a3bf7b29ba9d2e97db524968177f7febcf7293cfe5a5e463c55ab"
     },
     "m5-missing-draft/fault_helper.rs": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_helper.rs",
@@ -103,7 +103,7 @@
     },
     "m5-missing-draft/registration-lock.json": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
-      "sha256": "f4e152aab6b325bf42e124db8c5134de32327afdad84e6a206cec1d243e6a2b7"
+      "sha256": "a42cfaaeef21e64c455b1ac1ec8d8019de07f7b750d06e05e10b6731de59643b"
     },
     "m5-missing-draft/test_missing.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py",
@@ -127,7 +127,7 @@
     },
     "m5-receipt-integration/README.md": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/README.md",
-      "sha256": "33e8d5fe1f05751fdafe83610c16f4075b3772abed3b43130f700c2d4908a630"
+      "sha256": "4b7b37bb8ab89a07500ff03111f52cf078f727d396386a908365c3de6d1dfe10"
     },
     "build-guard/m2-queued-gate.py": {
       "source": "/home/markik/Code/testing/custody-contract-20261029/m2-queued-gate.py",

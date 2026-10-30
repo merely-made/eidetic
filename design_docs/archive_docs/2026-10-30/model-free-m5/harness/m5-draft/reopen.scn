@@ -13,6 +13,12 @@ assert snap suggestions ~ M5
 capture 21_reopen_A1_search
 choose-suggestion Capture: M5 A
 wait-saved-reader 600
+act Read document
+settle 15
+click-at 30 180
+act Maximize pane
+settle 10
+assert maximized
 assert snap saved-reader-quote == M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.
 assert snap saved-reader-text ~ M5 A1 archive
 record-saved-sources 22_reopen_A1
@@ -22,6 +28,8 @@ type violet compass
 wait-research-search 600
 choose-suggestion Capture: M5 A
 wait-saved-reader 600
+act Read document
+settle 15
 assert snap saved-reader-text ~ M5 A2 archive
 record-saved-sources 23_reopen_A2
 capture 23_reopen_A2
@@ -32,9 +40,10 @@ assert snap suggestions ~ Selection:
 record-saved-sources 24_reopen_selection
 capture 24_reopen_selection
 choose-suggestion Selection:
-settle 60
+wait-retained-reader 600
 assert content-live
-assert text only this linked finding
+# Exact Fleece body and identity are checked by the mandatory reader verifier
+# and this same-case frame review; generic Knot text probes do not cover Fleece.
 record-saved-sources 24_reopen_selection_reader
 capture 24_reopen_selection_reader
 act Search saved sources
@@ -44,9 +53,9 @@ assert snap suggestions ~ Note:
 record-saved-sources 25_reopen_note
 capture 25_reopen_note
 choose-suggestion Note:
-settle 60
+wait-retained-reader 600
 assert content-live
-assert text M5 authored Redshank note
+# Exact Fleece body and identity require the same mandatory verifier and frame.
 record-saved-sources 25_reopen_note_reader
 capture 25_reopen_note_reader
 act Search saved sources
@@ -64,6 +73,8 @@ record-runtime reopen_runtime
 
 # Draft: append during network-isolated reopen with an inference-enabled app.
 # The custody-only route is present, but no inference route is registered.
+key escape
+assert omnibar closed
 act Ask saved sources
 settle 600
 assert text Answers needs the inference resident

@@ -143,9 +143,9 @@ scroll 200 300 300
 settle 8
 capture 07_selected_knot
 act Retain selected Knot text
-settle 60
+wait-retained-clip 600
 act Open node in Workbench
-settle 15
+wait-retained-reader 600
 assert content-live
 assert snap actions ~ Export retained clip
 export-clip ${M5_SELECTION_PACKAGE}
@@ -216,7 +216,7 @@ settle 10
 click-note-member
 assert snap actions ~ Retain selected Redshank note
 act Retain selected Redshank note
-settle 60
+wait-retained-clip 600
 act Search saved sources
 type M5 authored Redshank note
 wait-research-search 600
