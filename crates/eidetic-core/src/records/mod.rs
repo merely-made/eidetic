@@ -186,6 +186,7 @@ pub struct RecordQuery {
 pub struct RecordSettings {
     pub max_sources: usize,
     pub max_records: usize,
+    /// Pair operations plus bytes inspected for pair identity and value comparisons.
     pub max_work: usize,
     /// Cumulative schema bytes checked while validating assertions.
     pub max_validation_bytes: usize,

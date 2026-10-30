@@ -7,6 +7,7 @@ use eidetic::records::*;
 use std::collections::{BTreeMap, BTreeSet};
 use std::io::{self, Write};
 mod operations;
+mod output;
 
 struct Budget {
     left: usize,
@@ -41,15 +42,6 @@ fn push(
     serde_json::to_writer(output, &row).map_err(|_| ResearchError::LimitExceeded)?;
     rows.push(row);
     Ok(())
-}
-fn row(key: RowValue, records: &[&PropertyRecordV1], sources: Vec<RecallSourceId>) -> RecordRow {
-    RecordRow {
-        key,
-        group: None,
-        count: None,
-        record_ids: records.iter().map(|r| r.id.clone()).collect(),
-        sources,
-    }
 }
 fn matches_source(s: &SourceRecord, f: &RecordFilters) -> bool {
     f.source.as_ref().is_none_or(|v| v == &s.source)
@@ -198,7 +190,7 @@ pub fn evaluate(
         .collect();
     let rows = operations::run(query, settings, &selected_sources, &selected, &definitions)?;
     Ok(RecordResult {
-        operation_version: "eidetic.structured-records/v1".into(),
+        operation_version: "eidetic.structured-records/v2".into(),
         snapshot: snapshot.clone(),
         query: query.clone(),
         settings: settings.clone(),

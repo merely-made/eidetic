@@ -514,3 +514,5 @@ fn model_free_definition_validation_work_is_bounded() {
         ResearchError::LimitExceeded
     );
 }
+#[path = "records_bounds/mod.rs"]
+mod bounds;

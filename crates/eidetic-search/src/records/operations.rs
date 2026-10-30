@@ -1,41 +1,5 @@
+use super::output::{Key, Numeric, Value, emit};
 use super::*;
-use serde::Serialize;
-
-#[derive(Serialize)]
-enum PairKey<'a> {
-    Pair(&'a str, &'a str),
-    Comparison(Comparison),
-}
-#[derive(Serialize)]
-struct PairView<'a> {
-    key: &'a PairKey<'a>,
-    group: Option<()>,
-    count: Option<u64>,
-    record_ids: [&'a str; 2],
-    sources: Vec<&'a RecallSourceId>,
-}
-fn preflight_pair(
-    key: &PairKey<'_>,
-    a: &PropertyRecordV1,
-    b: &PropertyRecordV1,
-    output: &Budget,
-) -> Result<(), ResearchError> {
-    let mut sources = vec![a.evidence.source(), b.evidence.source()];
-    sources.sort();
-    sources.dedup();
-    let view = PairView {
-        key,
-        group: None,
-        count: None,
-        record_ids: [&a.id, &b.id],
-        sources,
-    };
-    let mut remaining = Budget { left: output.left };
-    remaining
-        .write_all(b",")
-        .map_err(|_| ResearchError::LimitExceeded)?;
-    serde_json::to_writer(&mut remaining, &view).map_err(|_| ResearchError::LimitExceeded)
-}
 
 type Definitions<'a> = BTreeMap<(&'a String, &'a String), &'a PropertyDefinitionV1>;
 fn value_key(value: &PropertyValue) -> Result<String, ResearchError> {
@@ -77,7 +41,13 @@ fn relation(
             return Ok(Comparison::NonComparable);
         }
     }
-    if value_key(&a.value)? == value_key(&b.value)? {
+    let equal = match (&a.value, &b.value) {
+        (PropertyValue::Timestamp(x), PropertyValue::Timestamp(y)) => {
+            x.utc_seconds()? == y.utc_seconds()?
+        }
+        (x, y) => x == y,
+    };
+    if equal {
         Ok(Comparison::Equal)
     } else if d.cardinality == Cardinality::Multiple {
         Ok(Comparison::Distinct)
@@ -85,15 +55,66 @@ fn relation(
         Ok(Comparison::Disagreement)
     }
 }
-fn work(n: usize, settings: &RecordSettings) -> Result<(), ResearchError> {
-    if n.checked_mul(n.saturating_sub(1))
-        .and_then(|x| x.checked_div(2))
-        .is_none_or(|x| x > settings.max_work)
-    {
-        Err(ResearchError::LimitExceeded)
-    } else {
-        Ok(())
+fn source_bytes(s: &RecallSourceId) -> Option<usize> {
+    s.source
+        .len()
+        .checked_add(s.owner.as_ref().map_or(0, String::len))?
+        .checked_add(s.node.as_ref().map_or(0, String::len))
+}
+fn value_bytes(value: &PropertyValue) -> usize {
+    match value {
+        PropertyValue::Text(v) => v.len(),
+        PropertyValue::Decimal { unit, .. } => unit.len(),
+        _ => 0,
     }
+}
+fn charge_pair(
+    a: &PropertyRecordV1,
+    b: &PropertyRecordV1,
+    op: &RecordOperation,
+    remaining: &mut usize,
+) -> Result<(), ResearchError> {
+    let cost = match op {
+        RecordOperation::JoinEntity => a.entity.len().checked_add(b.entity.len()),
+        RecordOperation::JoinSource => source_bytes(a.evidence.source())
+            .and_then(|x| source_bytes(b.evidence.source()).and_then(|y| x.checked_add(y))),
+        RecordOperation::Compare => [a, b].iter().try_fold(0usize, |n, r| {
+            [
+                r.entity.len(),
+                r.property.len(),
+                r.schema_revision.len(),
+                r.context.len(),
+                r.status.as_ref().map_or(0, String::len),
+                value_bytes(&r.value),
+            ]
+            .into_iter()
+            .try_fold(n, usize::checked_add)
+        }),
+        _ => Some(0),
+    }
+    .ok_or(ResearchError::LimitExceeded)?;
+    *remaining = remaining
+        .checked_sub(cost)
+        .ok_or(ResearchError::LimitExceeded)?;
+    Ok(())
+}
+fn pair_work(n: usize, settings: &RecordSettings) -> Result<usize, ResearchError> {
+    let pairs = n
+        .checked_mul(n.saturating_sub(1))
+        .and_then(|x| x.checked_div(2))
+        .ok_or(ResearchError::LimitExceeded)?;
+    settings
+        .max_work
+        .checked_sub(pairs)
+        .ok_or(ResearchError::LimitExceeded)
+}
+fn source_refs<'a>(records: &[&'a PropertyRecordV1]) -> Vec<&'a RecallSourceId> {
+    records
+        .iter()
+        .map(|r| r.evidence.source())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect()
 }
 pub(super) fn run(
     query: &RecordQuery,
@@ -117,13 +138,17 @@ pub(super) fn run(
             }
             for s in sources {
                 let key = if matches!(query.operation, RecordOperation::SourceTimeline) {
-                    RowValue::Time(s.captured_at)
+                    Key::Time(s.captured_at)
                 } else {
-                    RowValue::Source(s.source.clone())
+                    Key::Source(&s.source)
                 };
-                push(
+                emit(
                     &mut rows,
-                    row(key, &[], vec![s.source.clone()]),
+                    key,
+                    None,
+                    None,
+                    &[],
+                    vec![&s.source],
                     settings,
                     &mut output,
                 )?;
@@ -139,26 +164,21 @@ pub(super) fn run(
             }
         }
         RecordOperation::CountByProducer => {
-            let mut groups: BTreeMap<&str, Vec<RecallSourceId>> = BTreeMap::new();
+            let mut groups: BTreeMap<&str, Vec<&RecallSourceId>> = BTreeMap::new();
             for s in sources {
                 if !groups.contains_key(s.producer.as_str()) && groups.len() >= settings.max_rows {
                     return Err(ResearchError::LimitExceeded);
                 }
-                groups
-                    .entry(&s.producer)
-                    .or_default()
-                    .push(s.source.clone());
+                groups.entry(&s.producer).or_default().push(&s.source);
             }
             for (producer, refs) in groups {
-                push(
+                emit(
                     &mut rows,
-                    RecordRow {
-                        key: RowValue::Text(producer.into()),
-                        group: None,
-                        count: Some(refs.len() as u64),
-                        record_ids: vec![],
-                        sources: refs,
-                    },
+                    Key::Text(producer),
+                    None,
+                    Some(refs.len() as u64),
+                    &[],
+                    refs,
                     settings,
                     &mut output,
                 )?;
@@ -173,21 +193,32 @@ pub(super) fn run(
                 groups.entry(r.evidence.source()).or_default().push(r);
             }
             for (source, rs) in groups {
-                let mut result = row(RowValue::Source(source.clone()), &rs, vec![source.clone()]);
-                result.count = Some(rs.len() as u64);
-                push(&mut rows, result, settings, &mut output)?;
+                emit(
+                    &mut rows,
+                    Key::Source(source),
+                    None,
+                    Some(rs.len() as u64),
+                    &rs,
+                    vec![source],
+                    settings,
+                    &mut output,
+                )?;
             }
         }
         RecordOperation::PropertyLookup | RecordOperation::RecordTimeline => {
             for r in records {
                 let key = if matches!(query.operation, RecordOperation::RecordTimeline) {
-                    RowValue::Time(r.recorded_at)
+                    Key::Time(r.recorded_at)
                 } else {
-                    RowValue::Value(r.value.clone())
+                    Key::Value(Value::Existing(&r.value))
                 };
-                push(
+                emit(
                     &mut rows,
-                    row(key, &[*r], vec![r.evidence.source().clone()]),
+                    key,
+                    None,
+                    None,
+                    &[*r],
+                    vec![r.evidence.source()],
                     settings,
                     &mut output,
                 )?;
@@ -220,40 +251,34 @@ pub(super) fn run(
                 groups.entry(k).or_insert_with(Vec::new).push(*r);
             }
             for rs in groups.values() {
-                let refs = rs
-                    .iter()
-                    .map(|r| r.evidence.source().clone())
-                    .collect::<BTreeSet<_>>()
-                    .into_iter()
-                    .collect();
                 let first = rs[0];
-                let mut result = row(RowValue::Value(first.value.clone()), rs, refs);
-                result.group = Some(PropertyGroupKey {
-                    entity: first.entity.clone(),
-                    property: first.property.clone(),
-                    schema_revision: first.schema_revision.clone(),
-                    context: first.context.clone(),
-                    status: first.status.clone(),
-                    valid_time: first.valid_time.clone(),
-                    value: first.value.clone(),
-                });
-                push(&mut rows, result, settings, &mut output)?;
+                emit(
+                    &mut rows,
+                    Key::Value(Value::Existing(&first.value)),
+                    Some(first),
+                    None,
+                    rs,
+                    source_refs(rs),
+                    settings,
+                    &mut output,
+                )?;
             }
         }
         RecordOperation::JoinEntity | RecordOperation::JoinSource | RecordOperation::Compare => {
-            work(records.len(), settings)?;
+            let mut remaining = pair_work(records.len(), settings)?;
             for (i, a) in records.iter().enumerate() {
                 for b in &records[i + 1..] {
+                    charge_pair(a, b, &query.operation, &mut remaining)?;
                     let key = match query.operation {
                         RecordOperation::JoinEntity if a.entity == b.entity => {
-                            Some(PairKey::Pair(&a.id, &b.id))
+                            Some(Key::Pair(&a.id, &b.id))
                         }
                         RecordOperation::JoinSource
                             if a.evidence.source() == b.evidence.source() =>
                         {
-                            Some(PairKey::Pair(&a.id, &b.id))
+                            Some(Key::Pair(&a.id, &b.id))
                         }
-                        RecordOperation::Compare => Some(PairKey::Comparison(relation(
+                        RecordOperation::Compare => Some(Key::Comparison(relation(
                             a,
                             b,
                             definitions[&(&a.property, &a.schema_revision)],
@@ -261,20 +286,17 @@ pub(super) fn run(
                         _ => None,
                     };
                     if let Some(key) = key {
-                        if rows.len() >= settings.max_rows {
-                            return Err(ResearchError::LimitExceeded);
-                        }
-                        preflight_pair(&key, a, b, &output)?;
-                        let key = match key {
-                            PairKey::Pair(x, y) => RowValue::Pair(x.into(), y.into()),
-                            PairKey::Comparison(c) => RowValue::Comparison(c),
-                        };
-                        let refs = [a.evidence.source().clone(), b.evidence.source().clone()]
-                            .into_iter()
-                            .collect::<BTreeSet<_>>()
-                            .into_iter()
-                            .collect();
-                        push(&mut rows, row(key, &[*a, *b], refs), settings, &mut output)?;
+                        let pair = [*a, *b];
+                        emit(
+                            &mut rows,
+                            key,
+                            None,
+                            None,
+                            &pair,
+                            source_refs(&pair),
+                            settings,
+                            &mut output,
+                        )?;
                     }
                 }
             }
@@ -285,9 +307,7 @@ pub(super) fn run(
                 let mut sum = 0i64;
                 for r in records {
                     if r.property != first.property || r.schema_revision != first.schema_revision {
-                        return Err(ResearchError::Invalid(
-                            "sum requires one property schema".into(),
-                        ));
+                        return Err(invalid("sum requires one property schema"));
                     }
                     let value = match (&first.value, &r.value) {
                         (PropertyValue::Integer(_), PropertyValue::Integer(v)) => *v,
@@ -304,31 +324,27 @@ pub(super) fn run(
                             *coefficient
                         }
                         _ => {
-                            return Err(ResearchError::Invalid(
-                                "sum requires compatible numeric units and scale".into(),
-                            ));
+                            return Err(invalid("sum requires compatible numeric units and scale"));
                         }
                     };
                     sum = sum.checked_add(value).ok_or(ResearchError::Overflow)?;
                 }
                 let value = match &first.value {
-                    PropertyValue::Integer(_) => PropertyValue::Integer(sum),
-                    PropertyValue::Decimal { scale, unit, .. } => PropertyValue::Decimal {
+                    PropertyValue::Integer(_) => Numeric::Integer(sum),
+                    PropertyValue::Decimal { scale, unit, .. } => Numeric::Decimal {
                         coefficient: sum,
                         scale: *scale,
-                        unit: unit.clone(),
+                        unit,
                     },
                     _ => unreachable!(),
                 };
-                let refs = records
-                    .iter()
-                    .map(|r| r.evidence.source().clone())
-                    .collect::<BTreeSet<_>>()
-                    .into_iter()
-                    .collect();
-                push(
+                emit(
                     &mut rows,
-                    row(RowValue::Value(value), records, refs),
+                    Key::Value(Value::Numeric(value)),
+                    None,
+                    None,
+                    records,
+                    source_refs(records),
                     settings,
                     &mut output,
                 )?;
