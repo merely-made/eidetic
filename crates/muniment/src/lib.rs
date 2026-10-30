@@ -56,7 +56,7 @@ pub use blob::{BlobStore, Hash};
 pub use codec::Codec;
 #[cfg(feature = "directory")]
 pub use directory_backend::DirectoryBackend;
-pub use error::StoreError;
+pub use error::{StoreError, StoreLimitKind};
 pub use journal::{CausalError, Journal, LogId, Provenance, Seq};
 pub use slot::SlotStore;
 
