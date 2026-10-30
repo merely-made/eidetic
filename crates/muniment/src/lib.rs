@@ -41,7 +41,14 @@ pub mod error;
 #[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
 pub mod fjall_backend;
 #[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
+pub mod fjall_limits;
+#[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
 pub use fjall_backend::FjallStore;
+#[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
+pub use fjall_limits::{
+    FjallBoundError, FjallLimitKind, FjallOwnerLimits, FjallReadBudget, FjallReadLimits,
+    FjallRecoveryLimits,
+};
 #[cfg(all(feature = "indexeddb", target_arch = "wasm32"))]
 pub mod indexeddb_backend;
 pub mod journal;
