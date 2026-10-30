@@ -1554,6 +1554,90 @@
       "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/08_after_passage_clip.png",
       "sha256": "31637c8bbef0eb4640f2fd1e220b575b50ebb43cde95bf84b795e3c02980e539",
       "bytes": 256120
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/01_authored_note.png",
+      "sha256": "d28d3a767534e1d928211f34fdd4fa2ba009da98ee1335244ab7985146ac0b2e",
+      "bytes": 100070
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/04_exact_A1.png",
+      "sha256": "1ec1e516db19a3f6017ea1f6d30fdc6e632fbcd8682d25764a8cb336901ee62d",
+      "bytes": 225386
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/05_note_citation.png",
+      "sha256": "761700e4e078e67d5f0f31784a6c720d61da1b7243cd7fa53ab536f2929e1772",
+      "bytes": 433062
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/01_authored_note.png",
+      "sha256": "aab28a08799c4715518e687507b420a97d5d5240e1e9689ced21167934c2d679",
+      "bytes": 99622
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/04_exact_A1.png",
+      "sha256": "b49fc7eaaa852d6530e49e9cefce7563149e8ee6fa70df9d9aac8e25c4779cae",
+      "bytes": 227563
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/05_note_citation.png",
+      "sha256": "3a5f3892360d4968f1f5316afd5d68f5cb7dfe92f940f006a3243156a284d855",
+      "bytes": 440687
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/06_before_citation_click.png",
+      "sha256": "3a5f3892360d4968f1f5316afd5d68f5cb7dfe92f940f006a3243156a284d855",
+      "bytes": 440687
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/07_after_citation_click.png",
+      "sha256": "ac4db37d0b7d781995698d19f4358651f2dba437861e4301a7ea193997b66331",
+      "bytes": 446608
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/01_authored_note.png",
+      "sha256": "758e0b8d2bf0082acbfc309ecee11db6d554dfe871d335c3671bee43c7abed19",
+      "bytes": 100694
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/04_exact_A1.png",
+      "sha256": "521e0eaf14bd395bdd4bf7f010e93baa066d033188df4e3e12a5342fd16787bd",
+      "bytes": 230208
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/05_note_citation.png",
+      "sha256": "f051857f2b456b0bf43e9a0ccb1dd034745528ee7ee778029055bd8baad3d790",
+      "bytes": 440839
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/06_before_citation_click.png",
+      "sha256": "f051857f2b456b0bf43e9a0ccb1dd034745528ee7ee778029055bd8baad3d790",
+      "bytes": 440839
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/06_citation_peek.png",
+      "sha256": "9f8b0e6d75065ca978343d1812525d0bf85c70325f6c1b7f393c9686c5ea9a9f",
+      "bytes": 447922
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/07_after_citation_click.png",
+      "sha256": "be30450a0cd61d288637291d8225ecb8850ef10ff66f1e0808c37f3514c3ae70",
+      "bytes": 243119
     }
   ],
   "excluded": "Native binaries, custody wallets/seeds, profile stores, shader caches, and active/incomplete E receipts.",
@@ -3841,6 +3925,186 @@
       "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
       "bytes": 241,
       "copied": false
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "intact-I",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "citation-click-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "citation-click-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
     }
   ],
   "native_collection_boundaries": {
@@ -6413,5 +6677,2048 @@
     ],
     "not_yet_archived_as_a_complete_bundle": "The exact main m5-draft launcher, all phase helpers, verifier, seed/reopen scenarios and supporting synthetic text fixtures as one matching runnable source set. Some are currently represented only by hashes or review diffs in ignored .superpowers/sdd.",
     "qualified_harness_status": "No final qualified harness exists yet. When one is qualified, archive its exact launcher/verifier/scenario/helper/fixture source set outside ignored SDD and bind the bundle to the receipt before calling it reconstructible."
+  },
+  "final_lib_gate_and_reader_open_focused_receipts": [
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-final-authoring-inference-lib-1.json",
+      "archive_file": "focused-receipts/reader-open/final-authoring-inference-lib-1.json",
+      "sha256": "f7d10cec929ecea3b847e777879d32ec78ebca47ede95a27bf36d51312f07636",
+      "bytes": 1385,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-final-authoring-inference-lib-1.log",
+      "archive_file": "focused-receipts/reader-open/final-authoring-inference-lib-1.log",
+      "sha256": "14571a7a66a61967aa73d2b0f8404b0e65cca583a8cc373bc0306e76b0ebc77b",
+      "bytes": 211713,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-workbench-history-green-1.json",
+      "archive_file": "focused-receipts/reader-open/m5-workbench-history-green-1.json",
+      "sha256": "4ed532b36809f37ca0831b56daad4d80d0a07c646ac51d6351ee3568b73cc015",
+      "bytes": 1566,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-workbench-history-green-1.log",
+      "archive_file": "focused-receipts/reader-open/m5-workbench-history-green-1.log",
+      "sha256": "99bfea6d277e8ab6355c09fad9bd516af266f97ac9cce575504a567acbb2aead",
+      "bytes": 61209,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-address-history-after-reader-1.json",
+      "archive_file": "focused-receipts/reader-open/m5-address-history-after-reader-1.json",
+      "sha256": "ca32f9c2a5296786a471e796e685708083854d3ce4ec2caed664044bde1cf4df",
+      "bytes": 1518,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-address-history-after-reader-1.log",
+      "archive_file": "focused-receipts/reader-open/m5-address-history-after-reader-1.log",
+      "sha256": "3cd35ea129836499fd641e21719de3010d8a6a46bd768994ac3452e74a933d41",
+      "bytes": 61182,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/failure.json",
+      "archive_file": "intact-I/failure.json",
+      "sha256": "805947517116a4a2a2f43bb2b017f39109fe9b0840fb46086db16d2bd62eccde",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/inputs.json",
+      "archive_file": "intact-I/inputs.json",
+      "sha256": "1291a5b9a2ab73fa86d4e4539f3d1a7bb37078d176e50bc51ab9242eb5cf2f30",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/seed-launcher.cleanup.json",
+      "archive_file": "intact-I/seed-launcher.cleanup.json",
+      "sha256": "e08686f6beaf33cee461d4d90ed99d346372f85b740014bb80d993ca550e2d9c",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/seed-launcher.log",
+      "archive_file": "intact-I/seed-launcher.log",
+      "sha256": "fb228a9d8488975745345246f2e09a0f97df9cdc869eac9e22beb93f2a098200",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/build-provenance.json",
+      "archive_file": "intact-I/frozen/build-provenance.json",
+      "sha256": "efd604ece255b3c629dc9893b9f4eddb2fad943d86601f64ca557b84008fda87",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/custodian-build.json",
+      "archive_file": "intact-I/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/custodian-source-inventory.json",
+      "archive_file": "intact-I/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/seed-config.json",
+      "archive_file": "intact-I/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/test-binary-build.json",
+      "archive_file": "intact-I/frozen/test-binary-build.json",
+      "sha256": "bf41e7fe0023e9496147b1431c99e8b82b608d19bd493689b77c0abac6c95a55",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/test-binary-source-inventory.json",
+      "archive_file": "intact-I/frozen/test-binary-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/turnstone-build.json",
+      "archive_file": "intact-I/frozen/turnstone-build.json",
+      "sha256": "73fd4cd4240765a3f7728370bdab04f58765995d9bd95e75a8c76914d7315f47",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/turnstone-source-inventory.json",
+      "archive_file": "intact-I/frozen/turnstone-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/acceptance_phase.py",
+      "archive_file": "intact-I/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/fixture_server.py",
+      "archive_file": "intact-I/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/namespace_phase.py",
+      "archive_file": "intact-I/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/reopen.scn",
+      "archive_file": "intact-I/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/run_acceptance.py",
+      "archive_file": "intact-I/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/run_native.py",
+      "archive_file": "intact-I/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/seed.scn",
+      "archive_file": "intact-I/frozen/seed.scn",
+      "sha256": "a03dfce48c0abf7332a48c6d69d8dab95893dd3fad6a93655651bc55ec9ef0d4",
+      "bytes": 24411,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/fixture-requests.json",
+      "archive_file": "intact-I/sandbox/fixture-requests.json",
+      "sha256": "86b5dd09c9bb6f60fd9b1e79e19bca7e40d04078380a4662c36382ccfe29b7fa",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/origin-info.json",
+      "archive_file": "intact-I/sandbox/origin-info.json",
+      "sha256": "9e6f57db16540dc2faae03074fb5466a0e5eee6557576a934ea1a5d6e5b662c7",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/m5-disposable-marker",
+      "archive_file": "intact-I/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "intact-I/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "2ac6ef9bb5190815121a764b9cbf12770953feda711c92d0b55bd03dc263af43",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "intact-I/sandbox/seed/03_B.source-captures.json",
+      "sha256": "806cf97f7bff4f258447bf903ebb38c4c39872ca68eb0f3c79bf1c01b8448db8",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "intact-I/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "a91d69800e8381ea3f62b8fec33341382cfe237802fda7cdf026510e9874f88d",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/app.log",
+      "archive_file": "intact-I/sandbox/seed/app.log",
+      "sha256": "a87a5e26cec3ab8df8f9aeb1af314d0d96df6969cc8e5e492ada50a783b9899d",
+      "bytes": 10719,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/custody.log",
+      "archive_file": "intact-I/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/diagnostics.json",
+      "archive_file": "intact-I/sandbox/seed/diagnostics.json",
+      "sha256": "ca516cad81a6c44fdc6bbed068ef0d0d2e9eaffd1bd874899a3e8cdd2bcd12cb",
+      "bytes": 22508,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/inference-route.json",
+      "archive_file": "intact-I/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/namespace.json",
+      "archive_file": "intact-I/sandbox/seed/namespace.json",
+      "sha256": "9606759915afc9bc87470a7227f1a5be459116378cdeb85223340b3d246f4395",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/origin-ready.json",
+      "archive_file": "intact-I/sandbox/seed/origin-ready.json",
+      "sha256": "14b853df39882e566d0d3f7b2dcfd99298bc08f0b7769c79e1d2321b1e9ea235",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/origin.log",
+      "archive_file": "intact-I/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/processes-final.json",
+      "archive_file": "intact-I/sandbox/seed/processes-final.json",
+      "sha256": "129f7a3b5d5f95a7244bce52cf59a6d41d68923076b8e704c1dcec36fe621a52",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/route-probe.log",
+      "archive_file": "intact-I/sandbox/seed/route-probe.log",
+      "sha256": "79f0efd760008dd0dcb127932061d45196a33405471d60e4f873a85c9ee37ab0",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/scenario.done",
+      "archive_file": "intact-I/sandbox/seed/scenario.done",
+      "sha256": "c74dde81dc9b07752c89867b0a3be97f50b26f22fb394bea3cd7136499ed16c2",
+      "bytes": 484,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/failure.json",
+      "archive_file": "citation-click-diagnostic-A/failure.json",
+      "sha256": "e2ab325fc539823ff0bcf292e63ca7c1624b27ac997c9f7bffced671bf7781b9",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/inputs.json",
+      "archive_file": "citation-click-diagnostic-A/inputs.json",
+      "sha256": "762c51db5c47c74aa3b2a5691e2f6609e4432b9289ea5cf50e4a8c75f70690b3",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/seed-launcher.cleanup.json",
+      "archive_file": "citation-click-diagnostic-A/seed-launcher.cleanup.json",
+      "sha256": "61b8c58e2dc9fbfef18bbbd396aef7359176a2b8656add9a0b38a952c8d6bc20",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/seed-launcher.log",
+      "archive_file": "citation-click-diagnostic-A/seed-launcher.log",
+      "sha256": "73af153db1cfea6ac8361afaab3dc9ab993499209b3e9db9abbce4673cdffe1e",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/build-provenance.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/build-provenance.json",
+      "sha256": "efd604ece255b3c629dc9893b9f4eddb2fad943d86601f64ca557b84008fda87",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/custodian-build.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/custodian-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/seed-config.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/test-binary-build.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/test-binary-build.json",
+      "sha256": "bf41e7fe0023e9496147b1431c99e8b82b608d19bd493689b77c0abac6c95a55",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/test-binary-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/test-binary-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/turnstone-build.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/turnstone-build.json",
+      "sha256": "73fd4cd4240765a3f7728370bdab04f58765995d9bd95e75a8c76914d7315f47",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/turnstone-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/turnstone-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/acceptance_phase.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/fixture_server.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/namespace_phase.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/reopen.scn",
+      "archive_file": "citation-click-diagnostic-A/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/run_acceptance.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/run_native.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/seed.scn",
+      "archive_file": "citation-click-diagnostic-A/frozen/seed.scn",
+      "sha256": "d93f83a1e4f73daac59b9aa1cbc1e46d337e42a89b0956a713df3e03a8edcdbb",
+      "bytes": 1986,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/fixture-requests.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/fixture-requests.json",
+      "sha256": "09b5099897c9b977728436131b17c1e77a45f0babfd33fc1d4c40190366e078d",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/origin-info.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/origin-info.json",
+      "sha256": "05e2957c0126345bdf49530e96cc7558a6c2687da58a06cc44ced774978b5fb2",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/m5-disposable-marker",
+      "archive_file": "citation-click-diagnostic-A/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "5ab67afac7e2fa442ab79536f3a4413e6cd70bcd09a7713ca265da5008066699",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/03_B.source-captures.json",
+      "sha256": "2e4ea70e1df4867398d4967cf3971291c6e6800d6fc92977a0b764f9bbe26036",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "6bc441a1cff1027a2b8aa0491101749b5d277bbafca25155f24a34c77d705cf0",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/08_after_citation_click.saved-sources.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/08_after_citation_click.saved-sources.json",
+      "sha256": "d893f9408d2490fd874bfb8e457b1fec7445cbfd3ff23a26f2590184e71deed6",
+      "bytes": 6158,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/app.log",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/app.log",
+      "sha256": "c02c98b0c39f4fc014dbfc0095813e7d673fa4c45714f265374c79375eadf96e",
+      "bytes": 10719,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/custody.log",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/diagnostics.json",
+      "sha256": "b965ba98061bbfbbb3a1a693e116c00d92e0942afbef70d537086ceca5ee13ed",
+      "bytes": 22507,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/inference-route.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/namespace.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/namespace.json",
+      "sha256": "47ba043fcb4db2f492f5a49f0d896c0eb38e46fa426218839f5687a0f43e4154",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/origin-ready.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/origin-ready.json",
+      "sha256": "f2fe62fba8bf34d68155a8f801ecdf6eff1b4fb12b0c866346bc2c453abc93bc",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/origin.log",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/processes-final.json",
+      "sha256": "b117eac3c59538d7f357ce1d16b3bf13a2168f69da2164f15e83b24ebefe86a7",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/route-probe.log",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/route-probe.log",
+      "sha256": "d1ee41f7648e89f7295cbb1838eb2abdc30b5a1b4f9228af83214ab72644594f",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/scenario.done",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/scenario.done",
+      "sha256": "d34b403e99b65026217654e27bacc48b50310031e66afe58266b698f31a6cc94",
+      "bytes": 1683,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/failure.json",
+      "archive_file": "citation-click-diagnostic-B/failure.json",
+      "sha256": "9e9b8314f01e2662a319742153398f5bee9a0f42aa7f371edba909976c1b400d",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/inputs.json",
+      "archive_file": "citation-click-diagnostic-B/inputs.json",
+      "sha256": "2bc718da58c2d30fae8daadb357de77b4cb9e5daf1b8509995cad6d4ba849055",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/seed-launcher.cleanup.json",
+      "archive_file": "citation-click-diagnostic-B/seed-launcher.cleanup.json",
+      "sha256": "3db27d93cc87b4bf82024b7ca7ce622f6cd1b8403a198b26ddc4b8ee1c1c4490",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/seed-launcher.log",
+      "archive_file": "citation-click-diagnostic-B/seed-launcher.log",
+      "sha256": "885b7a643edeefbee4e563390682c9429a642b07566ad5510291949b23d68fb5",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/build-provenance.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/build-provenance.json",
+      "sha256": "efd604ece255b3c629dc9893b9f4eddb2fad943d86601f64ca557b84008fda87",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/custodian-build.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/custodian-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/seed-config.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/test-binary-build.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/test-binary-build.json",
+      "sha256": "bf41e7fe0023e9496147b1431c99e8b82b608d19bd493689b77c0abac6c95a55",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/test-binary-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/test-binary-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/turnstone-build.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/turnstone-build.json",
+      "sha256": "73fd4cd4240765a3f7728370bdab04f58765995d9bd95e75a8c76914d7315f47",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/turnstone-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/turnstone-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/acceptance_phase.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/fixture_server.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/namespace_phase.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/reopen.scn",
+      "archive_file": "citation-click-diagnostic-B/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/run_acceptance.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/run_native.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/seed.scn",
+      "archive_file": "citation-click-diagnostic-B/frozen/seed.scn",
+      "sha256": "e72fe1a466006a7ee2821137784d3bc85510208ac729950fc1a2c5d90bbcf7c5",
+      "bytes": 2058,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/fixture-requests.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/fixture-requests.json",
+      "sha256": "c2655e2459385927d2479b645879ded784e1a8c22fb4de69ac2fa73a849bb331",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/origin-info.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/origin-info.json",
+      "sha256": "7ee5fb803674395f5e7704e048cf998765ce721aaac2943ae69cfcb052d8e0fa",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/m5-disposable-marker",
+      "archive_file": "citation-click-diagnostic-B/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "fd0d3c1a60d38bdba86a97a34643ea2f8b5c3509264a0a6628d7bf2507596d41",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/03_B.source-captures.json",
+      "sha256": "2c5b564b14913197791d2dc0ef611db9f8e99a34e80f4af8ac04ebe87150eca3",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "b5f650d07d897cdb34936e1b14a11883815c6bd850f7d3968cabf2bd76837509",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/08_after_citation_click.saved-sources.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/08_after_citation_click.saved-sources.json",
+      "sha256": "726480bffae428a01179b8b2ceceaa1536a62f700652fa2c63133fa0de4fa70e",
+      "bytes": 6158,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/app.log",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/app.log",
+      "sha256": "ab86a99dfd0c20b7453a21184378d68d27d4028ef610aa3a8a283db44522c047",
+      "bytes": 11881,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/custody.log",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/diagnostics.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/diagnostics.json",
+      "sha256": "c5d03cdb8c99cc4ba61500342ae89e7a7c7227c66bcbb2010a110cf40acbe813",
+      "bytes": 23835,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/inference-route.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/namespace.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/namespace.json",
+      "sha256": "51a8a9467479534290153fa4c2aab700d6e7fd374313d74220817edb209a1c8b",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/origin-ready.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/origin-ready.json",
+      "sha256": "fd4807c91e87e73afa858eae43d20ee72d4198e84c333e3da37da544f5e57013",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/origin.log",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/processes-final.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/processes-final.json",
+      "sha256": "4656f938c65658ec386423c507f50635fb9fe69beea3bcc338606b2a903b736e",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/route-probe.log",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/route-probe.log",
+      "sha256": "d1ee41f7648e89f7295cbb1838eb2abdc30b5a1b4f9228af83214ab72644594f",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/scenario.done",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/scenario.done",
+      "sha256": "38eea8dc071bd5c8b097ef95dd0b6b06eee5d74b89b0f3c26b03abbd5703d4fe",
+      "bytes": 1383,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-reader-open-review/hashes.json",
+      "archive_file": "review-packets/reader-open/source-review/hashes.json",
+      "sha256": "8592c29be31dfea3173f1f2090edf1ca86b6011834e6c5a05c063096321011fc",
+      "bytes": 729,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-reader-open-review/source.diff",
+      "archive_file": "review-packets/reader-open/source-review/source.diff",
+      "sha256": "84744bc513816f6ead64c7cfbe76f71ce3e4dc0b6d5b85b844db0d54f59e3e5f",
+      "bytes": 11256,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-reader-open-report.md",
+      "archive_file": "review-packets/reader-open/m5-reader-open-report.md",
+      "sha256": "18f7c0cc7bedf8594381bf20c4022226c731bbac6e6684af02ffb269c1b28e5b",
+      "bytes": 2287,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-citation-read-seed.diff",
+      "archive_file": "review-packets/reader-open/m5-citation-read-seed.diff",
+      "sha256": "46f0ee2929dafd09b9e2000b7d4bc4a03208496fd8f07bc8e84a9fc097dfa449",
+      "bytes": 453,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/assemble.py",
+      "archive_file": "review-packets/reader-open/receipt-adapter/assemble.py",
+      "sha256": "1c21e259d8288dfb338b1c9d211f9f8bb2edc5d90c5919f4ca6b9ea5fc7a73bd",
+      "bytes": 10548,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/verify.py",
+      "archive_file": "review-packets/reader-open/receipt-adapter/verify.py",
+      "sha256": "3677061a3466af90d1262cdda5cede448e384ff926384562f7814cf57874da9e",
+      "bytes": 57918,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/test_receipt.py",
+      "archive_file": "review-packets/reader-open/receipt-adapter/test_receipt.py",
+      "sha256": "65b1113fabda513092251e8af5ecc4a42d4bb8cf6c63af265073e2a2ccfd8950",
+      "bytes": 35736,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/README.md",
+      "archive_file": "review-packets/reader-open/receipt-adapter/README.md",
+      "sha256": "33e8d5fe1f05751fdafe83610c16f4075b3772abed3b43130f700c2d4908a630",
+      "bytes": 5729,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/reader-events-root-review.md",
+      "archive_file": "review-packets/reader-open/receipt-adapter/reader-events-root-review.md",
+      "sha256": "3752287f5c8c0a013a53f35cdb56eb4033b9c8612a3fc0b89d79ef649bd6c9b6",
+      "bytes": 590,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-hashes.json",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-hashes.json",
+      "sha256": "3c598ef93129811f9a8c68af5951b2e9444a68f67f7dfb8d239714c1549871f1",
+      "bytes": 853,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-green.log",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-green.log",
+      "sha256": "b5d4d148b129f601d455d2ded86c139e7442fda4adc0def328a4722f7e90f3cc",
+      "bytes": 2479,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-registration-fixture-failed.log",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-registration-fixture-failed.log",
+      "sha256": "b863da42ae210c0dd9568d744e24de541bc8275b3bfe7d54a61d01a3eb7685f9",
+      "bytes": 3505,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-review.md",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-review.md",
+      "sha256": "e399d9b4f2b978872887c3f5148d293540e1d64b536d040a5b841b0543d15f87",
+      "bytes": 1698,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
+      "archive_file": "review-packets/reader-open/fault-source-current/registration-lock.json",
+      "sha256": "ba1887031f1d19911fd0d6160aa747542f51b7a8b3d512b09319a091cf7cbc14",
+      "bytes": 1598,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_missing.py",
+      "sha256": "9556edae322fa658f7f4ad3dc1828253f63c2294ee176fd79ebada976eaf9e95",
+      "bytes": 26874,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/verify_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/verify_missing.py",
+      "sha256": "ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939",
+      "bytes": 9793,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/fault_phase.py",
+      "sha256": "a9b5790f3b37d3d3ffe24ff3ffcd42a99f438b01164e349f661ce323574b39ce",
+      "bytes": 11656,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/namespace_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/namespace_phase.py",
+      "sha256": "fcac9ef1b535a3732db61ef8230415bc7f2cc26bef64c67abb988905ece87e26",
+      "bytes": 22046,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/acceptance_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_acceptance.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_native.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/test_missing.py",
+      "sha256": "0db8337bc3d9678803ed0b7234b006d1e58941cf7057ef3dc1f07af2f971c4f7",
+      "bytes": 21140,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/test_fault_ledger.py",
+      "sha256": "4c54e948b8174a17dbda9aa624dd848cbd1a4bdc5ec18aaf138b290603368773",
+      "bytes": 3847,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/missing.scn",
+      "archive_file": "review-packets/reader-open/fault-source-current/missing.scn",
+      "sha256": "ea8daeffe786581df4725c12515ac723c6413d6b11925edc05c66c064bc34c3a",
+      "bytes": 1627,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_helper.rs",
+      "archive_file": "review-packets/reader-open/fault-source-current/fault_helper.rs",
+      "sha256": "892bd625a7aa1cf59211bf9ec425f59f4a63837daea22c405ecfc095a8b8d992",
+      "bytes": 16687,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/citation_event_history.rs",
+      "archive_file": "review-packets/reader-open/fault-source-current/citation_event_history.rs",
+      "sha256": "a12f49ec3b4c2bc2f9ee4ea772370640cc64fa324cd45f606db18462645e35e8",
+      "bytes": 6131,
+      "copied_now": true
+    }
+  ],
+  "failed_intact_I_and_citation_click_diagnostic_A_B_safe_records": [
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/failure.json",
+      "archive_file": "intact-I/failure.json",
+      "sha256": "805947517116a4a2a2f43bb2b017f39109fe9b0840fb46086db16d2bd62eccde",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/inputs.json",
+      "archive_file": "intact-I/inputs.json",
+      "sha256": "1291a5b9a2ab73fa86d4e4539f3d1a7bb37078d176e50bc51ab9242eb5cf2f30",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/seed-launcher.cleanup.json",
+      "archive_file": "intact-I/seed-launcher.cleanup.json",
+      "sha256": "e08686f6beaf33cee461d4d90ed99d346372f85b740014bb80d993ca550e2d9c",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/seed-launcher.log",
+      "archive_file": "intact-I/seed-launcher.log",
+      "sha256": "fb228a9d8488975745345246f2e09a0f97df9cdc869eac9e22beb93f2a098200",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/build-provenance.json",
+      "archive_file": "intact-I/frozen/build-provenance.json",
+      "sha256": "efd604ece255b3c629dc9893b9f4eddb2fad943d86601f64ca557b84008fda87",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/custodian-build.json",
+      "archive_file": "intact-I/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/custodian-source-inventory.json",
+      "archive_file": "intact-I/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/seed-config.json",
+      "archive_file": "intact-I/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/test-binary-build.json",
+      "archive_file": "intact-I/frozen/test-binary-build.json",
+      "sha256": "bf41e7fe0023e9496147b1431c99e8b82b608d19bd493689b77c0abac6c95a55",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/test-binary-source-inventory.json",
+      "archive_file": "intact-I/frozen/test-binary-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/turnstone-build.json",
+      "archive_file": "intact-I/frozen/turnstone-build.json",
+      "sha256": "73fd4cd4240765a3f7728370bdab04f58765995d9bd95e75a8c76914d7315f47",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/turnstone-source-inventory.json",
+      "archive_file": "intact-I/frozen/turnstone-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/acceptance_phase.py",
+      "archive_file": "intact-I/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/fixture_server.py",
+      "archive_file": "intact-I/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/namespace_phase.py",
+      "archive_file": "intact-I/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/reopen.scn",
+      "archive_file": "intact-I/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/run_acceptance.py",
+      "archive_file": "intact-I/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/run_native.py",
+      "archive_file": "intact-I/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/frozen/seed.scn",
+      "archive_file": "intact-I/frozen/seed.scn",
+      "sha256": "a03dfce48c0abf7332a48c6d69d8dab95893dd3fad6a93655651bc55ec9ef0d4",
+      "bytes": 24411,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/fixture-requests.json",
+      "archive_file": "intact-I/sandbox/fixture-requests.json",
+      "sha256": "86b5dd09c9bb6f60fd9b1e79e19bca7e40d04078380a4662c36382ccfe29b7fa",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/origin-info.json",
+      "archive_file": "intact-I/sandbox/origin-info.json",
+      "sha256": "9e6f57db16540dc2faae03074fb5466a0e5eee6557576a934ea1a5d6e5b662c7",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/m5-disposable-marker",
+      "archive_file": "intact-I/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "intact-I/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "2ac6ef9bb5190815121a764b9cbf12770953feda711c92d0b55bd03dc263af43",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "intact-I/sandbox/seed/03_B.source-captures.json",
+      "sha256": "806cf97f7bff4f258447bf903ebb38c4c39872ca68eb0f3c79bf1c01b8448db8",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "intact-I/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "a91d69800e8381ea3f62b8fec33341382cfe237802fda7cdf026510e9874f88d",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/app.log",
+      "archive_file": "intact-I/sandbox/seed/app.log",
+      "sha256": "a87a5e26cec3ab8df8f9aeb1af314d0d96df6969cc8e5e492ada50a783b9899d",
+      "bytes": 10719,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/custody.log",
+      "archive_file": "intact-I/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/diagnostics.json",
+      "archive_file": "intact-I/sandbox/seed/diagnostics.json",
+      "sha256": "ca516cad81a6c44fdc6bbed068ef0d0d2e9eaffd1bd874899a3e8cdd2bcd12cb",
+      "bytes": 22508,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/inference-route.json",
+      "archive_file": "intact-I/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/namespace.json",
+      "archive_file": "intact-I/sandbox/seed/namespace.json",
+      "sha256": "9606759915afc9bc87470a7227f1a5be459116378cdeb85223340b3d246f4395",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/origin-ready.json",
+      "archive_file": "intact-I/sandbox/seed/origin-ready.json",
+      "sha256": "14b853df39882e566d0d3f7b2dcfd99298bc08f0b7769c79e1d2321b1e9ea235",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/origin.log",
+      "archive_file": "intact-I/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/processes-final.json",
+      "archive_file": "intact-I/sandbox/seed/processes-final.json",
+      "sha256": "129f7a3b5d5f95a7244bce52cf59a6d41d68923076b8e704c1dcec36fe621a52",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/route-probe.log",
+      "archive_file": "intact-I/sandbox/seed/route-probe.log",
+      "sha256": "79f0efd760008dd0dcb127932061d45196a33405471d60e4f873a85c9ee37ab0",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-i/sandbox/seed/scenario.done",
+      "archive_file": "intact-I/sandbox/seed/scenario.done",
+      "sha256": "c74dde81dc9b07752c89867b0a3be97f50b26f22fb394bea3cd7136499ed16c2",
+      "bytes": 484,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/failure.json",
+      "archive_file": "citation-click-diagnostic-A/failure.json",
+      "sha256": "e2ab325fc539823ff0bcf292e63ca7c1624b27ac997c9f7bffced671bf7781b9",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/inputs.json",
+      "archive_file": "citation-click-diagnostic-A/inputs.json",
+      "sha256": "762c51db5c47c74aa3b2a5691e2f6609e4432b9289ea5cf50e4a8c75f70690b3",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/seed-launcher.cleanup.json",
+      "archive_file": "citation-click-diagnostic-A/seed-launcher.cleanup.json",
+      "sha256": "61b8c58e2dc9fbfef18bbbd396aef7359176a2b8656add9a0b38a952c8d6bc20",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/seed-launcher.log",
+      "archive_file": "citation-click-diagnostic-A/seed-launcher.log",
+      "sha256": "73af153db1cfea6ac8361afaab3dc9ab993499209b3e9db9abbce4673cdffe1e",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/build-provenance.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/build-provenance.json",
+      "sha256": "efd604ece255b3c629dc9893b9f4eddb2fad943d86601f64ca557b84008fda87",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/custodian-build.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/custodian-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/seed-config.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/test-binary-build.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/test-binary-build.json",
+      "sha256": "bf41e7fe0023e9496147b1431c99e8b82b608d19bd493689b77c0abac6c95a55",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/test-binary-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/test-binary-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/turnstone-build.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/turnstone-build.json",
+      "sha256": "73fd4cd4240765a3f7728370bdab04f58765995d9bd95e75a8c76914d7315f47",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/turnstone-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-A/frozen/turnstone-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/acceptance_phase.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/fixture_server.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/namespace_phase.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/reopen.scn",
+      "archive_file": "citation-click-diagnostic-A/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/run_acceptance.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/run_native.py",
+      "archive_file": "citation-click-diagnostic-A/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/frozen/seed.scn",
+      "archive_file": "citation-click-diagnostic-A/frozen/seed.scn",
+      "sha256": "d93f83a1e4f73daac59b9aa1cbc1e46d337e42a89b0956a713df3e03a8edcdbb",
+      "bytes": 1986,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/fixture-requests.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/fixture-requests.json",
+      "sha256": "09b5099897c9b977728436131b17c1e77a45f0babfd33fc1d4c40190366e078d",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/origin-info.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/origin-info.json",
+      "sha256": "05e2957c0126345bdf49530e96cc7558a6c2687da58a06cc44ced774978b5fb2",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/m5-disposable-marker",
+      "archive_file": "citation-click-diagnostic-A/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "5ab67afac7e2fa442ab79536f3a4413e6cd70bcd09a7713ca265da5008066699",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/03_B.source-captures.json",
+      "sha256": "2e4ea70e1df4867398d4967cf3971291c6e6800d6fc92977a0b764f9bbe26036",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "6bc441a1cff1027a2b8aa0491101749b5d277bbafca25155f24a34c77d705cf0",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/08_after_citation_click.saved-sources.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/08_after_citation_click.saved-sources.json",
+      "sha256": "d893f9408d2490fd874bfb8e457b1fec7445cbfd3ff23a26f2590184e71deed6",
+      "bytes": 6158,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/app.log",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/app.log",
+      "sha256": "c02c98b0c39f4fc014dbfc0095813e7d673fa4c45714f265374c79375eadf96e",
+      "bytes": 10719,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/custody.log",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/diagnostics.json",
+      "sha256": "b965ba98061bbfbbb3a1a693e116c00d92e0942afbef70d537086ceca5ee13ed",
+      "bytes": 22507,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/inference-route.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/namespace.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/namespace.json",
+      "sha256": "47ba043fcb4db2f492f5a49f0d896c0eb38e46fa426218839f5687a0f43e4154",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/origin-ready.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/origin-ready.json",
+      "sha256": "f2fe62fba8bf34d68155a8f801ecdf6eff1b4fb12b0c866346bc2c453abc93bc",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/origin.log",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/processes-final.json",
+      "sha256": "b117eac3c59538d7f357ce1d16b3bf13a2168f69da2164f15e83b24ebefe86a7",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/route-probe.log",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/route-probe.log",
+      "sha256": "d1ee41f7648e89f7295cbb1838eb2abdc30b5a1b4f9228af83214ab72644594f",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-a/sandbox/seed/scenario.done",
+      "archive_file": "citation-click-diagnostic-A/sandbox/seed/scenario.done",
+      "sha256": "d34b403e99b65026217654e27bacc48b50310031e66afe58266b698f31a6cc94",
+      "bytes": 1683,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/failure.json",
+      "archive_file": "citation-click-diagnostic-B/failure.json",
+      "sha256": "9e9b8314f01e2662a319742153398f5bee9a0f42aa7f371edba909976c1b400d",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/inputs.json",
+      "archive_file": "citation-click-diagnostic-B/inputs.json",
+      "sha256": "2bc718da58c2d30fae8daadb357de77b4cb9e5daf1b8509995cad6d4ba849055",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/seed-launcher.cleanup.json",
+      "archive_file": "citation-click-diagnostic-B/seed-launcher.cleanup.json",
+      "sha256": "3db27d93cc87b4bf82024b7ca7ce622f6cd1b8403a198b26ddc4b8ee1c1c4490",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/seed-launcher.log",
+      "archive_file": "citation-click-diagnostic-B/seed-launcher.log",
+      "sha256": "885b7a643edeefbee4e563390682c9429a642b07566ad5510291949b23d68fb5",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/build-provenance.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/build-provenance.json",
+      "sha256": "efd604ece255b3c629dc9893b9f4eddb2fad943d86601f64ca557b84008fda87",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/custodian-build.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/custodian-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/seed-config.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/test-binary-build.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/test-binary-build.json",
+      "sha256": "bf41e7fe0023e9496147b1431c99e8b82b608d19bd493689b77c0abac6c95a55",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/test-binary-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/test-binary-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/turnstone-build.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/turnstone-build.json",
+      "sha256": "73fd4cd4240765a3f7728370bdab04f58765995d9bd95e75a8c76914d7315f47",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/turnstone-source-inventory.json",
+      "archive_file": "citation-click-diagnostic-B/frozen/turnstone-source-inventory.json",
+      "sha256": "6265ba2f357b5c440f92935739a1c0948c38c29f4b354edc2671df47d13cde6c",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/acceptance_phase.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/fixture_server.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/namespace_phase.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/reopen.scn",
+      "archive_file": "citation-click-diagnostic-B/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/run_acceptance.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/run_native.py",
+      "archive_file": "citation-click-diagnostic-B/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/frozen/seed.scn",
+      "archive_file": "citation-click-diagnostic-B/frozen/seed.scn",
+      "sha256": "e72fe1a466006a7ee2821137784d3bc85510208ac729950fc1a2c5d90bbcf7c5",
+      "bytes": 2058,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/fixture-requests.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/fixture-requests.json",
+      "sha256": "c2655e2459385927d2479b645879ded784e1a8c22fb4de69ac2fa73a849bb331",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/origin-info.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/origin-info.json",
+      "sha256": "7ee5fb803674395f5e7704e048cf998765ce721aaac2943ae69cfcb052d8e0fa",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/m5-disposable-marker",
+      "archive_file": "citation-click-diagnostic-B/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "fd0d3c1a60d38bdba86a97a34643ea2f8b5c3509264a0a6628d7bf2507596d41",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/03_B.source-captures.json",
+      "sha256": "2c5b564b14913197791d2dc0ef611db9f8e99a34e80f4af8ac04ebe87150eca3",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "b5f650d07d897cdb34936e1b14a11883815c6bd850f7d3968cabf2bd76837509",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/08_after_citation_click.saved-sources.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/08_after_citation_click.saved-sources.json",
+      "sha256": "726480bffae428a01179b8b2ceceaa1536a62f700652fa2c63133fa0de4fa70e",
+      "bytes": 6158,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/app.log",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/app.log",
+      "sha256": "ab86a99dfd0c20b7453a21184378d68d27d4028ef610aa3a8a283db44522c047",
+      "bytes": 11881,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/custody.log",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/diagnostics.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/diagnostics.json",
+      "sha256": "c5d03cdb8c99cc4ba61500342ae89e7a7c7227c66bcbb2010a110cf40acbe813",
+      "bytes": 23835,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/inference-route.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/namespace.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/namespace.json",
+      "sha256": "51a8a9467479534290153fa4c2aab700d6e7fd374313d74220817edb209a1c8b",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/origin-ready.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/origin-ready.json",
+      "sha256": "fd4807c91e87e73afa858eae43d20ee72d4198e84c333e3da37da544f5e57013",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/origin.log",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/processes-final.json",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/processes-final.json",
+      "sha256": "4656f938c65658ec386423c507f50635fb9fe69beea3bcc338606b2a903b736e",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/route-probe.log",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/route-probe.log",
+      "sha256": "d1ee41f7648e89f7295cbb1838eb2abdc30b5a1b4f9228af83214ab72644594f",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/scenario.done",
+      "archive_file": "citation-click-diagnostic-B/sandbox/seed/scenario.done",
+      "sha256": "38eea8dc071bd5c8b097ef95dd0b6b06eee5d74b89b0f3c26b03abbd5703d4fe",
+      "bytes": 1383,
+      "copied_now": true
+    }
+  ],
+  "reader_open_review_and_final_event_adapter_packets": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-reader-open-review/hashes.json",
+      "archive_file": "review-packets/reader-open/source-review/hashes.json",
+      "sha256": "8592c29be31dfea3173f1f2090edf1ca86b6011834e6c5a05c063096321011fc",
+      "bytes": 729,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-reader-open-review/source.diff",
+      "archive_file": "review-packets/reader-open/source-review/source.diff",
+      "sha256": "84744bc513816f6ead64c7cfbe76f71ce3e4dc0b6d5b85b844db0d54f59e3e5f",
+      "bytes": 11256,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-reader-open-report.md",
+      "archive_file": "review-packets/reader-open/m5-reader-open-report.md",
+      "sha256": "18f7c0cc7bedf8594381bf20c4022226c731bbac6e6684af02ffb269c1b28e5b",
+      "bytes": 2287,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-citation-read-seed.diff",
+      "archive_file": "review-packets/reader-open/m5-citation-read-seed.diff",
+      "sha256": "46f0ee2929dafd09b9e2000b7d4bc4a03208496fd8f07bc8e84a9fc097dfa449",
+      "bytes": 453,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/assemble.py",
+      "archive_file": "review-packets/reader-open/receipt-adapter/assemble.py",
+      "sha256": "1c21e259d8288dfb338b1c9d211f9f8bb2edc5d90c5919f4ca6b9ea5fc7a73bd",
+      "bytes": 10548,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/verify.py",
+      "archive_file": "review-packets/reader-open/receipt-adapter/verify.py",
+      "sha256": "3677061a3466af90d1262cdda5cede448e384ff926384562f7814cf57874da9e",
+      "bytes": 57918,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/test_receipt.py",
+      "archive_file": "review-packets/reader-open/receipt-adapter/test_receipt.py",
+      "sha256": "65b1113fabda513092251e8af5ecc4a42d4bb8cf6c63af265073e2a2ccfd8950",
+      "bytes": 35736,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/README.md",
+      "archive_file": "review-packets/reader-open/receipt-adapter/README.md",
+      "sha256": "33e8d5fe1f05751fdafe83610c16f4075b3772abed3b43130f700c2d4908a630",
+      "bytes": 5729,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/reader-events-root-review.md",
+      "archive_file": "review-packets/reader-open/receipt-adapter/reader-events-root-review.md",
+      "sha256": "3752287f5c8c0a013a53f35cdb56eb4033b9c8612a3fc0b89d79ef649bd6c9b6",
+      "bytes": 590,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-hashes.json",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-hashes.json",
+      "sha256": "3c598ef93129811f9a8c68af5951b2e9444a68f67f7dfb8d239714c1549871f1",
+      "bytes": 853,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-green.log",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-green.log",
+      "sha256": "b5d4d148b129f601d455d2ded86c139e7442fda4adc0def328a4722f7e90f3cc",
+      "bytes": 2479,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-registration-fixture-failed.log",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-registration-fixture-failed.log",
+      "sha256": "b863da42ae210c0dd9568d744e24de541bc8275b3bfe7d54a61d01a3eb7685f9",
+      "bytes": 3505,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-review.md",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-review.md",
+      "sha256": "e399d9b4f2b978872887c3f5148d293540e1d64b536d040a5b841b0543d15f87",
+      "bytes": 1698,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
+      "archive_file": "review-packets/reader-open/fault-source-current/registration-lock.json",
+      "sha256": "ba1887031f1d19911fd0d6160aa747542f51b7a8b3d512b09319a091cf7cbc14",
+      "bytes": 1598,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_missing.py",
+      "sha256": "9556edae322fa658f7f4ad3dc1828253f63c2294ee176fd79ebada976eaf9e95",
+      "bytes": 26874,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/verify_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/verify_missing.py",
+      "sha256": "ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939",
+      "bytes": 9793,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/fault_phase.py",
+      "sha256": "a9b5790f3b37d3d3ffe24ff3ffcd42a99f438b01164e349f661ce323574b39ce",
+      "bytes": 11656,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/namespace_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/namespace_phase.py",
+      "sha256": "fcac9ef1b535a3732db61ef8230415bc7f2cc26bef64c67abb988905ece87e26",
+      "bytes": 22046,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/acceptance_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_acceptance.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_native.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/test_missing.py",
+      "sha256": "0db8337bc3d9678803ed0b7234b006d1e58941cf7057ef3dc1f07af2f971c4f7",
+      "bytes": 21140,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/test_fault_ledger.py",
+      "sha256": "4c54e948b8174a17dbda9aa624dd848cbd1a4bdc5ec18aaf138b290603368773",
+      "bytes": 3847,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/missing.scn",
+      "archive_file": "review-packets/reader-open/fault-source-current/missing.scn",
+      "sha256": "ea8daeffe786581df4725c12515ac723c6413d6b11925edc05c66c064bc34c3a",
+      "bytes": 1627,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_helper.rs",
+      "archive_file": "review-packets/reader-open/fault-source-current/fault_helper.rs",
+      "sha256": "892bd625a7aa1cf59211bf9ec425f59f4a63837daea22c405ecfc095a8b8d992",
+      "bytes": 16687,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/citation_event_history.rs",
+      "archive_file": "review-packets/reader-open/fault-source-current/citation_event_history.rs",
+      "sha256": "a12f49ec3b4c2bc2f9ee4ea772370640cc64fa324cd45f606db18462645e35e8",
+      "bytes": 6131,
+      "copied_now": true
+    }
+  ],
+  "reader_event_fault_scripts_and_registration_current": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-hashes.json",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-hashes.json",
+      "sha256": "3c598ef93129811f9a8c68af5951b2e9444a68f67f7dfb8d239714c1549871f1",
+      "bytes": 853,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-green.log",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-green.log",
+      "sha256": "b5d4d148b129f601d455d2ded86c139e7442fda4adc0def328a4722f7e90f3cc",
+      "bytes": 2479,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-registration-fixture-failed.log",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-registration-fixture-failed.log",
+      "sha256": "b863da42ae210c0dd9568d744e24de541bc8275b3bfe7d54a61d01a3eb7685f9",
+      "bytes": 3505,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/reader-events-review.md",
+      "archive_file": "review-packets/reader-open/fault-source-current/reader-events-review.md",
+      "sha256": "e399d9b4f2b978872887c3f5148d293540e1d64b536d040a5b841b0543d15f87",
+      "bytes": 1698,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
+      "archive_file": "review-packets/reader-open/fault-source-current/registration-lock.json",
+      "sha256": "ba1887031f1d19911fd0d6160aa747542f51b7a8b3d512b09319a091cf7cbc14",
+      "bytes": 1598,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_missing.py",
+      "sha256": "9556edae322fa658f7f4ad3dc1828253f63c2294ee176fd79ebada976eaf9e95",
+      "bytes": 26874,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/verify_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/verify_missing.py",
+      "sha256": "ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939",
+      "bytes": 9793,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/fault_phase.py",
+      "sha256": "a9b5790f3b37d3d3ffe24ff3ffcd42a99f438b01164e349f661ce323574b39ce",
+      "bytes": 11656,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/namespace_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/namespace_phase.py",
+      "sha256": "fcac9ef1b535a3732db61ef8230415bc7f2cc26bef64c67abb988905ece87e26",
+      "bytes": 22046,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/acceptance_phase.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_acceptance.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_native.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/test_missing.py",
+      "sha256": "0db8337bc3d9678803ed0b7234b006d1e58941cf7057ef3dc1f07af2f971c4f7",
+      "bytes": 21140,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py",
+      "archive_file": "review-packets/reader-open/fault-source-current/test_fault_ledger.py",
+      "sha256": "4c54e948b8174a17dbda9aa624dd848cbd1a4bdc5ec18aaf138b290603368773",
+      "bytes": 3847,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/missing.scn",
+      "archive_file": "review-packets/reader-open/fault-source-current/missing.scn",
+      "sha256": "ea8daeffe786581df4725c12515ac723c6413d6b11925edc05c66c064bc34c3a",
+      "bytes": 1627,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_helper.rs",
+      "archive_file": "review-packets/reader-open/fault-source-current/fault_helper.rs",
+      "sha256": "892bd625a7aa1cf59211bf9ec425f59f4a63837daea22c405ecfc095a8b8d992",
+      "bytes": 16687,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/citation_event_history.rs",
+      "archive_file": "review-packets/reader-open/fault-source-current/citation_event_history.rs",
+      "sha256": "a12f49ec3b4c2bc2f9ee4ea772370640cc64fa324cd45f606db18462645e35e8",
+      "bytes": 6131,
+      "copied_now": true
+    }
+  ],
+  "reader_open_diagnostic_boundaries": {
+    "source_state_before_reader_event_delta": "fe015c5df394f7be514609ebe2e5ecb25528f618",
+    "local_reader_event_and_peek_wording_delta": "cf459cd832abc877c79ae3c68e61eb7014ccf533",
+    "full_host_gate_receipt": "focused-receipts/reader-open/m5-final-authoring-inference-lib-1.json",
+    "full_host_gate": "1278 passed, 0 failed, 20 ignored at fe015 source",
+    "reader_open_focused": "one new reader-open event test passed 1/0; two existing address-history tests passed 2/0",
+    "intact_I": "Failed after exact A1 was clipped into the Knot note; citation click opened Peek, so immediate reader wait was incorrect. Failure and empty cleanup are retained.",
+    "citation_click_diagnostic_A": "Intentional diagnostic stop; safe records are retained and frames are external by hash.",
+    "citation_click_diagnostic_B": "Ordinary citation click opened Peek, then ordinary Read activated the tile. Event named exact A1; a separate current observation was Ready with exact A1, text hash, selector 0..57 and full passage. Intentional diagnostic stop only.",
+    "review_boundary": "Reader-open source review and four-file receipt adapter review are scoped approvals only. Fault guard false, receipt DRAFT, and no successful intact seed/reopen or native fault run.",
+    "excluded": "The main fresh build was still running; incomplete outputs are excluded."
   }
 }

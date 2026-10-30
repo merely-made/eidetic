@@ -751,3 +751,33 @@ launcher, verifier, phase helpers, seed/reopen scenarios and supporting fixture
 source bundle outside ignored SDD. The final qualified harness must be archived
 as an exact source bundle with its receipt before it can be called
 reconstructible. Full M5 acceptance remains incomplete.
+
+
+### M5 reader-open event evidence and focused host gate
+
+The full authoring/inference library gate receipt and the local reader-open
+focused receipts are indexed in `model-free-m5/additional-evidence-index.json`.
+The full gate passed 1278/0/20 at Turnstone source
+`fe015c5df394f7be514609ebe2e5ecb25528f618`. The subsequent local
+`cf459cd832abc877c79ae3c68e61eb7014ccf533` event/Peek wording delta has one new
+focused test passing 1/0 and two existing address-history tests passing 2/0.
+These focused checks do not replace a full gate for the later source.
+
+Failed intact I and citation-click diagnostics A and B are archived as safe
+records. Intact I clipped exact A1 into the real Knot note but stopped after
+the citation opened Peek instead of immediately producing a reader. Diagnostic
+B followed the ordinary Read control: its `WorkbenchTileOpened` event named
+the exact A1 address, and a separate reader observation was Ready for A1 with
+the exact manifest, text hash, selector 0..57 and full passage. Both diagnostics
+are intentional stops, not acceptance runs. Failure records and cleanup are
+retained; screenshots and synthetic HTML fixtures remain external with paths,
+hashes and sizes in the index.
+
+The reader-open source-review packet, scenario wording/seed delta, updated
+reader-event fault scripts and current registration lock, failed registration
+fixture log, 17-test log/review, and final four-file reader-event receipt
+adapter with root review are preserved at distinct paths. The reader-event
+source and receipt adapter reviews are scoped approvals. The fault guard remains
+false and the receipt remains DRAFT. No intact run completed the full
+seed-to-cold-reopen acceptance sequence, and no native fault run completed.
+The main fresh build was still running, so its incomplete outputs were excluded. Full M5 acceptance remains incomplete.

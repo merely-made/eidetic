@@ -1,0 +1,33 @@
+test_citation_can_predate_a2_but_must_match (test_missing.Binding.test_citation_can_predate_a2_but_must_match) ... ok
+test_click_interval_rejects_redacted_extra_lost_or_fallback (test_missing.Binding.test_click_interval_rejects_redacted_extra_lost_or_fallback) ... ok
+test_exact_error_and_unchanged_a2 (test_missing.Binding.test_exact_error_and_unchanged_a2) ... ok
+test_hidden_fallback_scope_is_rejected_even_when_reader_is_filtered_out (test_missing.Binding.test_hidden_fallback_scope_is_rejected_even_when_reader_is_filtered_out) ... ok
+test_receipt_verifier_requires_owner_and_primary_invariants (test_missing.Binding.test_receipt_verifier_requires_owner_and_primary_invariants) ... ok
+test_shared_payload_and_omitted_owner_fail (test_missing.Binding.test_shared_payload_and_omitted_owner_fail) ... ok
+test_target_address_uses_exact_canonical_identity_and_selector (test_missing.Binding.test_target_address_uses_exact_canonical_identity_and_selector) ... ok
+test_collection_ledger_refuses_changed_observation_and_primary (test_missing.Isolation.test_collection_ledger_refuses_changed_observation_and_primary) ... ok
+test_command_exposes_only_named_copy_and_frozen_inputs (test_missing.Isolation.test_command_exposes_only_named_copy_and_frozen_inputs) ... ok
+test_copy_rejects_links_and_is_independent (test_missing.Isolation.test_copy_rejects_links_and_is_independent) ... ok
+test_primary_change_on_failure_is_recorded (test_missing.Isolation.test_primary_change_on_failure_is_recorded) ... ok
+test_primary_hash_finally_on_collection_failure (test_missing.Isolation.test_primary_hash_finally_on_collection_failure) ... ok
+test_registration_lock_and_both_build_inventories (test_missing.Isolation.test_registration_lock_and_both_build_inventories) ... ERROR
+test_artifact_links_and_linked_parent_refused (test_fault_ledger.FaultLedger.test_artifact_links_and_linked_parent_refused) ... ok
+test_completed_ledger_binds_artifacts_excludes_stores_and_binaries (test_fault_ledger.FaultLedger.test_completed_ledger_binds_artifacts_excludes_stores_and_binaries) ... ok
+test_frozen_module_and_executable_drift_prevent_completion (test_fault_ledger.FaultLedger.test_frozen_module_and_executable_drift_prevent_completion) ... ok
+test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) ... ok
+
+======================================================================
+ERROR: test_registration_lock_and_both_build_inventories (test_missing.Isolation.test_registration_lock_and_both_build_inventories)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py", line 209, in test_registration_lock_and_both_build_inventories
+    run.verify_source_registration(root,source,lock)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py", line 188, in verify_source_registration
+    raise ValueError('required integration registration absent: ' + path)
+ValueError: required integration registration absent: src/shell/drive/shell_scenario_assert_no_surface.rs
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.079s
+
+FAILED (errors=1)
