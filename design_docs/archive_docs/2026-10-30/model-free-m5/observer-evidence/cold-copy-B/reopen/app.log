@@ -1,0 +1,93 @@
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+[2m2026-10-30T19:37:30.315669Z[0m [33m WARN[0m [2mturnstone::shell::shell_new[0m[2m:[0m device receipts reader is unavailable [3merror[0m[2m=[0mDevice receipts require a build with the diagnostics feature
+[2m2026-10-30T19:37:30.315974Z[0m [33m WARN[0m [2mturnstone::shell::shell_new[0m[2m:[0m the system clipboard is unavailable [3merror[0m[2m=[0mclipboard unavailable: Unknown error while interacting with the clipboard: X11 server connection timed out because it was unreachable
+[2m2026-10-30T19:37:30.336303Z[0m [33m WARN[0m [2mturnstone::app::updates::app_update_gemini_certificate_changed[0m[2m:[0m content spawn failed [3mnode[0m[2m=[0m5ef46c38-f4e6-4170-8676-89a17f2577d8 [3merror[0m[2m=[0mthe profile identity is pending: djinn is not running or the vault is locked
+[2m2026-10-30T19:37:30.336688Z[0m [33m WARN[0m [2mturnstone::app::updates::app_update_gemini_certificate_changed[0m[2m:[0m content spawn failed [3mnode[0m[2m=[0md0681a68-90f4-4a1b-914c-e82a50a451c4 [3merror[0m[2m=[0mthe profile identity is pending: djinn is not running or the vault is locked
+[2m2026-10-30T19:37:30.346322Z[0m [31mERROR[0m [2msctk_adwaita::config[0m[2m:[0m XDG Settings Portal did not return response in time: timeout: 100ms, key: color-scheme
+[2m2026-10-30T19:37:30.643397Z[0m [33m WARN[0m [2mwgpu_hal::vulkan::instance[0m[2m:[0m GENERAL [Loader Message (0x0)]
+	terminator_CreateInstance: Received return code -9 from call to vkCreateInstance in ICD /usr/lib64/libvulkan_dzn.so. Skipping this driver.
+[2m2026-10-30T19:37:30.643475Z[0m [33m WARN[0m [2mwgpu_hal::vulkan::instance[0m[2m:[0m 	objects: (type: INSTANCE, hndl: 0x55ce6b540ee0, name: ?)
+[2m2026-10-30T19:37:30.673261Z[0m [34mDEBUG[0m [2mwgpu_core::instance[0m[2m:[0m Instance::new: created Vulkan backend
+[2m2026-10-30T19:37:30.735394Z[0m [34mDEBUG[0m [2mwgpu_core::instance[0m[2m:[0m Instance::new: created Gl backend
+[2m2026-10-30T19:37:30.743613Z[0m [34mDEBUG[0m [2mwgpu_core::instance[0m[2m:[0m Found 3 compatible adapters. Sorted by preference:
+[2m2026-10-30T19:37:30.743665Z[0m [34mDEBUG[0m [2mwgpu_core::instance[0m[2m:[0m * AdapterInfo { name: "AMD Radeon Graphics (RADV RENOIR)", vendor: 4098, device: 5686, device_type: IntegratedGpu, device_pci_bus_id: "0000:06:00.0", driver: "radv", driver_info: "Mesa 26.2.5", backend: Vulkan, subgroup_min_size: 64, subgroup_max_size: 64, transient_saves_memory: Some(false), limit_bucket: None }
+[2m2026-10-30T19:37:30.743712Z[0m [34mDEBUG[0m [2mwgpu_core::instance[0m[2m:[0m * AdapterInfo { name: "AMD Radeon Graphics (radeonsi, renoir, ACO, DRM 3.64, 7.2.11-200.fc44.x86_64)", vendor: 4098, device: 0, device_type: Other, device_pci_bus_id: "", driver: "", driver_info: "4.6 (Core Profile) Mesa 26.2.5", backend: Gl, subgroup_min_size: 4, subgroup_max_size: 128, transient_saves_memory: None, limit_bucket: None }
+[2m2026-10-30T19:37:30.743746Z[0m [34mDEBUG[0m [2mwgpu_core::instance[0m[2m:[0m * AdapterInfo { name: "llvmpipe (LLVM 22.1.8, 256 bits)", vendor: 65541, device: 0, device_type: Cpu, device_pci_bus_id: "", driver: "llvmpipe", driver_info: "Mesa 26.2.5 (LLVM 22.1.8)", backend: Vulkan, subgroup_min_size: 8, subgroup_max_size: 8, transient_saves_memory: Some(false), limit_bucket: None }
+[2m2026-10-30T19:37:30.743766Z[0m [34mDEBUG[0m [2mwgpu_core::instance[0m[2m:[0m Request adapter result AdapterInfo { name: "AMD Radeon Graphics (RADV RENOIR)", vendor: 4098, device: 5686, device_type: IntegratedGpu, device_pci_bus_id: "0000:06:00.0", driver: "radv", driver_info: "Mesa 26.2.5", backend: Vulkan, subgroup_min_size: 64, subgroup_max_size: 64, transient_saves_memory: Some(false), limit_bucket: None }
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+[2m2026-10-30T19:37:32.749524Z[0m [33m WARN[0m [2mturnstone::app::updates::app_update_gemini_certificate_changed[0m[2m:[0m content spawn failed [3mnode[0m[2m=[0m4d58c073-a799-45bc-bb4d-075877b480cc [3merror[0m[2m=[0mUnlock the profile to read private saved sources
+[2m2026-10-30T19:37:32.750440Z[0m [33m WARN[0m [2mturnstone::app::updates::app_update_gemini_certificate_changed[0m[2m:[0m content spawn failed [3mnode[0m[2m=[0m7724799a-d088-4a6a-8ffd-ece2ae03b23b [3merror[0m[2m=[0mUnlock the profile to read private saved sources
+Fontconfig error: Cannot load default config file: No such file: (null)
+ICU4X data error: No segmentation model for complex script: Chinese/Japanese
+ICU4X data error: No segmentation model for complex script: Chinese/Japanese
+ICU4X data error: No segmentation model for complex script: Chinese/Japanese
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+ICU4X data error: No segmentation model for complex script: Chinese/Japanese
+ICU4X data error: No segmentation model for complex script: Chinese/Japanese
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+[2m2026-10-30T19:37:56.075075Z[0m [33m WARN[0m [2mturnstone::app::updates::app_update_gemini_certificate_changed[0m[2m:[0m content spawn failed [3mnode[0m[2m=[0m5ef46c38-f4e6-4170-8676-89a17f2577d8 [3merror[0m[2m=[0mRetained clip storage open: backend: fjall open: operation would block

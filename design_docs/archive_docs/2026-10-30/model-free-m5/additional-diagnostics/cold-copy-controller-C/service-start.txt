@@ -1,0 +1,11 @@
+Id=m5-cold-copy-controller-20261030-c.service
+ActiveState=active
+SubState=running
+InvocationID=dd3a490090804a488784df11e72f1483
+RuntimeMaxUSec=12min
+MainPID=1252754
+ExecMainPID=1252754
+ControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/m5-cold-copy-controller-20261030-c.service
+CPUQuotaPerSecUSec=500ms
+MemoryMax=536870912
+MemorySwapMax=0

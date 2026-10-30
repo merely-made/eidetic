@@ -1,0 +1,10 @@
+Id=m5-visible-negatives-controller-20261030-a.service
+ActiveState=failed
+SubState=failed
+InvocationID=390b5ffc546e4e04a0bb813ab0a0e211
+MainPID=0
+Result=exit-code
+ExecMainPID=1227789
+ExecMainCode=1
+ExecMainStatus=1
+ControlGroup=

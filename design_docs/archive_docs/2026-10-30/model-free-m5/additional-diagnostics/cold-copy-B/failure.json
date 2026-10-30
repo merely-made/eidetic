@@ -1,0 +1,4 @@
+{
+  "error": "ValueError(\"unexpected scenario failure: ['FAIL: assert content-live: focused node is failed: Retained clip storage open: backend: fjall open: operation would block', 'FAIL: wait-research-search after 600 frames: no current admitted result', 'FAIL: no successful window presentation for ten seconds']\")",
+  "time_ns": 1793389101840568024
+}

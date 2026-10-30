@@ -1,0 +1,60 @@
+{
+  "reviewer": "Codex visual review Terra",
+  "scope": "Q reopen screenshots only; reader observations and semantic checks are separate.",
+  "frames": [
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/21_reopen_A1_search.png",
+      "sha256": "1e905112b947255874a873f019f1d725c9f60301fc4ce94b20bc5c135c5aed91",
+      "status": "pass",
+      "observations": "A1 search result and matching archive text visible and readable."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/22_reopen_A1.png",
+      "sha256": "dbf2a74c348a072d796bf1857d01370cc0fa42594a0e10e47b8281996cf1cc4e",
+      "status": "blocked",
+      "observations": "Graph and Redshank pane visible with saved-source URI in status; opened A1 reader content is not visible in screenshot. Reader observation is separate evidence."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/23_reopen_A2.png",
+      "sha256": "899def68ecda7a33cfff3843b5a996a2b3ffd06e8942e8405f7f6f0f22ff91a7",
+      "status": "blocked",
+      "observations": "Graph and Redshank pane visible with saved-source URI in status; opened A2 reader content is not visible in screenshot. Reader observation is separate evidence."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/24_reopen_selection.png",
+      "sha256": "c201a692982a8668f15cac57df9caa0f27b75db27c7acadc9414b6282ddceac9",
+      "status": "pass",
+      "observations": "Knot selection search result shows only this linked finding."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/24_reopen_selection_reader.png",
+      "sha256": "f15fd575113a629ca0618589c9702d7bb9ee70bb4dc1e127dfe69fc5dea29b02",
+      "status": "pass",
+      "observations": "Knot selection reader shows selected passage only this linked finding and source anchor; lower content extends beyond viewport."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/25_reopen_note.png",
+      "sha256": "dd7debc32ab5a20f3d7b900ea06f5c58b192818a4ef62b20f0380e8f9640a016",
+      "status": "pass",
+      "observations": "Search shows Redshank note result alongside captures and selection."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/25_reopen_note_reader.png",
+      "sha256": "c52e62b9d9d35c724d142822efc933f5c9ddfb25c21ed0771a4f2513dbc37fac",
+      "status": "pass",
+      "observations": "Redshank note reader shows selected passage M5 authored Redshank note; panes are narrow and text wraps."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/cold_sum.png",
+      "sha256": "792f02bf166e9035bd156a3ec2ecfeec44219c31db33ee1cdf2f92e771c4be7c",
+      "status": "pass",
+      "observations": "Sum compatible values result explicitly labeled frozen historical input and complete; current operation selector says Source lookup. Exact sum and saved identity require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-q/sandbox/reopen/model_unavailable.png",
+      "sha256": "c80d09f46bc2c8af89c39d0cb211b757d3d3cf6676a6e390a9a2d2de8f55d413",
+      "status": "blocked",
+      "observations": "Structured research popup overlays the Answers pane; no model-unavailable message is visible in this capture. Runtime observation is separate evidence."
+    }
+  ]
+}

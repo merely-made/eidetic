@@ -43,7 +43,7 @@ INTACT_REQUIRED = {'inputs.json','processes.json','seed-launcher.cleanup.json','
 TOOLS = {
     'verify_receipt.py': ('../m5-draft/verify_receipt.py','c7890e11e3000694949247d1dd38b5206c1046d9657aa02848cddc4972f46019'),
     'verify_missing.py': ('../m5-missing-draft/verify_missing.py','ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939'),
-    'run_missing.py': ('../m5-missing-draft/run_missing.py','9556edae322fa658f7f4ad3dc1828253f63c2294ee176fd79ebada976eaf9e95'),
+    'run_missing.py': ('../m5-missing-draft/run_missing.py','260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5'),
 }
 
 
@@ -550,11 +550,36 @@ def check_retained_reader(search_observation, reader_observation, owner, kind):
         or not 0 <= selector['start'] < selector['end'] <= len(expected_text) or expected_text[selector['start']:selector['end']] != expected_fixture):
         raise ValueError('retained reader selector does not name owner text')
     document = reader.get('rendered_document')
-    expected_body = {'Paragraph':{'spans':[{'Text':expected_fixture}]}}
-    if (not isinstance(document,dict) or document.get('address') != 'mere://clip/'+admission['manifest'][7:]
-        or document.get('content_type') != 'application/vnd.mere.clip+json' or not isinstance(document.get('blocks'),list)
-        or len(document['blocks']) < 2 or document['blocks'][1] != expected_body):
-        raise ValueError('retained reader did not render the inspected text')
+    clip = item['clip']
+    anchors = clip['anchors']
+    if len(anchors) != 1:
+        raise ValueError('retained reader anchor count differs')
+    anchor = anchors[0]
+    units = 'utf8-bytes' if kind == 'Selection' else 'milliseconds'
+    if anchor['units'] != units:
+        raise ValueError('retained reader anchor units differ')
+    address = 'mere://clip/'+admission['manifest'][7:]
+    paragraph = {'Paragraph':{'spans':[{'Text':expected_text}]}}
+    blocks = [{'Heading':{'level':1,'spans':[{'Text':clip['title']}]}}]
+    if selector is not None:
+        blocks.extend([{'Heading':{'level':2,'spans':[{'Text':'Selected passage'}]}},
+                       {'Quote':{'blocks':[{'Paragraph':{'spans':[{'Text':expected_text[selector['start']:selector['end']]}]}}]}}])
+    blocks.append(paragraph)
+    if units == 'milliseconds':
+        blocks.append({'Badge':{'text':'Source recording unavailable in this clip'}})
+    blocks.append({'MetadataRow':{'label':'Source anchor ('+units+')','value':anchor['source']}})
+    if units == 'utf8-bytes':
+        blocks.append({'MetadataRow':{'label':'Original selection','value':anchor['selector']['exact_quote']}})
+    else:
+        offset = anchor['selector']['offset_ms']
+        if type(offset) is not int or offset < 0: raise ValueError('invalid note anchor offset')
+        blocks.append({'MetadataRow':{'label':'Original note position','value':f'{offset // 1000}.{offset % 1000:03d} seconds'}})
+    blocks.append({'Paragraph':{'spans':[{'Link':{'url':address+'/export','title':None,
+        'spans':[{'Text':'Export selected clip'}],'predicate':None}}]}})
+    if (not isinstance(document,dict) or document.get('address') != address
+        or document.get('content_type') != 'application/vnd.mere.clip+json' or document.get('blocks') != blocks):
+        raise ValueError('retained reader did not render the inspected text and chrome')
+
 
 
 def check_review_coverage(review, required_frames, ledger):

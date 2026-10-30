@@ -940,6 +940,10 @@ choose-suggestion Property lookup
 choose-suggestion Run in this scope
 wait-structured-result 600
 record-structured-research negative_no_match
+key up
+key up
+key up
+assert snap suggestions ~ No matching records in this scope
 capture negative_no_match
 choose-suggestion Filters…
 choose-suggestion Property ID

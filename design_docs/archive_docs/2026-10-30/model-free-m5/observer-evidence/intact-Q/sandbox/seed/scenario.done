@@ -1,0 +1,100 @@
+RESULT ok
+captured 01_authored_note
+captured 04_exact_A1
+captured 05_note_citation
+captured 07_selected_knot
+captured 08_selected_clip
+captured 10_selection_admitted
+captured redshank_note_private
+captured redshank_private_action_absent
+captured redshank_note_shareable
+captured redshank_note_admitted
+captured exact_pair
+captured authored_0
+captured authored_1
+captured authored_2
+captured authored_3
+captured authored_4
+captured authored_5
+captured authored_6
+captured authored_7
+captured authored_8
+captured authored_9
+captured authored_10
+captured authored_11
+captured authored_12
+captured authored_13
+captured op_SourceLookup
+captured op_CountByProducer
+captured op_CountBySource
+captured op_SourceTimeline
+captured op_RecordTimeline
+captured op_TagMembership
+captured op_PropertyLookup
+captured op_GroupValues
+captured op_JoinEntity
+captured op_JoinSource
+captured op_Compare
+captured op_Sum
+captured withdraw_before
+captured withdraw_inspected_active
+captured withdraw_history
+captured withdraw_fresh
+captured withdraw_historical
+captured scope_before
+captured scope_empty_selector
+captured scope_empty_search
+captured scope_empty_before_run
+captured scope_empty_fresh
+captured negative_no_match
+captured negative_over_limit
+presentation frames=1835 captures=49 blank=0
+capture /m5/run/seed/01_authored_note.png digest=636ba9ff98a0ac99 blank=false
+capture /m5/run/seed/04_exact_A1.png digest=e0b2601b205c5085 blank=false
+capture /m5/run/seed/05_note_citation.png digest=17bfc14d3609a45e blank=false
+capture /m5/run/seed/07_selected_knot.png digest=b5c7b0577864c006 blank=false
+capture /m5/run/seed/08_selected_clip.png digest=cf215ec9e5f45a8e blank=false
+capture /m5/run/seed/10_selection_admitted.png digest=bec9458818cf5216 blank=false
+capture /m5/run/seed/redshank_note_private.png digest=2e92c8bc4cc1915a blank=false
+capture /m5/run/seed/redshank_private_action_absent.png digest=0c9f6e77ba107ff1 blank=false
+capture /m5/run/seed/redshank_note_shareable.png digest=d7839461fb8d3660 blank=false
+capture /m5/run/seed/redshank_note_admitted.png digest=25b43e2afd373e16 blank=false
+capture /m5/run/seed/exact_pair.png digest=a5a5c1e7c82c95ca blank=false
+capture /m5/run/seed/authored_0.png digest=bd09538414448952 blank=false
+capture /m5/run/seed/authored_1.png digest=9a3de00fac4894e2 blank=false
+capture /m5/run/seed/authored_2.png digest=f02e6e968e63664d blank=false
+capture /m5/run/seed/authored_3.png digest=bd6f05197ff60165 blank=false
+capture /m5/run/seed/authored_4.png digest=7186c034a6c8478f blank=false
+capture /m5/run/seed/authored_5.png digest=278e7f58a94e8351 blank=false
+capture /m5/run/seed/authored_6.png digest=aede45009515ab6c blank=false
+capture /m5/run/seed/authored_7.png digest=aa425e0165cd6c11 blank=false
+capture /m5/run/seed/authored_8.png digest=ad6ec5bad783fb2b blank=false
+capture /m5/run/seed/authored_9.png digest=e5681223567f4149 blank=false
+capture /m5/run/seed/authored_10.png digest=176f3dcd7b6c9d35 blank=false
+capture /m5/run/seed/authored_11.png digest=f56e22ab976c8ce9 blank=false
+capture /m5/run/seed/authored_12.png digest=44dfe0c79b8d3cc1 blank=false
+capture /m5/run/seed/authored_13.png digest=382ae4903cff6d0c blank=false
+capture /m5/run/seed/op_SourceLookup.png digest=2b4e850db173c42d blank=false
+capture /m5/run/seed/op_CountByProducer.png digest=55eae999c20a4335 blank=false
+capture /m5/run/seed/op_CountBySource.png digest=8f8c156d2310061b blank=false
+capture /m5/run/seed/op_SourceTimeline.png digest=57055c4ae137df52 blank=false
+capture /m5/run/seed/op_RecordTimeline.png digest=b097724308da91e3 blank=false
+capture /m5/run/seed/op_TagMembership.png digest=e2d52c1549461a57 blank=false
+capture /m5/run/seed/op_PropertyLookup.png digest=0b4d74326c04167f blank=false
+capture /m5/run/seed/op_GroupValues.png digest=30e6fcbc27ab503b blank=false
+capture /m5/run/seed/op_JoinEntity.png digest=f058dae24364bcdd blank=false
+capture /m5/run/seed/op_JoinSource.png digest=bdefeedda59a673d blank=false
+capture /m5/run/seed/op_Compare.png digest=927fc9845f7c6188 blank=false
+capture /m5/run/seed/op_Sum.png digest=36ca52a0bd43ddc3 blank=false
+capture /m5/run/seed/withdraw_before.png digest=2bb86d8920433dc2 blank=false
+capture /m5/run/seed/withdraw_inspected_active.png digest=7b083ad83d6f166f blank=false
+capture /m5/run/seed/withdraw_history.png digest=7283e965bc19fde0 blank=false
+capture /m5/run/seed/withdraw_fresh.png digest=a2e29c004aa0213a blank=false
+capture /m5/run/seed/withdraw_historical.png digest=9b7eb9cc2fa1dfc0 blank=false
+capture /m5/run/seed/scope_before.png digest=21288dc6267d5883 blank=false
+capture /m5/run/seed/scope_empty_selector.png digest=cadef7017c16bc5e blank=false
+capture /m5/run/seed/scope_empty_search.png digest=7a2738b183a34bc6 blank=false
+capture /m5/run/seed/scope_empty_before_run.png digest=3d698365d9917276 blank=false
+capture /m5/run/seed/scope_empty_fresh.png digest=1be51cb6ec83d233 blank=false
+capture /m5/run/seed/negative_no_match.png digest=a84ba0b4fcfb1dc5 blank=false
+capture /m5/run/seed/negative_over_limit.png digest=5eb1a9645152937c blank=false

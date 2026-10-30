@@ -1,0 +1,11 @@
+Id=m5-visible-negatives-controller-20261030-a.service
+ActiveState=active
+SubState=running
+InvocationID=390b5ffc546e4e04a0bb813ab0a0e211
+RuntimeMaxUSec=22min
+MainPID=1227789
+ExecMainPID=1227789
+ControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/m5-visible-negatives-controller-20261030-a.service
+CPUQuotaPerSecUSec=500ms
+MemoryMax=536870912
+MemorySwapMax=0

@@ -1,0 +1,15 @@
+{
+  "attempt": "B",
+  "source_integrity_receipt": {
+    "path": "/home/markik/Code/testing/m5-cold-copy-diagnostic-20261030-b/source-integrity.json",
+    "sha256": "182b5aaa978917ccd5a934e971ce32a2ba69fd021db1726f528e7c71e8948408",
+    "bytes": 35542,
+    "copied": false
+  },
+  "original_collection_unchanged": true,
+  "integrity_error": "ValueError(\"unexpected scenario failure: ['FAIL: assert content-live: focused node is failed: Retained clip storage open: backend: fjall open: operation would block', 'FAIL: wait-research-search after 600 frames: no current admitted result', 'FAIL: no successful window presentation for ten seconds']\")",
+  "socket_ids_unchanged": true,
+  "socket_count_before": 3,
+  "socket_count_after": 3,
+  "boundary": "Derived summary omits embedded profile/store inventories and all socket payloads."
+}

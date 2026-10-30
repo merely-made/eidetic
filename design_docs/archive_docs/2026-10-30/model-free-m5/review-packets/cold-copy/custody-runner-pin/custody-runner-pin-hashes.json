@@ -1,0 +1,6 @@
+{
+  "m5-missing-draft/run_missing.py": "260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5",
+  "m5-receipt-integration/verify.py": "d0e181a75e6a1d4d142b3bc4e3aa50461259c25d24ba0bc87b1992a30b5280e2",
+  "m5-receipt-integration/assemble.py": "1eee7a19c7dff13c8b5e7245a8db81adda2410cb6446a1575c673a987e9b01b2",
+  "m5-draft/custody-runner-pin.diff": "9ed424e38aeecc067a867d149ad6562f50db7484c69a11638309c272530cc605"
+}

@@ -39,7 +39,7 @@
     },
     "m5-draft/seed-composed.draft.scn": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-composed.draft.scn",
-      "sha256": "ef2ee538a209f36b4216eeb9bd8f5dcbfa9234b85fe8a32c01e4a18b594243e6"
+      "sha256": "23e326774d820047cb8c86239630ae675cefd6e3a13bafe8c155277f05d5ebd8"
     },
     "m5-draft/reopen.scn": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/reopen.scn",
@@ -59,7 +59,7 @@
     },
     "m5-missing-draft/run_missing.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py",
-      "sha256": "9556edae322fa658f7f4ad3dc1828253f63c2294ee176fd79ebada976eaf9e95"
+      "sha256": "260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5"
     },
     "m5-missing-draft/run_native.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_native.py",
@@ -115,15 +115,15 @@
     },
     "m5-receipt-integration/assemble.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/assemble.py",
-      "sha256": "1c21e259d8288dfb338b1c9d211f9f8bb2edc5d90c5919f4ca6b9ea5fc7a73bd"
+      "sha256": "1eee7a19c7dff13c8b5e7245a8db81adda2410cb6446a1575c673a987e9b01b2"
     },
     "m5-receipt-integration/verify.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/verify.py",
-      "sha256": "3677061a3466af90d1262cdda5cede448e384ff926384562f7814cf57874da9e"
+      "sha256": "d0e181a75e6a1d4d142b3bc4e3aa50461259c25d24ba0bc87b1992a30b5280e2"
     },
     "m5-receipt-integration/test_receipt.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/test_receipt.py",
-      "sha256": "65b1113fabda513092251e8af5ecc4a42d4bb8cf6c63af265073e2a2ccfd8950"
+      "sha256": "fd9af2661c9c78cddfd52a2d42612c2e29eae8afc4cb19cad441cb129882ada6"
     },
     "m5-receipt-integration/README.md": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/README.md",
@@ -166,6 +166,10 @@
       "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/episode.mp3",
       "sha256": "8e406f6e26fba3a7d3c5e10956c649516633d193288335fd5df775e0e19508a5",
       "decoded_sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6"
+    },
+    "m5-missing-draft/test_custody_copy.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_custody_copy.py",
+      "sha256": "e3877487244a7b9c75c2166ed6e86bc3e8588223cebd5669d8bf45d35ddd5dc2"
     }
   }
 }

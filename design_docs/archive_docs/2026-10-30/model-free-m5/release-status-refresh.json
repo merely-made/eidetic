@@ -1,0 +1,31 @@
+{
+  "checked_at_utc": "2026-10-30T20:08:25.643268+00:00",
+  "source": "GitHub REST API; web latest alias returned an older cached release and was not used",
+  "items": [
+    {
+      "html_url": "https://github.com/fjall-rs/fjall/releases/tag/3.1.13",
+      "tag_name": "3.1.13",
+      "published_at": "2026-10-25T21:18:29Z",
+      "updated_at": "2026-10-25T21:18:29Z"
+    },
+    {
+      "html_url": "https://github.com/fjall-rs/fjall/issues/344",
+      "state": "open",
+      "updated_at": "2026-10-26T00:09:47Z",
+      "title": "Write buffer size is not enforced, max_write_buffer_size is a no-op"
+    },
+    {
+      "html_url": "https://github.com/fjall-rs/fjall/issues/311",
+      "state": "open",
+      "updated_at": "2026-10-15T17:25:27Z",
+      "title": "feat: add a \"strict\" recovery mode to distinguish mid-journal corruption from a torn tail"
+    },
+    {
+      "html_url": "https://github.com/fjall-rs/fjall/pull/337",
+      "state": "open",
+      "merged_at": null,
+      "updated_at": "2026-10-20T06:56:40Z",
+      "title": "feat: report mid-journal corruption in a strict recovery mode"
+    }
+  ]
+}

@@ -968,3 +968,99 @@ of the actual collector resolved it. The collector copies `op_Sum` to `seed_sum`
 and checks byte equality before reopen. No scenario change was required for that
 name. New native builds and the short refusal/recovery/no-match diagnostic are
 pending. The full seed/reopen, independent owner checks and fault case remain open.
+
+The two-real-record visible-negatives diagnostic on `22628cf9` now passes its
+intended path. Independently inspected frames show `No matching records in this
+scope`, the immediate `Unavailable: Structured record limit exceeded` row, and
+after ordinary settings restoration a complete result with 5 inputs and 2 records.
+The bound observations show a current complete two-record snapshot with zero
+no-match rows, the actual all-source PropertyLookup request with max_records 1,
+and a subsequent current two-row result with max_records 100000 and matching
+saved/content manifests. Only the deliberate diagnostic stop remains; cleanup
+verifies the native cgroup empty. Full collection Q is running separately.
+
+The new application and test provenance aggregate is
+`c68b843a65e8ca73fdaf38b77e3e5826be59982a83b34c918ba3e8fedc9e9850`.
+The harness seed is updated to the native-checked no-match navigation, hash
+`23e326774d820047cb8c86239630ae675cefd6e3a13bafe8c155277f05d5ebd8`.
+The missing-source and final-acceptance guards remain closed. Publication metadata
+confirms Turnstone `22628cf9` and Eidetic `6bfc904`, independently fetched with
+unchanged remote checkouts. This diagnostic and publication do not complete M5.
+
+### Q seed pass and remaining cold-reader evidence
+
+Q's seed completes successfully with 1,835 presented frames, 49 captures and no
+blank capture. All 11 producer/evidence frames and all 38 structured frames pass
+visual review. Cold reopen fails the generic `assert text` for the authored note.
+The note frame and actual admitted Fleece reader contain its text; the generic
+Taproot surface adapter registers Knot content rather than this Fleece content.
+Its exact source and body must still pass the separate mandatory reader verifier.
+
+The cold visual review also blocks A1 and A2 frames that show the graph rather
+than the loaded capture reader, and the model-unavailable frame obscured by the
+structured popup. The candidate ordinary navigation corrections are Read document
+for the captures and dismissing the popup before Ask. The saved Sum is visibly
+historical and complete. Q's cold native scope was cleaned up and its detached
+controller failed under the same invocation. It is a failed collection, not an
+intact acceptance input; owner inspection and the fault case remain unqualified.
+
+A copied-profile cold diagnostic is staged for review, with immutable Q inputs
+and copied synthetic stores. Its first review identified incomplete identity/body
+checks and copy-path guards. Separately, the final verifier's abbreviated fixture
+expected a paragraph at block 1; real retained readers include selected-passage
+headings, a quote, the body, metadata and an export control. That mismatch is
+being repaired against actual reader documents with strict source and text checks.
+Neither the diagnostic nor the final verifier is approved for acceptance yet.
+The missing-source guard remains disabled. Q's safe records and visual reviews
+are archived, with external frame hashes; all 1,880 copied references verify.
+
+
+### Cold-copy diagnostics and retained-clip ownership
+
+The copied-profile wrapper now copies only persistent custody state and records
+known runtime socket identities without copying those sockets. It rejects unknown
+special entries and checks original persistent bytes and socket identities after
+the run, including failure. Diagnostic B preserves those inputs but fails the
+Selection read with `Retained clip storage open: backend: fjall open: operation
+would block`. Its actual lock holder is unknown. Capture-only diagnostic C shows
+both exact A1 and A2 passages after ordinary Read, pane focus and Maximize. Root
+inspected both frames. C ends at its deliberate diagnostic stop, preserves Q and
+verifies an empty native cgroup. It does not qualify the other old panes, Selection,
+Note or the model-unavailable control. Q remains a failed collection.
+
+A source trace identified independent retained-clip opens on the UI and research
+paths. The real overlapping-read regression holds one sealed read at an unseal
+barrier and observes the second bounded open fail with Fjall WouldBlock. Exactly
+one test fails; the log SHA is
+`d42eee57261f86d90a1b318de17af6840fbe5b0584e7eb277f075c60a2e78497`.
+The preceding invocation compiled but selected zero tests and is not red evidence.
+This reproduces the ownership hazard without attributing B's holder.
+
+The approved worker plan has SHA
+`a60c967037b9842f0f1869944f9beb234c6e541b57146afdd0316a290a1778bf`.
+It replaces independent production opens with a dedicated bounded owner, exact
+immutable policy, serialized whole operations, separate request budgets and
+reserved queue/result capacity. All production consumers must migrate. Export
+preparation stays in memory until a one-shot claim coordinated with locally
+observed custody and target retirement. Retirement before claim prevents output;
+claim before retirement authorizes the write to finish and report its outcome.
+The plan does not promise rollback or atomicity against externally unobserved
+revocation. Implementation review must prove the shared authority, all retirement
+paths, reservation release and absence of file I/O under that authority lock.
+The worker is being implemented; no green or native result is claimed yet.
+
+The retained-reader verifier now checks the actual complete Fleece document shape,
+including quote, body, metadata and export control, while keeping source, version,
+selector and hash checks. Its 43 helper tests pass. Shape checks against Q used
+reconstructed owner data and are not independent owner qualification. The held
+reader observation does not itself establish the active pane; matching visual
+frames remain mandatory. The persistent-custody copy repair has 22 helper tests.
+The fault launcher remains disabled and the final assembler retains its DRAFT
+refusal. None of these helper checks completes M5.
+
+The coherent tracked harness refresh passes 72 Python checks (4 collector, 3
+base-verifier, 22 fault/copy and 43 final-verifier checks). Its source manifest
+binds 41 files. All 1,955 indexed archive references verify after the release
+status refresh. The worker plan remains current; only the earlier registry
+proposal is superseded. These are archive/helper checks, not a native acceptance
+result.

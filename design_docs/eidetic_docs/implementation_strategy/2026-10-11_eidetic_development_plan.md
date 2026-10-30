@@ -1330,7 +1330,7 @@ receipt from a run; it cannot stand in for performing that run.
   semantic result and other platform limits unchanged.
 
 **Progress (2026-10-30):** the earlier host changes are published through
-Turnstone `d0d93da`, and the real custody fixture through Mere `8fec5603`.
+Turnstone `22628cf9`, and the real custody fixture through Mere `8fec5603`.
 GitHub publication was recovered through an idle authorized host; exact commits
 were fetched back and remote checkouts were preserved. The host library suite
 passed 1,278 tests at `fe015c5`. Later reader, readiness, scope-order and Knot UI
@@ -1350,13 +1350,34 @@ from the over-limit refusal. The error callback left stale visible rows; a
 focused regression reproduced that product feedback defect. The reviewed fix is
 committed as `22628cf9` after receiving upstream `5b7dacd9` and its Genet
 `5fdee500` dependency. The focused refusal check passes on this combined source;
-the fresh native recheck is in progress. A successful complete run, independent copied-store
-inspection, missing-source fault run and final receipt verification are still
-required. The coherent provisional harness
-is retained under `design_docs/archive_docs/2026-10-30/model-free-m5/harness/`,
-including exact scripts, scenarios, fixtures and build guard. Its 66 Python
-checks pass; the fault launcher and final acceptance guard remain closed.
-See the archived receipts for exact source and test boundaries.
+the short native recheck passes visible no-match, immediate limit refusal and
+settings recovery. Collection Q passes its seed with 49 captures, but cold reopen
+fails a generic text probe that does not inspect the retained-note renderer. Its
+capture readers and model-unavailable state also need ordinary navigation steps
+to be visible. A copied-profile diagnostic confirms visible exact A1/A2 passages
+through Read and Maximize. A separate copied-profile run exposes retained-clip
+storage contention. A real overlapping-read regression reproduces Fjall's
+exclusive-open refusal; it does not identify that diagnostic's original lock holder.
+
+The approved next implementation uses one bounded retained-clip owner worker for
+all production read, retain, import, export and playback paths. It serializes
+operations, preserves exact storage policy and per-request budgets, and reserves
+queue and completion capacity before accepting work. UI operations are asynchronous.
+Custody retirement invalidates pending work. Export prepares bytes in memory and
+requires a synchronized authorization claim before any plaintext file write;
+an authorized write that has already claimed may finish and reports its actual
+outcome. This is not a rollback guarantee or an atomic guarantee against external
+revocation that has not yet been observed locally. Implementation and tests are
+in progress.
+
+The full retained-reader verifier repair and guarded persistent-store copy have
+passed their focused helper tests. A successful complete native run, independent
+copied-store inspection, missing-source fault run and final receipt verification
+are still required. The provisional harness is retained under
+`design_docs/archive_docs/2026-10-30/model-free-m5/harness/`, including exact scripts,
+scenarios, fixtures and build guard. Helper-test counts and source hashes are
+recorded there separately from native evidence; the fault launcher and final
+acceptance guard remain closed. See the archived receipts for exact boundaries.
 
 **Done when:** all of the milestone goal passes in fresh native processes on
 the recorded platform. Portable shared-library/browser compilation is a separate

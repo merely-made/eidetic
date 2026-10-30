@@ -1,0 +1,15 @@
+RESULT fail
+captured 21_reopen_A1_search
+captured 22_reopen_A1
+captured 23_reopen_A2
+captured 24_reopen_selection
+FAIL: assert content-live: focused node is failed: Retained clip storage open: backend: fjall open: operation would block
+captured 24_reopen_selection_reader
+FAIL: wait-research-search after 600 frames: no current admitted result
+FAIL: no successful window presentation for ten seconds
+presentation frames=172 captures=5 blank=0
+capture /m5/run/reopen/21_reopen_A1_search.png digest=6ba2f28f42ba8b14 blank=false
+capture /m5/run/reopen/22_reopen_A1.png digest=92119627a713c569 blank=false
+capture /m5/run/reopen/23_reopen_A2.png digest=b39e509ef5797964 blank=false
+capture /m5/run/reopen/24_reopen_selection.png digest=b44a6f151b0494a3 blank=false
+capture /m5/run/reopen/24_reopen_selection_reader.png digest=5c08f142f3df8c95 blank=false

@@ -1,0 +1,115 @@
+--- before/verify.py
++++ after/verify.py
+@@ -550,11 +550,36 @@
+         or not 0 <= selector['start'] < selector['end'] <= len(expected_text) or expected_text[selector['start']:selector['end']] != expected_fixture):
+         raise ValueError('retained reader selector does not name owner text')
+     document = reader.get('rendered_document')
+-    expected_body = {'Paragraph':{'spans':[{'Text':expected_fixture}]}}
+-    if (not isinstance(document,dict) or document.get('address') != 'mere://clip/'+admission['manifest'][7:]
+-        or document.get('content_type') != 'application/vnd.mere.clip+json' or not isinstance(document.get('blocks'),list)
+-        or len(document['blocks']) < 2 or document['blocks'][1] != expected_body):
+-        raise ValueError('retained reader did not render the inspected text')
++    clip = item['clip']
++    anchors = clip['anchors']
++    if len(anchors) != 1:
++        raise ValueError('retained reader anchor count differs')
++    anchor = anchors[0]
++    units = 'utf8-bytes' if kind == 'Selection' else 'milliseconds'
++    if anchor['units'] != units:
++        raise ValueError('retained reader anchor units differ')
++    address = 'mere://clip/'+admission['manifest'][7:]
++    paragraph = {'Paragraph':{'spans':[{'Text':expected_text}]}}
++    blocks = [{'Heading':{'level':1,'spans':[{'Text':clip['title']}]}}]
++    if selector is not None:
++        blocks.extend([{'Heading':{'level':2,'spans':[{'Text':'Selected passage'}]}},
++                       {'Quote':{'blocks':[{'Paragraph':{'spans':[{'Text':expected_text[selector['start']:selector['end']]}]}}]}}])
++    blocks.append(paragraph)
++    if units == 'milliseconds':
++        blocks.append({'Badge':{'text':'Source recording unavailable in this clip'}})
++    blocks.append({'MetadataRow':{'label':'Source anchor ('+units+')','value':anchor['source']}})
++    if units == 'utf8-bytes':
++        blocks.append({'MetadataRow':{'label':'Original selection','value':anchor['selector']['exact_quote']}})
++    else:
++        offset = anchor['selector']['offset_ms']
++        if type(offset) is not int or offset < 0: raise ValueError('invalid note anchor offset')
++        blocks.append({'MetadataRow':{'label':'Original note position','value':f'{offset // 1000}.{offset % 1000:03d} seconds'}})
++    blocks.append({'Paragraph':{'spans':[{'Link':{'url':address+'/export','title':None,
++        'spans':[{'Text':'Export selected clip'}],'predicate':None}}]}})
++    if (not isinstance(document,dict) or document.get('address') != address
++        or document.get('content_type') != 'application/vnd.mere.clip+json' or document.get('blocks') != blocks):
++        raise ValueError('retained reader did not render the inspected text and chrome')
++
+ 
+ 
+ def check_review_coverage(review, required_frames, ledger):
+--- before/test_receipt.py
++++ after/test_receipt.py
+@@ -483,13 +483,23 @@
+         admission={'session':session,'graph':graph,'node':node,'manifest':'blake3:'+digest}
+         source={'kind':'fleece','owner':'turnstone/s/research/v1','node':'n','source':'mere://retained-text/s/g/n/'+digest+'/'+version[7:]}
+         text='only this linked finding' if kind=='Selection' else 'M5 authored Redshank note'
+-        item={'selected':True,'admission':admission,'quote':text,'text':text}
++        anchor={'units':'utf8-bytes' if kind=='Selection' else 'milliseconds',
++                'source':'file:///fixture/source', 'selector':{'exact_quote':text} if kind=='Selection' else {'offset_ms':0}}
++        title='Knot selection' if kind=='Selection' else 'Redshank note'
++        item={'selected':True,'admission':admission,'quote':text,'text':text,'clip':{'title':title,'anchors':[anchor]}}
+         owner={'session':session,'graph':graph,kind.lower():item,'result':{'snapshot':{'sources':[{'producer':kind.lower(),'source':source,'version':version}]}}}
+         selector={'start':0,'end':len(text)}
+         search={'session':session,'retained_admissions':[admission], 'search':{'schema':'turnstone.research-search-summary/v1','session':session,'coverage':'Complete','hits':[{'source':source,'version':version,'producer':kind,'selector':selector}]}}
+         reader={'session':session,'retained_readers':[{'node':'live','engine':'fleece.retained-clip',
+                   'target':{'clip':admission,'text_hash':version,'selector':selector},'rendered_document':{'address':'mere://clip/'+digest,'content_type':'application/vnd.mere.clip+json',
+-                  'blocks':[{'Heading':{'level':1,'spans':[{'Text':'title'}]}},{'Paragraph':{'spans':[{'Text':text}]}}]}}]}
++                  'blocks':[{'Heading':{'level':1,'spans':[{'Text':title}]}},
++                    {'Heading':{'level':2,'spans':[{'Text':'Selected passage'}]}},
++                    {'Quote':{'blocks':[{'Paragraph':{'spans':[{'Text':text}]}}]}},
++                    {'Paragraph':{'spans':[{'Text':text}]}},
++                    *([{'Badge':{'text':'Source recording unavailable in this clip'}}] if kind=='Note' else []),
++                    {'MetadataRow':{'label':'Source anchor ('+anchor['units']+')','value':anchor['source']}},
++                    {'MetadataRow':{'label':'Original selection' if kind=='Selection' else 'Original note position','value':text if kind=='Selection' else '0.000 seconds'}},
++                    {'Paragraph':{'spans':[{'Link':{'predicate':None,'spans':[{'Text':'Export selected clip'}], 'title':None,'url':'mere://clip/'+digest+'/export'}}]}}]}}]}
+         return owner,search,reader
+ 
+     def test_reader_must_open_exact_owner_version_and_body(self):
+@@ -501,13 +511,30 @@
+             with self.assertRaises(ValueError): v.check_retained_reader(search,missing,owner,kind)
+             wrong=json.loads(json.dumps(reader)); wrong['retained_readers'][0]['target']['text_hash']='blake3:'+'c'*64
+             with self.assertRaises(ValueError): v.check_retained_reader(search,wrong,owner,kind)
+-            wrong=json.loads(json.dumps(reader)); wrong['retained_readers'][0]['rendered_document']['blocks'][1]['Paragraph']['spans'][0]['Text']+=' extra'
++            wrong=json.loads(json.dumps(reader)); wrong['retained_readers'][0]['rendered_document']['blocks'][3]['Paragraph']['spans'][0]['Text']+=' extra'
+             with self.assertRaises(ValueError): v.check_retained_reader(search,wrong,owner,kind)
+             wrong=json.loads(json.dumps(reader)); wrong['retained_readers'][0]['target']['selector']['end']-=1
+             with self.assertRaises(ValueError): v.check_retained_reader(search,wrong,owner,kind)
+             missing_selector=json.loads(json.dumps(search)); del missing_selector['search']['hits'][0]['selector']
+             with self.assertRaises(ValueError): v.check_retained_reader(missing_selector,reader,owner,kind)
+ 
++    def test_rejects_extra_or_changed_rendered_content(self):
++        v=module('verify')
++        for kind in ('Selection','Note'):
++            owner,search,reader=self.fixture(kind)
++            blocks=reader['retained_readers'][0]['rendered_document']['blocks']
++            mutations=[lambda b: b.insert(4,{'Paragraph':{'spans':[{'Text':'private canary'}]}}),
++                       lambda b: b[2]['Quote']['blocks'][0]['Paragraph']['spans'][0].update(Text='wrong quote'),
++                       lambda b: b[0]['Heading']['spans'][0].update(Text='private canary'),
++                       lambda b: b[-2]['MetadataRow'].update(value='private canary'),
++                       lambda b: b[-1]['Paragraph']['spans'][0]['Link'].update(url='mere://clip/wrong/export')]
++            for mutate in mutations:
++                altered=json.loads(json.dumps(reader))
++                mutate(altered['retained_readers'][0]['rendered_document']['blocks'])
++                with self.assertRaises(ValueError): v.check_retained_reader(search,altered,owner,kind)
++            wrong=json.loads(json.dumps(search)); wrong['search']['hits'][0]['source']['source']+='stale'
++            with self.assertRaises(ValueError): v.check_retained_reader(wrong,reader,owner,kind)
++
+ 
+ if __name__ == '__main__':
+     unittest.main()
+--- before/assemble.py
++++ after/assemble.py
+@@ -8,7 +8,7 @@
+ import stat
+ import types
+ 
+-VERIFY_SHA256 = '3677061a3466af90d1262cdda5cede448e384ff926384562f7814cf57874da9e'
++VERIFY_SHA256 = '4b48074459f282b90e184abe9ceddd237bc52a67c7650ff884d79a6f8cfd7383'
+ verify_path = Path(__file__).with_name('verify.py')
+ if verify_path.is_symlink() or not verify_path.is_file(): raise ValueError('missing validation module')
+ verify_bytes = verify_path.read_bytes()

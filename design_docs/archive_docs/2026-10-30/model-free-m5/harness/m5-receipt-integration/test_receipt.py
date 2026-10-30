@@ -483,13 +483,23 @@ class ColdRetainedReader(unittest.TestCase):
         admission={'session':session,'graph':graph,'node':node,'manifest':'blake3:'+digest}
         source={'kind':'fleece','owner':'turnstone/s/research/v1','node':'n','source':'mere://retained-text/s/g/n/'+digest+'/'+version[7:]}
         text='only this linked finding' if kind=='Selection' else 'M5 authored Redshank note'
-        item={'selected':True,'admission':admission,'quote':text,'text':text}
+        anchor={'units':'utf8-bytes' if kind=='Selection' else 'milliseconds',
+                'source':'file:///fixture/source', 'selector':{'exact_quote':text} if kind=='Selection' else {'offset_ms':0}}
+        title='Knot selection' if kind=='Selection' else 'Redshank note'
+        item={'selected':True,'admission':admission,'quote':text,'text':text,'clip':{'title':title,'anchors':[anchor]}}
         owner={'session':session,'graph':graph,kind.lower():item,'result':{'snapshot':{'sources':[{'producer':kind.lower(),'source':source,'version':version}]}}}
         selector={'start':0,'end':len(text)}
         search={'session':session,'retained_admissions':[admission], 'search':{'schema':'turnstone.research-search-summary/v1','session':session,'coverage':'Complete','hits':[{'source':source,'version':version,'producer':kind,'selector':selector}]}}
         reader={'session':session,'retained_readers':[{'node':'live','engine':'fleece.retained-clip',
                   'target':{'clip':admission,'text_hash':version,'selector':selector},'rendered_document':{'address':'mere://clip/'+digest,'content_type':'application/vnd.mere.clip+json',
-                  'blocks':[{'Heading':{'level':1,'spans':[{'Text':'title'}]}},{'Paragraph':{'spans':[{'Text':text}]}}]}}]}
+                  'blocks':[{'Heading':{'level':1,'spans':[{'Text':title}]}},
+                    {'Heading':{'level':2,'spans':[{'Text':'Selected passage'}]}},
+                    {'Quote':{'blocks':[{'Paragraph':{'spans':[{'Text':text}]}}]}},
+                    {'Paragraph':{'spans':[{'Text':text}]}},
+                    *([{'Badge':{'text':'Source recording unavailable in this clip'}}] if kind=='Note' else []),
+                    {'MetadataRow':{'label':'Source anchor ('+anchor['units']+')','value':anchor['source']}},
+                    {'MetadataRow':{'label':'Original selection' if kind=='Selection' else 'Original note position','value':text if kind=='Selection' else '0.000 seconds'}},
+                    {'Paragraph':{'spans':[{'Link':{'predicate':None,'spans':[{'Text':'Export selected clip'}], 'title':None,'url':'mere://clip/'+digest+'/export'}}]}}]}}]}
         return owner,search,reader
 
     def test_reader_must_open_exact_owner_version_and_body(self):
@@ -501,12 +511,29 @@ class ColdRetainedReader(unittest.TestCase):
             with self.assertRaises(ValueError): v.check_retained_reader(search,missing,owner,kind)
             wrong=json.loads(json.dumps(reader)); wrong['retained_readers'][0]['target']['text_hash']='blake3:'+'c'*64
             with self.assertRaises(ValueError): v.check_retained_reader(search,wrong,owner,kind)
-            wrong=json.loads(json.dumps(reader)); wrong['retained_readers'][0]['rendered_document']['blocks'][1]['Paragraph']['spans'][0]['Text']+=' extra'
+            wrong=json.loads(json.dumps(reader)); wrong['retained_readers'][0]['rendered_document']['blocks'][3]['Paragraph']['spans'][0]['Text']+=' extra'
             with self.assertRaises(ValueError): v.check_retained_reader(search,wrong,owner,kind)
             wrong=json.loads(json.dumps(reader)); wrong['retained_readers'][0]['target']['selector']['end']-=1
             with self.assertRaises(ValueError): v.check_retained_reader(search,wrong,owner,kind)
             missing_selector=json.loads(json.dumps(search)); del missing_selector['search']['hits'][0]['selector']
             with self.assertRaises(ValueError): v.check_retained_reader(missing_selector,reader,owner,kind)
+
+    def test_rejects_extra_or_changed_rendered_content(self):
+        v=module('verify')
+        for kind in ('Selection','Note'):
+            owner,search,reader=self.fixture(kind)
+            blocks=reader['retained_readers'][0]['rendered_document']['blocks']
+            mutations=[lambda b: b.insert(4,{'Paragraph':{'spans':[{'Text':'private canary'}]}}),
+                       lambda b: b[2]['Quote']['blocks'][0]['Paragraph']['spans'][0].update(Text='wrong quote'),
+                       lambda b: b[0]['Heading']['spans'][0].update(Text='private canary'),
+                       lambda b: b[-2]['MetadataRow'].update(value='private canary'),
+                       lambda b: b[-1]['Paragraph']['spans'][0]['Link'].update(url='mere://clip/wrong/export')]
+            for mutate in mutations:
+                altered=json.loads(json.dumps(reader))
+                mutate(altered['retained_readers'][0]['rendered_document']['blocks'])
+                with self.assertRaises(ValueError): v.check_retained_reader(search,altered,owner,kind)
+            wrong=json.loads(json.dumps(search)); wrong['search']['hits'][0]['source']['source']+='stale'
+            with self.assertRaises(ValueError): v.check_retained_reader(wrong,reader,owner,kind)
 
 
 if __name__ == '__main__':

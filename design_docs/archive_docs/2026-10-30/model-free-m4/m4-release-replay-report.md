@@ -19,3 +19,15 @@ The existing `partial_flush_across_partitions_preserves_acknowledged_values_on_r
 ## Warranted next step
 
 Controller decision: preserve existing v2 replay semantics for this milestone and charge all physical journal entries, including duplicate replay. Per-sequence pruning may be assessed separately with its own correctness proof. The configured recovery bounds do not require that optimization. Do not port a v3 fix or mark the v2 FIFO poison reproduced. If runtime characterization becomes necessary, coordinate with the recovery and primary agents, then use a standalone fixture against untouched registry Fjall 2.11.2 / lsm-tree 2.10.4 and preserve its output separately from the active patched-engine receipts.
+
+
+## Release status refresh during M5
+
+A fresh GitHub API check on October 30 still reports 3.1.13 as latest. The web
+`releases/latest` alias returned an older cached 3.1.12 page, so the direct release
+and API response govern this refresh. Write-buffer issue #344 and strict-recovery
+issue #311 remain open; the linked [strict-recovery PR #337](https://github.com/fjall-rs/fjall/pull/337)
+is open and unmerged. These statuses do not change the v2 applicability findings
+above. The separate M5 overlapping-open regression concerns consumer ownership
+of the same exclusive store; no fix for that is listed in 3.1.13's release notes.
+Metadata is preserved in `../model-free-m5/release-status-refresh.json`.
