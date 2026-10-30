@@ -48,9 +48,13 @@
 
 pub mod bm25;
 pub mod candidates;
+pub mod compare;
 pub mod document;
 pub mod fusion;
 pub mod index;
+pub mod recall;
+pub mod records;
+pub mod query;
 pub mod spec;
 pub mod tokenize;
 

@@ -1,0 +1,21 @@
+RESULT fail
+captured 21_reopen_A1_search
+captured 22_reopen_A1
+captured 23_reopen_A2
+captured 24_reopen_selection
+captured 24_reopen_selection_reader
+captured 25_reopen_note
+FAIL: assert text 'M5 authored Redshank note': not on any surface
+captured 25_reopen_note_reader
+captured cold_sum
+captured model_unavailable
+presentation frames=1141 captures=9 blank=0
+capture /m5/run/reopen/21_reopen_A1_search.png digest=66f9b530fe65bab9 blank=false
+capture /m5/run/reopen/22_reopen_A1.png digest=48391636396bc106 blank=false
+capture /m5/run/reopen/23_reopen_A2.png digest=3759c69262c07293 blank=false
+capture /m5/run/reopen/24_reopen_selection.png digest=922d0bab2960d8fa blank=false
+capture /m5/run/reopen/24_reopen_selection_reader.png digest=bad3365eb213163f blank=false
+capture /m5/run/reopen/25_reopen_note.png digest=301bc360260c5ef2 blank=false
+capture /m5/run/reopen/25_reopen_note_reader.png digest=ef967a1b942acc3e blank=false
+capture /m5/run/reopen/cold_sum.png digest=1e34756d16aa5b0f blank=false
+capture /m5/run/reopen/model_unavailable.png digest=62eec77076875e6a blank=false

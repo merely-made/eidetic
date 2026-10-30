@@ -1,0 +1,4 @@
+ActiveState=failed
+Result=oom-kill
+OOMPolicy=stop
+MemoryPeak=3221225472

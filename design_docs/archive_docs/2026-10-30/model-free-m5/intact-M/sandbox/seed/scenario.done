@@ -1,0 +1,96 @@
+RESULT fail
+captured 01_authored_note
+captured 04_exact_A1
+captured 05_note_citation
+captured 07_selected_knot
+captured 08_selected_clip
+captured 10_selection_admitted
+captured redshank_note_private
+captured redshank_private_action_absent
+captured redshank_note_shareable
+captured redshank_note_admitted
+captured exact_pair
+captured authored_0
+captured authored_1
+captured authored_2
+captured authored_3
+captured authored_4
+captured authored_5
+captured authored_6
+captured authored_7
+captured authored_8
+captured authored_9
+captured authored_10
+captured authored_11
+captured authored_12
+captured authored_13
+captured op_SourceLookup
+captured op_CountByProducer
+captured op_CountBySource
+captured op_SourceTimeline
+captured op_RecordTimeline
+captured op_TagMembership
+captured op_PropertyLookup
+captured op_GroupValues
+captured op_JoinEntity
+captured op_JoinSource
+captured op_Compare
+captured op_Sum
+captured withdraw_before
+captured withdraw_inspected_active
+FAIL: suggestion is absent or ambiguous: Withdrawn record history…
+FAIL: suggestion is absent or ambiguous: Inspect withdrawn assertion
+FAIL: suggestion is absent or ambiguous: Inspect record
+FAIL: assert snap suggestions Contains 'Current assertion: withdrawn': got '› Back'
+captured withdraw_history
+captured withdraw_fresh
+captured withdraw_historical
+captured scope_before
+captured scope_empty_selector
+FAIL: wait-research-search after 600 frames: no current admitted result
+FAIL: no successful window presentation for ten seconds
+presentation frames=1682 captures=44 blank=0
+capture /m5/run/seed/01_authored_note.png digest=60c51731919d62f4 blank=false
+capture /m5/run/seed/04_exact_A1.png digest=b4f1fdcb8308f069 blank=false
+capture /m5/run/seed/05_note_citation.png digest=f8aa16b927d35e32 blank=false
+capture /m5/run/seed/07_selected_knot.png digest=9e82790bebfd1950 blank=false
+capture /m5/run/seed/08_selected_clip.png digest=481a664b3aa8771b blank=false
+capture /m5/run/seed/10_selection_admitted.png digest=84433dde0baca6a1 blank=false
+capture /m5/run/seed/redshank_note_private.png digest=4bc6506f7553db9c blank=false
+capture /m5/run/seed/redshank_private_action_absent.png digest=1f8f40e2272b2576 blank=false
+capture /m5/run/seed/redshank_note_shareable.png digest=3f67912c94bbb177 blank=false
+capture /m5/run/seed/redshank_note_admitted.png digest=91ed9c7075591a89 blank=false
+capture /m5/run/seed/exact_pair.png digest=04206c295d088920 blank=false
+capture /m5/run/seed/authored_0.png digest=ac35bc30346697b0 blank=false
+capture /m5/run/seed/authored_1.png digest=94b1f2da799bb5d1 blank=false
+capture /m5/run/seed/authored_2.png digest=ae3ec1e6cf516b3d blank=false
+capture /m5/run/seed/authored_3.png digest=de4d187307221b48 blank=false
+capture /m5/run/seed/authored_4.png digest=e01b7c21779ef89c blank=false
+capture /m5/run/seed/authored_5.png digest=fb998740bff4c7c0 blank=false
+capture /m5/run/seed/authored_6.png digest=f71cf674b28c8a52 blank=false
+capture /m5/run/seed/authored_7.png digest=6a9a002c4e77d5cb blank=false
+capture /m5/run/seed/authored_8.png digest=ef633902ae8e52f7 blank=false
+capture /m5/run/seed/authored_9.png digest=f363267492a5c3ef blank=false
+capture /m5/run/seed/authored_10.png digest=11fc7d69533651a0 blank=false
+capture /m5/run/seed/authored_11.png digest=cf9f6f7ecb3082b9 blank=false
+capture /m5/run/seed/authored_12.png digest=a66d3f45176e3d40 blank=false
+capture /m5/run/seed/authored_13.png digest=f6b3b807b36b69a7 blank=false
+capture /m5/run/seed/op_SourceLookup.png digest=179ea542da2d417c blank=false
+capture /m5/run/seed/op_CountByProducer.png digest=ccdd1c2b15d9d100 blank=false
+capture /m5/run/seed/op_CountBySource.png digest=2174cf11a109a499 blank=false
+capture /m5/run/seed/op_SourceTimeline.png digest=c339c2ea4cdbb4f4 blank=false
+capture /m5/run/seed/op_RecordTimeline.png digest=724069a69452cf9d blank=false
+capture /m5/run/seed/op_TagMembership.png digest=296e400cdf76db86 blank=false
+capture /m5/run/seed/op_PropertyLookup.png digest=90d43795259334eb blank=false
+capture /m5/run/seed/op_GroupValues.png digest=66b01e389647ee1f blank=false
+capture /m5/run/seed/op_JoinEntity.png digest=dbb3a761127f85b2 blank=false
+capture /m5/run/seed/op_JoinSource.png digest=83d284d9ae3c0b4c blank=false
+capture /m5/run/seed/op_Compare.png digest=57e2b1d7c74199f8 blank=false
+capture /m5/run/seed/op_Sum.png digest=ec2b53e6c7b76bb3 blank=false
+capture /m5/run/seed/withdraw_before.png digest=aff31e25c0d03086 blank=false
+capture /m5/run/seed/withdraw_inspected_active.png digest=9f76f26a0abcb048 blank=false
+capture /m5/run/seed/withdraw_history.png digest=178089a5bc50c7bd blank=false
+capture /m5/run/seed/withdraw_fresh.png digest=1337be869bb670b3 blank=false
+capture /m5/run/seed/withdraw_historical.png digest=14c475cb466f88f1 blank=false
+capture /m5/run/seed/scope_before.png digest=64d524a68dd818a4 blank=false
+capture /m5/run/seed/scope_empty_selector.png digest=7e9c8cf655d360d5 blank=false

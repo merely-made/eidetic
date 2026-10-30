@@ -1,0 +1,15 @@
+RESULT fail
+captured 01_episode_visible
+captured 02_note_editor
+captured 03_saved_note
+captured 04_private_member
+captured 05_shareable_note
+captured 06_note_research
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["content e46750d7-b063-40dc-8f97-41ad2e4188ef live", "content-title e46750d7-b063-40dc-8f97-41ad2e4188ef Redshank note", "address-opened mere://clip/fb3262b3b2edde01dfa959ccd3cd3424916edb3b75dd087645ab449551f32e2a", "address-opened file:///m5/run/fixture-source/episode.mp3", "pane-closed", "omnibar-closed"])
+presentation frames=368 captures=6 blank=0
+capture /m5/run/seed/01_episode_visible.png digest=ba95599500cf025f blank=false
+capture /m5/run/seed/02_note_editor.png digest=a05074614d444521 blank=false
+capture /m5/run/seed/03_saved_note.png digest=de971f149a6ad4c9 blank=false
+capture /m5/run/seed/04_private_member.png digest=435154ccd9c4ed92 blank=false
+capture /m5/run/seed/05_shareable_note.png digest=0f77cbb9483dacae blank=false
+capture /m5/run/seed/06_note_research.png digest=958191a84c2dfefc blank=false

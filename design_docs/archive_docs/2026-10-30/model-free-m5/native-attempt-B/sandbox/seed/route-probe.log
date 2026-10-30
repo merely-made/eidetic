@@ -1,0 +1,15 @@
+
+running 1 test
+test inference_service::tests::model_free_fixture_refuses_inference_route ... 
+thread 'inference_service::tests::model_free_fixture_refuses_inference_route' (12) panicked at src/inference_service/tests.rs:268:5:
+inference route must be refused by a live broker
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    inference_service::tests::model_free_fixture_refuses_inference_route
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1255 filtered out; finished in 0.00s
+

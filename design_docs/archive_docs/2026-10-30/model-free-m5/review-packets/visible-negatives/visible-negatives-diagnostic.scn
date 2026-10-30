@@ -1,0 +1,355 @@
+# COMPOSED DRAFT: unrun, not accepted; missing-source fault injection is separate.
+# Draft: real capture, authored citation and real Knot selection; not acceptance complete.
+settle 20
+key escape
+act New session
+settle 5
+act Rename session
+type M5 seed
+key enter
+settle 5
+act New research note
+wait-knot 600 local file:///m5/run/profile/notes/research-
+assert content-live
+click surface:knot role:textbox
+key end
+key enter
+insert M5 authored research note
+key ctrl+s
+settle 30
+assert text saved
+capture 01_authored_note
+act Show document in map
+open ${M5_ORIGIN}/A
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/A
+settle 3
+scroll 900 500 -5000
+settle 3
+scroll 900 500 350
+settle 3
+click surface:inspector role:button Save source and keep
+wait-row 600 Source save: Saved
+record-source-captures 02_A1
+act Show document in map
+open ${M5_ORIGIN}/B
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/B
+settle 3
+scroll 900 500 -5000
+settle 3
+scroll 900 500 350
+settle 3
+click surface:inspector role:button Save source and keep
+wait-row 600 Source save: Saved
+record-source-captures 03_B
+act Search saved sources
+type naïve — 東京 🐦
+wait-research-search 600
+choose-suggestion Capture: M5 A
+wait-saved-reader 600
+assert snap saved-reader-quote == M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.
+record-saved-sources 04_exact_A1
+capture 04_exact_A1
+act Open Inspector pane
+settle 8
+scroll 900 500 5000
+settle 3
+click surface:inspector role:button Research tools
+settle 5
+scroll 900 500 5000
+settle 3
+click surface:inspector role:button Clip saved passage
+settle 60
+act Open research note
+settle 20
+assert text M5 authored research note
+assert text Read saved passage 1:
+capture 05_note_citation
+click .knot-saved-citation Read saved passage 1:
+settle 5
+assert snap focus-card-peek ~ mere://saved-source/sealed-v1/
+click surface:chrome role:button Read
+wait-saved-reader 600
+assert snap saved-reader-quote == M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.
+record-saved-sources 06_note_citation
+act Open research note
+act Read document
+settle 20
+click-at 200 220
+key end
+key enter
+insert M5 private preface zebra only this linked finding M5 private suffix otter
+key ctrl+s
+settle 30
+assert text saved
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+settle 8
+assert snap actions ~ Retain selected Knot text
+scroll 200 300 300
+settle 8
+scroll 200 300 300
+settle 8
+capture 07_selected_knot
+act Retain selected Knot text
+settle 60
+act Open node in Workbench
+settle 15
+assert content-live
+assert snap actions ~ Export retained clip
+export-clip ${M5_SELECTION_PACKAGE}
+wait-file 600 ${M5_SELECTION_PACKAGE}
+assert event clip-package-exported
+capture 08_selected_clip
+act Show document in map
+open ${M5_ORIGIN}/swap-a
+settle 15
+act Show document in map
+open ${M5_ORIGIN}/A
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/A
+settle 3
+scroll 900 500 -5000
+settle 3
+scroll 900 500 350
+settle 3
+click surface:inspector role:button Save source and keep
+wait-row 600 Source save: Saved
+assert row Saved captures: 2
+record-source-captures 09_A2
+act Search saved sources
+type only this linked finding
+wait-research-search 600
+assert snap suggestions ~ Selection:
+capture 10_selection_admitted
+record-saved-sources 10_selection_admitted
+key escape
+act Close pane
+act Save session
+settle 20
+# The local audio fixture is removed before reopen; playback is not qualified.
+open file:///m5/run/fixture-source/episode.mp3
+settle 60
+assert pane turnstone.redshank-episode
+click surface:contributed role:button Add text note
+settle 20
+click surface:contributed role:textbox
+insert M5 authored Redshank note
+click surface:contributed role:button Save text note
+settle 60
+capture redshank_note_private
+assert text M5 authored Redshank note
+click-at 300 300
+settle 5
+act Fit to view
+settle 10
+click-note-member
+assert-no-action Retain selected Redshank note
+capture redshank_private_action_absent
+click-at 700 130
+act Maximize pane
+settle 10
+click surface:contributed role:button More actions for note at 0:00
+settle 8
+click surface:contributed role:button Make shareable: note at 0:00
+settle 20
+capture redshank_note_shareable
+act Maximize pane
+settle 10
+click-at 300 300
+settle 5
+act Fit to view
+settle 10
+click-note-member
+assert snap actions ~ Retain selected Redshank note
+act Retain selected Redshank note
+settle 60
+act Search saved sources
+type M5 authored Redshank note
+wait-research-search 600
+assert snap suggestions ~ Note:
+record-saved-sources redshank_note_admitted
+capture redshank_note_admitted
+# Run while the seed process and its 09_A2.source-captures.json are current.
+# Labels must resolve uniquely; this uses ordinary arrow/enter handling.
+act Search saved sources
+type archive
+wait-research-search 600
+choose-suggestion Compare sources…
+choose-suggestion Left:
+choose-captured-source 09_A2 1
+choose-suggestion Right:
+choose-captured-source 09_A2 3
+choose-suggestion Compare selected sources
+record-comparison exact_pair
+capture exact_pair
+# Draft: ordinary property form actions using actual B passage and graph entities.
+# Search B first; values remain drafts until each ordinary Save acknowledgement.
+act Search saved sources
+type amber lantern
+wait-research-search 600
+choose-suggestion Structured records…
+choose-suggestion Enter a sourced property…
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:clock
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Timestamp
+choose-suggestion Single value
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 2026-10-10T09:30:00Z
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+wait-structured-author-save 600
+capture authored_0
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:clock
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Timestamp
+choose-suggestion Single value
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 2026-10-10T09:30:00Z
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+wait-structured-author-save 600
+capture authored_1
+choose-suggestion Back
+choose-suggestion Filters…
+choose-suggestion Property ID
+type m5:absent
+key enter
+choose-suggestion Back
+choose-suggestion Operation:
+choose-suggestion Property lookup
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research negative_no_match
+key up
+key up
+key up
+assert snap suggestions ~ No matching records in this scope
+capture negative_no_match
+choose-suggestion Filters…
+choose-suggestion Property ID
+key enter
+choose-suggestion Back
+choose-suggestion Operation limits…
+choose-suggestion Records:
+type 1
+key enter
+choose-suggestion Back
+choose-suggestion Run in this scope
+wait-structured-limit-refusal 600
+record-structured-status negative_over_limit
+assert snap suggestions ~ Structured record limit exceeded
+capture negative_over_limit
+choose-suggestion Operation limits…
+choose-suggestion Records:
+type 100000
+key enter
+choose-suggestion Back
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research after_limit_recovery
+capture after_limit_recovery
+assert event m5-intentional-diagnostic-stop

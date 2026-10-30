@@ -1,0 +1,6 @@
+
+running 1 test
+test inference_service::tests::model_free_fixture_refuses_inference_route ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1298 filtered out; finished in 0.03s
+

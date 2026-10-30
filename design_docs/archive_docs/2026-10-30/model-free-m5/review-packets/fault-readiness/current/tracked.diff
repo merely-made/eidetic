@@ -1,0 +1,1220 @@
+diff --git a/src/app/mod.rs b/src/app/mod.rs
+index 26fab683..e237b4a3 100644
+--- a/src/app/mod.rs
++++ b/src/app/mod.rs
+@@ -41,6 +41,7 @@ mod research_structured_rows;
+ #[cfg(test)]
+ mod research_structured_tests;
+ mod research_search_arms;
++mod research_search_scenario;
+ mod research_compare_arms;
+ mod research_compare_rows;
+ mod research_search_rows;
+diff --git a/src/app/research_compare_arms.rs b/src/app/research_compare_arms.rs
+index 1e6c9cd8..4c83b893 100644
+--- a/src/app/research_compare_arms.rs
++++ b/src/app/research_compare_arms.rs
+@@ -5,6 +5,38 @@ use crate::action::Effect;
+ use crate::research_compare::{Request, ResultView};
+ 
+ impl App {
++    /// Observe only the currently admitted explicit comparison; no source body.
++    pub(crate) fn research_compare_observation(&self) -> Result<serde_json::Value, String> {
++        let state = &self.research_search;
++        if !self.omnibar.open || state.view != super::research_search_state::View::Compare
++            || state.compare_request.is_some() || state.error.is_some() {
++            return Err("comparison is not ready and visible".into());
++        }
++        let request = state.compare_accepted.as_ref().ok_or("comparison request absent")?;
++        let result = state.comparison.as_ref().ok_or("comparison result absent")?;
++        if state.compare_left.as_ref() != Some(&request.left)
++            || state.compare_right.as_ref() != Some(&request.right)
++            || self.research.context_revision().ok() != Some((request.context.clone(), request.revision))
++            || self.research.clip_access().ok().and_then(|a| (a.epoch)()) != Some(request.epoch)
++            || !crate::research::admitted(&request.context, &request.left)
++            || !crate::research::admitted(&request.context, &request.right) {
++            return Err("comparison scope changed".into());
++        }
++        let c = &result.comparison;
++        let spans: Vec<_> = c.spans.iter().map(|span| serde_json::json!({
++            "kind": format!("{:?}", span.kind),
++            "old": span.old.as_ref().map(|s| serde_json::json!({"start":s.start,"end":s.end})),
++            "new": span.new.as_ref().map(|s| serde_json::json!({"start":s.start,"end":s.end})),
++        })).collect();
++        Ok(serde_json::json!({"schema":"turnstone.comparison-observation/v1", "session":self.session_id,
++            "request":request.id, "left":request.left, "right":request.right,
++            "operation":c.operation, "relationship":format!("{:?}", c.relationship),
++            "settings":{"max_input_bytes":c.settings.max_input_bytes,"max_identity_bytes":c.settings.max_identity_bytes,
++                "max_diff_work":c.settings.max_diff_work,"max_output_spans":c.settings.max_output_spans},
++            "old":{"source":c.old.source,"version":c.old.version,"text_hash":c.old.text_hash},
++            "new":{"source":c.new.source,"version":c.new.version,"text_hash":c.new.text_hash}, "spans":spans}))
++    }
++
+     pub(crate) fn issue_research_compare(&mut self) -> Vec<Effect> {
+         let state = &mut self.research_search;
+         state.compare_page = 0;
+diff --git a/src/app/research_record_owner.rs b/src/app/research_record_owner.rs
+index 4004f3a4..aad85d70 100644
+--- a/src/app/research_record_owner.rs
++++ b/src/app/research_record_owner.rs
+@@ -15,6 +15,9 @@ mod boundary_tests;
+ #[path = "research_record_integration_tests.rs"]
+ mod integration_tests;
+ #[cfg(test)]
++#[path = "research_record_scenario_tests.rs"]
++mod scenario_tests;
++#[cfg(test)]
+ #[path = "research_record_owner_tests.rs"]
+ mod tests;
+ 
+diff --git a/src/app/research_record_owner_tests.rs b/src/app/research_record_owner_tests.rs
+index b798ccaf..eeaa5c9e 100644
+--- a/src/app/research_record_owner_tests.rs
++++ b/src/app/research_record_owner_tests.rs
+@@ -368,3 +368,41 @@ fn model_free_result_install_generations_refuse_old_source_open_requests() {
+             .is_some_and(|error| error.contains("stale"))
+     );
+ }
++
++#[test]
++fn model_free_status_never_serializes_a_held_result_during_refusal() {
++    let root = tempfile::tempdir().unwrap();
++    let mut app = App::test_stub_at(root.path().to_path_buf());
++    let custody = crate::trail_memory::custody_test_fixture::custody();
++    app.research.set_available(true);
++    app.research.access(Some(crate::research::ClipAccess {
++        root: root.path().into(),
++        sealer: custody.sealer,
++        epoch: custody.epoch,
++    }));
++    app.sync_research_context();
++    let scope = app.structured_scope().unwrap();
++    let snapshot = RecordSnapshot {
++        scope_generation: "private-result-canary".into(),
++        complete: true,
++        exclusions: vec![],
++        sources: vec![],
++        definitions: vec![],
++        records: vec![],
++        lifecycle: vec![],
++    };
++    let query = RecordQuery {
++        operation: RecordOperation::SourceLookup,
++        filters: RecordFilters::default(),
++    };
++    let value =
++        eidetic_search::records::evaluate(&snapshot, &query, &RecordSettings::default()).unwrap();
++    let controller = &mut app.research_search.structured.controller;
++    controller.result = Some(value);
++    controller.view_scope = Some(scope);
++    controller.error = Some("source unavailable".into());
++    let status = app.structured_scenario_status();
++    assert_eq!(status["held_result"], true);
++    assert_eq!(status["error"], "source unavailable");
++    assert!(!status.to_string().contains("private-result-canary"));
++}
+diff --git a/src/app/research_record_scope.rs b/src/app/research_record_scope.rs
+index ed0446e1..553435c8 100644
+--- a/src/app/research_record_scope.rs
++++ b/src/app/research_record_scope.rs
+@@ -5,6 +5,124 @@ use super::App;
+ use crate::research_records::{Binding, ScopeToken};
+ 
+ impl App {
++    /// A status observation never serializes the held result or source bodies.
++    pub(crate) fn structured_scenario_status(&self) -> serde_json::Value {
++        let state = &self.research_search.structured;
++        let controller = &state.controller;
++        let visible = self.omnibar.open
++            && self.research_search.view == super::research_search_state::View::Structured;
++        let current = controller
++            .view_scope
++            .as_ref()
++            .is_some_and(|scope| self.structured_scope_is_current(scope));
++        let rows: Vec<_> = if visible {
++            self.omnibar
++                .suggestions
++                .iter()
++                .map(crate::observe::suggestion_line)
++                .collect()
++        } else {
++            Vec::new()
++        };
++        serde_json::json!({
++            "schema": "turnstone.structured-status/v1", "session": self.session_id,
++            "view": format!("{:?}", state.view), "visible": visible,
++            "busy": controller.busy,
++            "error": state.error.as_deref().or(controller.error.as_deref()),
++            "held_result": controller.result.is_some(),
++            "result_scope_current": current,
++            "result_generation": controller.result_generation,
++            "visible_rows": rows,
++        })
++    }
++
++    /// Scenario-only read of the same admitted frozen result shown by the UI.
++    /// Never runs a query or reads a store. Refuse changed scope and stale data.
++    pub(crate) fn structured_scenario_observation(&self) -> Result<serde_json::Value, String> {
++        use eidetic::TypedPayload;
++        if self.research_search.view != super::research_search_state::View::Structured
++            || !self.omnibar.open
++            || self.research_search.structured.view != super::research_structured_state::View::Home
++        {
++            return Err("structured research is not visible".into());
++        }
++        let controller = &self.research_search.structured.controller;
++        if controller.busy || controller.error.is_some() {
++            return Err("structured result is busy or unavailable".into());
++        }
++        let result = controller
++            .result
++            .as_ref()
++            .ok_or("structured result absent")?;
++        let generation = controller
++            .result_generation
++            .ok_or("result generation absent")?;
++        let scope = controller
++            .view_scope
++            .as_ref()
++            .ok_or("result scope absent")?;
++        if !self.structured_scope_is_current(scope) {
++            return Err("structured result scope changed".into());
++        }
++        if !controller.result_historical {
++            let accepted = controller
++                .accepted
++                .as_ref()
++                .ok_or("structured accepted request absent")?;
++            if accepted.selected != scope.selected
++                || accepted.query != result.query
++                || accepted.settings != result.settings
++            {
++                return Err("structured accepted scope changed".into());
++            }
++        }
++        let bytes = result.serialize_to_bytes().map_err(|e| e.to_string())?;
++        let content_manifest = eidetic::ManifestId::of_blob(&bytes);
++        // A replay does not carry a fresh accepted request; don't report a
++        // possibly stale saved_result as its selected manifest.
++        let saved_manifest = if controller.accepted.is_some() && !controller.result_historical {
++            controller.saved_result
++        } else {
++            None
++        };
++        if saved_manifest.is_some_and(|id| id != content_manifest) {
++            return Err("saved result identity mismatch".into());
++        }
++        Ok(serde_json::json!({
++            "schema": "turnstone.structured-observation/v1",
++            "session": self.session_id,
++            "context_generation": scope.context.generation,
++            "graph_revisions": scope.graphs.iter().map(|(id, revision)|
++                serde_json::json!({"graph": id.as_uuid(), "revision": revision})).collect::<Vec<_>>(),
++            "scope_revision": scope.revision,
++            "result_generation": generation,
++            "historical": controller.result_historical,
++            "busy": false,
++            "request_id": controller.accepted.as_ref().map(|r| r.id),
++            "content_manifest": content_manifest,
++            "saved_manifest": saved_manifest,
++            "source_selection": if controller.result_historical {
++                serde_json::json!({"mode": "unknown-historical"})
++            } else if let Some(members) = &scope.selected {
++                serde_json::json!({"mode": "chosen", "members": members})
++            } else {
++                serde_json::json!({"mode": "all"})
++            },
++            "result": crate::research_records::observation_result(result),
++        }))
++    }
++
++    /// Wait only for an admitted, settled result with durable current identity,
++    /// or an explicitly historical replay. Never advances product state.
++    pub(crate) fn structured_scenario_result_ready(&self) -> bool {
++        let Ok(value) = self.structured_scenario_observation() else {
++            return false;
++        };
++        value["historical"] == true
++            || (value["saved_manifest"].is_string()
++                && value["saved_manifest"] == value["content_manifest"])
++    }
++
+     pub(super) fn structured_scope(&self) -> Result<ScopeToken, String> {
+         self.structured_scope_reserved(0, 0)
+     }
+diff --git a/src/app/research_search_tests.rs b/src/app/research_search_tests.rs
+index f55fa46d..fcc73d88 100644
+--- a/src/app/research_search_tests.rs
++++ b/src/app/research_search_tests.rs
+@@ -215,3 +215,25 @@ fn model_free_compare_control_reachable_with_one_visible_row() {
+         "Saved Sources must offer comparison with one visible row"
+     );
+ }
++
++#[test]
++fn model_free_search_observation_requires_current_accepted_scope() {
++    let root = tempfile::tempdir().unwrap();
++    let mut app = app_with_search(root.path());
++    let pending = request(app.update(Action::SearchSavedSources));
++    assert!(app.scenario_research_search_summary().is_none());
++    let snapshot = eidetic_search::query::ResearchSnapshot {
++        generation: "scope-test".into(),
++        scope: vec![],
++        sources: vec![],
++        coverage: eidetic_search::query::Coverage::Complete,
++    };
++    let result = eidetic_search::query::search(&snapshot, &pending.query, &pending.settings).unwrap();
++    app.research_search_finished(pending, Ok(result));
++    let observed = app.scenario_research_search_summary().expect("accepted search");
++    assert_eq!(observed["coverage"], "Complete");
++    assert_eq!(observed["total"], 0);
++    assert!(observed["scope"].as_array().unwrap().is_empty());
++    app.research_search.selected = Some(vec![]);
++    assert!(app.scenario_research_search_summary().is_none(), "selection changed after acceptance");
++}
+diff --git a/src/app/tests/resource_content_inspector_follows_shared_resource_and_navigation_cases.rs b/src/app/tests/resource_content_inspector_follows_shared_resource_and_navigation_cases.rs
+index a2a2f80f..049ebec2 100644
+--- a/src/app/tests/resource_content_inspector_follows_shared_resource_and_navigation_cases.rs
++++ b/src/app/tests/resource_content_inspector_follows_shared_resource_and_navigation_cases.rs
+@@ -540,3 +540,47 @@ fn stale_place_update_from_a_departed_session_is_ignored() {
+     );
+     let _ = std::fs::remove_dir_all(root);
+ }
++
++#[test]
++fn model_free_source_target_wait_tracks_exact_current_admission() {
++    let mut app = App::test_stub();
++    let url = "https://example.test/source";
++    app.graph_runtimes.visit(url);
++    let node = app
++        .graph_runtimes
++        .graph()
++        .get_node_by_url(url)
++        .unwrap()
++        .1
++        .id;
++    assert!(!crate::scenario::source_target_ready(
++        &app.available_actions(),
++        url
++    ));
++    let body = "<html><main>source fixture</main></html>";
++    app.content.note_fetched(
++        node,
++        url.into(),
++        crate::content::FetchedDocument {
++            bytes: body.as_bytes().to_vec(),
++            body: body.into(),
++            content_type: Some("text/html".into()),
++            effective_url: Some(url.into()),
++            acquired_at_ms: 1,
++        },
++        body.len(),
++    );
++    assert!(crate::scenario::source_target_ready(
++        &app.available_actions(),
++        url
++    ));
++    assert!(!crate::scenario::source_target_ready(
++        &app.available_actions(),
++        "https://example.test/other"
++    ));
++    app.graph_runtimes.visit("https://example.test/other");
++    assert!(!crate::scenario::source_target_ready(
++        &app.available_actions(),
++        url
++    ));
++}
+diff --git a/src/inference_service/intent.rs b/src/inference_service/intent.rs
+index 75873739..5421bb72 100644
+--- a/src/inference_service/intent.rs
++++ b/src/inference_service/intent.rs
+@@ -8,6 +8,11 @@ pub(super) async fn intent(
+     name: &str,
+     payload: Vec<u8>,
+ ) -> Result<(), String> {
++    if name == ASK_PUBLISHED_INTENT {
++        crate::inference_activity::record_generation();
++    } else if name == PUBLISH_CORPUS_INTENT {
++        crate::inference_activity::record_publication();
++    }
+     let result = connection
+         .client
+         .request_body(CarrierRequestBody::Intent(IntentInvocation {
+diff --git a/src/inference_service/tests.rs b/src/inference_service/tests.rs
+index 5d8637ca..5dcd2c0e 100644
+--- a/src/inference_service/tests.rs
++++ b/src/inference_service/tests.rs
+@@ -245,3 +245,39 @@ fn admitted_research_route_refuses_wrong_owner() {
+             std::fs::write(output, serde_json::to_vec_pretty(&serde_json::json!({ "actual_admitted_route": true, "source_kind": "fleece", "wrong_owner_publication_refused": true, "wrong_owner_ask_refused": true, "publication_error": publication_error, "ask_error": ask_error })).unwrap()).unwrap();
+         });
+ }
++// Intended target: src/inference_service/tests.rs, compiled with inference.
++// Run only inside the isolated receipt supervisor while its marked custody
++// fixture is alive. This checks the named broker route, not model-load calls.
++#[test]
++#[ignore = "requires a running isolated M5 custody-only fixture"]
++fn model_free_fixture_refuses_inference_route() {
++    use djinn::door::app_client::AppClientError;
++    let endpoint = std::env::var("EIDETIC_CUSTODY_FIXTURE_ENDPOINT").expect("fixture endpoint");
++    let fixture_root = std::path::PathBuf::from(std::env::var_os("EIDETIC_CUSTODY_FIXTURE_ROOT").expect("fixture root"));
++    assert_eq!(std::fs::read(fixture_root.join("fixture-marker")).unwrap(), b"eidetic-retention-20261019\n");
++    assert!(std::path::Path::new(&endpoint).canonicalize().unwrap().starts_with(fixture_root.canonicalize().unwrap()));
++    let identity = crate::identity::RootIdentity::Custody(
++        djinn::door::custody_identity::CustodyIdentity::connect_at(&endpoint, "turnstone").expect("fixture custody unavailable"));
++    let (profile, public_key) = identity.custody_principal().expect("fixture principal unavailable");
++    let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().unwrap();
++    let result = runtime.block_on(AppBrokerClient::open_route_at(
++        &endpoint,
++        AppId::new("turnstone"),
++        AppRouteId::new(wire::INFERENCE_ASK_ROUTE).unwrap(),
++    ));
++    match result {
++        Err(AppClientError::Closed) => {},
++        Err(error) => panic!("inference route did not close during open: {error:?}"),
++        Ok(_) => panic!("inference route unexpectedly admitted"),
++    }
++    let after = crate::identity::RootIdentity::Custody(
++        djinn::door::custody_identity::CustodyIdentity::connect_at(&endpoint, "turnstone")
++            .expect("fixture custody unavailable after inference hello"));
++    assert_eq!(after.custody_principal(), Some((profile.clone(), public_key)),
++        "custody principal changed during inference hello");
++    std::fs::write(std::env::var_os("TURNSTONE_M5_ROUTE_RECEIPT").expect("route receipt"),
++        serde_json::to_vec_pretty(&serde_json::json!({
++            "schema":"turnstone.m5-route-probe/v1", "route":wire::INFERENCE_ASK_ROUTE,
++            "outcome":"closed-during-open", "pid":std::process::id(), "profile":profile.0, "public_key":public_key
++        })).unwrap()).unwrap();
++}
+diff --git a/src/inference_service/worker.rs b/src/inference_service/worker.rs
+index 10a4059d..a9955b18 100644
+--- a/src/inference_service/worker.rs
++++ b/src/inference_service/worker.rs
+@@ -67,6 +67,7 @@ pub(super) fn worker(
+                     None
+                 };
+                 if connection.is_none() {
++                    crate::inference_activity::record_route_attempt();
+                     let mut client = AppBrokerClient::open_route(
+                         AppId::new("turnstone"),
+                         AppRouteId::new(wire::INFERENCE_ASK_ROUTE).map_err(|e| e.to_string())?,
+diff --git a/src/lib.rs b/src/lib.rs
+index 08aca7b3..d0e56b66 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -61,6 +61,7 @@ mod graph_facets;
+ pub mod graph_scenes;
+ mod host_journal;
+ mod identity;
++mod inference_activity;
+ mod inference_contract;
+ #[cfg(feature = "inference")]
+ mod inference_service;
+@@ -117,6 +118,7 @@ pub mod research_compare;
+ pub(crate) mod research_record_graph;
+ pub mod research_records;
+ pub(crate) mod research_records_worker;
++mod research_scenario_privacy;
+ pub mod research_search;
+ pub mod research_storage;
+ pub mod resident_admission;
+diff --git a/src/research_records.rs b/src/research_records.rs
+index 0f505dd5..8d6fcad9 100644
+--- a/src/research_records.rs
++++ b/src/research_records.rs
+@@ -306,3 +306,34 @@ pub struct PendingChoice {
+     pub status: String,
+     pub orphan: bool,
+ }
++
++/// Bounded scenario evidence: disclose only fields needed to verify the
++/// selected result, never authors, methods, lifecycle refs or exclusion text.
++pub(crate) fn observation_record(record: &PropertyRecordV1) -> serde_json::Value {
++    serde_json::json!({
++        "id": record.id, "entity": record.entity, "property": record.property,
++        "schema_revision": record.schema_revision, "definition_manifest": record.definition_manifest,
++        "context": record.context, "value": record.value, "valid_time": record.valid_time,
++        "status": record.status, "evidence": record.evidence, "recorded_at": record.recorded_at,
++    })
++}
++pub(crate) fn observation_result(result: &RecordResult) -> serde_json::Value {
++    let snapshot = &result.snapshot;
++    serde_json::json!({
++        "operation_version": result.operation_version,
++        "query": result.query, "settings": result.settings, "rows": result.rows,
++        "snapshot": {
++            "scope_generation": snapshot.scope_generation, "complete": snapshot.complete,
++            "exclusion_count": snapshot.exclusions.len(),
++            "exclusions": snapshot.exclusions.iter().map(|value| match value.as_str() {
++                "Denied" => "denied", "Withdrawn" => "withdrawn", "Unavailable" => "unavailable",
++                "Unsupported" => "unsupported", _ => "unclassified",
++            }).collect::<Vec<_>>(),
++            "lifecycle": snapshot.lifecycle.iter().map(|value| serde_json::json!({
++                "record_id": value.record_id, "state": value.state,
++            })).collect::<Vec<_>>(),
++            "sources": snapshot.sources, "definitions": snapshot.definitions,
++            "records": snapshot.records.iter().map(observation_record).collect::<Vec<_>>(),
++        },
++    })
++}
+diff --git a/src/scenario.rs b/src/scenario.rs
+index edbfbba8..be0bfd59 100644
+--- a/src/scenario.rs
++++ b/src/scenario.rs
+@@ -105,6 +105,8 @@
+ //! wait-saved-sources <frames> # wait for this session's source admission read
+ //! wait-saved-reader <frames> # wait for the focused saved source's live reader
+ //! record-saved-sources <name> # write source admission, entries and live readers
++//! record-structured-research <name> # read only the current admitted result
++//! choose-suggestion <label> # unique visible row; ordinary arrow and enter keys
+ //! queue-act <palette label> # retain the exact offered Action through later
+ //!                            # scenario steps; no execution until deliver-act
+ //! deliver-act               # lower the retained Action through Shell::act
+@@ -190,6 +192,8 @@ pub enum Step {
+     RecordIdle(String),
+     /// Toggle the named current source member using Canvas multi-selection.
+     SelectGraphMember(String),
++    /// Click the one painted note member through the normal pointer route.
++    ClickNoteMember,
+     /// Read graph truth, native fold routes and the saved session sidecar.
+     RecordGraphFolds(String, usize),
+     /// Read the owning graph scene, geometry, source truth and saved facets.
+@@ -331,6 +335,12 @@ pub enum Step {
+     WaitSourceCapture(u32, u64, String),
+     /// Wait until this session's saved-source admission load has completed.
+     WaitSavedSources(u32),
++    /// Wait for the current admitted research query, not only its source owner.
++    WaitResearchSearch(u32),
++    /// Wait for an offered capture action bound to this exact current URL.
++    WaitSourceTarget(u32, String),
++    /// Wait for a current saved structured result or historical replay.
++    WaitStructuredResult(u32),
+     /// Wait until the focused saved-source reader has content and a live engine.
+     WaitSavedReader(u32),
+     /// Write the place observation facts (`crate::observe::place_record`),
+@@ -341,6 +351,25 @@ pub enum Step {
+     RecordSourceCaptures(String),
+     /// Write current-session saved-source admissions, entries, and reader state.
+     RecordSavedSources(String),
++    /// Observe the admitted current structured result without evaluating it.
++    RecordStructuredResearch(String),
++    /// Record visible negative/scope status without disclosing an old result.
++    RecordStructuredStatus(String),
++    /// Record bounded process counters and nonsecret custody principal.
++    RecordRuntime(String),
++    /// Record the current admitted explicit comparison without source bodies.
++    RecordComparison(String),
++    /// Select a unique visible omnibar row through ordinary key events.
++    ChooseSuggestion(String),
++    /// Refuse a named action if it is in the ordinary current action catalog.
++    AssertNoAction(String),
++    /// Select the visible exact manifest from an earlier capture observation.
++    ChooseCapturedSource {
++        name: String,
++        ordinal: u64,
++    },
++    /// Select an exactly saved result recorded in this session.
++    ChooseSavedResult(String),
+     /// Snapshot an exact catalog Action for a later stale-admission check.
+     QueueAct(String),
+     /// Deliver the previously queued catalog Action through the ordinary
+@@ -352,6 +381,81 @@ pub enum Step {
+     Log(String),
+ }
+ 
++/// Extract a saved result identity without accepting a stale or foreign observation.
++pub(crate) fn observed_saved_result(
++    value: &serde_json::Value,
++    session: &str,
++) -> Result<String, String> {
++    if value["schema"] != "turnstone.structured-observation/v1"
++        || value["session"].as_str() != Some(session)
++        || value["historical"] != false
++        || value["busy"] != false
++    {
++        return Err("saved result observation is not current for this session".into());
++    }
++    let saved = value["saved_manifest"]
++        .as_str()
++        .ok_or("saved result missing")?;
++    if saved.is_empty() || value["content_manifest"].as_str() != Some(saved) {
++        return Err("saved result identity mismatch".into());
++    }
++    Ok(saved.to_string())
++}
++
++/// Extract one saved capture identity from a current-session observation.
++pub(crate) fn observed_capture_manifest(
++    value: &serde_json::Value,
++    session: &str,
++    ordinal: u64,
++) -> Result<String, String> {
++    let values = value
++        .as_array()
++        .ok_or("capture observation is not an array")?;
++    let matches: Vec<_> = values
++        .iter()
++        .filter(|item| {
++            item["session"].as_str() == Some(session)
++                && item["ordinal"].as_u64() == Some(ordinal)
++                && item["phase"] == "saved"
++        })
++        .collect();
++    let [item] = matches.as_slice() else {
++        return Err("capture observation absent or ambiguous".into());
++    };
++    let manifest = item["stored"]["annotation_manifest"]
++        .as_str()
++        .ok_or("capture manifest missing")?;
++    if manifest.is_empty() {
++        return Err("empty capture manifest".into());
++    }
++    Ok(manifest.to_string())
++}
++
++/// Find one row by exact displayed label, falling back to a unique substring.
++/// The caller must still navigate to the row through the ordinary input seam.
++pub(crate) fn suggestion_target(labels: &[String], label: &str) -> Result<usize, String> {
++    let exact: Vec<_> = labels
++        .iter()
++        .enumerate()
++        .filter(|(_, value)| value.as_str() == label || value.strip_prefix("› ") == Some(label))
++        .map(|(index, _)| index)
++        .collect();
++    let matches = if exact.is_empty() {
++        labels
++            .iter()
++            .enumerate()
++            .filter(|(_, value)| value.contains(label))
++            .map(|(index, _)| index)
++            .collect::<Vec<_>>()
++    } else {
++        exact
++    };
++    match matches.as_slice() {
++        [target] => Ok(*target),
++        _ => Err(format!("suggestion is absent or ambiguous: {label}")),
++    }
++}
++
+ #[derive(Debug)]
+ pub enum EditKey {
+     Enter,
+@@ -401,3 +505,10 @@ pub(crate) use expand_env::expand_env;
+ #[path = "scenario/parse.rs"]
+ mod parse;
+ pub use parse::parse;
++
++/// Observe the ordinary offered capture action; never synthesize or invoke it.
++pub(crate) fn source_target_ready(actions: &[(String, crate::action::Action)], url: &str) -> bool {
++    actions.iter().filter(|(label, action)| label == "Save source and keep"
++        && matches!(action, crate::action::Action::CaptureSourceDocument { target } if target.url == url))
++        .count() == 1
++}
+diff --git a/src/scenario/parse.rs b/src/scenario/parse.rs
+index 5e428598..46fd3406 100644
+--- a/src/scenario/parse.rs
++++ b/src/scenario/parse.rs
+@@ -249,6 +249,7 @@ pub fn parse(body: &str) -> Result<Vec<Step>, String> {
+             }
+             "record-idle" if !rest.is_empty() => Step::RecordIdle(rest.to_string()),
+             "select-graph-member" if !rest.is_empty() => Step::SelectGraphMember(rest.to_string()),
++            "click-note-member" if rest.is_empty() => Step::ClickNoteMember,
+             "activate-graph-fold" => Step::ActivateGraphFold(rest.parse().map_err(|_| format!("line {}: fold index required", i + 1))?),
+             "double-click-node" if !rest.is_empty() => Step::DoubleClickGraphNode(rest.to_string()),
+             "record-graph-scene" if !rest.is_empty() => {
+@@ -483,12 +484,23 @@ pub fn parse(body: &str) -> Result<Vec<Step>, String> {
+                 }
+                 Step::WaitSourceCapture(frames.unwrap(), ordinal.unwrap(), phase.unwrap().to_string())
+             }
+-            "wait-saved-sources" | "wait-saved-reader" => {
++            "wait-source-target" => {
++                let mut fields = rest.split_whitespace();
++                let frames = fields.next().and_then(|value| value.parse::<u32>().ok());
++                let target = fields.next().filter(|value| !value.is_empty());
++                if frames.is_none() || target.is_none() || fields.next().is_some() {
++                    return err("wait-source-target wants '<frames> <exact-url>'");
++                }
++                Step::WaitSourceTarget(frames.unwrap(), target.unwrap().to_owned())
++            }
++            "wait-saved-sources" | "wait-saved-reader" | "wait-research-search" | "wait-structured-result" => {
+                 let frames = rest.trim().parse::<u32>().map_err(|_| {
+                     format!("line {}: {verb} wants '<frames>'", i + 1)
+                 })?;
+                 match verb {
+                     "wait-saved-sources" => Step::WaitSavedSources(frames),
++                    "wait-research-search" => Step::WaitResearchSearch(frames),
++                    "wait-structured-result" => Step::WaitStructuredResult(frames),
+                     _ => Step::WaitSavedReader(frames),
+                 }
+             }
+@@ -499,6 +511,48 @@ pub fn parse(body: &str) -> Result<Vec<Step>, String> {
+             "record-saved-sources" if !rest.is_empty() => {
+                 Step::RecordSavedSources(rest.to_string())
+             }
++            "record-structured-research" if !rest.is_empty() => {
++                if !rest.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-') {
++                    return err("record-structured-research wants a safe name");
++                }
++                Step::RecordStructuredResearch(rest.to_string())
++            }
++            "record-structured-status" if !rest.is_empty() => {
++                if !rest.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-') {
++                    return err("record-structured-status wants a safe name");
++                }
++                Step::RecordStructuredStatus(rest.to_string())
++            }
++            "record-runtime" if !rest.is_empty() => {
++                if !rest.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-') {
++                    return err("record-runtime wants a safe name");
++                }
++                Step::RecordRuntime(rest.to_string())
++            }
++            "record-comparison" if !rest.is_empty() => {
++                if !rest.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-') {
++                    return err("record-comparison wants a safe name");
++                }
++                Step::RecordComparison(rest.to_string())
++            }
++            "choose-captured-source" => {
++                let mut fields = rest.split_whitespace();
++                let name = fields.next().ok_or_else(|| format!("line {}: capture observation name required", i + 1))?;
++                let ordinal = fields.next().and_then(|v| v.parse::<u64>().ok()).filter(|v| *v > 0)
++                    .ok_or_else(|| format!("line {}: positive capture ordinal required", i + 1))?;
++                if fields.next().is_some() || !name.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-') {
++                    return err("choose-captured-source wants '<safe-name> <positive ordinal>'");
++                }
++                Step::ChooseCapturedSource { name: name.to_string(), ordinal }
++            }
++            "choose-saved-result" if !rest.is_empty() => {
++                if !rest.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-') {
++                    return err("choose-saved-result wants a safe name");
++                }
++                Step::ChooseSavedResult(rest.to_string())
++            }
++            "choose-suggestion" if !rest.is_empty() => Step::ChooseSuggestion(rest.to_string()),
++            "assert-no-action" if !rest.is_empty() => Step::AssertNoAction(rest.to_string()),
+             "queue-act" if !rest.is_empty() => Step::QueueAct(rest.to_string()),
+             "deliver-act" if rest.is_empty() => Step::DeliverAct,
+             "touch" if !rest.is_empty() => Step::TouchFile(rest.to_string()),
+diff --git a/src/scenario/tests.rs b/src/scenario/tests.rs
+index ecad7f7c..177b1936 100644
+--- a/src/scenario/tests.rs
++++ b/src/scenario/tests.rs
+@@ -219,3 +219,141 @@ fn inline_component_station_fixture_uses_supported_grammar() {
+     crate::frame_a11y::fixture_body_request("1 click tab Links").unwrap();
+     assert!(crate::frame_a11y::fixture_body_request("1 replace tab Links").is_err());
+ }
++
++#[test]
++fn model_free_structured_observation_commands_parse_safely() {
++    let steps = parse("record-structured-research alpha_1\nchoose-suggestion Count by source kind")
++        .unwrap();
++    assert!(matches!(steps.as_slice(),
++        [Step::RecordStructuredResearch(name), Step::ChooseSuggestion(label)]
++        if name == "alpha_1" && label == "Count by source kind"));
++    for input in [
++        "record-structured-research",
++        "record-structured-research ../x",
++        "record-structured-research a/b",
++        "choose-suggestion",
++    ] {
++        assert!(parse(input).is_err(), "{input}");
++    }
++}
++
++#[test]
++fn model_free_suggestion_selection_refuses_ambiguity_and_prefers_exact() {
++    let labels = vec![
++        "› Count by source kind".into(),
++        "› Count by source".into(),
++        "› Back".into(),
++    ];
++    assert_eq!(suggestion_target(&labels, "Count by source").unwrap(), 1);
++    assert!(suggestion_target(&labels, "Count by").is_err());
++    assert!(suggestion_target(&labels, "absent").is_err());
++    let duplicates = vec!["› Back".into(), "› Back".into()];
++    assert!(suggestion_target(&duplicates, "Back").is_err());
++}
++
++#[test]
++fn model_free_status_observation_rejects_unsafe_names() {
++    assert!(
++        matches!(parse("record-structured-status status_1").unwrap().as_slice(),
++        [Step::RecordStructuredStatus(name)] if name == "status_1")
++    );
++    assert!(parse("record-structured-status ../status").is_err());
++}
++
++#[test]
++fn model_free_runtime_observation_name_is_bounded_to_one_file() {
++    assert!(matches!(parse("record-runtime cold_1").unwrap().as_slice(),
++        [Step::RecordRuntime(name)] if name == "cold_1"));
++    assert!(parse("record-runtime ../outside").is_err());
++}
++
++#[test]
++fn model_free_capture_choice_requires_exact_current_session_and_ordinal() {
++    let value = serde_json::json!([
++        {"session":"s", "ordinal":1, "phase":"saved", "stored":{"annotation_manifest":"blake3:a"}},
++        {"session":"s", "ordinal":2, "phase":"saved", "stored":{"annotation_manifest":"blake3:b"}},
++        {"session":"foreign", "ordinal":1, "phase":"saved", "stored":{"annotation_manifest":"blake3:c"}}
++    ]);
++    assert_eq!(
++        observed_capture_manifest(&value, "s", 1).unwrap(),
++        "blake3:a"
++    );
++    assert_eq!(
++        observed_capture_manifest(&value, "s", 2).unwrap(),
++        "blake3:b"
++    );
++    assert!(observed_capture_manifest(&value, "s", 3).is_err());
++    assert!(parse("choose-captured-source ../outside 1").is_err());
++    assert!(parse("choose-captured-source captured 0").is_err());
++    assert!(
++        matches!(parse("choose-captured-source captured 1").unwrap().as_slice(),
++        [Step::ChooseCapturedSource { name, ordinal: 1 }] if name == "captured")
++    );
++}
++
++#[test]
++fn model_free_comparison_observation_name_is_safe() {
++    assert!(
++        matches!(parse("record-comparison exact_pair").unwrap().as_slice(),
++        [Step::RecordComparison(name)] if name == "exact_pair")
++    );
++    assert!(parse("record-comparison ../pair").is_err());
++}
++
++#[test]
++fn model_free_saved_result_choice_requires_saved_current_identity() {
++    let mut value = serde_json::json!({"schema":"turnstone.structured-observation/v1",
++        "session":"s", "historical":false, "busy":false,
++        "saved_manifest":"blake3:a", "content_manifest":"blake3:a"});
++    assert_eq!(observed_saved_result(&value, "s").unwrap(), "blake3:a");
++    assert!(observed_saved_result(&value, "foreign").is_err());
++    value["content_manifest"] = serde_json::json!("blake3:b");
++    assert!(observed_saved_result(&value, "s").is_err());
++    assert!(parse("choose-saved-result ../outside").is_err());
++    assert!(
++        matches!(parse("choose-saved-result seed_sum").unwrap().as_slice(),
++        [Step::ChooseSavedResult(name)] if name == "seed_sum")
++    );
++}
++
++#[test]
++fn model_free_note_pointer_and_private_action_commands_parse() {
++    assert!(matches!(
++        parse("click-note-member").unwrap().as_slice(),
++        [Step::ClickNoteMember]
++    ));
++    assert!(parse("click-note-member another").is_err());
++    assert!(
++        matches!(parse("assert-no-action Retain selected Redshank note").unwrap().as_slice(),
++        [Step::AssertNoAction(label)] if label == "Retain selected Redshank note")
++    );
++    assert!(parse("assert-no-action").is_err());
++}
++
++#[test]
++fn model_free_search_wait_requires_a_frame_limit() {
++    assert!(matches!(
++        parse("wait-research-search 600").unwrap().as_slice(),
++        [Step::WaitResearchSearch(600)]
++    ));
++    assert!(parse("wait-research-search invalid").is_err());
++}
++
++#[test]
++fn model_free_structured_result_wait_requires_a_frame_limit() {
++    assert!(matches!(
++        parse("wait-structured-result 600").unwrap().as_slice(),
++        [Step::WaitStructuredResult(600)]
++    ));
++    assert!(parse("wait-structured-result invalid").is_err());
++}
++
++#[test]
++fn model_free_source_target_wait_requires_frames_and_exact_url() {
++    assert!(
++        matches!(parse("wait-source-target 600 https://example.test/A").unwrap().as_slice(),
++        [Step::WaitSourceTarget(600, url)] if url == "https://example.test/A")
++    );
++    assert!(parse("wait-source-target 600").is_err());
++    assert!(parse("wait-source-target invalid https://example.test/A").is_err());
++}
+diff --git a/src/shell/drive.rs b/src/shell/drive.rs
+index 759b4d6b..8b3962e7 100644
+--- a/src/shell/drive.rs
++++ b/src/shell/drive.rs
+@@ -84,6 +84,8 @@ mod shell_adapter_with_surfaces;
+ mod shell_focused_saved_reader_node;
+ #[path = "drive/shell_run_scenario_step.rs"]
+ mod shell_run_scenario_step;
++#[path = "drive/shell_scenario_click_note_member.rs"]
++mod shell_scenario_click_note_member;
+ #[path = "drive/shell_scenario_assert_focused.rs"]
+ mod shell_scenario_assert_focused;
+ #[path = "drive/shell_scenario_assert_no_surface.rs"]
+diff --git a/src/shell/drive/shell_run_scenario_step.rs b/src/shell/drive/shell_run_scenario_step.rs
+index f13a56e9..7554ac68 100644
+--- a/src/shell/drive/shell_run_scenario_step.rs
++++ b/src/shell/drive/shell_run_scenario_step.rs
+@@ -19,6 +19,7 @@ impl Shell {
+         match step {
+             Step::Open(..)
+             | Step::SelectGraphMember(..)
++            | Step::ClickNoteMember
+             | Step::ActivateGraphFold(..)
+             | Step::DoubleClickGraphNode(..)
+             | Step::RecordGraphScene(..)
+@@ -108,11 +109,21 @@ impl Shell {
+             | Step::WaitKnot(..)
+             | Step::WaitSourceCapture(..)
+             | Step::WaitSavedSources(..)
++            | Step::WaitResearchSearch(..) | Step::WaitSourceTarget(..)
++            | Step::WaitStructuredResult(..)
+             | Step::WaitSavedReader(..)
+             | Step::WaitFile(..)
+             | Step::RecordPlace(..)
+             | Step::RecordSourceCaptures(..)
+             | Step::RecordSavedSources(..)
++            | Step::RecordStructuredResearch(..)
++            | Step::RecordStructuredStatus(..)
++            | Step::RecordRuntime(..)
++            | Step::RecordComparison(..)
++            | Step::ChooseSuggestion(..)
++            | Step::AssertNoAction(..)
++            | Step::ChooseCapturedSource { .. }
++            | Step::ChooseSavedResult(..)
+             | Step::TouchFile(..) => self.scenario_assert_no_surface(step)?,
+         }
+         self.request_redraw();
+@@ -148,6 +159,7 @@ impl Shell {
+                 self.app.focus = crate::surface::FocusTarget::Graph(pane);
+                 self.request_redraw();
+             },
++            Step::ClickNoteMember => self.scenario_click_note_member()?,
+             Step::ActivateGraphFold(index) => {
+                 let pane = self.app.graph_command_pane().ok_or("no graph owner pane")?;
+                 let badge = self
+diff --git a/src/shell/drive/shell_scenario_assert_no_surface.rs b/src/shell/drive/shell_scenario_assert_no_surface.rs
+index b213d9f0..8dcedeb7 100644
+--- a/src/shell/drive/shell_scenario_assert_no_surface.rs
++++ b/src/shell/drive/shell_scenario_assert_no_surface.rs
+@@ -236,6 +236,33 @@ impl Shell {
+                     ));
+                 }
+             },
++            Step::WaitResearchSearch(frames) => {
++                if !self.wait_frames(*frames, |shell| {
++                    shell.app.scenario_research_search_summary().is_some()
++                }) {
++                    return Err(format!(
++                        "wait-research-search after {frames} frames: no current admitted result"
++                    ));
++                }
++            },
++            Step::WaitStructuredResult(frames) => {
++                if !self.wait_frames(*frames, |shell| {
++                    shell.app.structured_scenario_result_ready()
++                }) {
++                    return Err(format!(
++                        "wait-structured-result after {frames} frames: no current saved result or historical replay"
++                    ));
++                }
++            },
++            Step::WaitSourceTarget(frames, url) => {
++                if !self.wait_frames(*frames, |shell| {
++                    crate::scenario::source_target_ready(&shell.app.available_actions(), url)
++                }) {
++                    return Err(format!(
++                        "wait-source-target after {frames} frames: no unique admitted action for {url}"
++                    ));
++                }
++            },
+             Step::WaitSavedReader(frames) => {
+                 if !self.wait_frames(*frames, Shell::focused_saved_reader_ready) {
+                     let node = self.focused_saved_reader_node();
+@@ -315,11 +342,18 @@ impl Shell {
+                 })?;
+             },
+             Step::RecordSavedSources(name) => {
++                let selected = self.app.research_search.selected.clone();
+                 let mut readers = Vec::new();
+                 let mut nodes: Vec<_> = self.app.saved_readers.keys().copied().collect();
+                 nodes.sort();
+                 for node in nodes {
+                     let reader = &self.app.saved_readers[&node];
++                    if !crate::research_scenario_privacy::capture_selected(
++                        &selected,
++                        &reader.target.key,
++                    ) {
++                        continue;
++                    }
+                     let engine = self
+                         .app
+                         .content
+@@ -380,6 +414,9 @@ impl Shell {
+                     .collect();
+                 members.sort();
+                 for node in members {
++                    if !crate::research_scenario_privacy::clip_node_selected(&selected, node) {
++                        continue;
++                    }
+                     if let Some(session) =
+                         self.content_sessions
+                             .session_mut(&node)
+@@ -396,11 +433,15 @@ impl Shell {
+                     "session": self.app.session_id,
+                     "generation": self.app.source_capture_generation,
+                     "status": self.app.saved_sources.status,
+-                    "admissions": self.app.saved_source_admissions(),
+-                    "entries": self.app.saved_sources.entries,
++                    "address_events": self.address_event_history.observation(&selected, |key| self.app.saved_source_admitted(key)),
++                    "reader_scope": {"schema":"turnstone.m5-reader-scope/v1",
++                        "selected": if selected.is_none() { None::<&str> } else { Some("restricted") }},
++                    "admissions": crate::research_scenario_privacy::admissions(&selected, self.app.saved_source_admissions()),
++                    "entries": crate::research_scenario_privacy::entries(&selected, &self.app.saved_sources.entries),
+                     "readers": readers,
+                     "retained_admissions": self.app.research_clip_admissions(),
+                     "retained_readers": retained_readers,
++                    "search": self.app.scenario_research_search_summary(),
+                 });
+                 let body = serde_json::to_string_pretty(&value).map_err(|error| {
+                     format!("record-saved-sources '{name}': could not serialize: {error}")
+@@ -415,6 +456,137 @@ impl Shell {
+                     )
+                 })?;
+             },
++            Step::RecordStructuredResearch(name) => {
++                let value = self.app.structured_scenario_observation()?;
++                let bytes = serde_json::to_vec_pretty(&value)
++                    .map_err(|e| format!("structured observation encoding: {e}"))?;
++                let path = self
++                    .shared_out_dir
++                    .join(format!("{name}.structured-research.json"));
++                std::fs::write(path, bytes)
++                    .map_err(|e| format!("structured observation write: {e}"))?;
++            },
++            Step::RecordStructuredStatus(name) => {
++                let value = self.app.structured_scenario_status();
++                let bytes = serde_json::to_vec_pretty(&value)
++                    .map_err(|e| format!("structured status encoding: {e}"))?;
++                let path = self
++                    .shared_out_dir
++                    .join(format!("{name}.structured-status.json"));
++                std::fs::write(path, bytes).map_err(|e| format!("structured status write: {e}"))?;
++            },
++            Step::RecordRuntime(name) => {
++                let principal = self
++                    .app
++                    .identity
++                    .as_ref()
++                    .and_then(|identity| identity.custody_principal());
++                let value = serde_json::json!({
++                    "schema": "turnstone.model-free-runtime/v1",
++                    "pid": std::process::id(),
++                    "session": self.app.session_id,
++                    "network_offline": self.network_offline,
++                    "offline_acquisition_attempts": self.offline_attempts.load(std::sync::atomic::Ordering::Relaxed),
++                    "custody_principal": principal.map(|(profile, public)| serde_json::json!({"profile": profile.0, "public_key": public})),
++                    "inference": crate::inference_activity::snapshot(),
++                });
++                let bytes = serde_json::to_vec_pretty(&value).map_err(|e| e.to_string())?;
++                std::fs::write(
++                    self.shared_out_dir.join(format!("{name}.runtime.json")),
++                    bytes,
++                )
++                .map_err(|e| format!("runtime observation write: {e}"))?;
++            },
++            Step::RecordComparison(name) => {
++                let value = self.app.research_compare_observation()?;
++                let bytes = serde_json::to_vec_pretty(&value).map_err(|e| e.to_string())?;
++                std::fs::write(
++                    self.shared_out_dir.join(format!("{name}.comparison.json")),
++                    bytes,
++                )
++                .map_err(|e| format!("comparison observation write: {e}"))?;
++            },
++            Step::ChooseCapturedSource { name, ordinal } => {
++                let path = self
++                    .shared_out_dir
++                    .join(format!("{name}.source-captures.json"));
++                let bytes = std::fs::read(path)
++                    .map_err(|e| format!("capture observation unavailable: {e}"))?;
++                let value: serde_json::Value =
++                    serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
++                let label = crate::scenario::observed_capture_manifest(
++                    &value,
++                    &self.app.session_id.as_uuid().to_string(),
++                    *ordinal,
++                )?;
++                self.scenario_assert_no_surface(&Step::ChooseSuggestion(label))?;
++            },
++            Step::ChooseSavedResult(name) => {
++                let path = self
++                    .shared_out_dir
++                    .join(format!("{name}.structured-research.json"));
++                let bytes = std::fs::read(path)
++                    .map_err(|e| format!("saved result observation unavailable: {e}"))?;
++                let value: serde_json::Value =
++                    serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
++                let label = crate::scenario::observed_saved_result(
++                    &value,
++                    &self.app.session_id.as_uuid().to_string(),
++                )?;
++                self.scenario_assert_no_surface(&Step::ChooseSuggestion(label))?;
++            },
++            Step::AssertNoAction(label) => {
++                let snap = crate::observe::snapshot(&self.app);
++                if snap.available_actions.iter().any(|action| action == label) {
++                    return Err(format!("action unexpectedly offered: {label}"));
++                }
++            },
++            Step::ChooseSuggestion(label) => {
++                // Saved Sources scrolls the rendered window rather than moving
++                // omnibar.selected. Discover the complete ordered row labels,
++                // reject ambiguity, then scroll via the actual keyboard seam.
++                if !self.app.omnibar.open
++                    || !matches!(self.app.omnibar.mode, crate::ui::OmnibarMode::SavedSources)
++                {
++                    return Err("saved-source omnibar is not open".into());
++                }
++                let labels: Vec<_> = self
++                    .app
++                    .research_search
++                    .rows
++                    .iter()
++                    .map(crate::observe::suggestion_line)
++                    .collect();
++                if labels.is_empty() || labels.len() > 10_000 {
++                    return Err("suggestion list is empty or over limit".into());
++                }
++                let target = crate::scenario::suggestion_target(&labels, label)?;
++                let first = self.app.research_search.first_row;
++                if first >= labels.len() {
++                    return Err("invalid first suggestion".into());
++                }
++                let count = (target + labels.len() - first) % labels.len();
++                for _ in 0..count {
++                    self.scenario_key_in_window(0, &EditKey::Down)?;
++                }
++                let current = crate::observe::snapshot(&self.app).omnibar;
++                let rows: Vec<_> = self
++                    .app
++                    .research_search
++                    .rows
++                    .iter()
++                    .map(crate::observe::suggestion_line)
++                    .collect();
++                if rows != labels
++                    || self.app.research_search.first_row != target
++                    || !current.open
++                    || current.selected != 0
++                    || current.suggestions.first() != Some(&labels[target])
++                {
++                    return Err("suggestion changed during keyboard selection".into());
++                }
++                self.scenario_key_in_window(0, &EditKey::Enter)?;
++            },
+             Step::TouchFile(path) => {
+                 let p = std::path::Path::new(path.as_str());
+                 std::fs::write(p, "touched\n")
+diff --git a/src/shell/effects/shell_refresh_diagnostic_inspection.rs b/src/shell/effects/shell_refresh_diagnostic_inspection.rs
+index 5107a277..a6b42f0b 100644
+--- a/src/shell/effects/shell_refresh_diagnostic_inspection.rs
++++ b/src/shell/effects/shell_refresh_diagnostic_inspection.rs
+@@ -34,6 +34,15 @@ impl Shell {
+             .map(|d| d.as_millis() as u64)
+             .unwrap_or(0);
+         for event in events {
++            if std::env::var_os("TURNSTONE_SCENARIO").is_some()
++                && let crate::observe::AppEvent::AddressOpened(address) = &event
++            {
++                let target = crate::saved_sources::parse_address(address).ok().flatten()
++                    .filter(|target| self.app.saved_source_admitted(&target.key))
++                    .filter(|target| crate::research_scenario_privacy::capture_selected(&self.app.research_search.selected, &target.key))
++                    .filter(|_| std::env::var("TURNSTONE_M5_EXPECTED_A1_URI").ok().as_deref() == Some(address.as_str()));
++                self.address_event_history.record(target);
++            }
+             self.diagnostic_observations.record(&event);
+             if self.observed_events.len() == 128 {
+                 self.observed_events.pop_front();
+diff --git a/src/shell/mod.rs b/src/shell/mod.rs
+index f35187c6..f816e05f 100644
+--- a/src/shell/mod.rs
++++ b/src/shell/mod.rs
+@@ -22,6 +22,7 @@ mod contributed_automation;
+ mod controller_input;
+ mod cue_content;
+ mod document_a11y;
++mod citation_event_history;
+ mod drive;
+ mod effects;
+ mod events;
+diff --git a/src/shell/shell.rs b/src/shell/shell.rs
+index aa95e8ce..abd7c16d 100644
+--- a/src/shell/shell.rs
++++ b/src/shell/shell.rs
+@@ -110,6 +110,7 @@ pub struct Shell {
+     /// received them. Automation drains this copy, so its assertions do not
+     /// compete with trail memory for the app's one event stream.
+     pub(super) observed_events: VecDeque<String>,
++    pub(super) address_event_history: super::citation_event_history::AddressEventHistory,
+     pub(super) diagnostic_observations: crate::diagnostic_observations::DiagnosticObservations,
+     pub(super) shared_out_dir: std::path::PathBuf,
+     /// A capture the next `render` fulfills from the very views it presents
+diff --git a/src/shell/shell_new.rs b/src/shell/shell_new.rs
+index 3fc69dc4..fe0c2827 100644
+--- a/src/shell/shell_new.rs
++++ b/src/shell/shell_new.rs
+@@ -332,6 +332,7 @@ impl Shell {
+             held_contributed_click: None,
+             contributed_click_request: 0,
+             observed_events: VecDeque::with_capacity(128),
++            address_event_history: Default::default(),
+             diagnostic_observations:
+                 crate::diagnostic_observations::DiagnosticObservations::from_env(),
+             shared_out_dir: shared_out_dir_from_env(),
+diff --git a/src/trail_memory.rs b/src/trail_memory.rs
+index 4136dd0e..2864e338 100644
+--- a/src/trail_memory.rs
++++ b/src/trail_memory.rs
+@@ -336,6 +336,11 @@ pub(crate) struct CaptureInferenceOwner {
+ #[path = "trail_memory/research_owner_tests.rs"]
+ mod research_owner_tests;
+ 
++#[cfg(test)]
++#[cfg(feature = "authoring")]
++#[path = "trail_memory/m5_inspection.rs"]
++mod m5_inspection;
++
+ #[path = "trail_memory/impl_default_for_recall_config.rs"]
+ mod impl_default_for_recall_config;
+ #[path = "trail_memory/memory_dir.rs"]
+diff --git a/src/trail_memory/research_owner_tests.rs b/src/trail_memory/research_owner_tests.rs
+index eda13dd4..706639f6 100644
+--- a/src/trail_memory/research_owner_tests.rs
++++ b/src/trail_memory/research_owner_tests.rs
+@@ -302,3 +302,22 @@ fn research_owner_loads_only_live_captures_and_reopens_exact_versions_without_pa
+             .starts_with("A1")
+     );
+ }
++
++/// This reader opens a disposable copy taken after both product processes exit.
++#[test]
++#[ignore = "requires an exited M5 isolated profile copy and fixture custody"]
++fn model_free_inspect_exited_structured_copy() {
++    super::m5_inspection::inspect_exited_structured_copy();
++}
++
++#[test]
++#[ignore = "requires a separately marked M5 fault copy and fixture custody"]
++fn model_free_inject_missing_capture_copy() {
++    super::m5_inspection::inject_missing_capture_copy();
++}
++
++#[test]
++#[ignore = "requires an injected M5 fault copy and fixture custody"]
++fn model_free_verify_missing_capture_copy() {
++    super::m5_inspection::verify_missing_capture_copy();
++}

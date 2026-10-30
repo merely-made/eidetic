@@ -1,0 +1,51 @@
+{
+  "custody_principal": {
+    "profile": "family",
+    "public_key": [
+      192,
+      80,
+      197,
+      99,
+      122,
+      68,
+      250,
+      134,
+      41,
+      255,
+      243,
+      204,
+      204,
+      226,
+      48,
+      12,
+      179,
+      98,
+      166,
+      61,
+      153,
+      217,
+      95,
+      197,
+      65,
+      69,
+      38,
+      111,
+      67,
+      50,
+      68,
+      90
+    ]
+  },
+  "inference": {
+    "client_compiled": true,
+    "corpus_publications": 0,
+    "generation_requests": 0,
+    "resident_model_loads": null,
+    "route_attempts": 0
+  },
+  "network_offline": true,
+  "offline_acquisition_attempts": 0,
+  "pid": 26,
+  "schema": "turnstone.model-free-runtime/v1",
+  "session": "26bf092b-f96f-4bf9-924b-5a4745247a52"
+}

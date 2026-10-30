@@ -1,0 +1,29 @@
+--- collection-c/seed.scn
++++ proposed/seed.scn
+@@ -19,6 +19,7 @@
+ settle 30
+ assert text saved
+ capture 01_authored_note
++act Show document in map
+ open ${M5_ORIGIN}/A
+ settle 20
+ act Open Inspector pane
+@@ -28,6 +29,7 @@
+ click-row Save source and keep
+ wait-row 600 Source save: Saved
+ record-source-captures 02_A1
++act Show document in map
+ open ${M5_ORIGIN}/B
+ settle 20
+ act Open Inspector pane
+@@ -129,8 +131,10 @@
+ wait-file 600 ${M5_SELECTION_PACKAGE}
+ assert event clip-package-exported
+ capture 08_selected_clip
++act Show document in map
+ open ${M5_ORIGIN}/swap-a
+ settle 15
++act Show document in map
+ open ${M5_ORIGIN}/A
+ settle 20
+ act Open Inspector pane

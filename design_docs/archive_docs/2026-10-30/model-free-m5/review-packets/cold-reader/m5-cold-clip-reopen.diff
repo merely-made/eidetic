@@ -1,0 +1,30 @@
+--- approved-passage/reopen.scn
++++ proposed/reopen.scn
+@@ -31,12 +31,27 @@
+ assert snap suggestions ~ Selection:
+ record-saved-sources 24_reopen_selection
+ capture 24_reopen_selection
++choose-suggestion Selection:
++settle 60
++assert content-live
++assert text only this linked finding
++record-saved-sources 24_reopen_selection_reader
++capture 24_reopen_selection_reader
+ act Search saved sources
+ type M5 authored Redshank note
+ wait-research-search 600
+ assert snap suggestions ~ Note:
+ record-saved-sources 25_reopen_note
+ capture 25_reopen_note
++choose-suggestion Note:
++settle 60
++assert content-live
++assert text M5 authored Redshank note
++record-saved-sources 25_reopen_note_reader
++capture 25_reopen_note_reader
++act Search saved sources
++type M5 authored Redshank note
++wait-research-search 600
+ choose-suggestion Structured records…
+ settle 5
+ choose-suggestion Saved results and replay…

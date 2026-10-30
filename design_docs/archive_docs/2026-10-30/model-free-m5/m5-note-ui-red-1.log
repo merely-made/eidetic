@@ -1,0 +1,44 @@
+Running as unit: custody-contract-m5-note-ui-red-1.scope; invocation ID: 50d4f0f128764e67ab1ce8e987b7958b
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=aa94fe22eea29e9b54e01ed21e6991536ed4f208#aa94fe22)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=aa94fe22eea29e9b54e01ed21e6991536ed4f208#aa94fe22)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=aa94fe22eea29e9b54e01ed21e6991536ed4f208#aa94fe22)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://github.com/merely-made/eidetic.git
+warning: patch `genet-taffy v0.14.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)` was not used in the crate graph
+warning: patch `murm-webrtc v0.0.1 (https://github.com/merely-made/murm.git?branch=main#573a8b2c)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+error: package ID specification `redshank-surfaces` did not match any packages
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p redshank-surfaces privacy_only_note_menu_keeps_privacy_without_edit_or_delete -- --nocapture"
+	User time (seconds): 0.52
+	System time (seconds): 1.44
+	Percent of CPU this job got: 53%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.65
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 144368
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 12
+	Minor (reclaiming a frame) page faults: 38401
+	Voluntary context switches: 13036
+	Involuntary context switches: 77
+	Swaps: 0
+	File system inputs: 524696
+	File system outputs: 1928
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

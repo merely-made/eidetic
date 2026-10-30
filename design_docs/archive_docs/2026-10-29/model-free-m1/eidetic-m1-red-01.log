@@ -1,0 +1,55 @@
+Running as unit: custody-contract-eidetic-m1-red-01.scope; invocation ID: cb940c36af684fd0b27b7ec94f86277b
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling tempfile v3.27.0
+   Compiling value-log v1.9.0
+   Compiling enum_dispatch v0.3.13
+   Compiling lsm-tree v2.10.4
+   Compiling munge_macro v0.4.7
+   Compiling fjall v2.11.2
+   Compiling munge v0.4.7
+   Compiling uuid v1.27.0
+   Compiling muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+   Compiling rkyv v0.8.18
+   Compiling chartulary v0.2.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/chartulary)
+   Compiling thiserror-impl v1.0.69
+   Compiling genet-text v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling thiserror v1.0.69
+   Compiling eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+   Compiling esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)
+error[E0432]: unresolved import `eidetic_search::recall`
+ --> crates/eidetic-search/tests/model_free_recall.rs:9:21
+  |
+9 | use eidetic_search::recall::{RecallIndex, RecallIndexConfig, RetainedSourceOwner};
+  |                     ^^^^^^ could not find `recall` in `eidetic_search`
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `eidetic-search` (test "model_free_recall") due to 1 previous error
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic-search --test model_free_recall"
+	User time (seconds): 14.23
+	System time (seconds): 5.30
+	Percent of CPU this job got: 89%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:21.95
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 425964
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1088
+	Minor (reclaiming a frame) page faults: 558028
+	Voluntary context switches: 12788
+	Involuntary context switches: 421
+	Swaps: 0
+	File system inputs: 2218904
+	File system outputs: 464000
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

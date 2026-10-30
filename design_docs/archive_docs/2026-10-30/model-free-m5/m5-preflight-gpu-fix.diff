@@ -1,0 +1,85 @@
+--- reviewed-route-label
++++ gpu-fix
+@@ -66,7 +66,7 @@
+               'timeout_seconds': 180, 'inspection_timeout_seconds': 30,
+               'memory_bytes': 3 * 1024**3, 'tasks_max': 128, 'cpu_percent': 150,
+               'devices': identities,
+-              'environment': {'PATH': '/usr/bin', 'WAYLAND_DISPLAY': 'wayland-0', 'RUST_LOG': 'warn'}}
++              'environment': {'PATH': '/usr/bin', 'WAYLAND_DISPLAY': 'wayland-0', 'RUST_LOG': 'warn,wgpu_core::instance=debug'}}
+     config_path = frozen / 'seed-config.json'; native.record(config_path, config)
+     ns = native.namespace_command(sandbox, frozen, args.wayland_socket, args.gpu_device,
+                                   'seed', config_path, preflight=True)
+@@ -107,6 +107,12 @@
+     raise SystemExit('mounted Wayland socket identity differs')
+ if not stat.S_ISCHR(dev.st_mode) or (dev.st_dev, dev.st_ino, dev.st_rdev) != (devices['render']['device'], devices['render']['inode'], devices['render']['rdev']):
+     raise SystemExit('mounted render device identity differs')
++sysinfo = devices['sysfs']
++sysroot = Path(sysinfo['root']); target = Path('/sys/dev/char') / sysinfo['devnum']
++if target.resolve(strict=True) != Path(sysinfo['target']): raise SystemExit('render sysfs target changed')
++rootstat, targetstat = sysroot.stat(), target.stat()
++if (rootstat.st_dev, rootstat.st_ino, targetstat.st_dev, targetstat.st_ino) != (sysinfo['device'], sysinfo['inode'], sysinfo['target_device'], sysinfo['target_inode']):
++    raise SystemExit('mounted render sysfs identity differs')
+ namespace_phase.phase(config)
+ run = Path('/m5/run/seed')
+ runtime = json.loads((run / 'gui_preflight.runtime.json').read_text())
+@@ -292,6 +298,14 @@
+                 'ownership_observed':owned, 'invocation':invocation, 'cleanup':cleanup})
+             if failed_empty_check: raise RuntimeError('scope termination could not be verified')
+ 
++def validate_render_sysfs_target(target, render_name):
++    devices = Path('/sys/devices')
++    if not target.is_absolute() or not target.is_relative_to(devices) or target.name != render_name or target.parent.name != 'drm':
++        raise ValueError('render sysfs target is not the selected device')
++    root = target.parent.parent
++    if root == devices or not root.is_relative_to(devices): raise ValueError('render device subtree too broad')
++    return root
++
+ def device_identity(wayland_socket, gpu_device):
+     runtime = os.environ.get('XDG_RUNTIME_DIR'); display = os.environ.get('WAYLAND_DISPLAY')
+     if not runtime or not display or '/' in display or display in ('.', '..'):
+@@ -305,9 +319,18 @@
+     device_stat = gpu_device.stat()
+     if not stat.S_ISCHR(device_stat.st_mode) or os.major(device_stat.st_rdev) != 226 or os.minor(device_stat.st_rdev) < 128:
+         raise ValueError('invalid DRM render device')
++    devnum = str(os.major(device_stat.st_rdev)) + ':' + str(os.minor(device_stat.st_rdev))
++    link = Path('/sys/dev/char') / devnum
++    if not link.is_symlink(): raise ValueError('render sysfs link missing')
++    target = link.resolve(strict=True)
++    root = validate_render_sysfs_target(target, gpu_device.name)
++    sysstat = root.stat(); targetstat = target.stat()
+     return {'wayland': {'path':str(wayland_socket), 'device':socket_stat.st_dev, 'inode':socket_stat.st_ino},
+             'render': {'path':str(gpu_device), 'device':device_stat.st_dev, 'inode':device_stat.st_ino,
+-                       'rdev':device_stat.st_rdev}}
++                       'rdev':device_stat.st_rdev},
++            'sysfs': {'root':str(root), 'target':str(target), 'devnum':devnum,
++                      'device':sysstat.st_dev, 'inode':sysstat.st_ino,
++                      'target_device':targetstat.st_dev, 'target_inode':targetstat.st_ino}}
+ 
+ def namespace_command(sandbox, frozen, wayland_socket, gpu_device, phase, config, preflight=False):
+     """Construct a narrow mount namespace; review on the actual host before use."""
+@@ -317,12 +340,24 @@
+     # Do not bind frozen/ as a directory: it also contains original fixture bodies.
+     command = ['bwrap', '--die-with-parent', '--new-session', '--unshare-user', '--uid', '0', '--gid', '0', '--cap-add', 'CAP_NET_ADMIN',
+                '--unshare-net', '--unshare-pid', '--unshare-ipc',
+-               '--proc', '/proc', '--dev', '/dev', '--ro-bind', '/sys/fs/cgroup', '/sys/fs/cgroup',
++               '--proc', '/proc', '--dev', '/dev',
+                '--ro-bind', '/usr', '/usr',
+                '--symlink', 'usr/lib', '/lib', '--symlink', 'usr/lib64', '/lib64',
+                '--dir', '/m5', '--dir', '/m5/input', '--bind', str(sandbox), '/m5/run',
+                '--dir', '/dev/dri', '--dev-bind', str(gpu_device), '/dev/dri/' + gpu_device.name,
+                '--bind', str(wayland_socket), '/m5/run/runtime/wayland-0']
++    device_stat = gpu_device.stat()
++    devnum = str(os.major(device_stat.st_rdev)) + ':' + str(os.minor(device_stat.st_rdev))
++    target = (Path('/sys/dev/char') / devnum).resolve(strict=True)
++    gpu_root = validate_render_sysfs_target(target, gpu_device.name)
++    command += ['--dir', '/sys', '--dir', '/sys/dev', '--dir', '/sys/dev/char', '--dir', '/sys/devices']
++    ancestor = Path('/sys/devices')
++    for part in gpu_root.relative_to(ancestor).parts[:-1]:
++        ancestor = ancestor / part
++        command += ['--dir', str(ancestor)]
++    command += ['--ro-bind', str(gpu_root), str(gpu_root),
++                '--symlink', os.path.relpath(target, '/sys/dev/char'), '/sys/dev/char/' + devnum,
++                '--ro-bind', '/sys/fs/cgroup', '/sys/fs/cgroup']
+     for name in ('turnstone', 'custodian', 'test-binary', 'namespace_phase.py', 'fixture_server.py', phase + '.scn'):
+         path = frozen / name
+         if not path.is_file(): raise ValueError('missing frozen input ' + str(path))

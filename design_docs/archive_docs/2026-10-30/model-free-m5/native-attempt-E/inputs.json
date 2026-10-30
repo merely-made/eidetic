@@ -1,0 +1,89 @@
+{
+  "files": {
+    "turnstone": "243a191b9e481c27133d3b5be1cb6ec441b3b7556136e8a724daefdbd53c74b0",
+    "custodian": "2b18444702cc0f198962125af8ac29a623257ff17f91f7190734c39dabaacf5e",
+    "test-binary": "64baa58e7934d6b67ab5f4b70d7f37a91d9821ab991b70e4f2d6c52c4d07512e",
+    "seed.scn": "961b17e4c0432d6b29b97bc47bec11722bcf906fe795146f7a12c2bb9000b8dc",
+    "namespace_phase.py": "f17afe791dfb7b3d02a63be5f00497ee59ddff45bfda6822e89d5c5445071121",
+    "preflight_phase.py": "48238cab03fc20a2925d83e99dc06e66d0c50c41967b838ad7a382130385b48f",
+    "fixture_server.py": "71198b8d604d59a849b3c5c0218f7e26735cfae285b066cea88efb9c369becca"
+  },
+  "kind": "empty-profile-preflight",
+  "devices": {
+    "wayland": {
+      "path": "/run/user/1000/wayland-0",
+      "device": 111,
+      "inode": 134
+    },
+    "render": {
+      "path": "/dev/dri/renderD128",
+      "device": 7,
+      "inode": 555,
+      "rdev": 57984
+    },
+    "sysfs": {
+      "root": "/sys/devices/pci0000:00/0000:00:08.1/0000:06:00.0",
+      "target": "/sys/devices/pci0000:00/0000:00:08.1/0000:06:00.0/drm/renderD128",
+      "devnum": "226:128",
+      "device": 26,
+      "inode": 7363,
+      "target_device": 26,
+      "target_inode": 43840
+    }
+  },
+  "builds": {
+    "turnstone": {
+      "receipt_sha256": "3cb808929150f7bfc258d95bb9b68b629a9d5b25caf9967c7f040c7e849f66c6",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "-p",
+        "turnstone",
+        "--features",
+        "authoring,inference",
+        "--bin",
+        "turnstone"
+      ],
+      "binary_sha256": "243a191b9e481c27133d3b5be1cb6ec441b3b7556136e8a724daefdbd53c74b0",
+      "source_hash": "8afc1fbd2d4500e401c11d6828163d7d75f7078d57bef7eac508c0f27cc4eb4b"
+    },
+    "test-binary": {
+      "receipt_sha256": "01b4adc48a0996a722f8038c5b0c240a71ca71c771bc53253a35c70db66d61dc",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "turnstone",
+        "--features",
+        "authoring,inference",
+        "--lib",
+        "--no-run"
+      ],
+      "binary_sha256": "64baa58e7934d6b67ab5f4b70d7f37a91d9821ab991b70e4f2d6c52c4d07512e",
+      "source_hash": "8afc1fbd2d4500e401c11d6828163d7d75f7078d57bef7eac508c0f27cc4eb4b"
+    },
+    "custodian": {
+      "receipt_sha256": "b0bc61abb88af58fa7aa04553ecedc006aee89596b44f3c37b64fd480cc31f38",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "mere-resident",
+        "--features",
+        "custody-receipt-host",
+        "--test",
+        "custody_payload",
+        "--no-run"
+      ],
+      "binary_sha256": "2b18444702cc0f198962125af8ac29a623257ff17f91f7190734c39dabaacf5e",
+      "source_hash": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff"
+    }
+  },
+  "provenance_sha256": "8b4bf8068fe49f529b63ee71e7c738786708e1ceb055c94da521791b49fa2cbe"
+}

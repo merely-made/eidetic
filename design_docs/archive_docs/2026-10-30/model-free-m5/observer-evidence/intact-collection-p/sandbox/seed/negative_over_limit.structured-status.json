@@ -1,0 +1,60 @@
+{
+  "author_save_ready": false,
+  "busy": false,
+  "error": "Structured record limit exceeded",
+  "held_result": false,
+  "limit_refusal": {
+    "context_generation": "27ee557d-9e5a-46e9-ac37-396e1065fb60",
+    "error": "Structured record limit exceeded",
+    "graph_revisions": [
+      {
+        "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+        "revision": 64
+      }
+    ],
+    "query": {
+      "filters": {
+        "entity": null,
+        "property": null,
+        "schema_revision": null,
+        "source": null,
+        "status": null,
+        "tag": null,
+        "unit": null,
+        "valid_time": null
+      },
+      "operation": "PropertyLookup"
+    },
+    "request_id": "befc865c-2959-4120-87ce-31f543d40f15",
+    "scope_revision": 9,
+    "settings": {
+      "max_input_bytes": 16777216,
+      "max_output_bytes": 16777216,
+      "max_records": 1,
+      "max_rows": 100000,
+      "max_sources": 10000,
+      "max_validation_bytes": 16777216,
+      "max_work": 1000000
+    },
+    "source_selection": {
+      "mode": "all"
+    },
+    "stage": "worker-refusal"
+  },
+  "result_generation": null,
+  "result_scope_current": false,
+  "schema": "turnstone.structured-status/v1",
+  "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+  "structured_idle_ready": false,
+  "view": "Home",
+  "visible": true,
+  "visible_rows": [
+    "› Run in this scope",
+    "› Enter a sourced property…",
+    "› Saved results and replay…",
+    "› Withdrawn record history…",
+    "› Pending saves…",
+    "› Operation limits…",
+    "› Back to search"
+  ]
+}

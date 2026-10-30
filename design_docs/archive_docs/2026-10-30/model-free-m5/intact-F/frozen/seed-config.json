@@ -1,0 +1,43 @@
+{
+  "phase": "seed",
+  "output": "/m5/run",
+  "scenario": "/m5/input/seed.scn",
+  "fixture_server": "/m5/input/fixture_server.py",
+  "custodian": "/m5/input/custodian",
+  "application": "/m5/input/turnstone",
+  "test_binary": "/m5/input/test-binary",
+  "inspection_observation": "/m5/run/reopen/cold_sum.structured-research.json",
+  "source_observation": "/m5/run/seed/redshank_note_admitted.saved-sources.json",
+  "timeout_seconds": 450,
+  "inspection_timeout_seconds": 90,
+  "memory_bytes": 3221225472,
+  "tasks_max": 128,
+  "cpu_percent": 150,
+  "devices": {
+    "wayland": {
+      "path": "/run/user/1000/wayland-0",
+      "device": 111,
+      "inode": 134
+    },
+    "render": {
+      "path": "/dev/dri/renderD128",
+      "device": 7,
+      "inode": 555,
+      "rdev": 57984
+    },
+    "sysfs": {
+      "root": "/sys/devices/pci0000:00/0000:00:08.1/0000:06:00.0",
+      "target": "/sys/devices/pci0000:00/0000:00:08.1/0000:06:00.0/drm/renderD128",
+      "devnum": "226:128",
+      "device": 26,
+      "inode": 7363,
+      "target_device": 26,
+      "target_inode": 43840
+    }
+  },
+  "environment": {
+    "PATH": "/usr/bin",
+    "WAYLAND_DISPLAY": "wayland-0",
+    "RUST_LOG": "warn,wgpu_core::instance=debug"
+  }
+}

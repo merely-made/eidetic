@@ -1,0 +1,103 @@
+{
+  "kind": "model-free-acceptance-collection",
+  "files": {
+    "turnstone": "3dbe6344e610bc228529b881643efe9eefce1157cfa82aaaaf3caa24f7ee4d04",
+    "custodian": "2b18444702cc0f198962125af8ac29a623257ff17f91f7190734c39dabaacf5e",
+    "test-binary": "51a70e473b5c343893bda6b0142a028e1114a95b9657eb173effcba70d9bcb89",
+    "seed.scn": "3f25efd28d660f7184f5927e9dbcbc96b15f3927682073856e7f829fe235c7d2",
+    "reopen.scn": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+    "run_native.py": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+    "namespace_phase.py": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+    "fixture_server.py": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+    "acceptance_phase.py": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+    "run_acceptance.py": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db"
+  },
+  "fixtures": {
+    "a1.html": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+    "a2.html": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+    "b.html": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+    "episode.mp3": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+    "foreign.html": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+    "selection.html": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079"
+  },
+  "devices": {
+    "wayland": {
+      "path": "/run/user/1000/wayland-0",
+      "device": 111,
+      "inode": 134
+    },
+    "render": {
+      "path": "/dev/dri/renderD128",
+      "device": 7,
+      "inode": 555,
+      "rdev": 57984
+    },
+    "sysfs": {
+      "root": "/sys/devices/pci0000:00/0000:00:08.1/0000:06:00.0",
+      "target": "/sys/devices/pci0000:00/0000:00:08.1/0000:06:00.0/drm/renderD128",
+      "devnum": "226:128",
+      "device": 26,
+      "inode": 7363,
+      "target_device": 26,
+      "target_inode": 43840
+    }
+  },
+  "builds": {
+    "turnstone": {
+      "source_inventory": "frozen/turnstone-source-inventory.json",
+      "receipt_sha256": "131c17f9bec42193fe366d2d3c0340a97d4030c46a37cbf5d253433fcd38b9d6",
+      "binary_sha256": "3dbe6344e610bc228529b881643efe9eefce1157cfa82aaaaf3caa24f7ee4d04",
+      "source_hash": "5999ba877d1818392a7f59fae14437e1b1896422708b5fd2902e46fc35bfe767",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "-p",
+        "turnstone",
+        "--features",
+        "authoring,inference",
+        "--bin",
+        "turnstone"
+      ]
+    },
+    "test-binary": {
+      "source_inventory": "frozen/test-binary-source-inventory.json",
+      "receipt_sha256": "0dd407db8c524a564781a9e16269905c6025fed60d6755c3357af870df277035",
+      "binary_sha256": "51a70e473b5c343893bda6b0142a028e1114a95b9657eb173effcba70d9bcb89",
+      "source_hash": "5999ba877d1818392a7f59fae14437e1b1896422708b5fd2902e46fc35bfe767",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "turnstone",
+        "--features",
+        "authoring,inference",
+        "--lib",
+        "--no-run"
+      ]
+    },
+    "custodian": {
+      "source_inventory": "frozen/custodian-source-inventory.json",
+      "receipt_sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "binary_sha256": "2b18444702cc0f198962125af8ac29a623257ff17f91f7190734c39dabaacf5e",
+      "source_hash": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "mere-resident",
+        "--features",
+        "custody-receipt-host",
+        "--test",
+        "custody_payload",
+        "--no-run"
+      ]
+    }
+  },
+  "provenance_sha256": "61f1a1977495764334ef7c9251db319e7bee588adf9563ffe28bd918b2f7ca78"
+}

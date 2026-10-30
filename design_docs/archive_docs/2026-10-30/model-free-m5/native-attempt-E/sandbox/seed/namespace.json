@@ -1,0 +1,102 @@
+{
+  "addresses": [
+    {
+      "ifindex": 1,
+      "ifname": "lo",
+      "flags": [
+        "LOOPBACK",
+        "UP",
+        "LOWER_UP"
+      ],
+      "mtu": 65536,
+      "qdisc": "noqueue",
+      "operstate": "UNKNOWN",
+      "group": "default",
+      "txqlen": 1000,
+      "link_type": "loopback",
+      "address": "00:00:00:00:00:00",
+      "broadcast": "00:00:00:00:00:00",
+      "addr_info": [
+        {
+          "family": "inet",
+          "local": "127.0.0.1",
+          "prefixlen": 8,
+          "scope": "host",
+          "label": "lo",
+          "valid_life_time": 4294967295,
+          "preferred_life_time": 4294967295
+        },
+        {
+          "family": "inet6",
+          "local": "::1",
+          "prefixlen": 128,
+          "scope": "host",
+          "protocol": "kernel_lo",
+          "valid_life_time": 4294967295,
+          "preferred_life_time": 4294967295
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "type": "local",
+      "dst": "127.0.0.0/8",
+      "dev": "lo",
+      "table": "local",
+      "protocol": "kernel",
+      "scope": "host",
+      "prefsrc": "127.0.0.1",
+      "flags": []
+    },
+    {
+      "type": "local",
+      "dst": "127.0.0.1",
+      "dev": "lo",
+      "table": "local",
+      "protocol": "kernel",
+      "scope": "host",
+      "prefsrc": "127.0.0.1",
+      "flags": []
+    },
+    {
+      "type": "broadcast",
+      "dst": "127.255.255.255",
+      "dev": "lo",
+      "table": "local",
+      "protocol": "kernel",
+      "scope": "link",
+      "prefsrc": "127.0.0.1",
+      "flags": []
+    },
+    {
+      "type": "local",
+      "dst": "::1",
+      "dev": "lo",
+      "table": "local",
+      "protocol": "kernel",
+      "metric": 0,
+      "flags": [],
+      "pref": "medium"
+    }
+  ],
+  "netns": "net:[4026532868]",
+  "mountns": "mnt:[4026532851]",
+  "userns": "user:[4026532849]",
+  "pidns": "pid:[4026532853]",
+  "ipcns": "ipc:[4026532852]",
+  "setup_capabilities": {
+    "effective": "0",
+    "permitted": "0",
+    "inheritable": "0",
+    "ambient": "0",
+    "no_new_privs": true
+  },
+  "cgroup": {
+    "path": "/user.slice/user-1000.slice/user@1000.service/app.slice/m5-preflight-800bc8b66f5f406399bbb570d1915c0a.scope",
+    "memory_max": "3221225472",
+    "memory_swap_max": "0",
+    "pids_max": "128",
+    "cpu_max": "150000 100000"
+  }
+}

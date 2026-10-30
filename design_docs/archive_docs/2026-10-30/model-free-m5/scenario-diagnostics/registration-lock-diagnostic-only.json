@@ -1,0 +1,17 @@
+{
+  "schema": "turnstone.m5-missing-registered-source/v1",
+  "files": {
+    "src/trail_memory/fault_helper.rs": "892bd625a7aa1cf59211bf9ec425f59f4a63837daea22c405ecfc095a8b8d992",
+    "src/trail_memory/m5_inspection.rs": "530bce96adcf7a2a9656aa4c444153f35709a38e325bd06f61457876bf4d057a",
+    "src/trail_memory/research_owner_tests.rs": "4a8cb3030b03882bd31de9e13f983b3a1066dcb1f3a5726a81196d99be8a0be6",
+    "src/shell/citation_event_history.rs": "6d7ee9825b99352f04f6f4899fecea2403c2020365d1cb3e43e7094ac7a54f3a",
+    "src/shell/mod.rs": "2d5871a14d4e48647da37cb442b08a49e091659795b29349910c135c9de8de18",
+    "src/shell/shell.rs": "59afc4d5220876d699e640ca635759d6bbb1e5fc2759704466c856156ba421fa",
+    "src/shell/shell_new.rs": "cd2797f62e8a2b27afe4f292087b817b7cfa2835a2fcc70eeac033b3fe05fa42",
+    "src/shell/effects/shell_refresh_diagnostic_inspection.rs": "ac0263fe4e54f941e477c76084a3b532b2ab1ebaf1fdf566cd41b43f91744216",
+    "src/shell/drive/shell_scenario_assert_no_surface.rs": "05b7e7e5513f6bcaf35986adc62d38723d2dfc870268e16071ce0297bf26734a",
+    "src/research_scenario_privacy.rs": "77880fcb1931a148342eb0d27957d31849cd4968891abf54c616b8cdb2721d35",
+    "src/app/saved_source_arms.rs": "9bb7d0a7ed2a69dfbf9bf321db3c6a698630b244bc00b02640080d490023eaf1"
+  },
+  "review": "m5-readiness-review.md; m5-missing-draft/fix2-review.md; m5-fetch-wait-review/review.md (timeout diagnostic only in registered source)"
+}

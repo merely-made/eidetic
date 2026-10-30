@@ -1,0 +1,659 @@
+{
+  "status": "source normalization before locked receiving check",
+  "changes": [
+    {
+      "kind": "package",
+      "name": "accesskit",
+      "version": "0.25.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#c6290142866eefead385e728c5c5da24ac6f624a",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "app-host",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "backstep",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "cambium",
+      "version": "0.6.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "cambium-a11y",
+      "version": "0.3.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "cambium-desktop",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "cambium-rootstock",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "cambium-winit",
+      "version": "0.3.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "chartulary",
+      "version": "0.2.2",
+      "before": "git+https://www.github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "chirograph",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "distillery",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "document-canvas",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "eidetic",
+      "version": "0.0.2",
+      "before": "git+https://www.github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "eidetic-search",
+      "version": "0.0.1",
+      "before": "git+https://www.github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "fjall",
+      "version": "2.11.2",
+      "before": "registry+https://github.com/rust-lang/crates.io-index",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "graft-engine",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "graphshell-client",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "graphshell-endpoint",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "graphshell-host",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "hest",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "illume",
+      "version": "0.0.3",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "incipit",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "inker",
+      "version": "0.1.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "knot-editor-host",
+      "version": "0.1.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "lsm-tree",
+      "version": "2.10.4",
+      "before": "registry+https://github.com/rust-lang/crates.io-index",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "luggage",
+      "version": "0.1.0",
+      "before": "git+https://www.github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "mere",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-alembic",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-athanor",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-cartography",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-chrome",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-comms",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-curation",
+      "version": "0.1.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-edit",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-fetch",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-fleece",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-forme",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-kernel",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-lanes",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-mesh",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-moot",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-pageload",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-proofs",
+      "version": "0.1.0",
+      "before": "git+https://www.github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "mere-rdf",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mere-surface-api",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "meristem",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mesquite",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "mora-cmudict",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "muniment",
+      "version": "0.2.0",
+      "before": "git+https://www.github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "nematic",
+      "version": "0.1.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "numen",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "pandect",
+      "version": "0.1.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "pelt-core",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "pictograph",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "platen",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "reference-data",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "sceno",
+      "version": "0.0.6",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "scenograph",
+      "version": "0.0.5",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "scenomise",
+      "version": "0.0.6",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "scenotime",
+      "version": "0.0.4",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "script-rhai",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "scrying-engine",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "seiche",
+      "version": "0.0.6",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "servitor",
+      "version": "0.0.2",
+      "before": "git+https://www.github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "sprigging",
+      "version": "0.3.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "stickleback",
+      "version": "0.1.1",
+      "before": "git+https://www.github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "package",
+      "name": "tabard",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "tabard-workshop",
+      "version": "0.0.1",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "tinct",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "uxtree",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "weld-engine",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "package",
+      "name": "workbench",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/mere.git?branch=main#229f277a252440a8e47aefe367febca3cf502bbb",
+      "after": "git+https://github.com/merely-made/mere.git?branch=main#c1035649255c934e057fe7eb0e0ebdf8881c1024"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "chartulary",
+      "version": "0.2.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "eidetic",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "luggage",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "mere-proofs",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "muniment",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "servitor",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "stickleback",
+      "version": "0.1.1",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "chartulary",
+      "version": "0.2.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "eidetic",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "luggage",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "mere-proofs",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "muniment",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "servitor",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "stickleback",
+      "version": "0.1.1",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "chartulary",
+      "version": "0.2.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "eidetic",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "luggage",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "mere-proofs",
+      "version": "0.1.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "muniment",
+      "version": "0.2.0",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "servitor",
+      "version": "0.0.2",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    },
+    {
+      "kind": "unused_patch",
+      "name": "stickleback",
+      "version": "0.1.1",
+      "before": "git+https://github.com/merely-made/eidetic.git?rev=a025008c36cc21c0afa63682e044cf1ca99403b4#a025008c36cc21c0afa63682e044cf1ca99403b4",
+      "after": "git+https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa"
+    }
+  ],
+  "package_count": 1662,
+  "all_other_fields_equal": true,
+  "cargo_lock_sha256": "46120659f29809c6fd50e03d55ed2e70e9a41f73fde71a1878421b6e78842ac6"
+}

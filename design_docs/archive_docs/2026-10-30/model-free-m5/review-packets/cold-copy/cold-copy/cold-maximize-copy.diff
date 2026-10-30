@@ -1,0 +1,31 @@
+--- m5-draft/cold-copy-diagnostic.py	2026-10-30 15:35:16.597810940 -0400
++++ m5-draft/cold-maximize-copy.py	2026-10-30 15:42:20.117370396 -0400
+@@ -11,8 +11,8 @@
+ import run_acceptance as acceptance
+ 
+ SOURCE = Path('/home/markik/Code/testing/m5-intact-collection-20261030-q')
+-OUT = Path('/home/markik/Code/testing/m5-cold-copy-diagnostic-20261030-b')
+-SCENARIO = HERE / 'cold-read-diagnostic.scn'
++OUT = Path('/home/markik/Code/testing/m5-cold-copy-diagnostic-20261030-c')
++SCENARIO = HERE / 'cold-maximize-diagnostic.scn'
+ ROOTS = ('profile', 'mere', 'custody/custodian/data', 'custody/custodian/vault')
+ FILES = ('custody/fixture-marker', 'custody/fixture.lock', 'custody/custodian/initialized',
+          'custody/custodian/client.json', 'origin-info.json',
+@@ -197,14 +197,11 @@
+         fails = [line for line in done.splitlines() if line.startswith('FAIL:')]
+         if len(fails) != 1 or 'm5-intentional-diagnostic-stop' not in fails[0]:
+             raise ValueError('unexpected scenario failure: ' + repr(fails))
+-        selection = validate_reader(run / 'reopen', '24_reopen_selection', 'Selection', 'only this linked finding')
+-        note = validate_reader(run / 'reopen', '25_reopen_note', 'Note', 'M5 authored Redshank note')
+-        for name in ('22_reopen_A1.png', '23_reopen_A2.png', 'model_unavailable.png'):
++        for name in ('22_reopen_A1.png', '23_reopen_A2.png'):
+             phase.validate_png(run / 'reopen' / name)
+-        native.record(OUT / 'diagnostic.json', {'status':'diagnostic-only-awaiting-visual-review',
++        native.record(OUT / 'diagnostic.json', {'status':'capture-layout-diagnostic-only-awaiting-visual-review',
+             'source':str(SOURCE), 'scenario_sha256':scenario_hash, 'frozen_sha256':frozen_source,
+-            'source_config_sha256':config_source, 'scope':unit, 'intentional_stop':True,
+-            'selection_reader':selection, 'note_reader':note})
++            'source_config_sha256':config_source, 'scope':unit, 'intentional_stop':True})
+     except BaseException as exc:
+         error = repr(exc)
+         native.record(OUT / 'failure.json', {'error':error, 'time_ns':time.time_ns()})

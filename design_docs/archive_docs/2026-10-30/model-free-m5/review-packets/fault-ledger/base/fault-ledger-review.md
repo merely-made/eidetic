@@ -1,0 +1,13 @@
+# M5 fault ledger integration review
+
+**Disposition: changes required.** This is a narrow static review of `fault-ledger.diff` and the matching packet. The guard remains false. No tests, builds, or launches were run in this review.
+
+## Findings
+
+1. **P1: completion does not bind frozen inputs back to the pre-launch snapshot.** `run_missing.py:318-319` records hashes of the full frozen tree before launch, but `complete_collection` at lines 255-264 and 279-283 hashes only its current non-executable entries and never compares the frozen tree with that snapshot. Executables are only checked for regular type and single link if present; their presence and bytes are not checked at completion. A changed or missing binary, or changed scenario or script, can therefore still produce a completed ledger. The after-run ledger hash and pre-launch `inputs.json` can disagree without failure, leaving exact binary/scenario provenance unestablished. Require the complete frozen tree to match the recorded pre-launch inventory after the owned scope exits, including presence and hashes of all three binaries, before emitting completion. Keep the ledger's omission of binary bytes and copy stores if desired. Add changed/missing binary and changed scenario/script regression cases.
+
+2. **P2: completion failures do not receive a persistent failure record.** `complete_collection` is called at `run_missing.py:352` after the `except` at lines 337-339. A missing artifact, invalid cleanup, linked artifact, or write/hash error there exits without `failure.json`; the primary integrity record remains, but the reason for failed collection is only in the caller's error output. Persist the completion exception and time as a failure receipt without emitting a successful `collection.json`, while retaining the already-written primary and cleanup evidence. Cover an actual completion failure through `execute`, not only direct `complete_collection` calls.
+
+## Checked
+
+The copied `run_acceptance.py` is byte-identical to `acceptance-draft/run_acceptance.py`. Its five-argument `verify_builds` return structure matches the driver's full `inputs['builds']` comparison. The ledger is emitted only after normal scope return, process cleanup checks and the primary-integrity `finally`, and required observations, frames, metadata and scripts are included; copy stores and executable bytes are intentionally excluded. The scenario delta removes only the redundant saved-source waits immediately preceding current admitted-search waits; actual scenario behavior remains untested. All seven hashes in `fault-ledger-hashes.json` match the packet. The 16 reported focused tests were not independently rerun.

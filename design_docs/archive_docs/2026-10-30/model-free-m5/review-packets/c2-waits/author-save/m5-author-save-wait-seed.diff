@@ -1,0 +1,128 @@
+--- m5-draft/seed-before-author-save-wait.scn	2026-10-30 13:32:08.077232800 -0400
++++ m5-draft/seed-composed.draft.scn	2026-10-30 13:32:08.114409467 -0400
+@@ -273,7 +273,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_0
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/A
+@@ -308,7 +308,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_1
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/A
+@@ -343,7 +343,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_2
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/A
+@@ -377,7 +377,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_3
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/A
+@@ -412,7 +412,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_4
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/A
+@@ -448,7 +448,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_5
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/B
+@@ -484,7 +484,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_6
+ # A separate same-named distinct-entity case, multivalued/incompatible and overflow
+ # records plus save acknowledgements and independent assertions are still required.
+@@ -523,7 +523,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_7
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/B
+@@ -559,7 +559,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_8
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/A
+@@ -594,7 +594,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_9
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/A
+@@ -629,7 +629,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_10
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/B
+@@ -665,7 +665,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_11
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/B
+@@ -701,7 +701,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_12
+ choose-suggestion Existing entity:
+ choose-suggestion ${M5_ORIGIN}/A
+@@ -737,7 +737,7 @@
+ choose-suggestion Exact evidence:
+ choose-suggestion M5 B
+ choose-suggestion Save sourced property
+-settle 300
++wait-structured-author-save 600
+ capture authored_13
+ # Return from the authoring form to the current search results.
+ choose-suggestion Back

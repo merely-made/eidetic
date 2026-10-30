@@ -1,0 +1,497 @@
+Running as unit: custody-contract-m4-mere-bounds-red.scope; invocation ID: 95ca46c2e95b4c43817ec352f02c78f6
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=864f107d44bf759111ad2ea3c9036b2cfbf03f4c#864f107d)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=864f107d44bf759111ad2ea3c9036b2cfbf03f4c#864f107d)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=864f107d44bf759111ad2ea3c9036b2cfbf03f4c#864f107d)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+   Compiling getrandom v0.4.3
+   Compiling uuid v1.27.0
+   Compiling zerocopy-derive v0.8.57
+   Compiling zerocopy v0.8.57
+   Compiling strum_macros v0.28.0
+   Compiling half v2.7.1
+   Compiling ciborium-ll v0.2.2
+   Compiling cfb v0.7.3
+   Compiling muniment v0.2.0 (https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)
+   Compiling strum v0.28.0
+   Compiling rmp v0.8.15
+   Compiling enumn v0.1.14
+   Compiling minicbor v2.3.0
+   Compiling tempfile v3.27.0
+   Compiling minicbor-serde v0.7.1
+   Compiling accesskit v0.25.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/support/patches/accesskit)
+   Compiling rmp-serde v1.3.1
+   Compiling numen v0.2.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/conatus/numen)
+   Compiling chartulary v0.2.2 (https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)
+   Compiling infer v0.19.0
+   Compiling ciborium v0.2.2
+   Compiling cbor4ii v1.2.3
+   Compiling mere-kernel v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/graph/graph-kernel)
+error[E0432]: unresolved import `crate::graph::resource::ResourceEdgesBoundError`
+ --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:8:5
+  |
+8 | use crate::graph::resource::ResourceEdgesBoundError;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^-----------------------
+  |                             |
+  |                             no `ResourceEdgesBoundError` in `graph::resource`
+
+error[E0432]: unresolved import `crate::graph::resource_pair_bounds`
+ --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:9:19
+  |
+9 | use crate::graph::resource_pair_bounds::BorrowedEdge;
+  |                   ^^^^^^^^^^^^^^^^^^^^ could not find `resource_pair_bounds` in `graph`
+
+warning: unused imports: `astar`, `dijkstra`, `has_path_connecting`, and `kosaraju_scc`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:21:22
+   |
+21 | use petgraph::algo::{astar, dijkstra, has_path_connecting, kosaraju_scc};
+   |                      ^^^^^  ^^^^^^^^  ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `Archived`, `Place`, `Resolver`, and `rancor::Fallible`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:25:21
+   |
+25 | use rkyv::{Archive, Archived, Deserialize, Place, Resolver, Serialize, rancor::Fallible};
+   |                     ^^^^^^^^               ^^^^^  ^^^^^^^^             ^^^^^^^^^^^^^^^^
+
+warning: unused import: `HashSet`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:26:43
+   |
+26 | use std::collections::{BTreeMap, HashMap, HashSet};
+   |                                           ^^^^^^^
+
+warning: unused imports: `GraphSnapshot`, `PersistedAddress`, `PersistedArrangementEdgeData`, `PersistedArrangementSubKind`, `PersistedContainmentEdgeData`, `PersistedContainmentSubKind`, `PersistedImportedEdgeData`, `PersistedImportedSubKind`, `PersistedNavigationTrigger`, `PersistedNodeSessionState`, `PersistedNode`, `PersistedProvenanceEdgeData`, `PersistedProvenanceSubKind`, `PersistedTraversalEdgeData`, `PersistedTraversalMetrics`, and `PersistedTraversalRecord`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:35:5
+   |
+35 |     GraphSnapshot, PersistedAddress, PersistedArrangementEdgeData, PersistedArrangementSubKind,
+   |     ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+36 |     PersistedContainmentEdgeData, PersistedContainmentSubKind, PersistedEdge, PersistedEdgeFamily,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+37 |     PersistedImportedEdgeData, PersistedImportedSubKind, PersistedNavigationTrigger, PersistedNode,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^
+38 |     PersistedNodeSessionState, PersistedProvenanceEdgeData, PersistedProvenanceSubKind,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+39 |     PersistedSemanticEdgeData, PersistedSemanticSubKind, PersistedTraversalEdgeData,
+   |                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+40 |     PersistedTraversalMetrics, PersistedTraversalRecord,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `NodeTagPresentationState`
+  --> crates/graph/graph-kernel/src/graph/node_facets.rs:18:54
+   |
+18 | use crate::types::{NodeClassification, NodeProperty, NodeTagPresentationState};
+   |                                                      ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `uuid::Uuid`
+   --> crates/graph/graph-kernel/src/graph/display.rs:212:9
+    |
+212 |     use uuid::Uuid;
+    |         ^^^^^^^^^^
+
+warning: unused imports: `address_from_url` and `detect_mime`
+  --> crates/graph/graph-kernel/src/graph/snapshot/from.rs:19:22
+   |
+19 | use crate::address::{address_from_url, detect_mime};
+   |                      ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/graph/graph-kernel/src/graph/input_key.rs:17:10
+   |
+17 |     NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+17 -     NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+17 +     NEXT.try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/graph/graph-kernel/src/graph/membership.rs:21:18
+   |
+21 |             NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |                  ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+21 -             NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+21 +             NEXT.try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:79:15
+    |
+ 79 |         graph.persisted_resource_edges_between_bounded(from, from, expected.len(), bytes),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:83:15
+    |
+ 83 |         graph.persisted_resource_edges_between_bounded(from, from, 1, bytes),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:87:15
+    |
+ 87 |         graph.persisted_resource_edges_between_bounded(from, from, 2, bytes - 1),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:118:15
+    |
+118 |         graph.persisted_resource_edges_between_bounded(other, other, 1, persisted_bytes),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:122:15
+    |
+122 |         graph.persisted_resource_edges_between_bounded(other, other, 1, persisted_bytes - 1),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:142:15
+    |
+142 |         graph.persisted_resource_edges_between_bounded(from, from, 2, bytes),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:146:15
+    |
+146 |         graph.persisted_resource_edges_between_bounded(from, other, 0, 1),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:150:15
+    |
+150 |         graph.persisted_resource_edges_between_bounded(from, Uuid::nil(), 0, 0),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:154:15
+    |
+154 |         graph.persisted_resource_edges_between_bounded(other, from, 0, 2),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+error[E0599]: no method named `persisted_resource_edges_between_bounded` found for struct `graph::Graph` in the current scope
+   --> crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs:158:15
+    |
+158 |         graph.persisted_resource_edges_between_bounded(other, from, 0, 1),
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: crates/graph/graph-kernel/src/graph/mod.rs:340:1
+    |
+340 | pub struct Graph {
+    | ---------------- method `persisted_resource_edges_between_bounded` not found for this struct
+    |
+help: there is a method `persisted_resource_edges_between` with a similar name, but with different arguments
+   --> crates/graph/graph-kernel/src/graph/resource.rs:301:5
+    |
+301 | /     pub(crate) fn persisted_resource_edges_between(
+302 | |         &self,
+303 | |         from: Uuid,
+304 | |         to: Uuid,
+305 | |     ) -> Vec<PersistedEdge> {
+    | |___________________________^
+
+warning: unused import: `EdgeRef`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:24:23
+   |
+24 | use petgraph::visit::{EdgeRef, IntoEdgeReferences};
+   |                       ^^^^^^^
+
+warning: unused variable: `copy`
+   --> crates/graph/graph-kernel/src/graph/cross_graph.rs:416:13
+    |
+416 |         let copy = b.get_node(copy_key).unwrap();
+    |             ^^^^ help: if this is intentional, prefix it with an underscore: `_copy`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> crates/graph/graph-kernel/src/graph/legacy_family_attribution.rs:500:13
+    |
+500 |         let mut attribution = LegacyFamilyAttribution::from_baseline(&graph);
+    |             ----^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `key`
+   --> crates/graph/graph-kernel/src/graph/assertion_write.rs:996:19
+    |
+996 |         let Some((key, current)) = self.find_semantic_statement(statement_id) else {
+    |                   ^^^ help: if this is intentional, prefix it with an underscore: `_key`
+
+warning: variable does not need to be mutable
+    --> crates/graph/graph-kernel/src/graph/query.rs:1341:13
+     |
+1341 |         let mut node = |g: &mut Graph, i: usize| {
+     |             ----^^^^
+     |             |
+     |             help: remove this `mut`
+
+Some errors have detailed explanations: E0432, E0599.
+For more information about an error, try `rustc --explain E0432`.
+warning: `mere-kernel` (lib test) generated 14 warnings
+error: could not compile `mere-kernel` (lib test) due to 12 previous errors; 14 warnings emitted
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -j1 -p mere-kernel --lib bounded_resource_tests -- --test-threads=1"
+	User time (seconds): 21.16
+	System time (seconds): 4.69
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:26.60
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 893072
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 292
+	Minor (reclaiming a frame) page faults: 803635
+	Voluntary context switches: 3350
+	Involuntary context switches: 783
+	Swaps: 0
+	File system inputs: 283160
+	File system outputs: 226136
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

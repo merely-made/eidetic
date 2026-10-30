@@ -1,0 +1,13 @@
+RESULT fail
+captured 01_authored_note
+captured 04_exact_A1
+captured 05_note_citation
+captured 06_before_citation_click
+captured 07_after_citation_click
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["address-opened file:///m5/run/profile/notes/research-baca10e4-0620-47b0-993b-b8496aacba41.djot", "content 2846c831-939a-4cf4-b861-d67c21effcb7 live", "content-title 2846c831-939a-4cf4-b861-d67c21effcb7 M5 A", "content-title 2846c831-939a-4cf4-b861-d67c21effcb7 Saved: M5 A", "address-opened mere://saved-source/sealed-v1/b4ffbcf3-16f4-4fcf-a0ef-cdeab95c7e15/49597e3c-6672-4378-b64a-2941243425b7/3168fed9-85b7-422c-a3c8-4e9b6c6f2ac8/15f7afdceabe56bdfc68fd4ed5e92dfaddde5a01f19ce82dfe6d878516842ae5/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57", "source-document-capture-progress request=76fd7f11-65e8-4f9b-b551-ff7ab22b9246 session=SessionId(b4ffbcf3-16f4-4fcf-a0ef-cdeab95c7e15) node=c91665c1-9d06-431b-ae21-50666370a67c stage=saved stored=Some(StoredSourceDocument { raw_manifest: \"blake3:2daa6279017e4ea73a8e691e194a802610eef1c48e4e597b592549e1061f05ae\", annotation_manifest: \"sealed-v1:blake3:df86f1e53972752d9c6dd9cf1b3a3210e8cc2cb7b5b6675aad9fd544908b9fcd\" }) "])
+presentation frames=344 captures=5 blank=0
+capture /m5/run/seed/01_authored_note.png digest=32f2bab67a304fa1 blank=false
+capture /m5/run/seed/04_exact_A1.png digest=d394f268a8fcde74 blank=false
+capture /m5/run/seed/05_note_citation.png digest=baf248d0e316bf81 blank=false
+capture /m5/run/seed/06_before_citation_click.png digest=baf248d0e316bf81 blank=false
+capture /m5/run/seed/07_after_citation_click.png digest=36f33fb26a3b0c64 blank=false

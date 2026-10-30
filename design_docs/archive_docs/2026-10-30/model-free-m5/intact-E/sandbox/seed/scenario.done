@@ -1,0 +1,6 @@
+RESULT fail
+captured 01_authored_note
+FAIL: wait-row 'Source save: Saved' after 600 frames: trail [] roster [] inspector ["Pane source: Following active pane: M5 A", "Title: M5 A", "URL: http://127.0.0.1:45707/A", "Node id: 3657a539-6d6f-41fe-ba83-89e7b27ffb93", "Addresses: 1", "Map position pinned: no", "Tags: none", "Import provenance: none", "Classifications: none", "Mime hint: text/html", "Viewer: auto", "Compat: no", "Content state: none", "Source save: Ready", "Saved captures: 0", "Kept: no", "you: ReplaySetNodeFacetById", "you: ReplaySetNodeFacetById", "you: ReplaySetNodeTitleById", "you: ReplaySetNodeMimeHintById", "you: ReplaySetResourceEdgesByIds"] arrange []
+FAIL: no successful window presentation for ten seconds
+presentation frames=118 captures=1 blank=0
+capture /m5/run/seed/01_authored_note.png digest=108bf84d7e87b65f blank=false

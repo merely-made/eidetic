@@ -1,0 +1,234 @@
+{
+  "reviewer": "Codex visual review Terra",
+  "scope": "Collection O structured seed captures only; screenshots do not prove exact values, inventory, cold reopen or fault behavior.",
+  "frames": [
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_0.png",
+      "sha256": "954a28cc6f403a79a4989885d1e218428dab27bdd799500b3df9bfcb24d9feb3",
+      "status": "pass",
+      "observations": "Author form visible and readable at top after save, with entity, m5:clock, schema revision and timestamp type. No visible error; inventory required for saved count and values."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_1.png",
+      "sha256": "3ab8f26f20f7dc22ae135f2e04d4f798d1ddb63824d0271bb0429e5fdffd4fd4",
+      "status": "pass",
+      "observations": "Author form visible and readable at top after save, with entity, m5:clock, schema revision and timestamp type. No visible error; inventory required for saved count and values."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_2.png",
+      "sha256": "7f9ab71909e92c88be56a6dfae83292b36dca000f4991b7824f7dea002f1c2b3",
+      "status": "pass",
+      "observations": "Author form visible and readable at top after save, with entity, m5:clock, schema revision and timestamp type. No visible error; inventory required for saved count and values."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_3.png",
+      "sha256": "790e84082f60cff22485864159c274227724d00bd72a832c86104bc736b48bc7",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:clock and timestamp type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_4.png",
+      "sha256": "0ced196c32970099bb359cbe29ccb6732ff1b68a42abc5084dc9dec7061ed521",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:clock and timestamp type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_5.png",
+      "sha256": "aedd5c48869602c41a7f47b408f92fcee35f3a775f63a41a0a9b7e89e4322c90",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:amount and integer type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_6.png",
+      "sha256": "eaf3fe8f995a573393182ff6cc7dd89796b875a52390e6e532b541660f21323e",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:amount and integer type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_7.png",
+      "sha256": "e26aa8010c08049f378fbc9ebec16ccf618ec612f6733bd2290753309735dc9c",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:overflow and integer type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_8.png",
+      "sha256": "b8b9b90780404b3766095f4430397446ece5c3412ffedbc2f12d34a0e4107aa2",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:overflow and integer type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_9.png",
+      "sha256": "6ce3214f00dd252887c01e5d4c24a4858596757c98ead739da9ef1b941956665",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:multi and text type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_10.png",
+      "sha256": "3c19d186852e6383a864dd15498e0c5aa6397991f2834d4108ffab4a6cd7dba5",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:multi and text type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_11.png",
+      "sha256": "69e366c683f7af2f8549eae10148c7736e771d4da9a57d2d785449bbca6c4cf6",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:decimal and decimal type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_12.png",
+      "sha256": "ba4603329c567d5463838b5ba87e2502aa53eade317a66b3af0ee3f88de75e5a",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:decimal and decimal type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_13.png",
+      "sha256": "58e5c3e9cf1d9a642f17e3439ce6419c31a5b4e3be282d535440e2300eee861e",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:withdraw and integer type; entity and schema revision visible. No visible error; inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_SourceLookup.png",
+      "sha256": "6ea378b6d691d3392f150ad313fc3cdbcfe82f96109e0e4befc048e0cee0ba00",
+      "status": "pass",
+      "observations": "Source lookup result and all-admitted scope are visible; complete, 5 inputs, 14 records shown. Navigation is readable; exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_CountByProducer.png",
+      "sha256": "aa48a51f8605541ad9395eeaf414236a1633d15e37611e610635583ebc04a670",
+      "status": "pass",
+      "observations": "Count by source kind result and all-admitted scope are visible; complete, 5 inputs, 14 records shown. Navigation is readable; exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_CountBySource.png",
+      "sha256": "f00bdd339c1fcd4a5b23366d0ff6dc21aa8de876fce5c602cddfd6bbb20bc8cd",
+      "status": "pass",
+      "observations": "Count by source result and all-admitted scope are visible; complete, 5 inputs, 14 records shown. Navigation is readable; exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_SourceTimeline.png",
+      "sha256": "1c4e45d0801afbc90ba97b02867968fceda5611d9614df81f27758faf4497421",
+      "status": "pass",
+      "observations": "Source timeline result and all-admitted scope are visible; complete, 5 inputs, 14 records shown. Navigation is readable; exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_RecordTimeline.png",
+      "sha256": "9c1fca14e99f3c790f29d4368adfa471a6c63ee24a70fcc4d6a9472a61b9d6ba",
+      "status": "pass",
+      "observations": "Record timeline result and all-admitted scope are visible; complete, 5 inputs, 14 records shown. Navigation is readable; exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_TagMembership.png",
+      "sha256": "6993ea17e9d7cdbc76035765efec4e8023c8db1537c7718666684c1133d4c54c",
+      "status": "pass",
+      "observations": "Tag membership result and all-admitted scope are visible; complete, 5 inputs, 14 records shown. Navigation is readable; exact values require semantic checks. This is an untagged absence case, not positive tag coverage."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_PropertyLookup.png",
+      "sha256": "dc423e163cd83c6e5a25bdf6d7aee4eb86b7707e973d6cf273803e5711a0ea37",
+      "status": "pass",
+      "observations": "Property lookup result and all-admitted scope are visible; complete, 5 inputs, 14 records shown. Navigation is readable; exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_GroupValues.png",
+      "sha256": "30d5dc58f5b096085006a98744228c1edc51726425cf4bcff1f3991e13ec1ba0",
+      "status": "pass",
+      "observations": "Group equal values complete, 5 inputs and 14 records; all-admitted scope and navigation readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_JoinEntity.png",
+      "sha256": "58bd33ef6d3d63660ff2b8ba59fa72b3d0decefc55af2e000e8f2c9bd3903118",
+      "status": "pass",
+      "observations": "Join by entity ID complete, 5 inputs and 14 records; all-admitted scope and navigation readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_JoinSource.png",
+      "sha256": "41ab82ec63470ab3cf4bf2a33c4fbcd3fedb329ba221064cd85ea78e22be3720",
+      "status": "pass",
+      "observations": "Join by source ID complete, 5 inputs and 14 records; all-admitted scope and navigation readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_Compare.png",
+      "sha256": "6ed0c9eaf74ecb8862cff63a334f8a9c58aa5527299146e14da8f2ef8389bd6b",
+      "status": "pass",
+      "observations": "Compare properties complete, 5 inputs and 14 records; all-admitted scope and navigation readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_Sum.png",
+      "sha256": "b5fe8f2186764a2fd21070d48ef779d7ec25af057fd7ff119d1d159ab9f4fa62",
+      "status": "pass",
+      "observations": "Sum compatible values complete, 5 inputs and 14 records; all-admitted scope and navigation readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_before.png",
+      "sha256": "1d74c530fa873b01efaa947252f630aba15c2566f23e8b383b0f6944e94827ab",
+      "status": "pass",
+      "observations": "Property lookup complete with 5 inputs and 14 records in all-admitted scope. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_inspected_active.png",
+      "sha256": "4dd6f80537f47c407fc8bae8d09489491f4873fb1f19031d84524a19980b24d4",
+      "status": "pass",
+      "observations": "Current assertion: active and withdrawal action visible and readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_history.png",
+      "sha256": "dda87965e269b6f072f5362984d7586a9736ed88c7f31e13d3fb11676bca8f86",
+      "status": "pass",
+      "observations": "Current assertion: withdrawn and exact evidence action visible and readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_fresh.png",
+      "sha256": "e4371ce4a6b2da6e5720c88ee814866d62e1eb76523e2804e374d04bf64257aa",
+      "status": "pass",
+      "observations": "Property lookup complete with 5 inputs and 13 records, current all-admitted scope. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_historical.png",
+      "sha256": "def9e17938540e75fc66467d0bbbc925e42aa3d205b0cacdc2c190e52633dc2c",
+      "status": "pass",
+      "observations": "Property lookup explicitly labeled frozen historical input and complete; 5 inputs and 14 rec... visible, right edge clipped. Historical label is readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_before.png",
+      "sha256": "9228c849cc9118f589294a73413261983e902b21add2d1c7d8c8b6de12c6da7b",
+      "status": "pass",
+      "observations": "Frozen historical input and complete label visible; count text clipped at right. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_selector.png",
+      "sha256": "d74e9bf42af082bf04a070a25d0b5113d7e3a590c9e4869bab03a962fc2cccb5",
+      "status": "pass",
+      "observations": "Choose sources checked; listed sources unchecked; navigation readable. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_search.png",
+      "sha256": "1452802a72371cbf2db004274281f53d0729892b74ea1ed64fb1ea54c4ec2dfe",
+      "status": "pass",
+      "observations": "Search options, compare, structured records and coverage visible with no result rows. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_before_run.png",
+      "sha256": "1acd1edb74c8455e1f9da23d0b0696a961166ff41991c8ff9a01e50b079a5453",
+      "status": "pass",
+      "observations": "Property lookup shows No sources chosen and Run in this scope; previous result absent. Exact values require semantic checks."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_fresh.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/negative_no_match.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/negative_over_limit.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    }
+  ]
+}

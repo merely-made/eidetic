@@ -1,0 +1,16 @@
+{
+  "status": "capture-layout-diagnostic-only-awaiting-visual-review",
+  "source": "/home/markik/Code/testing/m5-intact-collection-20261030-q",
+  "scenario_sha256": "036e3bfa839f788ba5ce4d61602eb98d18a53f275ae3372529274a07ad49b800",
+  "frozen_sha256": {
+    "turnstone": "a2c8ccc0a96f31d3a51d8d51c9d2ddc5102249db7297325bb98fe8a3284f695e",
+    "custodian": "2b18444702cc0f198962125af8ac29a623257ff17f91f7190734c39dabaacf5e",
+    "test-binary": "0eb0a0a16e67655369c0d52ea6f621f04a8b04f1daea9fbc89695d2db4977330",
+    "fixture_server.py": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+    "namespace_phase.py": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+    "acceptance_phase.py": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db"
+  },
+  "source_config_sha256": "59649c84e332131301bcffa7792f0460ebac963a2a8e504105d6896612d5930b",
+  "scope": "m5-cold-copy-f2c44638546046769213da15bb6bbac9",
+  "intentional_stop": true
+}

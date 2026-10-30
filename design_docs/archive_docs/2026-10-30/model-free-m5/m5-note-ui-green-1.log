@@ -1,0 +1,163 @@
+Running as unit: custody-contract-m5-note-ui-green-1.scope; invocation ID: fd2c6ee8670e4ac8b3fcd486df65d0fb
+warning: patch `armillary v0.1.1 (https://www.github.com/merely-made/armillary.git?rev=864f107d44bf759111ad2ea3c9036b2cfbf03f4c#864f107d)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling genet-text v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling regress v0.11.1 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling genet-flow v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling genet-scripted-dom v0.1.2 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling buckram v0.0.3 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling livery v0.0.5 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling genet-livery v0.0.4 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling backstep v0.1.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling cambium v0.6.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling cambium-winit v0.3.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling genet-render v0.2.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling cambium-rootstock v0.1.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling cambium-a11y v0.3.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling taproot v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling cambium-desktop v0.1.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling redshank-surfaces v0.0.0 (/home/markik/Code/worktrees/woodshed-model-free-notes-20261030/ports/redshank/surfaces)
+    Finished `test` profile [unoptimized] target(s) in 33.96s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/redshank_surfaces-c7013f9ba749ecb6)
+
+running 111 tests
+test dock::tests::compact_surface_has_semantic_player_and_capture_controls ... ok
+test dock::tests::completed_offers_replay ... ok
+test dock::tests::dock_voice_release_survives_the_host_recording_projection ... ok
+test dock::tests::every_compact_layout_requires_an_explicit_approximate_note_action ... ok
+test dock::tests::player_and_capture_mount_independently_and_emit_commands ... ok
+test dock::tests::pressing_the_seek_track_seeks_to_the_pressed_fraction ... ok
+test dock::tests::rate_and_volume_cycle ... ok
+test dock::tests::recording_swaps_the_transport_row_and_keeps_the_rows ... ok
+test dock::tests::stopped_capture_release_is_harmless_and_retained_surface_offers_explicit_retry ... ok
+test dock::tests::text_capture_availability_is_independent_when_explicitly_supplied ... ok
+test dock::tests::unavailable_transport_rejects_commands ... ok
+test dock::tests::voice_capture_uses_pointer_press_and_release ... ok
+test rail::tests::rail_carries_the_same_facts_and_commands ... ok
+test rail::tests::recording_rail_shows_the_frozen_anchor_and_both_exits ... ok
+test scene::chain::tests::a_pinned_episode_is_marked_and_the_card_offers_unpin ... ok
+test scene::chain::tests::episode_and_note_and_card_actions_emit_commands ... ok
+test scene::chain::tests::newest_episode_leads_the_vertical_chain ... ok
+test scene::chain::tests::overview_draws_one_row_per_feed_and_a_local_audio_row ... ok
+test scene::chain::tests::refresh_emits_for_the_current_feed ... ok
+test scene::chain::tests::the_context_card_lists_the_neighbours_by_date ... ok
+test scene::chain::tests::the_header_summarises_one_feed_and_the_whole_library ... ok
+test scene::chain::tests::the_scene_segment_emits_select_scene ... ok
+test scene::chain::tests::vertical_chain_marks_every_episode_state_and_hangs_its_notes ... ok
+test scene::geometry::tests::publication_dates_compare_utc_instants_across_feed_formats ... ok
+test scene::orrery::tests::the_centre_caption_uses_the_counts_and_the_refresh_schedule ... ok
+test scene::orrery::tests::the_newest_episode_sits_at_twelve ... ok
+test scene::orrery::tests::the_ring_carries_every_episode_and_the_notes_as_satellites ... ok
+test scene::orrery::tests::the_selected_card_opens_the_episode ... ok
+test scene::tests::the_three_projections_carry_the_same_six_episodes ... ok
+test scene::trail::tests::every_session_action_emits_select_item ... ok
+test scene::trail::tests::sessions_group_by_day_with_a_total_and_a_week_summary ... ok
+test scene::trail::tests::the_active_session_is_washed_to_its_playhead_and_carries_its_notes ... ok
+test shell::tests::artwork_background_image_changes_no_geometry_and_paints_nothing ... ok
+test shell::tests::copying_disables_recovery_actions_and_rejects_clicks ... ok
+test shell::tests::dock_height_is_identical_at_phone_width ... ok
+test shell::tests::dock_height_is_identical_in_every_transport_state ... ok
+test shell::tests::every_scope_class_is_reachable_from_the_state ... ok
+test shell::tests::notice_is_a_status_line_under_the_header ... ok
+test shell::tests::rail_layout_puts_the_rail_beside_the_tab_strip ... ok
+test shell::tests::recovery_actions_emit_intents_without_changing_host_facts ... ok
+test shell::tests::recovery_actions_follow_host_dirty_and_close_facts ... ok
+test shell::tests::recovery_and_copy_outcomes_stay_visible_in_both_layouts ... ok
+test shell::tests::segment_law_marks_the_selected_destination ... ok
+test shell::tests::shell_carries_the_scope_layout_and_one_panel ... ok
+test shell::tests::svg_elements_mount ... ok
+test surface_api::tests::a_host_projection_reaches_the_dock_on_the_next_frame ... ok
+test surface_api::tests::a_pressed_control_reaches_the_host_through_the_dock_handle ... ok
+test surface_api::tests::an_unavailable_transport_reports_itself_to_the_host ... ok
+test surface_api::tests::the_descriptor_accepts_the_episode_source_kind ... ok
+test surface_api::tests::the_session_renders_the_dock_under_the_scope_class ... ok
+test tabs::library::tests::a_feed_row_hides_refresh_behind_its_menu ... ok
+test tabs::library::tests::an_episode_menu_pins_and_unpins ... ok
+test tabs::library::tests::buffering_the_current_item_swaps_its_badge ... ok
+test tabs::library::tests::each_episode_has_exactly_one_primary_action ... ok
+test tabs::library::tests::episodes_download_then_remove_and_leave_the_library ... ok
+test tabs::library::tests::library_and_scenes_share_chronological_episode_order ... ok
+test tabs::library::tests::refresh_failure_offers_a_retry_that_refreshes ... ok
+test tabs::library::tests::roster_row_shows_counts_badge_and_offline_bytes ... ok
+test tabs::library::tests::selecting_a_feed_and_local_audio_emits_select_feed ... ok
+test tabs::library::tests::the_phone_scene_block_selects_a_projection ... ok
+test tabs::library::tests::the_playing_item_reads_playing_and_refuses_its_command ... ok
+test tabs::library::tests::the_quiet_field_subscribes_and_opens_local_files ... ok
+test tabs::library::tests::unavailable_episode_shows_its_message_and_retries ... ok
+test tabs::listen::tests::a_pinned_queue_row_carries_the_mark ... ok
+test tabs::listen::tests::editor_is_hidden_until_capture_then_saves_the_frozen_anchor ... ok
+test tabs::listen::tests::empty_queue_and_notes_show_quiet_rows ... ok
+test tabs::listen::tests::note_rows_open_edit_delete_and_play ... ok
+test tabs::listen::tests::note_rows_show_type_word_anchor_and_open_at ... ok
+test tabs::listen::tests::playing_voice_note_reports_progress_and_stops ... ok
+test tabs::listen::tests::privacy_only_note_menu_keeps_privacy_without_edit_or_delete ... ok
+test tabs::listen::tests::queue_row_offers_download_then_removal ... ok
+test tabs::listen::tests::queue_rows_carry_badge_listened_width_and_the_active_ring ... ok
+test tabs::listen::tests::queue_rows_select_and_reorder ... ok
+test tabs::listen::tests::span_capture_saves_a_span_note ... ok
+test tabs::listen::tests::the_note_menu_flips_privacy_per_note ... ok
+test tabs::listen::tests::the_overflow_menu_opens_one_row_at_a_time ... ok
+test tabs::listen::tests::the_phone_segment_counts_both_sections_and_marks_one_off ... ok
+test tabs::listen::tests::transcript_tracks_position_and_requests_seek_without_inserting_markup ... ok
+test tabs::notes::tests::alignment_actions_preserve_note_and_item_identity ... ok
+test tabs::notes::tests::an_empty_episode_shows_the_quiet_row ... ok
+test tabs::notes::tests::cluster_collapse_keeps_the_header_and_drops_the_rows ... ok
+test tabs::notes::tests::running_and_missing_fingerprint_explain_the_state_without_a_realign_action ... ok
+test tabs::notes::tests::selected_clip_export_requires_owner_capability_and_a_shareable_note ... ok
+test tabs::notes::tests::the_cluster_chip_counts_its_notes_and_the_list_truncates ... ok
+test tabs::notes::tests::the_filter_segment_and_export_emit_commands ... ok
+test tabs::notes::tests::the_header_reads_the_selected_item_facts ... ok
+test tabs::notes::tests::the_playhead_cluster_is_the_one_seeded_open ... ok
+test tabs::notes::tests::the_representation_card_reads_the_projected_receipt ... ok
+test tabs::notes::tests::the_representation_card_says_only_what_the_receipt_supports ... ok
+test tabs::notes::tests::the_span_card_plays_edits_and_deletes ... ok
+test tabs::notes::tests::the_strip_places_ticks_and_a_span_wash ... ok
+test tabs::notes::tests::unproven_and_different_notes_show_an_explicit_approximate_action ... ok
+test tabs::settings::tests::alignment_score_persists_similarity_threshold_between_800_and_990 ... ok
+test tabs::settings::tests::alignment_search_limit_persists_hour_steps_and_caps_at_one_day ... ok
+test tabs::settings::tests::cache_budget_stepper_moves_by_256_mib ... ok
+test tabs::settings::tests::capture_behaviour_and_privacy_segments_emit_their_fields ... ok
+test tabs::settings::tests::duck_level_steps_by_five_percent_and_stops_at_the_ends ... ok
+test tabs::settings::tests::every_section_and_control_kind_is_present ... ok
+test tabs::settings::tests::feed_limit_steps_by_one_mib_and_stays_bounded ... ok
+test tabs::settings::tests::fingerprint_window_persists_disable_and_bounded_capture_choices ... ok
+test tabs::settings::tests::rate_segment_sets_the_backend_and_the_store ... ok
+test tabs::settings::tests::reaction_offset_steps_by_one_second ... ok
+test tabs::settings::tests::refresh_seed_and_mode_segments_emit_their_fields ... ok
+test tabs::settings::tests::skip_steppers_emit_update_settings_with_the_changed_field ... ok
+test tabs::settings::tests::toggles_flip_their_field ... ok
+test theme::hosted_role_tests::embedded_dock_paints_host_roles_and_exact_legacy_fallbacks ... ok
+test theme::tests::brand_dark_derives_exactly_from_tinct ... ok
+test theme::tests::sheet_carries_every_scope_and_the_component_rules ... ok
+test theme::tests::sheet_uses_no_outline_and_no_ellipsis ... ok
+test theme::tests::wetland_dark_matches_the_canvas ... ok
+test theme::tests::wetland_derivation_drift_is_recorded ... ok
+
+test result: ok. 111 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.81s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p redshank-surfaces --lib"
+	User time (seconds): 30.50
+	System time (seconds): 6.15
+	Percent of CPU this job got: 96%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:37.90
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 754924
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 847
+	Minor (reclaiming a frame) page faults: 1049061
+	Voluntary context switches: 5896
+	Involuntary context switches: 1218
+	Swaps: 0
+	File system inputs: 1068704
+	File system outputs: 531760
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

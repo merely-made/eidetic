@@ -1,0 +1,10 @@
+Id=m5-intact-controller-20261030-p.service
+ActiveState=failed
+SubState=failed
+InvocationID=c53dbe316b7048a4b69946c85030c045
+MainPID=0
+Result=exit-code
+ExecMainPID=1210515
+ExecMainCode=1
+ExecMainStatus=1
+ControlGroup=

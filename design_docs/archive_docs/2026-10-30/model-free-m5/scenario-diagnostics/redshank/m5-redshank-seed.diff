@@ -1,0 +1,55 @@
+--- m5-draft/seed-before-redshank-fix.scn	2026-10-30 13:13:34.101630692 -0400
++++ m5-draft/seed-composed.draft.scn	2026-10-30 13:13:51.264019013 -0400
+@@ -172,27 +172,43 @@
+ assert snap suggestions ~ Selection:
+ capture 10_selection_admitted
+ record-saved-sources 10_selection_admitted
++key escape
++act Close pane
+ act Save session
+ settle 20
+-# Draft ordinary Redshank controls; the source is a generated half-second tone
+-# copied into the isolated fixture directory, which is removed before reopen.
++# The local audio fixture is removed before reopen; playback is not qualified.
+ open file:///m5/run/fixture-source/episode.mp3
+ settle 60
+ assert pane turnstone.redshank-episode
+-click role:button Add text note
++click surface:contributed role:button Add text note
+ settle 20
+-click role:textbox
+-input-text M5 authored Redshank note
+-click role:button Save text note
++click surface:contributed role:textbox
++insert M5 authored Redshank note
++click surface:contributed role:button Save text note
+ settle 60
+ capture redshank_note_private
++assert text M5 authored Redshank note
++click-at 300 300
++settle 5
++act Fit to view
++settle 10
+ click-note-member
+ assert-no-action Retain selected Redshank note
+ capture redshank_private_action_absent
+-click role:button More actions for note at 0:00
+-click role:button Make shareable: note at 0:00
+-settle 60
++click-at 700 130
++act Maximize pane
++settle 10
++click surface:contributed role:button More actions for note at 0:00
++settle 8
++click surface:contributed role:button Make shareable: note at 0:00
++settle 20
+ capture redshank_note_shareable
++act Maximize pane
++settle 10
++click-at 300 300
++settle 5
++act Fit to view
++settle 10
+ click-note-member
+ assert snap actions ~ Retain selected Redshank note
+ act Retain selected Redshank note

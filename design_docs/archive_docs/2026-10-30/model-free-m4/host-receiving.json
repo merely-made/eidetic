@@ -1,0 +1,11 @@
+{
+  "host_base": "cce607d38f5084a8b1ddec3361f7fd04e301b000",
+  "eidetic_before": "a90aa678d59abac1803b878fc57a16cef8957e60",
+  "eidetic_after": "2f55c137f25e619e8f7be2b7dbb76d15e081bc32",
+  "normalized_complete_lock_equal": true,
+  "files": {
+    "Cargo.toml": "656c25fb2f60905f9255b960b629dc62b5b230b05fcfb1f0498b720222eddd73",
+    "Cargo.lock": "4833f1a0ded7c6f483309262f71b1d807189bda1d25fbec9746420521ce5ff54"
+  },
+  "boundary": "Dependency receipt only; host source is in progress."
+}

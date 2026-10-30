@@ -1,5 +1,6 @@
 [workspace]
 resolver = "2"
+exclude = ["support/patches/fjall", "support/patches/lsm-tree"]
 members = [
     "crates/muniment",
     "crates/chartulary",

@@ -1,0 +1,214 @@
+Running as unit: custody-contract-m4-mere-clip-errors-1.scope; invocation ID: ddb8bb53b10e4d0bb277699db77a5adb
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=721e17d41a8f258073f440adbbb39ad145250868#721e17d4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=721e17d41a8f258073f440adbbb39ad145250868#721e17d4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=721e17d41a8f258073f440adbbb39ad145250868#721e17d4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+   Compiling naga-types v30.0.1
+   Compiling wgpu-types v30.0.1
+   Compiling naga v30.0.1
+   Compiling gpu-allocator v0.28.0
+   Compiling wgpu-naga-bridge v30.0.1
+   Compiling wgpu-hal v30.0.1
+   Compiling string_cache v0.11.0
+   Compiling icu_properties v2.3.0
+   Compiling web_atoms v0.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling wgpu-core-deps-windows-linux-android v30.0.1
+   Compiling markup5ever v0.40.0
+   Compiling wgpu-core v30.0.1
+   Compiling form_urlencoded v1.2.2
+   Compiling wgpu v30.0.1
+   Compiling vello_encoding v0.11.0 (https://github.com/mark-ik/vello?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+   Compiling tokio v1.53.2
+   Compiling vello_shaders v0.11.0 (https://github.com/mark-ik/vello?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+   Compiling idna_adapter v1.2.2
+   Compiling futures-intrusive v0.5.0
+   Compiling tokio-util v0.7.19
+   Compiling netrender_device v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+   Compiling rkyv v0.8.18
+   Compiling muniment v0.2.0 (https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)
+   Compiling accesskit v0.25.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/support/patches/accesskit)
+   Compiling netrender-vello v0.11.0 (https://github.com/mark-ik/vello?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+   Compiling idna v1.1.0
+   Compiling layout-dom-api v0.1.1 (https://github.com/merely-made/genet.git?branch=main#565458ea)
+   Compiling h2 v0.4.19
+   Compiling webcue v0.1.2
+   Compiling genet-fontique v0.10.0 (https://github.com/merely-made/genet.git?branch=main#565458ea)
+   Compiling icu_segmenter v2.3.0
+   Compiling chartulary v0.2.2 (https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)
+   Compiling url v2.5.8
+   Compiling netrender v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+   Compiling paint_list_api v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+   Compiling parley_data v0.10.0
+   Compiling harfrust v0.12.0
+   Compiling hyper v1.11.1
+   Compiling fleece v0.5.0 (https://github.com/merely-made/genet.git?branch=main#565458ea)
+   Compiling eidetic v0.0.2 (https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)
+   Compiling genet-parley v0.10.0 (https://github.com/merely-made/genet.git?branch=main#565458ea)
+   Compiling paint_list_render v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+   Compiling inker v0.1.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/inker/inker)
+   Compiling xml5ever v0.40.0
+   Compiling html5ever v0.40.1
+   Compiling serde_urlencoded v0.7.1
+   Compiling tabard v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/system/tabard)
+   Compiling genet-static-dom v0.1.1 (https://github.com/merely-made/genet.git?branch=main#565458ea)
+   Compiling document-canvas v0.1.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/inker/document-canvas)
+   Compiling image v0.25.10
+   Compiling mere-fleece v0.0.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/fleece)
+   Compiling hyper-util v0.1.20
+   Compiling mockito v1.7.2
+   Compiling mere-lanes v0.1.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/system/document-lanes)
+warning: method `packet` is never used
+   --> crates/system/document-lanes/src/smolweb.rs:738:19
+    |
+150 | impl SmolwebDocument {
+    | -------------------- method in this implementation
+...
+738 |     pub(crate) fn packet(&self) -> Option<&DocumentRenderPacket> {
+    |                   ^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `mere-lanes` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized] target(s) in 1m 21s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/mere_document_lanes-d28c42331d25c1f6)
+
+running 6 tests
+test retained_clip::tests::export_without_a_custody_adapter_refuses_a_sealed_clip ... ok
+test retained_clip::tests::retained_clip_read_keeps_storage_refusal_display ... ok
+test retained_clip::tests::retained_clip_semantic_missing_error_has_no_storage_cause ... ok
+test retained_clip::tests::selected_export_roundtrips_exact_body_and_source_without_private_backing ... ok
+test retained_clip::tests::shared_text_clip_has_original_evidence_and_a_real_pelt_session ... ok
+test retained_clip::tests::shared_voice_clip_keeps_exact_decoder_bytes_and_typed_controls ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 26 filtered out; finished in 0.07s
+
+     Running tests/smolweb_streaming_render.rs (/home/markik/Code/target/debug/deps/smolweb_streaming_render-0ac6aa421519abb3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p mere-lanes --features retained-clips retained_clip::tests"
+	User time (seconds): 67.17
+	System time (seconds): 12.39
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:21.76
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 728888
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 492
+	Minor (reclaiming a frame) page faults: 2511636
+	Voluntary context switches: 5847
+	Involuntary context switches: 1415
+	Swaps: 0
+	File system inputs: 516944
+	File system outputs: 1258864
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

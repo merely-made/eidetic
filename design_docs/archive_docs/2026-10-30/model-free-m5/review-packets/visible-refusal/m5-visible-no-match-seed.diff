@@ -1,0 +1,13 @@
+--- m5-draft/seed-before-visible-no-match.scn	2026-10-30 14:56:47.290839367 -0400
++++ m5-draft/seed-composed.draft.scn	2026-10-30 14:56:47.315626399 -0400
+@@ -940,6 +940,10 @@
+ choose-suggestion Run in this scope
+ wait-structured-result 600
+ record-structured-research negative_no_match
++key up
++key up
++key up
++assert snap suggestions ~ No matching records in this scope
+ capture negative_no_match
+ choose-suggestion Filters…
+ choose-suggestion Property ID

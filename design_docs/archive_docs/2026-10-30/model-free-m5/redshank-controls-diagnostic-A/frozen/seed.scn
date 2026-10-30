@@ -1,0 +1,21 @@
+settle 20
+act Open Inspector pane
+settle 5
+act Search saved sources
+type example
+key escape
+act Close pane
+open file:///m5/run/fixture-source/episode.mp3
+settle 60
+assert pane turnstone.redshank-episode
+capture 01_episode_visible
+click surface:contributed role:button Add text note
+settle 20
+capture 02_note_editor
+click surface:contributed role:textbox
+input-text M5 authored Redshank note
+click surface:contributed role:button Save text note
+settle 60
+capture 03_saved_note
+assert text M5 authored Redshank note
+assert event m5-intentional-diagnostic-stop

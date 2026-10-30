@@ -1,0 +1,58 @@
+{
+  "busy": false,
+  "content_manifest": "blake3:cb971ef1fda1c138d5cf1f5858ea0644071c581eed33df9313858833b7cb4aad",
+  "context_generation": "2676915d-2a7d-4895-bc72-19a68067c238",
+  "graph_revisions": [
+    {
+      "graph": "c6834b31-0485-4d4e-9866-a8b152213405",
+      "revision": 54
+    }
+  ],
+  "historical": false,
+  "request_id": "a59c93b0-b58b-48a4-b158-cd0205308f3b",
+  "result": {
+    "operation_version": "eidetic.structured-records/v2",
+    "query": {
+      "filters": {
+        "entity": null,
+        "property": null,
+        "schema_revision": null,
+        "source": null,
+        "status": null,
+        "tag": null,
+        "unit": null,
+        "valid_time": null
+      },
+      "operation": "SourceLookup"
+    },
+    "rows": [],
+    "settings": {
+      "max_input_bytes": 16777216,
+      "max_output_bytes": 16777216,
+      "max_records": 100000,
+      "max_rows": 100000,
+      "max_sources": 10000,
+      "max_validation_bytes": 16777216,
+      "max_work": 1000000
+    },
+    "snapshot": {
+      "complete": true,
+      "definitions": [],
+      "exclusion_count": 0,
+      "exclusions": [],
+      "lifecycle": [],
+      "records": [],
+      "scope_generation": "[\"2676915d-2a7d-4895-bc72-19a68067c238\",2,[[\"c6834b31-0485-4d4e-9866-a8b152213405\",53]],[[\"c6834b31-0485-4d4e-9866-a8b152213405\",\"d060ce45-18a8-4941-9e56-eeeaddda5204\"]],1,[]]",
+      "sources": []
+    }
+  },
+  "result_generation": "b1b24165-9932-4d13-94c2-a796c187ebe9",
+  "saved_manifest": "blake3:cb971ef1fda1c138d5cf1f5858ea0644071c581eed33df9313858833b7cb4aad",
+  "schema": "turnstone.structured-observation/v1",
+  "scope_revision": 2,
+  "session": "c161acf6-0442-41d0-974f-d0fd4b240109",
+  "source_selection": {
+    "members": [],
+    "mode": "chosen"
+  }
+}

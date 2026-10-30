@@ -1,0 +1,30 @@
+{
+  "reviewer": "Codex root visual review",
+  "scope": "Short two-real-record diagnostic on Turnstone22628cf9; not complete M5 acceptance",
+  "frames": [
+    {
+      "path": "/home/markik/Code/testing/m5-visible-negatives-diagnostic-20261030-a/sandbox/seed/negative_no_match.png",
+      "sha256": "024ea2e18e229589d4b4a438c3e66448b7b0d709a14df73158513adae24ff066",
+      "outcome": "pass",
+      "observation": "No matching records in this scope is plainly visible."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-visible-negatives-diagnostic-20261030-a/sandbox/seed/negative_over_limit.png",
+      "sha256": "4a17017d11ffc7116bc63c1905aa74865b4901c101615d219da4bce0fc13300d",
+      "outcome": "pass",
+      "observation": "Unavailable: Structured record limit exceeded is immediately visible above operation and scope."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-visible-negatives-diagnostic-20261030-a/sandbox/seed/after_limit_recovery.png",
+      "sha256": "152916646596bb72d6d509175b895c06c24b6a0455d194709a2a0f2c19e22bfc",
+      "outcome": "pass",
+      "observation": "The error is cleared and the completed Property lookup shows5inputs2records."
+    }
+  ],
+  "semantic_spotcheck": {
+    "no_match": "Current complete2record snapshot,0rows,matching saved/content manifests",
+    "refusal": "Actual PropertyLookup/all-source request, max_records1, worker-refusal exactlimiterror",
+    "recovery": "Currentcomplete2records2rows, max_records100000, matchingmanifests",
+    "termination": "Only intentionalstop; nativecgroupempty verified"
+  }
+}

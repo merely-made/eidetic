@@ -1,0 +1,24 @@
+--- before/run_preflight.py
++++ after/run_preflight.py
+@@ -49,7 +49,9 @@
+             raise ValueError('application build command missing')
+         if name == 'test-binary' and not ('test' in command and '--lib' in command and '--no-run' in command):
+             raise ValueError('probe test build command missing')
+-        if name == 'custodian' and not ('test' in command and '--test' in command and 'custody_payload' in command and '--no-run' in command and '--features' not in command):
++        if name == 'custodian' and command != [
++                'cargo', 'test', '--locked', '--offline', '-p', 'mere-resident',
++                '--features', 'custody-receipt-host', '--test', 'custody_payload', '--no-run']:
+             raise ValueError('custody-only fixture build command missing')
+         evidence[name] = {'receipt_sha256':native.sha(path), 'command':command, 'binary_sha256':hashes[name],
+                           'source_hash':saved['source_before']}
+--- before/capture_build.py
++++ after/capture_build.py
+@@ -33,7 +33,7 @@
+ commands = {
+     'turnstone':['cargo','build','--locked','--offline','-p','turnstone','--features','authoring,inference','--bin','turnstone'],
+     'test-binary':['cargo','test','--locked','--offline','-p','turnstone','--features','authoring,inference','--lib','--no-run'],
+-    'custodian':['cargo','test','--locked','--offline','-p','mere-resident','--test','custody_payload','--no-run']}
++    'custodian':['cargo','test','--locked','--offline','-p','mere-resident','--features','custody-receipt-host','--test','custody_payload','--no-run']}
+ try:
+     before = inventory(root); name = 'm5-provenance-' + a.kind + '-' + uuid.uuid4().hex[:12]
+     result = subprocess.run(['python3', str(GATE), name, str(root), *commands[a.kind]], check=False)

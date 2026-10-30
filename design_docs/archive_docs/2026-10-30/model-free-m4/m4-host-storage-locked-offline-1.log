@@ -1,0 +1,32 @@
+Running as unit: custody-contract-m4-host-storage-locked-offline-1.scope; invocation ID: 208fc27507ff46aab9a9b349f0c6737d
+error: failed to load source for dependency `chartulary`
+
+Caused by:
+  unable to update https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4
+
+Caused by:
+  can't checkout from 'https://www.github.com/merely-made/eidetic.git': you are in the offline mode (--offline)
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo metadata --locked --offline --format-version 1"
+	User time (seconds): 0.03
+	System time (seconds): 0.05
+	Percent of CPU this job got: 73%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.12
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 33700
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 13
+	Minor (reclaiming a frame) page faults: 6332
+	Voluntary context switches: 90
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 11216
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

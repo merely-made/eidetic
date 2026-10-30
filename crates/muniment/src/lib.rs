@@ -41,7 +41,14 @@ pub mod error;
 #[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
 pub mod fjall_backend;
 #[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
+pub mod fjall_limits;
+#[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
 pub use fjall_backend::FjallStore;
+#[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
+pub use fjall_limits::{
+    FjallBoundError, FjallLimitKind, FjallOwnerLimits, FjallReadBudget, FjallReadLimits,
+    FjallRecoveryLimits,
+};
 #[cfg(all(feature = "indexeddb", target_arch = "wasm32"))]
 pub mod indexeddb_backend;
 pub mod journal;
@@ -56,7 +63,7 @@ pub use blob::{BlobStore, Hash};
 pub use codec::Codec;
 #[cfg(feature = "directory")]
 pub use directory_backend::DirectoryBackend;
-pub use error::StoreError;
+pub use error::{StoreError, StoreLimitKind};
 pub use journal::{CausalError, Journal, LogId, Provenance, Seq};
 pub use slot::SlotStore;
 

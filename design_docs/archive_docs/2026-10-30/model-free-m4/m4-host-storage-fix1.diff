@@ -1,0 +1,2670 @@
+Scoped fix round1: original reviewed freeze3 to host-storage-review-final3; all66 current source hashes verified.
+--- reviewed/Cargo.toml
++++ Cargo.toml
+@@ -24,6 +24,7 @@
+ path = "src/main.rs"
+ 
+ [dependencies]
++async-trait = "=0.1.92"
+ curation = { package = "mere-curation", git = "https://github.com/merely-made/mere.git", branch = "main" }
+ # Product-redacted, bounded observations; the portable values live in Armillary.
+ apparatus-core = { version = "0.1.0", git = "https://github.com/merely-made/armillary.git", rev = "06340b08327b29c3485ecb0089bb5cafed20fd80", default-features = false, features = ["serde"] }
+@@ -327,7 +328,6 @@
+ grafting = { git = "https://github.com/merely-made/wgpu-graft.git", rev = "9f410f193eb82a9a70ff704674bba7df3eed981b", default-features = false, features = ["wgpu-30"], optional = true }
+ 
+ [dev-dependencies]
+-async-trait = "=0.1.92"
+ taproot = { version = "0.1.0", git = "https://github.com/merely-made/genet.git", branch = "main", features = ["estimated-probe-fixtures"] }
+ accesskit_consumer = "=0.39.1"
+ mien = { git = "https://github.com/merely-made/gemot.git", rev = "998133bc17b8636152e9c4f7605eb475498213c8" }
+--- reviewed/src/action/update.rs
++++ src/action/update.rs
+@@ -10,11 +10,13 @@
+     ResearchRecords(crate::research_records::JobResult),
+     ResearchCompareFinished {
+         request: crate::research_compare::Request,
+-        result: Result<crate::research_compare::ResultView, String>,
++        result:
++            Result<crate::research_compare::ResultView, crate::research_storage::SourceReadError>,
+     },
+     ResearchSearchFinished {
+         request: crate::research_search::Request,
+-        result: Result<eidetic_search::query::SearchResult, String>,
++        result:
++            Result<eidetic_search::query::SearchResult, crate::research_storage::SourceReadError>,
+     },
+     ReadingFindChanged {
+         target: crate::reading_view::ReadTarget,
+@@ -26,7 +28,7 @@
+         request: uuid::Uuid,
+         session: crate::panes::SessionId,
+         admissions: Vec<crate::saved_sources::Admission>,
+-        result: Result<Vec<crate::saved_sources::Entry>, String>,
++        result: Result<Vec<crate::saved_sources::Entry>, crate::research_storage::SourceReadError>,
+     },
+     SavedSourceRead {
+         generation: uuid::Uuid,
+@@ -34,7 +36,7 @@
+         node: uuid::Uuid,
+         url: String,
+         target: crate::saved_sources::Target,
+-        result: Result<crate::saved_sources::Content, String>,
++        result: Result<crate::saved_sources::Content, crate::research_storage::SourceReadError>,
+     },
+     /// Exact Gemini response bytes arrived before the terminal fetch answer.
+     PageStreamed {
+@@ -208,7 +210,7 @@
+     SourceDocumentCaptured {
+         capture_generation: uuid::Uuid,
+         request: crate::source_capture::CaptureRequest,
+-        result: Result<StoredSourceDocument, String>,
++        result: Result<StoredSourceDocument, crate::research_storage::SourceReadError>,
+     },
+     SourceCaptureRecovered {
+         capture_generation: uuid::Uuid,
+@@ -218,11 +220,11 @@
+     SourceCaptureSaved {
+         capture_generation: uuid::Uuid,
+         request: uuid::Uuid,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     SourceCaptureRecoveryFailed {
+         capture_generation: uuid::Uuid,
+-        error: String,
++        error: crate::research_storage::SourceReadError,
+     },
+     SourceCaptureRevalidated {
+         capture_generation: uuid::Uuid,
+--- reviewed/src/app/research_record_owner.rs
++++ src/app/research_record_owner.rs
+@@ -131,11 +131,11 @@
+         controller.pending = Some(job.clone());
+         vec![Effect::ResearchRecords(job), Effect::Redraw]
+     }
+-    pub(super) fn structured_error(&mut self, error: impl Into<String>) -> Vec<Effect> {
++    pub(super) fn structured_error(&mut self, error: impl std::fmt::Display) -> Vec<Effect> {
+         let controller = &mut self.research_search.structured.controller;
+         controller.busy = false;
+         controller.pending = None;
+-        controller.error = Some(error.into());
++        controller.error = Some(error.to_string());
+         vec![Effect::Redraw]
+     }
+     pub(crate) fn structured_query(
+@@ -371,8 +371,9 @@
+         let scope = match self.structured_scope() {
+             Ok(value) => value,
+             Err(error) => {
+-                return self
+-                    .structured_error(format!("Cannot retry within current graph limits: {error}"));
++                return self.structured_error(format!(
++                    "Cannot retry within current graph limits: {error}"
++                ));
+             },
+         };
+         self.structured_submit(Job::Reconcile {
+--- reviewed/src/app/source_capture_persistence_tests.rs
++++ src/app/source_capture_persistence_tests.rs
+@@ -118,7 +118,7 @@
+     app.apply_update(Update::SourceCaptureSaved {
+         capture_generation: app.source_capture_generation,
+         request: request.id,
+-        result,
++        result: result.map_err(Into::into),
+     });
+ }
+ 
+--- reviewed/src/app/source_capture_persistence_tests/source_capture_real_stack_process_worker_cases.rs
++++ src/app/source_capture_persistence_tests/source_capture_real_stack_process_worker_cases.rs
+@@ -204,7 +204,7 @@
+                 result.is_err(),
+                 "actual required write must fail at {stage}"
+             );
+-            acknowledge(&mut app, &request, result);
++            acknowledge(&mut app, &request, result.map_err(|e| e.to_string()));
+             assert_eq!(app.source_captures[&request.id].phase, CapturePhase::Failed);
+             assert_eq!(saved_events(&mut app), 0);
+             assert_eq!(blocked.read_preserved(&graph).unwrap(), graph_before);
+@@ -235,7 +235,7 @@
+                         assert_eq!(id, request.id);
+                         assert_eq!(capture_generation, app.source_capture_generation);
+                         assert!(result.is_ok(), "receipt acknowledgement: {result:?}");
+-                        acknowledge(&mut app, &request, result);
++                        acknowledge(&mut app, &request, result.map_err(|e| e.to_string()));
+                         break;
+                     },
+                     other => {
+--- reviewed/src/app/updates/app_apply_update.rs
++++ src/app/updates/app_apply_update.rs
+@@ -36,10 +36,10 @@
+         let mut effects = match update {
+             Update::ResearchRecords(result) => self.structured_completed(result),
+             Update::ResearchCompareFinished { request, result } => {
+-                self.research_compare_finished(request, result)
++                self.research_compare_finished(request, result.map_err(|e| e.to_string()))
+             },
+             Update::ResearchSearchFinished { request, result } => {
+-                self.research_search_finished(request, result)
++                self.research_search_finished(request, result.map_err(|e| e.to_string()))
+             },
+             Update::SavedSourcesLoaded { .. }
+             | Update::SavedSourceRead { .. }
+--- reviewed/src/app/updates/app_update_gemini_certificate_changed.rs
++++ src/app/updates/app_update_gemini_certificate_changed.rs
+@@ -232,14 +232,14 @@
+             },
+             Update::SourceDocumentCaptured {
+                 request, result, ..
+-            } => self.source_capture_deposited(request, result),
++            } => self.source_capture_deposited(request, result.map_err(|error| error.to_string())),
+             Update::SourceCaptureRevalidated {
+                 request, stored, ..
+             } => self.revalidate_source_capture(request, stored),
+             Update::SourceCaptureRecoveryFailed { error, .. } => {
+                 self.events.push(AppEvent::InteractionMissed {
+                     what: "recover-source-captures",
+-                    target: error,
++                    target: error.to_string(),
+                 });
+                 vec![Effect::Redraw]
+             },
+@@ -248,7 +248,7 @@
+             } => self.recover_source_capture(request, stored),
+             Update::SourceCaptureSaved {
+                 request, result, ..
+-            } => self.source_capture_saved(request, result),
++            } => self.source_capture_saved(request, result.map_err(|error| error.to_string())),
+             Update::PlaceDocumentVisit { .. } => Vec::new(),
+             Update::PlaceLanesAdvanced {
+                 session,
+--- reviewed/src/app/updates/app_update_saved_sources_loaded.rs
++++ src/app/updates/app_update_saved_sources_loaded.rs
+@@ -16,7 +16,12 @@
+                 if generation != self.source_capture_generation {
+                     return Vec::new();
+                 }
+-                self.saved_sources_loaded(request, session, admissions, result)
++                self.saved_sources_loaded(
++                    request,
++                    session,
++                    admissions,
++                    result.map_err(|e| e.to_string()),
++                )
+             },
+             Update::SavedSourceRead {
+                 generation,
+@@ -29,7 +34,13 @@
+                 if generation != self.source_capture_generation {
+                     return Vec::new();
+                 }
+-                self.saved_source_read(request, node, url, target, result)
++                self.saved_source_read(
++                    request,
++                    node,
++                    url,
++                    target,
++                    result.map_err(|e| e.to_string()),
++                )
+             },
+             Update::FeedFetched { node, url, result } => self.apply_feed_fetched(node, url, result),
+             Update::PageStreamed {
+--- reviewed/src/lib.rs
++++ src/lib.rs
+@@ -113,12 +113,12 @@
+ pub mod relationship_navigation;
+ pub mod remote_projection;
+ pub mod research;
+-pub mod research_search;
+ pub mod research_compare;
+ pub(crate) mod research_record_graph;
+ pub mod research_records;
+-pub(crate) mod research_storage;
+ pub(crate) mod research_records_worker;
++pub mod research_search;
++pub mod research_storage;
+ pub mod resident_admission;
+ pub mod resident_runs;
+ #[cfg(test)]
+--- reviewed/src/place/captured_collection.rs
++++ src/place/captured_collection.rs
+@@ -434,3 +434,7 @@
+ #[cfg(all(test, feature = "peers"))]
+ #[path = "captured_collection/tests.rs"]
+ mod tests;
++
++#[cfg(test)]
++#[path = "captured_collection/storage_tests.rs"]
++mod storage_tests;
+--- reviewed/src/place/captured_collection/storage_tests.rs
++++ src/place/captured_collection/storage_tests.rs
+@@ -0,0 +1,70 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++use super::*;
++use muniment::{Backend, FjallStore};
++
++#[test]
++fn model_free_capture_library_publishes_unavailable_after_bounded_refresh_refusal() {
++    let root = tempfile::tempdir().unwrap();
++    let directory = root.path().join("memory");
++    let mut initial = FjallStore::open(&directory).unwrap();
++    let html = "<html><main>library fixture</main></html>";
++    crate::trail_memory::capture_source_document_in(
++        &mut initial,
++        &crate::content::FetchedDocument {
++            bytes: html.as_bytes().to_vec(),
++            body: html.into(),
++            content_type: Some("text/html".into()),
++            effective_url: Some("https://example.test/library".into()),
++            acquired_at_ms: 1,
++        },
++    )
++    .unwrap();
++    drop(initial);
++    let library = LocalCaptureLibrary::default();
++    assert!(library.bind_custody(&crate::trail_memory::custody_test_fixture::custody()));
++    let limits = crate::research_storage::StorageLimits::default();
++    let owner = FjallStore::open_with_limits(&directory, limits.owner()).unwrap();
++    let mut bounded = crate::research_storage::BudgetStore {
++        store: &owner,
++        budget: limits.budget(),
++    };
++    refresh_local_capture_library(&mut bounded, &directory, &library).unwrap();
++    let ticket = library.ticket().unwrap();
++    assert!(matches!(
++        library.snapshot_for(&directory, ticket),
++        CaptureLibraryState::Ready { .. }
++    ));
++    let mut tight = limits.clone();
++    tight.operation_read.max_output_items = 0;
++    let bounded = crate::research_storage::BudgetStore {
++        store: &owner,
++        budget: tight.budget(),
++    };
++    assert!(matches!(
++        pollster::block_on(bounded.list("manifest:")),
++        Err(muniment::StoreError::LimitExceeded {
++            kind: muniment::StoreLimitKind::OutputItems,
++            limit: 0
++        })
++    ));
++    let mut bounded = crate::research_storage::BudgetStore {
++        store: &owner,
++        budget: tight.budget(),
++    };
++    let error = refresh_local_capture_library(&mut bounded, &directory, &library).unwrap_err();
++    assert!(error.contains("OutputItems"));
++    // This is the publication step performed by the trail actor on refresh failure.
++    library.unavailable(error);
++    assert!(matches!(library.snapshot_for(&directory, ticket),
++        CaptureLibraryState::Unavailable(ref error) if error.contains("OutputItems")));
++    let mut bounded = crate::research_storage::BudgetStore {
++        store: &owner,
++        budget: limits.budget(),
++    };
++    refresh_local_capture_library(&mut bounded, &directory, &library).unwrap();
++    assert!(matches!(
++        library.snapshot_for(&directory, ticket),
++        CaptureLibraryState::Ready { .. }
++    ));
++}
+--- reviewed/src/research_compare.rs
++++ src/research_compare.rs
+@@ -25,7 +25,7 @@
+ }
+ pub(crate) struct Response {
+     pub request: Request,
+-    pub result: Result<ResultView, String>,
++    pub result: Result<ResultView, crate::research_storage::SourceReadError>,
+ }
+ fn read(
+     bridge: &research::Bridge,
+@@ -33,7 +33,7 @@
+     request: &Request,
+     target: &Target,
+     budget: &crate::research_storage::SharedReadBudget,
+-) -> Result<RetainedSourceText, String> {
++) -> Result<RetainedSourceText, crate::research_storage::SourceReadError> {
+     if target.selector().is_some() {
+         return Err("A comparison side must name a whole source.".into());
+     }
+@@ -54,9 +54,7 @@
+             (content.title, content.text)
+         },
+         Target::Clip(target) => {
+-            let view = bridge
+-                .clip_view_bounded(&request.context, &target.clip, budget.clone())
+-                .map_err(|e| e.to_string())?;
++            let view = bridge.clip_view_bounded(&request.context, &target.clip, budget.clone())?;
+             let crate::retained_clip::ClipBody::Text(text) = view.body else {
+                 return Err("This clip has no text".into());
+             };
+@@ -77,7 +75,7 @@
+     bridge: &research::Bridge,
+     trail: &armillary::ActorHandle<crate::trail_memory::TrailCommand>,
+     request: &Request,
+-) -> Result<ResultView, String> {
++) -> Result<ResultView, crate::research_storage::SourceReadError> {
+     let check = || -> Result<(), String> {
+         if bridge.context_revision()? != (request.context.clone(), request.revision) {
+             return Err("Comparison admissions changed.".into());
+@@ -96,10 +94,10 @@
+     }
+     let budget = bridge.storage_limits()?.budget();
+     let left = read(bridge, trail, request, &request.left, &budget)
+-        .map_err(|e| format!("Left unavailable: {e}"))?;
++        .map_err(|error| error.context("Left unavailable"))?;
+     check()?;
+     let right = read(bridge, trail, request, &request.right, &budget)
+-        .map_err(|e| format!("Right unavailable: {e}"))?;
++        .map_err(|error| error.context("Right unavailable"))?;
+     check()?;
+     let comparison = compare::compare(
+         &left,
+--- reviewed/src/research_records.rs
++++ src/research_records.rs
+@@ -170,43 +170,43 @@
+ pub enum JobResult {
+     Query {
+         request: QueryRequest,
+-        result: Result<RecordResult, String>,
+-        manifest: Result<Option<eidetic::ManifestId>, String>,
++        result: Result<RecordResult, crate::research_storage::SourceReadError>,
++        manifest: Result<Option<eidetic::ManifestId>, crate::research_storage::SourceReadError>,
+     },
+     Deposit {
+         request: AuthorRequest,
+-        result: Result<eidetic::ManifestId, String>,
++        result: Result<eidetic::ManifestId, crate::research_storage::SourceReadError>,
+     },
+     Inspect {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+         binding: Binding,
+-        result: Result<PropertyRecordV1, String>,
++        result: Result<PropertyRecordV1, crate::research_storage::SourceReadError>,
+     },
+     Replay {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+-        result: Result<RecordResult, String>,
++        result: Result<RecordResult, crate::research_storage::SourceReadError>,
+     },
+     ConfirmProperty {
+         request: AuthorRequest,
+         scope: ScopeToken,
+         binding: Binding,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     ConfirmResult {
+         request: QueryRequest,
+         scope: ScopeToken,
+         binding: Binding,
+         value: RecordResult,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     MarkProperty {
+         request: AuthorRequest,
+         scope: ScopeToken,
+         binding: Binding,
+         assertion: serde_json::Value,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     MarkResult {
+         request: QueryRequest,
+@@ -214,32 +214,35 @@
+         binding: Binding,
+         assertion: serde_json::Value,
+         value: RecordResult,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     PrepareWithdrawal {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+         binding: Binding,
+         nonce: uuid::Uuid,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     ConfirmWithdrawal {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+         binding: Binding,
+         nonce: uuid::Uuid,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     Recovery {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+-        result: Result<Vec<crate::trail_memory::record_actor::RecoveryItem>, String>,
++        result: Result<
++            Vec<crate::trail_memory::record_actor::RecoveryItem>,
++            crate::research_storage::SourceReadError,
++        >,
+     },
+     Reconcile {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+         item: crate::trail_memory::record_actor::RecoveryItem,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     RecoveryMark {
+         id: uuid::Uuid,
+@@ -247,27 +250,27 @@
+         item: crate::trail_memory::record_actor::RecoveryItem,
+         binding: Binding,
+         assertion: serde_json::Value,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     RecoveryAck {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+         item: crate::trail_memory::record_actor::RecoveryItem,
+         binding: Binding,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     Abandon {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+         nonce: uuid::Uuid,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     Discover {
+         id: uuid::Uuid,
+         scope: ScopeToken,
+         bindings: Vec<Binding>,
+         history: bool,
+-        result: Result<(), String>,
++        result: Result<(), crate::research_storage::SourceReadError>,
+     },
+     OpenSource {
+         id: uuid::Uuid,
+@@ -275,7 +278,7 @@
+         generation: uuid::Uuid,
+         source: eidetic::models::recall::RecallSourceId,
+         version: String,
+-        result: Result<Target, String>,
++        result: Result<Target, crate::research_storage::SourceReadError>,
+     },
+     OpenEvidence {
+         id: uuid::Uuid,
+@@ -283,7 +286,7 @@
+         generation: Option<uuid::Uuid>,
+         binding: Binding,
+         record: PropertyRecordV1,
+-        result: Result<Target, String>,
++        result: Result<Target, crate::research_storage::SourceReadError>,
+     },
+ }
+ #[derive(Clone, Debug, PartialEq, Eq)]
+--- reviewed/src/research_records_worker.rs
++++ src/research_records_worker.rs
+@@ -3,6 +3,7 @@
+ //! Structured evaluation over the complete admitted source snapshot.
+ use crate::research::{self, Target};
+ use crate::research_records::*;
++use crate::research_storage::SourceReadError as HostError;
+ use crate::trail_memory::{TrailCommand, record_actor};
+ use eidetic::models::recall::PassageSelector;
+ use eidetic::records::{
+@@ -14,7 +15,7 @@
+ use std::time::Duration;
+ 
+ const MANUAL: &str = "https://merely.computer/ns/research#manual-property-v1";
+-fn current(bridge: &research::Bridge, scope: &ScopeToken) -> Result<(), String> {
++fn current(bridge: &research::Bridge, scope: &ScopeToken) -> Result<(), HostError> {
+     if bridge.context_revision()? != (scope.context.clone(), scope.revision)
+         || (bridge.clip_access()?.epoch)() != Some(scope.custody_epoch)
+     {
+@@ -26,8 +27,8 @@
+     trail: &armillary::ActorHandle<TrailCommand>,
+     budget: &Result<crate::research_storage::SharedReadBudget, String>,
+     scope: &ScopeToken,
+-    make: impl FnOnce(mpsc::SyncSender<Result<T, String>>) -> record_actor::Kind,
+-) -> Result<T, String> {
++    make: impl FnOnce(mpsc::SyncSender<Result<T, HostError>>) -> record_actor::Kind,
++) -> Result<T, HostError> {
+     let (send, receive) = mpsc::sync_channel(1);
+     if !trail.command(TrailCommand::ResearchRecords(record_actor::Command {
+         session: *scope.context.session.as_uuid(),
+@@ -51,7 +52,7 @@
+     max_sources: usize,
+     max_bytes: usize,
+     except: Option<uuid::Uuid>,
+-) -> Result<eidetic_search::query::ResearchSnapshot, String> {
++) -> Result<eidetic_search::query::ResearchSnapshot, HostError> {
+     current(bridge, scope)?;
+     let bindings = scope
+         .graph_manifests
+@@ -110,7 +111,7 @@
+     scope: &ScopeToken,
+     manifest: eidetic::ManifestId,
+     remaining: usize,
+-) -> Result<(PropertyRecordV1, eidetic::records::PropertyDefinitionV1), String> {
++) -> Result<(PropertyRecordV1, eidetic::records::PropertyDefinitionV1), HostError> {
+     command(trail, budget, scope, |reply| {
+         record_actor::Kind::ReadRecord(
+             manifest,
+@@ -126,7 +127,7 @@
+     scope: &ScopeToken,
+     manifest: eidetic::ManifestId,
+     remaining: usize,
+-) -> Result<eidetic::records::RecordResult, String> {
++) -> Result<eidetic::records::RecordResult, HostError> {
+     let mut settings = scope.settings.clone();
+     settings.max_input_bytes = remaining;
+     command(trail, budget, scope, |reply| {
+@@ -170,7 +171,7 @@
+     scope: &ScopeToken,
+     inputs: &eidetic_search::query::ResearchSnapshot,
+     value: &eidetic::records::RecordResult,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let mut remaining = remaining_after_sources(scope.settings.max_input_bytes, inputs)?;
+     remaining -= bounded_json_size(value, remaining)?;
+     for source in &value.snapshot.sources {
+@@ -249,7 +250,7 @@
+     trail: &armillary::ActorHandle<TrailCommand>,
+     budget: &Result<crate::research_storage::SharedReadBudget, String>,
+     request: &QueryRequest,
+-) -> Result<eidetic::records::RecordResult, String> {
++) -> Result<eidetic::records::RecordResult, HostError> {
+     let inputs = sources(
+         bridge,
+         trail,
+@@ -362,7 +363,7 @@
+     }
+     current(bridge, &request.scope)?;
+     eidetic_search::records::evaluate(&snapshot, &request.query, &request.settings)
+-        .map_err(|e| format!("Structured query refused: {e:?}"))
++        .map_err(|e| format!("Structured query refused: {e:?}").into())
+ }
+ fn bounded_json_size(value: &impl serde::Serialize, limit: usize) -> Result<usize, String> {
+     struct Counter {
+--- reviewed/src/research_search.rs
++++ src/research_search.rs
+@@ -28,7 +28,7 @@
+ }
+ pub(crate) struct Response {
+     pub request: Request,
+-    pub result: Result<SearchResult, String>,
++    pub result: Result<SearchResult, crate::research_storage::SourceReadError>,
+ }
+ 
+ pub(crate) fn producer(view: &crate::retained_clip::ClipView) -> ProducerKind {
+@@ -179,7 +179,7 @@
+     bridge: &research::Bridge,
+     trail: &armillary::ActorHandle<crate::trail_memory::TrailCommand>,
+     request: &Request,
+-) -> Result<ResearchSnapshot, String> {
++) -> Result<ResearchSnapshot, crate::research_storage::SourceReadError> {
+     snapshot_with_budget(bridge, trail, request, bridge.storage_limits()?.budget())
+ }
+ 
+@@ -188,7 +188,7 @@
+     trail: &armillary::ActorHandle<crate::trail_memory::TrailCommand>,
+     request: &Request,
+     budget: crate::research_storage::SharedReadBudget,
+-) -> Result<ResearchSnapshot, String> {
++) -> Result<ResearchSnapshot, crate::research_storage::SourceReadError> {
+     if bridge.context_revision()? != (request.context.clone(), request.revision) {
+         return Err("Search admissions changed.".into());
+     }
+@@ -350,7 +350,7 @@
+                 sources.push(source);
+             },
+             Err(crate::research_storage::SourceReadError::Storage(error)) => {
+-                return Err(error.to_string());
++                return Err(error.into());
+             },
+             Err(error) => {
+                 let exclusion = format!("{}: {error}", admission.manifest);
+@@ -388,9 +388,9 @@
+     bridge: &research::Bridge,
+     trail: &armillary::ActorHandle<crate::trail_memory::TrailCommand>,
+     request: &Request,
+-) -> Result<SearchResult, String> {
++) -> Result<SearchResult, crate::research_storage::SourceReadError> {
+     let snapshot = snapshot(bridge, trail, request)?;
+-    query::search(&snapshot, &request.query, &request.settings)
++    query::search(&snapshot, &request.query, &request.settings).map_err(Into::into)
+ }
+ 
+ /// One running job, one replaceable pending request and one replaceable response.
+--- reviewed/src/research_storage.rs
++++ src/research_storage.rs
+@@ -452,6 +452,33 @@
+     }
+ 
+     #[test]
++    fn model_free_negative_prefix_lookup_refuses_when_budget_is_exhausted() {
++        let root = tempfile::tempdir().unwrap();
++        let limits = StorageLimits::default();
++        let store = muniment::FjallStore::open_with_limits(root.path(), limits.owner()).unwrap();
++        pollster::block_on(store.put("retained/present", b"value")).unwrap();
++        let mut tight = limits.clone();
++        tight.operation_read.max_alloc_bytes = 0;
++        let adapter = BudgetStore {
++            store: &store,
++            budget: tight.budget(),
++        };
++        assert!(matches!(
++            adapter.exists("retained/missing"),
++            Err(muniment::StoreError::LimitExceeded {
++                kind: muniment::StoreLimitKind::AllocationBytes,
++                limit: 0
++            })
++        ));
++        let adapter = BudgetStore {
++            store: &store,
++            budget: limits.budget(),
++        };
++        assert!(!adapter.exists("retained/missing").unwrap());
++        assert!(adapter.exists("retained/present").unwrap());
++    }
++
++    #[test]
+     fn model_free_storage_budget_is_shared_across_distinct_owners() {
+         let root = tempfile::tempdir().unwrap();
+         let limits = StorageLimits::default();
+@@ -505,10 +532,18 @@
+     }
+ }
+ 
+-#[derive(Debug)]
+-pub(crate) enum SourceReadError {
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub enum SourceReadError {
+     Storage(muniment::StoreError),
+     Other(String),
++}
++impl SourceReadError {
++    pub(crate) fn context(self, context: &str) -> Self {
++        match self {
++            Self::Storage(_) => self,
++            Self::Other(message) => Self::Other(format!("{context}: {message}")),
++        }
++    }
+ }
+ impl From<String> for SourceReadError {
+     fn from(value: String) -> Self {
+@@ -541,3 +576,10 @@
+         }
+     }
+ }
++
++#[cfg(test)]
++impl SourceReadError {
++    pub(crate) fn contains(&self, text: impl AsRef<str>) -> bool {
++        self.to_string().contains(text.as_ref())
++    }
++}
+--- reviewed/src/shell/effects/shell_effect_control_content.rs
++++ src/shell/effects/shell_effect_control_content.rs
+@@ -107,7 +107,7 @@
+                     let effects = self.app.apply_update(Update::SourceCaptureSaved {
+                         capture_generation: self.app.source_capture_generation,
+                         request,
+-                        result: Err(error),
++                        result: Err(error.into()),
+                     });
+                     self.run_effects(effects);
+                 } else {
+@@ -172,7 +172,7 @@
+                     let effects = self.app.apply_update(Update::SourceDocumentCaptured {
+                         capture_generation,
+                         request,
+-                        result: Err(error),
++                        result: Err(error.into()),
+                     });
+                     self.run_effects(effects);
+                 }
+--- reviewed/src/trail_memory.rs
++++ src/trail_memory.rs
+@@ -66,13 +66,13 @@
+ mod sealed_records;
+ mod sealed_result_receipts;
+ mod structured_bounded_store;
++#[cfg(test)]
++#[path = "trail_memory/structured_owner_tests.rs"]
++mod structured_owner_tests;
+ mod worker_capture_ops;
+ mod worker_open_sealed;
+ mod worker_research_snapshot;
+ mod worker_research_source;
+-#[cfg(test)]
+-#[path = "trail_memory/structured_owner_tests.rs"]
+-mod structured_owner_tests;
+ 
+ /// Traversals per stored trace segment. Segments are the flush granularity:
+ /// small enough that a crash loses minutes, large enough that a stored trace
+@@ -152,13 +152,17 @@
+         max_chars: Option<usize>,
+         max_metadata_chars: Option<usize>,
+         budget: Option<crate::research_storage::SharedReadBudget>,
+-        reply: std::sync::mpsc::SyncSender<Result<Vec<crate::saved_sources::Entry>, String>>,
++        reply: std::sync::mpsc::SyncSender<
++            Result<Vec<crate::saved_sources::Entry>, crate::research_storage::SourceReadError>,
++        >,
+     },
+     ResearchSource {
+         context: crate::research::Context,
+         target: crate::saved_sources::Target,
+         budget: Option<crate::research_storage::SharedReadBudget>,
+-        reply: std::sync::mpsc::SyncSender<Result<crate::saved_sources::Content, String>>,
++        reply: std::sync::mpsc::SyncSender<
++            Result<crate::saved_sources::Content, crate::research_storage::SourceReadError>,
++        >,
+     },
+     /// Read exact retained texts through this actor's existing store handle.
+     InferenceSnapshot {
+@@ -441,3 +445,7 @@
+ 
+ #[path = "trail_memory/worker.rs"]
+ mod worker;
++
++#[cfg(test)]
++#[path = "trail_memory/storage_owner_review_tests.rs"]
++mod storage_owner_review_tests;
+--- reviewed/src/trail_memory/capture_source_document.rs
++++ src/trail_memory/capture_source_document.rs
+@@ -11,5 +11,5 @@
+     store: &mut FjallStore,
+     document: &crate::content::FetchedDocument,
+ ) -> Result<StoredSourceDocument, String> {
+-    capture_source_document_in(store, document)
++    capture_source_document_in(store, document).map_err(|error| error.to_string())
+ }
+--- reviewed/src/trail_memory/capture_source_document_in.rs
++++ src/trail_memory/capture_source_document_in.rs
+@@ -6,7 +6,7 @@
+ pub(crate) fn capture_source_document_in(
+     store: &mut dyn eidetic::Store,
+     document: &crate::content::FetchedDocument,
+-) -> Result<StoredSourceDocument, String> {
++) -> Result<StoredSourceDocument, crate::research_storage::SourceReadError> {
+     use eidetic::models::OpaqueBlob;
+     use eidetic::{
+         ModerationState, PrivacyClass, ProvenanceOrigin, ProvenanceRecord, Timestamp,
+@@ -15,7 +15,7 @@
+     use fleece::eidetic_bridge::{CaptureDomMode, CaptureEvidenceV1};
+ 
+     if document.acquired_at_ms == 0 {
+-        return Err("source capture requires an observed acquisition time".to_string());
++        return Err("source capture requires an observed acquisition time".into());
+     }
+     if !document
+         .content_type
+@@ -27,9 +27,7 @@
+                 .is_some_and(|media| media.trim().eq_ignore_ascii_case("text/html"))
+         })
+     {
+-        return Err(
+-            "source capture requires an observed text/html response content type".to_string(),
+-        );
++        return Err("source capture requires an observed text/html response content type".into());
+     }
+     let captured_at = Timestamp(document.acquired_at_ms);
+     let effective_url = document
+@@ -104,7 +102,7 @@
+     )?;
+     if raw_exists {
+         let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, raw_manifest))
+-            .map_err(|error| format!("raw source preflight: {error}"))?
++            .map_err(crate::research_storage::SourceReadError::from)?
+             .unwrap();
+         if !matches!(
+             manifest.provenance.origin,
+@@ -120,7 +118,7 @@
+             raw_manifest: raw_manifest.to_string(),
+             annotation_manifest: annotation_manifest.to_string(),
+         };
+-        verify_source_document(store, &stored)?;
++        verify_source_document_typed(store, &stored)?;
+     }
+     if !raw_exists {
+         pollster::block_on(eidetic::save_typed(
+@@ -143,17 +141,17 @@
+             },
+             captured_at,
+         ))
+-        .map_err(|error| format!("raw source deposit: {error}"))?;
++        .map_err(crate::research_storage::SourceReadError::from)?;
+     }
+     pollster::block_on(fleece::bootstrap_fleece_annotation_schema(store))
+-        .map_err(|error| format!("Fleece schema bootstrap: {error}"))?;
++        .map_err(crate::research_storage::SourceReadError::from)?;
+     if !annotation_exists {
+         pollster::block_on(fleece::save_fleece_annotation(
+             store,
+             &record,
+             document.acquired_at_ms,
+         ))
+-        .map_err(|error| format!("Fleece annotation deposit: {error}"))?;
++        .map_err(crate::research_storage::SourceReadError::from)?;
+     } else {
+         // Reusing a complete annotation preserves its exact manifest metadata.
+         // Its resource association is independently idempotent and may have
+@@ -164,12 +162,12 @@
+             eidetic::CaptureContent::Acquired,
+             document.acquired_at_ms,
+         ))
+-        .map_err(|error| format!("Fleece capture association: {error}"))?;
++        .map_err(crate::research_storage::SourceReadError::from)?;
+     }
+     let stored = StoredSourceDocument {
+         raw_manifest: raw_manifest.to_string(),
+         annotation_manifest: annotation_manifest.to_string(),
+     };
+-    verify_source_document(store, &stored)?;
++    verify_source_document_typed(store, &stored)?;
+     Ok(stored)
+ }
+--- reviewed/src/trail_memory/emit_capture_recovery.rs
++++ src/trail_memory/emit_capture_recovery.rs
+@@ -42,12 +42,11 @@
+                     if let Err(error) =
+                         source_capture_receipts::verify_receipt_typed(&mut bounded, &receipt)
+                     {
+-                        let id = receipt.request.id;
+                         if matches!(error, crate::research_storage::SourceReadError::Storage(_)) {
+                             updates.clear();
+                             updates.push(Update::SourceCaptureRecoveryFailed {
+                                 capture_generation,
+-                                error: format!("capture request {id} verification failed: {error}"),
++                                error: error.into(),
+                             });
+                             break;
+                         }
+@@ -58,7 +57,7 @@
+                         });
+                         updates.push(Update::SourceCaptureRecoveryFailed {
+                             capture_generation,
+-                            error: format!("capture request {id} verification failed: {error}"),
++                            error: error.into(),
+                         });
+                     } else if let Some(stored) = receipt.stored {
+                         updates.push(Update::SourceCaptureRevalidated {
+@@ -83,7 +82,7 @@
+         },
+         Err(error) => updates.push(Update::SourceCaptureRecoveryFailed {
+             capture_generation,
+-            error,
++            error: error.into(),
+         }),
+     }
+     for update in updates {
+--- reviewed/src/trail_memory/emit_sealed_capture_recovery.rs
++++ src/trail_memory/emit_sealed_capture_recovery.rs
+@@ -46,13 +46,13 @@
+                                 updates.clear();
+                                 updates.push(Update::SourceCaptureRecoveryFailed {
+                                     capture_generation,
+-                                    error: format!("sealed capture verification refused: {error}"),
++                                    error: error.into(),
+                                 });
+                                 break;
+                             }
+                             updates.push(Update::SourceCaptureRecoveryFailed {
+                                 capture_generation,
+-                                error: format!("sealed capture verification refused: {error}"),
++                                error: error.into(),
+                             });
+                         } else {
+                             updates.push(Update::SourceCaptureRevalidated {
+@@ -78,7 +78,7 @@
+         },
+         Err(error) => updates.push(Update::SourceCaptureRecoveryFailed {
+             capture_generation,
+-            error,
++            error: error.into(),
+         }),
+     }
+     for update in updates {
+--- reviewed/src/trail_memory/impl_crate_inference_service_retained_source_owner_2.rs
++++ src/trail_memory/impl_crate_inference_service_retained_source_owner_2.rs
+@@ -25,7 +25,8 @@
+         }
+         let entries = receive
+             .recv_timeout(Duration::from_secs(2))
+-            .map_err(|_| "The saved-source owner did not answer.")??;
++            .map_err(|_| "The saved-source owner did not answer.")?
++            .map_err(|error| error.to_string())?;
+ 
+         let mut sources = Vec::new();
+         for entry in &entries {
+@@ -123,7 +124,8 @@
+         }
+         let content = receive
+             .recv_timeout(Duration::from_secs(2))
+-            .map_err(|_| "The saved-source owner did not answer.")??;
++            .map_err(|_| "The saved-source owner did not answer.")?
++            .map_err(|error| error.to_string())?;
+         if self.bridge.context()? != context {
+             return Err("The cited source session or admissions changed.".into());
+         }
+--- reviewed/src/trail_memory/open_memory.rs
++++ src/trail_memory/open_memory.rs
+@@ -10,18 +10,21 @@
+     dir: &Path,
+     capture_library: &crate::place::captured_collection::LocalCaptureLibrary,
+     limits: &crate::research_storage::StorageLimits,
+-) -> Result<(FjallStore, BrowsingMemory), String> {
++) -> Result<(FjallStore, BrowsingMemory), crate::research_storage::SourceReadError> {
+     if let Err(err) = std::fs::create_dir_all(dir) {
+         capture_library.unavailable(format!("create session capture directory: {err}"));
+         tracing::warn!(%err, dir = %dir.display(), "trail memory: create dir failed; capture disabled until reopen");
+-        return Err(format!("create session capture directory: {err}"));
++        return Err(muniment::StoreError::Backend(format!(
++            "create session capture directory: {err}"
++        ))
++        .into());
+     }
+     let store = match FjallStore::open_with_limits(dir, limits.owner()) {
+         Ok(store) => store,
+         Err(err) => {
+             capture_library.unavailable(format!("open session capture store: {err}"));
+             tracing::warn!(%err, dir = %dir.display(), "trail memory: open failed; capture disabled until reopen");
+-            return Err(format!("open session capture store: {err}"));
++            return Err(err.into());
+         },
+     };
+     let mut bounded = crate::research_storage::BudgetStore {
+@@ -31,7 +34,7 @@
+     if let Err(err) = pollster::block_on(bootstrap_browsing_schema(&mut bounded)) {
+         capture_library.unavailable(format!("bootstrap browsing schema: {err}"));
+         tracing::warn!(%err, "trail memory: schema bootstrap failed; capture disabled until reopen");
+-        return Err(format!("bootstrap browsing schema: {err}"));
++        return Err(err.into());
+     }
+     match pollster::block_on(BrowsingMemory::load(&mut bounded, SEGMENT_SIZE)) {
+         Ok(memory) => {
+@@ -48,7 +51,7 @@
+         Err(err) => {
+             capture_library.unavailable(format!("load browsing corpus: {err}"));
+             tracing::warn!(%err, "trail memory: corpus load failed; capture disabled until reopen");
+-            Err(format!("load browsing corpus: {err}"))
++            Err(err.into())
+         },
+     }
+ }
+--- reviewed/src/trail_memory/preflight_source_artifact.rs
++++ src/trail_memory/preflight_source_artifact.rs
+@@ -9,9 +9,8 @@
+     schema: eidetic::SchemaRef,
+     privacy: eidetic::PrivacyClass,
+     expected: Option<&[u8]>,
+-) -> Result<bool, String> {
+-    let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, id))
+-        .map_err(|error| format!("source artifact preflight manifest: {error}"))?;
++) -> Result<bool, crate::research_storage::SourceReadError> {
++    let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, id))?;
+     if let Some(manifest) = &manifest {
+         if manifest.id != id
+             || manifest.content_hash != id.0
+@@ -20,17 +19,17 @@
+         {
+             return Err(format!(
+                 "source artifact preflight: incompatible existing manifest role at {id}"
+-            ));
++            )
++            .into());
+         }
+     }
+     let key = format!("blob:{}", id.0.to_hex());
+-    let bytes = pollster::block_on(store.get(&key))
+-        .map_err(|error| format!("source artifact preflight payload: {error}"))?;
++    let bytes = pollster::block_on(store.get(&key))?;
+     if let Some(bytes) = &bytes {
+         if eidetic::Hash::of(bytes) != id.0 || expected.is_some_and(|expected| expected != bytes) {
+-            return Err(format!(
+-                "source artifact preflight: payload integrity mismatch at {id}"
+-            ));
++            return Err(
++                format!("source artifact preflight: payload integrity mismatch at {id}").into(),
++            );
+         }
+     }
+     if let Some(manifest) = &manifest {
+@@ -40,7 +39,7 @@
+         if manifest.byte_size != bytes.len() as u64
+             || !manifest.sources.iter().any(|source| matches!(source, eidetic::BlobSource::Local { key: local } if local == &key))
+         {
+-            return Err(format!("source artifact preflight: inconsistent local payload at {id}"));
++            return Err(format!("source artifact preflight: inconsistent local payload at {id}").into());
+         }
+     }
+     Ok(manifest.is_some())
+--- reviewed/src/trail_memory/record_actor.rs
++++ src/trail_memory/record_actor.rs
+@@ -2,6 +2,7 @@
+ // SPDX-License-Identifier: MPL-2.0
+ //! Structured records through the existing session-bound sealed actor.
+ use super::{SourceCustody, sealed_record_receipts, sealed_records, sealed_result_receipts};
++use crate::research_storage::SourceReadError as HostError;
+ use eidetic::ManifestId;
+ use eidetic::records::{PropertyDefinitionV1, PropertyRecordV1, RecordResult};
+ use std::path::Path;
+@@ -17,69 +18,73 @@
+     pub kind: Kind,
+ }
+ pub(crate) enum Kind {
+-    Deposit(DepositRequest, SyncSender<Result<ManifestId, String>>),
++    Deposit(DepositRequest, SyncSender<Result<ManifestId, HostError>>),
+     ReadRecord(
+         ManifestId,
+         usize,
+         usize,
+-        SyncSender<Result<(PropertyRecordV1, PropertyDefinitionV1), String>>,
++        SyncSender<Result<(PropertyRecordV1, PropertyDefinitionV1), HostError>>,
+     ),
+     SaveResult(
+         ResultRequest,
+         RecordResult,
+-        SyncSender<Result<ManifestId, String>>,
++        SyncSender<Result<ManifestId, HostError>>,
+     ),
+     ReadResult(
+         ManifestId,
+         eidetic::records::RecordSettings,
+-        SyncSender<Result<RecordResult, String>>,
++        SyncSender<Result<RecordResult, HostError>>,
+     ),
+     Acknowledge(
+         DepositRequest,
+         ManifestId,
+         String,
+-        SyncSender<Result<(), String>>,
++        SyncSender<Result<(), HostError>>,
+     ),
+     MarkAttached(
+         DepositRequest,
+         ManifestId,
+         String,
+         serde_json::Value,
+-        SyncSender<Result<(), String>>,
+-    ),
+-    AcknowledgeResult(ResultRequest, String, SyncSender<Result<(), String>>),
++        SyncSender<Result<(), HostError>>,
++    ),
++    AcknowledgeResult(ResultRequest, String, SyncSender<Result<(), HostError>>),
+     MarkResultAttached(
+         ResultRequest,
+         String,
+         serde_json::Value,
+-        SyncSender<Result<(), String>>,
++        SyncSender<Result<(), HostError>>,
+     ),
+     Pending(
+         Vec<(uuid::Uuid, ManifestId)>,
+         usize,
+         usize,
+         Option<uuid::Uuid>,
+-        SyncSender<Result<(), String>>,
++        SyncSender<Result<(), HostError>>,
+     ),
+     PrepareWithdrawal(
+         uuid::Uuid,
+         uuid::Uuid,
+         ManifestId,
+         String,
+-        SyncSender<Result<(), String>>,
++        SyncSender<Result<(), HostError>>,
+     ),
+     AcknowledgeWithdrawal(
+         uuid::Uuid,
+         uuid::Uuid,
+         ManifestId,
+         String,
+-        SyncSender<Result<(), String>>,
+-    ),
+-    Inventory(usize, usize, SyncSender<Result<Vec<RecoveryItem>, String>>),
++        SyncSender<Result<(), HostError>>,
++    ),
++    Inventory(
++        usize,
++        usize,
++        SyncSender<Result<Vec<RecoveryItem>, HostError>>,
++    ),
+     Abandon(
+         uuid::Uuid,
+         Vec<(uuid::Uuid, ManifestId)>,
+-        SyncSender<Result<(), String>>,
++        SyncSender<Result<(), HostError>>,
+     ),
+ }
+ fn execute<T>(
+@@ -92,12 +97,12 @@
+     max_bytes: usize,
+     budget: &crate::research_storage::SharedReadBudget,
+     sync_after: bool,
+-    sync: &(dyn Fn(&muniment::FjallStore) -> Result<(), String> + Sync),
++    sync: &(dyn Fn(&muniment::FjallStore) -> Result<(), muniment::StoreError> + Sync),
+     operation: impl FnOnce(
+         &mut super::structured_bounded_store::BoundedStore<'_>,
+         &dyn eidetic::PayloadSealer,
+-    ) -> Result<T, String>,
+-) -> Result<T, String> {
++    ) -> Result<T, HostError>,
++) -> Result<T, HostError> {
+     let current = directory
+         .parent()
+         .and_then(Path::file_name)
+@@ -128,7 +133,7 @@
+     }
+     result
+ }
+-pub(super) fn reject(command: Command, error: String) {
++pub(super) fn reject(command: Command, error: HostError) {
+     match command.kind {
+         Kind::Deposit(_, reply) | Kind::SaveResult(_, _, reply) => {
+             let _ = reply.send(Err(error));
+@@ -162,9 +167,7 @@
+     generation: uuid::Uuid,
+ ) {
+     handle_with_sync(command, store, custody, directory, generation, &|store| {
+-        store
+-            .sync_all()
+-            .map_err(|error| format!("Structured store sync failed: {error}"))
++        store.sync_all()
+     });
+ }
+ pub(super) fn handle_with_sync(
+@@ -173,7 +176,7 @@
+     custody: Option<&SourceCustody>,
+     directory: &Path,
+     generation: uuid::Uuid,
+-    sync: &(dyn Fn(&muniment::FjallStore) -> Result<(), String> + Sync),
++    sync: &(dyn Fn(&muniment::FjallStore) -> Result<(), muniment::StoreError> + Sync),
+ ) {
+     let Command {
+         session,
+--- reviewed/src/trail_memory/saved_sources.rs
++++ src/trail_memory/saved_sources.rs
+@@ -39,7 +39,7 @@
+     admissions: &[Admission],
+     max_chars: Option<usize>,
+     max_metadata_chars: Option<usize>,
+-) -> Result<Vec<Entry>, String> {
++) -> Result<Vec<Entry>, crate::research_storage::SourceReadError> {
+     let mut entries = Vec::new();
+     let mut chars = 0usize;
+     let mut metadata = 0usize;
+@@ -61,7 +61,7 @@
+                 error: None,
+             },
+             Err(crate::research_storage::SourceReadError::Storage(error)) => {
+-                return Err(error.to_string());
++                return Err(error.into());
+             },
+             Err(error) => Entry {
+                 admission: admission.clone(),
+@@ -96,17 +96,16 @@
+     sealer: Option<&dyn eidetic::PayloadSealer>,
+     admission: &Admission,
+     target: &Target,
+-) -> Result<Content, String> {
++) -> Result<Content, crate::research_storage::SourceReadError> {
+     if target.key != admission.key {
+         return Err("saved source target does not match the admitted node reference".into());
+     }
+     let content = if admission.key.annotation_manifest.starts_with("sealed-v1:") {
+         let store = sealed.ok_or("sealed source store unavailable")?;
+         let sealer = sealer.ok_or("unlock the profile to read this sealed source")?;
+-        super::sealed_capture::content(store, sealer, admission)
+-            .map_err(|error| error.to_string())?
++        super::sealed_capture::content(store, sealer, admission)?
+     } else {
+-        load_content(store, admission).map_err(|error| error.to_string())?
++        load_content(store, admission)?
+     };
+     crate::saved_sources::validate_selector(&content, target)?;
+     Ok(content)
+@@ -120,7 +119,7 @@
+     admission: &Admission,
+     target: &Target,
+     budget: crate::research_storage::SharedReadBudget,
+-) -> Result<Content, String> {
++) -> Result<Content, crate::research_storage::SourceReadError> {
+     let mut legacy = crate::research_storage::BudgetStore {
+         store,
+         budget: budget.clone(),
+@@ -141,11 +140,11 @@
+     store: &mut dyn eidetic::Store,
+     admission: &Admission,
+     target: &Target,
+-) -> Result<Content, String> {
++) -> Result<Content, crate::research_storage::SourceReadError> {
+     if target.key != admission.key {
+         return Err("saved source target does not match the admitted node reference".into());
+     }
+-    let content = load_content(store, admission).map_err(|error| error.to_string())?;
++    let content = load_content(store, admission)?;
+     crate::saved_sources::validate_selector(&content, target)?;
+     Ok(content)
+ }
+--- reviewed/src/trail_memory/saved_sources_storage_tests.rs
++++ src/trail_memory/saved_sources_storage_tests.rs
+@@ -53,7 +53,7 @@
+     )
+     .unwrap_err();
+     assert!(error.contains("ValueBytes"));
+-    assert!(error.contains('7'));
++    assert!(error.contains("7"));
+ }
+ #[test]
+ fn model_free_evidence_open_shares_one_operation_budget() {
+--- reviewed/src/trail_memory/sealed_capture.rs
++++ src/trail_memory/sealed_capture.rs
+@@ -5,8 +5,9 @@
+ //! access under the existing trail actor. Legacy stores are never opened here.
+ use crate::action::StoredSourceDocument;
+ use crate::content::FetchedDocument;
++use crate::research_storage::SourceReadError as HostError;
+ use crate::source_capture::{CaptureRequest, DepositReceipt, SourceIdentity};
+-use eidetic::{Backend, PayloadSealer, TypedPayload};
++use eidetic::{PayloadSealer, TypedPayload};
+ use serde::{Deserialize, Serialize};
+ 
+ const PREFIX: &str = "turnstone/sealed-source-capture/v1/";
+@@ -32,7 +33,7 @@
+     store: &mut dyn eidetic::Store,
+     sealer: &dyn PayloadSealer,
+     receipt: &DepositReceipt,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let k = key(receipt.request.id);
+     let clear = serde_json::to_vec(&BoundReceipt {
+         namespace: k.clone(),
+@@ -49,17 +50,14 @@
+         ciphertext,
+     })
+     .map_err(|_| "sealed capture envelope encoding")?;
+-    pollster::block_on(store.put(&k, &value))
+-        .map_err(|e| format!("sealed capture receipt write: {e}"))
++    pollster::block_on(store.put(&k, &value)).map_err(HostError::from)
+ }
+ fn read_receipt(
+     store: &mut dyn eidetic::Store,
+     sealer: &dyn PayloadSealer,
+     k: &str,
+-) -> Result<Option<DepositReceipt>, String> {
+-    let Some(bytes) = pollster::block_on(store.get(k))
+-        .map_err(|e| format!("sealed capture receipt read: {e}"))?
+-    else {
++) -> Result<Option<DepositReceipt>, HostError> {
++    let Some(bytes) = pollster::block_on(store.get(k)).map_err(HostError::from)? else {
+         return Ok(None);
+     };
+     let envelope: ReceiptEnvelope =
+@@ -88,16 +86,15 @@
+     sealer: &dyn PayloadSealer,
+     value: &T,
+     _at: u64,
+-) -> Result<eidetic::ManifestId, String> {
++) -> Result<eidetic::ManifestId, HostError> {
+     let clear = value
+         .serialize_to_bytes()
+         .map_err(|_| "sealed capture payload encoding")?;
+     let id = eidetic::ManifestId::of_blob(&clear);
+-    let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, id))
+-        .map_err(|e| format!("sealed capture manifest read: {e}"))?;
++    let manifest =
++        pollster::block_on(eidetic::manifest::load_manifest(store, id)).map_err(HostError::from)?;
+     let blob_key = format!("blob:{}", id.0.to_hex());
+-    let existing = pollster::block_on(store.get(&blob_key))
+-        .map_err(|e| format!("sealed capture blob read: {e}"))?;
++    let existing = pollster::block_on(store.get(&blob_key)).map_err(HostError::from)?;
+     match (manifest, existing) {
+         (Some(m), Some(_)) => {
+             if m.id != id
+@@ -119,7 +116,7 @@
+                 Some(sealer),
+                 id,
+             ))
+-            .map_err(|_| "sealed capture existing artifact refused")?
++            .map_err(HostError::from)?
+             .ok_or("sealed capture existing artifact missing")?;
+             if value
+                 .serialize_to_bytes()
+@@ -152,7 +149,7 @@
+         },
+         eidetic::Timestamp(0),
+     ))
+-    .map_err(|_| "sealed capture artifact write refused".into())
++    .map_err(HostError::from)
+ }
+ 
+ pub(super) fn load<T: TypedPayload>(
+@@ -190,11 +187,11 @@
+     }
+     Ok(value)
+ }
+-fn parse_id(s: &str) -> Result<eidetic::ManifestId, String> {
++fn parse_id(s: &str) -> Result<eidetic::ManifestId, HostError> {
+     serde_json::from_value(serde_json::Value::String(s.to_owned()))
+         .map_err(|_| "sealed source identity invalid".into())
+ }
+-fn annotation(document: &FetchedDocument) -> Result<fleece::FleeceAnnotationRecord, String> {
++fn annotation(document: &FetchedDocument) -> Result<fleece::FleeceAnnotationRecord, HostError> {
+     use fleece::eidetic_bridge::{CaptureDomMode, CaptureEvidenceV1};
+     if document.acquired_at_ms == 0
+         || !document.content_type.as_deref().is_some_and(|v| {
+@@ -245,7 +242,7 @@
+     sealer: &dyn PayloadSealer,
+     request: &CaptureRequest,
+     document: Option<&FetchedDocument>,
+-) -> Result<StoredSourceDocument, String> {
++) -> Result<StoredSourceDocument, HostError> {
+     let source = request
+         .source
+         .as_ref()
+@@ -264,11 +261,9 @@
+     let document = match document {
+         Some(doc) if SourceIdentity::of(doc) == *source => doc,
+         _ if existing.is_some() => {
+-            let raw: eidetic::models::OpaqueBlob =
+-                load(store, sealer, parse_id(&source.hash)?).map_err(|error| error.to_string())?;
++            let raw: eidetic::models::OpaqueBlob = load(store, sealer, parse_id(&source.hash)?)?;
+             let body: eidetic::models::OpaqueBlob =
+-                load(store, sealer, parse_id(&source.body_hash)?)
+-                    .map_err(|error| error.to_string())?;
++                load(store, sealer, parse_id(&source.body_hash)?)?;
+             recovered = FetchedDocument {
+                 bytes: raw.0,
+                 body: String::from_utf8(body.0)
+@@ -353,8 +348,8 @@
+     sealer: &dyn PayloadSealer,
+     request: &CaptureRequest,
+     stored: &StoredSourceDocument,
+-) -> Result<(), String> {
+-    verify_typed(store, sealer, request, stored).map_err(|error| error.to_string())
++) -> Result<(), HostError> {
++    verify_typed(store, sealer, request, stored)
+ }
+ 
+ pub(super) fn verify_typed(
+@@ -469,7 +464,7 @@
+     store: &mut dyn eidetic::Store,
+     sealer: &dyn PayloadSealer,
+     request: &CaptureRequest,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let mut receipt =
+         read_receipt(store, sealer, &key(request.id))?.ok_or("sealed capture receipt missing")?;
+     if receipt.request != *request {
+@@ -493,9 +488,8 @@
+ pub(super) fn receipts(
+     store: &mut dyn eidetic::Store,
+     sealer: &dyn PayloadSealer,
+-) -> Result<Vec<DepositReceipt>, String> {
+-    let mut keys = pollster::block_on(store.list(PREFIX))
+-        .map_err(|_| "sealed capture inventory unavailable")?;
++) -> Result<Vec<DepositReceipt>, HostError> {
++    let mut keys = pollster::block_on(store.list(PREFIX)).map_err(HostError::from)?;
+     keys.sort();
+     keys.into_iter()
+         .map(|key| {
+--- reviewed/src/trail_memory/sealed_capture/tests.rs
++++ src/trail_memory/sealed_capture/tests.rs
+@@ -3,6 +3,7 @@
+ 
+ use super::*;
+ use crate::trail_memory::sealed_memory_dir;
++use eidetic::Backend as _;
+ use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+ 
+ struct TestSealer(AtomicBool);
+@@ -439,3 +440,84 @@
+         crate::trail_memory::sealed_records::load_definition(&mut store, &sealer, id,).is_err()
+     );
+ }
++
++#[test]
++fn model_free_sealed_capture_limits_refuse_before_unseal_and_recovery_publication() {
++    let root = tempfile::tempdir().unwrap();
++    let document = FetchedDocument {
++        bytes: b"<html><main>sealed evidence</main></html>".to_vec(),
++        body: "<html><main>sealed evidence</main></html>".into(),
++        effective_url: Some("https://example.test/sealed".into()),
++        content_type: Some("text/html".into()),
++        acquired_at_ms: 1,
++    };
++    let request = CaptureRequest {
++        id: uuid::Uuid::new_v4(),
++        session: crate::panes::SessionId::new(),
++        graph: crate::panes::GraphId::new(),
++        node: uuid::Uuid::new_v4(),
++        url: "https://example.test/sealed".into(),
++        source: Some(SourceIdentity::of(&document)),
++        keep: true,
++    };
++    let calls = std::sync::Arc::new(AtomicU64::new(0));
++    let sealer = EpochFenceSealer {
++        inner: TestSealer(AtomicBool::new(true)),
++        epoch: std::sync::Arc::new(AtomicU64::new(1)),
++        change_epoch_after_unseal: AtomicBool::new(false),
++        unseal_calls: calls.clone(),
++    };
++    let mut initial = muniment::FjallStore::open(root.path()).unwrap();
++    let stored = capture_request(&mut initial, &sealer, &request, Some(&document)).unwrap();
++    acknowledge(&mut initial, &sealer, &request).unwrap();
++    drop(initial);
++    let limits = crate::research_storage::StorageLimits::default();
++    let owner = muniment::FjallStore::open_with_limits(root.path(), limits.owner()).unwrap();
++    let admission = crate::saved_sources::Admission {
++        key: crate::saved_sources::Key {
++            session: request.session,
++            graph: request.graph,
++            node: request.node,
++            annotation_manifest: stored.annotation_manifest,
++        },
++        occurrence: 0,
++        title: "sealed".into(),
++        url: request.url,
++        error: None,
++    };
++    let mut small = limits.clone();
++    small.operation_read.max_value_bytes = 0;
++    let mut bounded = crate::research_storage::BudgetStore {
++        store: &owner,
++        budget: small.budget(),
++    };
++    let before = calls.load(Ordering::SeqCst);
++    assert!(matches!(
++        content(&mut bounded, &sealer, &admission),
++        Err(HostError::Storage(muniment::StoreError::LimitExceeded {
++            kind: muniment::StoreLimitKind::ValueBytes,
++            limit: 0
++        }))
++    ));
++    assert_eq!(calls.load(Ordering::SeqCst), before);
++    let mut small = limits.clone();
++    small.operation_read.max_visited_items = 0;
++    let mut bounded = crate::research_storage::BudgetStore {
++        store: &owner,
++        budget: small.budget(),
++    };
++    assert!(matches!(
++        receipts(&mut bounded, &sealer),
++        Err(HostError::Storage(muniment::StoreError::LimitExceeded {
++            kind: muniment::StoreLimitKind::VisitedItems,
++            limit: 0
++        }))
++    ));
++    assert_eq!(calls.load(Ordering::SeqCst), before);
++    let mut bounded = crate::research_storage::BudgetStore {
++        store: &owner,
++        budget: limits.budget(),
++    };
++    assert!(content(&mut bounded, &sealer, &admission).is_ok());
++    assert_eq!(receipts(&mut bounded, &sealer).unwrap().len(), 1);
++}
+--- reviewed/src/trail_memory/sealed_record_receipts.rs
++++ src/trail_memory/sealed_record_receipts.rs
+@@ -5,8 +5,9 @@
+     ResultReceipt, read_result_receipt, result_receipts, write_result_receipt,
+ };
+ use super::structured_bounded_store::StructuredStore;
++use crate::research_storage::SourceReadError as HostError;
+ use eidetic::records::{PropertyDefinitionV1, PropertyRecordV1};
+-use eidetic::{Backend as _, ManifestId, PayloadSealer};
++use eidetic::{ManifestId, PayloadSealer};
+ use serde::{Deserialize, Serialize};
+ 
+ const LEGACY_PREFIX: &str = "turnstone/sealed-property-request/v1/";
+@@ -63,7 +64,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     receipt: &Receipt,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let namespace = key(receipt.request.nonce);
+     let clear = serde_json::to_vec(&Bound {
+         namespace: namespace.clone(),
+@@ -87,13 +88,10 @@
+             .as_ref()
+             .is_some_and(|value| !value.saved)
+     {
+-        pollster::block_on(store.put(&pending, &encoded))
+-            .map_err(|e| format!("Property pending receipt write failed: {e}"))?;
++        pollster::block_on(store.put(&pending, &encoded))?;
+     } else {
+-        pollster::block_on(store.put(&namespace, &encoded))
+-            .map_err(|e| format!("Property completion write failed: {e}"))?;
+-        pollster::block_on(store.delete(&pending))
+-            .map_err(|e| format!("Property pending receipt cleanup failed: {e}"))?;
++        pollster::block_on(store.put(&namespace, &encoded))?;
++        pollster::block_on(store.delete(&pending))?;
+     }
+     Ok(())
+ }
+@@ -101,7 +99,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     nonce: uuid::Uuid,
+-) -> Result<Option<Receipt>, String> {
++) -> Result<Option<Receipt>, HostError> {
+     Ok(read_receipt_bounded(store, sealer, nonce, usize::MAX)?.map(|(value, _)| value))
+ }
+ fn read_receipt_bounded(
+@@ -109,22 +107,15 @@
+     sealer: &dyn PayloadSealer,
+     nonce: uuid::Uuid,
+     limit: usize,
+-) -> Result<Option<(Receipt, usize)>, String> {
++) -> Result<Option<(Receipt, usize)>, HostError> {
+     let namespace = key(nonce);
+-    if pollster::block_on(store.get(&format!("{LEGACY_PREFIX}{nonce}")))
+-        .map_err(|e| format!("Legacy property receipt read failed: {e}"))?
+-        .is_some()
+-    {
++    if pollster::block_on(store.get(&format!("{LEGACY_PREFIX}{nonce}")))?.is_some() {
+         return Err("Unsupported prior property receipt format; preserved for recovery".into());
+     }
+-    let pending = store
+-        .get_limited(&pending_key(nonce), limit)
+-        .map_err(|e| format!("Property pending receipt read failed: {e}"))?;
++    let pending = store.get_limited(&pending_key(nonce), limit)?;
+     let bytes = match pending {
+         Some(bytes) => Some(bytes),
+-        None => store
+-            .get_limited(&namespace, limit)
+-            .map_err(|e| format!("Property receipt read failed: {e}"))?,
++        None => store.get_limited(&namespace, limit)?,
+     };
+     let Some(bytes) = bytes else {
+         return Ok(None);
+@@ -170,7 +161,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     request: &DepositRequest,
+-) -> Result<ManifestId, String> {
++) -> Result<ManifestId, HostError> {
+     if request.record.id != request.nonce.to_string() {
+         return Err("Property nonce mismatch".into());
+     }
+@@ -238,7 +229,7 @@
+     graph: uuid::Uuid,
+     manifest: ManifestId,
+     statement: &str,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let mut receipt =
+         read_receipt(store, sealer, nonce)?.ok_or("Property receipt unavailable for withdrawal")?;
+     if !receipt.saved
+@@ -269,7 +260,7 @@
+     graph: uuid::Uuid,
+     manifest: ManifestId,
+     statement: &str,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let mut receipt =
+         read_receipt(store, sealer, nonce)?.ok_or("Property receipt unavailable for withdrawal")?;
+     if !receipt.saved
+@@ -296,7 +287,7 @@
+     request: &DepositRequest,
+     id: ManifestId,
+     statement_id: &str,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let mut held = read_receipt(store, sealer, request.nonce)?.ok_or("Property receipt missing")?;
+     if held.request != *request
+         || held.abandoned
+@@ -322,7 +313,7 @@
+     id: ManifestId,
+     statement_id: &str,
+     assertion: &serde_json::Value,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let mut receipt =
+         read_receipt(store, sealer, request.nonce)?.ok_or("Property receipt missing")?;
+     if receipt.request != *request
+@@ -353,18 +344,12 @@
+     max_items: usize,
+     max_bytes: usize,
+     legacy_checked: bool,
+-) -> Result<(Vec<Receipt>, usize), String> {
+-    if !legacy_checked
+-        && !pollster::block_on(store.list(LEGACY_PREFIX))
+-            .map_err(|e| format!("Legacy property inventory failed: {e}"))?
+-            .is_empty()
+-    {
++) -> Result<(Vec<Receipt>, usize), HostError> {
++    if !legacy_checked && !pollster::block_on(store.list(LEGACY_PREFIX))?.is_empty() {
+         return Err("Unsupported prior property receipt format; preserved for recovery".into());
+     }
+     let key_bytes = max_items.saturating_mul(PENDING_PREFIX.len() + 36);
+-    let keys = store
+-        .list_inventory(PENDING_PREFIX, max_items, key_bytes)
+-        .map_err(|e| format!("Property recovery inventory failed: {e}"))?;
++    let keys = store.list_inventory(PENDING_PREFIX, max_items, key_bytes)?;
+     if keys.len() > max_items {
+         return Err("Property recovery inventory limit exceeded".into());
+     }
+@@ -417,7 +402,7 @@
+     session: uuid::Uuid,
+     max_items: usize,
+     max_bytes: usize,
+-) -> Result<Vec<RecoveryItem>, String> {
++) -> Result<Vec<RecoveryItem>, HostError> {
+     inventory_after_legacy_check(store, sealer, session, max_items, max_bytes, false)
+ }
+ pub(super) fn inventory_after_legacy_check(
+@@ -427,7 +412,7 @@
+     max_items: usize,
+     max_bytes: usize,
+     legacy_checked: bool,
+-) -> Result<Vec<RecoveryItem>, String> {
++) -> Result<Vec<RecoveryItem>, HostError> {
+     let mut values = Vec::new();
+     let (properties, property_bytes) =
+         receipts(store, sealer, max_items, max_bytes, legacy_checked)?;
+@@ -486,7 +471,7 @@
+     session: uuid::Uuid,
+     nonce: uuid::Uuid,
+     bindings: &[(uuid::Uuid, ManifestId)],
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let property = read_receipt(store, sealer, nonce)?;
+     let result = read_result_receipt(store, sealer, nonce)?;
+     match (property, result) {
+--- reviewed/src/trail_memory/sealed_records.rs
++++ src/trail_memory/sealed_records.rs
+@@ -2,6 +2,7 @@
+ // SPDX-License-Identifier: MPL-2.0
+ //! Strict typed structured-research payloads in the existing sealed owner.
+ use super::structured_bounded_store::StructuredStore;
++use crate::research_storage::SourceReadError as HostError;
+ use eidetic::records::{PropertyDefinitionV1, PropertyRecordV1, RecordResult};
+ use eidetic::{ManifestId, PayloadSealer, Store, TypedPayload};
+ 
+@@ -11,10 +12,9 @@
+     sealer: &dyn PayloadSealer,
+     id: ManifestId,
+     max_bytes: usize,
+-) -> Result<(T, usize), String> {
++) -> Result<(T, usize), HostError> {
+     let manifest_bytes = store
+-        .get_limited(&id.store_key(), max_bytes)
+-        .map_err(|e| format!("Structured manifest read failed: {e}"))?
++        .get_limited(&id.store_key(), max_bytes)?
+         .ok_or("Structured manifest missing")?;
+     if manifest_bytes.len() > max_bytes {
+         return Err("Structured manifest byte limit exceeded".into());
+@@ -36,8 +36,7 @@
+         return Err("Structured artifact metadata or byte limit refused".into());
+     }
+     let ciphertext = store
+-        .get_limited(&key, max_bytes)
+-        .map_err(|e| format!("Structured ciphertext read failed: {e}"))?
++        .get_limited(&key, max_bytes)?
+         .ok_or("Structured ciphertext missing")?;
+     if ciphertext.len() > max_bytes {
+         return Err("Structured ciphertext byte limit exceeded".into());
+@@ -85,25 +84,25 @@
+     Ok((value, clear.len()))
+ }
+ 
+-fn schema<T: TypedPayload>(store: &mut dyn Store, value: &T) -> Result<(), String> {
++fn schema<T: TypedPayload>(store: &mut dyn Store, value: &T) -> Result<(), HostError> {
+     pollster::block_on(eidetic::records::validate_required_schema(
+         store,
+         &mut eidetic::NoFetcher,
+         value,
+     ))
+-    .map_err(|e| format!("Required record schema refused: {e}"))
++    .map_err(HostError::from)
+ }
+ 
+ pub(super) fn deposit_definition(
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     definition: &PropertyDefinitionV1,
+-) -> Result<ManifestId, String> {
++) -> Result<ManifestId, HostError> {
+     definition
+         .validate()
+         .map_err(|e| format!("Invalid property definition: {e:?}"))?;
+     pollster::block_on(eidetic::records::bootstrap_record_schemas(store))
+-        .map_err(|e| format!("Record schema bootstrap failed: {e}"))?;
++        .map_err(HostError::from)?;
+     schema(store, definition)?;
+     let id = super::sealed_capture::save(store, sealer, definition, 0)?;
+     if id != definition.manifest_id().map_err(|e| e.to_string())? {
+@@ -119,7 +118,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     id: ManifestId,
+-) -> Result<PropertyDefinitionV1, String> {
++) -> Result<PropertyDefinitionV1, HostError> {
+     load_definition_bounded(store, sealer, id, usize::MAX)
+ }
+ fn load_definition_bounded(
+@@ -127,7 +126,7 @@
+     sealer: &dyn PayloadSealer,
+     id: ManifestId,
+     max_bytes: usize,
+-) -> Result<PropertyDefinitionV1, String> {
++) -> Result<PropertyDefinitionV1, HostError> {
+     let (value, _): (PropertyDefinitionV1, _) = load_bounded(store, sealer, id, max_bytes)?;
+     schema(store, &value)?;
+     value
+@@ -143,7 +142,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     record: &PropertyRecordV1,
+-) -> Result<ManifestId, String> {
++) -> Result<ManifestId, HostError> {
+     let definition = load_definition(store, sealer, record.definition_manifest)?;
+     record
+         .validate(&definition)
+@@ -160,7 +159,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     id: ManifestId,
+-) -> Result<(PropertyRecordV1, PropertyDefinitionV1), String> {
++) -> Result<(PropertyRecordV1, PropertyDefinitionV1), HostError> {
+     load_record_bounded(store, sealer, id, usize::MAX, usize::MAX)
+ }
+ pub(super) fn load_record_bounded(
+@@ -169,7 +168,7 @@
+     id: ManifestId,
+     max_bytes: usize,
+     max_validation_bytes: usize,
+-) -> Result<(PropertyRecordV1, PropertyDefinitionV1), String> {
++) -> Result<(PropertyRecordV1, PropertyDefinitionV1), HostError> {
+     let (record, used): (PropertyRecordV1, _) = load_bounded(store, sealer, id, max_bytes)?;
+     schema(store, &record)?;
+     let definition = load_definition_bounded(
+@@ -191,9 +190,9 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     result: &RecordResult,
+-) -> Result<ManifestId, String> {
++) -> Result<ManifestId, HostError> {
+     pollster::block_on(eidetic::records::bootstrap_record_schemas(store))
+-        .map_err(|e| format!("Record schema bootstrap failed: {e}"))?;
++        .map_err(HostError::from)?;
+     schema(store, result)?;
+     let replay =
+         eidetic_search::records::evaluate(&result.snapshot, &result.query, &result.settings)
+@@ -212,7 +211,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     id: ManifestId,
+-) -> Result<RecordResult, String> {
++) -> Result<RecordResult, HostError> {
+     load_result_bounded(store, sealer, id, usize::MAX, None)
+ }
+ pub(super) fn load_result_bounded(
+@@ -221,7 +220,7 @@
+     id: ManifestId,
+     max_bytes: usize,
+     current: Option<&eidetic::records::RecordSettings>,
+-) -> Result<RecordResult, String> {
++) -> Result<RecordResult, HostError> {
+     let (result, _): (RecordResult, _) = load_bounded(store, sealer, id, max_bytes)?;
+     schema(store, &result)?;
+     let mut effective = result.settings.clone();
+--- reviewed/src/trail_memory/sealed_records_sync_tests.rs
++++ src/trail_memory/sealed_records_sync_tests.rs
+@@ -11,8 +11,8 @@
+     session: uuid::Uuid,
+     generation: uuid::Uuid,
+     fail: bool,
+-    make: impl FnOnce(mpsc::SyncSender<Result<T, String>>) -> Kind,
+-) -> Result<T, String> {
++    make: impl FnOnce(mpsc::SyncSender<Result<T, crate::research_storage::SourceReadError>>) -> Kind,
++) -> Result<T, crate::research_storage::SourceReadError> {
+     let (reply, receive) = mpsc::sync_channel(1);
+     record_actor::handle_with_sync(
+         record_actor::Command {
+@@ -28,7 +28,9 @@
+         generation,
+         &|_| {
+             if fail {
+-                Err("injected sync failure".into())
++                Err(muniment::StoreError::Backend(
++                    "injected sync failure".into(),
++                ))
+             } else {
+                 Ok(())
+             }
+--- reviewed/src/trail_memory/sealed_result_receipts.rs
++++ src/trail_memory/sealed_result_receipts.rs
+@@ -1,7 +1,8 @@
+ // Copyright 2026 Mark Alan Boykin
+ // SPDX-License-Identifier: MPL-2.0
+ use super::structured_bounded_store::StructuredStore;
+-use eidetic::{Backend as _, ManifestId, PayloadSealer};
++use crate::research_storage::SourceReadError as HostError;
++use eidetic::{ManifestId, PayloadSealer};
+ use serde::{Deserialize, Serialize};
+ #[derive(Serialize, Deserialize)]
+ #[serde(deny_unknown_fields)]
+@@ -49,7 +50,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     receipt: &ResultReceipt,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let namespace = result_key(receipt.request.nonce);
+     let clear = serde_json::to_vec(&BoundResult {
+         namespace: namespace.clone(),
+@@ -68,13 +69,10 @@
+     .map_err(|_| "Result receipt envelope invalid")?;
+     let pending = pending_key(receipt.request.nonce);
+     if !receipt.saved && !receipt.abandoned {
+-        pollster::block_on(store.put(&pending, &encoded))
+-            .map_err(|e| format!("Result pending receipt write failed: {e}"))?;
++        pollster::block_on(store.put(&pending, &encoded))?;
+     } else {
+-        pollster::block_on(store.put(&namespace, &encoded))
+-            .map_err(|e| format!("Result completion write failed: {e}"))?;
+-        pollster::block_on(store.delete(&pending))
+-            .map_err(|e| format!("Result pending receipt cleanup failed: {e}"))?;
++        pollster::block_on(store.put(&namespace, &encoded))?;
++        pollster::block_on(store.delete(&pending))?;
+     }
+     Ok(())
+ }
+@@ -82,7 +80,7 @@
+     store: &mut dyn StructuredStore,
+     sealer: &dyn PayloadSealer,
+     nonce: uuid::Uuid,
+-) -> Result<Option<ResultReceipt>, String> {
++) -> Result<Option<ResultReceipt>, HostError> {
+     Ok(read_result_receipt_bounded(store, sealer, nonce, usize::MAX)?.map(|(value, _)| value))
+ }
+ fn read_result_receipt_bounded(
+@@ -90,22 +88,15 @@
+     sealer: &dyn PayloadSealer,
+     nonce: uuid::Uuid,
+     limit: usize,
+-) -> Result<Option<(ResultReceipt, usize)>, String> {
++) -> Result<Option<(ResultReceipt, usize)>, HostError> {
+     let namespace = result_key(nonce);
+-    if pollster::block_on(store.get(&format!("{LEGACY_PREFIX}{nonce}")))
+-        .map_err(|e| format!("Legacy result receipt read failed: {e}"))?
+-        .is_some()
+-    {
++    if pollster::block_on(store.get(&format!("{LEGACY_PREFIX}{nonce}")))?.is_some() {
+         return Err("Unsupported prior result receipt format; preserved for recovery".into());
+     }
+-    let pending = store
+-        .get_limited(&pending_key(nonce), limit)
+-        .map_err(|e| format!("Result pending receipt read failed: {e}"))?;
++    let pending = store.get_limited(&pending_key(nonce), limit)?;
+     let bytes = match pending {
+         Some(bytes) => Some(bytes),
+-        None => store
+-            .get_limited(&namespace, limit)
+-            .map_err(|e| format!("Result receipt read failed: {e}"))?,
++        None => store.get_limited(&namespace, limit)?,
+     };
+     let Some(bytes) = bytes else {
+         return Ok(None);
+@@ -150,7 +141,7 @@
+     sealer: &dyn PayloadSealer,
+     request: &ResultRequest,
+     result: &eidetic::records::RecordResult,
+-) -> Result<ManifestId, String> {
++) -> Result<ManifestId, HostError> {
+     use eidetic::TypedPayload;
+     let id = ManifestId::of_blob(&result.serialize_to_bytes().map_err(|e| e.to_string())?);
+     if id != request.manifest {
+@@ -206,7 +197,7 @@
+     sealer: &dyn PayloadSealer,
+     request: &ResultRequest,
+     statement: &str,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let mut held =
+         read_result_receipt(store, sealer, request.nonce)?.ok_or("Result receipt missing")?;
+     if held.request != *request
+@@ -229,7 +220,7 @@
+     request: &ResultRequest,
+     statement: &str,
+     assertion: &serde_json::Value,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let mut held =
+         read_result_receipt(store, sealer, request.nonce)?.ok_or("Result receipt missing")?;
+     if held.request != *request
+@@ -259,18 +250,12 @@
+     max_items: usize,
+     max_bytes: usize,
+     legacy_checked: bool,
+-) -> Result<(Vec<ResultReceipt>, usize), String> {
+-    if !legacy_checked
+-        && !pollster::block_on(store.list(LEGACY_PREFIX))
+-            .map_err(|e| format!("Legacy result inventory failed: {e}"))?
+-            .is_empty()
+-    {
++) -> Result<(Vec<ResultReceipt>, usize), HostError> {
++    if !legacy_checked && !pollster::block_on(store.list(LEGACY_PREFIX))?.is_empty() {
+         return Err("Unsupported prior result receipt format; preserved for recovery".into());
+     }
+     let key_bytes = max_items.saturating_mul(PENDING_PREFIX.len() + 36);
+-    let keys = store
+-        .list_inventory(PENDING_PREFIX, max_items, key_bytes)
+-        .map_err(|e| format!("Result recovery inventory failed: {e}"))?;
++    let keys = store.list_inventory(PENDING_PREFIX, max_items, key_bytes)?;
+     if keys.len() > max_items {
+         return Err("Result recovery inventory limit exceeded".into());
+     }
+--- reviewed/src/trail_memory/source_capture_receipts.rs
++++ src/trail_memory/source_capture_receipts.rs
+@@ -1,6 +1,7 @@
+ // Copyright 2026 Mark Alan Boykin
+ // SPDX-License-Identifier: MPL-2.0
+ //! Request-scoped deposit recovery under the existing trail store owner.
++use crate::research_storage::SourceReadError as HostError;
+ 
+ use crate::action::StoredSourceDocument;
+ use crate::content::FetchedDocument;
+@@ -12,33 +13,32 @@
+     format!("{PREFIX}{}", request.id)
+ }
+ 
+-fn decode(key: &str, bytes: &[u8]) -> Result<DepositReceipt, String> {
++fn decode(key: &str, bytes: &[u8]) -> Result<DepositReceipt, HostError> {
+     let receipt: DepositReceipt = serde_json::from_slice(bytes)
+         .map_err(|error| format!("capture recovery receipt {key} is unreadable: {error}"))?;
+     if key != self::key(&receipt.request)
+         || receipt.request.source.is_none()
+         || (receipt.saved && receipt.stored.is_none())
+     {
+-        return Err(format!(
+-            "capture recovery receipt {key} has inconsistent request identity"
+-        ));
++        return Err(
++            format!("capture recovery receipt {key} has inconsistent request identity").into(),
++        );
+     }
+     Ok(receipt)
+ }
+ 
+-fn put(store: &mut dyn eidetic::Store, receipt: &DepositReceipt) -> Result<(), String> {
++fn put(store: &mut dyn eidetic::Store, receipt: &DepositReceipt) -> Result<(), HostError> {
+     let bytes = serde_json::to_vec(receipt)
+         .map_err(|error| format!("capture recovery receipt encode: {error}"))?;
+-    pollster::block_on(store.put(&key(&receipt.request), &bytes))
+-        .map_err(|error| format!("capture recovery receipt write: {error}"))
++    pollster::block_on(store.put(&key(&receipt.request), &bytes)).map_err(HostError::from)
+ }
+ 
+ fn verify_request(
+     store: &mut dyn eidetic::Store,
+     request: &CaptureRequest,
+     stored: &StoredSourceDocument,
+-) -> Result<(), String> {
+-    verify_request_typed(store, request, stored).map_err(|error| error.to_string())
++) -> Result<(), HostError> {
++    verify_request_typed(store, request, stored)
+ }
+ 
+ fn verify_request_typed(
+@@ -79,11 +79,11 @@
+ fn recover_document(
+     store: &mut dyn eidetic::Store,
+     source: &SourceIdentity,
+-) -> Result<FetchedDocument, String> {
++) -> Result<FetchedDocument, HostError> {
+     let hash: eidetic::Hash = serde_json::from_value(serde_json::json!(source.hash))
+         .map_err(|error| format!("capture source identity: {error}"))?;
+     let bytes = pollster::block_on(store.get(&format!("blob:{}", hash.to_hex())))
+-        .map_err(|error| format!("capture retry raw read: {error}"))?
++        .map_err(HostError::from)?
+         .ok_or("capture retry requires the original response; no local raw deposit exists")?;
+     if eidetic::Hash::of(&bytes) != hash {
+         return Err("capture retry raw payload integrity mismatch".into());
+@@ -91,7 +91,7 @@
+     let body_hash: eidetic::Hash = serde_json::from_value(serde_json::json!(source.body_hash))
+         .map_err(|error| format!("capture decoded-body identity: {error}"))?;
+     let body_bytes = pollster::block_on(store.get(&format!("blob:{}", body_hash.to_hex())))
+-        .map_err(|error| format!("capture retry decoded-body read: {error}"))?
++        .map_err(HostError::from)?
+         .ok_or(
+             "capture retry requires the original decoded response; no local body deposit exists",
+         )?;
+@@ -119,13 +119,13 @@
+     store: &mut dyn eidetic::Store,
+     request: &CaptureRequest,
+     document: Option<&FetchedDocument>,
+-) -> Result<StoredSourceDocument, String> {
++) -> Result<StoredSourceDocument, HostError> {
+     let source = request
+         .source
+         .as_ref()
+         .ok_or("capture request has no source identity")?;
+     let existing = pollster::block_on(store.get(&key(request)))
+-        .map_err(|error| format!("capture recovery receipt read: {error}"))?
++        .map_err(HostError::from)?
+         .map(|bytes| decode(&key(request), &bytes))
+         .transpose()?;
+     if let Some(existing) = &existing {
+@@ -170,9 +170,7 @@
+     // existing content-addressed blob namespace and is usually the raw blob.
+     let body_hash = eidetic::Hash::of(document.body.as_bytes());
+     let body_key = format!("blob:{}", body_hash.to_hex());
+-    match pollster::block_on(store.get(&body_key))
+-        .map_err(|error| format!("capture decoded-body deposit read: {error}"))?
+-    {
++    match pollster::block_on(store.get(&body_key)).map_err(HostError::from)? {
+         Some(existing) if existing == document.body.as_bytes() => {},
+         Some(_) => {
+             return Err(
+@@ -182,7 +180,7 @@
+         None => {
+             let manifest_key = eidetic::ManifestId::from_hash(body_hash).store_key();
+             if pollster::block_on(store.get(&manifest_key))
+-                .map_err(|error| format!("capture decoded-body manifest check: {error}"))?
++                .map_err(HostError::from)?
+                 .is_some()
+             {
+                 return Err(
+@@ -190,7 +188,7 @@
+                 );
+             }
+             pollster::block_on(store.put(&body_key, document.body.as_bytes()))
+-                .map_err(|error| format!("capture decoded-body deposit: {error}"))?;
++                .map_err(HostError::from)?;
+         },
+     }
+     let stored = super::capture_source_document_in(store, document)?;
+@@ -212,10 +210,10 @@
+ pub(super) fn completed_legacy(
+     store: &mut dyn eidetic::Store,
+     request: &CaptureRequest,
+-) -> Result<StoredSourceDocument, String> {
++) -> Result<StoredSourceDocument, HostError> {
+     let receipt_key = key(request);
+     let bytes = pollster::block_on(store.get(&receipt_key))
+-        .map_err(|_| "legacy capture receipt unavailable")?
++        .map_err(HostError::from)?
+         .ok_or("legacy capture receipt missing")?;
+     let receipt = decode(&receipt_key, &bytes)?;
+     if receipt.request != *request {
+@@ -235,8 +233,8 @@
+ pub(super) fn verify_receipt(
+     store: &mut dyn eidetic::Store,
+     receipt: &DepositReceipt,
+-) -> Result<(), String> {
+-    verify_receipt_typed(store, receipt).map_err(|error| error.to_string())
++) -> Result<(), HostError> {
++    verify_receipt_typed(store, receipt)
+ }
+ 
+ pub(super) fn verify_receipt_typed(
+@@ -256,10 +254,10 @@
+ pub(super) fn acknowledge_saved(
+     store: &mut dyn eidetic::Store,
+     request: &CaptureRequest,
+-) -> Result<(), String> {
++) -> Result<(), HostError> {
+     let receipt_key = key(request);
+     let bytes = pollster::block_on(store.get(&receipt_key))
+-        .map_err(|error| format!("capture save receipt read: {error}"))?
++        .map_err(HostError::from)?
+         .ok_or("capture save acknowledgement has no deposit receipt")?;
+     let mut receipt = decode(&receipt_key, &bytes)?;
+     if receipt.request != *request {
+@@ -286,14 +284,13 @@
+ /// never silently treated as an empty successful recovery.
+ pub(super) fn recover_receipts(
+     store: &mut dyn eidetic::Store,
+-) -> Result<Vec<DepositReceipt>, String> {
+-    let mut keys = pollster::block_on(store.list(PREFIX))
+-        .map_err(|error| format!("capture recovery inventory: {error}"))?;
++) -> Result<Vec<DepositReceipt>, HostError> {
++    let mut keys = pollster::block_on(store.list(PREFIX)).map_err(HostError::from)?;
+     keys.sort();
+     keys.into_iter()
+         .map(|key| {
+             let bytes = pollster::block_on(store.get(&key))
+-                .map_err(|error| format!("capture recovery receipt {key}: {error}"))?
++                .map_err(HostError::from)?
+                 .ok_or_else(|| format!("capture recovery receipt {key} disappeared"))?;
+             decode(&key, &bytes)
+         })
+--- reviewed/src/trail_memory/storage_owner_review_tests.rs
++++ src/trail_memory/storage_owner_review_tests.rs
+@@ -0,0 +1,138 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++use super::*;
++use eidetic::Backend as _;
++use std::sync::{Arc, mpsc};
++use std::time::Duration;
++
++#[test]
++fn model_free_actor_recovery_limit_is_typed_preserves_bytes_and_retries() {
++    fn files(root: &Path, dir: &Path, out: &mut Vec<(PathBuf, Vec<u8>)>) {
++        for entry in std::fs::read_dir(dir).unwrap() {
++            let path = entry.unwrap().path();
++            if path.is_dir() {
++                files(root, &path, out);
++            } else if path.is_file() {
++                out.push((
++                    path.strip_prefix(root).unwrap().to_owned(),
++                    std::fs::read(path).unwrap(),
++                ));
++            }
++        }
++    }
++    fn snapshot(root: &Path) -> Vec<(PathBuf, Vec<u8>)> {
++        let mut result = Vec::new();
++        files(root, root, &mut result);
++        result.sort();
++        result
++    }
++    let root = tempfile::tempdir().unwrap();
++    let session = crate::panes::SessionId::new();
++    let directory = root
++        .path()
++        .join(session.as_uuid().to_string())
++        .join("memory");
++    let store = FjallStore::open(&directory).unwrap();
++    pollster::block_on(store.put("retained", &vec![42; 8192])).unwrap();
++    store.sync_all().unwrap();
++    drop(store);
++    let before = snapshot(&directory);
++    let mut limits = crate::research_storage::StorageLimits::default();
++    limits.recovery.max_value_bytes = 16;
++    let generation = uuid::Uuid::new_v4();
++    let (actor, updates) = spawn_trail_for_session_with_limits(
++        Arc::new(|| {}),
++        Some(directory.clone()),
++        Default::default(),
++        generation,
++        Ok(limits),
++    );
++    assert!(actor.command(TrailCommand::SetCustody(Some(
++        custody_test_fixture::custody()
++    ))));
++    let update = updates.recv_timeout(Duration::from_secs(5)).unwrap();
++    assert!(matches!(
++        update,
++        Update::SourceCaptureRecoveryFailed {
++            error: crate::research_storage::SourceReadError::Storage(
++                muniment::StoreError::LimitExceeded {
++                    kind: muniment::StoreLimitKind::ValueBytes,
++                    limit: 16
++                }
++            ),
++            ..
++        }
++    ));
++    let check = |generation| {
++        let (reply, receive) = mpsc::sync_channel(1);
++        assert!(actor.command(TrailCommand::ResearchSnapshot {
++            context: crate::research::Context {
++                session,
++                generation,
++                admissions: vec![],
++                clips: vec![]
++            },
++            selected: None,
++            max_chars: Some(1000),
++            max_metadata_chars: Some(1000),
++            budget: None,
++            reply,
++        }));
++        assert!(matches!(
++            receive.recv_timeout(Duration::from_secs(5)).unwrap(),
++            Err(crate::research_storage::SourceReadError::Storage(
++                muniment::StoreError::LimitExceeded {
++                    kind: muniment::StoreLimitKind::ValueBytes,
++                    limit: 16
++                }
++            ))
++        ));
++    };
++    check(generation);
++    let new_generation = uuid::Uuid::new_v4();
++    assert!(actor.command(TrailCommand::Reopen {
++        directory: directory.clone(),
++        capture_generation: new_generation
++    }));
++    check(new_generation);
++    let (release, receive) = mpsc::sync_channel(1);
++    assert!(actor.command(TrailCommand::Release(release)));
++    receive.recv_timeout(Duration::from_secs(5)).unwrap();
++    actor.join().unwrap();
++    assert_eq!(snapshot(&directory), before);
++    let retry_generation = uuid::Uuid::new_v4();
++    let (retry, _) = spawn_trail_for_session_with_limits(
++        Arc::new(|| {}),
++        Some(directory),
++        Default::default(),
++        retry_generation,
++        Ok(crate::research_storage::StorageLimits::default()),
++    );
++    assert!(retry.command(TrailCommand::SetCustody(Some(
++        custody_test_fixture::custody()
++    ))));
++    let (reply, receive) = mpsc::sync_channel(1);
++    assert!(retry.command(TrailCommand::ResearchSnapshot {
++        context: crate::research::Context {
++            session,
++            generation: retry_generation,
++            admissions: vec![],
++            clips: vec![]
++        },
++        selected: None,
++        max_chars: Some(1000),
++        max_metadata_chars: Some(1000),
++        budget: None,
++        reply,
++    }));
++    assert!(
++        receive
++            .recv_timeout(Duration::from_secs(5))
++            .unwrap()
++            .is_ok()
++    );
++    let (release, receive) = mpsc::sync_channel(1);
++    assert!(retry.command(TrailCommand::Release(release)));
++    receive.recv_timeout(Duration::from_secs(5)).unwrap();
++    retry.join().unwrap();
++}
+--- reviewed/src/trail_memory/structured_bounded_store.rs
++++ src/trail_memory/structured_bounded_store.rs
+@@ -7,7 +7,7 @@
+     pub inner: &'a FjallStore,
+     pub max_bytes: usize,
+     pub budget: crate::research_storage::SharedReadBudget,
+-    pub sync: &'a (dyn Fn(&FjallStore) -> Result<(), String> + Sync),
++    pub sync: &'a (dyn Fn(&FjallStore) -> Result<(), StoreError> + Sync),
+ }
+ // Recovery inventories need their domain limits before storage copies keys.
+ pub(super) trait StructuredStore: Backend {
+@@ -95,7 +95,9 @@
+ }
+ 
+ impl BoundedStore<'_> {
+-    pub fn ensure_no_legacy_receipts(&self) -> Result<(), String> {
++    pub fn ensure_no_legacy_receipts(
++        &self,
++    ) -> Result<(), crate::research_storage::SourceReadError> {
+         let store = crate::research_storage::BudgetStore {
+             store: self.inner,
+             budget: self.budget.clone(),
+@@ -104,10 +106,11 @@
+             ("turnstone/sealed-property-request/v1/", "property"),
+             ("turnstone/sealed-result-request/v1/", "result"),
+         ] {
+-            if store.exists(prefix).map_err(|error| error.to_string())? {
++            if store.exists(prefix)? {
+                 return Err(format!(
+                     "Unsupported prior {kind} receipt format; preserved for recovery"
+-                ));
++                )
++                .into());
+             }
+         }
+         Ok(())
+@@ -130,7 +133,7 @@
+         if key.starts_with("turnstone/sealed-property-pending/v2/")
+             || key.starts_with("turnstone/sealed-result-pending/v2/")
+         {
+-            (self.sync)(self.inner).map_err(StoreError::Backend)?;
++            (self.sync)(self.inner)?;
+         }
+         self.inner.delete(key).await
+     }
+--- reviewed/src/trail_memory/structured_owner_tests.rs
++++ src/trail_memory/structured_owner_tests.rs
+@@ -17,8 +17,10 @@
+     actor: &armillary::ActorHandle<TrailCommand>,
+     session: uuid::Uuid,
+     generation: uuid::Uuid,
+-    make: impl FnOnce(mpsc::SyncSender<Result<T, String>>) -> record_actor::Kind,
+-) -> Result<T, String> {
++    make: impl FnOnce(
++        mpsc::SyncSender<Result<T, crate::research_storage::SourceReadError>>,
++    ) -> record_actor::Kind,
++) -> Result<T, crate::research_storage::SourceReadError> {
+     let (reply, receive) = mpsc::sync_channel(1);
+     assert!(
+         actor.command(TrailCommand::ResearchRecords(record_actor::Command {
+@@ -38,7 +40,7 @@
+     generation: uuid::Uuid,
+     manifest: eidetic::ManifestId,
+     budget: crate::research_storage::SharedReadBudget,
+-) -> Result<(PropertyRecordV1, PropertyDefinitionV1), String> {
++) -> Result<(PropertyRecordV1, PropertyDefinitionV1), crate::research_storage::SourceReadError> {
+     let (reply, receive) = mpsc::sync_channel(1);
+     assert!(
+         actor.command(TrailCommand::ResearchRecords(record_actor::Command {
+--- reviewed/src/trail_memory/structured_three_owner_case.rs
++++ src/trail_memory/structured_three_owner_case.rs
+@@ -139,14 +139,36 @@
+     assert!(lo > 0 && lo < 1_000_000);
+     let mut limits = crate::research_storage::StorageLimits::default();
+     limits.operation_read.max_visited_items = lo;
+-    bridge.set_storage_limits(Ok(limits));
++    let shared = limits.budget();
++    assert!(
++        crate::research_search::snapshot_with_budget(bridge, actor, &mixed_lexical, shared.clone())
++            .is_ok()
++    );
++    assert!(matches!(
++        actor_read_with_budget(actor, *session.as_uuid(), generation, manifest, shared),
++        Err(crate::research_storage::SourceReadError::Storage(
++            muniment::StoreError::LimitExceeded {
++                kind: muniment::StoreLimitKind::VisitedItems,
++                limit
++            }
++        )) if limit == lo
++    ));
++    bridge.set_storage_limits(Ok(limits.clone()));
+     assert!(matches!(
+         crate::research_records_worker::execute(
+             bridge,
+             actor,
+             crate::research_records::Job::Query(mixed.clone())
+         ),
+-        crate::research_records::JobResult::Query { result: Err(_), .. }
++        crate::research_records::JobResult::Query {
++            result: Err(crate::research_storage::SourceReadError::Storage(
++                muniment::StoreError::LimitExceeded {
++                    kind: muniment::StoreLimitKind::VisitedItems,
++                    limit
++                }
++            )),
++            ..
++        } if limit == lo
+     ));
+     bridge.set_storage_limits(Ok(Default::default()));
+     let crate::research_records::JobResult::Query {
+@@ -190,6 +212,29 @@
+         record_actor::Kind::AcknowledgeResult(saved, statement, reply)
+     })
+     .unwrap();
++    bridge.set_storage_limits(Ok(limits));
++    let refused = crate::research_records_worker::execute(
++        bridge,
++        actor,
++        crate::research_records::Job::Replay {
++            id: uuid::Uuid::new_v4(),
++            scope: mixed.scope.clone(),
++            result: result_id,
++        },
++    );
++    assert!(matches!(
++        refused,
++        crate::research_records::JobResult::Replay {
++            result: Err(crate::research_storage::SourceReadError::Storage(
++                muniment::StoreError::LimitExceeded {
++                    kind: muniment::StoreLimitKind::VisitedItems,
++                    limit
++                }
++            )),
++            ..
++        } if limit == lo
++    ));
++    bridge.set_storage_limits(Ok(Default::default()));
+     let replay = crate::research_records_worker::execute(
+         bridge,
+         actor,
+--- reviewed/src/trail_memory/worker.rs
++++ src/trail_memory/worker.rs
+@@ -13,21 +13,21 @@
+ ) {
+     let initial = dir.as_ref().map(|dir| match &limits {
+         Ok(limits) => open_memory(dir, &capture_library, limits),
+-        Err(error) => Err(error.clone()),
++        Err(error) => Err(error.clone().into()),
+     });
+     let mut memory_error = initial
+         .as_ref()
+         .and_then(|result| result.as_ref().err())
+         .cloned();
+     if let Some(error) = &memory_error {
+-        capture_library.unavailable(error.clone());
++        capture_library.unavailable(error.to_string());
+     }
+     let mut state = initial.and_then(Result::ok);
+     let mut current_dir = dir.unwrap_or_default();
+     let mut current_capture_generation = capture_generation;
+     let mut custody: Option<SourceCustody> = None;
+     let mut sealed_store: Option<FjallStore> = None;
+-    let mut sealed_error: Option<String> = None;
++    let mut sealed_error: Option<crate::research_storage::SourceReadError> = None;
+     // The derived lexical/behavioural projection and whether the corpus has
+     // moved since it was minted. Built on the first recall, not at
+     // spawn: a session that never searches never pays for one.
+@@ -88,7 +88,7 @@
+                 {
+                     out.emit(Update::SourceCaptureRecoveryFailed {
+                         capture_generation: current_capture_generation,
+-                        error: format!("{error}. Review storage settings or the reported error, then restart to retry."),
++                        error: error.clone(),
+                     });
+                 }
+                 if let (Some(binding), Ok(limits)) = (custody.as_ref(), limits.as_ref()) {
+@@ -144,10 +144,10 @@
+                 } else {
+                     match state.as_mut() {
+                         Some((store, _)) => {
+-                            let budget = limits
+-                                .as_ref()
+-                                .map(|limits| limits.budget())
+-                                .map_err(Clone::clone);
++                            let budget =
++                                limits.as_ref().map(|limits| limits.budget()).map_err(|e| {
++                                    crate::research_storage::SourceReadError::from(e.clone())
++                                });
+                             budget.and_then(|budget| {
+                                 let mut legacy = crate::research_storage::BudgetStore {
+                                     store,
+@@ -218,8 +218,10 @@
+                     Err(error.clone())
+                 } else {
+                     match state.as_mut() {
+-                        Some((store, _)) => {
+-                            limits.as_ref().map_err(Clone::clone).and_then(|limits| {
++                        Some((store, _)) => limits
++                            .as_ref()
++                            .map_err(|e| crate::research_storage::SourceReadError::from(e.clone()))
++                            .and_then(|limits| {
+                                 saved_sources::resolve_with_budget(
+                                     store,
+                                     sealed_store.as_ref(),
+@@ -230,8 +232,7 @@
+                                     &target,
+                                     limits.budget(),
+                                 )
+-                            })
+-                        },
++                            }),
+                         None => Err(memory_error
+                             .clone()
+                             .unwrap_or_else(|| "The session evidence store is unavailable".into())),
+@@ -525,8 +526,7 @@
+                     flush(store, memory);
+                 }
+                 last_to.clear();
+-                // The index belongs to the departing session's corpus;
+-                // the adopted one mints its own on first recall.
++                // The departing session's index is recreated on first recall.
+                 index = None;
+                 index_stale = true;
+                 indexed_sources.clear();
+@@ -536,11 +536,11 @@
+                 drop(sealed_store.take());
+                 let opened = match &limits {
+                     Ok(limits) => open_memory(&dir, &capture_library, limits),
+-                    Err(error) => Err(error.clone()),
++                    Err(error) => Err(error.clone().into()),
+                 };
+                 memory_error = opened.as_ref().err().cloned();
+                 if let Some(error) = &memory_error {
+-                    capture_library.unavailable(error.clone());
++                    capture_library.unavailable(error.to_string());
+                 }
+                 state = opened.ok();
+                 current_dir = dir;
+@@ -555,7 +555,7 @@
+                 {
+                     out.emit(Update::SourceCaptureRecoveryFailed {
+                         capture_generation: current_capture_generation,
+-                        error: format!("{error}. Review storage settings or the reported error, then restart to retry."),
++                        error: error.clone(),
+                     });
+                 }
+                 if let (Some(binding), Ok(limits)) = (custody.as_ref(), limits.as_ref()) {
+--- reviewed/src/trail_memory/worker_capture_ops.rs
++++ src/trail_memory/worker_capture_ops.rs
+@@ -1,25 +1,25 @@
+ // Copyright 2026 Mark Alan Boykin
+ // SPDX-License-Identifier: MPL-2.0
+ use super::*;
+-use eidetic::Backend as _;
+ 
+ pub(super) fn apply(
+     state: &mut Option<(FjallStore, BrowsingMemory)>,
+     sealed: &mut Option<FjallStore>,
+     binding: &SourceCustody,
+     limits: &Result<crate::research_storage::StorageLimits, String>,
+-    memory_error: &Option<String>,
+-    sealed_error: &Option<String>,
++    memory_error: &Option<crate::research_storage::SourceReadError>,
++    sealed_error: &Option<crate::research_storage::SourceReadError>,
+     request: &crate::source_capture::CaptureRequest,
+     document: Option<&crate::content::FetchedDocument>,
+     acknowledge: bool,
+-) -> Result<Option<StoredSourceDocument>, String> {
++) -> Result<Option<StoredSourceDocument>, crate::research_storage::SourceReadError> {
+     let budget = limits.as_ref().map_err(Clone::clone)?.budget();
+     let store = &mut state
+         .as_mut()
+         .ok_or_else(|| {
+             memory_error
+-                .clone()
++                .as_ref()
++                .map(ToString::to_string)
+                 .unwrap_or_else(|| "legacy capture store unavailable".into())
+         })?
+         .0;
+@@ -28,8 +28,7 @@
+         budget: budget.clone(),
+     };
+     let legacy_key = format!("turnstone/source-capture-request/v1/{}", request.id);
+-    let existing =
+-        pollster::block_on(legacy.get(&legacy_key)).map_err(|error| error.to_string())?;
++    let existing = pollster::block_on(legacy.get(&legacy_key))?;
+     if existing.is_some() {
+         if acknowledge {
+             source_capture_receipts::acknowledge_saved(&mut legacy, request)?;
+@@ -39,7 +38,8 @@
+     }
+     let store = sealed.as_mut().ok_or_else(|| {
+         sealed_error
+-            .clone()
++            .as_ref()
++            .map(ToString::to_string)
+             .unwrap_or_else(|| "sealed capture store unavailable".into())
+     })?;
+     let mut sealed = crate::research_storage::BudgetStore { store, budget };
+--- reviewed/src/trail_memory/worker_open_sealed.rs
++++ src/trail_memory/worker_open_sealed.rs
+@@ -5,11 +5,17 @@
+ pub(super) fn run(
+     directory: &Path,
+     limits: &Result<crate::research_storage::StorageLimits, String>,
+-) -> (Option<FjallStore>, Option<String>) {
+-    let result = limits.as_ref().map_err(Clone::clone).and_then(|limits| {
+-        FjallStore::open_with_limits(sealed_memory_dir(directory), limits.owner())
+-            .map_err(|error| format!("open sealed session store: {error}"))
+-    });
++) -> (
++    Option<FjallStore>,
++    Option<crate::research_storage::SourceReadError>,
++) {
++    let result = limits
++        .as_ref()
++        .map_err(|e| crate::research_storage::SourceReadError::from(e.clone()))
++        .and_then(|limits| {
++            FjallStore::open_with_limits(sealed_memory_dir(directory), limits.owner())
++                .map_err(crate::research_storage::SourceReadError::from)
++        });
+     match result {
+         Ok(store) => (Some(store), None),
+         Err(error) => (None, Some(error)),
+--- reviewed/src/trail_memory/worker_research_snapshot.rs
++++ src/trail_memory/worker_research_snapshot.rs
+@@ -9,14 +9,16 @@
+     max_chars: Option<usize>,
+     max_metadata_chars: Option<usize>,
+     budget: Option<crate::research_storage::SharedReadBudget>,
+-    reply: std::sync::mpsc::SyncSender<Result<Vec<crate::saved_sources::Entry>, String>>,
++    reply: std::sync::mpsc::SyncSender<
++        Result<Vec<crate::saved_sources::Entry>, crate::research_storage::SourceReadError>,
++    >,
+     state: &mut Option<(FjallStore, BrowsingMemory)>,
+     sealed_store: &mut Option<FjallStore>,
+     custody: &Option<SourceCustody>,
+     current_dir: &Path,
+     current_capture_generation: uuid::Uuid,
+-    memory_error: &Option<String>,
+-    sealed_error: &Option<String>,
++    memory_error: &Option<crate::research_storage::SourceReadError>,
++    sealed_error: &Option<crate::research_storage::SourceReadError>,
+     limits: &Result<crate::research_storage::StorageLimits, String>,
+ ) {
+     let custody_epoch = custody.as_ref().and_then(SourceCustody::snapshot);
+@@ -90,7 +92,7 @@
+             .ok_or_else(|| {
+                 memory_error
+                     .clone()
+-                    .unwrap_or_else(|| "The session evidence store is unavailable.".to_string())
++                    .unwrap_or_else(|| "The session evidence store is unavailable.".into())
+             })
+             .and_then(|result| result)
+     };
+--- reviewed/src/trail_memory/worker_research_source.rs
++++ src/trail_memory/worker_research_source.rs
+@@ -7,14 +7,16 @@
+     context: crate::research::Context,
+     target: crate::saved_sources::Target,
+     budget: Option<crate::research_storage::SharedReadBudget>,
+-    reply: std::sync::mpsc::SyncSender<Result<crate::saved_sources::Content, String>>,
++    reply: std::sync::mpsc::SyncSender<
++        Result<crate::saved_sources::Content, crate::research_storage::SourceReadError>,
++    >,
+     state: &mut Option<(FjallStore, BrowsingMemory)>,
+     sealed_store: &mut Option<FjallStore>,
+     custody: &Option<SourceCustody>,
+     current_dir: &Path,
+     current_capture_generation: uuid::Uuid,
+-    memory_error: &Option<String>,
+-    sealed_error: &Option<String>,
++    memory_error: &Option<crate::research_storage::SourceReadError>,
++    sealed_error: &Option<crate::research_storage::SourceReadError>,
+     limits: &Result<crate::research_storage::StorageLimits, String>,
+ ) {
+     let custody_epoch = custody.as_ref().and_then(SourceCustody::snapshot);
+@@ -41,7 +43,8 @@
+                         .as_ref()
+                         .err()
+                         .cloned()
+-                        .unwrap_or_else(|| "Storage limits unavailable".into())),
++                        .unwrap_or_else(|| "Storage limits unavailable".into())
++                        .into()),
+                     Some(budget) => {
+                         let mut legacy = crate::research_storage::BudgetStore {
+                             store,

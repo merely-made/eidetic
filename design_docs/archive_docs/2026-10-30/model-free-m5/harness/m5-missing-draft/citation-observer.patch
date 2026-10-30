@@ -1,0 +1,138 @@
+--- a/src/shell/mod.rs
++++ b/src/shell/mod.rs
+@@ -22,6 +22,7 @@
+ mod controller_input;
+ mod cue_content;
+ mod document_a11y;
++mod citation_event_history;
+ mod drive;
+ mod effects;
+ mod events;
+--- a/src/shell/shell.rs
++++ b/src/shell/shell.rs
+@@ -110,6 +110,7 @@
+     /// received them. Automation drains this copy, so its assertions do not
+     /// compete with trail memory for the app's one event stream.
+     pub(super) observed_events: VecDeque<String>,
++    pub(super) address_event_history: super::citation_event_history::AddressEventHistory,
+     pub(super) diagnostic_observations: crate::diagnostic_observations::DiagnosticObservations,
+     pub(super) shared_out_dir: std::path::PathBuf,
+     /// A capture the next `render` fulfills from the very views it presents
+--- a/src/shell/shell_new.rs
++++ b/src/shell/shell_new.rs
+@@ -332,6 +332,7 @@
+             held_contributed_click: None,
+             contributed_click_request: 0,
+             observed_events: VecDeque::with_capacity(128),
++            address_event_history: Default::default(),
+             diagnostic_observations:
+                 crate::diagnostic_observations::DiagnosticObservations::from_env(),
+             shared_out_dir: shared_out_dir_from_env(),
+--- a/src/shell/effects/shell_refresh_diagnostic_inspection.rs
++++ b/src/shell/effects/shell_refresh_diagnostic_inspection.rs
+@@ -34,6 +34,15 @@
+             .map(|d| d.as_millis() as u64)
+             .unwrap_or(0);
+         for event in events {
++            if std::env::var_os("TURNSTONE_SCENARIO").is_some()
++                && let crate::observe::AppEvent::AddressOpened(address) = &event
++            {
++                let target = crate::saved_sources::parse_address(address).ok().flatten()
++                    .filter(|target| self.app.saved_source_admitted(&target.key))
++                    .filter(|target| crate::research_scenario_privacy::capture_selected(&self.app.research_search.selected, &target.key))
++                    .filter(|_| std::env::var("TURNSTONE_M5_EXPECTED_A1_URI").ok().as_deref() == Some(address.as_str()));
++                self.address_event_history.record(target);
++            }
+             self.diagnostic_observations.record(&event);
+             if self.observed_events.len() == 128 {
+                 self.observed_events.pop_front();
+--- a/src/shell/drive/shell_scenario_assert_no_surface.rs
++++ b/src/shell/drive/shell_scenario_assert_no_surface.rs
+@@ -424,6 +424,9 @@
+                     "session": self.app.session_id,
+                     "generation": self.app.source_capture_generation,
+                     "status": self.app.saved_sources.status,
++                    "address_events": self.address_event_history.observation(&selected, |key| self.app.saved_source_admitted(key)),
++                    "reader_scope": {"schema":"turnstone.m5-reader-scope/v1",
++                        "selected": if selected.is_none() { None::<&str> } else { Some("restricted") }},
+                     "admissions": crate::research_scenario_privacy::admissions(&selected, self.app.saved_source_admissions()),
+                     "entries": crate::research_scenario_privacy::entries(&selected, &self.app.saved_sources.entries),
+                     "readers": readers,
+--- /dev/null
++++ b/src/shell/citation_event_history.rs
+@@ -0,0 +1,75 @@
++// STAGED ONLY: retained copy of existing AppEvent::AddressOpened observations.
++// This records evidence; it never dispatches or changes navigation.
++use std::collections::VecDeque;
++
++#[derive(Default)]
++pub(super) struct AddressEventHistory {
++    total: u64,
++    dropped: u64,
++    overflow: bool,
++    // None is a counted, redacted open. No arbitrary URI is retained.
++    events: VecDeque<(u64, Option<crate::saved_sources::Target>)>,
++}
++
++impl AddressEventHistory {
++    pub(super) fn record(&mut self, target: Option<crate::saved_sources::Target>) {
++        let Some(next) = self.total.checked_add(1) else {
++            self.overflow = true;
++            return;
++        };
++        self.total = next;
++        if self.events.len() == 128 {
++            self.events.pop_front();
++            match self.dropped.checked_add(1) {
++                Some(value) => self.dropped = value,
++                None => self.overflow = true,
++            }
++        }
++        self.events.push_back((next, target));
++    }
++
++    pub(super) fn observation(&self, selected: &Option<Vec<crate::research_search::Member>>,
++                              admitted: impl Fn(&crate::saved_sources::Key) -> bool) -> serde_json::Value {
++        let events: Vec<_> = self.events.iter().map(|(sequence, target)| {
++            let target = target.as_ref().filter(|value|
++                admitted(&value.key) && crate::research_scenario_privacy::capture_selected(selected, &value.key));
++            (*sequence, target)
++        }).collect();
++        serde_json::json!({"schema":"turnstone.m5-address-events/v1",
++            "total":self.total, "dropped":self.dropped, "overflow":self.overflow,
++            "events":events})
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn model_free_address_event_history_reports_bounded_loss() {
++        let mut h = AddressEventHistory::default();
++        let before = h.observation(&None, |_| true);
++        h.record(None);
++        let after = h.observation(&None, |_| true);
++        assert_eq!(before["total"], 0);
++        assert_eq!(after["total"], 1);
++        assert!(after["events"][0][1].is_null());
++        for _ in 0..128 { h.record(None); }
++        assert_eq!(h.observation(&None, |_| true)["dropped"], 1);
++        assert_eq!(h.observation(&None, |_| true)["events"].as_array().unwrap().len(), 128);
++    }
++
++    #[test]
++    fn model_free_address_event_history_rechecks_current_scope_and_admission() {
++        let key = crate::saved_sources::Key { session:crate::panes::SessionId::new(),
++            graph:crate::panes::GraphId::new(), node:uuid::Uuid::new_v4(),
++            annotation_manifest:"sealed-v1:blake3:canary".into() };
++        let target = crate::saved_sources::Target { key:key.clone(), text_hash:"blake3:canary".into(), selector:None };
++        let mut h = AddressEventHistory::default();
++        h.record(Some(target));
++        assert!(h.observation(&None, |_| false)["events"][0][1].is_null());
++        assert!(h.observation(&Some(vec![]), |_| true)["events"][0][1].is_null());
++        let selected = Some(vec![crate::research_search::Member::Capture(key)]);
++        assert!(h.observation(&selected, |_| true)["events"][0][1].is_object());
++    }
++}

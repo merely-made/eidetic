@@ -1,0 +1,9 @@
+RESULT fail
+captured 21_reopen_A1_search
+captured 22_reopen_A1
+captured 23_reopen_A2
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["workbench-opened mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/5a6ad3cf87e20c72094caab3a9e3bf956d2ef069767861b5249ea6d5ee302cf2/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d?start=0&end=59", "content 7724799a-d088-4a6a-8ffd-ece2ae03b23b live", "content-title 7724799a-d088-4a6a-8ffd-ece2ae03b23b M5 A", "content-title 7724799a-d088-4a6a-8ffd-ece2ae03b23b Saved: M5 A", "address-opened mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/5a6ad3cf87e20c72094caab3a9e3bf956d2ef069767861b5249ea6d5ee302cf2/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d?start=0&end=59", "workbench-opened mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/3fc65f3d0ea48c787484512a4403e65febfc5089e8e103c77358a71a98d47d81/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57"])
+presentation frames=110 captures=3 blank=0
+capture /m5/run/reopen/21_reopen_A1_search.png digest=9c2b207f7a173c59 blank=false
+capture /m5/run/reopen/22_reopen_A1.png digest=bf72dea2c2176dee blank=false
+capture /m5/run/reopen/23_reopen_A2.png digest=b10d77bad10a2e95 blank=false

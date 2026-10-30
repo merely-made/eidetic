@@ -1,0 +1,402 @@
+eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+├── eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+│   ├── async-trait feature "default"
+│   │   └── async-trait v0.1.92 (proc-macro)
+│   │       ├── proc-macro2 feature "default"
+│   │       │   ├── proc-macro2 v1.0.107
+│   │       │   │   └── unicode-ident feature "default"
+│   │       │   │       └── unicode-ident v1.0.26
+│   │       │   └── proc-macro2 feature "proc-macro"
+│   │       │       └── proc-macro2 v1.0.107 (*)
+│   │       ├── quote feature "default"
+│   │       │   ├── quote v1.0.47
+│   │       │   │   └── proc-macro2 v1.0.107 (*)
+│   │       │   └── quote feature "proc-macro"
+│   │       │       ├── quote v1.0.47 (*)
+│   │       │       └── proc-macro2 feature "proc-macro" (*)
+│   │       ├── syn feature "clone-impls"
+│   │       │   └── syn v3.0.6
+│   │       │       ├── proc-macro2 v1.0.107 (*)
+│   │       │       ├── quote v1.0.47 (*)
+│   │       │       └── unicode-ident feature "default" (*)
+│   │       ├── syn feature "full"
+│   │       │   └── syn v3.0.6 (*)
+│   │       ├── syn feature "parsing"
+│   │       │   └── syn v3.0.6 (*)
+│   │       ├── syn feature "printing"
+│   │       │   └── syn v3.0.6 (*)
+│   │       ├── syn feature "proc-macro"
+│   │       │   ├── syn v3.0.6 (*)
+│   │       │   ├── proc-macro2 feature "proc-macro" (*)
+│   │       │   └── quote feature "proc-macro" (*)
+│   │       └── syn feature "visit-mut"
+│   │           └── syn v3.0.6 (*)
+│   ├── blake3 feature "default"
+│   │   ├── blake3 v1.8.7
+│   │   │   ├── arrayvec v0.7.8
+│   │   │   ├── constant_time_eq v0.4.2
+│   │   │   ├── cfg-if feature "default"
+│   │   │   │   └── cfg-if v1.0.5
+│   │   │   └── cpufeatures feature "default"
+│   │   │       └── cpufeatures v0.3.1
+│   │   │   [build-dependencies]
+│   │   │   └── cc feature "default"
+│   │   │       └── cc v1.6.0
+│   │   │           ├── find-msvc-tools feature "default"
+│   │   │           │   └── find-msvc-tools v0.1.14
+│   │   │           └── shlex feature "default"
+│   │   │               ├── shlex v2.0.1
+│   │   │               └── shlex feature "std"
+│   │   │                   └── shlex v2.0.1
+│   │   └── blake3 feature "std"
+│   │       ├── blake3 v1.8.7 (*)
+│   │       └── constant_time_eq feature "std"
+│   │           └── constant_time_eq v0.4.2
+│   ├── chartulary feature "default"
+│   │   └── chartulary v0.2.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/chartulary)
+│   │       ├── muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+│   │       │   ├── async-trait feature "default" (*)
+│   │       │   ├── blake3 feature "default" (*)
+│   │       │   ├── serde feature "default"
+│   │       │   │   ├── serde v1.0.229
+│   │       │   │   │   ├── serde_core feature "result"
+│   │       │   │   │   │   └── serde_core v1.0.229
+│   │       │   │   │   └── serde_derive feature "default"
+│   │       │   │   │       └── serde_derive v1.0.229 (proc-macro)
+│   │       │   │   │           ├── proc-macro2 feature "proc-macro" (*)
+│   │       │   │   │           ├── quote feature "proc-macro" (*)
+│   │       │   │   │           ├── syn feature "clone-impls" (*)
+│   │       │   │   │           ├── syn feature "derive"
+│   │       │   │   │           │   └── syn v3.0.6 (*)
+│   │       │   │   │           ├── syn feature "parsing" (*)
+│   │       │   │   │           ├── syn feature "printing" (*)
+│   │       │   │   │           └── syn feature "proc-macro" (*)
+│   │       │   │   └── serde feature "std"
+│   │       │   │       ├── serde v1.0.229 (*)
+│   │       │   │       └── serde_core feature "std"
+│   │       │   │           └── serde_core v1.0.229
+│   │       │   ├── serde feature "derive"
+│   │       │   │   ├── serde v1.0.229 (*)
+│   │       │   │   └── serde feature "serde_derive"
+│   │       │   │       └── serde v1.0.229 (*)
+│   │       │   └── serde_json feature "default"
+│   │       │       ├── serde_json v1.0.151
+│   │       │       │   ├── memchr v2.8.3
+│   │       │       │   ├── serde_core v1.0.229
+│   │       │       │   ├── itoa feature "default"
+│   │       │       │   │   └── itoa v1.0.18
+│   │       │       │   └── zmij feature "default"
+│   │       │       │       └── zmij v1.0.23
+│   │       │       └── serde_json feature "std"
+│   │       │           ├── serde_json v1.0.151 (*)
+│   │       │           ├── serde_core feature "std" (*)
+│   │       │           └── memchr feature "std"
+│   │       │               ├── memchr v2.8.3
+│   │       │               └── memchr feature "alloc"
+│   │       │                   └── memchr v2.8.3
+│   │       ├── serde feature "default" (*)
+│   │       ├── serde feature "derive" (*)
+│   │       ├── serde_json feature "default" (*)
+│   │       ├── petgraph feature "default"
+│   │       │   ├── petgraph v0.8.3
+│   │       │   │   ├── fixedbitset v0.5.7
+│   │       │   │   ├── indexmap v2.14.2
+│   │       │   │   │   ├── equivalent v1.0.2
+│   │       │   │   │   └── hashbrown v0.17.1
+│   │       │   │   ├── serde v1.0.229 (*)
+│   │       │   │   ├── serde_derive v1.0.229 (proc-macro) (*)
+│   │       │   │   ├── hashbrown feature "default-hasher"
+│   │       │   │   │   └── hashbrown v0.15.5
+│   │       │   │   │       └── foldhash v0.1.5
+│   │       │   │   └── hashbrown feature "inline-more"
+│   │       │   │       └── hashbrown v0.15.5 (*)
+│   │       │   ├── petgraph feature "graphmap"
+│   │       │   │   └── petgraph v0.8.3 (*)
+│   │       │   ├── petgraph feature "matrix_graph"
+│   │       │   │   └── petgraph v0.8.3 (*)
+│   │       │   ├── petgraph feature "stable_graph"
+│   │       │   │   ├── petgraph v0.8.3 (*)
+│   │       │   │   └── serde feature "alloc"
+│   │       │   │       ├── serde v1.0.229 (*)
+│   │       │   │       └── serde_core feature "alloc"
+│   │       │   │           └── serde_core v1.0.229
+│   │       │   └── petgraph feature "std"
+│   │       │       ├── petgraph v0.8.3 (*)
+│   │       │       └── indexmap feature "std"
+│   │       │           └── indexmap v2.14.2 (*)
+│   │       ├── petgraph feature "serde-1"
+│   │       │   ├── petgraph v0.8.3 (*)
+│   │       │   ├── petgraph feature "serde"
+│   │       │   │   └── petgraph v0.8.3 (*)
+│   │       │   └── petgraph feature "serde_derive"
+│   │       │       └── petgraph v0.8.3 (*)
+│   │       ├── rkyv feature "default"
+│   │       │   ├── rkyv v0.8.18
+│   │       │   │   ├── hashbrown v0.17.1
+│   │       │   │   ├── munge v0.4.7
+│   │       │   │   │   └── munge_macro v0.4.7 (proc-macro)
+│   │       │   │   │       ├── proc-macro2 v1.0.107 (*)
+│   │       │   │   │       ├── quote v1.0.47 (*)
+│   │       │   │   │       ├── syn feature "clone-impls"
+│   │       │   │   │       │   └── syn v2.0.119
+│   │       │   │   │       │       ├── proc-macro2 v1.0.107 (*)
+│   │       │   │   │       │       ├── quote v1.0.47 (*)
+│   │       │   │   │       │       └── unicode-ident feature "default" (*)
+│   │       │   │   │       ├── syn feature "full"
+│   │       │   │   │       │   └── syn v2.0.119 (*)
+│   │       │   │   │       ├── syn feature "parsing"
+│   │       │   │   │       │   └── syn v2.0.119 (*)
+│   │       │   │   │       ├── syn feature "printing"
+│   │       │   │   │       │   └── syn v2.0.119 (*)
+│   │       │   │   │       └── syn feature "proc-macro"
+│   │       │   │   │           ├── syn v2.0.119 (*)
+│   │       │   │   │           ├── proc-macro2 feature "proc-macro" (*)
+│   │       │   │   │           └── quote feature "proc-macro" (*)
+│   │       │   │   ├── ptr_meta v0.3.2
+│   │       │   │   │   └── ptr_meta_derive v0.3.2 (proc-macro)
+│   │       │   │   │       ├── proc-macro2 feature "proc-macro" (*)
+│   │       │   │   │       ├── quote feature "proc-macro" (*)
+│   │       │   │   │       ├── syn feature "clone-impls" (*)
+│   │       │   │   │       ├── syn feature "derive" (*)
+│   │       │   │   │       ├── syn feature "full" (*)
+│   │       │   │   │       ├── syn feature "parsing" (*)
+│   │       │   │   │       ├── syn feature "printing" (*)
+│   │       │   │   │       └── syn feature "proc-macro" (*)
+│   │       │   │   ├── rancor v0.1.3
+│   │       │   │   │   └── ptr_meta feature "derive"
+│   │       │   │   │       ├── ptr_meta v0.3.2 (*)
+│   │       │   │   │       └── ptr_meta feature "ptr_meta_derive"
+│   │       │   │   │           └── ptr_meta v0.3.2 (*)
+│   │       │   │   ├── rend v0.5.4
+│   │       │   │   │   └── bytecheck v0.8.3
+│   │       │   │   │       ├── bytecheck_derive v0.8.3 (proc-macro)
+│   │       │   │   │       │   ├── proc-macro2 v1.0.107 (*)
+│   │       │   │   │       │   ├── quote v1.0.47 (*)
+│   │       │   │   │       │   ├── syn feature "clone-impls" (*)
+│   │       │   │   │       │   ├── syn feature "derive" (*)
+│   │       │   │   │       │   ├── syn feature "full" (*)
+│   │       │   │   │       │   ├── syn feature "parsing" (*)
+│   │       │   │   │       │   ├── syn feature "printing" (*)
+│   │       │   │   │       │   └── syn feature "proc-macro" (*)
+│   │       │   │   │       ├── ptr_meta v0.3.2 (*)
+│   │       │   │   │       ├── rancor v0.1.3 (*)
+│   │       │   │   │       └── simdutf8 v0.1.5
+│   │       │   │   ├── rkyv_derive v0.8.18 (proc-macro)
+│   │       │   │   │   ├── proc-macro2 feature "proc-macro" (*)
+│   │       │   │   │   ├── quote feature "proc-macro" (*)
+│   │       │   │   │   ├── syn feature "clone-impls" (*)
+│   │       │   │   │   ├── syn feature "derive" (*)
+│   │       │   │   │   ├── syn feature "parsing" (*)
+│   │       │   │   │   ├── syn feature "printing" (*)
+│   │       │   │   │   └── syn feature "proc-macro" (*)
+│   │       │   │   └── bytecheck feature "simdutf8"
+│   │       │   │       └── bytecheck v0.8.3 (*)
+│   │       │   ├── rkyv feature "bytecheck"
+│   │       │   │   ├── rkyv v0.8.18 (*)
+│   │       │   │   ├── rend feature "bytecheck"
+│   │       │   │   │   └── rend v0.5.4 (*)
+│   │       │   │   └── rkyv_derive feature "bytecheck"
+│   │       │   │       └── rkyv_derive v0.8.18 (proc-macro) (*)
+│   │       │   └── rkyv feature "std"
+│   │       │       ├── rkyv v0.8.18 (*)
+│   │       │       ├── rkyv feature "alloc"
+│   │       │       │   ├── rkyv v0.8.18 (*)
+│   │       │       │   └── rancor feature "alloc"
+│   │       │       │       └── rancor v0.1.3 (*)
+│   │       │       └── ptr_meta feature "std"
+│   │       │           └── ptr_meta v0.3.2 (*)
+│   │       ├── rkyv feature "std" (*)
+│   │       ├── slotmap feature "default"
+│   │       │   ├── slotmap v1.1.1
+│   │       │   │   ├── serde feature "alloc" (*)
+│   │       │   │   └── serde feature "derive" (*)
+│   │       │   │   [build-dependencies]
+│   │       │   │   └── version_check feature "default"
+│   │       │   │       └── version_check v0.9.5
+│   │       │   └── slotmap feature "std"
+│   │       │       └── slotmap v1.1.1 (*)
+│   │       ├── slotmap feature "serde"
+│   │       │   └── slotmap v1.1.1 (*)
+│   │       ├── uuid feature "default"
+│   │       │   ├── uuid v1.27.0
+│   │       │   │   └── sha1_smol v1.0.1
+│   │       │   └── uuid feature "std"
+│   │       │       └── uuid v1.27.0 (*)
+│   │       └── uuid feature "v5"
+│   │           ├── uuid v1.27.0 (*)
+│   │           └── uuid feature "sha1"
+│   │               └── uuid v1.27.0 (*)
+│   ├── muniment feature "json"
+│   │   └── muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment) (*)
+│   ├── serde feature "default" (*)
+│   ├── serde feature "derive" (*)
+│   ├── serde_json feature "default" (*)
+│   ├── url feature "default"
+│   │   ├── url v2.5.8
+│   │   │   ├── form_urlencoded feature "alloc"
+│   │   │   │   ├── form_urlencoded v1.2.2
+│   │   │   │   │   └── percent-encoding v2.3.2
+│   │   │   │   └── percent-encoding feature "alloc"
+│   │   │   │       └── percent-encoding v2.3.2
+│   │   │   ├── percent-encoding feature "alloc" (*)
+│   │   │   ├── idna feature "alloc"
+│   │   │   │   └── idna v1.1.0
+│   │   │   │       ├── idna_adapter feature "default"
+│   │   │   │       │   └── idna_adapter v1.2.2
+│   │   │   │       │       ├── icu_normalizer v2.3.0
+│   │   │   │       │       │   ├── icu_collections v2.3.0
+│   │   │   │       │       │   │   ├── displaydoc v0.2.7 (proc-macro)
+│   │   │   │       │       │   │   │   ├── proc-macro2 feature "default" (*)
+│   │   │   │       │       │   │   │   ├── quote feature "default" (*)
+│   │   │   │       │       │   │   │   └── syn feature "default"
+│   │   │   │       │       │   │   │       ├── syn v3.0.6 (*)
+│   │   │   │       │       │   │   │       ├── syn feature "clone-impls" (*)
+│   │   │   │       │       │   │   │       ├── syn feature "derive" (*)
+│   │   │   │       │       │   │   │       ├── syn feature "parsing" (*)
+│   │   │   │       │       │   │   │       ├── syn feature "printing" (*)
+│   │   │   │       │       │   │   │       └── syn feature "proc-macro" (*)
+│   │   │   │       │       │   │   ├── utf8_iter v1.0.4
+│   │   │   │       │       │   │   ├── potential_utf feature "zerovec"
+│   │   │   │       │       │   │   │   └── potential_utf v0.1.6
+│   │   │   │       │       │   │   │       └── zerovec v0.11.8
+│   │   │   │       │       │   │   │           ├── yoke v0.8.3
+│   │   │   │       │       │   │   │           │   ├── stable_deref_trait v1.2.1
+│   │   │   │       │       │   │   │           │   ├── yoke-derive v0.8.3 (proc-macro)
+│   │   │   │       │       │   │   │           │   │   ├── proc-macro2 feature "default" (*)
+│   │   │   │       │       │   │   │           │   │   ├── quote feature "default" (*)
+│   │   │   │       │       │   │   │           │   │   ├── syn feature "default" (*)
+│   │   │   │       │       │   │   │           │   │   ├── syn feature "fold"
+│   │   │   │       │       │   │   │           │   │   │   └── syn v3.0.6 (*)
+│   │   │   │       │       │   │   │           │   │   ├── syn feature "visit"
+│   │   │   │       │       │   │   │           │   │   │   └── syn v3.0.6 (*)
+│   │   │   │       │       │   │   │           │   │   └── synstructure feature "default"
+│   │   │   │       │       │   │   │           │   │       ├── synstructure v0.14.0
+│   │   │   │       │       │   │   │           │   │       │   ├── proc-macro2 v1.0.107 (*)
+│   │   │   │       │       │   │   │           │   │       │   ├── quote v1.0.47 (*)
+│   │   │   │       │       │   │   │           │   │       │   ├── syn feature "clone-impls" (*)
+│   │   │   │       │       │   │   │           │   │       │   ├── syn feature "derive" (*)
+│   │   │   │       │       │   │   │           │   │       │   ├── syn feature "extra-traits"
+│   │   │   │       │       │   │   │           │   │       │   │   └── syn v3.0.6 (*)
+│   │   │   │       │       │   │   │           │   │       │   ├── syn feature "parsing" (*)
+│   │   │   │       │       │   │   │           │   │       │   ├── syn feature "printing" (*)
+│   │   │   │       │       │   │   │           │   │       │   └── syn feature "visit" (*)
+│   │   │   │       │       │   │   │           │   │       └── synstructure feature "proc-macro"
+│   │   │   │       │       │   │   │           │   │           ├── synstructure v0.14.0 (*)
+│   │   │   │       │       │   │   │           │   │           ├── proc-macro2 feature "proc-macro" (*)
+│   │   │   │       │       │   │   │           │   │           ├── quote feature "proc-macro" (*)
+│   │   │   │       │       │   │   │           │   │           └── syn feature "proc-macro" (*)
+│   │   │   │       │       │   │   │           │   └── zerofrom v0.1.8
+│   │   │   │       │       │   │   │           │       └── zerofrom-derive v0.1.8 (proc-macro)
+│   │   │   │       │       │   │   │           │           ├── proc-macro2 feature "default" (*)
+│   │   │   │       │       │   │   │           │           ├── quote feature "default" (*)
+│   │   │   │       │       │   │   │           │           ├── syn feature "default" (*)
+│   │   │   │       │       │   │   │           │           ├── syn feature "fold" (*)
+│   │   │   │       │       │   │   │           │           ├── syn feature "visit" (*)
+│   │   │   │       │       │   │   │           │           └── synstructure feature "default" (*)
+│   │   │   │       │       │   │   │           ├── zerofrom v0.1.8 (*)
+│   │   │   │       │       │   │   │           └── zerovec-derive v0.11.6 (proc-macro)
+│   │   │   │       │       │   │   │               ├── proc-macro2 feature "default" (*)
+│   │   │   │       │       │   │   │               ├── quote feature "default" (*)
+│   │   │   │       │       │   │   │               ├── syn feature "default" (*)
+│   │   │   │       │       │   │   │               └── syn feature "extra-traits" (*)
+│   │   │   │       │       │   │   ├── zerovec feature "derive"
+│   │   │   │       │       │   │   │   └── zerovec v0.11.8 (*)
+│   │   │   │       │       │   │   ├── zerovec feature "yoke"
+│   │   │   │       │       │   │   │   └── zerovec v0.11.8 (*)
+│   │   │   │       │       │   │   ├── yoke feature "derive"
+│   │   │   │       │       │   │   │   ├── yoke v0.8.3 (*)
+│   │   │   │       │       │   │   │   ├── yoke feature "zerofrom"
+│   │   │   │       │       │   │   │   │   └── yoke v0.8.3 (*)
+│   │   │   │       │       │   │   │   └── zerofrom feature "derive"
+│   │   │   │       │       │   │   │       └── zerofrom v0.1.8 (*)
+│   │   │   │       │       │   │   └── zerofrom feature "derive" (*)
+│   │   │   │       │       │   ├── icu_normalizer_data v2.3.0
+│   │   │   │       │       │   ├── icu_provider v2.3.1
+│   │   │   │       │       │   │   ├── displaydoc v0.2.7 (proc-macro) (*)
+│   │   │   │       │       │   │   ├── icu_locale_core v2.3.0
+│   │   │   │       │       │   │   │   ├── displaydoc v0.2.7 (proc-macro) (*)
+│   │   │   │       │       │   │   │   ├── litemap v0.8.3
+│   │   │   │       │       │   │   │   ├── tinystr v0.8.4
+│   │   │   │       │       │   │   │   │   ├── displaydoc v0.2.7 (proc-macro) (*)
+│   │   │   │       │       │   │   │   │   └── zerovec v0.11.8 (*)
+│   │   │   │       │       │   │   │   ├── writeable v0.6.4
+│   │   │   │       │       │   │   │   └── zerovec v0.11.8 (*)
+│   │   │   │       │       │   │   ├── writeable v0.6.4
+│   │   │   │       │       │   │   ├── zerotrie v0.2.5
+│   │   │   │       │       │   │   │   ├── displaydoc v0.2.7 (proc-macro) (*)
+│   │   │   │       │       │   │   │   ├── zerofrom v0.1.8 (*)
+│   │   │   │       │       │   │   │   └── yoke feature "derive" (*)
+│   │   │   │       │       │   │   ├── zerovec feature "derive" (*)
+│   │   │   │       │       │   │   ├── yoke feature "derive" (*)
+│   │   │   │       │       │   │   └── zerofrom feature "derive" (*)
+│   │   │   │       │       │   ├── smallvec v1.16.1
+│   │   │   │       │       │   └── zerovec v0.11.8 (*)
+│   │   │   │       │       └── icu_properties v2.3.0
+│   │   │   │       │           ├── displaydoc v0.2.7 (proc-macro) (*)
+│   │   │   │       │           ├── icu_collections v2.3.0 (*)
+│   │   │   │       │           ├── icu_properties_data v2.3.0
+│   │   │   │       │           ├── icu_provider v2.3.1 (*)
+│   │   │   │       │           ├── zerovec feature "derive" (*)
+│   │   │   │       │           ├── zerovec feature "yoke" (*)
+│   │   │   │       │           ├── icu_locale_core feature "zerovec"
+│   │   │   │       │           │   ├── icu_locale_core v2.3.0 (*)
+│   │   │   │       │           │   └── tinystr feature "zerovec"
+│   │   │   │       │           │       └── tinystr v0.8.4 (*)
+│   │   │   │       │           ├── zerotrie feature "yoke"
+│   │   │   │       │           │   └── zerotrie v0.2.5 (*)
+│   │   │   │       │           └── zerotrie feature "zerofrom"
+│   │   │   │       │               └── zerotrie v0.2.5 (*)
+│   │   │   │       ├── utf8_iter feature "default"
+│   │   │   │       │   └── utf8_iter v1.0.4
+│   │   │   │       ├── smallvec feature "const_generics"
+│   │   │   │       │   └── smallvec v1.16.1
+│   │   │   │       └── smallvec feature "default"
+│   │   │   │           └── smallvec v1.16.1
+│   │   │   └── idna feature "compiled_data"
+│   │   │       ├── idna v1.1.0 (*)
+│   │   │       └── idna_adapter feature "compiled_data"
+│   │   │           ├── idna_adapter v1.2.2 (*)
+│   │   │           ├── icu_normalizer feature "compiled_data"
+│   │   │           │   ├── icu_normalizer v2.3.0 (*)
+│   │   │           │   └── icu_provider feature "baked"
+│   │   │           │       └── icu_provider v2.3.1 (*)
+│   │   │           └── icu_properties feature "compiled_data"
+│   │   │               ├── icu_properties v2.3.0 (*)
+│   │   │               └── icu_provider feature "baked" (*)
+│   │   └── url feature "std"
+│   │       ├── url v2.5.8 (*)
+│   │       ├── form_urlencoded feature "std"
+│   │       │   ├── form_urlencoded v1.2.2 (*)
+│   │       │   ├── form_urlencoded feature "alloc" (*)
+│   │       │   └── percent-encoding feature "std"
+│   │       │       ├── percent-encoding v2.3.2
+│   │       │       └── percent-encoding feature "alloc" (*)
+│   │       ├── percent-encoding feature "std" (*)
+│   │       └── idna feature "std"
+│   │           ├── idna v1.1.0 (*)
+│   │           └── idna feature "alloc" (*)
+│   └── zeroize feature "default"
+│       ├── zeroize v1.9.1
+│       └── zeroize feature "alloc"
+│           └── zeroize v1.9.1
+├── serde feature "default" (*)
+├── serde feature "derive" (*)
+├── serde_json feature "default" (*)
+├── genet-text feature "default"
+│   └── genet-text v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+│       └── unicode-segmentation feature "default"
+│           └── unicode-segmentation v1.13.3
+└── thiserror feature "default"
+    └── thiserror v1.0.69
+        └── thiserror-impl feature "default"
+            └── thiserror-impl v1.0.69 (proc-macro)
+                ├── proc-macro2 feature "default" (*)
+                ├── quote feature "default" (*)
+                └── syn feature "default"
+                    ├── syn v2.0.119 (*)
+                    ├── syn feature "clone-impls" (*)
+                    ├── syn feature "derive"
+                    │   └── syn v2.0.119 (*)
+                    ├── syn feature "parsing" (*)
+                    ├── syn feature "printing" (*)
+                    └── syn feature "proc-macro" (*)

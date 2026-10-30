@@ -1,0 +1,213 @@
+{
+  "address_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ],
+      [
+        4,
+        null
+      ],
+      [
+        5,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-address-events/v1",
+    "total": 5
+  },
+  "admissions": [
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:d52e89483f4a7ef69a01ac1a297154a815ea314c6e92f13a8877755ed94b11b3",
+        "graph": "79fe819b-88d5-4dcc-83bc-f0f6911e2f51",
+        "node": "677147e5-463b-4f18-a44f-e9341cff0517",
+        "session": "3aa4e54b-2920-4c05-b11d-556620f1d7b9"
+      },
+      "occurrence": 0,
+      "title": "M5 B",
+      "url": "http://127.0.0.1:36931/B"
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:04dbe06a9044ebaf70d828921159f404a5e4e60c085cde735154e4486266fa75",
+        "graph": "79fe819b-88d5-4dcc-83bc-f0f6911e2f51",
+        "node": "fb7b2d07-22a8-42df-8a9d-44b3b21cdc0f",
+        "session": "3aa4e54b-2920-4c05-b11d-556620f1d7b9"
+      },
+      "occurrence": 0,
+      "title": "M5 A",
+      "url": "http://127.0.0.1:36931/A"
+    }
+  ],
+  "entries": [],
+  "generation": "c1093a87-ebae-41e2-9b83-8ee2fc2cee81",
+  "reader_open_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-reader-open-events/v1",
+    "total": 1
+  },
+  "reader_scope": {
+    "schema": "turnstone.m5-reader-scope/v1",
+    "selected": null
+  },
+  "readers": [
+    {
+      "content": {
+        "captured_at_ms": 1793383528813,
+        "origin": "http://127.0.0.1:36931/A",
+        "raw_manifest": "blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be",
+        "text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.",
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e",
+        "title": "M5 A"
+      },
+      "engine": "turnstone.saved-source",
+      "error": null,
+      "node": "6a8d3754-ec46-4cc3-9940-19b46a97a5cb",
+      "phase": "Ready",
+      "rendered_document": {
+        "address": "mere://saved-source/sealed-v1/3aa4e54b-2920-4c05-b11d-556620f1d7b9/79fe819b-88d5-4dcc-83bc-f0f6911e2f51/fb7b2d07-22a8-42df-8a9d-44b3b21cdc0f/04dbe06a9044ebaf70d828921159f404a5e4e60c085cde735154e4486266fa75/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57",
+        "blocks": [
+          {
+            "Heading": {
+              "level": 1,
+              "spans": [
+                {
+                  "Text": "M5 A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved from http://127.0.0.1:36931/A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Captured 2026-10-30T18:05:28Z"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved version: sealed-v1:bl"
+                }
+              ]
+            }
+          },
+          {
+            "Quote": {
+              "blocks": [
+                {
+                  "Paragraph": {
+                    "spans": [
+                      {
+                        "Strong": [
+                          {
+                            "Text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units."
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Link": {
+                    "predicate": null,
+                    "spans": [
+                      {
+                        "Text": "Open original address"
+                      }
+                    ],
+                    "title": "Open original address",
+                    "url": "http://127.0.0.1:36931/A"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "content_type": "text/plain; profile=saved-source",
+        "diagnostics": [],
+        "lang": null,
+        "navigation": {
+          "anchors": [],
+          "block_count": 0,
+          "folds": []
+        },
+        "provenance": {
+          "canonical_uri": "mere://saved-source/sealed-v1/3aa4e54b-2920-4c05-b11d-556620f1d7b9/79fe819b-88d5-4dcc-83bc-f0f6911e2f51/fb7b2d07-22a8-42df-8a9d-44b3b21cdc0f/04dbe06a9044ebaf70d828921159f404a5e4e60c085cde735154e4486266fa75/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57",
+          "fetched_at": null,
+          "source_kind": "turnstone.saved-source",
+          "source_label": "http://127.0.0.1:36931/A"
+        },
+        "title": "M5 A",
+        "trust": "Unknown"
+      },
+      "target": {
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:04dbe06a9044ebaf70d828921159f404a5e4e60c085cde735154e4486266fa75",
+          "graph": "79fe819b-88d5-4dcc-83bc-f0f6911e2f51",
+          "node": "fb7b2d07-22a8-42df-8a9d-44b3b21cdc0f",
+          "session": "3aa4e54b-2920-4c05-b11d-556620f1d7b9"
+        },
+        "selector": {
+          "end": 57,
+          "start": 0
+        },
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+      },
+      "url": "mere://saved-source/sealed-v1/3aa4e54b-2920-4c05-b11d-556620f1d7b9/79fe819b-88d5-4dcc-83bc-f0f6911e2f51/fb7b2d07-22a8-42df-8a9d-44b3b21cdc0f/04dbe06a9044ebaf70d828921159f404a5e4e60c085cde735154e4486266fa75/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57"
+    }
+  ],
+  "retained_admissions": [],
+  "retained_readers": [],
+  "search": null,
+  "session": "3aa4e54b-2920-4c05-b11d-556620f1d7b9",
+  "status": ""
+}

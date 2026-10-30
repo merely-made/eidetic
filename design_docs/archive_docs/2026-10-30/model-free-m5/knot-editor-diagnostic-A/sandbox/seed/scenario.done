@@ -1,0 +1,15 @@
+RESULT fail
+captured 01_authored_note
+captured 04_exact_A1
+captured 05_note_citation
+captured 09_before_editor_click
+FAIL: insert: no focused text editor
+captured 10_after_editor_insert
+FAIL: assert text 'only this linked finding': not on any surface
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["address-opened file:///m5/run/profile/notes/research-8e04252b-effd-44d1-ba9b-aacd6301796a.djot", "pane-summoned Read", "workbench-opened mere://saved-source/sealed-v1/0d0ee0d6-9781-49a0-ac77-a04f5c2fc22e/0db276aa-aac7-4139-82d1-846b096e7010/6a14de53-0091-41df-bf54-1c3654765307/9088ddcdce7864b505fd2874e054e5bdd0f2ba85adbe5d283ca146ab00c7b341/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57", "address-opened file:///m5/run/profile/notes/research-8e04252b-effd-44d1-ba9b-aacd6301796a.djot", "content 7fd9da1d-0252-49a0-aa3a-e3f76cf902a0 live", "content-title 7fd9da1d-0252-49a0-aa3a-e3f76cf902a0 M5 A"])
+presentation frames=361 captures=5 blank=0
+capture /m5/run/seed/01_authored_note.png digest=2f1219174f72245f blank=false
+capture /m5/run/seed/04_exact_A1.png digest=28735e708182843b blank=false
+capture /m5/run/seed/05_note_citation.png digest=b07e6e7fc902d45c blank=false
+capture /m5/run/seed/09_before_editor_click.png digest=349a7e38be45151f blank=false
+capture /m5/run/seed/10_after_editor_insert.png digest=22c665e11195b32b blank=false

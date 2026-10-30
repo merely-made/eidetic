@@ -1,0 +1,11 @@
+# Export claim placement clarification
+
+Root ruling, independently checked against the current Shell/App ownership model by the storage reviewer. This clarifies the approved a60c967 worker plan; it does not change its before-claim / after-claim guarantee.
+
+The owner worker prepares the bounded export in memory. Shell receives the preparation, validates the current target, session, destination, source admission and custody, then synchronously performs the one-shot claim on the event-loop thread before enqueueing the file commit. Shell owns App by value and this sequence has exclusive mutable access. No event pumping, modal dialog, mutating callback, await or effect dispatch may occur between currentness validation and claim. Therefore App mutations cannot interleave with that sequence, and global invalidation hooks across every App mutation are unnecessary. Changes before the sequence fail currentness validation; changes after claim follow the approved authorized-write semantics.
+
+BoundSealer retirement may occur concurrently, including retirement detected by epoch/seal/unseal or a watcher. Every such retirement must share the claim authority. Perform any fresh external epoch check outside the authority lock; inside it atomically require locally live custody and consume the ticket. Retirement between epoch check and claim must defeat the claim. Do no filesystem or custody I/O under the lock. External revocation not yet locally observed retains the approved explicit limitation.
+
+Hold the bounded input/output reservation across prepare, delivery, claim and commit. Claim followed by enqueue failure reports failure and releases its retained payload. Once commit has been claimed and queued, later state changes do not falsely cancel or roll back the write: report the actual result. File overwrite/no-clobber controls still apply. No plaintext temporary or final file may be created before claim.
+
+Implementation review must verify the uninterrupted shell sequence, shared retirement authority, one-shot consumption, complete reservation lifecycle and actual outcome reporting. Tests still require before-claim invalidation and after-claim retirement ordering, with real output files. This note and source inspection are not runtime proof.

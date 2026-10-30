@@ -1,0 +1,368 @@
+{
+  "address_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ],
+      [
+        4,
+        null
+      ],
+      [
+        5,
+        null
+      ],
+      [
+        6,
+        null
+      ],
+      [
+        7,
+        null
+      ],
+      [
+        8,
+        null
+      ],
+      [
+        9,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-address-events/v1",
+    "total": 9
+  },
+  "admissions": [
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2",
+        "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+        "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+        "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+      },
+      "occurrence": 0,
+      "title": "M5 A",
+      "url": "http://127.0.0.1:36981/A"
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:9660f90bfc49a344d6bc9a0b46ad1fb7f649adedb8a022eac4985cce6bd1256c",
+        "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+        "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+        "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+      },
+      "occurrence": 1,
+      "title": "M5 A",
+      "url": "http://127.0.0.1:36981/A"
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:67ffe86b17ee7980cf9fc364e337c58123c7a7ae4c1c49e129a94fa51af578da",
+        "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+        "node": "853dbf1a-61de-4fcc-94b3-c3584c4fcc1c",
+        "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+      },
+      "occurrence": 0,
+      "title": "M5 B",
+      "url": "http://127.0.0.1:36981/B"
+    }
+  ],
+  "entries": [],
+  "generation": "27ee557d-9e5a-46e9-ac37-396e1065fb60",
+  "reader_open_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-reader-open-events/v1",
+    "total": 3
+  },
+  "reader_scope": {
+    "schema": "turnstone.m5-reader-scope/v1",
+    "selected": null
+  },
+  "readers": [
+    {
+      "content": {
+        "captured_at_ms": 1793385897834,
+        "origin": "http://127.0.0.1:36981/A",
+        "raw_manifest": "blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be",
+        "text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.",
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e",
+        "title": "M5 A"
+      },
+      "engine": "turnstone.saved-source",
+      "error": null,
+      "node": "bbd257bb-7373-4a58-bbda-cafb2fe20a73",
+      "phase": "Ready",
+      "rendered_document": {
+        "address": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/083a91e9-0243-4d97-b15c-bd16a075b984/8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57",
+        "blocks": [
+          {
+            "Heading": {
+              "level": 1,
+              "spans": [
+                {
+                  "Text": "M5 A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved from http://127.0.0.1:36981/A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Captured 2026-10-30T18:44:57Z"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved version: sealed-v1:bl"
+                }
+              ]
+            }
+          },
+          {
+            "Quote": {
+              "blocks": [
+                {
+                  "Paragraph": {
+                    "spans": [
+                      {
+                        "Strong": [
+                          {
+                            "Text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units."
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Link": {
+                    "predicate": null,
+                    "spans": [
+                      {
+                        "Text": "Open original address"
+                      }
+                    ],
+                    "title": "Open original address",
+                    "url": "http://127.0.0.1:36981/A"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "content_type": "text/plain; profile=saved-source",
+        "diagnostics": [],
+        "lang": null,
+        "navigation": {
+          "anchors": [],
+          "block_count": 0,
+          "folds": []
+        },
+        "provenance": {
+          "canonical_uri": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/083a91e9-0243-4d97-b15c-bd16a075b984/8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57",
+          "fetched_at": null,
+          "source_kind": "turnstone.saved-source",
+          "source_label": "http://127.0.0.1:36981/A"
+        },
+        "title": "M5 A",
+        "trust": "Unknown"
+      },
+      "target": {
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2",
+          "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+          "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+          "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+        },
+        "selector": {
+          "end": 57,
+          "start": 0
+        },
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+      },
+      "url": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/083a91e9-0243-4d97-b15c-bd16a075b984/8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57"
+    }
+  ],
+  "retained_admissions": [
+    {
+      "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+      "manifest": "blake3:3ebb1f33932d330ecfd849fb778971f3c65d00d3bc8d478d6b0ec6a5ce30d53a",
+      "node": "0957b9bd-079d-4ac5-8056-c55dab1d8687",
+      "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+    }
+  ],
+  "retained_readers": [],
+  "search": {
+    "coverage": "Complete",
+    "generation": "27ee557d-9e5a-46e9-ac37-396e1065fb60:8",
+    "hits": [
+      {
+        "producer": "Selection",
+        "selector": {
+          "end": 24,
+          "start": 0
+        },
+        "source": {
+          "kind": "fleece",
+          "node": "0957b9bd-079d-4ac5-8056-c55dab1d8687",
+          "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+          "source": "mere://retained-text/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/0957b9bd-079d-4ac5-8056-c55dab1d8687/3ebb1f33932d330ecfd849fb778971f3c65d00d3bc8d478d6b0ec6a5ce30d53a/8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+        },
+        "version": "blake3:8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+      }
+    ],
+    "inputs": [
+      {
+        "address": "file:///m5/run/profile/notes/research-7f1fe0ae-e167-4312-a28e-ecdb6bf1c2de.djot",
+        "date": null,
+        "producer": "Selection",
+        "source": {
+          "kind": "fleece",
+          "node": "0957b9bd-079d-4ac5-8056-c55dab1d8687",
+          "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+          "source": "mere://retained-text/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/0957b9bd-079d-4ac5-8056-c55dab1d8687/3ebb1f33932d330ecfd849fb778971f3c65d00d3bc8d478d6b0ec6a5ce30d53a/8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+        },
+        "tags": [],
+        "text_hash": "blake3:8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac",
+        "title": "Knot selection",
+        "version": "blake3:8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+      },
+      {
+        "address": "http://127.0.0.1:36981/A",
+        "date": 1793385897834,
+        "producer": "Capture",
+        "source": {
+          "kind": "fleece",
+          "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+          "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+          "source": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/083a91e9-0243-4d97-b15c-bd16a075b984/8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+        },
+        "tags": [],
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e",
+        "title": "M5 A",
+        "version": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+      },
+      {
+        "address": "http://127.0.0.1:36981/A",
+        "date": 1793386017666,
+        "producer": "Capture",
+        "source": {
+          "kind": "fleece",
+          "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+          "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+          "source": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/083a91e9-0243-4d97-b15c-bd16a075b984/9660f90bfc49a344d6bc9a0b46ad1fb7f649adedb8a022eac4985cce6bd1256c/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+        },
+        "tags": [],
+        "text_hash": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d",
+        "title": "M5 A",
+        "version": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+      },
+      {
+        "address": "http://127.0.0.1:36981/B",
+        "date": 1793385903975,
+        "producer": "Capture",
+        "source": {
+          "kind": "fleece",
+          "node": "853dbf1a-61de-4fcc-94b3-c3584c4fcc1c",
+          "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+          "source": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/853dbf1a-61de-4fcc-94b3-c3584c4fcc1c/67ffe86b17ee7980cf9fc364e337c58123c7a7ae4c1c49e129a94fa51af578da/b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+        },
+        "tags": [],
+        "text_hash": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145",
+        "title": "M5 B",
+        "version": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+      }
+    ],
+    "request": "84181c0d-4190-42f5-bf22-0dd117e14359",
+    "schema": "turnstone.research-search-summary/v1",
+    "scope": [
+      {
+        "kind": "fleece",
+        "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+        "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+        "source": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/083a91e9-0243-4d97-b15c-bd16a075b984/8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+      },
+      {
+        "kind": "fleece",
+        "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+        "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+        "source": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/083a91e9-0243-4d97-b15c-bd16a075b984/9660f90bfc49a344d6bc9a0b46ad1fb7f649adedb8a022eac4985cce6bd1256c/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+      },
+      {
+        "kind": "fleece",
+        "node": "853dbf1a-61de-4fcc-94b3-c3584c4fcc1c",
+        "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+        "source": "mere://saved-source/sealed-v1/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/853dbf1a-61de-4fcc-94b3-c3584c4fcc1c/67ffe86b17ee7980cf9fc364e337c58123c7a7ae4c1c49e129a94fa51af578da/b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+      },
+      {
+        "kind": "fleece",
+        "node": "0957b9bd-079d-4ac5-8056-c55dab1d8687",
+        "owner": "turnstone/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/research/v1",
+        "source": "mere://retained-text/f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b/839f22b0-423c-49ff-9de1-284fd202e4b0/0957b9bd-079d-4ac5-8056-c55dab1d8687/3ebb1f33932d330ecfd849fb778971f3c65d00d3bc8d478d6b0ec6a5ce30d53a/8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+      }
+    ],
+    "selected": null,
+    "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+    "total": 1
+  },
+  "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+  "status": ""
+}

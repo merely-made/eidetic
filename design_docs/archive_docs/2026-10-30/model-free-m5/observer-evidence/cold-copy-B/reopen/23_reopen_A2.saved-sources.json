@@ -1,0 +1,362 @@
+{
+  "address_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-address-events/v1",
+    "total": 2
+  },
+  "admissions": [
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:cb791dfdc5bcc166ed96d6b829950013f6dce2bd5a7cae8c3dd7e26f4939747b",
+        "graph": "c886a3bb-f17d-4554-9ed5-b4ede49734c7",
+        "node": "b7f0e0b1-2401-48fc-ae96-641c61ac40ac",
+        "session": "98acde98-f95b-474a-81ec-6e3aa2a7c3fe"
+      },
+      "occurrence": 0,
+      "title": "M5 B",
+      "url": "http://127.0.0.1:35069/B"
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:3fc65f3d0ea48c787484512a4403e65febfc5089e8e103c77358a71a98d47d81",
+        "graph": "c886a3bb-f17d-4554-9ed5-b4ede49734c7",
+        "node": "d2b39a24-cee5-4554-b85e-26e25d4fefa5",
+        "session": "98acde98-f95b-474a-81ec-6e3aa2a7c3fe"
+      },
+      "occurrence": 0,
+      "title": "M5 A",
+      "url": "http://127.0.0.1:35069/A"
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:5a6ad3cf87e20c72094caab3a9e3bf956d2ef069767861b5249ea6d5ee302cf2",
+        "graph": "c886a3bb-f17d-4554-9ed5-b4ede49734c7",
+        "node": "d2b39a24-cee5-4554-b85e-26e25d4fefa5",
+        "session": "98acde98-f95b-474a-81ec-6e3aa2a7c3fe"
+      },
+      "occurrence": 1,
+      "title": "M5 A",
+      "url": "http://127.0.0.1:35069/A"
+    }
+  ],
+  "entries": [],
+  "generation": "c5ea905b-c7b7-44c6-995e-a464df7ab389",
+  "reader_open_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-reader-open-events/v1",
+    "total": 2
+  },
+  "reader_scope": {
+    "schema": "turnstone.m5-reader-scope/v1",
+    "selected": null
+  },
+  "readers": [
+    {
+      "content": {
+        "captured_at_ms": 1793387564618,
+        "origin": "http://127.0.0.1:35069/A",
+        "raw_manifest": "blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be",
+        "text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.",
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e",
+        "title": "M5 A"
+      },
+      "engine": "turnstone.saved-source",
+      "error": null,
+      "node": "4d58c073-a799-45bc-bb4d-075877b480cc",
+      "phase": "Ready",
+      "rendered_document": {
+        "address": "mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/3fc65f3d0ea48c787484512a4403e65febfc5089e8e103c77358a71a98d47d81/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57",
+        "blocks": [
+          {
+            "Heading": {
+              "level": 1,
+              "spans": [
+                {
+                  "Text": "M5 A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved from http://127.0.0.1:35069/A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Captured 2026-10-30T19:12:44Z"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved version: sealed-v1:bl"
+                }
+              ]
+            }
+          },
+          {
+            "Quote": {
+              "blocks": [
+                {
+                  "Paragraph": {
+                    "spans": [
+                      {
+                        "Strong": [
+                          {
+                            "Text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units."
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Link": {
+                    "predicate": null,
+                    "spans": [
+                      {
+                        "Text": "Open original address"
+                      }
+                    ],
+                    "title": "Open original address",
+                    "url": "http://127.0.0.1:35069/A"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "content_type": "text/plain; profile=saved-source",
+        "diagnostics": [],
+        "lang": null,
+        "navigation": {
+          "anchors": [],
+          "block_count": 0,
+          "folds": []
+        },
+        "provenance": {
+          "canonical_uri": "mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/3fc65f3d0ea48c787484512a4403e65febfc5089e8e103c77358a71a98d47d81/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57",
+          "fetched_at": null,
+          "source_kind": "turnstone.saved-source",
+          "source_label": "http://127.0.0.1:35069/A"
+        },
+        "title": "M5 A",
+        "trust": "Unknown"
+      },
+      "target": {
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:3fc65f3d0ea48c787484512a4403e65febfc5089e8e103c77358a71a98d47d81",
+          "graph": "c886a3bb-f17d-4554-9ed5-b4ede49734c7",
+          "node": "d2b39a24-cee5-4554-b85e-26e25d4fefa5",
+          "session": "98acde98-f95b-474a-81ec-6e3aa2a7c3fe"
+        },
+        "selector": {
+          "end": 57,
+          "start": 0
+        },
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+      },
+      "url": "mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/3fc65f3d0ea48c787484512a4403e65febfc5089e8e103c77358a71a98d47d81/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57"
+    },
+    {
+      "content": {
+        "captured_at_ms": 1793387675854,
+        "origin": "http://127.0.0.1:35069/A",
+        "raw_manifest": "blake3:595e11f6ef7af778289b94655b4bfa07a7d379e77114425a312810607ad09fae",
+        "text": "M5 A2 archive: violet compass. Evidence amount is 18 units.",
+        "text_hash": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d",
+        "title": "M5 A"
+      },
+      "engine": "turnstone.saved-source",
+      "error": null,
+      "node": "7724799a-d088-4a6a-8ffd-ece2ae03b23b",
+      "phase": "Ready",
+      "rendered_document": {
+        "address": "mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/5a6ad3cf87e20c72094caab3a9e3bf956d2ef069767861b5249ea6d5ee302cf2/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d?start=0&end=59",
+        "blocks": [
+          {
+            "Heading": {
+              "level": 1,
+              "spans": [
+                {
+                  "Text": "M5 A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved from http://127.0.0.1:35069/A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Captured 2026-10-30T19:14:35Z"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved version: sealed-v1:bl"
+                }
+              ]
+            }
+          },
+          {
+            "Quote": {
+              "blocks": [
+                {
+                  "Paragraph": {
+                    "spans": [
+                      {
+                        "Strong": [
+                          {
+                            "Text": "M5 A2 archive: violet compass. Evidence amount is 18 units."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "M5 A2 archive: violet compass. Evidence amount is 18 units."
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Link": {
+                    "predicate": null,
+                    "spans": [
+                      {
+                        "Text": "Open original address"
+                      }
+                    ],
+                    "title": "Open original address",
+                    "url": "http://127.0.0.1:35069/A"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "content_type": "text/plain; profile=saved-source",
+        "diagnostics": [],
+        "lang": null,
+        "navigation": {
+          "anchors": [],
+          "block_count": 0,
+          "folds": []
+        },
+        "provenance": {
+          "canonical_uri": "mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/5a6ad3cf87e20c72094caab3a9e3bf956d2ef069767861b5249ea6d5ee302cf2/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d?start=0&end=59",
+          "fetched_at": null,
+          "source_kind": "turnstone.saved-source",
+          "source_label": "http://127.0.0.1:35069/A"
+        },
+        "title": "M5 A",
+        "trust": "Unknown"
+      },
+      "target": {
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:5a6ad3cf87e20c72094caab3a9e3bf956d2ef069767861b5249ea6d5ee302cf2",
+          "graph": "c886a3bb-f17d-4554-9ed5-b4ede49734c7",
+          "node": "d2b39a24-cee5-4554-b85e-26e25d4fefa5",
+          "session": "98acde98-f95b-474a-81ec-6e3aa2a7c3fe"
+        },
+        "selector": {
+          "end": 59,
+          "start": 0
+        },
+        "text_hash": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+      },
+      "url": "mere://saved-source/sealed-v1/98acde98-f95b-474a-81ec-6e3aa2a7c3fe/c886a3bb-f17d-4554-9ed5-b4ede49734c7/d2b39a24-cee5-4554-b85e-26e25d4fefa5/5a6ad3cf87e20c72094caab3a9e3bf956d2ef069767861b5249ea6d5ee302cf2/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d?start=0&end=59"
+    }
+  ],
+  "retained_admissions": [
+    {
+      "graph": "c886a3bb-f17d-4554-9ed5-b4ede49734c7",
+      "manifest": "blake3:55429c9b129f76c1f42b9820caceb73f6cbefd1aac559f2eced49f69f60d464b",
+      "node": "5ef46c38-f4e6-4170-8676-89a17f2577d8",
+      "session": "98acde98-f95b-474a-81ec-6e3aa2a7c3fe"
+    },
+    {
+      "graph": "c886a3bb-f17d-4554-9ed5-b4ede49734c7",
+      "manifest": "blake3:37c4d90b7fdd005dc96682984da7463cab2a7e8dae7fc9920b7f188f9f0288c6",
+      "node": "d0681a68-90f4-4a1b-914c-e82a50a451c4",
+      "session": "98acde98-f95b-474a-81ec-6e3aa2a7c3fe"
+    }
+  ],
+  "retained_readers": [],
+  "search": null,
+  "session": "98acde98-f95b-474a-81ec-6e3aa2a7c3fe",
+  "status": ""
+}

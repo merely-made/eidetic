@@ -1,0 +1,238 @@
+Scoped fix round3: reviewed round2 to host-storage-review3-freeze1; all68 current source hashes verified.
+--- round2/src/research_storage.rs
++++ src/research_storage.rs
+@@ -370,6 +370,10 @@
+         owner: &'static str,
+         error: muniment::StoreError,
+     },
++    StorageOpenRetry {
++        owner: &'static str,
++        error: muniment::StoreError,
++    },
+     Context {
+         label: String,
+         cause: Box<SourceReadError>,
+@@ -386,9 +390,14 @@
+     pub(crate) fn open(owner: &'static str, error: muniment::StoreError) -> Self {
+         Self::StorageOpen { owner, error }
+     }
++    pub(crate) fn open_retry(owner: &'static str, error: muniment::StoreError) -> Self {
++        Self::StorageOpenRetry { owner, error }
++    }
+     pub fn storage_error(&self) -> Option<&muniment::StoreError> {
+         match self {
+-            Self::Storage(error) | Self::StorageOpen { error, .. } => Some(error),
++            Self::Storage(error)
++            | Self::StorageOpen { error, .. }
++            | Self::StorageOpenRetry { error, .. } => Some(error),
+             Self::Context { cause, .. } => cause.storage_error(),
+             Self::Other(_) => None,
+         }
+@@ -421,30 +430,45 @@
+     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+         match self {
+             Self::Storage(error) => error.fmt(f),
+-            Self::StorageOpen { owner, error } => {
+-                write!(f, "{owner} storage open: {error}")?;
+-                if let muniment::StoreError::LimitExceeded { kind, .. } = error {
+-                    let setting = match kind {
+-                        muniment::StoreLimitKind::ValueBytes => "Open: value bytes",
+-                        muniment::StoreLimitKind::KeyBytes => "Open: key bytes",
+-                        muniment::StoreLimitKind::ReplayBytes => "Open: replay bytes",
+-                        muniment::StoreLimitKind::ReplayItems => "Open: recovery item visits",
+-                        muniment::StoreLimitKind::MetadataBytes => "Open: metadata bytes",
+-                        muniment::StoreLimitKind::InputBytes => "Open: input bytes",
+-                        muniment::StoreLimitKind::AllocationBytes => "Open: allocation bytes",
+-                        _ => "Open storage limit",
+-                    };
+-                    write!(
+-                        f,
+-                        ". Raise {setting} in settings and restart Turnstone to retry."
+-                    )?;
+-                }
+-                Ok(())
+-            },
++            Self::StorageOpen { owner, error } => format_open(f, owner, error, true),
++            Self::StorageOpenRetry { owner, error } => format_open(f, owner, error, false),
+             Self::Context { label, cause } => write!(f, "{label}: {cause}"),
+             Self::Other(error) => f.write_str(error),
+         }
+     }
++}
++
++fn format_open(
++    f: &mut std::fmt::Formatter<'_>,
++    owner: &str,
++    error: &muniment::StoreError,
++    restart: bool,
++) -> std::fmt::Result {
++    write!(f, "{owner} storage open: {error}")?;
++    if let muniment::StoreError::LimitExceeded { kind, .. } = error {
++        let setting = match kind {
++            muniment::StoreLimitKind::ValueBytes => "Open: value bytes",
++            muniment::StoreLimitKind::KeyBytes => "Open: key bytes",
++            muniment::StoreLimitKind::ReplayBytes => "Open: replay bytes",
++            muniment::StoreLimitKind::ReplayItems => "Open: recovery item visits",
++            muniment::StoreLimitKind::MetadataBytes => "Open: metadata bytes",
++            muniment::StoreLimitKind::InputBytes => "Open: input bytes",
++            muniment::StoreLimitKind::AllocationBytes => "Open: allocation bytes",
++            _ => "Open storage limit",
++        };
++        if restart {
++            write!(
++                f,
++                ". Raise {setting} in settings and restart Turnstone to retry."
++            )?;
++        } else {
++            write!(
++                f,
++                ". Raise {setting} in settings and retry; restart Turnstone if the changed settings are not active."
++            )?;
++        }
++    }
++    Ok(())
+ }
+ 
+ #[cfg(test)]
+--- round2/src/retained_clip.rs
++++ src/retained_clip.rs
+@@ -136,7 +136,7 @@
+     ))
+     .map_err(|e| e.to_string())?
+     .ok_or("Staged retained clip missing")?;
+-    let owner = open_with_limits(root, true, limits)?;
++    let owner = open_with_limits(root, true, limits).map_err(|error| error.to_string())?;
+     let mut store = crate::research_storage::BudgetStore {
+         store: &owner,
+         budget: limits.budget(),
+@@ -189,18 +189,20 @@
+ 
+ fn open(root: &Path, create: bool) -> Result<muniment::FjallStore, String> {
+     let limits = crate::app::research_search_state::Preferences::load(root)?.storage;
+-    open_with_limits(root, create, &limits)
++    open_with_limits(root, create, &limits).map_err(|error| error.to_string())
+ }
+ fn open_with_limits(
+     root: &Path,
+     create: bool,
+     limits: &crate::research_storage::StorageLimits,
+-) -> Result<muniment::FjallStore, String> {
++) -> Result<muniment::FjallStore, crate::research_storage::SourceReadError> {
+     let path = root.join(STORE_DIR);
+     if !create && !path.is_dir() {
+         return Err("This mere has no retained clip store".into());
+     }
+-    muniment::FjallStore::open_with_limits(path, limits.owner()).map_err(|error| error.to_string())
++    muniment::FjallStore::open_with_limits(path, limits.owner()).map_err(|error| {
++        crate::research_storage::SourceReadError::open_retry("Retained clip", error)
++    })
+ }
+ 
+ fn import_with_sealer(
+@@ -256,7 +258,7 @@
+     .map_err(|e| e.to_string())?;
+     // Validate the receiving capability before durable admission.
+     read_store(&mut staging, sealer, id, policy).map_err(|error| error.to_string())?;
+-    let owner = open_with_limits(root, true, limits)?;
++    let owner = open_with_limits(root, true, limits).map_err(|error| error.to_string())?;
+     let mut store = crate::research_storage::BudgetStore {
+         store: &owner,
+         budget: limits.budget(),
+@@ -369,7 +371,7 @@
+     replace: bool,
+     limits: &crate::research_storage::StorageLimits,
+ ) -> Result<(), String> {
+-    let owner = open_with_limits(root, false, limits)?;
++    let owner = open_with_limits(root, false, limits).map_err(|error| error.to_string())?;
+     let mut store = crate::research_storage::BudgetStore {
+         store: &owner,
+         budget: limits.budget(),
+--- round2/src/retained_clip/custody_tests.rs
++++ src/retained_clip/custody_tests.rs
+@@ -392,3 +392,86 @@
+     }
+     std::fs::write(root.join(format!("{phase}-passed.json")), serde_json::to_vec(&serde_json::json!({"phase":phase,"pid":std::process::id(),"passed":true,"scope":"synthetic wallet-backed IPC, native producer and store; no headed UI claim"})).unwrap()).unwrap();
+ }
++
++#[test]
++fn model_free_clip_open_refusal_explains_setting_on_retain_import_and_export() {
++    let source = tempfile::tempdir().unwrap();
++    let destination = tempfile::tempdir().unwrap();
++    let mut note: serde_json::Value = serde_json::from_str(include_str!(
++        "../../scenarios/fixtures/retained_clips/redshank.json"
++    ))
++    .unwrap();
++    note["annotation"]["body"] = serde_json::json!({"kind":"text", "plain_text":"Retained note"});
++    let seal = sealer();
++    let source_id = retain_native(
++        source.path(),
++        NativeClip::Redshank {
++            export: &note,
++            voice_body: None,
++        },
++        &context(),
++        policy(),
++        &seal,
++    )
++    .unwrap();
++    let package = source.path().join("selected.clip.json");
++    export_sealed(source.path(), source_id, &package, policy(), false, &seal).unwrap();
++    let seeded = muniment::FjallStore::open(destination.path().join(STORE_DIR)).unwrap();
++    pollster::block_on(seeded.put("oversized", &vec![42; 8192])).unwrap();
++    seeded.sync_all().unwrap();
++    drop(seeded);
++    let mut limits = crate::research_storage::StorageLimits::default();
++    limits.recovery.max_value_bytes = 16;
++    let output = destination.path().join("refused.clip.json");
++    let error = match open_with_limits(destination.path(), false, &limits) {
++        Ok(_) => panic!("oversized retained store must refuse"),
++        Err(error) => error,
++    };
++    assert!(matches!(
++        error.storage_error(),
++        Some(muniment::StoreError::LimitExceeded {
++            kind: muniment::StoreLimitKind::ValueBytes,
++            limit: 16
++        })
++    ));
++
++    let retain_error = retain_native_with_limits(
++        destination.path(),
++        NativeClip::Redshank {
++            export: &note,
++            voice_body: None,
++        },
++        &context(),
++        policy(),
++        &seal,
++        &limits,
++    )
++    .unwrap_err();
++    let import_error =
++        import_sealed_with_limits(destination.path(), &package, policy(), 7, &seal, &limits)
++            .unwrap_err();
++    let export_error = export_sealed_with_limits(
++        destination.path(),
++        source_id,
++        &output,
++        policy(),
++        false,
++        &seal,
++        &limits,
++    )
++    .unwrap_err();
++    for error in [retain_error, import_error, export_error] {
++        assert!(
++            error.contains("Retained clip")
++                && error.contains("open")
++                && error.contains("ValueBytes")
++                && error.contains("16")
++                && error.contains("Open: value bytes")
++                && error.contains("settings")
++                && error.contains("retry")
++                && error.contains("restart Turnstone if"),
++            "{error}"
++        );
++    }
++    assert!(!output.exists());
++}

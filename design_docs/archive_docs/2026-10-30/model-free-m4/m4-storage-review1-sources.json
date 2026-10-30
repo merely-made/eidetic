@@ -1,0 +1,833 @@
+{
+  "worktree": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029",
+  "files": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "d003625a52894e237395eb8fddea6163f21fcc199d4ab0ab5208d695a0cc236c"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "ddf59a7f35bf23b1bae6d442c91c3538aa1a2af4f4f7b347c26bc57b83767419"
+    },
+    {
+      "path": "crates/muniment/Cargo.toml",
+      "sha256": "73bcc12f61b78649d92439e03947d6a2b2cdffd8b74688b2412b2e2638ac30f1"
+    },
+    {
+      "path": "crates/muniment/src/backend.rs",
+      "sha256": "ab9c0aca6290bac0663fc535c8f946a1a2d6f1e659d141a65e65bcf629b0d96b"
+    },
+    {
+      "path": "crates/muniment/src/blob.rs",
+      "sha256": "401b3acd2c3a7d527424d68f863a11650dd6a11aaf8854bfda06c18bfc7678e6"
+    },
+    {
+      "path": "crates/muniment/src/codec.rs",
+      "sha256": "dc883364c395b83914c2294056c05789cc11ef6d650e409d95d72f1fb7ffba73"
+    },
+    {
+      "path": "crates/muniment/src/custody_transact_tests.rs",
+      "sha256": "f30447c4f9f0578f7e2e3c2983bb981652f773363bd1d2d1648bee0727ddbdda"
+    },
+    {
+      "path": "crates/muniment/src/directory_backend.rs",
+      "sha256": "74ef1d4d0e1adb51f8363d55cd868efabda43395842c4314c01b1b839806f42d"
+    },
+    {
+      "path": "crates/muniment/src/error.rs",
+      "sha256": "a0e0ae75bc9748f2a6a3f2c3cc06a7326b177a1b93aa92b150964dcf251cdba7"
+    },
+    {
+      "path": "crates/muniment/src/fjall_backend.rs",
+      "sha256": "09b848678297c57923c4de8b609017ce24bd43ef0acdf75e6f3e07bce5c4248d"
+    },
+    {
+      "path": "crates/muniment/src/fjall_bounded.rs",
+      "sha256": "55cd48beae24dd7af1971ddae6315092c0816ce4e62c53cadf32fd617344582e"
+    },
+    {
+      "path": "crates/muniment/src/fjall_bounds_tests.rs",
+      "sha256": "3aef728f1b2fcd1d3ff8655fff8e25721cd67ffb8d7e23d8662eff24ea260943"
+    },
+    {
+      "path": "crates/muniment/src/fjall_limits.rs",
+      "sha256": "b925730067d57a10e43ce97d7e0474baae065deb444500b9e6d46500cadcf244"
+    },
+    {
+      "path": "crates/muniment/src/fjall_partition_bounds_tests.rs",
+      "sha256": "4d82452cf5a4e4fd97fcd56d77d4104998ad599a0ef67c207d047758d9a07e4c"
+    },
+    {
+      "path": "crates/muniment/src/fjall_recovery_fixture.rs",
+      "sha256": "3d5ce9335f2ab7bba4d5db8d972438a72d8a4ddf1e6aca78092be8f1d01c86a1"
+    },
+    {
+      "path": "crates/muniment/src/fjall_recovery_open_tests.rs",
+      "sha256": "8049928dc4ffeed3e150ce3f2dbe6cdeefe66597008a076e7a6eea6e5888b8a7"
+    },
+    {
+      "path": "crates/muniment/src/fjall_recovery_set_tests.rs",
+      "sha256": "a58e52968d63c4bbfaacd14e52107b50e2ef857f43ab2c5e0dc790aa752af55b"
+    },
+    {
+      "path": "crates/muniment/src/fjall_recovery_tests.rs",
+      "sha256": "da7cd39434036932e379538747044e537f4d17b49b603a7940ed803ff04c0e9a"
+    },
+    {
+      "path": "crates/muniment/src/indexeddb_backend.rs",
+      "sha256": "42a8c9611ccd44e12c21ffea72a0f6575ff56163d1dca28868810bcb09a655f1"
+    },
+    {
+      "path": "crates/muniment/src/journal/causal.rs",
+      "sha256": "1ff540a6762c54f88bc8e1d59c43ffb9fefd98d93588ca08fe5d744c9c4b6dd4"
+    },
+    {
+      "path": "crates/muniment/src/journal/digest.rs",
+      "sha256": "8bc806c40db25e87a015e846215a4feec110a7bf5554f997811038d938426c21"
+    },
+    {
+      "path": "crates/muniment/src/journal/entries.rs",
+      "sha256": "38c127e63182791dbc114ff8d350c59a0dbee7917215eaa4cb2af363e0bb5ca8"
+    },
+    {
+      "path": "crates/muniment/src/journal/fork.rs",
+      "sha256": "303b6f29346906f8ae2c1ea8ef6430b1cf5861314a5ba0275a8eb79816edb21d"
+    },
+    {
+      "path": "crates/muniment/src/journal/log.rs",
+      "sha256": "5e24c63901fa7efbdc9e2c633310b69bd353a705c3154a506089b3718f6ff219"
+    },
+    {
+      "path": "crates/muniment/src/journal/mod.rs",
+      "sha256": "872c689f5021001ae6f8eac2e04ecfb943775dcf00b639919b49e7a38b68da84"
+    },
+    {
+      "path": "crates/muniment/src/journal/persist.rs",
+      "sha256": "2a2841b0e6f1491689f8fc42b57e22cfa53f423b13ef619b0453810bc97471ad"
+    },
+    {
+      "path": "crates/muniment/src/journal/seq.rs",
+      "sha256": "931947277d4b0825ec3ba5fbd856c388a7e530a4b23f531effd24040b895b028"
+    },
+    {
+      "path": "crates/muniment/src/lib.rs",
+      "sha256": "4072d7fb8bb5516aaafa7137f9a96eaa458437442c1953cfb4450869a05c391f"
+    },
+    {
+      "path": "crates/muniment/src/redb_backend.rs",
+      "sha256": "7adf95f89a4e3cfb2c682cec97b0f2d720083adc824ecce08c0864342c9ef607"
+    },
+    {
+      "path": "crates/muniment/src/slot.rs",
+      "sha256": "e5af0474ac765244815f58cc5f39ad3de4c6f2bdb1ae90c352ddce940fc36fe9"
+    },
+    {
+      "path": "crates/muniment/src/zip_backend.rs",
+      "sha256": "426d61752fdf641bb99ded2457d6c4ba65dca342def63efcdb1ae50e6728424a"
+    },
+    {
+      "path": "rust-toolchain.toml",
+      "sha256": "70b1451554546366dd35c01225416776cfb8c0e3a73da440def1bed6de93808e"
+    },
+    {
+      "path": "support/patches/README.md",
+      "sha256": "cea8325069c77e6e7d730f586d0cde2020b08f4d9a096dcbf4f920bceecedd4e"
+    },
+    {
+      "path": "support/patches/fjall/Cargo.lock",
+      "sha256": "3afe01cbe7ce3489df0186cf91029fa3f8ba782031b0f64436f8902f44d9da39"
+    },
+    {
+      "path": "support/patches/fjall/Cargo.toml",
+      "sha256": "76a67a2e4f24916955e078e5abc754e0acec221bf0f8aa046820dce11f6756dc"
+    },
+    {
+      "path": "support/patches/fjall/LICENSE-APACHE",
+      "sha256": "0477dcb7f150cb9de1a9f4f6cfa0e1eb7f6ba3d3920cf6636b7876abdfc6486c"
+    },
+    {
+      "path": "support/patches/fjall/LICENSE-MIT",
+      "sha256": "247ecb48d7bc988303db4e7915095e395d178f0f8e95f4c32ccee4b02b6032b1"
+    },
+    {
+      "path": "support/patches/fjall/README.md",
+      "sha256": "9a7a13b7d0399f346396632855610f1e9f12fecb20e00cf1c328c090622f37f7"
+    },
+    {
+      "path": "support/patches/fjall/src/background_worker.rs",
+      "sha256": "f5c633d8bcf75248825f479f251f042a5e9621e4298741c377774b22ad989b69"
+    },
+    {
+      "path": "support/patches/fjall/src/batch/item.rs",
+      "sha256": "ede9762f1df4772670946f89c3409868ebfbd9277daf24c878f7889dd1431034"
+    },
+    {
+      "path": "support/patches/fjall/src/batch/mod.rs",
+      "sha256": "9ef5f26e07f09ceefab5f35b78f35d42217f3d9b64c3777fa3dedef68a92808b"
+    },
+    {
+      "path": "support/patches/fjall/src/bounded_recovery/store/commit.rs",
+      "sha256": "650d392fafc2355fd6d345980abc23232f05b161797cebc67626b0561f212b2b"
+    },
+    {
+      "path": "support/patches/fjall/src/bounded_recovery/store.rs",
+      "sha256": "d90c365976b4250fdda646b71f4d46e94c42c64c77e9b5d2ea6efdbf269c0d46"
+    },
+    {
+      "path": "support/patches/fjall/src/bounded_recovery.rs",
+      "sha256": "77711679b1a94312e8626cbe082e40aa91b111d310092eaaa4e2b7226857c51f"
+    },
+    {
+      "path": "support/patches/fjall/src/compaction/manager.rs",
+      "sha256": "f2362437c41229846d4d8b2934b56c24f0caf38f1659123217340303ddcff302"
+    },
+    {
+      "path": "support/patches/fjall/src/compaction/mod.rs",
+      "sha256": "35f9abb3c1ad76595db8583327bc94f1922349f33fbb639a1e0df149426123eb"
+    },
+    {
+      "path": "support/patches/fjall/src/compaction/worker.rs",
+      "sha256": "e1bcbd94b5ce3cba386c39bf754251a0709eca937bac53083cb614f0295ab169"
+    },
+    {
+      "path": "support/patches/fjall/src/config.rs",
+      "sha256": "d3d23ced6ce6a6217e758a829092cfb5abf000d934eaf5685430d57f72e6088b"
+    },
+    {
+      "path": "support/patches/fjall/src/drop.rs",
+      "sha256": "6a47e7f758bef0b9eaf2962953e1a5ac6004bd04e229ed4f47d59d4b3c65cdfd"
+    },
+    {
+      "path": "support/patches/fjall/src/error.rs",
+      "sha256": "dceadeccce97b53164c763415d4fe73c2c480bb8f3506a8e02a88c3d8928c1f6"
+    },
+    {
+      "path": "support/patches/fjall/src/file.rs",
+      "sha256": "4218def19fb33762a188608215e7f258ea46ef3a13b4ff5a4f48ed86d83ea4a3"
+    },
+    {
+      "path": "support/patches/fjall/src/flush/manager.rs",
+      "sha256": "cbe7a0aa9187cc10df59a6c20ab7550f6e8466a8cdc344c5b7597c85a70422e0"
+    },
+    {
+      "path": "support/patches/fjall/src/flush/mod.rs",
+      "sha256": "1f71d34ef1a29762e498086ddd0bf1b5b7dcea4696d8e2fec4681775edcc8964"
+    },
+    {
+      "path": "support/patches/fjall/src/flush/queue.rs",
+      "sha256": "eca30132e23fddfe567455bcc787947f1c86495c23b62c536a6b190b3488d6f9"
+    },
+    {
+      "path": "support/patches/fjall/src/flush/worker.rs",
+      "sha256": "c529d8264f729c0e3effb2a9af7b6302b3b97cda04695dee74b859b4a9509937"
+    },
+    {
+      "path": "support/patches/fjall/src/gc/mod.rs",
+      "sha256": "2838669a5946c5e7232a492e52fddd343a5876efdc76508b0da1f14d5931ba16"
+    },
+    {
+      "path": "support/patches/fjall/src/iter.rs",
+      "sha256": "1546200e09c9cf5bb281bbb395a81e7a65479b07affc2c450bb1c147f9df96ba"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/batch_reader.rs",
+      "sha256": "afa459f3ebbdecaa0172623d31dec4901d40afbded67f879b7fc0575654d9954"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/bounded.rs",
+      "sha256": "7cefc3abd7762af3ce015438b74ed5581442e5847bdebcb2cf4dd09794f518c8"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/bounded_replay.rs",
+      "sha256": "7bf4a008b709e5be31a109ea5f443d35d1759ff5ca3b61b9d7840279c9c00e9c"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/bounded_set.rs",
+      "sha256": "2ad8b46f966cadf73f105f3c0a2dd77b71cb0b078f7118aac7b371d7a49d6297"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/error.rs",
+      "sha256": "d233f02f5e5dd2c56ad073e8284931867a3146c7193a98ca7021312e4188850d"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/manager.rs",
+      "sha256": "aa0ce41c80f4c8fbec1c4f93977e96ba49f86d2c2c73bf2979665eb707ceaac1"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/marker.rs",
+      "sha256": "cd7ceac99da1653a90d46c3226bd5ef6688acdfd0d7375082c05c6eddeb4497d"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/mod.rs",
+      "sha256": "1edc80bda92a8491f6b5ecc371551c7b1633da5d9997ea2b533c6809e02ad7ca"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/reader.rs",
+      "sha256": "f1b872235a7df80f098902b3295bb48f6e966f217c9b9fd6acbce04f8647f16c"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/recovery.rs",
+      "sha256": "5d286fbd3855a5dbfac2b4ba013500e3c0a07fbec27c4282a987b7fc05c8443b"
+    },
+    {
+      "path": "support/patches/fjall/src/journal/writer.rs",
+      "sha256": "3d0faa82c40071147c4142acd4b322d6f009927d8535e3f6a1ad44f970d2273a"
+    },
+    {
+      "path": "support/patches/fjall/src/keyspace.rs",
+      "sha256": "6e72a461f2611cffd808c7d164abb498f7797565f37dedeb779cc76ff53ad071"
+    },
+    {
+      "path": "support/patches/fjall/src/lib.rs",
+      "sha256": "06fda41dec15d39e453c0fbb0b89f5a041ad8e13bcb31898887dada60b3ac4d4"
+    },
+    {
+      "path": "support/patches/fjall/src/monitor.rs",
+      "sha256": "5ba9a80842efdf8e21e18bd50561e0cd69029b0a531ef203e30cbd17bc9c3647"
+    },
+    {
+      "path": "support/patches/fjall/src/partition/bounded_options.rs",
+      "sha256": "1fcfb6c78a8c9caa962b1a0bc80674e212871efb39f22de70462dd74a45278ab"
+    },
+    {
+      "path": "support/patches/fjall/src/partition/bounded_read.rs",
+      "sha256": "8ee53f2a288d8b0507e44ab4f55760d1def8e688575fb44a16d64eaf51611710"
+    },
+    {
+      "path": "support/patches/fjall/src/partition/mod.rs",
+      "sha256": "37eac03812fecc608ff5595ba735e6b0240617e26799b909d0df531560213a1b"
+    },
+    {
+      "path": "support/patches/fjall/src/partition/name.rs",
+      "sha256": "5e876740005102f15628071eefc538bdb3dba3735dffdef8f773f0519b46090c"
+    },
+    {
+      "path": "support/patches/fjall/src/partition/options.rs",
+      "sha256": "c2062d60fb72f367c954c070be419b81e9cbc0a9b30f414f20805f7e32964fc1"
+    },
+    {
+      "path": "support/patches/fjall/src/partition/write_delay.rs",
+      "sha256": "8fe3a9af89d8ead4bf89b2eb8aee1af96fc15b5c5618d6ab4a2c6ca6d3af7a48"
+    },
+    {
+      "path": "support/patches/fjall/src/path.rs",
+      "sha256": "862223ab81c34d3aa0b3ead2d36d5341bdfe750bf77c179531c510b8fd4e15b8"
+    },
+    {
+      "path": "support/patches/fjall/src/poison_dart.rs",
+      "sha256": "72fac33df2fe02f9134a837ff39a19790a7c942fb4f959daf392dbba501a2f7c"
+    },
+    {
+      "path": "support/patches/fjall/src/recovery.rs",
+      "sha256": "ec3d353ee9e4f3b40f3747045c718eb568ea7d28408bf6f4e17d63325107b7cb"
+    },
+    {
+      "path": "support/patches/fjall/src/snapshot_nonce.rs",
+      "sha256": "700141e8811c748e70896fa6cb7fce5f33d827573cbce374b7aee34a28f7bd3a"
+    },
+    {
+      "path": "support/patches/fjall/src/snapshot_tracker.rs",
+      "sha256": "8413499adf06fa38a73a0ee84a801150c50b2ca9136af16fe85c1ea6a0836786"
+    },
+    {
+      "path": "support/patches/fjall/src/stats.rs",
+      "sha256": "2b996ef654966fb80eb8d06ac5a4edf0d4619ed7208afd6160306e5cc0368ed8"
+    },
+    {
+      "path": "support/patches/fjall/src/tracked_snapshot.rs",
+      "sha256": "b6bea493509bb39537991b056b4da60f4087f0ff66625b352fb34f82aba4b377"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/conflict_manager.rs",
+      "sha256": "e45001745112b5f40bba768ed04c72fcbd102aa3c69f54733a25ffd2c91f81c5"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/keyspace.rs",
+      "sha256": "9505058661d1eb735733ad834f74d87522f7667faddf9beacfafe234a3492e05"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/mod.rs",
+      "sha256": "9a0171894a245404c7d4a48e9ae0665fc5c8ea15d014a36e94cfc3aab2313eb2"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/oracle.rs",
+      "sha256": "4aa82030cdb3d034b6b959e840fbdb835fe6caf36bced7c0420d19b5fd6ec07c"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/partition.rs",
+      "sha256": "6f8bfd003a807ceae5e1a5c92312032b3eddb8619d365c54a3d939febdb99547"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/read_tx.rs",
+      "sha256": "cd2b2e5049cf5af9a4668af119de2d4d35de019fd71238c31eae0727b1953dea"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/write/mod.rs",
+      "sha256": "8aac72ac233b85a65e59c369e42ab6e806e04e1cd0956898530647607faa4b74"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/write/single_writer.rs",
+      "sha256": "05691569ee54246d5cf3ffdd6e37fd52541ca1cf487c9c7e9203915912b71571"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/write/ssi.rs",
+      "sha256": "6b83561a37650ed9acf1ac859414b118ebb6910fc41d2d7fb9a4d4912840ff65"
+    },
+    {
+      "path": "support/patches/fjall/src/tx/write_tx.rs",
+      "sha256": "50499c1e2d8140b5ce280399b53586e56211f43327caf7b57441cda56a6150fe"
+    },
+    {
+      "path": "support/patches/fjall/src/version.rs",
+      "sha256": "b9ad5934ea566d7fe0be7a3ca8988a228cd0d415f3dc59e9bbf383755d518a94"
+    },
+    {
+      "path": "support/patches/fjall/src/write_buffer_manager.rs",
+      "sha256": "a13c2b2834243432f6fe98b8334648183f78f5a2ce632d5bcfa1dabe16d4fb87"
+    },
+    {
+      "path": "support/patches/lsm-tree/Cargo.lock",
+      "sha256": "ce0d949b89ab84064458ede81f2e2d5aca8ad5f7d0384d4f80593b96b8e94e9a"
+    },
+    {
+      "path": "support/patches/lsm-tree/Cargo.toml",
+      "sha256": "d65ecab7f89825a9d6c8a677fe2a40dbab11398bc79368aeb7ab0ec0dc57fb28"
+    },
+    {
+      "path": "support/patches/lsm-tree/LICENSE-APACHE",
+      "sha256": "0477dcb7f150cb9de1a9f4f6cfa0e1eb7f6ba3d3920cf6636b7876abdfc6486c"
+    },
+    {
+      "path": "support/patches/lsm-tree/LICENSE-MIT",
+      "sha256": "247ecb48d7bc988303db4e7915095e395d178f0f8e95f4c32ccee4b02b6032b1"
+    },
+    {
+      "path": "support/patches/lsm-tree/README.md",
+      "sha256": "cda703f0ac1680b3d0f78648883e935fafc15fb4275d4b920906370155a11c50"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/abstract.rs",
+      "sha256": "49afda69c2d79ff4693b96eb8338bc94bb3b958030bd296be668df05e2482324"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/any_tree.rs",
+      "sha256": "f5b61232b9d152ef57acaefc5755513a763cdbc8f891fae9c804d224ec22e34b"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/binary_search.rs",
+      "sha256": "fdd440944783e830dcb920d8671678cfc2f3655aad113206625a1dc30f9f4987"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/blob_tree/cache.rs",
+      "sha256": "67b84a199de38351b11046a57e15fca00ae014a6a842df7402cb21df7cc71120"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/blob_tree/compression.rs",
+      "sha256": "c2f68fbf614f30397989644d58e77fb457faf344a3d804a32f2c9e62872d420a"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/blob_tree/gc/mod.rs",
+      "sha256": "48846f654ea3ee72d9983f60c677cf32740230c5e4e3b86b3a919981f0ff58b2"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/blob_tree/gc/reader.rs",
+      "sha256": "e41c9b533207f1dadce03a69ed47e7abcae50fae68c753b0ebaacaeff6bbaf0d"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/blob_tree/gc/writer.rs",
+      "sha256": "b22982cdb230e7f5da1e3379b90e9d687d1e89a332720982c0a82606131e0684"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/blob_tree/index.rs",
+      "sha256": "e5b1554e216e9291d006d2e2297892a5c56e02648d2f8f9c274afd553af3f162"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/blob_tree/mod.rs",
+      "sha256": "697353b167e33e7774f4f96ecf50771fddeac7bcf74f7ad23e8c1f553e5bf23d"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/blob_tree/value.rs",
+      "sha256": "b88a3c6129388a404c0f7a38400c8ea178a0da2da9a33158f0dbfa732008acfa"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bloom/bit_array.rs",
+      "sha256": "031efd8a22fd53c51aa7aa5a18f91e154485ed5c36df9ff3e79b354b89823a40"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bloom/mod.rs",
+      "sha256": "70d8a9c426b0ab2860c8c57992545a907b92b9a0d1dabba3ce75d59e2e867b2c"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_block.rs",
+      "sha256": "eedd190b052c3f3003cfd964c111b38e270c8573c35f4c9e0dfb98a2c93ab473"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_block_tests.rs",
+      "sha256": "8502fe74c8ea41296a21aa46c331781d90edc4b9976d7f86af38a3c2308f8c81"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_bloom.rs",
+      "sha256": "6d0a457be52157601ec5361e955ce78e8556d5d4e02ed4b83d109f8a1423d518"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_bloom_tests.rs",
+      "sha256": "0dcd707e0bc140930061e4f23cf6716e541d3e5eaebb9e90987239d2396f676b"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_budget.rs",
+      "sha256": "04f1268ccf05446d0849af9053623254f1726645748b3dcb0f370bcdb3b8444f"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_index.rs",
+      "sha256": "1c6ac674d573549f80526edf5b16e8e10146ae41fb0ab78a9dc39f84b1d84f89"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_index_block.rs",
+      "sha256": "3a62c382be8b0b8aedaa579112a33eeb6f779430d3843fb091e1a6e7064eeaa1"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_index_block_tests.rs",
+      "sha256": "0545b79677785eea5cc06b7bfddfb34e399d18dced1e1a4a3ffc3716c5381bcd"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_index_tests.rs",
+      "sha256": "9852bef11fcfe010b746e92c38e48c2b006eafe6d0e4d666c381eff222a4afe8"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_inflate.rs",
+      "sha256": "aa3b1fce43fe63b287f0f72406ebff59358d658d5515b75c657331fa74cd52b1"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_manifest.rs",
+      "sha256": "8a9efc5bacdd466472a22352ffb752fb80f04abf9d58bad965f37a9b85a9774a"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_manifest_tests.rs",
+      "sha256": "d480a1d20a4955e792de78147bd3e832de2acd94d010475f8fd35735b07933b9"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_metadata.rs",
+      "sha256": "e3ef270cb01049cef4a9bdd7d962472f7fbe98f9a4f4b0f1fa761b5c58ad4034"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_metadata_tests.rs",
+      "sha256": "41f50a16539dd3369b31081055344cadb5474af66ae094de86975229ee3f0f07"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_prepare.rs",
+      "sha256": "285effb2295115db43fab9a7a896da6c42a01268e674bf9b08e01a06746d8ea7"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_prepare_tests.rs",
+      "sha256": "61e46f412cd53b594c8cc88c1d3cda1dbbe6dfb22934d9b729ea109446e3b5b8"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_read.rs",
+      "sha256": "aac47742558c72cd0b460381cfc36f531347c91a42c62a424f76c5209545b35b"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_read_index.rs",
+      "sha256": "ae15a359657ed6d08826871e320077742c55287a096643a7e2092cd6ad1dbfff"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_read_tests.rs",
+      "sha256": "f7bc9b24ff3e8549e9d42768e40eeea4f8774738357a4efb96bc9766c6079dc2"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_segment.rs",
+      "sha256": "d548869c684f150fd4da0cf10397d53872915be0bd08a8807eb216e9612544e2"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_segment_tests.rs",
+      "sha256": "c622da820d14de9c787062ff9fcdda0c576db60b43d54bb930f675f2f90625c2"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_trailer.rs",
+      "sha256": "f5828357ceb7dd59403ea0f7837c8671798a9d6b8d35e707d2a1b930a00c1b8c"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_trailer_tests.rs",
+      "sha256": "6ac5e36aaa56fdaa6574e7c7e082a774078e408a58594b54c6f3499941bfc543"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_tree.rs",
+      "sha256": "6270c1333abaa975a8be10511b533eeb23f7cb86f4506cc1bd7c8d4d04eb3348"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_validation.rs",
+      "sha256": "46049e328a9f4f10c7212be188d11e6ea2cedcdbe0883c2fb546cd860c887672"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/bounded_validation_tests.rs",
+      "sha256": "b091fdea9644ed5507b0522e9c3f961bf71c6f0c37053307bfe61de857814900"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/cache.rs",
+      "sha256": "72c380165db546b4a9a70605edb01ad0430cebbb3b275d2cbdc37cc528ac429f"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/fifo.rs",
+      "sha256": "7577c9bf6f1dab498bba461215f4947732aac5781537ead15d6b7a6061cec951"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/leveled.rs",
+      "sha256": "8156be1e012fe8586f3a011583d1b5db820c3626d659f8fa243885196e0d810b"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/maintenance.rs",
+      "sha256": "c3311d386cf68251c8e6f6f23389ba2571327de1620ea675a1ea5acbf9543f84"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/major.rs",
+      "sha256": "2bb1d4e0405158633f45ec2bf95112f34a19c597c9db2ba0af0eed67ca85103d"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/mod.rs",
+      "sha256": "4211398238bfef0e2a68a936bd0cb773a9fbcad22b11dfcf6e2f5db8e344cf54"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/movedown.rs",
+      "sha256": "809924faaedf85e11d7b4c1dc2db5317ddc5eacc27beb9166ee0c5d821f215ee"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/pulldown.rs",
+      "sha256": "c82d77c5e782b569f967178759bdb39c3e9cd76d841126d469f543237c2c9a37"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/stream.rs",
+      "sha256": "f57a8a9279d86fd471a68e77fdcd6a2f2b15bc9b10af8f660dc3383541d8f0a6"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/tiered.rs",
+      "sha256": "36b9c62eb219af5e93100128ec0f9d802650a28aa4eb8c37182ac57790b7de5b"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/compaction/worker.rs",
+      "sha256": "35822ad5df956896d765ea8de3ac54e491bf00971eea94d29b9781ceef2831d2"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/config.rs",
+      "sha256": "c05e14ab3fd92076208561b5d7bdc2f8804b510ca50c0534f7bc678ded6e39c6"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/descriptor_table/lru.rs",
+      "sha256": "71a6084b886a99fbc498016e08faa81c0f19bc75100b6572d3386a44ca1c1bd5"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/descriptor_table/mod.rs",
+      "sha256": "6728d8193f83f0cd84a9e50cabf94ba1aad196f99a9b8a98ff4471ef7bca9f65"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/error.rs",
+      "sha256": "d633ae0de98f5f2674d74f799640e0e6d787e606176b3f02d647e921b7a62550"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/file.rs",
+      "sha256": "2259ac664ee3e8de0e5debaa3988e8bde855ba8a68c80010d03ba52c235d114c"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/key.rs",
+      "sha256": "91dab2fef7c168587b7656e1d7acc7012ef7cb9289945ad92d4abc0618b958cc"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/level_manifest/hidden_set.rs",
+      "sha256": "602f0452384003b912660fa4081412ca226c03eda9ecbb64b68a1bc8af1da292"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/level_manifest/level.rs",
+      "sha256": "ffbc9737f0e9a8013183573d80bf8424ce1e63cc252e36d4a57157d25d450000"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/level_manifest/mod.rs",
+      "sha256": "02acfd75116d4b771d56eccb38f22ee72b22a25e61b9dbb3395402a74cc9d3bd"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/level_reader.rs",
+      "sha256": "fc3ae0b9c934a3c927dbf8083c934bf2544a6692e975bbbe7fe0929bad9e94db"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/level_scanner.rs",
+      "sha256": "0667f7d8742c8070618d0cc053b39f1758facda072770301de516ffd1e06804e"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/lib.rs",
+      "sha256": "12dd1c777cb5326dfd75fc084a1c7763efe3ad9db13bda4b0896add91ad66230"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/manifest.rs",
+      "sha256": "9787dfbf98b3a09d933777bcd3cfde12c137528ec205866bbf3c2dfb99c3cc2e"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/memtable/mod.rs",
+      "sha256": "674dd481de2b7d33642f513744fd1e127e9be0ad72880b577fd472688a913f63"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/merge.rs",
+      "sha256": "9916517cfb8345e6d6946aef235fbd8aca19a42064b06c0d226c301426dca435"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/multi_reader.rs",
+      "sha256": "747201155a8295658e4665b9b9999ebb74ba3d7dbf80ef40855ed3009a5c7035"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/mvcc_stream.rs",
+      "sha256": "2d21104c411f97a9f76bacb0c5cc002df25c360e00122490cb4a6be54a818933"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/path.rs",
+      "sha256": "d89eee7422dcf76da9e190d70035e93a7ee598130f0987b23d951b0b0f18268a"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/range.rs",
+      "sha256": "152fedea953cd7c61e5501771a4e0aeac994640a2a2ddd788715b3a09eb20b11"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block/checksum.rs",
+      "sha256": "f09c58d1f52fa2f5a09eccb338b7f14be590f28bcefb261a7ad66feb3092e84e"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block/header.rs",
+      "sha256": "34f76033202551e67b74b2e1665a368238b3997103f47895d926e0196a64c09e"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block/mod.rs",
+      "sha256": "2f75938320f4399aeeb06a608e6dd081f782a02b42c1966eb72e5a5a09caa23b"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block/offset.rs",
+      "sha256": "9ba665accbc5c1a583eaab8501b859e5ca9718cb5ccf91d37783cafb238eae40"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block_index/block_handle.rs",
+      "sha256": "7560a45a238daa15692abea0114ef1847646b0d2ccca64d63b51891f8723f280"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block_index/full_index.rs",
+      "sha256": "ae1dfd639fa490c1b76b415a7c595174e2f1fc61caba120b165e3ade25daeade"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block_index/mod.rs",
+      "sha256": "3db1156858d5b6e01705d6c2b2fff5901e919972f09c72ab5a867b201eab3f44"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block_index/top_level.rs",
+      "sha256": "7ef0bf20cab57309ba25783a54808d3908da45006160e04a3cf552d49bdb0d78"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block_index/two_level_index.rs",
+      "sha256": "db787887676cc4d64e7398c9ed460d29f0f27ab804e3b46ae847ee355a374f88"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/block_index/writer.rs",
+      "sha256": "c2c601acd61a6cf5c11e1316a6afc584172105d6311c778e15b7b02c1efeb032"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/file_offsets.rs",
+      "sha256": "7a322fc84408e2537c4e14558d33582eb59fb2f602c4dbd38527f076c07aeead"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/forward_reader.rs",
+      "sha256": "57df5525aaf99801d8160f55c4dc6e1626ab540f617d378ba1ffe38d7a684478"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/id.rs",
+      "sha256": "56e5e55ead1441ad77cd6a0b16cba7205c55d5c8f8af412a369a658291cf0ced"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/inner.rs",
+      "sha256": "56c3b261f254f30ec6767577b638d4580851bca6208965eda1d2d62febeab63e"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/meta/compression.rs",
+      "sha256": "71460fb8d8700a0c61641e62dd0767e8397ac35f04d529e023c0c726994f3aa7"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/meta/mod.rs",
+      "sha256": "9bcb035c30875c45f64cae2c091fcda921d50d7b41e356693505a411e156440b"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/meta/table_type.rs",
+      "sha256": "48bf0bc97e1884f26874146990f5da45f82295c6cf16a77e9d1eed6d92670802"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/mod.rs",
+      "sha256": "3df9443d45dc262adc30ddf27130b7e16bb3c157088ba3a009a5e4234713b595"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/multi_writer.rs",
+      "sha256": "a35132d7e344071a378be9de714fb0a5958860648b4edef94327f71c8861cc23"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/range.rs",
+      "sha256": "77406642b1368b0842c442c22b1e818841e16b0163ddf0be74178d119dc8435f"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/reader.rs",
+      "sha256": "b88f44d6d9ecf25329eeefabef7713239519246060b030ef46c38d6e26083cbb"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/scanner.rs",
+      "sha256": "b4129bc2927daa6f7c5dc6076e684c969e73acfc82b36268127ca32a026ad8bb"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/trailer.rs",
+      "sha256": "2a813e0f96de9f1ce5d5b971227372e057c46456bc9c892e1e1aeda0457895e2"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/value_block.rs",
+      "sha256": "5cc13b417dfaa3a04b9a2df0bd093862c9bcf5e9c2f3d695c453b9a90c26326d"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/value_block_consumer.rs",
+      "sha256": "788a8e6fe75768c2985139e31b0bfe73449d493b58bd0b854273828e7c465396"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/writer/meta.rs",
+      "sha256": "cfe7006e04884a913ed7bb925f822dd019a33b02f731395ac0fe054a8e3a9e0a"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/segment/writer/mod.rs",
+      "sha256": "eb6b7e94ad722d1b4b3b0591486d2e45503850786af41e6a2a55bbd3401eacbc"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/seqno.rs",
+      "sha256": "cdd8e33b5b359c0cd311e87d28ce85198523933a32e703841dec9fe9f4871f88"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/snapshot.rs",
+      "sha256": "a0fd41e55cdf48ef4355c6060b3d1bed0878f495bb454c1023ee3f39d07bc4ac"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/stop_signal.rs",
+      "sha256": "d14b7788e6fc713dd155fcc2e15e86fd370baef866940b913b3fa0168d6f84ff"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/time.rs",
+      "sha256": "ae34404275e015272abbd33c9e7b8facae827e8be104015aeb5455a14bdb79ad"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/tree/ingest.rs",
+      "sha256": "7dd7cd1c37d8351466a4c2e5a068aaf0d088616dc922d26258a663526314567e"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/tree/inner.rs",
+      "sha256": "842e2128155423fd5754c2f07aaab73c36ae3c0b8eba4634d2d2064a5b8e5be1"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/tree/mod.rs",
+      "sha256": "a4f99c6e22a36a6729999d20f8f22dde719ee1c14228d0fa656b9a628ed666d9"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/value.rs",
+      "sha256": "6892ebaceb2e392fa27cddacf6ab0b571ffc183eb28c4be0c2d9be6a3e3e5e05"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/version.rs",
+      "sha256": "2f9a825ca91cf96a4834778da6ddc783dacc72935ecfd908ba137c6b12059847"
+    },
+    {
+      "path": "support/patches/lsm-tree/src/windows.rs",
+      "sha256": "cae6f71b2a53f43db5bbd32edcd45b9537acac32b240ad0399f6fe5414e7da38"
+    }
+  ]
+}

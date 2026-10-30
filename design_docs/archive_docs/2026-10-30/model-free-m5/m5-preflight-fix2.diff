@@ -1,0 +1,93 @@
+--- fix1-reviewed
++++ fix2-preflight
+@@ -74,8 +74,8 @@
+         raise ValueError('Wayland socket or render device changed before launch')
+     unit = 'm5-preflight-' + uuid.uuid4().hex
+     result = native.run_scope(native.cgroup_scope(ns, config['memory_bytes'], config['tasks_max'],
+-                                                  config['cpu_percent'], unit), unit,
+-                              out / 'launcher.log', 240)
++                                                  config['cpu_percent'], unit, 240), unit,
++                              out / 'launcher.log', 250)
+     native.record(out / 'launcher.json', result)
+     if result['exit_code'] or result['timed_out']: raise RuntimeError('preflight launcher failed')
+ except BaseException as exc:
+@@ -166,11 +166,12 @@
+     if not result: raise ValueError('empty source inventory')
+     return result
+ 
+-def cgroup_scope(command, memory_bytes, tasks, cpu_percent, unit):
+-    if memory_bytes <= 0 or tasks <= 0 or cpu_percent <= 0: raise ValueError('invalid cgroup limits')
++def cgroup_scope(command, memory_bytes, tasks, cpu_percent, unit, runtime_seconds):
++    if memory_bytes <= 0 or tasks <= 0 or cpu_percent <= 0 or not 1 <= runtime_seconds <= 600: raise ValueError('invalid cgroup limits')
+     if not unit.startswith('m5-') or not unit.replace('-', '').isalnum(): raise ValueError('invalid scope name')
+-    return ['systemd-run', '--user', '--scope', '--collect', '--unit', unit,
+-            '--property', 'MemoryMax=' + str(memory_bytes), '--property', 'MemorySwapMax=0',
++    return ['systemd-run', '--user', '--scope', '--collect', '--unit', unit, '--slice=app.slice',
++            '--property', 'RuntimeMaxSec=' + str(runtime_seconds) + 's', '--property', 'TimeoutStopSec=3s',
++            '--property', 'KillMode=control-group', '--property', 'MemoryMax=' + str(memory_bytes), '--property', 'MemorySwapMax=0',
+             '--property', 'TasksMax=' + str(tasks), '--property', 'CPUQuota=' + str(cpu_percent) + '%',
+             '--', *command]
+ 
+@@ -203,10 +204,32 @@
+         except (OSError, ValueError): pass
+     return False
+ 
++def scope_empty(unit):
++    parent = Path('/sys/fs/cgroup/user.slice') / f'user-{os.getuid()}.slice' / f'user@{os.getuid()}.service' / 'app.slice'
++    if not parent.is_dir(): return None
++    path = parent / (unit + '.scope')
++    try:
++        events = (path / 'cgroup.events').read_text().splitlines()
++    except FileNotFoundError: return True
++    except OSError: return None
++    return 'populated 0' in events if any(line.startswith('populated ') for line in events) else None
++
++def wait_scope_empty(unit, earliest, deadline):
++    while time.monotonic() < deadline:
++        empty = scope_empty(unit)
++        if time.monotonic() >= earliest and empty is True: return True
++        time.sleep(.1)
++    return scope_empty(unit) is True and time.monotonic() >= earliest
++
+ def run_scope(cmd, unit, log, timeout):
+     """Supervise and clean only a uniquely named, verified owned scope."""
+     if not scope_not_present(unit): raise ValueError('scope name already exists or cannot be checked')
+-    start = time.time_ns(); proc = None; owned = False; invocation = None; cleanup = []; normal = False
++    limits = [part for part in cmd if part.startswith('RuntimeMaxSec=') and part.endswith('s')]
++    if len(limits) != 1: raise ValueError('scope runtime backstop missing')
++    runtime = int(limits[0].removeprefix('RuntimeMaxSec=').removesuffix('s'))
++    if not 1 <= runtime <= 600 or 'TimeoutStopSec=3s' not in cmd or 'KillMode=control-group' not in cmd or '--slice=app.slice' not in cmd:
++        raise ValueError('scope backstop properties invalid')
++    start = time.time_ns(); started_monotonic = time.monotonic(); proc = None; owned = False; invocation = None; cleanup = []; normal = False
+     with log.open('xb') as stream:
+         try:
+             proc = subprocess.Popen(cmd, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
+@@ -253,8 +276,19 @@
+                         except ProcessLookupError: pass
+                         try: proc.wait(timeout=3)
+                         except subprocess.TimeoutExpired: cleanup.append({'process_group':'unreaped'})
++            if proc is not None:
++                backstop_end = started_monotonic + runtime + 3 + 5
++                earliest = started_monotonic if owned else backstop_end
++                try: verified_empty = wait_scope_empty(unit, earliest, backstop_end + 2)
++                except BaseException as exc:
++                    verified_empty = False
++                    cleanup.append({'empty_check_error':repr(exc)})
++                cleanup.append({'cgroup_empty_verified':verified_empty, 'backstop_seconds':runtime + 3})
++            failed_empty_check = proc is not None and normal and not verified_empty
++            if failed_empty_check: normal = False
+             record(log.with_suffix('.cleanup.json'), {'scope':unit + '.scope', 'normal':normal,
+                 'ownership_observed':owned, 'invocation':invocation, 'cleanup':cleanup})
++            if failed_empty_check: raise RuntimeError('scope termination could not be verified')
+ 
+ def device_identity(wayland_socket, gpu_device):
+     runtime = os.environ.get('XDG_RUNTIME_DIR'); display = os.environ.get('WAYLAND_DISPLAY')
+@@ -338,7 +372,7 @@
+             config_path = frozen / (phase + '-config.json'); record(config_path, config)
+             ns = namespace_command(sandbox, frozen, options.wayland_socket, options.gpu_device, phase, config_path)
+             unit = 'm5-' + phase + '-' + uuid.uuid4().hex
+-            cmd = cgroup_scope(ns, options.memory_bytes, options.tasks, options.cpu_percent, unit)
++            cmd = cgroup_scope(ns, options.memory_bytes, options.tasks, options.cpu_percent, unit, min(options.timeout + 120, 600))
+             result = run_scope(cmd, unit, out / (phase + '-launcher.log'), options.timeout + 120)
+             record(out / (phase + '-launcher.json'), result)
+             if result['exit_code'] or result['timed_out']: raise ValueError(phase + ' launcher failed')

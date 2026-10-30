@@ -1,0 +1,5 @@
+{
+  "reason": "Bounded collection stopped after its complete note-search observation lacked the required Note producer; later actions are cascading and cannot qualify acceptance.",
+  "time_ns": 1793379917302092402,
+  "controller_pid": 1158039
+}

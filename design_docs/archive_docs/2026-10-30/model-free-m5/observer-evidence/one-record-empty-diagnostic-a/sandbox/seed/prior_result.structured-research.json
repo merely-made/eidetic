@@ -1,0 +1,210 @@
+{
+  "busy": false,
+  "content_manifest": "blake3:56dab4d0c0752c6761d782b5ba4e4174afc193f422815e5d96370bbbc643f01f",
+  "context_generation": "0fb44ddf-c8c2-4fdf-b6de-69148df5877b",
+  "graph_revisions": [
+    {
+      "graph": "41fd021f-b82b-4004-9af8-552322a63ed0",
+      "revision": 35
+    }
+  ],
+  "historical": false,
+  "request_id": "2d5c0324-1704-40b0-8093-bf7f11e66afe",
+  "result": {
+    "operation_version": "eidetic.structured-records/v2",
+    "query": {
+      "filters": {
+        "entity": null,
+        "property": null,
+        "schema_revision": null,
+        "source": null,
+        "status": null,
+        "tag": null,
+        "unit": null,
+        "valid_time": null
+      },
+      "operation": "PropertyLookup"
+    },
+    "rows": [
+      {
+        "count": null,
+        "group": null,
+        "key": {
+          "Value": {
+            "Timestamp": {
+              "date": {
+                "day": 10,
+                "month": 10,
+                "year": 2026
+              },
+              "hour": 9,
+              "minute": 30,
+              "offset_minutes": 0,
+              "second": 0
+            }
+          }
+        },
+        "record_ids": [
+          "f5e51fb4-4ab5-4e9e-a547-88808cc410d5"
+        ],
+        "sources": [
+          {
+            "kind": "fleece",
+            "node": "3d23bd3d-c16d-4fdf-b5f0-6faf5fbb650e",
+            "owner": "turnstone/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/research/v1",
+            "source": "mere://saved-source/sealed-v1/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/41fd021f-b82b-4004-9af8-552322a63ed0/3d23bd3d-c16d-4fdf-b5f0-6faf5fbb650e/8cc550214a3d974c1c86a25c2cd61a674bdec4ac766bafdd683ab19bbc4f80d8/b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+          }
+        ]
+      }
+    ],
+    "settings": {
+      "max_input_bytes": 16777216,
+      "max_output_bytes": 16777216,
+      "max_records": 100000,
+      "max_rows": 100000,
+      "max_sources": 10000,
+      "max_validation_bytes": 16777216,
+      "max_work": 1000000
+    },
+    "snapshot": {
+      "complete": true,
+      "definitions": [
+        {
+          "cardinality": "Single",
+          "id": "m5:clock",
+          "revision": "1",
+          "statuses": [
+            "approved",
+            "guessed"
+          ],
+          "unit": null,
+          "value_type": "Timestamp"
+        }
+      ],
+      "exclusion_count": 0,
+      "exclusions": [],
+      "lifecycle": [
+        {
+          "record_id": "f5e51fb4-4ab5-4e9e-a547-88808cc410d5",
+          "state": "Active"
+        }
+      ],
+      "records": [
+        {
+          "context": "observation",
+          "definition_manifest": "blake3:0acafdb1fa6b80bb6524db9ecfc1f430a8d8e262a5b1b1aa6e66c21833486e96",
+          "entity": "aa6dde66-7575-5147-a7b3-00f67b25740f",
+          "evidence": {
+            "Passage": {
+              "hash": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145",
+              "selector": {
+                "end": 56,
+                "start": 0
+              },
+              "source": {
+                "kind": "fleece",
+                "node": "3d23bd3d-c16d-4fdf-b5f0-6faf5fbb650e",
+                "owner": "turnstone/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/research/v1",
+                "source": "mere://saved-source/sealed-v1/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/41fd021f-b82b-4004-9af8-552322a63ed0/3d23bd3d-c16d-4fdf-b5f0-6faf5fbb650e/8cc550214a3d974c1c86a25c2cd61a674bdec4ac766bafdd683ab19bbc4f80d8/b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+              },
+              "version": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+            }
+          },
+          "id": "f5e51fb4-4ab5-4e9e-a547-88808cc410d5",
+          "property": "m5:clock",
+          "recorded_at": 1793385722,
+          "schema_revision": "1",
+          "status": "approved",
+          "valid_time": {
+            "end": 1793491200,
+            "start": 1790812800
+          },
+          "value": {
+            "Timestamp": {
+              "date": {
+                "day": 10,
+                "month": 10,
+                "year": 2026
+              },
+              "hour": 9,
+              "minute": 30,
+              "offset_minutes": 0,
+              "second": 0
+            }
+          }
+        }
+      ],
+      "scope_generation": "[\"0fb44ddf-c8c2-4fdf-b6de-69148df5877b\",9,[[\"41fd021f-b82b-4004-9af8-552322a63ed0\",34]],[[\"41fd021f-b82b-4004-9af8-552322a63ed0\",\"b7152080-538d-4a1f-a35b-93e121ab8634\"]],1,null]",
+      "sources": [
+        {
+          "captured_at": 1793385546,
+          "producer": "capture",
+          "source": {
+            "kind": "fleece",
+            "node": "3d23bd3d-c16d-4fdf-b5f0-6faf5fbb650e",
+            "owner": "turnstone/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/research/v1",
+            "source": "mere://saved-source/sealed-v1/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/41fd021f-b82b-4004-9af8-552322a63ed0/3d23bd3d-c16d-4fdf-b5f0-6faf5fbb650e/8cc550214a3d974c1c86a25c2cd61a674bdec4ac766bafdd683ab19bbc4f80d8/b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+          },
+          "tags": [],
+          "version": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+        },
+        {
+          "captured_at": 1793385540,
+          "producer": "capture",
+          "source": {
+            "kind": "fleece",
+            "node": "72eec25c-c70b-41af-9a6f-0b234b4cd9be",
+            "owner": "turnstone/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/research/v1",
+            "source": "mere://saved-source/sealed-v1/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/41fd021f-b82b-4004-9af8-552322a63ed0/72eec25c-c70b-41af-9a6f-0b234b4cd9be/399621b9789f859e7dd38dbd6e4aa5ec2303e93d25cb7ababcd4a73bcd7a173d/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+          },
+          "tags": [],
+          "version": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+        },
+        {
+          "captured_at": 1793385662,
+          "producer": "capture",
+          "source": {
+            "kind": "fleece",
+            "node": "72eec25c-c70b-41af-9a6f-0b234b4cd9be",
+            "owner": "turnstone/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/research/v1",
+            "source": "mere://saved-source/sealed-v1/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/41fd021f-b82b-4004-9af8-552322a63ed0/72eec25c-c70b-41af-9a6f-0b234b4cd9be/b23dc558cb2844ba3e1888795b3c6b8bcf7a84d93e5749aa22564823d1a11878/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+          },
+          "tags": [],
+          "version": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+        },
+        {
+          "captured_at": null,
+          "producer": "selection",
+          "source": {
+            "kind": "fleece",
+            "node": "b601d108-187e-4535-bb16-496d5fd8b32a",
+            "owner": "turnstone/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/research/v1",
+            "source": "mere://retained-text/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/41fd021f-b82b-4004-9af8-552322a63ed0/b601d108-187e-4535-bb16-496d5fd8b32a/5d8a1ec8fd6751aef50b30954050cd8a58b7d24745724cea55267d40d2c6150d/8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+          },
+          "tags": [],
+          "version": "blake3:8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+        },
+        {
+          "captured_at": null,
+          "producer": "note",
+          "source": {
+            "kind": "fleece",
+            "node": "c4e9596e-c3da-476c-9c7c-a5772b09142e",
+            "owner": "turnstone/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/research/v1",
+            "source": "mere://retained-text/ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af/41fd021f-b82b-4004-9af8-552322a63ed0/c4e9596e-c3da-476c-9c7c-a5772b09142e/c0ca3123cf18396ca35049d1714cd65fc5cc51eec9f067ce957bb7a07526b039/96fa68a3b2e4f227abed655a1328eacf348698918689eeff9c83fe4f222e7e36"
+          },
+          "tags": [],
+          "version": "blake3:96fa68a3b2e4f227abed655a1328eacf348698918689eeff9c83fe4f222e7e36"
+        }
+      ]
+    }
+  },
+  "result_generation": "2919b2e1-fbad-46b7-af91-bf567c46a180",
+  "saved_manifest": "blake3:56dab4d0c0752c6761d782b5ba4e4174afc193f422815e5d96370bbbc643f01f",
+  "schema": "turnstone.structured-observation/v1",
+  "scope_revision": 9,
+  "session": "ab1fd556-08c8-4b6b-97f9-8aeef0a2f3af",
+  "source_selection": {
+    "mode": "all"
+  }
+}

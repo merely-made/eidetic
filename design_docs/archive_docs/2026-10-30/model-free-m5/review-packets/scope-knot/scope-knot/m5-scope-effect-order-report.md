@@ -1,0 +1,7 @@
+# Scope transition cancellation order
+
+A prior current structured scope followed by choosing an empty source scope failed to return a fresh search in collection M and short diagnostic A. Both isolated runs are preserved; both verified their owned cgroups empty. `research_search_command` previously returned the replacement `ResearchSearch` effect before `invalidate_structured` returned `CancelResearchSearch` for stale structured state. The shell submits and cancels the worker in effect order.
+
+The narrow source change invalidates structured state first, then submits the replacement search. A regression covers chosen-empty and return-to-all transitions: each cancels before submitting the new correctly scoped request, and the old structured view scope is cleared. The expected red `m5-scope-effect-red-1` failed the ordering assertion, SHA-256 `692ed67c81b1f573c753976ec44951ba820b5ab8e4967fa057501be84ef152c5`; another agent's Knot edits crossed its compilation so it is not an exact frozen-source receipt. The focused green `m5-scope-effect-green-1` passed 1/0 after both source waves were frozen, SHA-256 `2b1294fea43c444678bf1946931e52d511861499c3135ea81000aa40e0c0d5ca`.
+
+The two-file source diff is `m5-scope-effect-order.diff` SHA-256 `05928228ff9a9f5aeb93c681d175b952ccb0d06f633f0e1e9e08157484ef906c`. Scope-specific source review, a matching binary and a repeated native empty-scope diagnostic are still required. The ordinary Back before withdrawal history is staged separately in `m5-withdraw-back-seed.diff`; it is not yet run.

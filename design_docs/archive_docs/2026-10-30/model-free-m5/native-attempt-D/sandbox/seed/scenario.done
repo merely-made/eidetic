@@ -1,0 +1,4 @@
+RESULT ok
+captured gui_preflight
+presentation frames=66 captures=1 blank=0
+capture /m5/run/seed/gui_preflight.png digest=a9ddfb69bc02ac76 blank=false

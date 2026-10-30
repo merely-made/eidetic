@@ -1,0 +1,64 @@
+diff --git a/src/app/research_record_scenario_tests.rs b/src/app/research_record_scenario_tests.rs
+index 9fd673de..82625f7c 100644
+--- a/src/app/research_record_scenario_tests.rs
++++ b/src/app/research_record_scenario_tests.rs
+@@ -230,3 +230,30 @@ fn model_free_scenario_observation_is_scope_checked_and_read_only() {
+     app.graph_runtimes.get_mut(graph).unwrap().instance = uuid::Uuid::new_v4();
+     assert!(app.structured_scenario_observation().is_err());
+ }
++
++#[test]
++fn model_free_scope_change_cancels_stale_work_before_dispatching_fresh_search() {
++    let root = tempfile::tempdir().unwrap();
++    let mut app = App::test_stub_at(root.path().to_path_buf());
++    let custody = crate::trail_memory::custody_test_fixture::custody();
++    app.research.set_available(true);
++    app.research.access(Some(crate::research::ClipAccess {
++        root: root.path().into(),
++        sealer: custody.sealer,
++        epoch: custody.epoch,
++    }));
++    app.sync_research_context();
++    for (command, selected) in [
++        (crate::action::ResearchSearchAction::ScopeChosen, Some(vec![])),
++        (crate::action::ResearchSearchAction::ScopeAll, None),
++    ] {
++        app.research_search.structured.controller.view_scope = Some(app.structured_scope().unwrap());
++        let effects = app.research_search_command(command);
++        let cancel = effects.iter().position(|effect| matches!(effect, Effect::CancelResearchSearch)).expect("stale structured work canceled");
++        let search = effects.iter().position(|effect| matches!(effect, Effect::ResearchSearch(_))).expect("fresh search dispatched");
++        assert!(cancel < search, "cancel must precede the replacement search");
++        assert_eq!(app.research_search.selected, selected);
++        assert!(app.research_search.structured.controller.view_scope.is_none());
++        assert!(matches!(&effects[search], Effect::ResearchSearch(request) if request.selected == selected));
++    }
++}
+diff --git a/src/app/research_search_arms.rs b/src/app/research_search_arms.rs
+index d2f24883..d9c7f65b 100644
+--- a/src/app/research_search_arms.rs
++++ b/src/app/research_search_arms.rs
+@@ -369,14 +369,18 @@ impl App {
+             },
+             _ => {},
+         }
+-        let mut effects = if refresh {
+-            self.research_search.error = None;
+-            self.issue_research_search()
++        // Cancel work for the old structured scope before submitting the
++        // replacement search; canceling afterward would cancel the new job.
++        let mut effects = if scope_changed {
++            self.invalidate_structured()
+         } else {
+-            vec![Effect::Redraw]
++            vec![]
+         };
+-        if scope_changed {
+-            effects.extend(self.invalidate_structured());
++        if refresh {
++            self.research_search.error = None;
++            effects.extend(self.issue_research_search());
++        } else {
++            effects.push(Effect::Redraw);
+         }
+         self.recompute_omnibar_suggestions();
+         effects.push(Effect::Redraw);

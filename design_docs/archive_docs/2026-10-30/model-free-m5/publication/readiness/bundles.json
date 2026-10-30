@@ -1,0 +1,14 @@
+{
+  "turnstone": {
+    "sha256": "d52a51ff1fd3ddd6a695fbf2dfdbcaf803760552c4b357bf43628ae454d476e0",
+    "bytes": 3453,
+    "head": "c2f69b743a0cb3d637b32fb2ef7f4c164fb60d8a",
+    "base": "cf459cd832abc877c79ae3c68e61eb7014ccf533"
+  },
+  "eidetic": {
+    "sha256": "7e8f57eba242184ab2434f007e8302542cbbe942aec76b69e7a4dd44c01173ed",
+    "bytes": 1079296,
+    "head": "a251467aa4044ff625f38264cfff5f0bcd37c0f9",
+    "base": "0919a72bb1857b380ce6ef5d284505b540df4dee"
+  }
+}

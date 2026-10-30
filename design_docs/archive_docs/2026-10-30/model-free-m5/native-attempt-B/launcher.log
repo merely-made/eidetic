@@ -1,0 +1,8 @@
+Running as unit: m5-preflight-0fbcb211294441adbbd203f53bccabbd.scope; invocation ID: 0aaf1ba758274c0e85e0e30b7fda169f
+Traceback (most recent call last):
+  File "/m5/input/preflight_phase.py", line 25, in <module>
+    namespace_phase.phase(config)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/m5/input/namespace_phase.py", line 221, in phase
+    raise PhaseError('custody-only route probe failed')
+namespace_phase.PhaseError: custody-only route probe failed

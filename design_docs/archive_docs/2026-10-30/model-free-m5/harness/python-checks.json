@@ -1,0 +1,54 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s <copied-suite> -v",
+  "results": {
+    "acceptance-draft": 4,
+    "m5-draft": 3,
+    "m5-missing-draft": 22,
+    "m5-receipt-integration": 43
+  },
+  "failures": 0,
+  "scope": "Copied Python harness unit tests only; no native build or acceptance run.",
+  "retained_verifier_log_sha256": "d9d6a4441dbcaf9a6d06a216943d94142b94563e50af4d40a99e0eaadfc17cd4",
+  "refresh": {
+    "source_manifest_sha256": "035a31b6da191290b0635b0bc8b51cff1e3c4bd3be72c9262fda4ff909bed72c",
+    "files": {
+      "m5-missing-draft/run_missing.py": "260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5",
+      "m5-missing-draft/test_missing.py": "0db8337bc3d9678803ed0b7234b006d1e58941cf7057ef3dc1f07af2f971c4f7",
+      "m5-missing-draft/test_custody_copy.py": "e3877487244a7b9c75c2166ed6e86bc3e8588223cebd5669d8bf45d35ddd5dc2",
+      "m5-receipt-integration/verify.py": "d0e181a75e6a1d4d142b3bc4e3aa50461259c25d24ba0bc87b1992a30b5280e2",
+      "m5-receipt-integration/assemble.py": "1eee7a19c7dff13c8b5e7245a8db81adda2410cb6446a1575c673a987e9b01b2",
+      "m5-receipt-integration/test_receipt.py": "fd9af2661c9c78cddfd52a2d42612c2e29eae8afc4cb19cad441cb129882ada6"
+    },
+    "ready_for_fault_collection": false,
+    "finalization_status": "DRAFT",
+    "log": "cold-copy-refresh-checks.log",
+    "log_sha256": "37e6e7aedf4ff9ff040d70e238971a9caeeb5be92f37b0c1664a1db38cc362fe",
+    "log_bytes": 10760,
+    "per_suite": {
+      "acceptance-draft": {
+        "tests": 4,
+        "passed": true,
+        "exit_code": 0,
+        "summary": "Ran 4 tests in 0.031s"
+      },
+      "m5-draft": {
+        "tests": 3,
+        "passed": true,
+        "exit_code": 0,
+        "summary": "Ran 3 tests in 0.002s"
+      },
+      "m5-missing-draft": {
+        "tests": 22,
+        "passed": true,
+        "exit_code": 0,
+        "summary": "Ran 22 tests in 0.098s"
+      },
+      "m5-receipt-integration": {
+        "tests": 43,
+        "passed": true,
+        "exit_code": 0,
+        "summary": "Ran 43 tests in 0.040s"
+      }
+    }
+  }
+}

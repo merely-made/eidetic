@@ -20,10 +20,36 @@
 //! call in `tokio::task::spawn_blocking` at the call site.
 
 use crate::error::StoreError;
+#[path = "fjall_bounded.rs"]
+mod bounded;
 use crate::{Backend, WriteOp};
 use async_trait::async_trait;
-use fjall::{Config, Keyspace, PartitionCreateOptions, PartitionHandle};
+use fjall::{Config, Keyspace, PartitionCreateOptions, PartitionHandle, PersistMode};
 use std::path::Path;
+
+#[cfg(test)]
+#[path = "fjall_recovery_tests.rs"]
+mod recovery_tests;
+#[cfg(test)]
+#[path = "fjall_recovery_fixture.rs"]
+mod recovery_fixture;
+#[cfg(test)]
+#[path = "fjall_recovery_set_tests.rs"]
+mod recovery_set_tests;
+
+#[cfg(test)]
+#[path = "fjall_recovery_open_tests.rs"]
+mod recovery_open_tests;
+#[cfg(test)]
+#[path = "fjall_partition_bounds_tests.rs"]
+mod partition_bounds_tests;
+#[cfg(test)]
+#[path = "fjall_bounds_tests.rs"]
+mod bounds_tests;
+
+
+
+
 
 /// Default partition name used by [`FjallStore::open`]. Callers that want
 /// to host multiple eidetic stores in one fjall keyspace use
@@ -37,8 +63,9 @@ pub const DEFAULT_PARTITION: &str = "eidetic";
 /// Construct with [`FjallStore::open`] for the simple single-partition
 /// case.
 pub struct FjallStore {
-    _keyspace: Keyspace,
+    keyspace: Keyspace,
     partition: PartitionHandle,
+    owner_limits: Option<crate::FjallOwnerLimits>,
 }
 
 impl FjallStore {
@@ -59,9 +86,19 @@ impl FjallStore {
             .open_partition(partition, PartitionCreateOptions::default())
             .map_err(|e| StoreError::Backend(format!("fjall partition: {e}")))?;
         Ok(Self {
-            _keyspace: keyspace,
+            keyspace,
             partition,
+            owner_limits: None,
         })
+    }
+
+    /// Flush and synchronize the keyspace's journal, including prior writes.
+    ///
+    /// This blocks on storage I/O and returns any persistence error to the caller.
+    pub fn sync_all(&self) -> Result<(), StoreError> {
+        self.keyspace
+            .persist(PersistMode::SyncAll)
+            .map_err(|e| StoreError::Backend(format!("fjall sync: {e}")))
     }
 }
 
@@ -69,6 +106,9 @@ impl FjallStore {
 #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 impl Backend for FjallStore {
     async fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError> {
+        if let Some(owner) = &self.owner_limits {
+            return self.get_bounded(key, &crate::FjallReadLimits::unlimited(), &mut crate::FjallReadBudget::new(owner.read.clone())).map_err(Into::into);
+        }
         match self.partition.get(key) {
             Ok(Some(slice)) => Ok(Some(slice.to_vec())),
             Ok(None) => Ok(None),
@@ -77,6 +117,7 @@ impl Backend for FjallStore {
     }
 
     async fn put(&self, key: &str, bytes: &[u8]) -> Result<(), StoreError> {
+        self.admit_write(key, bytes)?;
         self.partition
             .insert(key, bytes)
             .map_err(|e| StoreError::Backend(format!("fjall insert {key}: {e}")))?;
@@ -84,6 +125,9 @@ impl Backend for FjallStore {
     }
 
     async fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError> {
+        if let Some(owner) = &self.owner_limits {
+            return self.list_bounded(prefix, &crate::FjallReadLimits::unlimited(), &mut crate::FjallReadBudget::new(owner.read.clone())).map_err(Into::into);
+        }
         let mut keys = Vec::new();
         for entry in self.partition.prefix(prefix) {
             let (key, _value) =
@@ -100,6 +144,7 @@ impl Backend for FjallStore {
     /// that needs that — `delete_manifest`, for the age-out eviction count —
     /// probes with `get` first.)
     async fn delete(&self, key: &str) -> Result<(), StoreError> {
+        self.admit_key(key)?;
         self.partition
             .remove(key)
             .map_err(|e| StoreError::Backend(format!("fjall remove {key}: {e}")))?;
@@ -110,6 +155,9 @@ impl Backend for FjallStore {
     /// is a native range scan — the ordered read a journal needs to replay
     /// a per-author range in `seq` order.
     async fn scan(&self, start: &str, end: &str) -> Result<Vec<String>, StoreError> {
+        if let Some(owner) = &self.owner_limits {
+            return self.scan_bounded(start, end, &crate::FjallReadLimits::unlimited(), &mut crate::FjallReadBudget::new(owner.read.clone())).map_err(Into::into);
+        }
         let mut keys = Vec::new();
         for entry in self.partition.range(start.to_string()..end.to_string()) {
             let (key, _value) =
@@ -127,6 +175,12 @@ impl Backend for FjallStore {
     /// idempotent, so a crash mid-batch leaves recoverable orphans, never a
     /// torn read of a mutated key.
     async fn apply(&self, ops: &[WriteOp]) -> Result<(), StoreError> {
+        for op in ops {
+            match op {
+                WriteOp::Put { key, value } => self.admit_write(key, value)?,
+                WriteOp::Delete { key } => self.admit_key(key)?,
+            }
+        }
         for op in ops {
             match op {
                 WriteOp::Put { key, value } => {
@@ -154,6 +208,130 @@ mod tests {
         let dir = TempDir::new().expect("tempdir");
         let store = FjallStore::open(dir.path()).expect("fjall open");
         (store, dir)
+    }
+
+    #[test]
+    fn concurrent_keyspace_open_refuses_until_owner_drops() {
+        let dir = TempDir::new().unwrap();
+        let first = Config::new(dir.path()).open().unwrap();
+        let partition = first.open_partition("held", PartitionCreateOptions::default()).unwrap();
+        assert!(Config::new(dir.path()).open().is_err());
+        drop(first);
+        assert!(Config::new(dir.path()).open().is_err());
+        drop(partition);
+        assert!(Config::new(dir.path()).open().is_ok());
+    }
+
+    #[test]
+    fn iterator_retains_keyspace_lease_after_partition_drops() {
+        let dir = TempDir::new().unwrap();
+        let keyspace = Config::new(dir.path()).open().unwrap();
+        let partition = keyspace.open_partition("held", PartitionCreateOptions::default()).unwrap();
+        partition.insert("key", "value").unwrap();
+        let mut iter = partition.iter();
+        drop(partition);
+        drop(keyspace);
+        assert!(Config::new(dir.path()).open().is_err());
+        assert!(iter.next().unwrap().is_ok());
+        drop(iter);
+        assert!(Config::new(dir.path()).open().is_ok());
+    }
+
+    #[test]
+    fn snapshot_retains_keyspace_lease_after_partition_drops() {
+        let dir = TempDir::new().unwrap();
+        let keyspace = Config::new(dir.path()).open().unwrap();
+        let partition = keyspace.open_partition("held", PartitionCreateOptions::default()).unwrap();
+        partition.insert("key", "value").unwrap();
+        let snapshot = partition.snapshot();
+        drop(partition);
+        drop(keyspace);
+        assert!(Config::new(dir.path()).open().is_err());
+        assert_eq!(snapshot.get("key").unwrap().unwrap().as_ref(), b"value");
+        drop(snapshot);
+        assert!(Config::new(dir.path()).open().is_ok());
+    }
+
+    #[test]
+    fn snapshot_iterator_retains_lease_after_snapshot_drops() {
+        let dir = TempDir::new().unwrap();
+        let keyspace = Config::new(dir.path()).open().unwrap();
+        let partition = keyspace.open_partition("held", PartitionCreateOptions::default()).unwrap();
+        partition.insert("key", "value").unwrap();
+        let snapshot = partition.snapshot();
+        let mut iter = snapshot.iter();
+        drop(snapshot);
+        drop(partition);
+        drop(keyspace);
+        assert!(Config::new(dir.path()).open().is_err());
+        assert!(iter.next().unwrap().is_ok());
+        drop(iter);
+        assert!(Config::new(dir.path()).open().is_ok());
+    }
+
+    #[test]
+    fn transaction_iterator_retains_lease_after_owner_drops() {
+        let dir = TempDir::new().unwrap();
+        let keyspace = Config::new(dir.path()).open_transactional().unwrap();
+        let partition = keyspace.open_partition("held", PartitionCreateOptions::default()).unwrap();
+        partition.insert("key", "value").unwrap();
+        let tx = keyspace.read_tx();
+        let mut iter = tx.iter(&partition);
+        drop(tx);
+        drop(partition);
+        drop(keyspace);
+        assert!(Config::new(dir.path()).open().is_err());
+        assert!(iter.next().unwrap().is_ok());
+        drop(iter);
+        assert!(Config::new(dir.path()).open().is_ok());
+    }
+
+    #[test]
+    fn owner_lock_refuses_second_process_until_drop() {
+        const CHILD_DIR: &str = "MUNIMENT_FJALL_LOCK_TEST_DIR";
+        const CHILD_EXPECT: &str = "MUNIMENT_FJALL_LOCK_TEST_EXPECT_OPEN";
+        if let Some(path) = std::env::var_os(CHILD_DIR) {
+            let opened = Config::new(path).open().is_ok();
+            let expected = std::env::var(CHILD_EXPECT).unwrap() == "yes";
+            std::process::exit(i32::from(opened != expected));
+        }
+        let dir = TempDir::new().unwrap();
+        let owner = Config::new(dir.path()).open().unwrap();
+        let child = |expected: &str| std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", "fjall_backend::tests::owner_lock_refuses_second_process_until_drop"])
+            .env(CHILD_DIR, dir.path()).env(CHILD_EXPECT, expected).status().unwrap();
+        assert!(child("no").success());
+        drop(owner);
+        assert!(child("yes").success());
+    }
+
+    #[test]
+    fn journal_preparation_refuses_oversize_without_changing_file() {
+        use fjall::bounded_recovery::{prepare_journal, RecoveryBudget, RecoveryError, RecoveryLimitKind, RecoveryLimits};
+        let dir = TempDir::new().unwrap();
+        {
+            let store = FjallStore::open(dir.path()).unwrap();
+            pollster::block_on(async {
+                store.put("a", b"a").await.unwrap();
+                store.put("b", b"larger").await.unwrap();
+                store.put("c", b"c").await.unwrap();
+            });
+            store.sync_all().unwrap();
+        }
+        let paths: Vec<_> = std::fs::read_dir(dir.path().join("journals"))
+            .unwrap().map(|entry| entry.unwrap().path()).collect();
+        assert_eq!(paths.len(), 1);
+        let before = std::fs::read(&paths[0]).unwrap();
+        let limits = RecoveryLimits { max_value_bytes: 3, max_key_bytes: 128,
+            max_replay_bytes: 4096, max_replay_items: 100, max_metadata_bytes: 4096,
+            max_input_bytes: 134_217_728, max_alloc_bytes: 65_536 };
+        let err = prepare_journal(&paths[0], &mut RecoveryBudget::new(limits.clone()));
+        assert!(matches!(err, Err(RecoveryError::Limit { kind: RecoveryLimitKind::ValueBytes, .. })));
+        assert_eq!(std::fs::read(&paths[0]).unwrap(), before);
+        let larger = RecoveryLimits { max_value_bytes: 6, ..limits };
+        let admitted = prepare_journal(&paths[0], &mut RecoveryBudget::new(larger)).unwrap();
+        assert_eq!(admitted.item_count(), 3);
+        assert_eq!(std::fs::read(&paths[0]).unwrap(), before);
     }
 
     #[test]
@@ -203,6 +381,35 @@ mod tests {
     }
 
     #[test]
+    fn sync_all_preserves_written_bytes_after_process_exit() {
+        const CHILD_DIR: &str = "MUNIMENT_FJALL_SYNC_TEST_DIR";
+        if let Some(path) = std::env::var_os(CHILD_DIR) {
+            let store = FjallStore::open(path).expect("open child store");
+            pollster::block_on(store.put("receipt", b"pending")).expect("write receipt");
+            store.sync_all().expect("sync receipt");
+            // Skip Fjall's drop-time sync so the parent reopens after the explicit sync.
+            std::process::exit(0);
+        }
+
+        let dir = TempDir::new().expect("tempdir");
+        let status = std::process::Command::new(std::env::current_exe().unwrap())
+            .args([
+                "--exact",
+                "fjall_backend::tests::sync_all_preserves_written_bytes_after_process_exit",
+            ])
+            .env(CHILD_DIR, dir.path())
+            .status()
+            .expect("run child");
+        assert!(status.success(), "child process failed: {status}");
+
+        let store = FjallStore::open(dir.path()).expect("reopen store");
+        assert_eq!(
+            pollster::block_on(store.get("receipt")).unwrap(),
+            Some(b"pending".to_vec())
+        );
+    }
+
+    #[test]
     fn default_partition_preserves_existing_eidetic_keys() {
         pollster::block_on(async {
             let dir = TempDir::new().expect("tempdir");
@@ -242,8 +449,12 @@ mod tests {
     fn separate_partitions_isolate_keys() {
         pollster::block_on(async {
             let dir = TempDir::new().expect("tempdir");
-            let mut alice = FjallStore::open_partition(dir.path(), "alice").unwrap();
-            let mut bob = FjallStore::open_partition(dir.path(), "bob").unwrap();
+            let alice = FjallStore::open_partition(dir.path(), "alice").unwrap();
+            let keyspace = alice.keyspace.clone();
+            let partition = keyspace
+                .open_partition("bob", PartitionCreateOptions::default())
+                .unwrap();
+            let bob = FjallStore { keyspace, partition, owner_limits: None };
 
             alice.put("k", b"alice-value").await.unwrap();
             bob.put("k", b"bob-value").await.unwrap();

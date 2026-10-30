@@ -1,0 +1,46 @@
+Running as unit: custody-contract-eidetic-m4-records-red.scope; invocation ID: 31a2856dc05847d18dd96ef30624f0c5
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling genet-text v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+error[E0432]: unresolved import `eidetic::records`
+ --> crates/eidetic-search/tests/model_free_records.rs:1:14
+  |
+1 | use eidetic::records::*;
+  |              ^^^^^^^ could not find `records` in `eidetic`
+
+error[E0432]: unresolved import `eidetic_search::records`
+ --> crates/eidetic-search/tests/model_free_records.rs:3:21
+  |
+3 | use eidetic_search::records::evaluate;
+  |                     ^^^^^^^ could not find `records` in `eidetic_search`
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `eidetic-search` (test "model_free_records") due to 2 previous errors
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic-search --no-default-features --test model_free_records"
+	User time (seconds): 1.60
+	System time (seconds): 1.62
+	Percent of CPU this job got: 70%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.55
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 275456
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 556
+	Minor (reclaiming a frame) page faults: 104707
+	Voluntary context switches: 8012
+	Involuntary context switches: 105
+	Swaps: 0
+	File system inputs: 908480
+	File system outputs: 23600
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

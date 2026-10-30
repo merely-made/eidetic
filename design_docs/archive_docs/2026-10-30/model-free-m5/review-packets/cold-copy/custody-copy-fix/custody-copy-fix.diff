@@ -1,0 +1,106 @@
+--- /home/markik/Code/worktrees/eidetic-model-free-m1-20261029/design_docs/archive_docs/2026-10-30/model-free-m5/harness/m5-missing-draft/run_missing.py	2026-10-30 12:41:30.098405798 -0400
++++ m5-missing-draft/run_missing.py	2026-10-30 15:40:10.684629531 -0400
+@@ -9,7 +9,7 @@
+ 
+ READY_FOR_FAULT_COLLECTION = False
+ LIMITS = {'memory_bytes': 3 * 1024**3, 'tasks_max': 128, 'cpu_percent': 150}
+-TREES = ('profile', 'mere', 'data', 'config', 'cache', 'custody')
++TREES = ('profile', 'mere', 'data', 'config', 'cache')
+ FROZEN = ('turnstone', 'custodian', 'test-binary')
+ SOURCE_PATHS = ('src/trail_memory/fault_helper.rs','src/trail_memory/m5_inspection.rs',
+                 'src/trail_memory/research_owner_tests.rs','src/shell/citation_event_history.rs',
+@@ -30,6 +30,59 @@
+             raise phase.TreeReadError(str(entry.relative_to(path)), 'hard-linked file', tree)
+     return tree
+ 
++def collection_tree(root):
++    """Inventory every original entry, including only recognized stale fixture sockets."""
++    if root.is_symlink() or not root.is_dir(): raise ValueError('collection root is not plain')
++    values = {}
++    for path in sorted(root.rglob('*')):
++        rel = path.relative_to(root); mode = path.lstat(); name = str(rel)
++        if stat.S_ISDIR(mode.st_mode): values[name + '/'] = 'directory'
++        elif stat.S_ISREG(mode.st_mode):
++            if mode.st_nlink != 1: raise ValueError('hard-linked collection file: ' + name)
++            values[name] = native.sha(path)
++        elif stat.S_ISSOCK(mode.st_mode):
++            parts = rel.parts
++            if len(parts) != 5 or parts[:3] != ('sandbox','custody','custodian') or parts[4] != 'custody.sock' or not parts[3].startswith('run-'):
++                raise ValueError('unexpected collection socket: ' + name)
++            try: valid = str(uuid.UUID(parts[3][4:])) == parts[3][4:]
++            except ValueError: valid = False
++            if not valid: raise ValueError('invalid custody runtime socket: ' + name)
++            values[name] = {'socket': {'device':mode.st_dev, 'inode':mode.st_ino, 'mode':mode.st_mode}}
++        else: raise ValueError('nonregular collection entry: ' + name)
++    return values
++
++def copy_custody(source, dest):
++    """Copy persistent synthetic-wallet state; preserve original runtime sockets in place."""
++    if source.is_symlink() or not source.is_dir() or dest.exists(): raise ValueError('invalid custody copy')
++    if {p.name for p in source.iterdir()} != {'fixture-marker','fixture.lock','custodian'}:
++        raise ValueError('unexpected custody root entries')
++    state = source / 'custodian'
++    if state.is_symlink() or not state.is_dir(): raise ValueError('invalid custodian state')
++    sockets = {}
++    for item in state.iterdir():
++        if item.name in ('data','vault','initialized','client.json'): continue
++        if item.is_symlink() or not item.is_dir() or not item.name.startswith('run-'):
++            raise ValueError('unexpected custodian runtime entry')
++        try: valid = str(uuid.UUID(item.name[4:])) == item.name[4:]
++        except ValueError: valid = False
++        entries = list(item.iterdir())
++        if not valid or len(entries) != 1 or entries[0].name != 'custody.sock':
++            raise ValueError('invalid custodian runtime directory')
++        st = entries[0].lstat()
++        if not stat.S_ISSOCK(st.st_mode): raise ValueError('invalid custodian runtime socket')
++        sockets[item.name + '/custody.sock'] = {'device':st.st_dev,'inode':st.st_ino,'mode':st.st_mode}
++    dest.mkdir(mode=0o700); (dest / 'custodian').mkdir(mode=0o700)
++    trees = {name:copy_tree(state / name, dest / 'custodian' / name) for name in ('data','vault')}
++    files = {}
++    for name in ('fixture-marker','fixture.lock','custodian/initialized','custodian/client.json'):
++        src, target = source / name, dest / name
++        st = src.lstat()
++        if not stat.S_ISREG(st.st_mode) or st.st_nlink != 1: raise ValueError('invalid custody state file: ' + name)
++        files[name] = native.freeze_file(src, target)
++        if (src.stat().st_dev,src.stat().st_ino) == (target.stat().st_dev,target.stat().st_ino):
++            raise ValueError('custody copy shares inode')
++    return {'trees':trees,'files':files,'runtime_sockets':sockets}
++
+ def copy_tree(source, dest):
+     before = regular_tree(source)
+     shutil.copytree(source, dest, symlinks=False, copy_function=shutil.copy2)
+@@ -302,7 +355,7 @@
+     out.mkdir(mode=0o700, parents=True)
+     before = None
+     try:
+-        before = regular_tree(root)
++        before = collection_tree(root)
+         inputs, processes = collection_evidence(root)
+         copyroot, frozen, output = out / 'copy', out / 'frozen', out / 'output'
+         for d in (copyroot, frozen, output): d.mkdir(mode=0o700)
+@@ -310,6 +363,7 @@
+         native.freeze_file(args.registration_lock, frozen / 'registration-lock.json')
+         verify_source_registration(root, source_root, frozen / 'registration-lock.json')
+         copied = {name:copy_tree(root / 'sandbox' / name, copyroot / name) for name in TREES}
++        copied['custody'] = copy_custody(root / 'sandbox/custody', copyroot / 'custody')
+         run_id = uuid.uuid4()
+         (copyroot / 'profile' / 'm5-fault-copy-marker').write_text('turnstone-m5-fault-copy/v1\n' + str(run_id) + '\n')
+         run = root / 'sandbox'
+@@ -330,7 +384,7 @@
+         native.record(frozen / 'config.json', config)
+         native.record(out / 'inputs.json', {'run_id':str(run_id),'copied':copied,
+             'collection_hashes':before, 'frozen':phase.tree_hashes(frozen), 'devices':devices})
+-        if regular_tree(root) != before: raise ValueError('primary changed before phase')
++        if collection_tree(root) != before: raise ValueError('primary changed before phase')
+         if native.device_identity(args.wayland_socket, args.gpu_device) != devices: raise ValueError('device changed before launch')
+         cmd = namespace_command(copyroot, frozen, output, devices)
+         unit = 'm5-missing-' + uuid.uuid4().hex
+@@ -352,7 +406,7 @@
+         raise
+     finally:
+         try:
+-            after = regular_tree(root)
++            after = collection_tree(root)
+             valid = before is not None and after == before
+             native.record(out / 'primary-integrity.json', {'before':before,'after':after,'unchanged':valid})
+             if not valid: raise ValueError('primary collection changed or initial inventory absent')

@@ -1,0 +1,15 @@
+{
+  "custody_principal": null,
+  "inference": {
+    "client_compiled": true,
+    "corpus_publications": 0,
+    "generation_requests": 0,
+    "resident_model_loads": null,
+    "route_attempts": 0
+  },
+  "network_offline": true,
+  "offline_acquisition_attempts": 0,
+  "pid": 17,
+  "schema": "turnstone.model-free-runtime/v1",
+  "session": "dd5936fa-26bf-4247-a2ba-4fd7acab7f76"
+}
