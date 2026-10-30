@@ -803,3 +803,32 @@ acceptance. Screenshots and synthetic HTML fixture files remain external with
 path, hash and size in the index. Binaries, media, stores and custody identity
 data are excluded. Intact L was still running and was not archived. Full M5
 acceptance remains incomplete.
+
+
+### M5 intact L timeout, Read document review and publication update
+
+Safe manifests, logs, configuration, scenarios and selected capture/readback
+JSON from intact collection L are indexed in
+`model-free-m5/additional-evidence-index.json`. Its configured 450-second app
+deadline expired after authored step 4. The seed phase did not complete, so no
+reopen ran. Cleanup terminated the app, custodian and fixture server and later
+verified the scope cgroup empty. This is a timed-out collection, not a semantic
+product failure. Frames and synthetic HTML fixtures are indexed by external
+path, SHA-256 and size; binaries, media, stores, caches and custody identity
+data are excluded. L does not qualify save/reopen or M5 acceptance.
+
+The current `missing.scn`, its hash manifest and the scoped Read document review
+are preserved at `model-free-m5/review-packets/missing-document/`. Review found
+no issue with adding the ordinary Read document action after opening the
+research note. The existing 17 Python fault and ledger tests also passed. No
+native fault scenario ran; headed citation visibility remains unverified, and
+`READY_FOR_FAULT_COLLECTION` remains false.
+
+Publication status is now resolved. The earlier failed push attempts recorded
+above remain accurate for those attempts; the exact Mere `8fec5603`, Turnstone
+`cf459cd832abc877c79ae3c68e61eb7014ccf533` and Eidetic `0919a72` commits were
+subsequently pushed via idle s-pc and independently fetched here. Archived
+publication metadata records the exact heads, bundle hashes and unchanged
+checkout states. The publishing script is retained for provenance; bundle
+archives and credentials are excluded. Publication is source state only and
+does not qualify M5.

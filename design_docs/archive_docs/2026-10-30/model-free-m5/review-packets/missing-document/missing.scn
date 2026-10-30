@@ -1,0 +1,49 @@
+# DRAFT. Run only in a third, network-isolated process on the fault copy.
+# This uses the actual note citation created in seed, not a fabricated URL.
+settle 20
+key escape
+assert snap network-offline == true
+omnibar actions
+type Switch to session M5 seed
+key enter
+settle 8
+# Explicitly select the full admitted-source scope using ordinary controls.
+act Search saved sources
+type violet compass
+wait-research-search 600
+choose-suggestion Search options…
+choose-suggestion Sources and scope
+choose-suggestion All admitted
+choose-suggestion Back
+choose-suggestion Back to results
+wait-research-search 600
+record-saved-sources missing_all_scope
+act Open research note
+act Read document
+settle 20
+assert content-live
+assert text Read saved passage 1:
+record-saved-sources missing_before_click
+capture missing_before_click
+click .knot-saved-citation Read saved passage 1:
+# The citation first opens Peek. The ordinary Read control opens its reader.
+settle 5
+assert snap focus-card-peek ~ mere://saved-source/sealed-v1/
+capture missing_A1_peek
+click surface:chrome role:button Read
+# wait-saved-reader only accepts success. This bounded settle is provisional;
+# the verifier requires the matching target and an Error, so pending fails.
+settle 600
+assert snap saved-reader-state == Error
+assert snap network-offline == true
+record-saved-sources missing_A1_open
+capture missing_A1_refusal
+act Search saved sources
+type violet compass
+wait-research-search 600
+choose-suggestion Capture: M5 A
+wait-saved-reader 600
+assert snap saved-reader-text ~ M5 A2 archive
+record-saved-sources missing_A2_open
+capture missing_A2_ready
+record-runtime missing_runtime
