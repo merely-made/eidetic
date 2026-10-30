@@ -1,0 +1,204 @@
+{
+  "address_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ],
+      [
+        4,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-address-events/v1",
+    "total": 4
+  },
+  "admissions": [
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:c54f6874cab8c977e14f33c8785642e27a11b79fbf16c8fbc7d5aa2bb8d78997",
+        "graph": "3d6f743e-8abf-4853-9ff2-fee962c4754b",
+        "node": "2885cd31-8dea-4c10-948c-b5ae4f41be84",
+        "session": "b88e907b-9283-4599-9c83-340aa4989a1a"
+      },
+      "occurrence": 0,
+      "title": "M5 A",
+      "url": "http://127.0.0.1:32855/A"
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:c29488ca9828efc4ab992244b9138cdc11144eb33eac1ec58482c6d5a83a7d36",
+        "graph": "3d6f743e-8abf-4853-9ff2-fee962c4754b",
+        "node": "c8253121-5a46-43c2-b9ac-8592052d8cca",
+        "session": "b88e907b-9283-4599-9c83-340aa4989a1a"
+      },
+      "occurrence": 0,
+      "title": "M5 B",
+      "url": "http://127.0.0.1:32855/B"
+    }
+  ],
+  "entries": [],
+  "generation": "695932eb-0446-4ae4-bffa-ba7e2a749468",
+  "reader_open_events": {
+    "dropped": 0,
+    "events": [],
+    "overflow": false,
+    "schema": "turnstone.m5-reader-open-events/v1",
+    "total": 0
+  },
+  "reader_scope": {
+    "schema": "turnstone.m5-reader-scope/v1",
+    "selected": null
+  },
+  "readers": [
+    {
+      "content": {
+        "captured_at_ms": 1793379420188,
+        "origin": "http://127.0.0.1:32855/A",
+        "raw_manifest": "blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be",
+        "text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.",
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e",
+        "title": "M5 A"
+      },
+      "engine": "turnstone.saved-source",
+      "error": null,
+      "node": "de1cdc50-5812-4f34-a81e-955ea2ce162a",
+      "phase": "Ready",
+      "rendered_document": {
+        "address": "mere://saved-source/sealed-v1/b88e907b-9283-4599-9c83-340aa4989a1a/3d6f743e-8abf-4853-9ff2-fee962c4754b/2885cd31-8dea-4c10-948c-b5ae4f41be84/c54f6874cab8c977e14f33c8785642e27a11b79fbf16c8fbc7d5aa2bb8d78997/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57",
+        "blocks": [
+          {
+            "Heading": {
+              "level": 1,
+              "spans": [
+                {
+                  "Text": "M5 A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved from http://127.0.0.1:32855/A"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Captured 2026-10-30T16:57:00Z"
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "Saved version: sealed-v1:bl"
+                }
+              ]
+            }
+          },
+          {
+            "Quote": {
+              "blocks": [
+                {
+                  "Paragraph": {
+                    "spans": [
+                      {
+                        "Strong": [
+                          {
+                            "Text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Text": "M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units."
+                }
+              ]
+            }
+          },
+          {
+            "Paragraph": {
+              "spans": [
+                {
+                  "Link": {
+                    "predicate": null,
+                    "spans": [
+                      {
+                        "Text": "Open original address"
+                      }
+                    ],
+                    "title": "Open original address",
+                    "url": "http://127.0.0.1:32855/A"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "content_type": "text/plain; profile=saved-source",
+        "diagnostics": [],
+        "lang": null,
+        "navigation": {
+          "anchors": [],
+          "block_count": 0,
+          "folds": []
+        },
+        "provenance": {
+          "canonical_uri": "mere://saved-source/sealed-v1/b88e907b-9283-4599-9c83-340aa4989a1a/3d6f743e-8abf-4853-9ff2-fee962c4754b/2885cd31-8dea-4c10-948c-b5ae4f41be84/c54f6874cab8c977e14f33c8785642e27a11b79fbf16c8fbc7d5aa2bb8d78997/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57",
+          "fetched_at": null,
+          "source_kind": "turnstone.saved-source",
+          "source_label": "http://127.0.0.1:32855/A"
+        },
+        "title": "M5 A",
+        "trust": "Unknown"
+      },
+      "target": {
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:c54f6874cab8c977e14f33c8785642e27a11b79fbf16c8fbc7d5aa2bb8d78997",
+          "graph": "3d6f743e-8abf-4853-9ff2-fee962c4754b",
+          "node": "2885cd31-8dea-4c10-948c-b5ae4f41be84",
+          "session": "b88e907b-9283-4599-9c83-340aa4989a1a"
+        },
+        "selector": {
+          "end": 57,
+          "start": 0
+        },
+        "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+      },
+      "url": "mere://saved-source/sealed-v1/b88e907b-9283-4599-9c83-340aa4989a1a/3d6f743e-8abf-4853-9ff2-fee962c4754b/2885cd31-8dea-4c10-948c-b5ae4f41be84/c54f6874cab8c977e14f33c8785642e27a11b79fbf16c8fbc7d5aa2bb8d78997/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57"
+    }
+  ],
+  "retained_admissions": [],
+  "retained_readers": [],
+  "search": null,
+  "session": "b88e907b-9283-4599-9c83-340aa4989a1a",
+  "status": ""
+}

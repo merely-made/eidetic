@@ -1,0 +1,45 @@
+{
+  "address_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-address-events/v1",
+    "total": 1
+  },
+  "admissions": [],
+  "entries": [],
+  "generation": "d3a2978b-2ebb-4e32-a5ad-c269847b6765",
+  "reader_open_events": {
+    "dropped": 0,
+    "events": [],
+    "overflow": false,
+    "schema": "turnstone.m5-reader-open-events/v1",
+    "total": 0
+  },
+  "reader_scope": {
+    "schema": "turnstone.m5-reader-scope/v1",
+    "selected": null
+  },
+  "readers": [],
+  "retained_admissions": [],
+  "retained_readers": [],
+  "search": {
+    "coverage": "Complete",
+    "generation": "d3a2978b-2ebb-4e32-a5ad-c269847b6765:2",
+    "hits": [],
+    "inputs": [],
+    "request": "1475db42-64b2-49c4-9599-5ffcbe0e8dd5",
+    "schema": "turnstone.research-search-summary/v1",
+    "scope": [],
+    "selected": null,
+    "session": "567310e7-c9e1-4674-96c3-dcf643ebbfc2",
+    "total": 0
+  },
+  "session": "567310e7-c9e1-4674-96c3-dcf643ebbfc2",
+  "status": ""
+}

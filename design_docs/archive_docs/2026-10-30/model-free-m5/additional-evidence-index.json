@@ -1638,6 +1638,330 @@
       "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/seed/07_after_citation_click.png",
       "sha256": "be30450a0cd61d288637291d8225ecb8850ef10ff66f1e0808c37f3514c3ae70",
       "bytes": 243119
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/01_authored_note.png",
+      "sha256": "1b9fd14dc4d1c30f11603ac668718ec5c4ac0898fed3b5ab85bf83f450c70763",
+      "bytes": 99251
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/04_exact_A1.png",
+      "sha256": "10268d65ad4b41a51d6fb24f50d5e19fa32210bb4038ebf9de1a6465e936dbea",
+      "bytes": 226120
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/05_note_citation.png",
+      "sha256": "1f3c668e23e4ad3a2a6443175c5b678ba62a6ac0d273a949d8b112374893561f",
+      "bytes": 433185
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/07_selected_knot.png",
+      "sha256": "cc48a8f62eb26da18d16022499c84da44598dd509b1df90a12c4858ebbd83a44",
+      "bytes": 514910
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/01_authored_note.png",
+      "sha256": "d541b4b3bbf76cb1caa668c44c78f17a68d4f9587ea95b7d62476e9493782eea",
+      "bytes": 99584
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/04_exact_A1.png",
+      "sha256": "d8b79f7a5d0b7497e46bff9d4bbd5abc0e12a3cb8c9c8b05110c449fcfaf6149",
+      "bytes": 229460
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/05_note_citation.png",
+      "sha256": "a420253bea06f272f22bc1bb8fe76249f7d1ce42471336b0fd858bb835c4e4fc",
+      "bytes": 432035
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/07_selected_knot.png",
+      "sha256": "b4ca9cbbac76e7be9c382086cdf59e1aa9f973e7c1a182511e5b3e0c32bcaf6b",
+      "bytes": 520811
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/08_selected_clip.png",
+      "sha256": "699d5dae40e98157003cba6e489c61212c1e78f54f829b72510b2f21639900eb",
+      "bytes": 425809
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/10_selection_admitted.png",
+      "sha256": "015cee0295cf9cef18a1176e26407b1dbc425d284040ccb3e1efff9fbaa9cf82",
+      "bytes": 177737
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/exact_pair.png",
+      "sha256": "2320f4295d861ff018245487b7834acca34abe10154358a10a4a9145c1b4881d",
+      "bytes": 225976
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/redshank_note_admitted.png",
+      "sha256": "726f368a153fd8bcf242b4b49740928b3bc1e0b3f0b66e430f738e7702f76883",
+      "bytes": 213721
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/redshank_note_private.png",
+      "sha256": "e32cd1260d21012bbd4b47d04750c0419fe09e2c943e116d1508a1b601243fcb",
+      "bytes": 181178
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/redshank_note_shareable.png",
+      "sha256": "25ca1db4fecb29af93a5f92bf13f86a33987d9cf4c7d9245694605744523fc9b",
+      "bytes": 181346
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/redshank_private_action_absent.png",
+      "sha256": "fd6853bcd77d3821f1c3de8f3456e1252ff99df0c04968cdc6a1bfb86ec193dc",
+      "bytes": 181159
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/01_authored_note.png",
+      "sha256": "90a33bbca07680a7cbd35cc5673e7f234e15e33998b232c9ef3fa33ac0555fd6",
+      "bytes": 99981
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/04_exact_A1.png",
+      "sha256": "40bc74dae56dea0c12a2f51c0a912b73d25b784bbd3c3991529ffc525b6bd7b7",
+      "bytes": 228856
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/05_note_citation.png",
+      "sha256": "e8bcbf95de547436a38de869844375082a913fd39b7ead38ecb8416c0fbda6d4",
+      "bytes": 440895
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/09_before_editor_click.png",
+      "sha256": "a4e78e6120c3a81a2e077e447cc0d6c6daa8655bc55e424dcaf71e18aa9f572b",
+      "bytes": 180078
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/10_after_editor_insert.png",
+      "sha256": "4ff39a1bfb7e90762599ad3fd020a7cecbffad84fa6f597f90ee4fc8112e647a",
+      "bytes": 146849
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/01_authored_note.png",
+      "sha256": "a85ed103da4fdb4d507f74cd72ad87b755af709b7a2712a2c5022dc50c6883c9",
+      "bytes": 99358
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/04_exact_A1.png",
+      "sha256": "23b07f38d3a5bc54a5171c8d8d797d3972f6f263be0d87bf999630d3172bf301",
+      "bytes": 225046
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/05_note_citation.png",
+      "sha256": "f58adda008891ac1dc96ed0bbecb4be1b05e7020ac5c68b20ef9d2113260a563",
+      "bytes": 423098
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/09_before_editor_click.png",
+      "sha256": "fb2716a2b629fe539b194f095ed34e5a08ed6b0c5f334961b88e6abebdb64fbe",
+      "bytes": 506222
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/10_after_editor_insert.png",
+      "sha256": "fa3d2eb00944e5bf79d15a8658e5ae05f18c8254c360a5b26a113c30aa055c97",
+      "bytes": 506629
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/01_authored_note.png",
+      "sha256": "a577536dd9bc9864b367f1377b76636c704c0c33d50d764d65ab9cb923fa7536",
+      "bytes": 99750
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/04_exact_A1.png",
+      "sha256": "7a2ee0519971bb2df20dfa12cf3b714959197a52ae6034dbea0d71ecc5a9c2d6",
+      "bytes": 229338
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/05_note_citation.png",
+      "sha256": "654ea147f0daa5747ade74b348f80e26ac37871a1cd49e635fd369346ede7402",
+      "bytes": 434051
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/09_before_editor_click.png",
+      "sha256": "bf4a275558d6dcdf77ed5ed1e8b1d09fffeb6101fb6ecd74aad10e307f878025",
+      "bytes": 524183
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/10_after_editor_insert.png",
+      "sha256": "525b561741395af97fb4e6c481940430a4bf6ccc581131b06b8cf6a81ef7ba11",
+      "bytes": 524184
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/01_episode_visible.png",
+      "sha256": "070fd87968fab31aadf03e64fa2c35aaed824ecca14fce495c264006b1e38385",
+      "bytes": 102081
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/02_note_editor.png",
+      "sha256": "4ba259b0a80b9a7f2a7a026ff3ffe2480eaff68bf46d6256a03b685f2985b384",
+      "bytes": 112138
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/03_saved_note.png",
+      "sha256": "4ba259b0a80b9a7f2a7a026ff3ffe2480eaff68bf46d6256a03b685f2985b384",
+      "bytes": 112138
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/01_episode_visible.png",
+      "sha256": "fa8f032192ce254519a5fe2c101509725e2a1634cbb3b75fc36bfdca229e650b",
+      "bytes": 102081
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/02_note_editor.png",
+      "sha256": "b4c76a52989131084993974bee83143f46b6685b7ca03babd0dbebd3892925e7",
+      "bytes": 112138
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/03_saved_note.png",
+      "sha256": "7d603c83b547d1fd998b183dc0c538e4de9eb222e862a5590d7d787ffb0c8a77",
+      "bytes": 110508
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/01_episode_visible.png",
+      "sha256": "a9b653bd48b94bcd7cf78112439dcc48f913e1482248970612ae0e13c19aefad",
+      "bytes": 102102
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/02_note_editor.png",
+      "sha256": "8385ad475292abfcac2453ebe296000e5e78e618ccb440b09170792e4fee0319",
+      "bytes": 112158
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/03_saved_note.png",
+      "sha256": "dd5238df50fe5542e8ed14ad02a626dc61f2cd8db1dc61ac42d44df5892af5f8",
+      "bytes": 110534
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/04_maximized_note.png",
+      "sha256": "555d2e47b05dff6613ab908add0b6d95eee94bc973343a154f171a7590ee2c98",
+      "bytes": 105237
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/05_note_menu.png",
+      "sha256": "57f4b1d9bce2b75ef4796173763b33f66d8c1a00a0fa5333683d1e27ca9bfaaa",
+      "bytes": 109581
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/06_note_shareable.png",
+      "sha256": "46996dd0f1f0325c5f035ae2d66e498e24450f7d68362e8a4fbfcf96541aec7c",
+      "bytes": 109029
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/01_episode_visible.png",
+      "sha256": "81e8be1dfe14e05ce85acf747a28240b24db3ba1bbbb9a396512a731a69ef0c4",
+      "bytes": 102099
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/02_note_editor.png",
+      "sha256": "376a884ffdfdfdae75dffcb48b3472ac5958b90cc550d3e88793d034e301fcfa",
+      "bytes": 112155
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/03_saved_note.png",
+      "sha256": "5107bda71a56e8af58fd1203e57f9033a1f97848cc53df2794285bfee9ddea38",
+      "bytes": 110457
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/04_private_member.png",
+      "sha256": "5107bda71a56e8af58fd1203e57f9033a1f97848cc53df2794285bfee9ddea38",
+      "bytes": 110457
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/05_shareable_note.png",
+      "sha256": "46996dd0f1f0325c5f035ae2d66e498e24450f7d68362e8a4fbfcf96541aec7c",
+      "bytes": 109029
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/06_note_research.png",
+      "sha256": "8009447625f8e45942765cbb9deb57afb83d9d8992f16914fad701ad4b8426a2",
+      "bytes": 123024
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/01_episode_visible.png",
+      "sha256": "d4a760fc943efdbd4ee1d0dacf9d6f2fe6cee8bb10f020e9d4d1dc556e75d36c",
+      "bytes": 102038
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/02_note_editor.png",
+      "sha256": "045a99c90756b5a5af1187c66c58f0d4d768d57b5387088d6961324e934eb6aa",
+      "bytes": 112094
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/03_saved_note.png",
+      "sha256": "4a3e497bfada76e9de9906afa81a22eba604ba265c2772e3bf914d0fbc7c4707",
+      "bytes": 110627
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/04_private_member.png",
+      "sha256": "0a87582d2fde2ec289e333f9e9bac8e509529597bb148e7b7296445be8adda8a",
+      "bytes": 129319
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/05_shareable_note.png",
+      "sha256": "c398d1ebe84d5ab7c5dcd47e2e32460069cde7684532e71b3663112b5824c8bb",
+      "bytes": 114874
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/06_note_research.png",
+      "sha256": "101aab8bcdc45be1f0c7cad098c8d65c99b774ad9e1683d96469044c466a94b5",
+      "bytes": 175151
     }
   ],
   "excluded": "Native binaries, custody wallets/seeds, profile stores, shader caches, and active/incomplete E receipts.",
@@ -4103,6 +4427,606 @@
     {
       "run": "citation-click-diagnostic-B",
       "external_path": "/home/markik/Code/testing/m5-citation-click-diagnostic-20261030-b/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "intact-J",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "intact-K",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "knot-editor-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "knot-editor-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "knot-editor-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-C",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-D",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101
+    },
+    {
+      "run": "redshank-controls-diagnostic-E",
+      "external_path": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/fixture-source/selection.html",
       "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
       "bytes": 241
     }
@@ -8720,5 +9644,2518 @@
     "citation_click_diagnostic_B": "Ordinary citation click opened Peek, then ordinary Read activated the tile. Event named exact A1; a separate current observation was Ready with exact A1, text hash, selector 0..57 and full passage. Intentional diagnostic stop only.",
     "review_boundary": "Reader-open source review and four-file receipt adapter review are scoped approvals only. Fault guard false, receipt DRAFT, and no successful intact seed/reopen or native fault run.",
     "excluded": "The main fresh build was still running; incomplete outputs are excluded."
+  },
+  "failed_intact_J_K_and_Knot_Redshank_diagnostics_A_to_E_safe_records": [
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/failure.json",
+      "archive_file": "intact-J/failure.json",
+      "sha256": "3cda2bcfefddcb1fdfce1ba604623dd98cc3ceddf77afa20e3a3621298342852",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/inputs.json",
+      "archive_file": "intact-J/inputs.json",
+      "sha256": "0334c9be76d5c39cd21e2d9e1773af08ff08a30a37326c37551fc7f1fef762c0",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/seed-launcher.cleanup.json",
+      "archive_file": "intact-J/seed-launcher.cleanup.json",
+      "sha256": "4e645aa6861a5b89ee41b964d164ea6dabab6d5e25cd7633c6c083450d49451b",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/seed-launcher.log",
+      "archive_file": "intact-J/seed-launcher.log",
+      "sha256": "1c465522b82be4553bc8eb26496d679ebfd1345932efb5f793fbcc02bd9e40fc",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/build-provenance.json",
+      "archive_file": "intact-J/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/custodian-build.json",
+      "archive_file": "intact-J/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/custodian-source-inventory.json",
+      "archive_file": "intact-J/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/seed-config.json",
+      "archive_file": "intact-J/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/test-binary-build.json",
+      "archive_file": "intact-J/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/test-binary-source-inventory.json",
+      "archive_file": "intact-J/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/turnstone-build.json",
+      "archive_file": "intact-J/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/turnstone-source-inventory.json",
+      "archive_file": "intact-J/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/acceptance_phase.py",
+      "archive_file": "intact-J/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/fixture_server.py",
+      "archive_file": "intact-J/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/namespace_phase.py",
+      "archive_file": "intact-J/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/reopen.scn",
+      "archive_file": "intact-J/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/run_acceptance.py",
+      "archive_file": "intact-J/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/run_native.py",
+      "archive_file": "intact-J/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/frozen/seed.scn",
+      "archive_file": "intact-J/frozen/seed.scn",
+      "sha256": "6c85fad02878fd0989513dfa79c79cef75e6becfe49fea389e0608be2bf81abf",
+      "bytes": 24519,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/fixture-requests.json",
+      "archive_file": "intact-J/sandbox/fixture-requests.json",
+      "sha256": "0d28c25c95e1568c45d5a42693b951b2c2eacdb02595b58e76f3efe794c8140b",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/origin-info.json",
+      "archive_file": "intact-J/sandbox/origin-info.json",
+      "sha256": "cbaf0befab04c48107cb154d22de44bc704889cbca3521eb6d47dcdcce912537",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/m5-disposable-marker",
+      "archive_file": "intact-J/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "intact-J/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "ee2b71c09d4b0edc1cd32a1c5b7cfdcd82448176a0badf259ce7e3b0606aa0b1",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "intact-J/sandbox/seed/03_B.source-captures.json",
+      "sha256": "5d73b92990dcab66211082fd51f9a8fc9614ac733a2afdbee6bf1d9fecc8f6be",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "intact-J/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "85a68d9f2e8fd23889d5c682f07a4ca309fecc3fc3bcbd77ba1e4ef468f62302",
+      "bytes": 6274,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "intact-J/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "1576335a290b15c1431cab8a87313d7ac39ad1532a304b78242e28cce0c2f529",
+      "bytes": 6360,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/app.log",
+      "archive_file": "intact-J/sandbox/seed/app.log",
+      "sha256": "470e43b367509db27065b448baf5a5eca60a1b62d3e8fee3f0e31320c658fb1a",
+      "bytes": 13299,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/custody.log",
+      "archive_file": "intact-J/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/diagnostics.json",
+      "archive_file": "intact-J/sandbox/seed/diagnostics.json",
+      "sha256": "a7e748d63980d1482d19bd0d3007e7ad4351adde3daf4bd69db9dbf6db751fb1",
+      "bytes": 25818,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/inference-route.json",
+      "archive_file": "intact-J/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/namespace.json",
+      "archive_file": "intact-J/sandbox/seed/namespace.json",
+      "sha256": "4d8d7c8f4f5ce78ee604e6270fb93c898390f9c81af57c17a5847cd81030f50c",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/origin-ready.json",
+      "archive_file": "intact-J/sandbox/seed/origin-ready.json",
+      "sha256": "6b5cefc4d704398b6e6105b6e3dd4eca3e9ec0e3b3962e6e9707d708a13bfb2f",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/origin.log",
+      "archive_file": "intact-J/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/processes-final.json",
+      "archive_file": "intact-J/sandbox/seed/processes-final.json",
+      "sha256": "25d9dbcee52e447b70598455fd8bebecd8c8bbf1aa79a1142b2625107c801c9c",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/route-probe.log",
+      "archive_file": "intact-J/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-j/sandbox/seed/scenario.done",
+      "archive_file": "intact-J/sandbox/seed/scenario.done",
+      "sha256": "a8f31f11a59f24a5d24753a10efbe4d6296d7f6fe494595f079410342c70f62d",
+      "bytes": 6823,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/failure.json",
+      "archive_file": "intact-K/failure.json",
+      "sha256": "2c6134382c4f9eafae00ab996d8fe5870754431db5062050cb269bb8fa56b804",
+      "bytes": 71,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/abort-reason.json",
+      "archive_file": "intact-K/abort-reason.json",
+      "sha256": "046c5535906ae04709ec6be3a7f5fac737b491f460b99fdbd70f476593671bb3",
+      "bytes": 244,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/inputs.json",
+      "archive_file": "intact-K/inputs.json",
+      "sha256": "4b325bc41c40160f0f9af209088e967593cefc0408c004ab501efead31843ec9",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/seed-launcher.cleanup.json",
+      "archive_file": "intact-K/seed-launcher.cleanup.json",
+      "sha256": "29ec882fc3d8f6854de351525b33ebdf4e867655a3e9feb6ff189662ea612fc2",
+      "bytes": 403,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/seed-launcher.log",
+      "archive_file": "intact-K/seed-launcher.log",
+      "sha256": "2d2b6a4898002daeba484f76a628afa77c5130980acd4f31af0464b9a7b3b71e",
+      "bytes": 124,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/build-provenance.json",
+      "archive_file": "intact-K/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/custodian-build.json",
+      "archive_file": "intact-K/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/custodian-source-inventory.json",
+      "archive_file": "intact-K/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/seed-config.json",
+      "archive_file": "intact-K/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/test-binary-build.json",
+      "archive_file": "intact-K/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/test-binary-source-inventory.json",
+      "archive_file": "intact-K/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/turnstone-build.json",
+      "archive_file": "intact-K/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/turnstone-source-inventory.json",
+      "archive_file": "intact-K/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/acceptance_phase.py",
+      "archive_file": "intact-K/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/fixture_server.py",
+      "archive_file": "intact-K/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/namespace_phase.py",
+      "archive_file": "intact-K/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/reopen.scn",
+      "archive_file": "intact-K/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/run_acceptance.py",
+      "archive_file": "intact-K/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/run_native.py",
+      "archive_file": "intact-K/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/frozen/seed.scn",
+      "archive_file": "intact-K/frozen/seed.scn",
+      "sha256": "233d7f9f4236a713ed6a15bf4b5f8367f085def482e73710b97738a712ab86e0",
+      "bytes": 24522,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/fixture-requests.json",
+      "archive_file": "intact-K/sandbox/fixture-requests.json",
+      "sha256": "0ff4e72c76931bb5dc9d06e5784ec72cc54ed1e0cce214e45f4d5ba99f0bac30",
+      "bytes": 544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/origin-info.json",
+      "archive_file": "intact-K/sandbox/origin-info.json",
+      "sha256": "b89ba650f45a0779aa5699331d098f7e79044a031ab923b24dcd4b383292f8ba",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/m5-disposable-marker",
+      "archive_file": "intact-K/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "intact-K/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "b94d09bf50d4acf7e62b9e3bc34262a0dd935ee4269cd9b19918bdad53c07d06",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "intact-K/sandbox/seed/03_B.source-captures.json",
+      "sha256": "fd18167ca86b006a8a7b86b7fdc840fbaf39fba0e37a0bed24c644331d96b3d0",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "intact-K/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "3e172a4381d9c3137c9c1e10672f9f7ed2dc1bcf0949a5854a4192ef8311cd57",
+      "bytes": 6274,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "intact-K/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "d69e8bfb22dd3ac08b4e7e7639f2dc0a4b030ca3b20102894f294c02bbee3b41",
+      "bytes": 6360,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/09_A2.source-captures.json",
+      "archive_file": "intact-K/sandbox/seed/09_A2.source-captures.json",
+      "sha256": "451751d838b7b0b54863b5ebc16531ca3711acf9673ccb2adc13cb54e6c71871",
+      "bytes": 2753,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "archive_file": "intact-K/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "sha256": "7ae4afe4e98c22cf40b83dd4a096cd720a5810d19747caf8140bb92e1d5abdee",
+      "bytes": 13683,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/app.log",
+      "archive_file": "intact-K/sandbox/seed/app.log",
+      "sha256": "f7fea8f743acef64381066ef92d898c1e4fe0db147330d130c3af1e41ec067d1",
+      "bytes": 56254,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/custody.log",
+      "archive_file": "intact-K/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/exact_pair.comparison.json",
+      "archive_file": "intact-K/sandbox/seed/exact_pair.comparison.json",
+      "sha256": "8c0fd0f767e859699a172220564800f49e91e85f133a4f5ac92a2ab648a0a979",
+      "bytes": 2819,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/inference-route.json",
+      "archive_file": "intact-K/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/namespace.json",
+      "archive_file": "intact-K/sandbox/seed/namespace.json",
+      "sha256": "f3ed06a79169b6def5ffd3622960a10cb01ab41e2cd74cdf757ef16782bdb1a7",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/origin-ready.json",
+      "archive_file": "intact-K/sandbox/seed/origin-ready.json",
+      "sha256": "cf22a62562f780cde92f26edacdb62d213cf4bbfcd86594b71f102ebc707d962",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/origin.log",
+      "archive_file": "intact-K/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "archive_file": "intact-K/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "sha256": "0121dfdebd89b3e983d9f291276c2b6481fff48070ee763285d85cea814ef059",
+      "bytes": 15798,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-k/sandbox/seed/route-probe.log",
+      "archive_file": "intact-K/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/failure.json",
+      "archive_file": "knot-editor-diagnostic-A/failure.json",
+      "sha256": "4f47fd84a0c5e092c57ef934fd124bf3afdffe7cad5219d43baba31d63f44905",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/inputs.json",
+      "archive_file": "knot-editor-diagnostic-A/inputs.json",
+      "sha256": "2592e07443a9aad9bcfceeb9d0eaa0fcec347751ac448c9f97910c1189123812",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/seed-launcher.cleanup.json",
+      "archive_file": "knot-editor-diagnostic-A/seed-launcher.cleanup.json",
+      "sha256": "d1f5c1dce86874ddf94baccef842f3a9b092ba50b28879351ae3747a47570dfa",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/seed-launcher.log",
+      "archive_file": "knot-editor-diagnostic-A/seed-launcher.log",
+      "sha256": "c43686f04d1dbddad7f4d7982c4c7e62624f2608f9b81d9c380862d0fb98a258",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/build-provenance.json",
+      "archive_file": "knot-editor-diagnostic-A/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/custodian-build.json",
+      "archive_file": "knot-editor-diagnostic-A/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/custodian-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-A/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/seed-config.json",
+      "archive_file": "knot-editor-diagnostic-A/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/test-binary-build.json",
+      "archive_file": "knot-editor-diagnostic-A/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/test-binary-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-A/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/turnstone-build.json",
+      "archive_file": "knot-editor-diagnostic-A/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/turnstone-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-A/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/acceptance_phase.py",
+      "archive_file": "knot-editor-diagnostic-A/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/fixture_server.py",
+      "archive_file": "knot-editor-diagnostic-A/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/namespace_phase.py",
+      "archive_file": "knot-editor-diagnostic-A/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/reopen.scn",
+      "archive_file": "knot-editor-diagnostic-A/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/run_acceptance.py",
+      "archive_file": "knot-editor-diagnostic-A/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/run_native.py",
+      "archive_file": "knot-editor-diagnostic-A/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/frozen/seed.scn",
+      "archive_file": "knot-editor-diagnostic-A/frozen/seed.scn",
+      "sha256": "418ea1f81203ecbde6d9bbb6baca1e4074710eadee2eed7194ca1df57355ea31",
+      "bytes": 2394,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/fixture-requests.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/fixture-requests.json",
+      "sha256": "1787d4f895f95f906f01431740b414fbd4904f5e519cbd45fe025fa7a2d2f2f6",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/origin-info.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/origin-info.json",
+      "sha256": "926d4ee3ea00cfb352e898fb98316cfd5c707a5b50e8e024b7e22267d2aee4be",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/m5-disposable-marker",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "e00c7d0d8c3a2bc06f48f4c88668846916771e83a60b6172e4b5ec2228d0acc8",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/03_B.source-captures.json",
+      "sha256": "c40989963205b66b61b0bff276af8c6f0971e0d91cee320a565c3e659d271df7",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "a610e5df531db9a37997a32883000fd8dee65dd261e74862ddaa1bbbbd17d180",
+      "bytes": 6274,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "b35b06783de8d255a30413312009bed0874ae0a63e8f84c026fd07210d45b713",
+      "bytes": 6360,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/app.log",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/app.log",
+      "sha256": "6883abc910e2ab450454a3f47d68bb4b0934e5dbb0947d23f0763436e1efc948",
+      "bytes": 11881,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/custody.log",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/diagnostics.json",
+      "sha256": "b3825faef6f182a79d091f408751ee459e69ae7274e375fe1703c292cdf3e8e7",
+      "bytes": 24494,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/inference-route.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/namespace.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/namespace.json",
+      "sha256": "4f16bd114437d3dc8f2b1230583b604408719242cfb42d088043a283346da95b",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/origin-ready.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/origin-ready.json",
+      "sha256": "074a719a3a0481bcd95af1b3eaf13ae46dfd5f4e3dc807ade0df9aeebab510f4",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/origin.log",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/processes-final.json",
+      "sha256": "0178226f1d0733926f8990f545fed44b5274b329275c4566a0c9a7d7fb807818",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/route-probe.log",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-a/sandbox/seed/scenario.done",
+      "archive_file": "knot-editor-diagnostic-A/sandbox/seed/scenario.done",
+      "sha256": "772ed6a52468611f5514c443000d7fa389b6116a446b842bcd18bb1a2cb8f424",
+      "bytes": 1407,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/failure.json",
+      "archive_file": "knot-editor-diagnostic-B/failure.json",
+      "sha256": "fd0f8780a8520ac3bf9d33069d10e86e65dea2378c8548d69c4e69e5f9ff594a",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/inputs.json",
+      "archive_file": "knot-editor-diagnostic-B/inputs.json",
+      "sha256": "75466018af946641ae8598b517d0ebb9f7f8ef982142fe995facf2b41bd0db47",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/seed-launcher.cleanup.json",
+      "archive_file": "knot-editor-diagnostic-B/seed-launcher.cleanup.json",
+      "sha256": "a8e9e76a0a66a68493c9e2f82cfc23120d3e0ba27d6624bfdaece49619315d66",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/seed-launcher.log",
+      "archive_file": "knot-editor-diagnostic-B/seed-launcher.log",
+      "sha256": "8f14c587ba8bdd253c31f4321783baa723c552f7858830fd497427de30b942c6",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/build-provenance.json",
+      "archive_file": "knot-editor-diagnostic-B/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/custodian-build.json",
+      "archive_file": "knot-editor-diagnostic-B/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/custodian-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-B/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/seed-config.json",
+      "archive_file": "knot-editor-diagnostic-B/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/test-binary-build.json",
+      "archive_file": "knot-editor-diagnostic-B/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/test-binary-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-B/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/turnstone-build.json",
+      "archive_file": "knot-editor-diagnostic-B/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/turnstone-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-B/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/acceptance_phase.py",
+      "archive_file": "knot-editor-diagnostic-B/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/fixture_server.py",
+      "archive_file": "knot-editor-diagnostic-B/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/namespace_phase.py",
+      "archive_file": "knot-editor-diagnostic-B/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/reopen.scn",
+      "archive_file": "knot-editor-diagnostic-B/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/run_acceptance.py",
+      "archive_file": "knot-editor-diagnostic-B/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/run_native.py",
+      "archive_file": "knot-editor-diagnostic-B/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/frozen/seed.scn",
+      "archive_file": "knot-editor-diagnostic-B/frozen/seed.scn",
+      "sha256": "9a38bc21ea95dd9504dc4263dd4fa5d9e36793034bbc97b3f7dd21f3f4ec3429",
+      "bytes": 2412,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/fixture-requests.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/fixture-requests.json",
+      "sha256": "96aedd2fea1073dafb1e1532dcf4fb210229a6c1aeecf1ca3dd7a5f991391f5b",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/origin-info.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/origin-info.json",
+      "sha256": "ae3511a2717a7cf66f958fabeb0b1406e4c5a4dca1e6379925f7d1abc3cdd5f9",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/m5-disposable-marker",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "542b45c03b9d9db4dee22dd03827b57a62f592f60a96defb5f3d99b013146e3c",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/03_B.source-captures.json",
+      "sha256": "93732c0e6b716038e80f8987838f80ce3550f28f1a5f7abb3f1394dbf3d8663e",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "b351e0762fee4696bf0d123b61726cf9515997927a51b8cc88904b94ca5a8c27",
+      "bytes": 6274,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "ca2fbf45b39d1f3ddaf49573e94aba387fbbc7759b69fddbc554792b17fe48ce",
+      "bytes": 6360,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/app.log",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/app.log",
+      "sha256": "00460454ff82882c69c33cca6f758e40d4ba6e31651b1092bb42c62df010967e",
+      "bytes": 14623,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/custody.log",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/diagnostics.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/diagnostics.json",
+      "sha256": "27cb1f8468194aca5fa1a585e9b0c6a63c40030ed4f921cc0a112fc0e7dd8c81",
+      "bytes": 25156,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/inference-route.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/namespace.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/namespace.json",
+      "sha256": "669fe597888e8fbf4e5afc18d078a9d76da6eec6427c326d007c2d632b49b932",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/origin-ready.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/origin-ready.json",
+      "sha256": "0304fae304d7dc11d10b208eff0b5702bd758609dcf32ac89ab8c68a52ee4156",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/origin.log",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/processes-final.json",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/processes-final.json",
+      "sha256": "c442eef5a692d3e7ce0fdade5e872e1bdb141cd2b25a0127f5d9ba138b44b4fd",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/route-probe.log",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-b/sandbox/seed/scenario.done",
+      "archive_file": "knot-editor-diagnostic-B/sandbox/seed/scenario.done",
+      "sha256": "d610580d88709f75ccf63b37aa814debe4608887ffa0df48e948b47c5909bf21",
+      "bytes": 1346,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/failure.json",
+      "archive_file": "knot-editor-diagnostic-C/failure.json",
+      "sha256": "115f4147a2700b72dae6ca7e6dba8ff0a49d43f90cc9687926ba9eb068b5e7ca",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/inputs.json",
+      "archive_file": "knot-editor-diagnostic-C/inputs.json",
+      "sha256": "23cbd2b878897e287aa1784aec0beee075fcb54cea642a0dd92bee73580e157f",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/seed-launcher.cleanup.json",
+      "archive_file": "knot-editor-diagnostic-C/seed-launcher.cleanup.json",
+      "sha256": "ec40da5c8fce0bc8c76a9096c0855656541751ec1c6f9a751ae85297dbf72be5",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/seed-launcher.log",
+      "archive_file": "knot-editor-diagnostic-C/seed-launcher.log",
+      "sha256": "dde59028011250c1093ec15c78539c344210e3bf23c19ddc3a3ba090b88f9564",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/build-provenance.json",
+      "archive_file": "knot-editor-diagnostic-C/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/custodian-build.json",
+      "archive_file": "knot-editor-diagnostic-C/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/custodian-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-C/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/seed-config.json",
+      "archive_file": "knot-editor-diagnostic-C/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/test-binary-build.json",
+      "archive_file": "knot-editor-diagnostic-C/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/test-binary-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-C/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/turnstone-build.json",
+      "archive_file": "knot-editor-diagnostic-C/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/turnstone-source-inventory.json",
+      "archive_file": "knot-editor-diagnostic-C/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/acceptance_phase.py",
+      "archive_file": "knot-editor-diagnostic-C/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/fixture_server.py",
+      "archive_file": "knot-editor-diagnostic-C/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/namespace_phase.py",
+      "archive_file": "knot-editor-diagnostic-C/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/reopen.scn",
+      "archive_file": "knot-editor-diagnostic-C/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/run_acceptance.py",
+      "archive_file": "knot-editor-diagnostic-C/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/run_native.py",
+      "archive_file": "knot-editor-diagnostic-C/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/frozen/seed.scn",
+      "archive_file": "knot-editor-diagnostic-C/frozen/seed.scn",
+      "sha256": "42702add99b027af863e8275fab9d3756fe079e526e14ea0a98b98912e25fcd8",
+      "bytes": 2441,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/fixture-requests.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/fixture-requests.json",
+      "sha256": "f593693dbb690bd306bdc491bde63b81cb2643843e44753e2ed340335f134c10",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/origin-info.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/origin-info.json",
+      "sha256": "78032ceb971966f1ce6041088dad763b67cc5f8cd9c064b2876880e3da9e8530",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/m5-disposable-marker",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "d3a4f42a193da87341fdc0bf4ff7ad5aa9f81955c43ce8aab6897d51a5d57179",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/03_B.source-captures.json",
+      "sha256": "ec57e1d1f65da10ce22739fb7fcc293a41c8794e45b01cd361908c703450d192",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "c63e0a453eae0ed5198078d4c0972060175b5fb149b33ce0663ba87676ebd92e",
+      "bytes": 6274,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "99db0ccd7164f49670a8f076d990cd6a98b6307ba50db90e08b22477ddb872b5",
+      "bytes": 6360,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/app.log",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/app.log",
+      "sha256": "69abc92e1833b694a4387fa3684cd8598a77d6e846dbdcd0c8be3711e0f07c50",
+      "bytes": 15393,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/custody.log",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/diagnostics.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/diagnostics.json",
+      "sha256": "303f305385c7cd8bb3dcf7a2f076e645527e6df8db346fd049ca3f2eb00e44e3",
+      "bytes": 25156,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/inference-route.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/namespace.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/namespace.json",
+      "sha256": "4d59b9b47827b15741c513b32581f95020627d6bb58977e676094bea959c6685",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/origin-ready.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/origin-ready.json",
+      "sha256": "9661e5596ffd45f6427e0f910d3ba4185d7030aa50297bbb3131cb5922715726",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/origin.log",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/processes-final.json",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/processes-final.json",
+      "sha256": "853c165deb22fb370fda9d9eeb43e09ac25ea6b5e956222dc4ab5aefd068fbd3",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/route-probe.log",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-editor-diagnostic-20261030-c/sandbox/seed/scenario.done",
+      "archive_file": "knot-editor-diagnostic-C/sandbox/seed/scenario.done",
+      "sha256": "f69c3e8b45613f04bb400092c90d6081d46bb7557c37d88aa2239ae23ff26c30",
+      "bytes": 1346,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/failure.json",
+      "archive_file": "redshank-controls-diagnostic-A/failure.json",
+      "sha256": "431b614c9083d6a33ed7d2060dfa39ec89f613bdad8df8dc4861d1a6d4bd327c",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/inputs.json",
+      "archive_file": "redshank-controls-diagnostic-A/inputs.json",
+      "sha256": "46a28df54637e636a5851fe326077a9dc7c6be0573ec10679a4fe668640cf7ff",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/seed-launcher.cleanup.json",
+      "archive_file": "redshank-controls-diagnostic-A/seed-launcher.cleanup.json",
+      "sha256": "fb57543f3ba9b763b98af30589e9806fb286280911b7e7228dd49ef600a82aa1",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/seed-launcher.log",
+      "archive_file": "redshank-controls-diagnostic-A/seed-launcher.log",
+      "sha256": "b0a0f8cd5a7c1ecdc1cc80d1234666af514b9fbd3c5c272a0d7c05ea7b175758",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/build-provenance.json",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/custodian-build.json",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/custodian-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/seed-config.json",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/test-binary-build.json",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/test-binary-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/turnstone-build.json",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/turnstone-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/acceptance_phase.py",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/fixture_server.py",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/namespace_phase.py",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/reopen.scn",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/run_acceptance.py",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/run_native.py",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/frozen/seed.scn",
+      "archive_file": "redshank-controls-diagnostic-A/frozen/seed.scn",
+      "sha256": "53d78528679a5274aaf6fbb1e2dd2670904861dfc91c8304ab9e0b9c7fecd6ae",
+      "bytes": 558,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/fixture-requests.json",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/origin-info.json",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/origin-info.json",
+      "sha256": "4f2799fc5b3454f002d9e2dc4bcb43f484998296a86762fe573292d5b7f5bb1e",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/m5-disposable-marker",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/app.log",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/app.log",
+      "sha256": "a3df2ccd340e776af55b21ab6c4288b3a2c591d5631c091ab69064b72e854b64",
+      "bytes": 4576,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/custody.log",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/diagnostics.json",
+      "sha256": "cf8b73772fb000e4da07c20a63ba84d16587ee06643d4ac9c8c2cf089ea2dcad",
+      "bytes": 5805,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/inference-route.json",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/namespace.json",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/namespace.json",
+      "sha256": "76ab16ea6219a8da969cd8faf5f8569e1597b639b73a915fd3be7f50e2d60129",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/origin-ready.json",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/origin-ready.json",
+      "sha256": "57de8ecf1abb2317e0678c02e1e591683e23ee4493375414c7eb38d136e332f7",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/origin.log",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/processes-final.json",
+      "sha256": "544bdfcb7801abbed628730dbe752419ca051a316b67dff516d992c73354bf7e",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/route-probe.log",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-a/sandbox/seed/scenario.done",
+      "archive_file": "redshank-controls-diagnostic-A/sandbox/seed/scenario.done",
+      "sha256": "f97e0abdd4d5661413fd0ee1af7e61e90b541c49547b0c112a677fda260a287b",
+      "bytes": 795,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/failure.json",
+      "archive_file": "redshank-controls-diagnostic-B/failure.json",
+      "sha256": "2b28c2b021b28f6da5feabbfcf285c30843730659d344edbaa706c5403afe913",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/inputs.json",
+      "archive_file": "redshank-controls-diagnostic-B/inputs.json",
+      "sha256": "f18f973c2bcc57cea5bdfd5c2ffe162ab42d7af504bb0ef5c34840202bee4079",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/seed-launcher.cleanup.json",
+      "archive_file": "redshank-controls-diagnostic-B/seed-launcher.cleanup.json",
+      "sha256": "62b342cbbe6e85d465ed80dd90bdf5c75e36357efb434d8b8e203d540dec2498",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/seed-launcher.log",
+      "archive_file": "redshank-controls-diagnostic-B/seed-launcher.log",
+      "sha256": "c08e9a81e2b6bd7bdf128bfac2cac8b67f23e6e7da0cf078469d5517993c1896",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/build-provenance.json",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/custodian-build.json",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/custodian-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/seed-config.json",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/test-binary-build.json",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/test-binary-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/turnstone-build.json",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/turnstone-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/acceptance_phase.py",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/fixture_server.py",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/namespace_phase.py",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/reopen.scn",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/run_acceptance.py",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/run_native.py",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/frozen/seed.scn",
+      "archive_file": "redshank-controls-diagnostic-B/frozen/seed.scn",
+      "sha256": "12b606f8ead52b6f356bda9b365beb811f65aafbf51b92f87117a9f2ea44949a",
+      "bytes": 554,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/fixture-requests.json",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/origin-info.json",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/origin-info.json",
+      "sha256": "7329b82330d142cd639938d1d997bdbffab0168100cbdbb599d1608467e63e65",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/m5-disposable-marker",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/app.log",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/app.log",
+      "sha256": "871f9b3807d1e54aa7275daa7a2eff3fe75493498845634ea7951f767d517896",
+      "bytes": 5080,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/custody.log",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/diagnostics.json",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/diagnostics.json",
+      "sha256": "b3d3c399c5a2c652103ca2d3b77c02590a633ee6ff90860d531c489826df8a12",
+      "bytes": 5142,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/inference-route.json",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/namespace.json",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/namespace.json",
+      "sha256": "7d8d006700052cb80168bdcf5924c63a661e38a6ead1d9c527e77a551aa59546",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/origin-ready.json",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/origin-ready.json",
+      "sha256": "41ba8c12c90660b33a76847396199806cabe41f25f96a3debe4bb6fa3a5f03d0",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/origin.log",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/processes-final.json",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/processes-final.json",
+      "sha256": "4f2878d9cef473bef68cf849fb838c652a9d101eedc98ed69573f4f2ff16db55",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/route-probe.log",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-b/sandbox/seed/scenario.done",
+      "archive_file": "redshank-controls-diagnostic-B/sandbox/seed/scenario.done",
+      "sha256": "23c4383de94d025fb81321dc324a73f0b2933e558a316ae96258bf9ca42514ed",
+      "bytes": 644,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/failure.json",
+      "archive_file": "redshank-controls-diagnostic-C/failure.json",
+      "sha256": "0db7746bd509b3b5c71355f6efd480cd58c4611817cd3fcfe08518bc0b0c0128",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/inputs.json",
+      "archive_file": "redshank-controls-diagnostic-C/inputs.json",
+      "sha256": "d836cc87b168848f9608a1da967faf904085b3145e88baa3c4727f00aacecf48",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/seed-launcher.cleanup.json",
+      "archive_file": "redshank-controls-diagnostic-C/seed-launcher.cleanup.json",
+      "sha256": "22ddb3390dcd4e80b6209d360871bf6ed9bee1df9072b23594581c933c9a3b7d",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/seed-launcher.log",
+      "archive_file": "redshank-controls-diagnostic-C/seed-launcher.log",
+      "sha256": "ec66a427fda5c01cab418d67cd10ad3db79f4580bf7ce63c109dc0c3e7e33cff",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/build-provenance.json",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/custodian-build.json",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/custodian-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/seed-config.json",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/test-binary-build.json",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/test-binary-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/turnstone-build.json",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/turnstone-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/acceptance_phase.py",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/fixture_server.py",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/namespace_phase.py",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/reopen.scn",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/run_acceptance.py",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/run_native.py",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/frozen/seed.scn",
+      "archive_file": "redshank-controls-diagnostic-C/frozen/seed.scn",
+      "sha256": "bc2b798638bb3294e2119c1df7dac33c170ca6ce631cdfdc9c1e063e53362c44",
+      "bytes": 809,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/fixture-requests.json",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/origin-info.json",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/origin-info.json",
+      "sha256": "57f466fb8221c500a6a9a6d17d5cc544db375b71b79e615308ed6af9195fb617",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/m5-disposable-marker",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/app.log",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/app.log",
+      "sha256": "4310a18c49766ecf9c1ba69e1e78ac26cd631a00aa487e7927e2fb600ba8cf31",
+      "bytes": 5080,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/custody.log",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/diagnostics.json",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/diagnostics.json",
+      "sha256": "e7bd2a2a0eb3cedff2a42dc3ef649eac3dec7560d1d2ceeb241d04f01feb0ce3",
+      "bytes": 5140,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/inference-route.json",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/namespace.json",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/namespace.json",
+      "sha256": "87e70d17c6481226bc840b021c7b61e698c907be17253fbf19011a5bcef0b747",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/origin-ready.json",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/origin-ready.json",
+      "sha256": "b145f59b7009875d472b9cf79672cced6b7f617657d7e28f1a56441ad6442fa3",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/origin.log",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/processes-final.json",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/processes-final.json",
+      "sha256": "77dd29a72c9df42adb5bf090179114ee2ea275119ca67b5589e872de71c2d6ea",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/route-probe.log",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-c/sandbox/seed/scenario.done",
+      "archive_file": "redshank-controls-diagnostic-C/sandbox/seed/scenario.done",
+      "sha256": "c67308bfec8eb3c3f8d155fcad43bab2157c7414717e32ae9a98f8f025b12845",
+      "bytes": 952,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/failure.json",
+      "archive_file": "redshank-controls-diagnostic-D/failure.json",
+      "sha256": "01c69b2e5c0a0fd5a43f275ca9b48bd0cdc598013cd0011a1d65aca5b6de1e3c",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/inputs.json",
+      "archive_file": "redshank-controls-diagnostic-D/inputs.json",
+      "sha256": "1727a42f4f9ff2eb4ed2fc2c34525237dc023bd7cfe2bc79dd19474c7ad7eac2",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/seed-launcher.cleanup.json",
+      "archive_file": "redshank-controls-diagnostic-D/seed-launcher.cleanup.json",
+      "sha256": "1a45c39e81571de25ffbc021049eb94c914fd7cfbb2ce225bf889f3cd9e4f05b",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/seed-launcher.log",
+      "archive_file": "redshank-controls-diagnostic-D/seed-launcher.log",
+      "sha256": "6391f75cbac5dfc014983ae026f462b0a59d0fea10d8aef89c29c77e7a2b18af",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/build-provenance.json",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/custodian-build.json",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/custodian-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/seed-config.json",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/test-binary-build.json",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/test-binary-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/turnstone-build.json",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/turnstone-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/acceptance_phase.py",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/fixture_server.py",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/namespace_phase.py",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/reopen.scn",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/run_acceptance.py",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/run_native.py",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/frozen/seed.scn",
+      "archive_file": "redshank-controls-diagnostic-D/frozen/seed.scn",
+      "sha256": "526be06b95504d0343d1e7a2554d2974f8fa96e01d148a33082a5205d7f903c8",
+      "bytes": 1240,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/fixture-requests.json",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/origin-info.json",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/origin-info.json",
+      "sha256": "750490354f2c70673ca349a81476a5eac0a29abd0115ea7ae843046304fe5f78",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/m5-disposable-marker",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/06_note_research.saved-sources.json",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/06_note_research.saved-sources.json",
+      "sha256": "57ffd716c113f98f0e12a44e9481672732f954a40a3ba283cf8341d5a6d758be",
+      "bytes": 1038,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/app.log",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/app.log",
+      "sha256": "8115446a08b1567262f26034eb2081ac377d51a8c7962a8424480ca8b4ba4346",
+      "bytes": 5080,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/custody.log",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/diagnostics.json",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/diagnostics.json",
+      "sha256": "ff8c46ba25000a923d4f2f3d84e40c98edde5d9460313a92e66fbfbca857c30e",
+      "bytes": 5141,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/inference-route.json",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/namespace.json",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/namespace.json",
+      "sha256": "eeb59daf36408ecf38fdd36ba690b7e55ef03e5ae7b46dae3926fc2a8ece209b",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/origin-ready.json",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/origin-ready.json",
+      "sha256": "9204507e38c91e18c6fcbf67beddc96e8bc6b52f117fc62cac17987ccc6afb35",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/origin.log",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/processes-final.json",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/processes-final.json",
+      "sha256": "5d473ff6af0bc5036850c28d653632d4627db3c7c9777dc6fbce303cac7e856f",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/route-probe.log",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-d/sandbox/seed/scenario.done",
+      "archive_file": "redshank-controls-diagnostic-D/sandbox/seed/scenario.done",
+      "sha256": "d26c505f7a7f0cf189116be440969e1c35fc912736efaf1eeead57d5ca3c0b5c",
+      "bytes": 4185,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/failure.json",
+      "archive_file": "redshank-controls-diagnostic-E/failure.json",
+      "sha256": "38ceee1885fd74d63a5f256418f72fe3cb26b8f555306421f3b7e4ee67bf591a",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/inputs.json",
+      "archive_file": "redshank-controls-diagnostic-E/inputs.json",
+      "sha256": "68fede52cdda0ee7f624160e2e51e671ea908bd6ac6b3105dc9694cbbb31a742",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/seed-launcher.cleanup.json",
+      "archive_file": "redshank-controls-diagnostic-E/seed-launcher.cleanup.json",
+      "sha256": "5a6837ae73a9e06cc4cf4d448c674c31267181f00996140b9bd8b814ddec5efb",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/seed-launcher.log",
+      "archive_file": "redshank-controls-diagnostic-E/seed-launcher.log",
+      "sha256": "505a89a527c67edcc3b2d591aa72390df035e455b5a6875f41f43ab201e353be",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/build-provenance.json",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/build-provenance.json",
+      "sha256": "86fe4274091e00cdf3f96d53012666de10d9fbe87df42387aff448f971145dfa",
+      "bytes": 2789,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/custodian-build.json",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/custodian-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/seed-config.json",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/test-binary-build.json",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/test-binary-build.json",
+      "sha256": "34ebfaaa409b3783e77df8ab1f71c5fee20d8b364e273cc14868604c10417888",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/test-binary-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/test-binary-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/turnstone-build.json",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/turnstone-build.json",
+      "sha256": "a0759014069398efea1f10ea60e33ca671a8f64e705283fa5e17502ac9a8635e",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/turnstone-source-inventory.json",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/turnstone-source-inventory.json",
+      "sha256": "264cf1df617cbea6768abdb03d33535fad817a017dbeb5ae8e2ed1c0601fbd13",
+      "bytes": 1635544,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/acceptance_phase.py",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+      "bytes": 4665,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/fixture_server.py",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+      "bytes": 2083,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/namespace_phase.py",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915",
+      "bytes": 21995,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/reopen.scn",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/reopen.scn",
+      "sha256": "1e976a822021810692ce20c24905e071bbc39ad55b38e7c001ea6551fdfa6204",
+      "bytes": 2451,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/run_acceptance.py",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/run_native.py",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+      "bytes": 18546,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/frozen/seed.scn",
+      "archive_file": "redshank-controls-diagnostic-E/frozen/seed.scn",
+      "sha256": "afe0d742fac3382f537fabff4d389103feb79ac18c7ff90bf41ed87219a1fa76",
+      "bytes": 1292,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/fixture-requests.json",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/origin-info.json",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/origin-info.json",
+      "sha256": "4491fb6189fcde5265d956c9e661b7777dc077acde4101c638f9a4550c7a4c4d",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/m5-disposable-marker",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/m5-disposable-marker",
+      "sha256": "f88c3aea4d37aa3e3879522e3077165414c9e87bc78b40331dd692b5467a1d7a",
+      "bytes": 17,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/06_note_research.saved-sources.json",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/06_note_research.saved-sources.json",
+      "sha256": "41a28806d88833af9fc1a3ab206ab3595c283689010663aa5405291ccefedd9b",
+      "bytes": 3361,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/app.log",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/app.log",
+      "sha256": "dfd281a99f68d685e5ab752f7ddf31f84c858a1250e0e659f1611e4a799e1d48",
+      "bytes": 5728,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/custody.log",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/diagnostics.json",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/diagnostics.json",
+      "sha256": "78bf6b782f956b0680845fe78f7e43e0a12f72de6b29fcdd197864e10559ded0",
+      "bytes": 7135,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/inference-route.json",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/namespace.json",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/namespace.json",
+      "sha256": "5a15176049cd213031003fe625e65e5933ff782bc94f9eb63555725b079478f3",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/origin-ready.json",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/origin-ready.json",
+      "sha256": "38b6aa343005ebd5810bdfa8e456c3fd8d529bdc669dee42da364d8fc6ee740c",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/origin.log",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/processes-final.json",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/processes-final.json",
+      "sha256": "02e35c178b57727a2f5b2b8ae5f7e0ecbc31cb6a1a1a45f59645f028836a2aff",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/route-probe.log",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/route-probe.log",
+      "sha256": "39df784ae7d061203b7d211d564535cd1c0b9034e9e93d14f2782cd80333fd60",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-redshank-controls-diagnostic-20261030-e/sandbox/seed/scenario.done",
+      "archive_file": "redshank-controls-diagnostic-E/sandbox/seed/scenario.done",
+      "sha256": "d9a89d8db22f6d706201382171dbe270df03fb71cacdf689552f67b570d7c660",
+      "bytes": 1066,
+      "copied_now": true
+    }
+  ],
+  "reviewed_knot_and_redshank_scenario_deltas": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-knot-editor-seed.diff",
+      "archive_file": "scenario-diagnostics/knot-editor/m5-knot-editor-seed.diff",
+      "sha256": "02984daba995c13d8294d4ef6083122c093b1cec6d38804b642bd09fa1494277",
+      "bytes": 415,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/knot-editor-diagnostic.scn",
+      "archive_file": "scenario-diagnostics/knot-editor/knot-editor-diagnostic.scn",
+      "sha256": "418ea1f81203ecbde6d9bbb6baca1e4074710eadee2eed7194ca1df57355ea31",
+      "bytes": 2394,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/knot-editor-read-diagnostic.scn",
+      "archive_file": "scenario-diagnostics/knot-editor/knot-editor-read-diagnostic.scn",
+      "sha256": "9a38bc21ea95dd9504dc4263dd4fa5d9e36793034bbc97b3f7dd21f3f4ec3429",
+      "bytes": 2412,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/knot-editor-save-diagnostic.scn",
+      "archive_file": "scenario-diagnostics/knot-editor/knot-editor-save-diagnostic.scn",
+      "sha256": "42702add99b027af863e8275fab9d3756fe079e526e14ea0a98b98912e25fcd8",
+      "bytes": 2441,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-redshank-seed.diff",
+      "archive_file": "scenario-diagnostics/redshank/m5-redshank-seed.diff",
+      "sha256": "636625d094c5cd2a01c19e6b0eac53809a8ccb462779c737b5d2e93b22c05499",
+      "bytes": 1782,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-before-redshank-fix.scn",
+      "archive_file": "scenario-diagnostics/redshank/seed-before-redshank-fix.scn",
+      "sha256": "233d7f9f4236a713ed6a15bf4b5f8367f085def482e73710b97738a712ab86e0",
+      "bytes": 24522,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/redshank-controls-diagnostic.scn",
+      "archive_file": "scenario-diagnostics/redshank/redshank-controls-diagnostic.scn",
+      "sha256": "53d78528679a5274aaf6fbb1e2dd2670904861dfc91c8304ab9e0b9c7fecd6ae",
+      "bytes": 558,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/redshank-controls-insert-diagnostic.scn",
+      "archive_file": "scenario-diagnostics/redshank/redshank-controls-insert-diagnostic.scn",
+      "sha256": "12b606f8ead52b6f356bda9b365beb811f65aafbf51b92f87117a9f2ea44949a",
+      "bytes": 554,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/redshank-privacy-diagnostic.scn",
+      "archive_file": "scenario-diagnostics/redshank/redshank-privacy-diagnostic.scn",
+      "sha256": "bc2b798638bb3294e2119c1df7dac33c170ca6ce631cdfdc9c1e063e53362c44",
+      "bytes": 809,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/redshank-retention-diagnostic.scn",
+      "archive_file": "scenario-diagnostics/redshank/redshank-retention-diagnostic.scn",
+      "sha256": "526be06b95504d0343d1e7a2554d2974f8fa96e01d148a33082a5205d7f903c8",
+      "bytes": 1240,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/redshank-retention-diagnostic-e.scn",
+      "archive_file": "scenario-diagnostics/redshank/redshank-retention-diagnostic-e.scn",
+      "sha256": "afe0d742fac3382f537fabff4d389103feb79ac18c7ff90bf41ed87219a1fa76",
+      "bytes": 1292,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/redshank-note.scn.fragment",
+      "archive_file": "scenario-diagnostics/redshank/redshank-note.scn.fragment",
+      "sha256": "11a3542ed5d485663c1fc39d7a587a36da6d66c97a630c7cfd96dc3370ed711b",
+      "bytes": 990,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-controls-report.md",
+      "archive_file": "scenario-diagnostics/redshank/m5-note-controls-report.md",
+      "sha256": "303d3d83b173514241426f03645d3ddb600988a4e3675acf06b1d66d7d8774ed",
+      "bytes": 16654,
+      "copied_now": true
+    }
+  ],
+  "intact_J_K_and_note_control_diagnostic_boundaries": {
+    "source_state": "cf459cd832abc877c79ae3c68e61eb7014ccf533; K build provenance unchanged",
+    "intact_J": "Failed at note insertion because no focused text editor was active; the later Retain action was unavailable. Failed receipt and cleanup retained.",
+    "intact_K": "Intentionally aborted after the complete note-search observation lacked the required Note producer. Later actions would be cascading and cannot qualify acceptance. abort-reason.json, failure.json, and cleanup are retained.",
+    "knot_editor_diagnostics_A_to_C": "All three failed as bounded editor diagnostics; A saw no focused text editor and no expected text; B/C advanced through note open/insert but did not reach their intentional stop assertion. Per-run scenario.done records retain exact details.",
+    "redshank_controls_A_to_D": "Diagnostics expose successive scenario/control mismatches; all stop before qualification. Exact failed assertions and safe logs are retained.",
+    "redshank_controls_E": "Private selected Note action absent; after ordinary share transition, retention reported Complete with count 1. Playback is unqualified. Intentional diagnostic stop only.",
+    "excluded": "Intact L is still running and is not archived.",
+    "boundary": "Screenshots and synthetic fixtures are indexed by external path, SHA-256 and size only. Binaries, media, stores and custody identity/vault files are excluded. These records do not establish a successful intact seed/reopen or M5 acceptance."
   }
 }

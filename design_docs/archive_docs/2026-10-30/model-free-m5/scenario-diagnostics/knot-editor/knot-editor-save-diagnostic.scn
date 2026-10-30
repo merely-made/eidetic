@@ -1,0 +1,93 @@
+# COMPOSED DRAFT: unrun, not accepted; missing-source fault injection is separate.
+# Draft: real capture, authored citation and real Knot selection; not acceptance complete.
+settle 20
+key escape
+act New session
+settle 5
+act Rename session
+type M5 seed
+key enter
+settle 5
+act New research note
+wait-knot 600 local file:///m5/run/profile/notes/research-
+assert content-live
+click surface:knot role:textbox
+key end
+key enter
+insert M5 authored research note
+key ctrl+s
+settle 30
+assert text saved
+capture 01_authored_note
+act Show document in map
+open ${M5_ORIGIN}/A
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/A
+settle 3
+scroll 900 500 -5000
+settle 3
+scroll 900 500 350
+settle 3
+click surface:inspector role:button Save source and keep
+wait-row 600 Source save: Saved
+record-source-captures 02_A1
+act Show document in map
+open ${M5_ORIGIN}/B
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/B
+settle 3
+scroll 900 500 -5000
+settle 3
+scroll 900 500 350
+settle 3
+click surface:inspector role:button Save source and keep
+wait-row 600 Source save: Saved
+record-source-captures 03_B
+act Search saved sources
+type naïve — 東京 🐦
+wait-research-search 600
+choose-suggestion Capture: M5 A
+wait-saved-reader 600
+assert snap saved-reader-quote == M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.
+record-saved-sources 04_exact_A1
+capture 04_exact_A1
+act Open Inspector pane
+settle 8
+scroll 900 500 5000
+settle 3
+click surface:inspector role:button Research tools
+settle 5
+scroll 900 500 5000
+settle 3
+click surface:inspector role:button Clip saved passage
+settle 60
+act Open research note
+settle 20
+assert text M5 authored research note
+assert text Read saved passage 1:
+capture 05_note_citation
+click .knot-saved-citation Read saved passage 1:
+settle 5
+assert snap focus-card-peek ~ mere://saved-source/sealed-v1/
+click surface:chrome role:button Read
+wait-saved-reader 600
+assert snap saved-reader-quote == M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.
+record-saved-sources 06_note_citation
+act Open research note
+act Read document
+settle 20
+capture 09_before_editor_click
+click-at 200 220
+key end
+key enter
+insert M5 private preface zebra only this linked finding M5 private suffix otter
+key ctrl+s
+settle 30
+assert text saved
+capture 10_after_editor_insert
+assert text only this linked finding
+assert event m5-intentional-diagnostic-stop

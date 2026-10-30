@@ -781,3 +781,25 @@ source and receipt adapter reviews are scoped approvals. The fault guard remains
 false and the receipt remains DRAFT. No intact run completed the full
 seed-to-cold-reopen acceptance sequence, and no native fault run completed.
 The main fresh build was still running, so its incomplete outputs were excluded. Full M5 acceptance remains incomplete.
+
+
+### M5 failed intact J/K and note-control diagnostics
+
+Safe records for failed intact J and intentionally aborted K, Knot editor
+diagnostics A-C, Redshank note-control diagnostics A-E, and the reviewed
+scenario deltas are indexed in `model-free-m5/additional-evidence-index.json`.
+J failed at note insertion because no focused text editor was active. K was
+intentionally aborted after the complete note-search observation lacked the
+required Note producer; the saved abort reason explains why following actions
+would only cascade. Its failure and cleanup receipts are retained.
+
+The Knot editor diagnostics failed at their successive editor/text or stop
+assertions; their scenario outputs and cleanup records preserve the individual
+boundaries. Redshank controls A-D also stop at their recorded control mismatches.
+Diagnostic E showed the selected Note action absent while private, then reported
+shareable retention Complete with count 1. Playback is still unqualified, and E
+stopped intentionally. No diagnostic here is a complete intact or reopen
+acceptance. Screenshots and synthetic HTML fixture files remain external with
+path, hash and size in the index. Binaries, media, stores and custody identity
+data are excluded. Intact L was still running and was not archived. Full M5
+acceptance remains incomplete.

@@ -1,0 +1,9 @@
+RESULT fail
+captured 01_episode_visible
+captured 02_note_editor
+captured 03_saved_note
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["address-opened file:///m5/run/fixture-source/episode.mp3", "pane-closed", "omnibar-closed", "pane-summoned Inspect", "profile-identity-unlocked Passphrase (held by djinn)", "session-switched 6b17f41d"])
+presentation frames=193 captures=3 blank=0
+capture /m5/run/seed/01_episode_visible.png digest=982c8b33927d0390 blank=false
+capture /m5/run/seed/02_note_editor.png digest=e138d3bce785fa4e blank=false
+capture /m5/run/seed/03_saved_note.png digest=248d25b4ecfdf95a blank=false
