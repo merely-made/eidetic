@@ -1,0 +1,7 @@
+# M5 scenario focus correction
+
+Collection C reached the actual A HTTP request, but the source wait reported `browser command target differs`; the ten-second presentation watchdog subsequently fired. The app recorded 111 presented frames and one nonblank authored-note capture; the owned scope was verified empty. The failed run remains at `/home/markik/Code/testing/m5-intact-collection-20261030-c`.
+
+`open` uses ordinary `OpenAddress`: `src/app/node_arms/app_commit_gemini_identity.rs` visits the focused/default graph, but it does not retire a previously focused ordinary reader. `src/app/node_arms/app_browser_command_target.rs` gives focused content priority over graph context. The existing `toolbar_address_navigation_reads_without_changing_graph_command_semantics` test confirms the direct-open/reader distinction. The ordinary `Show document in map` action in `src/app/pane_arms/app_reveal_pane.rs` reveals and focuses the owning graph. This source evidence motivates, but does not prove the outcome of, the next headed run.
+
+The only proposed change is four ordinary map actions before A, B, swap-a and A2, in `m5-map-focus-scenario.diff` SHA-256 `064753c95d4ea7762fc163459c8e5a5cae57360cb8b5cc5fe5466ae1612a9384`. Updated `m5-draft/seed-composed.draft.scn` SHA-256 `9223b0b73211ce99389b0f4a9d66e16681156721c6d2a7eb817804ca51eee07b`. Exact target waits and watchdog remain unchanged. The h build provenance is unchanged. Scenario review and another headed collection are needed; there is no acceptance claim.

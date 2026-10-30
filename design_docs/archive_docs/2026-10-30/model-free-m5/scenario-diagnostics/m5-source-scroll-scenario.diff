@@ -1,0 +1,35 @@
+--- collection-e/seed.scn
++++ proposed/seed.scn
+@@ -26,6 +26,10 @@
+ settle 5
+ wait-source-target 600 ${M5_ORIGIN}/A
+ settle 3
++scroll 900 500 -5000
++settle 3
++scroll 900 500 350
++settle 3
+ click surface:inspector role:button Save source and keep
+ wait-row 600 Source save: Saved
+ record-source-captures 02_A1
+@@ -36,6 +40,10 @@
+ settle 5
+ wait-source-target 600 ${M5_ORIGIN}/B
+ settle 3
++scroll 900 500 -5000
++settle 3
++scroll 900 500 350
++settle 3
+ click surface:inspector role:button Save source and keep
+ wait-row 600 Source save: Saved
+ record-source-captures 03_B
+@@ -141,6 +149,10 @@
+ settle 5
+ wait-source-target 600 ${M5_ORIGIN}/A
+ settle 3
++scroll 900 500 -5000
++settle 3
++scroll 900 500 350
++settle 3
+ click surface:inspector role:button Save source and keep
+ wait-row 600 Source save: Saved
+ assert row Saved captures: 2

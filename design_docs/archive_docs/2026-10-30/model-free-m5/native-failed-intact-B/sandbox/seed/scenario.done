@@ -1,0 +1,6 @@
+RESULT fail
+captured 01_authored_note
+FAIL: wait-source-target after 600 frames: no unique admitted action for http://127.0.0.1:39603/A
+FAIL: no successful window presentation for ten seconds
+presentation frames=111 captures=1 blank=0
+capture /m5/run/seed/01_authored_note.png digest=47ea51c9c7e9b8fc blank=false

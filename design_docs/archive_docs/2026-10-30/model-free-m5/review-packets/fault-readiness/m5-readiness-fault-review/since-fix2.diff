@@ -1,0 +1,2510 @@
+--- fix2/src/app/tests/resource_content_inspector_follows_shared_resource_and_navigation_cases.rs
++++ current/src/app/tests/resource_content_inspector_follows_shared_resource_and_navigation_cases.rs
+@@ -0,0 +1,586 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++
++#[test]
++fn resource_content_inspector_follows_shared_resource_and_navigation() {
++    let (mut app, first, second, resource) = resource_content_fixture();
++    let pane = app.default_graph_pane();
++    for member in [first, second] {
++        assert!(app.graph_pane_select_member(pane, member));
++        let lines = crate::inspector_view::inspector_lines(&app);
++        assert!(
++            lines.iter().any(|line| line == "Tags: Paper, paper"),
++            "{lines:?}"
++        );
++        assert!(
++            lines
++                .iter()
++                .any(|line| line == &format!("Node id: {member}"))
++        );
++    }
++
++    app.update(Action::ContentNavigationCommitted {
++        member: first,
++        url: "https://example.test/next".into(),
++    });
++    let graph = app.graph_runtimes.graph();
++    let first_key = graph.get_node_by_id(first).unwrap().0;
++    let second_key = graph.get_node_by_id(second).unwrap().0;
++    assert_ne!(graph.shown_resource_id(first_key), Some(resource));
++    assert_eq!(graph.shown_resource_id(second_key), Some(resource));
++    assert!(app.graph_pane_select_member(pane, first));
++    assert!(
++        crate::inspector_view::inspector_lines(&app)
++            .iter()
++            .any(|line| line == "Tags: none")
++    );
++    assert!(app.graph_pane_select_member(pane, second));
++    assert!(
++        crate::inspector_view::inspector_lines(&app)
++            .iter()
++            .any(|line| line == "Tags: Paper, paper")
++    );
++
++    // Returning the same Surface to the old resource restores the content
++    // read without copying the sibling's tags into the Surface.
++    app.update(Action::ContentNavigationCommitted {
++        member: first,
++        url: "https://example.test/page#three".into(),
++    });
++    let graph = app.graph_runtimes.graph();
++    let key = graph.get_node_by_id(first).unwrap().0;
++    assert_eq!(graph.shown_resource_id(key), Some(resource));
++    assert!(graph.get_node(key).unwrap().tags.is_empty());
++    assert!(app.graph_pane_select_member(pane, first));
++    assert!(
++        crate::inspector_view::inspector_lines(&app)
++            .iter()
++            .any(|line| line == "Tags: Paper, paper")
++    );
++}
++
++#[test]
++fn resource_content_recycle_capture_keeps_exact_labels_and_live_sibling() {
++    let (mut app, first, second, resource) = resource_content_fixture();
++    let effects = app.update(Action::DeleteFocusedNode);
++    let record = effects
++        .iter()
++        .find_map(|effect| match effect {
++            Effect::RecordDeleted { record } => Some(record),
++            _ => None,
++        })
++        .expect("delete stages recycle record");
++    assert_eq!(record.node_id, first);
++    assert_eq!(record.url, "https://EXAMPLE.test/page#one");
++    let mut labels = record.tags.clone();
++    labels.sort();
++    assert_eq!(labels, vec!["Paper".to_string(), "paper".to_string()]);
++
++    let graph = app.graph_runtimes.graph();
++    assert!(graph.get_node_by_id(first).is_none());
++    let sibling_key = graph.get_node_by_id(second).expect("sibling survives").0;
++    assert_eq!(graph.shown_resource_id(sibling_key), Some(resource));
++    assert_eq!(graph.surface_ids_showing_resource(resource), vec![second]);
++    assert_eq!(graph.resource_tag_labels(resource).len(), 2);
++    let reloaded = mere::kernel::graph::Graph::try_from_snapshot(&graph.to_snapshot())
++        .expect("persisted live sibling association");
++    let key = reloaded.get_node_by_id(second).unwrap().0;
++    assert_eq!(reloaded.shown_resource_id(key), Some(resource));
++    assert_eq!(
++        reloaded.surface_ids_showing_resource(resource),
++        vec![second]
++    );
++    assert_eq!(
++        reloaded.resource_tag_labels(resource),
++        graph.resource_tag_labels(resource)
++    );
++    let pane = app.default_graph_pane();
++    assert!(app.graph_pane_select_member(pane, second));
++    assert!(
++        crate::inspector_view::inspector_lines(&app)
++            .iter()
++            .any(|line| line == "Tags: Paper, paper")
++    );
++    // RemovedRecord.tags is Vec<String>: this asserts labels only. It cannot
++    // establish concept owners, assertion handles, taggers, or recovery scope.
++}
++
++#[test]
++fn session_restore_applies_law_before_overlays_and_records_refusal() {
++    let dir = tempfile::tempdir().unwrap();
++    let mut app = App::test_stub();
++    app.data_root = dir.path().to_path_buf();
++    let session_id = app.session_id;
++    let session_dir = session::session_dir(dir.path(), session_id);
++    // The flat view intent this host wrote before the saved scene.
++    let write_intent = |law: mere::canvas::PhysicsLaw| {
++        std::fs::create_dir_all(&session_dir).unwrap();
++        std::fs::write(
++            session::view_intent_path(&session_dir),
++            serde_json::json!({
++                "physics_law": law.id(),
++                "physics_overlays": [mere::canvas::PhysicsOverlay::GridSnap.id()],
++            })
++            .to_string(),
++        )
++        .unwrap();
++    };
++    write_intent(mere::canvas::PhysicsLaw::Density);
++    app.adopt_session(session_id);
++    assert_eq!(
++        app.graph_runtimes.physics_law(),
++        mere::canvas::PhysicsLaw::Density
++    );
++    assert!(app.graph_runtimes.physics_overlays().is_empty());
++    assert_eq!(
++        app.physics_refusal().unwrap().refused,
++        vec![mere::canvas::PhysicsOverlay::GridSnap]
++    );
++    assert!(
++        app.take_events()
++            .iter()
++            .any(|event| matches!(event, AppEvent::PhysicsRefused(_)))
++    );
++
++    write_intent(mere::canvas::PhysicsLaw::Springs);
++    app.adopt_session(session_id);
++    assert_eq!(
++        app.graph_runtimes.physics_overlays(),
++        &[mere::canvas::PhysicsOverlay::GridSnap]
++    );
++    assert!(app.physics_refusal().is_none());
++}
++
++#[test]
++fn capture_action_preserves_explicit_member_for_the_host() {
++    let mut app = App::test_stub();
++    let member = uuid::Uuid::new_v4();
++    assert_eq!(
++        app.update(Action::CapturePage { member }),
++        vec![Effect::CaptureContent { node: member }]
++    );
++}
++
++#[test]
++fn source_capture_refuses_a_member_without_a_current_target() {
++    let app = App::test_stub();
++    assert!(app.source_capture_target(uuid::Uuid::new_v4()).is_err());
++    assert!(
++        !app.available_actions()
++            .iter()
++            .any(|(label, _)| label == "Save source and keep")
++    );
++}
++
++#[test]
++fn source_capture_carries_current_target_without_requesting_png() {
++    let mut app = App::test_stub();
++    let url = "https://example.test/source";
++    let key = app.graph_runtimes.visit(url);
++    let node = app.graph_runtimes.graph().get_node(key).unwrap().id;
++    let request = requested_source_capture(&mut app, node);
++    assert_eq!(request.node, node);
++    assert_eq!(request.url, url);
++    assert_eq!(request.session, app.session_id);
++    assert_eq!(request.graph, app.graph_runtimes.active_graph());
++}
++
++#[test]
++fn source_capture_completion_attaches_an_ordered_node_reference_series() {
++    let mut app = App::test_stub();
++    let url = "https://example.test/source";
++    let key = app.graph_runtimes.visit(url);
++    let node = app.graph_runtimes.graph().get_node(key).unwrap().id;
++    for annotation_manifest in ["annotation-first", "annotation-second"] {
++        let request = requested_source_capture(&mut app, node);
++        assert_eq!(
++            app.apply_update(Update::SourceDocumentCaptured {
++                capture_generation: app.source_capture_generation,
++                request: request.clone(),
++                result: Ok(crate::action::StoredSourceDocument {
++                    raw_manifest: format!("raw-{annotation_manifest}"),
++                    annotation_manifest: annotation_manifest.into(),
++                }),
++            }),
++            vec![
++                Effect::PersistSourceCapture {
++                    request: request.id
++                },
++                Effect::Redraw
++            ]
++        );
++    }
++    assert_eq!(
++        crate::source_capture::references(app.graph_runtimes.facets(), node),
++        vec![
++            "annotation-first".to_string(),
++            "annotation-second".to_string()
++        ]
++    );
++    assert!(
++        app.take_events().iter().all(|event| !matches!(
++            event,
++            crate::observe::AppEvent::SourceDocumentCaptured { .. }
++        )),
++        "attachment cannot report final saved success"
++    );
++}
++
++#[test]
++fn stale_or_failed_source_capture_completion_never_attaches_a_reference() {
++    let mut app = App::test_stub();
++    let url = "https://example.test/source";
++    let key = app.graph_runtimes.visit(url);
++    let node = app.graph_runtimes.graph().get_node(key).unwrap().id;
++    let stale = requested_source_capture(&mut app, node);
++    app.update(Action::ContentNavigationCommitted {
++        member: node,
++        url: "https://example.test/changed".into(),
++    });
++    assert_eq!(
++        app.apply_update(Update::SourceDocumentCaptured {
++            capture_generation: app.source_capture_generation,
++            request: stale,
++            result: Ok(crate::action::StoredSourceDocument {
++                raw_manifest: "raw-stale".into(),
++                annotation_manifest: "annotation-stale".into(),
++            }),
++        }),
++        vec![Effect::Redraw]
++    );
++    assert!(app.take_events().iter().any(|event| matches!(
++        event,
++        crate::observe::AppEvent::SourceDocumentCaptureFailed { .. }
++    )));
++    assert!(crate::source_capture::references(app.graph_runtimes.facets(), node).is_empty());
++    let failed = requested_source_capture(&mut app, node);
++    assert_eq!(
++        app.apply_update(Update::SourceDocumentCaptured {
++            capture_generation: app.source_capture_generation,
++            request: failed,
++            result: Err("eidetic write failed".into()),
++        }),
++        vec![Effect::Redraw]
++    );
++    assert!(app.take_events().iter().any(|event| matches!(
++        event,
++        crate::observe::AppEvent::SourceDocumentCaptureFailed { .. }
++    )));
++    assert!(crate::source_capture::references(app.graph_runtimes.facets(), node).is_empty());
++}
++
++#[test]
++fn retired_static_viewer_pins_migrate_to_livery() {
++    let node = uuid::Uuid::new_v4();
++    let mut states = pandect::browser_node_state::BrowserNodeStates::new();
++    states.entry(node).viewer_override = Some(inker::routing::ENGINE_GENET_WEB.to_string());
++
++    assert!(migrate_retired_viewer_overrides(&mut states));
++    assert_eq!(
++        states
++            .get(node)
++            .and_then(|state| state.viewer_override.as_deref()),
++        Some(inker::routing::ENGINE_GENET_LIVERY)
++    );
++    assert!(!migrate_retired_viewer_overrides(&mut states));
++}
++
++#[test]
++fn binary_page_response_becomes_durable_download_custody() {
++    let mut app = App::test_stub();
++    let url = "gemini://capsule.test/archive.bin";
++    let key = app.graph_runtimes.visit(url);
++    let node = app.graph_runtimes.graph().get_node(key).unwrap().id;
++    app.content.note_requested(node);
++    let request = fetch::next_fetch_request_id();
++    app.content.begin_fetch(node, request);
++    let _ = app.take_events();
++
++    let bytes = b"\0exact\xffbytes".to_vec();
++    let effects = app.apply_update(Update::PageFetched {
++        request,
++        node,
++        url: url.to_string(),
++        result: Ok(crate::action::FetchedPage {
++            content_type: Some("application/octet-stream".into()),
++            content_disposition: Some("attachment; filename=archive.bin".into()),
++            bytes: bytes.clone(),
++            body: String::from_utf8_lossy(&bytes).into_owned(),
++        }),
++    });
++    assert!(effects.iter().any(|effect| matches!(
++        effect,
++        Effect::StoreDownload {
++            node: actual,
++            url: actual_url,
++            bytes: actual_bytes,
++            ..
++        } if *actual == node && actual_url == url && actual_bytes == &bytes
++    )));
++    assert!(
++        !effects
++            .iter()
++            .any(|effect| matches!(effect, Effect::SpawnContent { .. })),
++        "a binary response must not be sent to a document engine"
++    );
++    let facet = chartulary::FacetId::new(crate::content_classes::DOWNLOAD_FACET);
++    let pending = app.graph_runtimes.facets().get(&node, &facet).unwrap();
++    assert_eq!(pending["status"], "storing");
++    assert_eq!(pending["byte_size"], bytes.len() as u64);
++
++    let content = mere::kernel::graph::ContentHash::of(&bytes);
++    let destination = "C:\\Downloads\\archive.bin".to_string();
++    let complete = app.apply_update(Update::DownloadStored {
++        node,
++        url: url.to_string(),
++        content_type: Some("application/octet-stream".into()),
++        content_disposition: Some("attachment; filename=archive.bin".into()),
++        received_at_ms: 42,
++        byte_size: bytes.len() as u64,
++        result: Ok(crate::action::StoredDownload {
++            content,
++            destination: destination.clone(),
++            byte_size: bytes.len() as u64,
++        }),
++    });
++    assert_eq!(complete, vec![Effect::SaveSession, Effect::Redraw]);
++    assert_eq!(
++        app.graph_runtimes
++            .graph()
++            .get_node_by_id(node)
++            .unwrap()
++            .1
++            .content,
++        Some(content)
++    );
++    let completed = app.graph_runtimes.facets().get(&node, &facet).unwrap();
++    assert_eq!(completed["status"], "completed");
++    assert_eq!(completed["destination_path"], destination);
++    assert_eq!(completed["content_hash"], content.to_hex());
++    let events = app
++        .take_events()
++        .iter()
++        .map(AppEvent::describe)
++        .collect::<Vec<_>>();
++    assert!(
++        events
++            .iter()
++            .any(|event| event.starts_with("download-started"))
++    );
++    assert!(
++        events
++            .iter()
++            .any(|event| event.starts_with("download-completed"))
++    );
++}
++
++#[test]
++fn place_binding_survives_switch_and_restart_as_a_worker_open() {
++    let root = std::env::temp_dir().join(format!("turnstone-place-adopt-{}", uuid::Uuid::new_v4()));
++    let mut app = App::test_stub();
++    app.data_root = root.clone();
++
++    let personal = crate::panes::SessionId::new();
++    std::fs::create_dir_all(session::session_dir(&root, personal)).unwrap();
++    app.adopt_session(personal);
++    assert_eq!(app.place, crate::place::PlaceState::Personal);
++    assert!(
++        !session::place_binding_path(&app.session_dir()).exists(),
++        "adopting a personal session does not invent a place sidecar"
++    );
++
++    let target = crate::panes::SessionId::new();
++    let sdir = session::session_dir(&root, target);
++    let binding = crate::place::PlaceBindingV1::new(
++        crate::place::PlaceId([0x11; 32]),
++        crate::place::SharedContainerId([0x22; 32]),
++        crate::place::ChatSpaceId([0x33; 32]),
++        "commons",
++    )
++    .unwrap();
++    session::save_place_binding(&sdir, &binding).unwrap();
++    let key = app.graph_runtimes.visit("https://shared.example");
++    let shared_node = app.graph_runtimes.graph().get_node(key).unwrap().id;
++    session::save_session_graph(&sdir, app.graph_runtimes.graph());
++
++    let effects = app.adopt_session(target);
++    assert!(
++        matches!(
++            &app.place,
++            crate::place::PlaceState::Opening {
++                binding: actual,
++                generation: 2,
++            } if actual == &binding
++        ),
++        "the app exposes the worker open instead of presenting the cache as current"
++    );
++    assert!(
++        effects.iter().any(|effect| matches!(
++            effect,
++            Effect::OpenPlace {
++                session,
++                generation: 2,
++                binding: actual,
++            } if *session == target && actual == &binding
++        )),
++        "adoption asks the shell-owned worker to materialize the retained domains"
++    );
++    assert!(
++        app.graph_runtimes
++            .graph()
++            .get_node_by_id(shared_node)
++            .is_some(),
++        "the cached graph remains immediately available"
++    );
++
++    // A fresh process cannot share the departed owner's writer lease.
++    drop(app);
++    let mut reopened = App::test_stub();
++    reopened.data_root = root.clone();
++    let effects = reopened.adopt_session(target);
++    assert!(
++        matches!(
++            &reopened.place,
++            crate::place::PlaceState::Opening {
++                binding: actual,
++                generation: 1,
++            } if actual == &binding
++        ),
++        "a fresh app state requests the same durable binding"
++    );
++    assert!(effects.iter().any(|effect| matches!(
++        effect,
++        Effect::OpenPlace {
++            session,
++            generation: 1,
++            binding: actual,
++        } if *session == target && actual == &binding
++    )));
++    let _ = std::fs::remove_dir_all(root);
++}
++
++#[test]
++fn stale_place_update_from_a_departed_session_is_ignored() {
++    let root = std::env::temp_dir().join(format!("turnstone-place-stale-{}", uuid::Uuid::new_v4()));
++    let mut app = App::test_stub();
++    app.data_root = root.clone();
++    let first = crate::panes::SessionId::new();
++    let second = crate::panes::SessionId::new();
++    let first_binding = crate::place::PlaceBindingV1::new(
++        crate::place::PlaceId([0x11; 32]),
++        crate::place::SharedContainerId([0x12; 32]),
++        crate::place::ChatSpaceId([0x13; 32]),
++        "first",
++    )
++    .unwrap();
++    let second_binding = crate::place::PlaceBindingV1::new(
++        crate::place::PlaceId([0x21; 32]),
++        crate::place::SharedContainerId([0x22; 32]),
++        crate::place::ChatSpaceId([0x23; 32]),
++        "second",
++    )
++    .unwrap();
++    session::save_place_binding(&session::session_dir(&root, first), &first_binding).unwrap();
++    session::save_place_binding(&session::session_dir(&root, second), &second_binding).unwrap();
++
++    app.adopt_session(first);
++    app.adopt_session(second);
++    assert_eq!(app.session_id, second);
++    let stale = crate::place::OfflinePlaceSnapshot {
++        graph: crate::place::GraphCache {
++            nodes: 99,
++            ..Default::default()
++        },
++        ..Default::default()
++    };
++    assert!(
++        app.apply_update(Update::PlaceOpened {
++            session: first,
++            generation: 1,
++            result: Ok(stale),
++        })
++        .is_empty(),
++        "a stale worker answer produces no follow-up effect"
++    );
++    assert!(
++        matches!(
++            &app.place,
++            crate::place::PlaceState::Opening {
++                binding,
++                generation: 2,
++            } if binding == &second_binding
++        ),
++        "the stale answer cannot replace the active session's opening"
++    );
++
++    let current = crate::place::OfflinePlaceSnapshot {
++        graph: crate::place::GraphCache {
++            nodes: 2,
++            ..Default::default()
++        },
++        ..Default::default()
++    };
++    assert_eq!(
++        app.apply_update(Update::PlaceOpened {
++            session: second,
++            generation: 2,
++            result: Ok(current.clone()),
++        }),
++        vec![Effect::Redraw]
++    );
++    assert_eq!(
++        app.place,
++        crate::place::PlaceState::Offline {
++            binding: second_binding,
++            generation: 2,
++            snapshot: current,
++        }
++    );
++    let _ = std::fs::remove_dir_all(root);
++}
++
++#[test]
++fn model_free_source_target_wait_tracks_exact_current_admission() {
++    let mut app = App::test_stub();
++    let url = "https://example.test/source";
++    app.graph_runtimes.visit(url);
++    let node = app
++        .graph_runtimes
++        .graph()
++        .get_node_by_url(url)
++        .unwrap()
++        .1
++        .id;
++    assert!(!crate::scenario::source_target_ready(
++        &app.available_actions(),
++        url
++    ));
++    let body = "<html><main>source fixture</main></html>";
++    app.content.note_fetched(
++        node,
++        url.into(),
++        crate::content::FetchedDocument {
++            bytes: body.as_bytes().to_vec(),
++            body: body.into(),
++            content_type: Some("text/html".into()),
++            effective_url: Some(url.into()),
++            acquired_at_ms: 1,
++        },
++        body.len(),
++    );
++    assert!(crate::scenario::source_target_ready(
++        &app.available_actions(),
++        url
++    ));
++    assert!(!crate::scenario::source_target_ready(
++        &app.available_actions(),
++        "https://example.test/other"
++    ));
++    app.graph_runtimes.visit("https://example.test/other");
++    assert!(!crate::scenario::source_target_ready(
++        &app.available_actions(),
++        url
++    ));
++}
+--- fix2/src/scenario.rs
++++ current/src/scenario.rs
+@@ -337,6 +337,8 @@
+     WaitSavedSources(u32),
+     /// Wait for the current admitted research query, not only its source owner.
+     WaitResearchSearch(u32),
++    /// Wait for an offered capture action bound to this exact current URL.
++    WaitSourceTarget(u32, String),
+     /// Wait for a current saved structured result or historical replay.
+     WaitStructuredResult(u32),
+     /// Wait until the focused saved-source reader has content and a live engine.
+@@ -503,3 +505,10 @@
+ #[path = "scenario/parse.rs"]
+ mod parse;
+ pub use parse::parse;
++
++/// Observe the ordinary offered capture action; never synthesize or invoke it.
++pub(crate) fn source_target_ready(actions: &[(String, crate::action::Action)], url: &str) -> bool {
++    actions.iter().filter(|(label, action)| label == "Save source and keep"
++        && matches!(action, crate::action::Action::CaptureSourceDocument { target } if target.url == url))
++        .count() == 1
++}
+--- fix2/src/scenario/parse.rs
++++ current/src/scenario/parse.rs
+@@ -484,6 +484,15 @@
+                 }
+                 Step::WaitSourceCapture(frames.unwrap(), ordinal.unwrap(), phase.unwrap().to_string())
+             }
++            "wait-source-target" => {
++                let mut fields = rest.split_whitespace();
++                let frames = fields.next().and_then(|value| value.parse::<u32>().ok());
++                let target = fields.next().filter(|value| !value.is_empty());
++                if frames.is_none() || target.is_none() || fields.next().is_some() {
++                    return err("wait-source-target wants '<frames> <exact-url>'");
++                }
++                Step::WaitSourceTarget(frames.unwrap(), target.unwrap().to_owned())
++            }
+             "wait-saved-sources" | "wait-saved-reader" | "wait-research-search" | "wait-structured-result" => {
+                 let frames = rest.trim().parse::<u32>().map_err(|_| {
+                     format!("line {}: {verb} wants '<frames>'", i + 1)
+--- fix2/src/scenario/tests.rs
++++ current/src/scenario/tests.rs
+@@ -347,3 +347,13 @@
+     ));
+     assert!(parse("wait-structured-result invalid").is_err());
+ }
++
++#[test]
++fn model_free_source_target_wait_requires_frames_and_exact_url() {
++    assert!(
++        matches!(parse("wait-source-target 600 https://example.test/A").unwrap().as_slice(),
++        [Step::WaitSourceTarget(600, url)] if url == "https://example.test/A")
++    );
++    assert!(parse("wait-source-target 600").is_err());
++    assert!(parse("wait-source-target invalid https://example.test/A").is_err());
++}
+--- fix2/src/shell/citation_event_history.rs
++++ current/src/shell/citation_event_history.rs
+@@ -0,0 +1,75 @@
++// STAGED ONLY: retained copy of existing AppEvent::AddressOpened observations.
++// This records evidence; it never dispatches or changes navigation.
++use std::collections::VecDeque;
++
++#[derive(Default)]
++pub(super) struct AddressEventHistory {
++    total: u64,
++    dropped: u64,
++    overflow: bool,
++    // None is a counted, redacted open. No arbitrary URI is retained.
++    events: VecDeque<(u64, Option<crate::saved_sources::Target>)>,
++}
++
++impl AddressEventHistory {
++    pub(super) fn record(&mut self, target: Option<crate::saved_sources::Target>) {
++        let Some(next) = self.total.checked_add(1) else {
++            self.overflow = true;
++            return;
++        };
++        self.total = next;
++        if self.events.len() == 128 {
++            self.events.pop_front();
++            match self.dropped.checked_add(1) {
++                Some(value) => self.dropped = value,
++                None => self.overflow = true,
++            }
++        }
++        self.events.push_back((next, target));
++    }
++
++    pub(super) fn observation(&self, selected: &Option<Vec<crate::research_search::Member>>,
++                              admitted: impl Fn(&crate::saved_sources::Key) -> bool) -> serde_json::Value {
++        let events: Vec<_> = self.events.iter().map(|(sequence, target)| {
++            let target = target.as_ref().filter(|value|
++                admitted(&value.key) && crate::research_scenario_privacy::capture_selected(selected, &value.key));
++            (*sequence, target)
++        }).collect();
++        serde_json::json!({"schema":"turnstone.m5-address-events/v1",
++            "total":self.total, "dropped":self.dropped, "overflow":self.overflow,
++            "events":events})
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn model_free_address_event_history_reports_bounded_loss() {
++        let mut h = AddressEventHistory::default();
++        let before = h.observation(&None, |_| true);
++        h.record(None);
++        let after = h.observation(&None, |_| true);
++        assert_eq!(before["total"], 0);
++        assert_eq!(after["total"], 1);
++        assert!(after["events"][0][1].is_null());
++        for _ in 0..128 { h.record(None); }
++        assert_eq!(h.observation(&None, |_| true)["dropped"], 1);
++        assert_eq!(h.observation(&None, |_| true)["events"].as_array().unwrap().len(), 128);
++    }
++
++    #[test]
++    fn model_free_address_event_history_rechecks_current_scope_and_admission() {
++        let key = crate::saved_sources::Key { session:crate::panes::SessionId::new(),
++            graph:crate::panes::GraphId::new(), node:uuid::Uuid::new_v4(),
++            annotation_manifest:"sealed-v1:blake3:canary".into() };
++        let target = crate::saved_sources::Target { key:key.clone(), text_hash:"blake3:canary".into(), selector:None };
++        let mut h = AddressEventHistory::default();
++        h.record(Some(target));
++        assert!(h.observation(&None, |_| false)["events"][0][1].is_null());
++        assert!(h.observation(&Some(vec![]), |_| true)["events"][0][1].is_null());
++        let selected = Some(vec![crate::research_search::Member::Capture(key)]);
++        assert!(h.observation(&selected, |_| true)["events"][0][1].is_object());
++    }
++}
+--- fix2/src/shell/drive/shell_run_scenario_step.rs
++++ current/src/shell/drive/shell_run_scenario_step.rs
+@@ -109,7 +109,7 @@
+             | Step::WaitKnot(..)
+             | Step::WaitSourceCapture(..)
+             | Step::WaitSavedSources(..)
+-            | Step::WaitResearchSearch(..)
++            | Step::WaitResearchSearch(..) | Step::WaitSourceTarget(..)
+             | Step::WaitStructuredResult(..)
+             | Step::WaitSavedReader(..)
+             | Step::WaitFile(..)
+--- fix2/src/shell/drive/shell_scenario_assert_no_surface.rs
++++ current/src/shell/drive/shell_scenario_assert_no_surface.rs
+@@ -251,6 +251,15 @@
+                 }) {
+                     return Err(format!(
+                         "wait-structured-result after {frames} frames: no current saved result or historical replay"
++                    ));
++                }
++            },
++            Step::WaitSourceTarget(frames, url) => {
++                if !self.wait_frames(*frames, |shell| {
++                    crate::scenario::source_target_ready(&shell.app.available_actions(), url)
++                }) {
++                    return Err(format!(
++                        "wait-source-target after {frames} frames: no unique admitted action for {url}"
+                     ));
+                 }
+             },
+@@ -424,6 +433,9 @@
+                     "session": self.app.session_id,
+                     "generation": self.app.source_capture_generation,
+                     "status": self.app.saved_sources.status,
++                    "address_events": self.address_event_history.observation(&selected, |key| self.app.saved_source_admitted(key)),
++                    "reader_scope": {"schema":"turnstone.m5-reader-scope/v1",
++                        "selected": if selected.is_none() { None::<&str> } else { Some("restricted") }},
+                     "admissions": crate::research_scenario_privacy::admissions(&selected, self.app.saved_source_admissions()),
+                     "entries": crate::research_scenario_privacy::entries(&selected, &self.app.saved_sources.entries),
+                     "readers": readers,
+--- fix2/src/shell/effects/shell_refresh_diagnostic_inspection.rs
++++ current/src/shell/effects/shell_refresh_diagnostic_inspection.rs
+@@ -0,0 +1,348 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++
++impl Shell {
++    /// Refresh only the value-facing projection; diagnostics authority remains
++    /// here, and Gloss reads its own independent immutable batch.
++    pub(in super::super) fn refresh_diagnostic_inspection(&mut self) {
++        let requested = self.app.frisket.iter_leaves().any(|(_, content, _)| {
++            content
++                .composition()
++                .is_some_and(|config| config.sections.iter().any(|id| id == "diagnostics"))
++        });
++        self.app.diagnostic_inspection =
++            requested.then(|| self.diagnostic_observations.inspection());
++    }
++
++    /// Hand the app's drained semantic events to their consumers. Navigation
++    /// events become trail-memory records for the root persona (owner = the
++    /// master public key's hex, the stable key-rooted tag). A bounded described
++    /// copy feeds automation without competing for this app-owned stream.
++    pub(super) fn drain_app_events(&mut self) {
++        let events = self.app.take_events();
++        if events.is_empty() {
++            return;
++        }
++        let owner: Option<String> = self
++            .app
++            .personae_root()
++            .map(|root| root.iter().map(|b| format!("{b:02x}")).collect());
++        let at_ms = std::time::SystemTime::now()
++            .duration_since(std::time::UNIX_EPOCH)
++            .map(|d| d.as_millis() as u64)
++            .unwrap_or(0);
++        for event in events {
++            if std::env::var_os("TURNSTONE_SCENARIO").is_some()
++                && let crate::observe::AppEvent::AddressOpened(address) = &event
++            {
++                let target = crate::saved_sources::parse_address(address).ok().flatten()
++                    .filter(|target| self.app.saved_source_admitted(&target.key))
++                    .filter(|target| crate::research_scenario_privacy::capture_selected(&self.app.research_search.selected, &target.key))
++                    .filter(|_| std::env::var("TURNSTONE_M5_EXPECTED_A1_URI").ok().as_deref() == Some(address.as_str()));
++                self.address_event_history.record(target);
++            }
++            self.diagnostic_observations.record(&event);
++            if self.observed_events.len() == 128 {
++                self.observed_events.pop_front();
++            }
++            self.observed_events.push_back(event.describe());
++            if let Some((url, transition)) = crate::trail_memory::navigation(&event) {
++                match &owner {
++                    Some(owner) => {
++                        self.trail_handle
++                            .command(crate::trail_memory::TrailCommand::Record {
++                                owner: owner.clone(),
++                                url,
++                                transition,
++                                at_ms,
++                            });
++                    },
++                    // The trail is the persona's, keyed by its root, which a
++                    // locked vault does not reveal (vault lock ruling 38).
++                    // Hold the visit until the root is adopted.
++                    None if self.pending_trail.len() < super::super::PENDING_TRAIL_CAP => {
++                        self.pending_trail.push((url, transition, at_ms));
++                    },
++                    None => {},
++                }
++            }
++        }
++    }
++
++    /// The effect runner: the one place effects meet ports.
++    /// Retire what the shell keeps beside a node's surface: its capture
++    /// registration and its imported frames. The caller removes or replaces
++    /// the node's content entry.
++    pub(super) fn retire_surface_extras(&mut self, node: uuid::Uuid) {
++        self.page_captures.remove_surface(node);
++        #[cfg(all(any(feature = "weld", feature = "scry", feature = "servo"), windows))]
++        self.surface_frames.remove(&node);
++        #[cfg(all(feature = "scry", windows))]
++        self.scry_frame_importers.remove(&node);
++    }
++
++    pub(super) fn spawn_browser_surface(
++        &mut self,
++        node: uuid::Uuid,
++        url: &str,
++        decision: &inker::routing::EngineRouteDecision,
++        source: pelt_core::PeltRouteSource,
++    ) -> Update {
++        let result = (|| -> Result<crate::content::ContentFacts, String> {
++            let scry = decision.engine_id == inker::routing::ENGINE_SCRYING_WEB;
++            let servo_profile = if decision.engine_id == inker::routing::ENGINE_GRAFT_SERVO {
++                Some(self.ensure_servo_engine()?)
++            } else {
++                None
++            };
++            if scry {
++                self.ensure_scry_engine()?;
++            } else if servo_profile.is_none() {
++                self.ensure_weld_engine()?;
++            }
++            let profile = if let Some(profile) = &servo_profile {
++                profile.clone()
++            } else if scry {
++                self.app
++                    .data_root
++                    .join("scry")
++                    .join("webview2-profiles")
++                    .join(node.to_string())
++            } else {
++                self.app
++                    .data_root
++                    .join("weld")
++                    .join("cef-cache")
++                    .join(node.to_string())
++            };
++            std::fs::create_dir_all(&profile).map_err(|error| {
++                format!(
++                    "could not create browser profile {}: {error}",
++                    profile.display()
++                )
++            })?;
++            let profile = profile.canonicalize().map_err(|error| {
++                format!(
++                    "could not resolve browser profile {}: {error}",
++                    profile.display()
++                )
++            })?;
++
++            let profile = browser_profile_path(profile)?;
++
++            // Producer epochs belong to one instance. Retire old custody and
++            // synchronization before a replacement can emit an equal epoch.
++            self.content_sessions.remove(&node);
++            self.clear_reader_appearances(node);
++            self.retire_surface_semantics(node);
++            self.surface_find_requests.remove(&node);
++            self.page_captures.remove_surface(node);
++            #[cfg(all(any(feature = "weld", feature = "scry", feature = "servo"), windows))]
++            self.surface_frames.remove(&node);
++            #[cfg(all(feature = "scry", windows))]
++            self.scry_frame_importers.remove(&node);
++
++            let spawn = SurfaceSpawnRequest {
++                url: url.to_owned(),
++                width: self.width.max(1),
++                height: self.height.max(1),
++                profile: EngineProfileBinding {
++                    user_data_dir: profile.to_string_lossy().into_owned(),
++                },
++                // Scry's host wrapper installs its dedicated producer fence
++                // in the adapter envelope. Weld's callback importer is separate.
++                fence_handle: None,
++            };
++            let mut producer = self
++                .surface_engines
++                .spawn(decision, &spawn)
++                .map_err(|error| error.to_string())?;
++            #[cfg(all(feature = "scry", windows))]
++            if scry {
++                let fence = self
++                    .scry_factory
++                    .as_ref()
++                    .ok_or_else(|| "Scry factory was not retained by the host".to_owned())?
++                    .synchronizer_for_profile(&profile)?;
++                let host = self
++                    .host
++                    .as_ref()
++                    .ok_or_else(|| "the Turnstone wgpu host is not ready".to_owned())?;
++                self.scry_frame_importers.insert(
++                    node,
++                    super::super::surface_frames::ScryingFrameImporter::new(
++                        host.device(),
++                        host.queue(),
++                        fence,
++                    ),
++                );
++            }
++            let capabilities = producer
++                .as_web_surface()
++                .map(|web| app_document_capabilities(web.document_capabilities()))
++                .unwrap_or_default();
++            replay_page_scale(&mut self.app, node, producer.as_mut());
++            // The node's content is the surface lane of its Pelt content, so
++            // navigation reaches the web plane through the same command API
++            // as a document (SC step 4, pass B).
++            let route = pelt_core::PeltRoute {
++                decision: decision.clone(),
++                source,
++                state: pelt_core::PeltRouteState::Surface,
++            };
++            #[cfg(all(feature = "servo", any(target_os = "macos", target_os = "linux")))]
++            let content = if servo_profile.is_some() {
++                let host = self
++                    .host
++                    .as_ref()
++                    .ok_or("the Turnstone wgpu host is not ready")?;
++                let browser = inker::cue_browser::BrowserSurface::new_with_report(
++                    producer,
++                    inker::webcue::Scope {
++                        owner: uuid::Uuid::new_v4().as_u128(),
++                        generation: 1,
++                    },
++                    inker::webcue::Viewport {
++                        width: spawn.width,
++                        height: spawn.height,
++                        scale: 1.,
++                    },
++                    super::super::servo::cue::capabilities().map_err(|e| e.to_string())?,
++                    super::super::servo::cue::frame_reader(
++                        host.device().clone(),
++                        host.queue().clone(),
++                    ),
++                )
++                .map_err(|e| e.to_string())?;
++                pelt_core::PeltContent::from_browser(browser, route)
++            } else {
++                pelt_core::PeltContent::from_surface(producer, (spawn.width, spawn.height), route)
++            };
++            #[cfg(not(all(feature = "servo", any(target_os = "macos", target_os = "linux"))))]
++            let content =
++                pelt_core::PeltContent::from_surface(producer, (spawn.width, spawn.height), route);
++            self.content_sessions.insert(node, content);
++            self.activate_surface_accessibility(node, false);
++            self.page_captures.register_surface(node);
++            tracing::info!(%node, %url, engine = %decision.engine_id, "surface content live");
++            Ok(crate::content::ContentFacts {
++                engine: decision.engine_id.clone(),
++                lane: crate::content::ContentLane::Surface,
++                structure: None,
++                lineage: None,
++                capabilities,
++            })
++        })();
++        match result {
++            Ok(facts) => Update::ContentSpawned {
++                node,
++                facts: Some(facts),
++            },
++            Err(error) => Update::ContentFailed {
++                node,
++                error: format!("{error} ({})", decision.engine_id),
++            },
++        }
++    }
++
++    /// The effect runner: the one place effects meet ports.
++    pub(in super::super) fn run_effects(&mut self, effects: Vec<Effect>) {
++        self.app.sync_research_context();
++        self.publish_engine_inventory();
++        // Semantic events noted by the update that produced these effects
++        // drain to their consumers first (the trail-memory capture today;
++        // the scenario log and diagnostics subscribe at this same drain).
++        self.drain_app_events();
++        for effect in effects {
++            if self.app.session_load_refused()
++                && !matches!(
++                    &effect,
++                    Effect::SwitchSession { .. } | Effect::Redraw | Effect::ClosePlace { .. }
++                )
++            {
++                continue;
++            }
++            let fetch_commands = browse::fetch_commands_for(&effect, &mut self.pending_fetches);
++            if !fetch_commands.is_empty() {
++                for command in fetch_commands {
++                    self.command_fetch(command);
++                }
++                continue;
++            }
++            match effect {
++                Effect::OpenThemeWorkshop
++                | Effect::OpenAlembicWorkshop
++                | Effect::ReplaceGeminiTrust { .. }
++                | Effect::SaveSession
++                | Effect::SaveChromeLayout(..)
++                | Effect::SaveGraphFolds { .. }
++                | Effect::CopyText(..)
++                | Effect::CreateResearchNote { .. }
++                | Effect::ChooseResearchNote { .. }
++                | Effect::ChooseKnotDocumentFile { .. }
++                | Effect::RetainProducerSelection { .. }
++                | Effect::ChooseClipPackageFile
++                | Effect::ImportClipPackage(..)
++                | Effect::ControlRetainedClip(..)
++                | Effect::ChooseClipExportFile { .. }
++                | Effect::ExportClipPackage { .. }
++                | Effect::OpenPlace { .. }
++                | Effect::JoinPlace { .. }
++                | Effect::FoundPlace { .. }
++                | Effect::OfferPlacePrekey { .. }
++                | Effect::InvitePlace { .. }
++                | Effect::WritePlaceArtifact { .. }
++                | Effect::ReadPlaceArtifact { .. }
++                | Effect::LeavePlace { .. }
++                | Effect::ReconnectPlace { .. }
++                | Effect::ClearPlaceLeftMark { .. }
++                | Effect::RunPlaceCommand { .. }
++                | Effect::ResyncPlace { .. }
++                | Effect::SetPlaceCollection { .. }
++                | Effect::ClosePlace { .. }
++                | Effect::StoreImage { .. }
++                | Effect::StoreDownload { .. }
++                | Effect::RecordDeleted { .. }
++                | Effect::EmptyRecycleBin
++                | Effect::RecallQuery { .. }
++                | Effect::RecordPageText { .. } => self.effect_open_theme_workshop(effect),
++                Effect::TrashSession { .. } | Effect::SwitchSession { .. } => {
++                    self.effect_trash_session(effect)
++                },
++                Effect::SpawnContent { .. } | Effect::UpdateContent { .. } => {
++                    self.effect_spawn_content(effect)
++                },
++                Effect::ControlContent { .. }
++                | Effect::ScaleContent { .. }
++                | Effect::CaptureContent { .. }
++                | Effect::PersistSourceCapture { .. }
++                | Effect::CaptureSourceDocument { .. }
++                | Effect::ResearchCompare(..)
++                | Effect::ResearchRecords(..)
++                | Effect::ResearchSearch(..)
++                | Effect::CancelResearchSearch
++                | Effect::LoadSavedSources { .. }
++                | Effect::ReadSavedSource { .. }
++                | Effect::RestoreReadingAnchor { .. }
++                | Effect::SaveReadingPreferences
++                | Effect::ReadFind { .. }
++                | Effect::FindContent { .. }
++                | Effect::ClearContentFind { .. }
++                | Effect::AnswerPermissionRequest { .. }
++                | Effect::AnswerAuthenticationRequest { .. }
++                | Effect::CloseContent { .. }
++                | Effect::Redraw
++                | Effect::SubmitMicron { .. }
++                | Effect::CancelMicronSubmission { .. }
++                | Effect::OpenWindow { .. }
++                | Effect::FetchPage { .. }
++                | Effect::CancelPage { .. }
++                | Effect::FetchFeed { .. }
++                | Effect::FetchFavicon { .. }
++                | Effect::SubmitSmolweb { .. } => self.effect_control_content(effect),
++            }
++        }
++    }
++}
+--- fix2/src/shell/mod.rs
++++ current/src/shell/mod.rs
+@@ -0,0 +1,287 @@
++// Copyright 2026 Mark Alan Boykin
++// This Source Code Form is subject to the terms of the Mozilla Public
++// License, v. 2.0. If a copy of the MPL was not distributed with this
++// file, You can obtain one at https://mozilla.org/MPL/2.0/.
++// SPDX-License-Identifier: MPL-2.0
++
++//! The desktop shell: winit window + the shared present stack, raw input
++//! mapped onto the canvas's semantic methods (continuous gestures) and onto
++//! [`Action`]s (app intents), the ports (fetch + physics actors), and the
++//! effect runner. The only module that touches a platform API; everything it
++//! learns flows back through the spine.
++
++#[cfg(feature = "workshop")]
++mod alembic_workshop;
++#[cfg(not(feature = "workshop"))]
++#[path = "../disabled/alembic_workshop.rs"]
++mod alembic_workshop;
++mod appearance_editor;
++mod appearance_receipt;
++mod content_pool;
++mod contributed_automation;
++mod controller_input;
++mod cue_content;
++mod document_a11y;
++mod citation_event_history;
++mod drive;
++mod effects;
++mod events;
++mod foreign_a11y;
++mod gestures;
++mod keys;
++mod native_frames;
++mod nomadnet_fetch;
++mod page_capture;
++mod reader_observe;
++mod render;
++mod renderers;
++mod research_notes;
++mod retained_clips;
++mod saved_sources;
++#[cfg(all(feature = "scry", windows))]
++mod scry;
++#[cfg(all(
++    feature = "servo",
++    any(windows, target_os = "macos", target_os = "linux")
++))]
++use crate::servo_host as servo;
++#[cfg(all(any(feature = "weld", feature = "scry", feature = "servo"), windows))]
++mod surface_frames;
++mod surface_poll;
++#[cfg(all(feature = "weld", windows))]
++pub(crate) mod weld;
++use render::{capture_composed, decode_sprite};
++mod lens;
++use lens::LensWindow;
++mod frame_keys;
++mod input;
++mod native_composition;
++mod outer_workspace;
++mod titlebar;
++pub(crate) mod window_input;
++use input::pointer_button;
++
++use std::collections::{HashMap, VecDeque};
++use std::path::Path;
++use std::sync::Arc;
++use std::sync::mpsc::Receiver;
++
++use fetch::{FetchCommand, FetchUpdate};
++use genet_documents::LocalFetcher;
++use genet_winit_host::SurfaceHost;
++use image::ImageEncoder;
++use inker::{DocumentSession, SessionClick, SessionRegistry, SessionSpawnRequest};
++use mere::canvas::WHEEL_PAN_SCALE;
++use mere_document_lanes::{
++    ReaderSessionEngine, RemoteFetcher, SmolwebInlineMediaPolicy, SmolwebSessionEngine,
++    SmolwebTheme,
++};
++use netrender::external_texture::ExternalTexturePlacement;
++use netrender::{ColorLoad, NetrenderOptions};
++use winit::application::ApplicationHandler;
++use winit::dpi::{PhysicalPosition, PhysicalSize};
++use winit::event::{ElementState, Ime, MouseButton, MouseScrollDelta, WindowEvent};
++use winit::event_loop::{ActiveEventLoop, EventLoopProxy};
++use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
++use winit::window::{Window, WindowId};
++
++pub(crate) mod a11y_bridge;
++mod window_a11y;
++
++use crate::panes::PaneContent;
++use crate::settings_pane::LiveSettingsHandle;
++use crate::settings_provider::ApplicationSettingsProvider;
++
++use crate::action::{Action, Effect, Update};
++use crate::app::App;
++use crate::surface::{Rect, SurfaceKind};
++use crate::{browse, session};
++
++use netrender::Scene;
++
++/// Each node's live content: Pelt's routed content, either a document lane
++/// around a host-loading, host-history controller or a surface lane around the
++/// web engine's producer (SC step 4). The App owns the node's load and graph
++/// history; a document controller opens the body the App fetched, and a
++/// surface takes navigation on its own web plane.
++pub(crate) use content_pool::NodeDocuments;
++
++#[cfg(test)]
++#[path = "servo_profile_tests.rs"]
++mod servo_profile_tests;
++
++#[cfg(test)]
++#[path = "tests.rs"]
++mod tests;
++
++/// Native window metadata captured from the shell's current primary/lens records.
++/// The portable controls use actual App lens identities and the same host planners.
++struct ContributedActionWindows {
++    primary: (u32, u32),
++    lenses: Vec<(usize, u32, u32)>,
++}
++
++#[cfg(test)]
++#[path = "contributed_window_a11y_tests.rs"]
++mod contributed_window_a11y_tests;
++
++#[cfg(test)]
++#[path = "render_recovery_tests.rs"]
++mod render_recovery_tests;
++
++#[path = "impl_node_sessions_for_node_documents.rs"]
++mod impl_node_sessions_for_node_documents;
++#[path = "impl_node_surfaces_for_node_documents.rs"]
++mod impl_node_surfaces_for_node_documents;
++#[path = "impl_pelt_core_pelt_clock_for.rs"]
++mod impl_pelt_core_pelt_clock_for;
++#[path = "standard_content_engines.rs"]
++mod standard_content_engines;
++pub(crate) use standard_content_engines::standard_content_engines;
++#[path = "content_engines_with_client_limits.rs"]
++mod content_engines_with_client_limits;
++use content_engines_with_client_limits::content_engines_with_client_limits;
++#[path = "content_engines_with_remote.rs"]
++mod content_engines_with_remote;
++use content_engines_with_remote::content_engines_with_remote;
++#[path = "project_engine_inventory.rs"]
++mod project_engine_inventory;
++pub(crate) use project_engine_inventory::project_engine_inventory;
++#[path = "servo_construction_availability.rs"]
++mod servo_construction_availability;
++use servo_construction_availability::servo_construction_availability;
++#[path = "weld_construction_availability.rs"]
++mod weld_construction_availability;
++use weld_construction_availability::weld_construction_availability;
++#[path = "scry_construction_availability.rs"]
++mod scry_construction_availability;
++use scry_construction_availability::scry_construction_availability;
++#[path = "smolweb_inline_media_policy.rs"]
++mod smolweb_inline_media_policy;
++use smolweb_inline_media_policy::smolweb_inline_media_policy;
++#[path = "standard_route_policy.rs"]
++mod standard_route_policy;
++use standard_route_policy::standard_route_policy;
++#[path = "content_link_target.rs"]
++mod content_link_target;
++use content_link_target::content_link_target;
++#[path = "pane_display_label.rs"]
++mod pane_display_label;
++use pane_display_label::pane_display_label;
++#[path = "start_share_reader.rs"]
++mod start_share_reader;
++use start_share_reader::start_share_reader;
++#[path = "start_publishing.rs"]
++mod start_publishing;
++use start_publishing::start_publishing;
++#[path = "shared_scenario_from_env.rs"]
++mod shared_scenario_from_env;
++#[path = "shell_start_private_connect.rs"]
++mod shell_start_private_connect;
++use shared_scenario_from_env::shared_scenario_from_env;
++#[path = "servo_profile_directory.rs"]
++#[cfg(any(
++    test,
++    all(
++        feature = "servo",
++        any(windows, target_os = "macos", target_os = "linux")
++    )
++))]
++mod servo_profile_directory;
++#[cfg(any(
++    test,
++    all(
++        feature = "servo",
++        any(windows, target_os = "macos", target_os = "linux")
++    )
++))]
++use servo_profile_directory::servo_profile_directory;
++#[path = "surface_poll_interval_from_env.rs"]
++mod surface_poll_interval_from_env;
++use surface_poll_interval_from_env::surface_poll_interval_from_env;
++#[path = "shared_out_dir_from_env.rs"]
++mod shared_out_dir_from_env;
++use shared_out_dir_from_env::shared_out_dir_from_env;
++#[path = "frame_placement.rs"]
++mod frame_placement;
++use frame_placement::frame_placement;
++#[path = "take_window_capture.rs"]
++mod take_window_capture;
++#[path = "window_recovery_new.rs"]
++mod window_recovery_new;
++use take_window_capture::take_window_capture;
++#[path = "raster_capture_refusal.rs"]
++mod raster_capture_refusal;
++use raster_capture_refusal::raster_capture_refusal;
++#[path = "admit_recovered_core.rs"]
++mod admit_recovered_core;
++use admit_recovered_core::admit_recovered_core;
++#[path = "impl_drop_for_shell.rs"]
++mod impl_drop_for_shell;
++#[path = "primary_content_plan.rs"]
++mod primary_content_plan;
++#[path = "shell_ensure_render_recovery.rs"]
++mod shell_ensure_render_recovery;
++#[path = "shell_new.rs"]
++mod shell_new;
++#[path = "shell_publish_engine_inventory.rs"]
++mod shell_publish_engine_inventory;
++#[path = "shell_push_primary_a11y_tree.rs"]
++mod shell_push_primary_a11y_tree;
++#[path = "shell_scenario_pump.rs"]
++mod shell_scenario_pump;
++#[path = "shell_surface_plan.rs"]
++mod shell_surface_plan;
++use primary_content_plan::primary_content_plan;
++#[path = "primary_content_plan_with_rects.rs"]
++mod primary_content_plan_with_rects;
++use primary_content_plan_with_rects::primary_content_plan_with_rects;
++#[path = "contributed_action_plan.rs"]
++mod contributed_action_plan;
++use contributed_action_plan::contributed_action_plan;
++#[path = "dispatch_contributed_action.rs"]
++mod dispatch_contributed_action;
++use dispatch_contributed_action::dispatch_contributed_action;
++#[path = "smolweb_session_engine_ids.rs"]
++mod smolweb_session_engine_ids;
++use smolweb_session_engine_ids::SMOLWEB_SESSION_ENGINE_IDS;
++#[path = "node_sessions.rs"]
++mod node_sessions;
++pub(crate) use node_sessions::NodeSessions;
++#[path = "node_surfaces.rs"]
++mod node_surfaces;
++pub(crate) use node_surfaces::NodeSurfaces;
++#[path = "shell_clock.rs"]
++mod shell_clock;
++pub(crate) use shell_clock::ShellClock;
++#[path = "pending_trail_cap.rs"]
++mod pending_trail_cap;
++use pending_trail_cap::PENDING_TRAIL_CAP;
++#[path = "private_binding.rs"]
++mod private_binding;
++use private_binding::PrivateBinding;
++#[path = "planned_scene.rs"]
++mod planned_scene;
++use planned_scene::PlannedScene;
++#[path = "planned_layer.rs"]
++mod planned_layer;
++use planned_layer::PlannedLayer;
++#[path = "composite_layer.rs"]
++mod composite_layer;
++use composite_layer::CompositeLayer;
++#[path = "window_recovery.rs"]
++mod window_recovery;
++use window_recovery::WindowRecovery;
++#[path = "host_file_drag.rs"]
++mod host_file_drag;
++use host_file_drag::HostFileDrag;
++#[path = "shell.rs"]
++mod shell;
++pub use shell::Shell;
++
++/// Wake classification keeps model invalidation apart from GPU completion.
++#[derive(Clone, Copy, Debug)]
++pub enum ShellEvent {
++    ActorWake,
++    NativeFrameReady,
++}
+--- fix2/src/shell/shell.rs
++++ current/src/shell/shell.rs
+@@ -0,0 +1,327 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++
++/// The turnstone shell: app state plus the window, present stack, and ports
++/// that drive it.
++pub struct Shell {
++    pub(super) app: App,
++    /// The shell-owned live value projection. Settings panes receive clones;
++    /// the shell alone polls and applies the typed chrome snapshot.
++    pub(super) live_settings: LiveSettingsHandle,
++    /// Wakes the loop when the physics or fetch actor has news.
++    pub(super) proxy: EventLoopProxy<crate::shell::ShellEvent>,
++    /// Proxy callbacks admit one actor drain at the end of the native batch.
++    pub(super) actor_wake_pending: bool,
++    pub(super) native_frames: super::native_frames::NativeFrameQueue,
++    pub(super) native_frame_wake: armillary::Wake,
++    /// The fetch actor's command handle; dropping it ends the actor.
++    pub(super) fetch_handle: armillary::ActorHandle<FetchCommand>,
++    pub(super) network_offline: bool,
++    pub(super) offline_attempts: Arc<std::sync::atomic::AtomicUsize>,
++    /// Durable Gemini server pins. The protocol verifier shares this exact
++    /// instance; the shell retains it for explicit change acceptance.
++    pub(super) gemini_trust: Arc<crate::gemini_trust::GeminiTrustStore>,
++    /// Completed fetches, drained after each notified native event batch.
++    pub(super) fetch_rx: Receiver<FetchUpdate>,
++    /// The session jar's durable home, flushed after each drain.
++    pub(super) cookie_custody: crate::cookie_custody::CookieCustody,
++    pub(super) nomadnet_handle: armillary::demand::DemandActor<FetchCommand, FetchUpdate>,
++    pub(super) nomadnet_rx: armillary::demand::DemandUpdates<FetchCommand, FetchUpdate>,
++    pub(super) micron_submission_handle:
++        armillary::demand::DemandActor<nomadnet_fetch::MicronSubmissionCommand, Update>,
++    pub(super) micron_submission_rx:
++        armillary::demand::DemandUpdates<nomadnet_fetch::MicronSubmissionCommand, Update>,
++    /// Serialized download custody writes, kept off the event-loop thread.
++    pub(super) download_handle: armillary::ActorHandle<crate::download::DownloadCommand>,
++    /// Completed custody writes, drained beside fetch answers.
++    pub(super) download_rx: Receiver<Update>,
++    /// The recycle-bin actor (the eidetic deleted-node bin at the session's
++    /// bin dir); commands stage records / re-point on a session switch.
++    pub(super) bin_handle: armillary::ActorHandle<crate::recycle::BinCommand>,
++    /// The bin's answers (BinListed / BinFailed), drained beside the fetches.
++    pub(super) bin_rx: Receiver<Update>,
++    /// The trail-memory actor (browsing capture into the session's memory
++    /// store; search wiring W1). Fed from the semantic-event drain; re-pointed
++    /// and released on the same session edges as the bin.
++    pub(super) trail_handle: Arc<armillary::ActorHandle<crate::trail_memory::TrailCommand>>,
++    /// The trail's recall answers (RecallHits / RecallFailed), drained beside
++    /// the bin's.
++    pub(super) trail_rx: Receiver<Update>,
++    pub(super) research_worker: crate::research_search::Worker,
++    /// The retained-place worker. It owns every Gemot, Commons, chat, group,
++    /// and redb handle for the active session.
++    pub(super) place_handle: crate::place_service::PlacePort,
++    pub(super) place_settings: crate::place::worker::PlaceWorkerSettings,
++    pub(super) place_wake: armillary::Wake,
++    pub(super) capture_library: crate::place::captured_collection::LocalCaptureLibrary,
++    pub(super) custody_trail_ready: Option<Receiver<()>>,
++    pub(super) pending_place_reopen:
++        Option<(crate::panes::SessionId, u64, crate::place::PlaceBindingV1)>,
++    /// Generation-tagged app-owned answers from the place worker.
++    pub(super) place_rx: crate::place_service::PlaceUpdates,
++    pub(super) custody_generation: Arc<std::sync::atomic::AtomicU64>,
++    pub(super) custody_setup: Option<(
++        crate::custody_binding::Setup,
++        Receiver<crate::custody_binding::SetupEvent>,
++    )>,
++    pub(super) custody_expected_principal: Option<crate::identity::CustodyPrincipal>,
++    pub(super) custody_binding: Option<PrivateBinding>,
++    pub(super) retired_setups: Vec<crate::custody_binding::Setup>,
++    pub(super) retired_watchers: Vec<crate::custody_binding::Watcher>,
++    pub(super) custody_wake: Arc<dyn Fn() + Send + Sync>,
++    /// Knot's publish source, held while the identity is pending: the
++    /// publishing service speaks as the profile; unlock configures its owner.
++    pub(super) pending_publish_source: Option<crate::publish_service::PublishSource>,
++    /// Visits made while the identity is pending, filed under the root at
++    /// unlock (at most [`PENDING_TRAIL_CAP`]).
++    pub(super) pending_trail: Vec<(String, eidetic::TraceTransition, u64)>,
++    /// The system clipboard, opened once at startup: the handle holds X11 and
++    /// Wayland selection ownership for its lifetime. `Err` carries why it is
++    /// unreachable, so a copy refuses out loud rather than panicking. It stays
++    /// here, behind the effect seam; App and the place worker never see one.
++    pub(super) clipboard: Result<Box<dyn genet_clipboard::TextClipboard>, String>,
++    /// Last cursor position in physical px. winit's `MouseInput` carries no
++    /// position, so the shell tracks it from `CursorMoved`.
++    pub(super) cursor: (f32, f32),
++    /// Live Ctrl state, for the omnibar summon chords (Ctrl+L / Ctrl+K).
++    pub(super) ctrl: bool,
++    /// Live Alt state, for the nav chords (Alt+Left / Alt+Right).
++    pub(super) alt: bool,
++    /// Live Shift state, for the tear-out modifier arms (Ctrl+Shift = fork).
++    pub(super) shift: bool,
++    pub(super) meta: bool,
++    /// The taproot scenario driver (activated by `TURNSTONE_SCENARIO`): the
++    /// generic one-step-per-frame loop every genet app shares, driving this
++    /// Shell through its
++    /// `Automatable`/`Driveable` impl — the one scenario loop turnstone runs.
++    /// `shared_out_dir` stays
++    /// on `self` (the scenario is taken out during a tick) so `capture` can reach
++    /// it. `shared_done` guards writing the sentinel exactly once.
++    pub(super) shared_scenario: Option<taproot::Scenario>,
++    /// Exact action copied from the common catalog for scenario stale-source
++    /// controls; delivery still lowers through the ordinary shell action path.
++    pub(super) scenario_queued_action: Option<Action>,
++    pub(super) pending_scenario_wait: Option<drive::PendingScenarioWait>,
++    pub(super) held_contributed_click: Option<contributed_automation::HeldClick>,
++    pub(super) contributed_click_request: u64,
++    /// A bounded copy of semantic events after their ordinary consumers have
++    /// received them. Automation drains this copy, so its assertions do not
++    /// compete with trail memory for the app's one event stream.
++    pub(super) observed_events: VecDeque<String>,
++    pub(super) address_event_history: super::citation_event_history::AddressEventHistory,
++    pub(super) diagnostic_observations: crate::diagnostic_observations::DiagnosticObservations,
++    pub(super) shared_out_dir: std::path::PathBuf,
++    /// A capture the next `render` fulfills from the very views it presents
++    /// (never a re-rasterization — the receipt must be the presented frame).
++    pub(super) pending_capture: Option<std::path::PathBuf>,
++    pub(super) pending_capture_readback: Option<appearance_receipt::PendingCapture>,
++    pub(super) pending_native_diagnostics: Vec<appearance_receipt::PendingCapture>,
++    pub(super) main_receipt: appearance_receipt::MainReceipt,
++    /// A capture the next LENS render fulfills (the scenario's capture-lens
++    /// verb; targets the first live lens window).
++    pub(super) pending_lens_capture: Option<std::path::PathBuf>,
++    pub(super) pending_lens_capture_window: Option<WindowId>,
++    pub(super) window: Option<Arc<Window>>,
++    /// The OS AccessKit bridge for the primary window, when installed.
++    pub(super) a11y_adapter: Option<genet_winit_host::AccessKitBridge>,
++    /// Routes for the current host tree. Document admissions are captured
++    /// separately at enqueue and revalidated against their live source.
++    pub(super) a11y_routes: crate::a11y::A11yRoutes,
++    /// Assistive actions queued by the platform thread, drained here.
++    pub(super) a11y_actions: crate::shell::a11y_bridge::ActionQueue,
++    /// Activation occurs on a platform thread; replay subtrees on the UI thread.
++    pub(super) a11y_epoch: Option<u64>,
++    pub(super) a11y_surface_layout: Vec<(uuid::Uuid, accesskit::Rect)>,
++    pub(super) surface_a11y: crate::foreign_a11y::ForeignA11y,
++    pub(super) host: Option<SurfaceHost>,
++    pub(super) render_recovery: Option<Arc<genet_render_host::SharedRenderCore>>,
++    pub(super) primary_recovery: Option<WindowRecovery>,
++    pub(super) render_recovery_blocked: Option<String>,
++    pub(super) width: u32,
++    pub(super) height: u32,
++    /// The content port (rung 4, session-engines plan phase 4): the session
++    /// registry does the engine-id dispatch, and the live sessions — retained,
++    /// non-Send handles — live here, keyed by the same node ids App's
++    /// ContentStates tracks. Ports own handles; App holds data.
++    /// Shared with every node's Pelt controller, which spawns from it.
++    pub(super) content_engines: Arc<SessionRegistry<netrender::Scene>>,
++    /// Pelt's surface registry for document controllers. A node's web surface
++    /// is spawned from `surface_engines` below and held as the surface lane
++    /// of its content.
++    pub(super) pelt_surface_engines: Arc<inker::SurfaceEngineRegistry>,
++    pub(super) content_sessions: NodeDocuments,
++    pub(super) cue_frames: cue_content::CueFrames,
++    /// Long-lived frame-streaming engines. The neutral inker registry chooses
++    /// the producer; each node's content holds its non-Send live handle, and
++    /// the shell keeps the imported frame cache.
++    pub(super) surface_engines: inker::SurfaceEngineRegistry,
++    /// Mailbox fallback cadence until producers expose an event-loop wake hook.
++    pub(super) surface_poll_clock: surface_poll::SurfacePollClock,
++    pub(super) document_clock: content_pool::DocumentClock,
++    pub(super) primary_focused: bool,
++    /// Last monitor-rate observation on the existing event/render cadence.
++    pub(super) physics_display_rate_last_observed: Option<std::time::Instant>,
++    /// Exact app request/query identity for progressive hosted find results.
++    pub(super) surface_find_requests: std::collections::HashMap<uuid::Uuid, (u64, String)>,
++    pub(super) page_captures: page_capture::CaptureCorrelation,
++    #[cfg(all(any(feature = "weld", feature = "scry", feature = "servo"), windows))]
++    pub(super) surface_frames:
++        std::collections::HashMap<uuid::Uuid, Option<surface_frames::ImportedSurfaceFrame>>,
++    #[cfg(all(feature = "scry", windows))]
++    pub(super) scry_factory: Option<Arc<scry::TurnstoneScryFactory>>,
++    #[cfg(all(
++        feature = "servo",
++        any(windows, target_os = "macos", target_os = "linux")
++    ))]
++    pub(super) servo_factory: Option<Arc<servo::TurnstoneServoFactory>>,
++    #[cfg(all(feature = "scry", windows))]
++    pub(super) scry_frame_importers:
++        std::collections::HashMap<uuid::Uuid, surface_frames::ScryingFrameImporter>,
++    /// A restored Weld-pinned node can request content before winit has created
++    /// its device. Keep it requested until `resumed` instead of falsely
++    /// reporting an unavailable engine.
++    pub(super) pending_surface_spawns: Vec<(uuid::Uuid, String)>,
++    /// One hub per visited holder, plus this profile's own root. Shared with
++    /// the Knot authoring engine, which was boxed into the content registry
++    /// long before any place was joined.
++    pub(super) knot_visits: crate::knot_authoring::KnotVisits,
++    /// Content spawns waiting on a dial to the mere that holds them, by
++    /// holder root. Replayed through the ordinary spawn effect once the visit
++    /// is open, exactly as a Weld-pinned node waits for its device.
++    pub(super) pending_visit_spawns: Vec<([u8; 32], uuid::Uuid, String)>,
++    /// Correlates a visit answer with the request that asked for it.
++    pub(super) next_visit_request: u64,
++    /// Place-held documents this profile was refused, kept so observation can
++    /// say `refused` where there is no surface to ask.
++    pub(super) knot_visit_refusals: Vec<crate::observe::KnotDocumentFacts>,
++    /// Configured Knot destination for typed Inspector clips. The handle owns
++    /// neither file authority nor vault keys; it only queues endpoint intents.
++    pub(super) knot_clip: Option<crate::knot_authoring::KnotClipHandle>,
++    pub(super) knot_notes_root: Option<std::path::PathBuf>,
++    pub(super) clip_offers: HashMap<crate::panes::PaneId, research_notes::ClipOffer>,
++    /// Mere's routing vocabulary over inker's engine rules: address -> engine id.
++    pub(super) route_policy: inker::EngineRoutePolicy,
++    /// Profile/origin user-agent policy, pending prompts, and the process-only
++    /// credential provider. Graph data receives summaries, never secrets.
++    pub(super) web_policy: crate::web_policy::WebPolicyService,
++    /// Monotonic epoch for the sessions' pump clock.
++    pub(super) epoch: std::time::Instant,
++    /// In-flight fetch correlation: which node asked for each URL, noted
++    /// before commanding the actor, reattached by the adapter on completion.
++    pub(super) pending_fetches: browse::PendingFetches,
++    /// The surface a pointer press landed on, held until release (rung 5 slice
++    /// B). Pointer routing captures on press so a press-drag-release stays with
++    /// one surface: the canvas needs paired `pointer_down`/`pointer_up`, and a
++    /// content click must not leak its release to the canvas beneath.
++    pub(super) pointer_capture: Option<crate::surface::SurfaceKind>,
++    pub(super) contributed_pointer: Option<input::ContributedPointer>,
++    /// DOM `buttons` state for the mouse pointer. Pointer Events carries the
++    /// full post-event mask, including on move, so CEF can distinguish hover
++    /// from a pressed drag.
++    pub(super) surface_pointer_buttons: inker::PointerButtons,
++    /// Winit touch ids are u64 and may be reused after a contact ends. Live
++    /// contacts receive compact, collision-free DOM/CEF pointer ids and each
++    /// retains its own content-surface capture until Up or Cancel.
++    pub(super) touch_input: window_input::TouchInput,
++    pub(super) input_window: u64,
++    pub(super) window_focus: HashMap<u64, crate::surface::FocusTarget>,
++    pub(super) window_buttons: HashMap<u64, inker::PointerButtons>,
++    /// Files offered by the OS drag manager and the current web-surface target.
++    /// Graph drops keep using the addressed-content import path.
++    pub(super) host_file_drag: HostFileDrag,
++    /// The frame-streaming content surface currently under the pointer. This
++    /// scopes cursor-shape callbacks and restores the host default on leave.
++    pub(super) hovered_surface: Option<uuid::Uuid>,
++    /// Whether the last scroll key delivered to focused content actually moved
++    /// the page (`Some(true/false)`), or `None` if no content scroll key has
++    /// been delivered. A probe for the scenario runner: it lets a receipt
++    /// assert both that a page scrolled AND that an idempotent end (PageUp at
++    /// the top) is honestly a no-op, so the receipt proves real offset
++    /// semantics rather than a method that always returns true.
++    pub(super) content_scroll_moved: Option<bool>,
++    /// The Roster pane's cambium grid (rung 5 slice D): a retained
++    /// `GenetAppRunner` whose state and DOM persist between the frame that draws
++    /// it and the click that hits it. `!Send`, like the content sessions, so it
++    /// lives here rather than in App.
++    /// The Gloss pane (minimap): the first pane whose cambium view carries a
++    /// custom-paint leaf, so it owns a leaf registry beside its runner.
++    /// The Trail pane: the sectioned list's first consumer (the hand-DOM Trail
++    /// retired). Retained like the others.
++    /// The Inspector pane: detail sections over app truth (inert content;
++    /// the detail_panel's own contract). Retained like the others.
++    /// The Workbench pane (rung 5 slice E): platen's tiling walked into cells
++    /// wearing cambium tab strips. Retained like the others.
++    /// Inspector also retains the followed object's viewer controls.
++    /// The application-settings projection over the host provider. Retained
++    /// like the other Cambium panes.
++    /// Owner controls for the active retained Knot publishing service.
++    /// The service owns carrier, vault read handle, tickets, and revocations;
++    /// the pane only projects and commands it.
++    pub(super) publish_service: Option<Arc<crate::publish_service::KnotPublishingService>>,
++    /// Recipient controls for a private ticket. This service does not need a
++    /// local Knot authoring host, only the profile root it derives from.
++    pub(super) shared_knot_service:
++        Option<Arc<crate::share_reader_service::KnotShareReaderService>>,
++    pub(super) device_receipts_service:
++        Option<Arc<crate::device_receipts_service::DeviceReceiptsService>>,
++    /// The Overmap pane (O1): the switcher as a graph view, retained like the
++    /// Gloss minimap it mirrors.
++    /// Every retained per-pane Cambium renderer, keyed by `PaneId`.
++    /// See [`renderers::PaneRenderers`] for why they live in one place.
++    pub(super) renderers: renderers::PaneRenderers,
++    pub(super) outer_frames: std::cell::RefCell<HashMap<usize, crate::outer_frame::OuterFrame>>,
++    pub(super) outer_capture: Option<outer_workspace::OuterCapture>,
++    pub(super) outer_focus: Option<frame_keys::HeaderFocus>,
++    pub(super) titlebar_clicks: HashMap<usize, cambium_genet_winit_host::ClickCadence>,
++    /// Runtime product surface factories. Concrete product state never enters
++    /// the shell; admission yields the erased sessions retained above.
++    pub(super) surface_providers: crate::contributed_surface::SurfaceProviderRegistry,
++    /// Every mounted Redshank dock, by library identity. `!Send` like the
++    /// other retained product state, so it lives here rather than in App;
++    /// the app owns the model, the store and the one audio runtime.
++    pub(super) redshank_docks: crate::redshank_episode_surface::RedshankDocks,
++    /// Which pane the pointer is hovering (pane pointer-move routing): lets a
++    /// move off a pane deliver its Leave so hover emphasis clears.
++    pub(super) hovered_pane: Option<crate::panes::PaneId>,
++    /// The chrome, as a cambium view over a FOREST of window-roots (one
++    /// shared document, one projection per window): retained + diffed, row
++    /// clicks live, lens windows carry the caption chip. Replaces the
++    /// hand-built `ui::chrome_scene`.
++    pub(super) chrome: crate::chrome_view::ChromeSurfaces,
++    /// A workbench tab drag in flight, scoped to its source pane. Two
++    /// Workbenches can be visible at once, so a member id alone cannot choose
++    /// which Forme arrangement a release mutates.
++    pub(super) wb_tab_drag: Option<(crate::panes::PaneId, uuid::Uuid)>,
++    /// A workbench divider drag in flight: the pressed band plus the pane's
++    /// window origin (the walk is pane-local; pointer deliveries are window
++    /// coords).
++    pub(super) wb_divider_drag: Option<(crate::workbench_tiling::WbDivider, (f32, f32))>,
++    /// The divider drag in flight: the pressed seam's placement, held from
++    /// press to release (like `pointer_capture`, which also points at it).
++    /// Cursor moves turn into ratios through cambium's `Split::ratio_at` —
++    /// the component owns the gesture math; the shell only feeds it points.
++    pub(super) divider_drag: Option<crate::pane::DividerPlacement>,
++    /// A LENS window's seam drag in flight: which lens (ordinal) plus the
++    /// pressed seam's placement in that window's tiling. Moves lower
++    /// `SetSplitRatio` aimed at the lens's space; release persists once.
++    pub(super) lens_divider_drag: Option<(usize, crate::pane::DividerPlacement)>,
++    /// Lens windows (rung 7, one-state-N-windows): the same graph through a
++    /// window-owned camera. The primary window keeps the full pane/chrome
++    /// experience; each lens renders the canvas with ITS `Viewport` installed
++    /// around the pass and stashed back after — two windows on one graph hold
++    /// distinct cameras over shared node positions (the canvas's install
++    /// seam, exactly as the multi-window doctrine recorded).
++    pub(super) lens_windows: std::collections::HashMap<WindowId, LensWindow>,
++    /// Lens windows requested but not yet created (window creation needs the
++    /// `ActiveEventLoop`, which effects don't carry; the event handlers drain
++    /// this while one is in scope).
++    pub(super) pending_windows: Vec<usize>,
++    pub(super) theme_editor: Option<appearance_editor::EditorWindow>,
++    pub(super) theme_editor_requested: bool,
++    pub(super) close_after_theme_editor: bool,
++    pub(super) alembic_workshop: Option<alembic_workshop::WorkshopWindow>,
++    pub(super) alembic_workshop_requested: bool,
++    pub(super) close_after_alembic_workshop: bool,
++}
+--- fix2/src/shell/shell_new.rs
++++ current/src/shell/shell_new.rs
+@@ -0,0 +1,464 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++
++impl Shell {
++    pub fn new(proxy: EventLoopProxy<crate::shell::ShellEvent>, address: Option<String>) -> Self {
++        let client_limits = crate::client_limits::BrowserClientLimits::from_environment()
++            .expect("Turnstone client limit configuration is invalid");
++        let (mut app, boot_effects) = App::boot(address.as_deref());
++        match crate::chrome_layout::ChromeLayout::load(&app.data_root) {
++            Ok(layout) => {
++                let mut chrome = app.shell_chrome_config().clone();
++                chrome.layout = layout;
++                app.set_shell_chrome_config(chrome);
++            },
++            Err(error) => tracing::warn!(%error, "chrome placement could not be loaded"),
++        }
++        let initial_provider = match ApplicationSettingsProvider::load(&app.data_root) {
++            Ok(provider) => provider,
++            Err(error) => {
++                tracing::warn!(%error, "application settings could not be loaded at shell startup");
++                ApplicationSettingsProvider::from_failed_load(&app.data_root, error.to_string())
++            },
++        };
++        let live_settings = LiveSettingsHandle::new(initial_provider.settings());
++        live_settings.publish_provider(&initial_provider);
++        app.apply_chrome_settings_snapshot(&live_settings.snapshot());
++        let policy_path = crate::web_policy::default_policy_path(&app.data_root);
++        let policy_registry = crate::web_policy::PermissionRegistry::load(
++            "default",
++            crate::web_policy::ProfileStorage::Persistent(policy_path),
++        )
++        .unwrap_or_else(|error| {
++            tracing::warn!(%error, "persistent web policy is unavailable; using an isolated in-memory profile");
++            crate::web_policy::PermissionRegistry::private("default-fallback")
++        });
++        let request_timeout = std::env::var("TURNSTONE_WEB_REQUEST_TIMEOUT_MS")
++            .ok()
++            .and_then(|value| value.parse::<u64>().ok())
++            .map(std::time::Duration::from_millis)
++            .unwrap_or_else(|| std::time::Duration::from_secs(30));
++        let web_policy = crate::web_policy::WebPolicyService::new(policy_registry, request_timeout);
++
++        // Gemini must never fall through errand's permissive trust default.
++        // Corrupt trust state fails startup rather than silently forgetting
++        // pins and treating a changed certificate as first contact.
++        let gemini_trust = Arc::new(
++            crate::gemini_trust::GeminiTrustStore::load(&app.data_root)
++                .expect("Turnstone could not open its durable Gemini trust store"),
++        );
++        fetch::install_smolweb_tofu(gemini_trust.clone());
++
++        // The fetch actor on its own armillary thread, waking this loop like
++        // the physics actor does.
++        let fetch_proxy = proxy.clone();
++        let fetch_wake: armillary::Wake = Arc::new(move || {
++            let _ = fetch_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        let (nomadnet_handle, nomadnet_rx) = nomadnet_fetch::spawn(Arc::clone(&fetch_wake));
++        let (micron_submission_handle, micron_submission_rx) =
++            nomadnet_fetch::spawn_submissions(Arc::clone(&fetch_wake));
++        // The session jar is durable again: loaded here, flushed on each drain.
++        let cookie_custody = crate::cookie_custody::CookieCustody::open(&app.data_root)
++            .expect("Turnstone could not open its cookie store");
++        // The process session's stores: the page actor and every other fetch
++        // in this shell share them, so an episode's ranged reads carry the
++        // same cookies as the pages (ranged fetch plan, lane T1). Keying the
++        // set by persona is lane T2.
++        let stores = fetch::session_stores().clone();
++        let network_offline = crate::offline::enabled();
++        let offline_attempts = Arc::new(std::sync::atomic::AtomicUsize::new(0));
++        let (fetch_handle, fetch_rx) = if network_offline {
++            crate::offline::spawn(fetch_wake, offline_attempts.clone())
++        } else {
++            fetch::spawn_fetcher_with_policy(fetch_wake, stores.clone(), client_limits.fetch)
++        };
++        let blocking_fetch: Arc<dyn fetch::Fetch> = if network_offline {
++            Arc::new(crate::offline::NoNetwork(offline_attempts.clone()))
++        } else {
++            Arc::new(
++                fetch::NetFetch::new(&stores).expect("Turnstone could not build its fetch handle"),
++            )
++        };
++
++        let download_proxy = proxy.clone();
++        let download_wake: armillary::Wake = Arc::new(move || {
++            let _ = download_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        let (download_handle, download_rx) = crate::download::spawn_downloads(download_wake);
++
++        // The recycle-bin actor over THIS session's bin store, waking the
++        // loop the same way; it answers its spawn with the initial list.
++        let bin_proxy = proxy.clone();
++        let bin_wake: armillary::Wake = Arc::new(move || {
++            let _ = bin_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        let (bin_handle, bin_rx) = crate::recycle::spawn_bin_for_session(
++            bin_wake,
++            (!app.session_load_refused()).then(|| crate::recycle::bin_dir(&app.session_dir())),
++        );
++
++        // The trail-memory actor over THIS session's memory store (search
++        // wiring W1 + W2): browsing capture in, recall answers out, behind
++        // the same wake shape.
++        let trail_proxy = proxy.clone();
++        let trail_wake: armillary::Wake = Arc::new(move || {
++            let _ = trail_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        let capture_library = crate::place::captured_collection::LocalCaptureLibrary::default();
++        let storage_limits = app.research_storage_limits();
++        app.research.set_storage_limits(storage_limits.clone());
++        let (trail_handle, trail_rx) = crate::trail_memory::spawn_trail_for_session_with_limits(
++            trail_wake,
++            (!app.session_load_refused())
++                .then(|| crate::trail_memory::memory_dir(&app.session_dir())),
++            capture_library.clone(),
++            app.source_capture_generation,
++            storage_limits,
++        );
++        let trail_handle = Arc::new(trail_handle);
++        let research_proxy = proxy.clone();
++        let research_wake: armillary::Wake = Arc::new(move || {
++            let _ = research_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        let research_worker = crate::research_search::Worker::spawn(
++            app.research.clone(),
++            trail_handle.clone(),
++            research_wake,
++        );
++
++        let place_proxy = proxy.clone();
++        let place_wake: armillary::Wake = Arc::new(move || {
++            let _ = place_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        let place_settings = crate::place::worker::PlaceWorkerSettings {
++            capture_library: capture_library.clone(),
++            ..crate::place::worker::PlaceWorkerSettings::default()
++        };
++        // Identity binding runs off the UI thread and returns only a bounded,
++        // epoch-bound route. The place worker waits until that route is ready.
++        let (place_handle, place_rx) =
++            crate::place_service::configure(place_wake.clone(), place_settings.clone());
++        if let Some(root) = &app.identity {
++            place_handle.command(crate::place::worker::PlaceWorkerCommand::AdoptIdentity(
++                root.clone(),
++            ));
++        }
++        let custody_generation = Arc::new(std::sync::atomic::AtomicU64::new(1));
++        let custody_proxy = proxy.clone();
++        let custody_wake: Arc<dyn Fn() + Send + Sync> = Arc::new(move || {
++            let _ = custody_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        let custody_setup = match crate::custody_binding::Setup::connect(
++            custody_generation.clone(),
++            custody_wake.clone(),
++        ) {
++            Ok((setup, events)) => Some((setup, events)),
++            Err(error) => {
++                tracing::warn!(%error, "profile custody connection remains pending");
++                None
++            },
++        };
++        let mut pending_publish_source = None;
++
++        // The content port's ordinary lanes: both Genet static renderers plus
++        // the engine-native smolweb family. Route policy selects one by
++        // address/media type without app dispatch.
++        let mut content_engines = content_engines_with_client_limits(client_limits);
++        let knot_proxy = proxy.clone();
++        let knot_wake: Arc<dyn Fn() + Send + Sync> = Arc::new(move || {
++            let _ = knot_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        let mut knot_clip = None;
++        let mut knot_notes_root = None;
++        let mut publish_service = None;
++        let shared_knot_service = app
++            .identity
++            .clone()
++            .filter(|_| !network_offline)
++            .and_then(start_share_reader);
++        let device_receipts_service =
++            match crate::device_receipts_service::DeviceReceiptsService::start() {
++                Ok(service) => Some(Arc::new(service)),
++                Err(error) => {
++                    tracing::warn!(%error, "device receipts reader is unavailable");
++                    None
++                },
++            };
++        let knot_visits = crate::knot_authoring::KnotVisits::default();
++        #[cfg(feature = "authoring")]
++        match crate::knot_authoring::KnotAuthoringEngine::for_profile(
++            knot_wake,
++            knot_visits.clone(),
++            &app.data_root,
++        ) {
++            Ok(Some(mut engine)) => {
++                knot_clip = engine.clip_handle();
++                knot_notes_root = engine.notes_root();
++                if let Some(source) = engine.take_publish_source() {
++                    match app.identity.clone() {
++                        Some(root) if !network_offline => {
++                            publish_service = start_publishing(source, root)
++                        },
++                        Some(_) => {},
++                        None => pending_publish_source = Some(source),
++                    }
++                }
++                content_engines.register(Box::new(engine));
++            },
++            Ok(None) => {},
++            Err(error) => tracing::warn!(%error, "Knot authoring is unavailable"),
++        }
++
++        let clipboard = genet_clipboard::SystemClipboard::new()
++            .map(|clipboard| Box::new(clipboard) as Box<dyn genet_clipboard::TextClipboard>)
++            .map_err(|error| {
++                tracing::warn!(%error, "the system clipboard is unavailable");
++                error.to_string()
++            });
++
++        let mut surface_providers = crate::contributed_surface::SurfaceProviderRegistry::new();
++        surface_providers
++            .register_provider(crate::knot_document_surface::KnotDocumentProvider::default())
++            .expect("the built-in Knot document provider is unique");
++        #[cfg(feature = "sky")]
++        surface_providers
++            .register_provider(crate::sky_surface::SkySurfaceProvider::default())
++            .expect("the built-in Sky provider is unique");
++        #[cfg(feature = "inference")]
++        surface_providers
++            .register_provider(
++                crate::distillery_installed_surface::DistilleryInstalledProvider::default(),
++            )
++            .expect("the built-in Distillery installed provider is unique");
++        // Redshank's own compact dock, admitted rather than copied. The shell
++        // holds the dock handles; the app holds the one listening authority,
++        // which is where the device is opened.
++        app.sync_research_context();
++        let answers_proxy = proxy.clone();
++        let answers_wake: armillary::Wake = Arc::new(move || {
++            let _ = answers_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        });
++        #[cfg(feature = "inference")]
++        surface_providers
++            .register_provider(crate::inference_surface::AnswerProvider::new(
++                Arc::new(crate::trail_memory::CaptureInferenceOwner {
++                    trail: trail_handle.clone(),
++                    bridge: app.research.clone(),
++                }),
++                answers_wake,
++                app.research.clone(),
++            ))
++            .expect("the answer provider is unique");
++        let redshank_docks = crate::redshank_episode_surface::RedshankDocks::new();
++        surface_providers
++            .register_provider(
++                crate::redshank_episode_surface::RedshankEpisodeProvider::new(
++                    redshank_docks.clone(),
++                ),
++            )
++            .expect("the Redshank episode provider is unique");
++        if app.session_load_refused() {
++            app.redshank = crate::redshank_host::RedshankHost::detached(
++                crate::redshank_host::Output::Device,
++                blocking_fetch,
++            );
++        } else {
++            app.redshank = crate::redshank_host::RedshankHost::open(
++                &app.session_dir(),
++                crate::redshank_host::Output::Device,
++                blocking_fetch,
++            );
++        }
++        let redshank_proxy = proxy.clone();
++        app.redshank.set_wake(Arc::new(move || {
++            let _ = redshank_proxy.send_event(crate::shell::ShellEvent::ActorWake);
++        }));
++        let native_proxy = proxy.clone();
++        let native_frame_wake: armillary::Wake = Arc::new(move || {
++            let _ = native_proxy.send_event(crate::shell::ShellEvent::NativeFrameReady);
++        });
++        let mut shell = Self {
++            app,
++            live_settings,
++            proxy,
++            actor_wake_pending: false,
++            native_frames: Default::default(),
++            native_frame_wake,
++            fetch_handle,
++            network_offline,
++            offline_attempts,
++            gemini_trust,
++            fetch_rx,
++            cookie_custody,
++            nomadnet_handle,
++            nomadnet_rx,
++            micron_submission_handle,
++            micron_submission_rx,
++            download_handle,
++            download_rx,
++            bin_handle,
++            bin_rx,
++            trail_handle,
++            trail_rx,
++            research_worker,
++            place_handle,
++            place_settings,
++            place_wake,
++            capture_library,
++            custody_trail_ready: None,
++            pending_place_reopen: None,
++            place_rx,
++            custody_generation,
++            custody_setup,
++            custody_expected_principal: None,
++            custody_binding: None,
++            retired_setups: Vec::new(),
++            retired_watchers: Vec::new(),
++            custody_wake,
++            pending_publish_source,
++            pending_trail: Vec::new(),
++            clipboard,
++            cursor: (0.0, 0.0),
++            ctrl: false,
++            alt: false,
++            shift: false,
++            meta: false,
++            shared_scenario: shared_scenario_from_env(),
++            scenario_queued_action: None,
++            pending_scenario_wait: None,
++            held_contributed_click: None,
++            contributed_click_request: 0,
++            observed_events: VecDeque::with_capacity(128),
++            address_event_history: Default::default(),
++            diagnostic_observations:
++                crate::diagnostic_observations::DiagnosticObservations::from_env(),
++            shared_out_dir: shared_out_dir_from_env(),
++            pending_capture: None,
++            pending_capture_readback: None,
++            pending_native_diagnostics: Vec::new(),
++            main_receipt: Default::default(),
++            pending_lens_capture: None,
++            pending_lens_capture_window: None,
++            window: None,
++            a11y_adapter: None,
++            a11y_routes: crate::a11y::A11yRoutes::new(),
++            a11y_actions: std::sync::Arc::new(std::sync::Mutex::new(Default::default())),
++            a11y_epoch: None,
++            a11y_surface_layout: Vec::new(),
++            surface_a11y: crate::foreign_a11y::ForeignA11y::new(),
++            host: None,
++            render_recovery: None,
++            primary_recovery: None,
++            render_recovery_blocked: None,
++            width: 1024,
++            height: 600,
++            content_engines: Arc::new(content_engines),
++            pelt_surface_engines: Arc::new(inker::SurfaceEngineRegistry::new()),
++            content_sessions: NodeDocuments::default(),
++            cue_frames: Default::default(),
++            surface_engines: inker::SurfaceEngineRegistry::new(),
++            surface_poll_clock: surface_poll::SurfacePollClock::new(
++                surface_poll_interval_from_env(),
++            ),
++            document_clock: content_pool::DocumentClock::new(surface_poll_interval_from_env()),
++            primary_focused: true,
++            physics_display_rate_last_observed: None,
++            surface_find_requests: std::collections::HashMap::new(),
++            page_captures: page_capture::CaptureCorrelation::default(),
++            #[cfg(all(any(feature = "weld", feature = "scry", feature = "servo"), windows))]
++            surface_frames: std::collections::HashMap::new(),
++            #[cfg(all(feature = "scry", windows))]
++            scry_factory: None,
++            #[cfg(all(
++                feature = "servo",
++                any(windows, target_os = "macos", target_os = "linux")
++            ))]
++            servo_factory: None,
++            #[cfg(all(feature = "scry", windows))]
++            scry_frame_importers: std::collections::HashMap::new(),
++            pending_surface_spawns: Vec::new(),
++            knot_visits,
++            pending_visit_spawns: Vec::new(),
++            next_visit_request: 1,
++            knot_visit_refusals: Vec::new(),
++            knot_clip,
++            knot_notes_root,
++            clip_offers: HashMap::new(),
++            route_policy: standard_route_policy(),
++            web_policy,
++            epoch: std::time::Instant::now(),
++            pending_fetches: browse::PendingFetches::default(),
++            pointer_capture: None,
++            contributed_pointer: None,
++            surface_pointer_buttons: inker::PointerButtons::NONE,
++            touch_input: window_input::TouchInput::default(),
++            input_window: 0,
++            window_focus: HashMap::new(),
++            window_buttons: HashMap::new(),
++            host_file_drag: HostFileDrag::default(),
++            hovered_surface: None,
++            content_scroll_moved: None,
++            publish_service,
++            shared_knot_service,
++            device_receipts_service,
++            renderers: Default::default(),
++            outer_frames: Default::default(),
++            outer_capture: None,
++            outer_focus: None,
++            titlebar_clicks: HashMap::new(),
++            surface_providers,
++            redshank_docks,
++            hovered_pane: None,
++            chrome: crate::chrome_view::ChromeSurfaces::new(),
++            wb_tab_drag: None,
++            wb_divider_drag: None,
++            divider_drag: None,
++            lens_divider_drag: None,
++            lens_windows: std::collections::HashMap::new(),
++            pending_windows: Vec::new(),
++            theme_editor: None,
++            theme_editor_requested: false,
++            close_after_theme_editor: false,
++            alembic_workshop: None,
++            alembic_workshop_requested: false,
++            close_after_alembic_workshop: false,
++        };
++        shell.publish_engine_inventory();
++        shell.run_effects(boot_effects);
++        shell
++    }
++
++    pub(super) fn has_live_content(&self, node: &uuid::Uuid) -> bool {
++        self.content_sessions.contains_key(node)
++    }
++
++    pub(super) fn has_independent_reader_appearance(&self, node: &uuid::Uuid) -> bool {
++        self.content_sessions.session(node).is_some_and(|session| {
++            session
++                .as_any_ref()
++                .is::<mere_document_lanes::ReaderDocumentSession>()
++        })
++    }
++
++    pub(super) fn clear_surface_content(&mut self) {
++        self.cancel_content_pointer();
++        self.cue_frames.clear();
++        self.content_sessions.retain_appearances(|_, _| false);
++        self.clear_surface_semantics();
++        self.content_sessions
++            .retain(|_, content| content.lane() != pelt_core::PeltLane::Surface);
++        self.surface_find_requests.clear();
++        self.page_captures.clear_surfaces();
++        #[cfg(all(any(feature = "weld", feature = "scry", feature = "servo"), windows))]
++        self.surface_frames.clear();
++        #[cfg(all(feature = "scry", windows))]
++        self.scry_frame_importers.clear();
++    }
++
++    pub(super) fn clear_reader_appearances(&mut self, node: uuid::Uuid) {
++        self.content_sessions.clear_appearances(node);
++    }
++}
+--- fix2/src/trail_memory/fault_helper.rs
++++ current/src/trail_memory/fault_helper.rs
+@@ -0,0 +1,269 @@
++// STAGED SOURCE, NOT IN THE BUILD. Integrate as a child of m5_inspection only
++// after the runner containment and source-freeze review described in report.md.
++// One ignored test may invoke inject(); it must run after the intact processes
++// have exited, inside the fault-only mount namespace.
++use super::*;
++use eidetic::Store;
++use std::path::{Path, PathBuf};
++
++#[derive(serde::Deserialize)]
++#[serde(deny_unknown_fields)]
++struct Input {
++    schema: String,
++    run_id: uuid::Uuid,
++    a1_admission: crate::saved_sources::Admission,
++    a1_target: crate::saved_sources::Target,
++    a1_content: crate::saved_sources::Content,
++    a2_admission: crate::saved_sources::Admission,
++    a2_target: crate::saved_sources::Target,
++    a2_content: crate::saved_sources::Content,
++    all_admissions: Vec<crate::saved_sources::Admission>,
++    sealed_capture_receipts: ReceiptBaseline,
++}
++
++#[derive(serde::Deserialize)]
++#[serde(deny_unknown_fields)]
++struct ReceiptBaseline { schema: String, count: usize, blake3: String }
++
++fn verify_receipt_baseline(receipts: &[crate::source_capture::DepositReceipt], baseline: &ReceiptBaseline) {
++    assert_eq!(baseline.schema, "turnstone.m5-sealed-capture-receipts/v1");
++    assert_eq!(receipts.len(), baseline.count, "receipt inventory count differs from intact inspection");
++    let canonical = serde_json::to_vec(receipts).expect("receipt inventory serialization");
++    assert_eq!(blake3::hash(&canonical).to_hex().to_string(), baseline.blake3,
++        "receipt inventory differs from intact inspection");
++}
++
++// A session's sealed capture owner is a distinct Fjall partition/root. Its
++// complete receipt inventory includes saved, pending, failed and detached
++// capture requests. The target's own decoded body may share its raw bytes.
++fn exclusively_referenced(receipts: &[crate::source_capture::DepositReceipt],
++                          a: &crate::saved_sources::Admission, raw: &str) -> bool {
++    let own: Vec<_> = receipts.iter().filter(|r| r.saved && r.request.session == a.key.session
++        && r.request.graph == a.key.graph && r.request.node == a.key.node
++        && r.request.source.as_ref().is_some_and(|s| s.hash == raw)
++        && r.stored.as_ref().is_some_and(|s| s.annotation_manifest == a.key.annotation_manifest
++            && s.raw_manifest == raw)).collect();
++    if own.len() != 1 { return false; }
++    let owner_id = own[0].request.id;
++    receipts.iter().all(|r| {
++        if r.request.id == owner_id { return true; }
++        let Some(source) = r.request.source.as_ref() else { return false; };
++        source.hash != raw && source.body_hash != raw && r.stored.as_ref().is_none_or(|s|
++            s.raw_manifest != raw && s.annotation_manifest.strip_prefix("sealed-v1:").unwrap_or(&s.annotation_manifest) != raw)
++    })
++}
++
++#[cfg(test)]
++mod sharing_tests {
++    use super::*;
++
++    #[test]
++    fn model_free_missing_fault_rejects_saved_and_unsaved_shared_receipts() {
++        let session = crate::panes::SessionId::new();
++        let graph = crate::panes::GraphId::new();
++        let node = uuid::Uuid::new_v4();
++        let key = crate::saved_sources::Key { session, graph, node, annotation_manifest:"sealed-v1:annotation".into() };
++        let a = crate::saved_sources::Admission { key, occurrence:0, title:String::new(), url:String::new(), error:None };
++        let source = crate::source_capture::SourceIdentity { hash:"raw-a".into(), body_hash:"raw-a".into(),
++            effective_url:None, content_type:None, acquired_at_ms:1 };
++        let request = crate::source_capture::CaptureRequest { id:uuid::Uuid::new_v4(), session, graph, node,
++            url:String::new(), source:Some(source), keep:false };
++        let saved = crate::source_capture::DepositReceipt { saved:true, request,
++            stored:Some(crate::action::StoredSourceDocument { raw_manifest:"raw-a".into(),
++                annotation_manifest:"sealed-v1:annotation".into() }) };
++        assert!(exclusively_referenced(&[saved.clone()], &a, "raw-a"));
++        let mut other = saved.clone();
++        other.request.id = uuid::Uuid::new_v4();
++        other.request.node = uuid::Uuid::new_v4();
++        other.saved = false;
++        other.stored = None;
++        assert!(!exclusively_referenced(&[saved.clone(), other.clone()], &a, "raw-a"));
++        other.request.source.as_mut().unwrap().hash = "different".into();
++        assert!(!exclusively_referenced(&[saved.clone(), other.clone()], &a, "raw-a"));
++        other.request.source.as_mut().unwrap().body_hash = "different".into();
++        other.stored = Some(crate::action::StoredSourceDocument { raw_manifest:"raw-a".into(), annotation_manifest:"sealed-v1:other".into() });
++        assert!(!exclusively_referenced(&[saved, other], &a, "raw-a"));
++    }
++}
++
++fn assert_graph_ref(graph: &mere::kernel::graph::Graph, admission: &crate::saved_sources::Admission) {
++    assert!(admission.error.is_none() && admission.key.is_sealed());
++    let (_, node) = graph.get_node_by_id(admission.key.node).expect("source node missing");
++    let facet = graph.facets().get(&node.id, &chartulary::FacetId::new(
++        crate::source_capture::SOURCE_CAPTURE_REFERENCES_FACET,
++    )).and_then(|v| v.as_array()).expect("source facet missing");
++    assert_eq!(facet.get(admission.occurrence).and_then(|v| v.as_str()),
++        Some(admission.key.annotation_manifest.as_str()));
++}
++
++// These paths are fixed by a separately reviewed mount namespace, not supplied
++// by the input JSON. /m5/fault-copy is the ONLY writable profile mount.
++pub(super) fn inject() {
++    let root = PathBuf::from("/m5/fault-copy");
++    assert_eq!(root.canonicalize().unwrap(), root);
++    let input: Input = serde_json::from_slice(&std::fs::read("/m5/input/missing-input.json").unwrap()).unwrap();
++    assert_eq!(input.schema, "turnstone.m5-missing-input/v1");
++    let marker = format!("turnstone-m5-fault-copy/v1\n{}\n", input.run_id);
++    assert_eq!(std::fs::read(root.join("m5-fault-copy-marker")).unwrap(), marker.as_bytes());
++    let fixture = Path::new("/m5/custody").canonicalize().unwrap();
++    assert_eq!(fixture, Path::new("/m5/custody"));
++    assert_eq!(std::fs::read(fixture.join("fixture-marker")).unwrap(), b"eidetic-retention-20261019\n");
++    let endpoint = Path::new("/m5/custody/app.sock").canonicalize().unwrap();
++    assert!(endpoint.starts_with(&fixture));
++    let sealer = crate::identity::RootIdentity::Custody(
++        djinn::door::custody_identity::CustodyIdentity::connect_at(
++            endpoint.to_str().unwrap(), "turnstone").expect("fixture custody"));
++
++    let a = &input.a1_admission;
++    let b = &input.a2_admission;
++    assert_eq!(a.key, input.a1_target.key);
++    assert_eq!(b.key, input.a2_target.key);
++    assert!(input.a1_target.selector.is_some(), "A1 must be an exact passage citation");
++    assert_eq!(a.key.session, b.key.session);
++    assert_eq!(a.key.graph, b.key.graph);
++    assert_eq!(a.key.node, b.key.node);
++    assert_ne!(a.key.annotation_manifest, b.key.annotation_manifest);
++    assert_ne!(input.a1_content.text_hash, input.a2_content.text_hash);
++    assert_ne!(input.a1_content.raw_manifest, input.a2_content.raw_manifest,
++        "A2 shares the A1 raw payload");
++    assert_eq!(input.a1_target.text_hash, input.a1_content.text_hash);
++    assert_eq!(input.a2_target.text_hash, input.a2_content.text_hash);
++    crate::saved_sources::validate_selector(&input.a1_content, &input.a1_target).unwrap().expect("A1 quote");
++    crate::saved_sources::validate_selector(&input.a2_content, &input.a2_target).unwrap();
++    let session = *a.key.session.as_uuid();
++    let session_dir = root.join("sessions").join(session.to_string());
++    let graph = super::strict_inspection_graph(&session_dir).expect("fault copy graph");
++    assert_graph_ref(&graph, a);
++    assert_graph_ref(&graph, b);
++    let mut graph_refs = std::collections::HashSet::new();
++    for (_, node) in graph.nodes() {
++        if let Some(value) = graph.facets().get(&node.id, &chartulary::FacetId::new(
++            crate::source_capture::SOURCE_CAPTURE_REFERENCES_FACET)) {
++            for (occurrence, value) in value.as_array().expect("invalid reference series").iter().enumerate() {
++                assert!(graph_refs.insert((node.id, occurrence, value.as_str().expect("invalid reference").to_owned())));
++            }
++        }
++    }
++    let mut observed_refs = std::collections::HashSet::new();
++    for item in &input.all_admissions {
++        assert_eq!(item.key.session, a.key.session);
++        assert_eq!(item.key.graph, a.key.graph);
++        assert_graph_ref(&graph, item);
++        assert!(observed_refs.insert((item.key.node, item.occurrence, item.key.annotation_manifest.clone())));
++    }
++    assert_eq!(graph_refs, observed_refs, "capture inventory incomplete");
++    assert!(input.all_admissions.iter().any(|item| item == a));
++    assert!(input.all_admissions.iter().any(|item| item == b));
++    let sealed = super::super::sealed_memory_dir(&session_dir.join("memory"));
++    assert!(sealed.is_dir());
++    let mut store = FjallStore::open(&sealed).expect("fault copy store");
++    let receipts_before = super::super::sealed_capture::receipts(&mut store, &sealer).expect("capture receipts");
++    verify_receipt_baseline(&receipts_before, &input.sealed_capture_receipts);
++    assert!(exclusively_referenced(&receipts_before, a, &input.a1_content.raw_manifest),
++        "another saved or unsaved capture receipt references A1 bytes, or A1 receipt is ambiguous");
++    let receipt_digest = format!("blake3:{}", input.sealed_capture_receipts.blake3);
++    assert_eq!(super::super::sealed_capture::content(&mut store, &sealer, a).unwrap(), input.a1_content);
++    assert_eq!(super::super::sealed_capture::content(&mut store, &sealer, b).unwrap(), input.a2_content);
++    for item in &input.all_admissions {
++        let content = super::super::sealed_capture::content(&mut store, &sealer, item).expect("capture inventory unavailable");
++        if item != a {
++            assert_ne!(content.raw_manifest, input.a1_content.raw_manifest, "another admitted capture shares A1 bytes");
++        }
++    }
++    let raw: eidetic::ManifestId = serde_json::from_value(
++        serde_json::Value::String(input.a1_content.raw_manifest.clone())).unwrap();
++    let manifest = pollster::block_on(eidetic::manifest::load_manifest(&mut store, raw)).unwrap().unwrap();
++    let key = format!("blob:{}", raw.0.to_hex());
++    assert_eq!(manifest.id, raw);
++    assert_eq!(manifest.content_hash, raw.0);
++    assert_eq!(manifest.sources.len(), 1);
++    assert!(matches!(&manifest.sources[0], eidetic::BlobSource::Local { key: held } if held == &key));
++    assert!(eidetic::seal::seal_marker(&manifest).unwrap().is_some());
++    let before = pollster::block_on(store.get(&key)).unwrap().expect("A1 bytes absent before fault");
++    let ciphertext_hash = eidetic::Hash::of(&before).to_string();
++    // Owner API only. Keep the manifest, graph admission and receipt intact.
++    pollster::block_on(store.delete(&key)).expect("owner deletion");
++    store.sync_all().expect("durable fault");
++    drop(store);
++    let mut store = FjallStore::open(&sealed).unwrap();
++    assert!(pollster::block_on(store.get(&key)).unwrap().is_none());
++    assert_eq!(pollster::block_on(eidetic::manifest::load_manifest(&mut store, raw)).unwrap().unwrap(), manifest);
++    assert_eq!(super::super::sealed_capture::receipts(&mut store, &sealer).expect("capture receipts after deletion"), receipts_before,
++        "capture receipts changed");
++    assert!(super::super::sealed_capture::content(&mut store, &sealer, a).is_err());
++    assert_eq!(super::super::sealed_capture::content(&mut store, &sealer, b).unwrap(), input.a2_content);
++    let receipt = serde_json::json!({"schema":"turnstone.m5-missing-fault/v1", "run_id":input.run_id,
++        "a1_target":input.a1_target, "a2_target":input.a2_target,
++        "a1_raw_manifest":input.a1_content.raw_manifest, "a2_raw_manifest":input.a2_content.raw_manifest,
++        "deleted_ciphertext_hash":ciphertext_hash, "manifest_preserved":true,
++        "capture_receipts_hash":receipt_digest, "capture_receipts_preserved":true,
++        "a1_raw_absent_after_reopen":true, "a1_owner_refused":true, "a2_owner_unchanged":true});
++    // create_new ensures a failed or repeated attempt cannot overwrite evidence.
++    use std::io::Write;
++    let mut out = std::fs::OpenOptions::new().write(true).create_new(true)
++        .open("/m5/output/fault.json").expect("fresh output");
++    out.write_all(&serde_json::to_vec_pretty(&receipt).unwrap()).unwrap();
++    out.sync_all().unwrap();
++}
++
++// A second ignored test runs this in a fresh process after inject exits and
++// before the GUI opens. It checks owner state, including the unchanged receipt
++// inventory, rather than trusting the injector's success status alone.
++pub(super) fn verify_preservation() {
++    let root = PathBuf::from("/m5/fault-copy");
++    assert_eq!(root.canonicalize().unwrap(), root);
++    let input: Input = serde_json::from_slice(&std::fs::read("/m5/input/missing-input.json").unwrap()).unwrap();
++    assert_eq!(input.schema, "turnstone.m5-missing-input/v1");
++    assert_eq!(std::fs::read(root.join("m5-fault-copy-marker")).unwrap(),
++        format!("turnstone-m5-fault-copy/v1\n{}\n", input.run_id).as_bytes());
++    let fault: serde_json::Value = serde_json::from_slice(&std::fs::read("/m5/output/fault.json").unwrap()).unwrap();
++    assert_eq!(fault["schema"], "turnstone.m5-missing-fault/v1");
++    assert_eq!(fault["run_id"], input.run_id.to_string());
++    assert_eq!(fault["a1_target"], serde_json::to_value(&input.a1_target).unwrap());
++    assert_eq!(fault["a2_target"], serde_json::to_value(&input.a2_target).unwrap());
++    let fixture = Path::new("/m5/custody").canonicalize().unwrap();
++    assert_eq!(fixture, Path::new("/m5/custody"));
++    assert_eq!(std::fs::read(fixture.join("fixture-marker")).unwrap(), b"eidetic-retention-20261019\n");
++    let endpoint = fixture.join("app.sock").canonicalize().unwrap();
++    assert!(endpoint.starts_with(&fixture));
++    let sealer = crate::identity::RootIdentity::Custody(
++        djinn::door::custody_identity::CustodyIdentity::connect_at(endpoint.to_str().unwrap(), "turnstone").unwrap());
++    let a = &input.a1_admission;
++    let session = *a.key.session.as_uuid();
++    let session_dir = root.join("sessions").join(session.to_string());
++    let graph = super::strict_inspection_graph(&session_dir).unwrap();
++    assert_graph_ref(&graph, a);
++    assert_graph_ref(&graph, &input.a2_admission);
++    let sealed = super::super::sealed_memory_dir(&session_dir.join("memory"));
++    assert!(sealed.is_dir());
++    let mut store = FjallStore::open(sealed).unwrap();
++    let receipts = super::super::sealed_capture::receipts(&mut store, &sealer).unwrap();
++    verify_receipt_baseline(&receipts, &input.sealed_capture_receipts);
++    assert!(exclusively_referenced(&receipts, a, &input.a1_content.raw_manifest));
++    let digest = format!("blake3:{}", input.sealed_capture_receipts.blake3);
++    assert_eq!(fault["capture_receipts_hash"], digest);
++    assert_eq!(receipts.iter().filter(|r| r.saved && r.request.session == a.key.session
++        && r.request.graph == a.key.graph && r.request.node == a.key.node
++        && r.stored.as_ref().is_some_and(|s| s.annotation_manifest == a.key.annotation_manifest
++            && s.raw_manifest == input.a1_content.raw_manifest)).count(), 1);
++    let raw: eidetic::ManifestId = serde_json::from_value(
++        serde_json::Value::String(input.a1_content.raw_manifest.clone())).unwrap();
++    let manifest = pollster::block_on(eidetic::manifest::load_manifest(&mut store, raw)).unwrap().unwrap();
++    let key = format!("blob:{}", raw.0.to_hex());
++    assert_eq!(manifest.id, raw);
++    assert_eq!(manifest.content_hash, raw.0);
++    assert_eq!(manifest.sources.len(), 1);
++    assert!(matches!(&manifest.sources[0], eidetic::BlobSource::Local { key: held } if held == &key));
++    assert!(eidetic::seal::seal_marker(&manifest).unwrap().is_some());
++    assert!(pollster::block_on(store.get(&key)).unwrap().is_none());
++    assert!(super::super::sealed_capture::content(&mut store, &sealer, a).is_err());
++    assert_eq!(super::super::sealed_capture::content(&mut store, &sealer, &input.a2_admission).unwrap(), input.a2_content);
++    let receipt = serde_json::json!({"schema":"turnstone.m5-missing-postcheck/v1", "run_id":input.run_id,
++        "capture_receipts_hash":digest, "capture_receipts_preserved":true,
++        "a1_raw_absent":true, "a1_owner_refused":true, "a2_owner_unchanged":true});
++    use std::io::Write;
++    let mut out = std::fs::OpenOptions::new().write(true).create_new(true)
++        .open("/m5/output/fault-postcheck.json").unwrap();
++    out.write_all(&serde_json::to_vec_pretty(&receipt).unwrap()).unwrap();
++    out.sync_all().unwrap();
++}
+--- fix2/src/trail_memory/m5_inspection.rs
++++ current/src/trail_memory/m5_inspection.rs
+@@ -5,6 +5,17 @@
+ 
+ #[path = "m5_inventory.rs"]
+ mod inventory;
++
++#[path = "fault_helper.rs"]
++mod missing_fault;
++
++pub(super) fn inject_missing_capture_copy() {
++    missing_fault::inject();
++}
++
++pub(super) fn verify_missing_capture_copy() {
++    missing_fault::verify_preservation();
++}
+ 
+ /// Inspect only an already complete modern graph. Never acquire a writer
+ /// lease or invoke migration, recovery, or image externalization.
+--- fix2/src/trail_memory/research_owner_tests.rs
++++ current/src/trail_memory/research_owner_tests.rs
+@@ -309,3 +309,15 @@
+ fn model_free_inspect_exited_structured_copy() {
+     super::m5_inspection::inspect_exited_structured_copy();
+ }
++
++#[test]
++#[ignore = "requires a separately marked M5 fault copy and fixture custody"]
++fn model_free_inject_missing_capture_copy() {
++    super::m5_inspection::inject_missing_capture_copy();
++}
++
++#[test]
++#[ignore = "requires an injected M5 fault copy and fixture custody"]
++fn model_free_verify_missing_capture_copy() {
++    super::m5_inspection::verify_missing_capture_copy();
++}

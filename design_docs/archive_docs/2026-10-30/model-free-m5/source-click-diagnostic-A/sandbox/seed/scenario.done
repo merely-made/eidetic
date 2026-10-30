@@ -1,0 +1,9 @@
+RESULT fail
+captured 01_authored_note
+captured 02_before_source_click
+captured 03_after_source_click
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["interaction-missed role:button 'Save source and keep'", "pane-summoned Inspect", "content 718a65bd-5d77-4230-b461-f18f1a05b5c0 streaming bytes=131", "address-opened http://127.0.0.1:44425/A", "content e43ac813-a1da-44bd-ba96-d48e5d8f878a live", "content e43ac813-a1da-44bd-ba96-d48e5d8f878a requested"])
+presentation frames=157 captures=3 blank=0
+capture /m5/run/seed/01_authored_note.png digest=2576ef40daf61bf4 blank=false
+capture /m5/run/seed/02_before_source_click.png digest=5a384f8ceed3b474 blank=false
+capture /m5/run/seed/03_after_source_click.png digest=6c6fd5698e8c873b blank=false

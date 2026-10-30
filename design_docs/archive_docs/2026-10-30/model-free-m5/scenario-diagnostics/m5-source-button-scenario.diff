@@ -1,0 +1,29 @@
+--- collection-d/seed.scn
++++ proposed/seed.scn
+@@ -26,7 +26,7 @@
+ settle 5
+ wait-source-target 600 ${M5_ORIGIN}/A
+ settle 3
+-click-row Save source and keep
++click surface:inspector role:button Save source and keep
+ wait-row 600 Source save: Saved
+ record-source-captures 02_A1
+ act Show document in map
+@@ -36,7 +36,7 @@
+ settle 5
+ wait-source-target 600 ${M5_ORIGIN}/B
+ settle 3
+-click-row Save source and keep
++click surface:inspector role:button Save source and keep
+ wait-row 600 Source save: Saved
+ record-source-captures 03_B
+ act Search saved sources
+@@ -141,7 +141,7 @@
+ settle 5
+ wait-source-target 600 ${M5_ORIGIN}/A
+ settle 3
+-click-row Save source and keep
++click surface:inspector role:button Save source and keep
+ wait-row 600 Source save: Saved
+ assert row Saved captures: 2
+ record-source-captures 09_A2

@@ -638,3 +638,55 @@ manifests and logs are indexed in `model-free-m5/additional-evidence-index.json`
 the frame remains external with its path and SHA-256 recorded there. This
 qualifies startup/preflight only. No retained note, fresh-process restart or
 ordinary-use M5 acceptance is claimed, and the full M5 gate was not run.
+
+
+### M5 observer, readiness, fetch-wait and failed collection evidence
+
+The observer review chain, readiness/fault integration, fetch-wait review, and
+associated focused receipts are indexed in
+`model-free-m5/additional-evidence-index.json`. The initial observer review and
+fix1 review requested changes; fix2 was approved for scoped source review. Its
+three cleaned privacy/projection tests each passed 1/0. Readiness/fault plumbing
+and fetch-wait integration were also approved for scoped source review only.
+Focused address-history tests passed 2/0, shared-receipt refusal passed 1/0,
+source-target tests passed 2/0, and the correlated fetch-to-capture-action test
+passed 1/0. Earlier red and integrity diagnostics remain preserved; the
+read-only inspector's real-store checks and fault injection were not run, and
+`READY_FOR_FAULT_COLLECTION` remains false.
+
+Failed intact collections A, B and C are archived as safe records in the same
+index. A failed at note-root setup: the research-note editor was not live, the
+attempted note insert found no editor, and no reopen ran. B created the ordinary
+Knot note but timed out waiting for the admitted A capture action because the
+scenario wait did not drain fetch updates. C timed out because its browser
+command target differed from the requested source target. Each failed scope
+verified its cgroup empty. Frame images and synthetic fixture media are not
+copied; their external paths and hashes are recorded. Binaries, stores, caches
+and custody identity/vault data are excluded.
+
+These receipts do not change the M5 boundary: observer/source checks and startup
+E are bounded evidence; no intact collection reached successful save and fresh
+reopen, no native fault injection ran, and full offline M5 acceptance remains
+incomplete.
+
+
+### M5 source-save interaction diagnostics
+
+The additional safe manifests and logs for failed intact collections D and E,
+plus source-click diagnostics A and B, are indexed in
+`model-free-m5/additional-evidence-index.json`. D failed when the row-targeted
+source-save click missed. E failed because the offered button was below the
+viewport. Neither saved the A source, and neither is an acceptance run.
+
+The reviewed scenario-only map-focus, explicit-button and scroll diffs, reviewed
+scenario, and current diagnostic-only registration lock are archived with those
+records. Diagnostic A observed `interaction-missed` and an empty capture-attempt
+list. Diagnostic B used ordinary scroll input to reveal the button, then the
+ordinary click saved and kept the A capture; its capture JSON is preserved. Both
+diagnostics intentionally stopped at their diagnostic assertion. The before-
+click and other frames remain external with paths and hashes in the index.
+
+These results narrow the next full-collection work to the ordinary source-save
+interaction. They do not qualify the intact sequence, fresh-process reopen,
+fault injection or full M5 acceptance; the next full collection remains
+pending.
