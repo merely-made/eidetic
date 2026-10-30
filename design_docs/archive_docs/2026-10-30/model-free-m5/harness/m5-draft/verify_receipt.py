@@ -180,8 +180,11 @@ def verify_operation_semantics(observations):
         if row['key']['Comparison'] == 'Disagreement':
             verify_disagreement(left, right, compared['snapshot']['definitions'])
         if row['key']['Comparison'] == 'NonComparable':
-            # The current fixture exercises missing/different status or time.
-            require(same_identity and (not same_status or a is None or b is None), 'noncomparable case not evidenced by fixture')
+            left_decimal = left['value'].get('Decimal')
+            right_decimal = right['value'].get('Decimal')
+            different_scale = (left_decimal is not None and right_decimal is not None
+                               and left_decimal['scale'] != right_decimal['scale'])
+            require(same_identity and (not same_status or a is None or b is None or (overlaps and different_scale)), 'noncomparable case not evidenced by fixture')
         if row['key']['Comparison'] == 'Distinct':
             verify_distinct_comparison(left, right, compared['snapshot']['definitions'])
     total = result('Sum')

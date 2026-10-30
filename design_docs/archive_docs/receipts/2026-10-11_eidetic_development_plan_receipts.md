@@ -1418,3 +1418,48 @@ These raw logs remain under `/home/markik/Code/testing/custody-contract-20261029
 Source-size and whitespace checks pass. The prior 1,302-test result belongs to
 the preceding source; this narrow correction has the focused checks above.
 Fresh committed-source application/test builds and native collection S are next.
+
+
+### M5 S/T and inspector diagnostics, 2026-10-30
+
+Seed S failed at the `clip-package-exported` event assertion: the durable export
+file was visible before the main frame drained the worker completion event. S is
+a failed partial attempt. T produced 49 seed captures, zero blank captures, and
+passed its exact export-event assertion. Its cold phase returned `RESULT ok` with
+nine captures, but the independent owner check failed because the legacy-entry
+set was empty. T therefore does not qualify cold owner verification or full M5.
+T's visual packet records review of the remaining 38 structured/negative frames;
+visual review does not replace the owner check.
+
+Diagnostic A failed permissions/readiness before the inspector ran. Diagnostic B
+ran both real-owner inspection paths, each with 1 pass and 0 failures, and its
+source-integrity checks remained unchanged. These are bounded diagnostics, not
+full product qualification. The S/T and A/B raw records remain under
+`/home/markik/Code/testing/`; their hashes are indexed externally.
+
+Upstream Turnstone `068f182e` has been received. The inspector correction
+`61c25b0c` is local and awaits the full host gate and publication. The adopted
+seed, registration lock, legacy verifier, integration verifier and assembler
+were refreshed in the copied provisional harness from approved SDD sources. The
+43-case integration suite passed. Separately, diagnostic checks on real T
+observations passed and rejected equal-scale and disjoint-time false comparison
+classifications; the copied harness remains DRAFT and fault collection stays
+closed. M1–M4 are landed; M5 remains in progress.
+
+### Refreshed upstream host gate, 2026-10-30
+
+Turnstone `61c25b0c28e585b49199af064f04ee8ef51fe7e7` includes upstream
+Settings/projection work at `068f182e` and the reviewed inspector correction.
+The first locked/offline attempt lacked the exact new Mere checkout; only
+published `ccdfc89413fb6716fd3e19d57adcf2e7673af2cd` was fetched, preserving
+Cargo.lock. The next full run compiled the new cohort but reached the unchanged
+600-second cap before finishing tests (exit124; log `m5-host-upstream-full-2.log`,
+SHA-256 `c40bbba0669a64ff45f3f5adf05d2abe442799785bd52d61aa17735ed4123483`).
+
+The warm rerun passed 1,402 tests, zero failures, 21 ignored, in 290.82 seconds
+(wrapper4:53.43; peakRSS401,924KiB; zero swaps; exit0). Raw log
+`/home/markik/Code/testing/custody-contract-20261029/m5-host-upstream-full-3.log`
+has SHA-256 `cfc44318b75e27c95a13a2b519632dbc0fe7a9561f04c7c6e9193eff42a8ff63`.
+The source-size and whitespace checks pass. This qualifies the host software
+suite on the refreshed source. Fresh app/test provenance builds and native
+collection U are in progress; M5 remains incomplete.

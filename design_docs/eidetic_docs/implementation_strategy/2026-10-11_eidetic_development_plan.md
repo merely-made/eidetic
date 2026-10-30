@@ -1974,3 +1974,16 @@ The implementation proposals still need these concrete decisions:
   The real MiniLM retriever is paired with a tiny exact-session decoder fixture;
   this receipt measures retrieval and native IPC, without a new trained-answer,
   headed UI, browser, assessment/tag or second-device verdict.
+
+
+- **2026-10-30, M5 current findings.** S failed its export-completion event
+  assertion after the durable file appeared before the worker event drained. T
+  passed the 49-capture seed and export-event assertion; its nine-capture cold
+  phase returned `RESULT ok`, but the independent owner verifier failed on an
+  empty legacy-entry set. T visual review is recorded separately and does not
+  qualify cold owner verification. Diagnostic A stopped at permissions/readiness
+  before inspector execution; diagnostic B passed both real-owner checks (1/0)
+  with source integrity unchanged. Upstream `068f182e` is received; local inspector
+  fix `61c25b0c` remains pending the full host gate and publication. M1–M4 are
+  landed, M5 remains in progress, and the copied harness stays DRAFT with fault
+  collection disabled.

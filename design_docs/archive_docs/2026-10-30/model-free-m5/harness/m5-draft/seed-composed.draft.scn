@@ -150,6 +150,7 @@ assert content-live
 assert snap actions ~ Export retained clip
 export-clip ${M5_SELECTION_PACKAGE}
 wait-file 600 ${M5_SELECTION_PACKAGE}
+settle 15
 assert event clip-package-exported
 capture 08_selected_clip
 act Show document in map

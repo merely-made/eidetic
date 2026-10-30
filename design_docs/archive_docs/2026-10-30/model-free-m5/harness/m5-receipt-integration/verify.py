@@ -41,7 +41,7 @@ INTACT_REQUIRED = {'inputs.json','processes.json','seed-launcher.cleanup.json','
                    'sandbox/reopen/24_reopen_selection_reader.saved-sources.json','sandbox/reopen/25_reopen_note_reader.saved-sources.json',
                    'sandbox/reopen/22_reopen_A1.saved-sources.json','sandbox/reopen/23_reopen_A2.saved-sources.json'}
 TOOLS = {
-    'verify_receipt.py': ('../m5-draft/verify_receipt.py','c7890e11e3000694949247d1dd38b5206c1046d9657aa02848cddc4972f46019'),
+    'verify_receipt.py': ('../m5-draft/verify_receipt.py','e521c6f2bb538976fabc482f991354f720fb79e5c886ac33dd81d2e21cd9fc47'),
     'verify_missing.py': ('../m5-missing-draft/verify_missing.py','ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939'),
     'run_missing.py': ('../m5-missing-draft/run_missing.py','260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5'),
 }

@@ -35,11 +35,11 @@
     },
     "m5-draft/verify_receipt.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/verify_receipt.py",
-      "sha256": "c7890e11e3000694949247d1dd38b5206c1046d9657aa02848cddc4972f46019"
+      "sha256": "e521c6f2bb538976fabc482f991354f720fb79e5c886ac33dd81d2e21cd9fc47"
     },
     "m5-draft/seed-composed.draft.scn": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-composed.draft.scn",
-      "sha256": "125d6affefbdf1b8d611c51c6192f591190f1e9b740ec9d7c18ba5b37d5a2271"
+      "sha256": "d1cff0e4683dc23ff49fed25104f7c89de99e232d74a4bda8308fd2b1c79199e"
     },
     "m5-draft/reopen.scn": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/reopen.scn",
@@ -103,7 +103,7 @@
     },
     "m5-missing-draft/registration-lock.json": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
-      "sha256": "a42cfaaeef21e64c455b1ac1ec8d8019de07f7b750d06e05e10b6731de59643b"
+      "sha256": "bbb705d915f50d0dca98975d811b0586f349f34ce8fed96c583b2ced8a7d696a"
     },
     "m5-missing-draft/test_missing.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py",
@@ -115,11 +115,11 @@
     },
     "m5-receipt-integration/assemble.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/assemble.py",
-      "sha256": "1eee7a19c7dff13c8b5e7245a8db81adda2410cb6446a1575c673a987e9b01b2"
+      "sha256": "3703bc8fea54e744c352374d9ce36d5d26997ee49b5e27e59c05071b54e9c178"
     },
     "m5-receipt-integration/verify.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/verify.py",
-      "sha256": "d0e181a75e6a1d4d142b3bc4e3aa50461259c25d24ba0bc87b1992a30b5280e2"
+      "sha256": "98bae452a8602831133e6eb1f233852084c06fff58f646a0bc4601d9725120de"
     },
     "m5-receipt-integration/test_receipt.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/test_receipt.py",

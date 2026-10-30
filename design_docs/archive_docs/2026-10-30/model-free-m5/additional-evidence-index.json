@@ -18658,8 +18658,8 @@
     "turnstone_source_commit": "22628cf9 (after fast-forwarding current upstream 5b7dacd9)",
     "genet_upstream": "5fdee500",
     "lock_sha256": "e939676c1b7a9116fd8c68539e947c0e4e3b121c7493ff0524a4f0be84176b30",
-    "source_bytes": "Owner source and test source match the report hashes 3ae7bde2…0660f1ee and 6f6f6201…85544a20 at commit 22628cf9.",
-    "gate_sequence": "Red-1 wrong address mode; Red-2 reproduced stale Saved Sources structured rows; Green-1 passed 1 test on old base; Upstream-1 failed before compile due to missing offline Genet; Upstream-2 on current upstream passed with fix1, log SHA-256 1634b266…ec7f7e4.",
+    "source_bytes": "Owner source and test source match the report hashes 3ae7bde2\u20260660f1ee and 6f6f6201\u202685544a20 at commit 22628cf9.",
+    "gate_sequence": "Red-1 wrong address mode; Red-2 reproduced stale Saved Sources structured rows; Green-1 passed 1 test on old base; Upstream-1 failed before compile due to missing offline Genet; Upstream-2 on current upstream passed with fix1, log SHA-256 1634b266\u2026ec7f7e4.",
     "qualification": "No new native qualification; separate fresh native build is running."
   },
   "visible_negatives_A_and_refusal_publication": [
@@ -19572,7 +19572,7 @@
   ],
   "intact_Q_boundary": {
     "seed": "Seed phase passed and captured 49 frames; 1,835 frames were presented and 0 were blank. This does not establish cold-reopen success.",
-    "cold_reopen": "Failed on the generic assertion text “M5 authored Redshank note” despite the actual Note Fleece body and frame. Visual review found three blocks: cold A1/A2 show only the graph without Read document, and the model-unavailable popup obscures its message.",
+    "cold_reopen": "Failed on the generic assertion text \u201cM5 authored Redshank note\u201d despite the actual Note Fleece body and frame. Visual review found three blocks: cold A1/A2 show only the graph without Read document, and the model-unavailable popup obscures its message.",
     "visual_review": "Seed visual review has 38 passes. Reopen visual review has 3 blocks.",
     "scope": "Full Q collection failed. No owner inspection or fault acceptance is established. A separate cold-only diagnostic is being staged; this archived Q copy was not modified.",
     "archive_boundary": "Phase/observer JSON and logs are archived with hashes. PNG frames and synthetic fixture HTML remain external and are bound by hashes. Stores, keys, custody/private material, caches, clips, audio and binaries are excluded."
@@ -20138,7 +20138,7 @@
     "stable_packet": "Review and source artifacts are scoped design evidence. Custody-copy report records 22 passing unit tests; its exact output is in the review markdown, with no separate 22-test log found. Custody runner pin log records 43 passing tests.",
     "qualification": "B/C are diagnostics only. No full cold acceptance, owner inspection, or fault acceptance is established; fault guard remains false and final status remains DRAFT.",
     "exclusions": "No profile or storage inventories, keys/private data, binaries, socket payloads, or PNG/HTML payloads copied. External frames/fixtures are referenced by hashes.",
-    "source_concurrency": "C source-integrity evidence shows unchanged original files and socket IDs. The concurrency hazard is established, but B’s actual holder was not identified; no file-lock artifact is copied or claimed.",
+    "source_concurrency": "C source-integrity evidence shows unchanged original files and socket IDs. The concurrency hazard is established, but B\u2019s actual holder was not identified; no file-lock artifact is copied or claimed.",
     "root_visual_review": "Root inspected the exact C A1/A2 frames. The completed C diagnostic remains capture-only and does not qualify clip, model-unavailable, or error panes.",
     "test_log_availability": "The retained verifier 43-test log is indexed from the existing archive harness area. The 22-test custody-copy output is present verbatim in its review markdown; no separate 22-test log or modified-files report was present in the SDD/testing locations."
   },
@@ -20162,7 +20162,7 @@
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/verify.py",
       "archive_file": "harness/m5-receipt-integration/verify.py",
-      "sha256": "d0e181a75e6a1d4d142b3bc4e3aa50461259c25d24ba0bc87b1992a30b5280e2",
+      "sha256": "98bae452a8602831133e6eb1f233852084c06fff58f646a0bc4601d9725120de",
       "bytes": 59340,
       "copied_now": true,
       "kind": "refreshed archived harness source"
@@ -20170,7 +20170,7 @@
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/assemble.py",
       "archive_file": "harness/m5-receipt-integration/assemble.py",
-      "sha256": "1eee7a19c7dff13c8b5e7245a8db81adda2410cb6446a1575c673a987e9b01b2",
+      "sha256": "3703bc8fea54e744c352374d9ce36d5d26997ee49b5e27e59c05071b54e9c178",
       "bytes": 10548,
       "copied_now": true,
       "kind": "refreshed archived harness source"
@@ -20186,8 +20186,8 @@
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-composed.draft.scn",
       "archive_file": "harness/m5-draft/seed-composed.draft.scn",
-      "sha256": "125d6affefbdf1b8d611c51c6192f591190f1e9b740ec9d7c18ba5b37d5a2271",
-      "bytes": 25459,
+      "sha256": "d1cff0e4683dc23ff49fed25104f7c89de99e232d74a4bda8308fd2b1c79199e",
+      "bytes": 25469,
       "copied_now": true,
       "status": "approved/adopted current provisional harness source"
     },
@@ -20210,8 +20210,8 @@
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
       "archive_file": "harness/m5-missing-draft/registration-lock.json",
-      "sha256": "a42cfaaeef21e64c455b1ac1ec8d8019de07f7b750d06e05e10b6731de59643b",
-      "bytes": 1880,
+      "sha256": "bbb705d915f50d0dca98975d811b0586f349f34ce8fed96c583b2ced8a7d696a",
+      "bytes": 2120,
       "copied_now": true,
       "status": "approved/adopted current provisional harness source"
     },
@@ -20235,12 +20235,12 @@
   "archive_harness_refresh_outputs": [
     {
       "source": "derived from approved SDD sources and copied-harness verification",
-      "sha256": "035a31b6da191290b0635b0bc8b51cff1e3c4bd3be72c9262fda4ff909bed72c",
-      "bytes": 12225,
+      "sha256": "a592af67565db0f0524185faafe20f7e5ead5e617ed5a239ecbed1d7fd0daf72",
+      "bytes": 12251,
       "copied_now": false,
       "kind": "refreshed source manifest",
-      "status": "historical generated harness output retained under /testing",
-      "external_path": "/home/markik/Code/testing/m5-harness-source-manifest-before-adoption-20261030.json"
+      "status": "previous manifest preserved under /testing; current manifest tracked in harness",
+      "external_path": "/home/markik/Code/testing/m5-harness-source-manifest-before-latest-20261030.json"
     },
     {
       "source": "derived from approved SDD sources and copied-harness verification",
@@ -20283,6 +20283,23 @@
       "copied_now": false,
       "status": "raw provisional harness test log retained under /testing",
       "external_path": "/home/markik/Code/testing/m5-harness-adopted-scenario-checks-20261030.log"
+    },
+    {
+      "source": "derived from approved adopted SDD sources",
+      "sha256": "9ff68e4e9254f141e82bc7472120de6b61f7ebcbe78bfd00b1ab8a5fa17298da",
+      "bytes": 2270,
+      "copied_now": true,
+      "kind": "current lightweight copied-harness check metadata",
+      "status": "guards remain closed; DRAFT; helper checks only"
+    },
+    {
+      "source": "copied provisional integration Python helper suite",
+      "sha256": "c8192329a75504310dfd8bbff3161334b667153e37e61faf57e122c50f4b4010",
+      "bytes": 6128,
+      "copied_now": false,
+      "kind": "latest bounded Python test log",
+      "status": "43 integration tests passed; no native qualification",
+      "external_path": "/home/markik/Code/testing/m5-harness-latest-integration-checks-20261030.log"
     }
   ],
   "preserved_test_missing_source": {
@@ -21185,6 +21202,136 @@
       "bytes": 681,
       "copied": false,
       "status": "M5 collection R failed partial seed; external raw diagnostic receipt under /testing"
+    }
+  ],
+  "latest_S_T_inspector_diagnostic_evidence": [
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-s/failure.json",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-s/failure.json",
+      "sha256": "14af27ef9d2fc6c91cc5aa97b446614585feb57b9d9a68c9cd1d111bb1428cc6",
+      "bytes": 101,
+      "copied": false,
+      "status": "S seed failed at export-event timing; native attempt failed"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-s/sandbox/seed/scenario.done",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-s/sandbox/seed/scenario.done",
+      "sha256": "0909695f7bbe9a1f97ed8b719b516864733ff25c298c952ac8ee68407c871d89",
+      "bytes": 5632,
+      "copied": false,
+      "status": "S partial seed scenario output; failure retained"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-t/seed-launcher.json",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-t/seed-launcher.json",
+      "sha256": "f0837a596da230e6863d990acf6b592a1607b1eba338267217c9966846e64a50",
+      "bytes": 3202,
+      "copied": false,
+      "status": "T seed launcher receipt; RESULT ok, 49 captures, export event asserted"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-t/sandbox/seed/scenario.done",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-t/sandbox/seed/scenario.done",
+      "sha256": "b50744d66c5117069c90cb36d2952d561e27bc61c6792612e87cfb6c6a675165",
+      "bytes": 5047,
+      "copied": false,
+      "status": "T seed scenario result; 49 captures"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-t/reopen-launcher.log",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-t/reopen-launcher.log",
+      "sha256": "29a861ac0b049b2d94595aa6e473c287ad5c7278e159c60ae51d09b8e436f0ae",
+      "bytes": 667,
+      "copied": false,
+      "status": "T cold reopen phase failed owner verification; raw launcher log"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-t/sandbox/reopen/scenario.done",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-t/sandbox/reopen/scenario.done",
+      "sha256": "1552fe5dcd9b0790e96718f4585ecbf0c706a5be708428dc99ba4e2f77098786",
+      "bytes": 1016,
+      "copied": false,
+      "status": "T cold phase RESULT ok; 9 captures; separate owner check failed legacy entries empty"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-t/sandbox/reopen/cold_sum.structured-research.json",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-t/sandbox/reopen/cold_sum.structured-research.json",
+      "sha256": "75a47903dda95505aa655377238144a3e13c6fe461b4aa188934e3186d4fdb14",
+      "bytes": 31291,
+      "copied": false,
+      "status": "T cold structured result evidence; historical query result"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-a/failure.json",
+      "external_path": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-a/failure.json",
+      "sha256": "0d78c92a41d980e11d89cdb97817f0df7b3d065b90c27404c685ec83e2624839",
+      "bytes": 67,
+      "copied": false,
+      "status": "Diagnostic A failed before inspector readiness due permissions"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-a/launcher.log",
+      "external_path": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-a/launcher.log",
+      "sha256": "58a1431eb6df2b9615b781eda6bac5b45ed30c629857594cbf399296b7d8faeb",
+      "bytes": 742,
+      "copied": false,
+      "status": "Diagnostic A launcher failure before inspector"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-t-seed-producers.json",
+      "external_path": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-t-seed-producers.json",
+      "sha256": "d0f24ff934fe0c6157158ddbca5e5864db1ed2f6b804df8cbf4e14af005e8f73",
+      "bytes": 3159,
+      "copied": false,
+      "status": "T seed producer/comparison visual review; separate reviewer packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-t-structured.json",
+      "external_path": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-t-structured.json",
+      "sha256": "f366d8be535e54a9ad3a1b9fb58c1192dbe7a6b1253df297c982d5e81e810fbc",
+      "bytes": 18541,
+      "copied": false,
+      "status": "T structured/negative seed visual review; 38 frames reviewed"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/result.json",
+      "external_path": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/result.json",
+      "sha256": "ad6caa8f1aae63b4c70a8bcdeb0ab69fca8a0496dd874b251567c0c21afd31ef",
+      "bytes": 1302,
+      "copied": false,
+      "status": "Diagnostic B completed real-owner inspection result"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/inspection.json",
+      "external_path": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/inspection.json",
+      "sha256": "a44907f87996cc208f793d30f8b86324c49c11ba31002726a4505e3e83cd9037",
+      "bytes": 69362,
+      "copied": false,
+      "status": "Diagnostic B real-owner inspection result"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/withdrawal_inspection.json",
+      "external_path": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/withdrawal_inspection.json",
+      "sha256": "2f9a1ceabd008ba4205d064d41a44284eed6446d332b5f2cd30c5e19dcd47ac8",
+      "bytes": 69325,
+      "copied": false,
+      "status": "Diagnostic B real-owner withdrawal inspection result"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/inspection-integrity.json",
+      "external_path": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/inspection-integrity.json",
+      "sha256": "a859eeba8c938ea9873d4d1ae50e235aa87220054e3b5844217245e50c065db8",
+      "bytes": 60644,
+      "copied": false,
+      "status": "Diagnostic B source integrity evidence"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/withdrawal_inspection-integrity.json",
+      "external_path": "/home/markik/Code/testing/m5-inspection-copy-diagnostic-20261030-b/sandbox/inspection-diagnostic/withdrawal_inspection-integrity.json",
+      "sha256": "a859eeba8c938ea9873d4d1ae50e235aa87220054e3b5844217245e50c065db8",
+      "bytes": 60644,
+      "copied": false,
+      "status": "Diagnostic B withdrawal source integrity evidence"
     }
   ]
 }
