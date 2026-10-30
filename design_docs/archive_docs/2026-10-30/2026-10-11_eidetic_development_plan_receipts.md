@@ -717,3 +717,37 @@ with hashes in the index.
 These runs do not qualify a full collection, note citation/readback, fresh
 reopen, fault injection or M5 acceptance. The next full collection remains
 pending.
+
+
+### M5 limit observer, cold reader and receipt integration source reviews
+
+The limit-refusal observer and cold-reader source review packets, focused receipts,
+reader-hoist diff/root review, and the final receipt-integration fix2 package are
+indexed in `model-free-m5/additional-evidence-index.json`. The limit observer
+review first found a refusal invalidation gap; the red roundtrip reproduced it,
+and the green roundtrip cleared it. A prior pre-dispatch explanation of the
+record limit is disproved: enumeration dispatches to the worker, which enforces
+`max_records` on admitted records and returns the exact refusal. Focused tests
+covering refusal binding, roundtrip invalidation, retained-reader scope,
+source-target wait and hit selector passed as recorded. These are focused tests
+and source review, not evidence of a native worker limit hit or headed cold
+reopen. The cold-reader scoped review was approved; the later hoist review
+approved moving unchanged admission enumeration out of the live-reader loop.
+Its 39-file source manifest matched, while the full host gate was still running
+and cold reopen remained pending.
+
+All four receipt-integration files and all three successive review reports,
+including the final root 42-test log, are preserved. Fix2 was approved for its
+scoped citation-passage and retained-reader checks; the verifier remains guarded
+as draft. The fault-ledger fix1 packet records 17 passing focused tests and an
+approved scoped review, while the fault guard remains false. The current
+registration lock is preserved separately from the earlier archived version.
+There is still no successful native intact acceptance or native fault injection.
+
+The archive contains some runnable components, including the receipt assembler
+and verifier, the fault runner and scenario, tests, and selected native
+preflight sources. It does not yet contain the complete matching main M5
+launcher, verifier, phase helpers, seed/reopen scenarios and supporting fixture
+source bundle outside ignored SDD. The final qualified harness must be archived
+as an exact source bundle with its receipt before it can be called
+reconstructible. Full M5 acceptance remains incomplete.
