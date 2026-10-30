@@ -1,0 +1,22 @@
+{
+  "status": "interim lock comparison, not compiled dependency qualification",
+  "head": "a365c1be2b1981491eceea5be4db06c907ecdb30",
+  "before_sha256": "bb4fb163ae51b6538a4605aeb82e1d05d43f7cf46e32e46a7d8a089ba1d0b9c4",
+  "after_sha256": "d003625a52894e237395eb8fddea6163f21fcc199d4ab0ab5208d695a0cc236c",
+  "package_count": 1033,
+  "permitted_source_changes": [
+    {
+      "name": "fjall",
+      "version": "2.11.2",
+      "source_before": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum_before": "0b25ad44cd4360a0448a9b5a0a6f1c7a621101cca4578706d43c9a821418aebc"
+    },
+    {
+      "name": "lsm-tree",
+      "version": "2.10.4",
+      "source_before": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum_before": "799399117a2bfb37660e08be33f470958babb98386b04185288d829df362ea15"
+    }
+  ],
+  "all_other_fields_equal": true
+}

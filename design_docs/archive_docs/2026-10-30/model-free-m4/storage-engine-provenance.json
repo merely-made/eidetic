@@ -1,0 +1,22 @@
+[
+  {
+    "name": "fjall",
+    "version": "2.11.2",
+    "upstream_crate_sha256": "0b25ad44cd4360a0448a9b5a0a6f1c7a621101cca4578706d43c9a821418aebc",
+    "preserved_licenses": [
+      "LICENSE-APACHE",
+      "LICENSE-MIT"
+    ],
+    "registry_source_manifest_license_files_verified_against_crate": 53
+  },
+  {
+    "name": "lsm-tree",
+    "version": "2.10.4",
+    "upstream_crate_sha256": "799399117a2bfb37660e08be33f470958babb98386b04185288d829df362ea15",
+    "preserved_licenses": [
+      "LICENSE-APACHE",
+      "LICENSE-MIT"
+    ],
+    "registry_source_manifest_license_files_verified_against_crate": 83
+  }
+]

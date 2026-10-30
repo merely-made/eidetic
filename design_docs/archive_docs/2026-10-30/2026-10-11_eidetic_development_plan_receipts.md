@@ -287,3 +287,136 @@ round-one review retained two related history/recovery findings: saved discovery
 refuses all entries above the query record count, and a new attachment can exceed
 the graph scan work/byte bound before recovery captures its scope. These are
 being corrected; this checkpoint is not M4 completion or publication evidence.
+
+
+### Second host review and storage extension checkpoint
+
+The second backend correction passed 53 focused tests with all 61 frozen source
+hashes unchanged (`m4-host-review-round2-freeze-1`, peak 2,753,384 KiB RSS and
+zero process swaps). Checkpoint `e3527023` received scoped backend approval;
+the UI review was already approved. Saved-history discovery no longer applies
+the unrelated query record count, and attachment preflight reserves recovery
+scan work before creating new recovery obligations. This was still the
+post-fetch storage boundary, before the required engine extension.
+
+Portable error identity was published as Eidetic `a365c1b`. Its first focused
+attempt failed to compile because a test payload lacked Debug; the second
+passed 147 unit tests, one Fjall integration test and two model-free record
+integration tests. Mere `c10356492` preserves Eidetic errors through retained
+clip reads; six focused clip tests passed. The Mere lock changed only two
+existing dev dependency edges, with no source/version/package selection change.
+The Mere gate uses its older Eidetic pin, so it does not alone prove the new
+storage-cause accessor reaches Turnstone. Receiving tests remain necessary.
+
+The current Turnstone checkpoints were then rebased onto upstream `7ca35b71`,
+producing `f8335284`, `24a0f9a0` and `3113ef7f`. The held storage extension was
+preserved in stash `0d48efe0` and restored without dropping any stash. Of its
+46 files, 45 retained exact hashes/status/modes; `shell_new.rs` combines the
+upstream native-frame event hooks with the storage settings loaded before actor
+startup. Both inventories and the reconciliation note are retained here. This
+rebase has not yet received a fresh build, and the restored extension remains
+uncompiled against incomplete supplier APIs. Earlier receipts qualify their
+original frozen sources only.
+
+Official Fjall 3.1.13 fixes journal replay issue #332, where already persisted
+entries can be replayed and later flushed into overlapping FIFO runs. A v2
+partial-flush/restart test preserves expected values, but that does not test the
+reported subsequent FIFO flush failure. Targeted applicability investigation is
+part of the storage work. The newer release still lacks the required bounded
+normal-tree read contract, and migrating formats would itself read old values
+without those bounds. The compatible v2 patch remains unqualified until live
+reads and whole-store preparation are integrated, all held tests are enabled,
+and independent review and receiving gates pass.
+
+
+Follow-up source comparison of replay issue #332 confirms that ordinary v2
+recovery can replay persisted items. However, v2 FIFO delegates overlapping L0
+to maintenance rather than using the v3 assertion, and new Muniment partitions
+use Leveled compaction. The precise FIFO poisoning failure is therefore not
+established for the pinned engine. No runtime reproduction or unproven backport
+was made. The bounded recovery ledger must account for duplicates; preserving
+v2 replay semantics does not make its configured limits ineffective.
+
+The upstream write-buffer cap issue #344 and strict-recovery issue #311 remain
+open. The bounded journal parser now rejects definitely malformed markers,
+value tags, UTF-8 and trailers as corruption. It streams zero padding before
+accepting it and keeps only supported incomplete-at-end repairs deferred.
+Focused journal tests pass; whole-store commit and live read qualification still
+remain. This does not claim to diagnose every possible form of disk corruption.
+
+
+### Published bounded storage supplier
+
+Eidetic `b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa` publishes the compatible
+Fjall 2.11.2 / lsm-tree 2.10.4 extension. The original crate archive checksums
+and license files were verified; 136 original source, manifest and license
+files matched their cached crate archives. Direct path dependencies make Git
+consumers receive the derived engines. The workspace lock changes only those
+two engine source identities, retaining all other packages, versions and edges.
+Standalone engine locks are retained for their focused tests; Fjall's generated
+standalone xxhash selection was narrowly aligned to the workspace version.
+
+Both initial task reviews required fixes. Recovery review found temporary
+cleanup could unlink a still-held lock, a failed temporary open could delete
+an existing store, and each recovered partition's config path clone lacked an
+explicit charge. LSM/Muniment review found missing resident decode-work charges,
+unadmitted delete keys, incomplete empty-prefix opaque-key coverage, malformed
+index extents/pointers admitted too late, Miniz charging maximum rather than
+actual output work, and index visits charged after traversal. One consolidated
+fix wave per task addressed all nine findings. Scoped re-reviews approved the
+fixes and found no new Important or Critical regression. Cross-tree ordering
+was inspected: every tree receives admitted replay before any prepared tree
+is committed, and the commit performs no later configured-limit checks or
+reads of stored contents. Known filesystem path conversions are precharged.
+
+The reviewed 207-file closure is in `m4-storage-review1-sources.json`; its hash
+is `ea0a7a2623356c7d042ca1a0db8c83c390a1d1e0f448559e4a18f76f9d87da4b`.
+The controller independently rechecked every file and packet log hash before
+publication. Locked/offline guarded gates on this closure passed:
+
+- `m4-store-review-wave-lsm-1`: 64 bounded LSM tests, including LZ4 and Miniz.
+- `m4-store-review-wave-muniment-1`: 117 native Muniment tests with Fjall.
+- `m4-store-review-wave-bytes-1`: two explicit unsupported-bytes cases.
+- `m4-recovery-review-fjall-unit-2`: two standalone recovery regressions.
+- `m4-store-final-core-search-1`: 150 core and 91 search tests; three search
+  tests and two core doctests remain ignored. Peak RSS 881,376 KiB, zero process
+  swaps. This checks existing portable callers against the new native supplier.
+- `m4-store-final-wasm-1`: no-default core/search Wasm compilation passed.
+
+`storage-gates-index.json` indexes 190 verified raw packets, separating the
+reviewed supplier closure from focused/interim evidence. It retains compile
+failures, the terminated partial-flush test, subsequent wakeup and write-buffer
+fixes, malformed-input failures, and lock setup failures. The unused patch and
+unchanged upstream unsafe/deprecation/test warnings remain visible. Git's
+import whitespace diagnostics came exclusively from byte-identical upstream
+files, retained for patch fidelity; newly authored Rust files stay within the
+600-line constraint.
+
+The patch preserves the v2 store format and refuses unsupported blob/bytes
+representations. Bounded reads bypass the cache; optional Bloom filters are
+omitted during preparation. Existence scans the full matching range, which can
+refuse after an earlier match. Temporary cleanup retains the root and stable
+lock inode after the last capability drops and is armed only after successful
+open. Linux/Rust 1.99.1 has runtime evidence. Relevant installed 1.97.1 standard
+library collection and path routines were compared by source, not runtime
+qualified. Mac/Windows source accounting and the documented Windows path
+refusals do not establish platform qualification. Limits cover named requested
+capacities and work, not total RSS, allocator failure, background compaction,
+uncooperative external writers, or physical power loss.
+
+Turnstone receiving, final whole-M4 review and M5 product qualification remain
+open after this supplier publication.
+
+
+Turnstone's receiving manifest and lock now select published Eidetic `b39a3dc`
+and Mere `c1035649255c934e057fe7eb0e0ebdf8881c1024`. All 1,662 package entries
+and dependency edges remain equal after normalizing the 72 intended active
+source changes and 21 unused-patch source updates. Fjall and LSM now share the
+supplier Git source through their direct path edges. An initial offline check
+failed because the new supplier was not cached; `cargo fetch --locked` populated
+it. `m4-host-storage-receiving-1` then passed locked/offline metadata and default
+and inference dependency boundaries (1,114 resolved packages, two workspace
+members, 650/798 package names). The lock hash stayed
+`46120659f29809c6fd50e03d55ed2e70e9a41f73fde71a1878421b6e78842ac6`.
+Existing unused-patch and cached Servo metadata diagnostics remain recorded.
+This is dependency reception, not a host compile or runtime receipt.

@@ -1,0 +1,67 @@
+Running as unit: custody-contract-m4-store-portable-red-1.scope; invocation ID: 8af7af01c7da4599a000cca5882efef3
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling heapless v0.7.17
+   Compiling tempfile v3.27.0
+   Compiling postcard v1.1.3
+   Compiling muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+error[E0599]: no variant named `LimitExceeded` found for enum `error::StoreError`
+  --> crates/muniment/src/error.rs:48:33
+   |
+13 | pub enum StoreError {
+   | ------------------- variant `LimitExceeded` not found here
+...
+48 |         let error = StoreError::LimitExceeded {
+   |                                 ^^^^^^^^^^^^^ variant not found in `error::StoreError`
+
+error[E0433]: cannot find type `StoreLimitKind` in this scope
+  --> crates/muniment/src/error.rs:49:19
+   |
+49 |             kind: StoreLimitKind::ValueBytes,
+   |                   ^^^^^^^^^^^^^^ use of undeclared type `StoreLimitKind`
+
+error[E0599]: no variant named `LimitExceeded` found for enum `error::StoreError`
+  --> crates/muniment/src/error.rs:53:45
+   |
+13 | pub enum StoreError {
+   | ------------------- variant `LimitExceeded` not found here
+...
+53 |         assert!(matches!(error, StoreError::LimitExceeded { kind: StoreLimitKind::ValueBytes, limit: 4 }));
+   |                                             ^^^^^^^^^^^^^ variant not found in `error::StoreError`
+
+error[E0433]: cannot find type `StoreLimitKind` in this scope
+  --> crates/muniment/src/error.rs:53:67
+   |
+53 |         assert!(matches!(error, StoreError::LimitExceeded { kind: StoreLimitKind::ValueBytes, limit: 4 }));
+   |                                                                   ^^^^^^^^^^^^^^ use of undeclared type `StoreLimitKind`
+
+Some errors have detailed explanations: E0433, E0599.
+For more information about an error, try `rustc --explain E0433`.
+error: could not compile `muniment` (lib test) due to 4 previous errors
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p muniment error::tests -- --test-threads=1"
+	User time (seconds): 1.41
+	System time (seconds): 0.74
+	Percent of CPU this job got: 96%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.23
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 193188
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 16
+	Minor (reclaiming a frame) page faults: 103479
+	Voluntary context switches: 238
+	Involuntary context switches: 26
+	Swaps: 0
+	File system inputs: 12760
+	File system outputs: 14040
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

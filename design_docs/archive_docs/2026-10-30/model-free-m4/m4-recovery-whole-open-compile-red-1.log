@@ -1,0 +1,280 @@
+Running as unit: custody-contract-m4-recovery-whole-open-compile-red-1.scope; invocation ID: 7b7e8c5e37d3445aa5d8e8c8df1e4e54
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling lsm-tree v2.10.4 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/support/patches/lsm-tree)
+warning: usage of an `unsafe` block
+  --> support/patches/lsm-tree/src/binary_search.rs:25:20
+   |
+25 |         let item = unsafe { slice.get_unchecked(mid) };
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> support/patches/lsm-tree/src/binary_search.rs:24:16
+   |
+24 |         #[warn(unsafe_code)]
+   |                ^^^^^^^^^^^
+
+warning: struct `BlockLimits` is never constructed
+  --> support/patches/lsm-tree/src/bounded_block.rs:13:19
+   |
+13 | pub(crate) struct BlockLimits {
+   |                   ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: enum `BlockReadError` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:23:17
+   |
+23 | pub(crate) enum BlockReadError {
+   |                 ^^^^^^^^^^^^^^
+
+warning: function `allocate_zeroed` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:36:4
+   |
+36 | fn allocate_zeroed(len: usize) -> Result<Vec<u8>, BlockReadError> {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `read_data_block_budgeted` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:48:15
+   |
+48 | pub(crate) fn read_data_block_budgeted<R: Read>(
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `read_data_block_inner` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:67:4
+   |
+67 | fn read_data_block_inner<R: Read>(
+   |    ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `corrupt` is never used
+  --> support/patches/lsm-tree/src/bounded_bloom.rs:10:4
+   |
+10 | fn corrupt() -> PrepareError {
+   |    ^^^^^^^
+
+warning: function `parse_bloom` is never used
+  --> support/patches/lsm-tree/src/bounded_bloom.rs:14:15
+   |
+14 | pub(crate) fn parse_bloom(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<BloomFilter, PrepareError> {
+   |               ^^^^^^^^^^^
+
+warning: function `corrupt` is never used
+  --> support/patches/lsm-tree/src/bounded_index.rs:12:4
+   |
+12 | fn corrupt() -> PrepareError {
+   |    ^^^^^^^
+
+warning: function `field` is never used
+  --> support/patches/lsm-tree/src/bounded_index.rs:16:4
+   |
+16 | fn field(cursor: &mut Cursor<&[u8]>, budget: &mut dyn RecoveryBudget) -> Result<(u64, usize, usize), PrepareError> {
+   |    ^^^^^
+
+warning: function `parse_index_entries` is never used
+  --> support/patches/lsm-tree/src/bounded_index.rs:29:15
+   |
+29 | pub(crate) fn parse_index_entries(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<Vec<KeyedBlockHandle>, PrepareError> {
+   |               ^^^^^^^^^^^^^^^^^^^
+
+warning: function `corrupt` is never used
+  --> support/patches/lsm-tree/src/bounded_manifest.rs:10:4
+   |
+10 | fn corrupt() -> PrepareError {
+   |    ^^^^^^^
+
+warning: function `reserve` is never used
+  --> support/patches/lsm-tree/src/bounded_manifest.rs:14:4
+   |
+14 | fn reserve<T>(vec: &mut Vec<T>, count: usize, budget: &mut dyn RecoveryBudget) -> Result<(), PrepareError> {
+   |    ^^^^^^^
+
+warning: function `parse_levels` is never used
+  --> support/patches/lsm-tree/src/bounded_manifest.rs:21:15
+   |
+21 | pub(crate) fn parse_levels(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<Vec<Vec<u64>>, PrepareError> {
+   |               ^^^^^^^^^^^^
+
+warning: enum `ValidationError` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:11:17
+   |
+11 | pub(crate) enum ValidationError {
+   |                 ^^^^^^^^^^^^^^^
+
+warning: struct `ValidationSummary` is never constructed
+  --> support/patches/lsm-tree/src/bounded_validation.rs:19:19
+   |
+19 | pub(crate) struct ValidationSummary {
+   |                   ^^^^^^^^^^^^^^^^^
+
+warning: function `skip` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:25:4
+   |
+25 | fn skip(cursor: &mut Cursor<&[u8]>, len: usize) -> Result<(), ValidationError> {
+   |    ^^^^
+
+warning: function `validate_data_entries` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:35:15
+   |
+35 | pub(crate) fn validate_data_entries(
+   |               ^^^^^^^^^^^^^^^^^^^^^
+
+warning: `lsm-tree` (lib) generated 18 warnings
+   Compiling fjall v2.11.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/support/patches/fjall)
+warning: struct `PartitionRecoveryBudget` is never constructed
+   --> support/patches/fjall/src/bounded_recovery.rs:142:19
+    |
+142 | pub(crate) struct PartitionRecoveryBudget<'a> {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `journal_recovery_mode` is never read
+  --> support/patches/fjall/src/config.rs:51:16
+   |
+14 | pub struct Config {
+   |            ------ field in this struct
+...
+51 |     pub(crate) journal_recovery_mode: RecoveryMode,
+   |                ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `Config` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+
+warning: fields `partition`, `key`, `value`, and `value_type` are never read
+  --> support/patches/fjall/src/journal/bounded.rs:17:16
+   |
+16 | pub(crate) struct PreparedItem {
+   |                   ------------ fields in this struct
+17 |     pub(crate) partition: String,
+   |                ^^^^^^^^^
+18 |     pub(crate) key: Vec<u8>,
+   |                ^^^
+19 |     pub(crate) value: Vec<u8>,
+   |                ^^^^^
+20 |     pub(crate) value_type: lsm_tree::ValueType,
+   |                ^^^^^^^^^^
+
+warning: field `seqno` is never read
+  --> support/patches/fjall/src/journal/bounded.rs:24:16
+   |
+23 | pub(crate) struct PreparedBatch {
+   |                   ------------- field in this struct
+24 |     pub(crate) seqno: u64,
+   |                ^^^^^
+
+warning: method `outstanding_flushes` is never used
+  --> support/patches/fjall/src/stats.rs:26:12
+   |
+25 | impl Stats {
+   | ---------- method in this implementation
+26 |     pub fn outstanding_flushes(&self) -> usize {
+   |            ^^^^^^^^^^^^^^^^^^^
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> support/patches/fjall/src/tx/keyspace.rs:42:21
+   |
+42 |     pub fn write_tx(&self) -> WriteTransaction {
+   |                     ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                     |
+   |                     the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default
+help: use `'_` for type paths
+   |
+42 |     pub fn write_tx(&self) -> WriteTransaction<'_> {
+   |                                               ++++
+
+warning: `fjall` (lib) generated 6 warnings (run `cargo fix --lib -p fjall` to apply 1 suggestion)
+   Compiling muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+error[E0599]: no method named `open_with_recovery_limits` found for struct `fjall::Config` in the current scope
+  --> crates/muniment/src/fjall_recovery_open_tests.rs:70:43
+   |
+70 |     let refused = Config::new(dir.path()).open_with_recovery_limits(limits(5));
+   |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^ method not found in `fjall::Config`
+
+error[E0599]: no method named `open_with_recovery_limits` found for struct `fjall::Config` in the current scope
+  --> crates/muniment/src/fjall_recovery_open_tests.rs:74:44
+   |
+74 |     let keyspace = Config::new(dir.path()).open_with_recovery_limits(limits(32)).unwrap();
+   |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^ method not found in `fjall::Config`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:305:18
+    |
+305 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:315:18
+    |
+315 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:324:18
+    |
+324 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:337:21
+    |
+337 |                 let mut store = FjallStore::open(dir.path()).expect("open 1");
+    |                     ----^^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:341:21
+    |
+341 |                 let mut store = FjallStore::open(dir.path()).expect("open 2");
+    |                     ----^^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:396:18
+    |
+396 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `muniment` (lib test) generated 6 warnings
+error: could not compile `muniment` (lib test) due to 2 previous errors; 6 warnings emitted
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p muniment --no-default-features --features fjall,json whole_open_refusal_preserves_store_before_larger_retry -- --exact --nocapture"
+	User time (seconds): 3.85
+	System time (seconds): 0.89
+	Percent of CPU this job got: 98%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.84
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 285560
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 4
+	Minor (reclaiming a frame) page faults: 163630
+	Voluntary context switches: 279
+	Involuntary context switches: 82
+	Swaps: 0
+	File system inputs: 7256
+	File system outputs: 57960
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

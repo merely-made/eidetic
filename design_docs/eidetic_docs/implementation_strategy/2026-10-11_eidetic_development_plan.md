@@ -1169,19 +1169,90 @@ immutable capture event. Exposing that observation requires a separately named
 metadata field or a stronger owner contract, rather than silently substituting
 it for capture time.
 
-**Storage-bound extension (approved 2026-10-30):** effective structured limits apply before unsealing,
-deserializing and retaining query inputs, with cumulative accounting across the
-selected set. They do not provide a total-memory ceiling: existing Fjall point
-reads and key enumeration can materialize stored values before the host sees
-their sizes, and the source reader has earlier temporary allocations under its
-own character limits. The user extended M4 to close the initial storage/read allocation gap and asked
-that new releases be checked first. The current upstream release still lacks
-the needed normal-tree read bound; its format migration also reads the old store
-unbounded. The proposed compatible engine extension must cover point reads,
-prefix inventory and journal recovery, including compressed and decoded sizes,
-with configurable operation bounds. Limit exhaustion must leave existing files
-intact and distinguish refusal from corruption. This is open implementation
-work; the post-fetch wrapper does not close it, and M5 remains separate.
+**Storage-bound extension (approved 2026-10-30):** structured limits apply
+before unsealing, deserializing and retaining query inputs, with cumulative
+accounting across the selected set. The original Fjall reads can allocate a
+stored value before the host checks its size. The user extended M4 to close
+that gap and requested an upstream release review first. The reviewed supplier
+now provides bounded owner preparation, reads and inventories while retaining
+the existing format. Newer upstream releases do not supply that contract, and
+their format migration itself reads legacy values without it.
+
+Supplier task review and focused native tests are complete. Turnstone's receiver
+is still being integrated; its settings and shared operation ledger must reach
+session memory, sealed memory and retained clips. Neither the published supplier
+nor the earlier post-fetch host tests establish this end-to-end result. M5
+remains separate. Exact source, release findings, failures and test evidence are
+in the October 30 receipts.
+
+**Implementation contract for the storage extension:** retain the existing
+standard-tree v2 partition and opaque keys. Carry the exact upstream Fjall and
+LSM-tree sources with licenses and a documented patch, using direct dependency
+paths so Git consumers receive the same implementation. This avoids a data
+migration but creates an ongoing upstream-maintenance obligation; it does not
+qualify crates.io packaging of the derived dependencies.
+
+A bounded owner open validates all required metadata and journal recovery under
+an exclusive store lock without changing existing files. It prepares and retains
+the admitted recovery state; only successful admission may apply cleanup, tail
+repair or journal creation and start background work. No later resource-limit
+check may fail after that mutation phase starts. Resource-limit refusal preserves
+a recursive inventory and hashes of existing files, including earlier repair
+candidates when a later journal exceeds a limit. Unsupported blob-tree partitions
+refuse during preparation. Existing standard-tree bytes require no conversion.
+
+Read limits separately name individual values, encoded/decoded blocks, cumulative
+requested allocation capacity, input/decode work, metadata, visited entries and
+returned key/item totals. Each capacity request is checked before allocation;
+these are operation bounds, not allocator-overhead or whole-process RSS bounds.
+Both the owner ceiling and a shared operation ledger are charged before work;
+already consumed work is not refunded on failure. Cached and memtable values
+obey the current limits, and compressed data is capped by its actual decoded
+output. A block containing any oversized entry may conservatively refuse the
+whole lookup, even when its target is small. The refusal names the relevant
+limit rather than misidentifying the target as oversized.
+
+Ordinary byte-store reads on the bounded owner inherit these ceilings; structured
+operations may tighten them. Complete prefix/range inventory returns all keys or
+a refusal. A distinct bounded existence probe may return true at the first live
+match; false requires exhausting its scope. No partial result establishes absence.
+Journal budgets cover all entries and batch/checksum work, including overwritten,
+deleted and unknown-partition data, without treating a limit as corruption.
+Streaming checksums preserve the existing byte encoding. Writes are checked
+against the recovery entry ceilings before reaching the journal. Explicit sync
+and pending admission retain their separate durability role.
+
+The bounded path rereads blocks under current budgets and omits optional Bloom
+filters during preparation; this can increase I/O. Existence currently examines
+the complete matching range and can refuse on later work even after an earlier
+match. Temporary stores retain an empty root and stable coordination lock after
+the last capability drops, avoiding lock-inode replacement races. These are
+explicit costs of the compatible patch. Linux has runtime evidence; other
+platforms retain their stated source-only and unsupported-path boundaries.
+Named allocation limits exclude allocator/OS overhead, fixed configured runtime
+infrastructure, background compaction and total process RSS.
+
+- [x] Implement and review bounded engine preparation, reads, enumeration and
+  error propagation in the existing storage owner. Preserve source provenance;
+  upstream files may retain their original shape while new code follows local
+  size rules.
+- [ ] Receive the supplier in Turnstone; persist visible storage/recovery limits,
+  use bounded open for session memory, sealed memory and retained clips on every
+  owner lifecycle path, and share one operation ledger across source, record and
+  receipt reads, including actor handoffs. Reopen failures remain distinct from
+  missing data or a locked profile.
+- [ ] Verify retained v2 compatibility, cold/cache/memtable and compressed paths,
+  exact/zero/overflow limits, complete inventories and existence, ordinary-owner
+  reads, snapshot consistency, and every refusal-before-allocation boundary.
+  Verify whole-store bytes stay unchanged after refused recovery and larger
+  explicit limits allow a later complete reopen. Cover typed errors, sync and
+  pending-recovery fences, settings migration and coherent receiving locks.
+
+**Storage extension done when:** an oversized stored value cannot trigger its
+separate payload allocation on a bounded read or reopen; enumerations and decoder
+work obey their named limits; resource-limit refusals preserve retained data and
+remain recoverable through explicit settings. M5 still owns headed use and independent
+network-disabled restart qualification.
 
 **Files/interfaces:** core `records/`, shared search `records/`, existing
 sealed typed storage and owner attribution; Turnstone research service/surface

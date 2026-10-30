@@ -1,0 +1,191 @@
+Running as unit: custody-contract-m4-store-review-empty-prefix-red-1.scope; invocation ID: ca40b32a2d5b4e9aa24131f486cd42b8
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: usage of an `unsafe` block
+  --> support/patches/lsm-tree/src/binary_search.rs:25:20
+   |
+25 |         let item = unsafe { slice.get_unchecked(mid) };
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> support/patches/lsm-tree/src/binary_search.rs:24:16
+   |
+24 |         #[warn(unsafe_code)]
+   |                ^^^^^^^^^^^
+
+warning: function `read_data_block_budgeted` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:53:15
+   |
+53 | pub(crate) fn read_data_block_budgeted<R: Read + Seek>(
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `corrupt` is never used
+  --> support/patches/lsm-tree/src/bounded_bloom.rs:10:4
+   |
+10 | fn corrupt() -> PrepareError {
+   |    ^^^^^^^
+
+warning: function `parse_bloom` is never used
+  --> support/patches/lsm-tree/src/bounded_bloom.rs:14:15
+   |
+14 | pub(crate) fn parse_bloom(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<BloomFilter, PrepareError> {
+   |               ^^^^^^^^^^^
+
+warning: `lsm-tree` (lib) generated 4 warnings
+warning: unused import: `stats::Stats`
+  --> support/patches/fjall/src/bounded_recovery/store/commit.rs:17:5
+   |
+17 |     stats::Stats,
+   |     ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `owner_lock` is never read
+   --> support/patches/fjall/src/bounded_recovery.rs:284:16
+    |
+282 | pub struct ReplayPlan {
+    |            ---------- field in this struct
+283 |     pub(crate) partitions: Vec<crate::journal::bounded_replay::PreparedPartition>,
+284 |     pub(crate) owner_lock: std::sync::Arc<crate::keyspace::OwnerLease>,
+    |                ^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `journal_recovery_mode` is never read
+  --> support/patches/fjall/src/config.rs:51:16
+   |
+14 | pub struct Config {
+   |            ------ field in this struct
+...
+51 |     pub(crate) journal_recovery_mode: RecoveryMode,
+   |                ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `Config` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+
+warning: method `outstanding_flushes` is never used
+  --> support/patches/fjall/src/stats.rs:26:12
+   |
+25 | impl Stats {
+   | ---------- method in this implementation
+26 |     pub fn outstanding_flushes(&self) -> usize {
+   |            ^^^^^^^^^^^^^^^^^^^
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> support/patches/fjall/src/tx/keyspace.rs:42:21
+   |
+42 |     pub fn write_tx(&self) -> WriteTransaction {
+   |                     ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                     |
+   |                     the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default
+help: use `'_` for type paths
+   |
+42 |     pub fn write_tx(&self) -> WriteTransaction<'_> {
+   |                                               ++++
+
+warning: `fjall` (lib) generated 5 warnings (run `cargo fix --lib -p fjall` to apply 2 suggestions)
+   Compiling muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:340:18
+    |
+340 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:350:18
+    |
+350 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:359:18
+    |
+359 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:372:21
+    |
+372 |                 let mut store = FjallStore::open(dir.path()).expect("open 1");
+    |                     ----^^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:376:21
+    |
+376 |                 let mut store = FjallStore::open(dir.path()).expect("open 2");
+    |                     ----^^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:431:18
+    |
+431 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+warning: `muniment` (lib test) generated 6 warnings (run `cargo fix --lib -p muniment --tests` to apply 6 suggestions)
+    Finished `test` profile [unoptimized] target(s) in 2.56s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/muniment-31353997559a9d5b)
+
+running 1 test
+test fjall_backend::bounds_tests::empty_prefix_includes_binary_boundary_keys_in_memory_and_on_disk ... FAILED
+
+failures:
+
+---- fjall_backend::bounds_tests::empty_prefix_includes_binary_boundary_keys_in_memory_and_on_disk stdout ----
+
+thread 'fjall_backend::bounds_tests::empty_prefix_includes_binary_boundary_keys_in_memory_and_on_disk' (941127) panicked at crates/muniment/src/fjall_bounds_tests.rs:143:9:
+assertion failed: store.exists_bounded("", &cap,
+        &mut FjallReadBudget::new(cap.clone())).unwrap()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    fjall_backend::bounds_tests::empty_prefix_includes_binary_boundary_keys_in_memory_and_on_disk
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 116 filtered out; finished in 0.25s
+
+error: test failed, to rerun pass `-p muniment --lib`
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p muniment --features fjall empty_prefix_includes_binary -- --test-threads=1"
+	User time (seconds): 2.04
+	System time (seconds): 0.65
+	Percent of CPU this job got: 93%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.90
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 285328
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 12
+	Minor (reclaiming a frame) page faults: 104312
+	Voluntary context switches: 2283
+	Involuntary context switches: 76
+	Swaps: 0
+	File system inputs: 928
+	File system outputs: 29520
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

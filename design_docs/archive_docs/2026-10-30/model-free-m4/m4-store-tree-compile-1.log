@@ -1,0 +1,204 @@
+Running as unit: custody-contract-m4-store-tree-compile-1.scope; invocation ID: deea091d06c4471f8fcbb32bd342384f
+   Compiling lsm-tree v2.10.4 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/support/patches/lsm-tree)
+warning: unused import: `TreeInner`
+  --> src/bounded_tree.rs:19:17
+   |
+19 |         inner::{TreeInner, get_next_tree_id},
+   |                 ^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: usage of an `unsafe` block
+  --> src/binary_search.rs:25:20
+   |
+25 |         let item = unsafe { slice.get_unchecked(mid) };
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> src/binary_search.rs:24:16
+   |
+24 |         #[warn(unsafe_code)]
+   |                ^^^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:273:43
+    |
+273 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:373:43
+    |
+373 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:574:47
+    |
+574 |             let folder = tempfile::tempdir()?.into_path();
+    |                                               ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:678:43
+    |
+678 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:367:43
+    |
+367 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:415:43
+    |
+415 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:453:43
+    |
+453 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:523:43
+    |
+523 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: field `0` is never read
+  --> src/bounded_block.rs:24:8
+   |
+24 |     Io(std::io::Error),
+   |     -- ^^^^^^^^^^^^^^
+   |     |
+   |     field in this variant
+   |
+   = note: `BlockReadError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or remove the field
+   |
+24 -     Io(std::io::Error),
+24 +     Io(()),
+   |
+
+warning: field `0` is never read
+  --> src/bounded_block.rs:33:12
+   |
+33 |     Budget(BudgetError),
+   |     ------ ^^^^^^^^^^^
+   |     |
+   |     field in this variant
+   |
+   = note: `BlockReadError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or remove the field
+   |
+33 -     Budget(BudgetError),
+33 +     Budget(()),
+   |
+
+warning: function `corrupt` is never used
+  --> src/bounded_tree.rs:28:4
+   |
+28 | fn corrupt() -> PrepareError {
+   |    ^^^^^^^
+
+warning: function `charge` is never used
+  --> src/bounded_tree.rs:31:4
+   |
+31 | fn charge(b: &mut dyn RecoveryBudget, n: usize) -> Result<(), PrepareError> {
+   |    ^^^^^^
+
+warning: function `join` is never used
+  --> src/bounded_tree.rs:36:4
+   |
+36 | fn join(path: &Path, name: &str, b: &mut dyn RecoveryBudget) -> Result<PathBuf, PrepareError> {
+   |    ^^^^
+
+warning: function `read_file` is never used
+  --> src/bounded_tree.rs:48:4
+   |
+48 | fn read_file(path: &Path, b: &mut dyn RecoveryBudget) -> Result<Vec<u8>, PrepareError> {
+   |    ^^^^^^^^^
+
+warning: constant `NAME_RESERVE` is never used
+  --> src/bounded_tree.rs:63:7
+   |
+63 | const NAME_RESERVE: usize = 3 * 65_536;
+   |       ^^^^^^^^^^^^
+
+warning: struct `PreparedTree` is never constructed
+  --> src/bounded_tree.rs:71:12
+   |
+71 | pub struct PreparedTree {
+   |            ^^^^^^^^^^^^
+
+warning: methods `tree` and `commit` are never used
+  --> src/bounded_tree.rs:78:12
+   |
+75 | impl PreparedTree {
+   | ----------------- methods in this implementation
+...
+78 |     pub fn tree(&self) -> &Tree {
+   |            ^^^^
+...
+84 |     pub fn commit(mut self) -> Result<Tree, PrepareError> {
+   |            ^^^^^^
+
+warning: function `prepare` is never used
+  --> src/bounded_tree.rs:92:15
+   |
+92 | pub(crate) fn prepare(
+   |               ^^^^^^^
+
+warning: function `reserve_one` is never used
+   --> src/bounded_tree.rs:233:4
+    |
+233 | fn reserve_one<T>(v: &mut Vec<T>, b: &mut dyn RecoveryBudget) -> Result<(), PrepareError> {
+    |    ^^^^^^^^^^^
+
+warning: associated function `from_prepared` is never used
+   --> src/level_manifest/mod.rs:113:19
+    |
+112 | impl LevelManifest {
+    | ------------------ associated function in this implementation
+113 |     pub(crate) fn from_prepared(path: PathBuf, groups: Vec<Vec<Segment>>) -> Self {
+    |                   ^^^^^^^^^^^^^
+
+warning: `lsm-tree` (lib test) generated 22 warnings (run `cargo fix --lib -p lsm-tree --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized] target(s) in 3.61s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/lsm_tree-a33218ffee2be352)
+
+running 2 tests
+test bounded_segment_tests::prepares_real_segment_without_mutating_it ... ok
+test bounded_segment_tests::segment_limit_refusal_does_not_mutate_segment ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 149 filtered out; finished in 0.00s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --manifest-path support/patches/lsm-tree/Cargo.toml --features lz4,miniz --lib bounded_segment_tests -- --test-threads=1"
+	User time (seconds): 3.23
+	System time (seconds): 0.44
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.66
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 359792
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 4
+	Minor (reclaiming a frame) page faults: 108628
+	Voluntary context switches: 666
+	Involuntary context switches: 51
+	Swaps: 0
+	File system inputs: 3864
+	File system outputs: 30264
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

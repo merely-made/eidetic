@@ -1,0 +1,113 @@
+Running as unit: custody-contract-m4-store-replay-install-red-1.scope; invocation ID: f8d9a03b54404b90818efae2b3c0ebaa
+   Compiling lsm-tree v2.10.4 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/support/patches/lsm-tree)
+warning: usage of an `unsafe` block
+  --> src/binary_search.rs:25:20
+   |
+25 |         let item = unsafe { slice.get_unchecked(mid) };
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> src/binary_search.rs:24:16
+   |
+24 |         #[warn(unsafe_code)]
+   |                ^^^^^^^^^^^
+
+error[E0599]: no method named `install_replay` found for struct `PreparedTree` in the current scope
+   --> src/bounded_prepare_tests.rs:115:29
+    |
+115 |     let retained = prepared.install_replay(Some(active), vec![sealed], &mut Ledger { remaining: 1_000_000 }).unwrap();
+    |                             ^^^^^^^^^^^^^^ method not found in `PreparedTree`
+    |
+   ::: src/bounded_tree.rs:99:1
+    |
+ 99 | pub struct PreparedTree {
+    | ----------------------- method `install_replay` not found for this struct
+
+error[E0599]: no method named `install_replay` found for struct `PreparedTree` in the current scope
+   --> src/bounded_prepare_tests.rs:131:31
+    |
+131 |     assert!(matches!(prepared.install_replay(Some(active), vec![], &mut Ledger { remaining: 0 }), Err(PrepareError::Limit { .. })));
+    |                               ^^^^^^^^^^^^^^ method not found in `PreparedTree`
+    |
+   ::: src/bounded_tree.rs:99:1
+    |
+ 99 | pub struct PreparedTree {
+    | ----------------------- method `install_replay` not found for this struct
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:273:43
+    |
+273 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:373:43
+    |
+373 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:574:47
+    |
+574 |             let folder = tempfile::tempdir()?.into_path();
+    |                                               ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:678:43
+    |
+678 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:367:43
+    |
+367 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:415:43
+    |
+415 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:453:43
+    |
+453 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:523:43
+    |
+523 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `lsm-tree` (lib test) generated 9 warnings
+error: could not compile `lsm-tree` (lib test) due to 2 previous errors; 9 warnings emitted
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --manifest-path support/patches/lsm-tree/Cargo.toml --features lz4,miniz --lib replay_install -- --test-threads=1"
+	User time (seconds): 1.77
+	System time (seconds): 0.27
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.10
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 308084
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 7
+	Minor (reclaiming a frame) page faults: 62425
+	Voluntary context switches: 162
+	Involuntary context switches: 61
+	Swaps: 0
+	File system inputs: 9360
+	File system outputs: 88
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101
