@@ -1,0 +1,192 @@
+[
+  {
+    "file": "m5-activity-1.json",
+    "sha256": "e615095238603edecef646c92e6ed6bc384a35e7aacea22021974a7cbc497fad",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-activity-1.log",
+    "sha256": "6e6a687a0e2d62e9c366747282d2d9f77c5b99f1f09dc6af7633a06fdbf424dd",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-authoring-reader-1.json",
+    "sha256": "4f30d7a0ecff62530b7638d455567f3e3257a90016818687d5fef60ced8bd7a0",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-authoring-reader-1.log",
+    "sha256": "ca4a413e2269f5bbe9ae4883f80ecdfcc020ae9ab7caa660b97c023d7323f978",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-comparison-1.json",
+    "sha256": "569c7f8e1ba63f4de2da3f11980d3e841f36a7784c9107090e4cab9a9e6d6d7c",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-comparison-1.log",
+    "sha256": "40319cc5fc4a2a3c9dc1249b90f74aa6cb4c23cc515b2cc1ff9c4032a1af7a92",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-custody-fixture-build-1.json",
+    "sha256": "4c0d4bda53b1d78faa76e263f634f20ea172a5cd16f50474fb76ff3620588359",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-custody-fixture-build-1.log",
+    "sha256": "c07336a3bd4d8e103dd5685492c05c0a75c7ba4796e491d0f4cf98ff386d56e9",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-custody-fixture-build-2.json",
+    "sha256": "84318ecd55d969f890d73fbf8a5bd863d75db5a3f7b67f9ae84ce2ffe8301953",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-custody-fixture-build-2.log",
+    "sha256": "7db39051ab59b7cda217fa8d8746451d57b8d4458465940e72f16a055f379479",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-mere-graphshell-1.json",
+    "sha256": "c1ac581111b5f4c6532dff7323a102de1aa503b1d45761909cf69cc26d1d488f",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-mere-graphshell-1.log",
+    "sha256": "cee2c6638ef5060c847e904d17399082625c49d2fd8834aac97c2d9ed96b5c57",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-mere-graphshell-2.json",
+    "sha256": "77eb363b2d5814c6a7039a60352aea6a4971b53e7756ae5845ca8ce8fab326e9",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-mere-graphshell-2.log",
+    "sha256": "3bb1a832f621509a8c599f22604b590c89474adc59c711f1a640502ba34bedaf",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-note-anchor-green-1.json",
+    "sha256": "f7eb3bc19e7b3bfb716f1dfc80af7fcee5aac51bb6d196637c58e1cbcd7d9479",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-note-anchor-green-1.log",
+    "sha256": "4dec318dae292dd22ce175a6828a8e0c25ee0702465a40711f3aa39f558ed283",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-note-anchor-red-1.json",
+    "sha256": "0ba5ba33ceeed3a8702a7451c7ba9ae4aac012996958b09582873530d4032f02",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-anchor-red-1.log",
+    "sha256": "cc4306836229815ae35264c26347b7190f73a5202167670cb416487d46b374b0",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-host-ui-red-1.json",
+    "sha256": "3d9c1bfeb6f8055a10601cd91d77e1a8b4229d7f7f2c39a84e84019260c61608",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-host-ui-red-1.log",
+    "sha256": "4e7f1bdf75dce90ad42a8e0bcb41a2a13019bcb4fd278aca0ad82151f5d6c950",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-reopen-1.json",
+    "sha256": "295cfc6b3a7142f541ffc4c0ab5cc446d30cf44c3ce48a472f0e72abdd70f834",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-note-reopen-1.log",
+    "sha256": "dc3d0f22b8a71a32974c4825513dfbb0d59bfb5396b2a3ce781419ef57d9bf1c",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-note-ui-green-1.json",
+    "sha256": "25bd3bcb5a4a025ca259a31d2d70a41e3e672c1976eaaddf0c333a2d11fb604f",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-note-ui-green-1.log",
+    "sha256": "172849bf7bf2dd9067a8ff2585bb49ae2a2ab3bca0fb62f3896af9500c4a22b3",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-note-ui-red-1.json",
+    "sha256": "acc2f1e4d66f3d1559b1fc9acbeb6c99191c0976dd766e3d5905a051ad87e881",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-ui-red-1.log",
+    "sha256": "66bd7fb59ea1921e630c949aaeaf7b08652132f27bf07b05d04b070b231442ef",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-ui-red-2.json",
+    "sha256": "5bd44ef0049a90667decb51561b45506239cf4f98a9b95871edf274d8224ebb3",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-ui-red-2.log",
+    "sha256": "9e6dc06249dfdaef2ade401e498f94958086ffc6139eda147525153158415abf",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-ui-red-3.json",
+    "sha256": "1c65b7333ca11a9ef6b84b32263cbcaec8eef2dea15209b9499a49588fb902b9",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-note-ui-red-3.log",
+    "sha256": "1654b8be3e61ce0ddf452cb60ac3577a56b90c28fc263febda9ffb4ea759d3a1",
+    "exit_code": 101
+  },
+  {
+    "file": "m5-observation-1.json",
+    "sha256": "daeb2d9b0e9260984b308d51c78c2f360c19168c1848eceda3fb852a822c7724",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-observation-1.log",
+    "sha256": "710c51011a9de68a1ccd234620e3401387e523d5c4c0629dd0ecc65aa5f9e01f",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-parser-1.json",
+    "sha256": "e42742f42ced51aa103189c6db9009ba4d03acd6393539631f820920b7f71117",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-parser-1.log",
+    "sha256": "3594ce23f9d5e7add20a06b894a622893d6cc6f3e4ede6ba6b01eb1b0dc445be",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-reader-compile-1.json",
+    "sha256": "a0dd0be20dcaa0a8921be48d998bc4efe3474d22fe248e4a37f41daf67d026a4",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-reader-compile-1.log",
+    "sha256": "cdf8aea5a66caa6f46b983c80935198b539356971ee341b460b475516e2f093b",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-status-owner-1.json",
+    "sha256": "e1ddccf01fddc418917ceb576b5869fc98ac660a62858d698a4174b4c81f41c1",
+    "exit_code": 0
+  },
+  {
+    "file": "m5-status-owner-1.log",
+    "sha256": "ca1e7c56f0257771e4db08f2f7af06aedbebc320e23262b92fdbbb5c4a0c1439",
+    "exit_code": 0
+  }
+]

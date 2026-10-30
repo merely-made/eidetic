@@ -1,0 +1,83 @@
+diff --git a/ports/graphshell/src/retained_content.rs b/ports/graphshell/src/retained_content.rs
+index ef5088d42..b9dfb92e7 100644
+--- a/ports/graphshell/src/retained_content.rs
++++ b/ports/graphshell/src/retained_content.rs
+@@ -50,21 +50,23 @@ pub async fn import_clip<B: muniment::Backend + Clone>(
+     if bytes.len() as u64 > wire_limit {
+         return Err("Clip package exceeds its configured wire budget".into());
+     }
+     let package: fleece::portable_clip::ClipPackageV1 =
+         serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
+     let mut staging = eidetic::MemoryBackend::new();
+     let staged =
+         fleece::portable_clip::import_clip_package(&mut staging, None, &package, context, limits)
+             .await
+             .map_err(|e| e.to_string())?;
+-    mere_document_lanes::retained_clip::read_store(&mut staging, None, staged, limits).await?;
++    mere_document_lanes::retained_clip::read_store(&mut staging, None, staged, limits)
++        .await
++        .map_err(|error| format!("Could not verify imported retained clip: {error}"))?;
+     let mut store = app.host.store();
+     let id =
+         fleece::portable_clip::import_clip_package(&mut store, None, &package, context, limits)
+             .await
+             .map_err(|e| e.to_string())?;
+     let address = mere_document_lanes::retained_clip::address(id);
+     let member = app
+         .host
+         .create_address(&address, &package.clip.title)
+         .map_err(|e| format!("Clip retained at {address}; reference creation needs retry: {e}"))?;
+@@ -510,22 +512,23 @@ impl ContentHost {
+     /// The existing Fleece/Eidetic owner verifies exact held parts without
+     /// fetching. Its private sealer and custody backend remain caller supplied.
+     pub async fn open_clip(
+         &mut self,
+         access: Uuid,
+         store: &mut dyn eidetic::Store,
+         sealer: Option<&dyn eidetic::seal::PayloadSealer>,
+         id: eidetic::ManifestId,
+         limits: mere_document_lanes::retained_clip::ClipLimits,
+     ) -> Result<Rc<RefCell<ContentSlot>>, String> {
+-        let view =
+-            mere_document_lanes::retained_clip::read_store(store, sealer, id, limits).await?;
++        let view = mere_document_lanes::retained_clip::read_store(store, sealer, id, limits)
++            .await
++            .map_err(|error| format!("Could not read retained clip: {error}"))?;
+         self.open(access, HeldContent::clip(&view)?)
+     }
+     pub fn new(registries: PeltRegistries<Scene>) -> Self {
+         Self {
+             registries,
+             slots: BTreeMap::new(),
+             dictionaries: Vec::new(),
+         }
+     }
+     /// Hand loaded segmenter dictionaries to every open lane session and every
+diff --git a/ports/graphshell/src/web_tree/reading.rs b/ports/graphshell/src/web_tree/reading.rs
+index 190ead1ef..fc5ce61f4 100644
+--- a/ports/graphshell/src/web_tree/reading.rs
++++ b/ports/graphshell/src/web_tree/reading.rs
+@@ -909,21 +909,22 @@ pub(super) fn clip_appearance(
+             PendingClip {
+                 address: address.into(),
+                 ticket,
+                 answer: answer.clone(),
+             },
+         );
+         wasm_bindgen_futures::spawn_local(async move {
+             let result = async {
+                 let clip =
+                     mere_document_lanes::retained_clip::read_store(&mut store, None, id, limits)
+-                        .await?;
++                        .await
++                        .map_err(|error| format!("Could not read retained clip: {error}"))?;
+                 HeldContent::clip(&clip)
+             }
+             .await;
+             *answer.borrow_mut() = Some(result);
+         });
+     }
+     Appearance::Message(
+         status.unwrap_or_else(|| "Reading verified retained clip from this Mere".into()),
+     )
+ }

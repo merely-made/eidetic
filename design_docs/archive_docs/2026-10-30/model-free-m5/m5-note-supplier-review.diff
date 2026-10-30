@@ -1,0 +1,283 @@
+diff --git a/ports/redshank/surfaces/src/dock.rs b/ports/redshank/surfaces/src/dock.rs
+index 2899d1b..3735878 100644
+--- a/ports/redshank/surfaces/src/dock.rs
++++ b/ports/redshank/surfaces/src/dock.rs
+@@ -345,17 +345,17 @@ fn transport_controls(state: &CompactPlayerState) -> Vec<CompactView> {
+             true,
+             CompactCommand::SetVolume(next_volume(volume)),
+         ),
+         Box::new(el("span", ()).attr("class", "rs-spacer")),
+     ]
+ }
+ 
+ pub(crate) fn text_note_button(state: &CompactPlayerState) -> CompactView {
+-    let enabled = state.transport_enabled();
++    let enabled = state.text_capture_enabled();
+     control(
+         vec![
+             span("rs-cap-glyph", "T"),
+             span("rs-cap-label", "Text note"),
+             span("rs-cap-word", "text"),
+             span("rs-kbd", "N"),
+         ],
+         "rs-btn rs-btn-capture rs-capture-control",
+@@ -706,16 +706,53 @@ mod tests {
+             capture.root(),
+             "Hold to record voice note",
+         );
+         capture.dispatch_click(voice, PointerClick::at((1.0, 1.0)));
+         capture.update(|state| commands.extend(state.drain_commands()));
+         assert_eq!(commands, [CompactCommand::AddTextNote]);
+     }
+ 
++    #[test]
++    fn text_capture_availability_is_independent_when_explicitly_supplied() {
++        let mut capture = runner(capture_surface);
++        capture.update(|state| {
++            state.transport = TransportState::Unavailable("No output".into());
++        });
++        let note = node_with_label(&capture.dom().borrow(), capture.root(), "Add text note");
++        capture.dispatch_click(note, PointerClick::at((1.0, 1.0)));
++        capture.update(|state| assert_eq!(state.drain_commands().count(), 0));
++
++        capture.update(|state| state.text_capture_available = Some(true));
++        let note = node_with_label(&capture.dom().borrow(), capture.root(), "Add text note");
++        capture.dispatch_click(note, PointerClick::at((1.0, 1.0)));
++        capture.update(|state| {
++            assert_eq!(
++                state.drain_commands().collect::<Vec<_>>(),
++                [CompactCommand::AddTextNote]
++            )
++        });
++
++        capture.update(|state| {
++            state.transport = TransportState::Playing;
++            state.text_capture_available = Some(false);
++        });
++        let note = node_with_label(&capture.dom().borrow(), capture.root(), "Add text note");
++        capture.dispatch_click(note, PointerClick::at((1.0, 1.0)));
++        capture.update(|state| assert_eq!(state.drain_commands().count(), 0));
++
++        capture.update(|state| {
++            state.text_capture_available = Some(true);
++            state.now_playing = None;
++        });
++        let note = node_with_label(&capture.dom().borrow(), capture.root(), "Add text note");
++        capture.dispatch_click(note, PointerClick::at((1.0, 1.0)));
++        capture.update(|state| assert_eq!(state.drain_commands().count(), 0));
++    }
++
+     #[test]
+     fn voice_capture_uses_pointer_press_and_release() {
+         let mut capture = runner(capture_surface);
+         capture.update(|state| state.voice_capture_available = true);
+         let voice = node_with_label(
+             &capture.dom().borrow(),
+             capture.root(),
+             "Hold to record voice note",
+diff --git a/ports/redshank/surfaces/src/lib.rs b/ports/redshank/surfaces/src/lib.rs
+index b42c01b..d558281 100644
+--- a/ports/redshank/surfaces/src/lib.rs
++++ b/ports/redshank/surfaces/src/lib.rs
+@@ -400,16 +400,20 @@ pub struct NoteOpenWarning {
+ pub struct CompactPlayerState {
+     pub transport: TransportState,
+     pub now_playing: Option<NowPlaying>,
+     pub skip_backward_ms: u64,
+     pub skip_forward_ms: u64,
+     /// Effective playback rate in percent, as the backend reports it.
+     pub rate_percent: u16,
+     pub volume_percent: u8,
++    /// Host-supplied text capture capability. None retains the transport-based
++    /// standalone policy; an explicit value permits hosts without playback to
++    /// admit a capture independently of transport availability.
++    pub text_capture_available: Option<bool>,
+     pub voice_capture_available: bool,
+     pub voice_capture_active: bool,
+     pub recording: Option<Recording>,
+     /// A refused note open remains visible until an explicit listener action.
+     pub note_warning: Option<NoteOpenWarning>,
+     commands: Vec<CompactCommand>,
+ }
+ 
+@@ -417,16 +421,17 @@ impl Default for CompactPlayerState {
+     fn default() -> Self {
+         Self {
+             transport: TransportState::Empty,
+             now_playing: None,
+             skip_backward_ms: 15_000,
+             skip_forward_ms: 30_000,
+             rate_percent: 100,
+             volume_percent: 80,
++            text_capture_available: None,
+             voice_capture_available: false,
+             voice_capture_active: false,
+             recording: None,
+             note_warning: None,
+             commands: Vec::new(),
+         }
+     }
+ }
+@@ -443,16 +448,23 @@ impl CompactPlayerState {
+     /// Whether transport commands are accepted right now.
+     pub fn transport_enabled(&self) -> bool {
+         self.now_playing.is_some()
+             && !matches!(
+                 self.transport,
+                 TransportState::Empty | TransportState::Buffering | TransportState::Unavailable(_)
+             )
+     }
++
++    pub fn text_capture_enabled(&self) -> bool {
++        self.now_playing.is_some()
++            && self
++                .text_capture_available
++                .unwrap_or_else(|| self.transport_enabled())
++    }
+ }
+ 
+ // ---------------------------------------------------------------------------
+ // Full-surface rows
+ // ---------------------------------------------------------------------------
+ 
+ #[derive(Clone, Debug, Eq, PartialEq)]
+ pub struct TextCapture {
+@@ -489,16 +501,24 @@ pub struct NoteSummary {
+     pub id: AnnotationId,
+     pub item_id: ItemId,
+     pub offset_ms: u64,
+     pub end_offset_ms: Option<u64>,
+     pub body: NoteSummaryBody,
+     pub private: bool,
+ }
+ 
++/// Which note mutations the embedding host can carry through its owner model.
++#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
++pub enum NoteRowActions {
++    #[default]
++    Full,
++    PrivacyOnly,
++}
++
+ #[derive(Clone, Debug, Eq, PartialEq)]
+ pub enum NoteAlignment {
+     Unavailable(String),
+     Download,
+     Ready,
+     Running,
+     Aligned {
+         position_ms: u64,
+@@ -620,16 +640,18 @@ pub struct RecoveryState {
+     pub close_requested: bool,
+     pub copying: bool,
+     /// Copy progress, destination, or a refusal supplied by the host.
+     pub copy_notice: Option<String>,
+ }
+ 
+ #[derive(Clone, Debug, Eq, PartialEq, Default)]
+ pub struct RedshankSurfaceState {
++    /// Restrict the shared note row to the actions supported by this host.
++    pub note_row_actions: NoteRowActions,
+     /// The embedding owner supplies a selected-note package writer.
+     pub note_clip_export_available: bool,
+     pub transcript: Option<(
+         ItemId,
+         redshank_model::SavedTranscript,
+         timed_text::Transcript,
+     )>,
+     pub active_tab: SurfaceTab,
+diff --git a/ports/redshank/surfaces/src/tabs/listen.rs b/ports/redshank/surfaces/src/tabs/listen.rs
+index bbb10c1..af9aace 100644
+--- a/ports/redshank/surfaces/src/tabs/listen.rs
++++ b/ports/redshank/surfaces/src/tabs/listen.rs
+@@ -580,16 +580,36 @@ mod tests {
+                 CompactCommand::OpenNote(AnnotationId("text-one".into())),
+                 CompactCommand::BeginEditNote(AnnotationId("text-one".into())),
+                 CompactCommand::DeleteNote(AnnotationId("text-one".into())),
+                 CompactCommand::PlayVoiceNote(AnnotationId("voice-one".into())),
+             ]
+         );
+     }
+ 
++    #[test]
++    fn privacy_only_note_menu_keeps_privacy_without_edit_or_delete() {
++        let mut state = with_notes();
++        state.note_row_actions = crate::NoteRowActions::PrivacyOnly;
++        let mut runner = runner(state, panel);
++        open_menu(&mut runner, "note at 0:46");
++        let html = markup_of(&runner);
++        assert!(html.contains("Make shareable: note at 0:46"));
++        assert!(!html.contains("Edit note at 0:46"));
++        assert!(!html.contains("Delete note at 0:46"));
++        click(&mut runner, "Make shareable: note at 0:46");
++        assert_eq!(
++            commands(&mut runner),
++            [CompactCommand::SetNotePrivacy {
++                id: AnnotationId("text-one".into()),
++                privacy: redshank_model::NotePrivacy::Shareable,
++            }]
++        );
++    }
++
+     #[test]
+     fn playing_voice_note_reports_progress_and_stops() {
+         let mut state = with_notes();
+         state.notes[1].body = NoteSummaryBody::Voice {
+             duration_ms: 6_000,
+             preview: VoiceNotePreview::Playing { position_ms: 2_000 },
+         };
+         let mut runner = runner(state, panel);
+diff --git a/ports/redshank/surfaces/src/tabs/rows.rs b/ports/redshank/surfaces/src/tabs/rows.rs
+index 4c1378b..17e9a0b 100644
+--- a/ports/redshank/surfaces/src/tabs/rows.rs
++++ b/ports/redshank/surfaces/src/tabs/rows.rs
+@@ -298,17 +298,17 @@ pub fn note_actions(state: &RedshankSurfaceState, note: &NoteSummary) -> FullVie
+                     "rs-note-open",
+                     CompactCommand::OpenNoteApproximately(note.id.clone()),
+                 ),
+             ),
+         )
+         .attr("class", "rs-note-identity")
+     });
+     let mut actions = Vec::new();
+-    if note.kind() == NoteKind::Text {
++    if note.kind() == NoteKind::Text && state.note_row_actions == crate::NoteRowActions::Full {
+         actions.push(action(
+             "Edit",
+             format!("Edit note at {at}"),
+             "rs-row-action",
+             CompactCommand::BeginEditNote(note.id.clone()),
+         ));
+     }
+     // Private notes stay out of the export; the row is where that flips.
+@@ -329,22 +329,24 @@ pub fn note_actions(state: &RedshankSurfaceState, note: &NoteSummary) -> FullVie
+         privacy_label,
+         format!("{privacy_label}: note at {at}"),
+         "rs-row-action",
+         CompactCommand::SetNotePrivacy {
+             id: note.id.clone(),
+             privacy,
+         },
+     ));
+-    actions.push(action(
+-        "Delete",
+-        format!("Delete note at {at}"),
+-        "rs-row-action",
+-        CompactCommand::DeleteNote(note.id.clone()),
+-    ));
++    if state.note_row_actions == crate::NoteRowActions::Full {
++        actions.push(action(
++            "Delete",
++            format!("Delete note at {at}"),
++            "rs-row-action",
++            CompactCommand::DeleteNote(note.id.clone()),
++        ));
++    }
+     let menu = overflow(
+         state,
+         MenuTarget::Note(note.id.clone()),
+         &format!("note at {at}"),
+         actions,
+     );
+     Box::new(el("span", (open_at, warning, alignment, menu)).attr("class", "rs-row-tail"))
+ }

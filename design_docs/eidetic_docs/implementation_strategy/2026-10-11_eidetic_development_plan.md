@@ -1333,8 +1333,10 @@ receipt from a run; it cannot stand in for performing that run.
 qualified. The hosted Redshank text-note action currently lacks its editor and
 privacy controls; complete that existing path using the owning components
 before claiming native Note coverage. The custody fixture build also exposed
-two unmigrated Graphshell consumers of the typed clip-read API. Correct those
-at their existing adapters. Staged observers, parser checks and fixture builds
+three unmigrated Graphshell consumers of the typed clip-read API. Their
+existing adapters are now corrected and published; the Redshank supplier
+capabilities are also published after 111 passing surface tests. The hosted
+note bridge and native acceptance run remain in progress. Staged observers, parser checks and fixture builds
 are preparation, not headed or restart acceptance.
 
 **Done when:** all of the milestone goal passes in fresh native processes on

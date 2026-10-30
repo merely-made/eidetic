@@ -1,0 +1,15 @@
+{
+  "from": "a4356b74084e9016f6fdb9a7c6b8130def547021",
+  "to": "b3dfacff93fcf0169097606589a6482b209ed047",
+  "packages": [
+    "audio-primitives",
+    "redshank-model",
+    "redshank-playback",
+    "redshank-storage",
+    "redshank-surfaces",
+    "timed-text"
+  ],
+  "before_sha256": "46120659f29809c6fd50e03d55ed2e70e9a41f73fde71a1878421b6e78842ac6",
+  "after_sha256": "4a5aebe4aeb3a8e29ce2743c454691326ebe4cfa320312aeaeaf4ae19f03eaaf",
+  "normalized_lock_identical": true
+}

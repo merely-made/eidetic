@@ -555,5 +555,43 @@ M4, not the full P4a milestone.
 
 M5 implementation has begun from the published host revision. Preparation
 identified the normal `GRAPHSHELL_APP_ENDPOINT` custody route and the marked-root
-C1 fixture host, and staged ordinary-control observation and independent copied-
+`custody_payload::retained_custody_receipt_host` fixture, and staged ordinary-control observation and independent copied-
 store inspection. No M5 headed seed/restart acceptance result is claimed here.
+
+
+### M5 supplier integration preparation
+
+Woodshed `b3dfacff93fcf0169097606589a6482b209ed047` adds hosted note action
+policy and explicit text-capture availability to the existing Redshank controls.
+Its four changed files passed independent source review and the nested surface
+library gate: **111 passed, zero failed or ignored**. The private-only host can
+omit unsupported Edit/Delete controls while retaining the owner editor and
+privacy action. Absence of an explicit capture capability preserves the existing
+transport-derived behavior; every policy still requires a current item.
+
+Mere `a4cbd4baf3411b597bdcfc13653de0444b5d480d` completes three Graphshell
+adapters for the typed clip-read error. Independent source review and the locked
+offline Graphshell library check pass. The marked-root custody fixture also
+builds. The earlier missing Git checkout failure and original adapter compile
+failure remain failed preparation receipts; a compiled fixture is not a running
+service.
+
+Both suppliers were refreshed from upstream before publication and their remote
+main revisions independently confirmed. The host receives six Woodshed, 62 Mere
+and 33 Genet lock source references, preserving all other lock bytes. Genet
+`c0144fe59dea449519cede190bed8662f661fc22` is the single geometry/accessibility
+commit required by the new Mere geometry API. Eidetic remains `b39a3dc`.
+Locked offline metadata resolves 1,114 packages; default/inference link-boundary
+checks pass at 650/798 package names. Host compilation after this reception,
+the note adapter and the native acceptance sequence remain pending.
+
+The startup preflight uses the custody-payload fixture, not the C1 receipt host:
+the latter lacks the required payload-custody configuration. The isolated
+Wayland/render-device descriptor probe succeeded, but launched no application.
+Review found scope-cleanup, writable mount-input validation and evidence-label
+issues in the staged startup harness; they must be corrected before its run.
+No headed capture, real-note retention or fresh-process M5 acceptance is claimed.
+
+The initial 19 completed preparation packet/log pairs, supplier reviews and
+receiving records are preserved under `model-free-m5/`;
+`preparation-gates-index.json` records their verified checksums and exit codes.
