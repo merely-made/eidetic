@@ -22,7 +22,7 @@
 use crate::error::StoreError;
 use crate::{Backend, WriteOp};
 use async_trait::async_trait;
-use fjall::{Config, Keyspace, PartitionCreateOptions, PartitionHandle};
+use fjall::{Config, Keyspace, PartitionCreateOptions, PartitionHandle, PersistMode};
 use std::path::Path;
 
 /// Default partition name used by [`FjallStore::open`]. Callers that want
@@ -37,7 +37,7 @@ pub const DEFAULT_PARTITION: &str = "eidetic";
 /// Construct with [`FjallStore::open`] for the simple single-partition
 /// case.
 pub struct FjallStore {
-    _keyspace: Keyspace,
+    keyspace: Keyspace,
     partition: PartitionHandle,
 }
 
@@ -59,9 +59,18 @@ impl FjallStore {
             .open_partition(partition, PartitionCreateOptions::default())
             .map_err(|e| StoreError::Backend(format!("fjall partition: {e}")))?;
         Ok(Self {
-            _keyspace: keyspace,
+            keyspace,
             partition,
         })
+    }
+
+    /// Flush and synchronize the keyspace's journal, including prior writes.
+    ///
+    /// This blocks on storage I/O and returns any persistence error to the caller.
+    pub fn sync_all(&self) -> Result<(), StoreError> {
+        self.keyspace
+            .persist(PersistMode::SyncAll)
+            .map_err(|e| StoreError::Backend(format!("fjall sync: {e}")))
     }
 }
 
@@ -200,6 +209,35 @@ mod tests {
                 assert_eq!(got, Some(b"survive".to_vec()));
             }
         });
+    }
+
+    #[test]
+    fn sync_all_preserves_written_bytes_after_process_exit() {
+        const CHILD_DIR: &str = "MUNIMENT_FJALL_SYNC_TEST_DIR";
+        if let Some(path) = std::env::var_os(CHILD_DIR) {
+            let store = FjallStore::open(path).expect("open child store");
+            pollster::block_on(store.put("receipt", b"pending")).expect("write receipt");
+            store.sync_all().expect("sync receipt");
+            // Skip Fjall's drop-time sync so the parent reopens after the explicit sync.
+            std::process::exit(0);
+        }
+
+        let dir = TempDir::new().expect("tempdir");
+        let status = std::process::Command::new(std::env::current_exe().unwrap())
+            .args([
+                "--exact",
+                "fjall_backend::tests::sync_all_preserves_written_bytes_after_process_exit",
+            ])
+            .env(CHILD_DIR, dir.path())
+            .status()
+            .expect("run child");
+        assert!(status.success(), "child process failed: {status}");
+
+        let store = FjallStore::open(dir.path()).expect("reopen store");
+        assert_eq!(
+            pollster::block_on(store.get("receipt")).unwrap(),
+            Some(b"pending".to_vec())
+        );
     }
 
     #[test]
