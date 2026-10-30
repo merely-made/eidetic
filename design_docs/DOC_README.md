@@ -8,6 +8,8 @@ Canonical migration and current receipts: `mere/design_docs/mere_docs/implementa
 
 ## Family documents
 
+- [2026-10-29_bookmark_tokenizer_plan](eidetic_docs/implementation_strategy/2026-10-29_bookmark_tokenizer_plan.md) — in progress; replace independent Netscape bookmark HTML syntax mechanics with html5ever tokenization while preserving source evidence, folder/timestamp mapping, notices and feature boundaries. Supplier and downstream receiving gates are separate.
+
 - [2026-10-11_eidetic_development_plan](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md) — active; next milestone is [P4a model-free retained research](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#p4a-next-milestone-model-free-retained-research): shared lexical retrieval, exact evidence, version comparison, bounded structured queries and offline Turnstone restart qualification. Upstream refreshed 2026-10-29; M1 extraction and receiving landed; M2–M5 open. Rebased Turnstone saved-source and research tests pass; native product and restart qualification remain open. Earlier producer, embedding and inference receipts retain their separate limits.
 - [2026-10-23_responsa_plan](eidetic_docs/implementation_strategy/2026-10-23_responsa_plan.md) — active; fading of doctrine statements and the answer-key rerun on toolchain bumps, both owed by isocosm's decision-links plan; nothing built.
 - [2026-05-09_eidetic_design_pass](eidetic_docs/research/2026-05-09_eidetic_design_pass.md)
