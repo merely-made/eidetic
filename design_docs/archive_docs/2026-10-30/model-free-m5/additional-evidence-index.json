@@ -2396,6 +2396,1140 @@
       "sha256": "d61aa267d2d63615aefac9ec6c3ac6fba9f99695fe1614c26e62eb503ede4107",
       "bytes": 61270,
       "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/seed/scope_result.png",
+      "sha256": "ef0b7269b4a49d0f5637b2265dba5eb6c2fe66687af36c31c3d7c362927f7f8b",
+      "bytes": 71069,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/seed/scope_selector.png",
+      "sha256": "26aee529cbf986bc17fc0fca7eb1774ae95275db733631e78927c9ffca376d86",
+      "bytes": 61438,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/01_authored_note.png",
+      "sha256": "950e1e961f96e43541f3dc2cd46064301b9dab0afeb862b9bc2e6adde980886d",
+      "bytes": 100554,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/04_exact_A1.png",
+      "sha256": "e1be2bc8df4f0438fcf4d48f97f18ce9bb806c04ac5994b68de11af7b4b87586",
+      "bytes": 222737,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/05_note_citation.png",
+      "sha256": "12e2c888d8479eb9a076bbcd4f9879cb9576db08cb4f1de699c34e5c4c28f832",
+      "bytes": 433891,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/07_selected_knot.png",
+      "sha256": "dc985d5425cf5b0cedfba88bf1caabdf900d3d7a44ecdc1753dc46193c066c34",
+      "bytes": 290337,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/07_selection_before_scroll.png",
+      "sha256": "a9687070458a1a6a0bc5df3634aa6793fec913bed5e962844298a861ca7e6d75",
+      "bytes": 549240,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/08_selected_clip.png",
+      "sha256": "2259d5a66cd6dec1cbac16e4c2f5a8f25b1b674ee85da87e92a1926144deaf53",
+      "bytes": 423763,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/01_authored_note.png",
+      "sha256": "e6e211c2a254a34d956fe8ba7a979c966c01dcd563632492f8d6129ccec7179f",
+      "bytes": 99437,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/04_exact_A1.png",
+      "sha256": "19c37978079782bdabc63f7a1137f372fc4cd4f24fb587e57514756ca03bf6ef",
+      "bytes": 221896,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/05_note_citation.png",
+      "sha256": "0c72c9fe658bac1745f83524ef9470285b700d595b179c6a1fcf9d65a405b0ee",
+      "bytes": 436487,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/07_scroll_1200.png",
+      "sha256": "faf94149b665a767399daa9cbca4f4e0df1edb9b9f18b25c881effb9fcd5c662",
+      "bytes": 300588,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/07_scroll_300.png",
+      "sha256": "88f948d323b1627a327987f4375f17fbc7df86f497bfd092cab832909b0fb3ba",
+      "bytes": 602120,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/07_scroll_600.png",
+      "sha256": "9476df132a1e8e28b7d84110e5763d46d1ed85795cd40c6e7bf6911e7725b35e",
+      "bytes": 387829,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/07_scroll_900.png",
+      "sha256": "6b16c5a769c310880619e351f9cbcbe99b2027af52f486e42111c48022388f04",
+      "bytes": 300589,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/07_selected_knot.png",
+      "sha256": "b0cbf0ba3ee163313ab7d1eb7738240fabad4046c60fb93c679890e1ce65bc67",
+      "bytes": 300588,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/07_selection_before_scroll.png",
+      "sha256": "f3301ff2b29c8262504db7121dabd28ab2eadab5df71a5ff1189194d37a11558",
+      "bytes": 543892,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/08_selected_clip.png",
+      "sha256": "11f3207e71ae1541046645a9187f1b54c9b0af789aa1996e6d457518c6d5e432",
+      "bytes": 431045,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/01_authored_note.png",
+      "sha256": "a13c71e353ab196533b93a9325d682c5cb023daaf93c2a5b928004b0d6d30337",
+      "bytes": 100246,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/04_exact_A1.png",
+      "sha256": "d0c54bf05827678ca82e8f6ff9299678d5804216618b52d046dae39084169edd",
+      "bytes": 224436,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/05_note_citation.png",
+      "sha256": "6410a6d56d6dab05b11342c4f1141c7733d4057c1deff4d3739eb2ff35f31b8b",
+      "bytes": 442660,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/07_selected_knot.png",
+      "sha256": "4c46cb8dd4e90b82e86e6bfb5439d2ee28c9dd9ba11e9bc0df83a06c7fef08a6",
+      "bytes": 396962,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/08_selected_clip.png",
+      "sha256": "dba82a1c8f1eadb167047f2a830147f25c45c7c8a68f4f2f38a5ce55c1a11d6f",
+      "bytes": 480231,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/01_authored_note.png",
+      "sha256": "76668fbb4228f176c1b3154667218bca144160d3547f394407418a1185d1ffdf",
+      "bytes": 98942,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/04_exact_A1.png",
+      "sha256": "bd7f27f8c8f2a218323114f20261a3c03da22dcc96c51da1bde957fdf897d1fa",
+      "bytes": 226607,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/05_note_citation.png",
+      "sha256": "16772092ef902c3186ee1021fe0fa21b1c9559b1b98c5c2a8497fea1b9dfb577",
+      "bytes": 423464,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/07_selected_knot.png",
+      "sha256": "a8623c3fbc613a8937c211c8badc5df2da69742db3aea05feba48a23eff23d07",
+      "bytes": 368172,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/08_selected_clip.png",
+      "sha256": "28437fbdcfc38fc25bc725fc4a2504ea1f4cef3aca1168c888dba640aa1fb832",
+      "bytes": 471207,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/10_selection_admitted.png",
+      "sha256": "28f50b4cfd84f8931a2a6d45e3ee359918ae652a9823ab026974f769230c1125",
+      "bytes": 178317,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_0.png",
+      "sha256": "985e8e621637c2f819a49443212231758669454ccba100d33360ccd9f7866998",
+      "bytes": 159271,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_1.png",
+      "sha256": "705b511614f61bf5296bb71d96fba89716bf38177fae736cdc2eafe1bda09613",
+      "bytes": 159275,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_2.png",
+      "sha256": "102167423525cef035853e6c0334af297699a44546b84bb16d145f227a4e0701",
+      "bytes": 159265,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_3.png",
+      "sha256": "962b9cc249e773c925f9f76db7e99374ee66e461306d104e571d993be73aaae4",
+      "bytes": 159292,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_4.png",
+      "sha256": "e39678ba5574ba4776d050757e3d3342a48cb7a2bab2f96db661b1552a1e6f41",
+      "bytes": 159248,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_5.png",
+      "sha256": "6151938dc7e80b9950d99a34e76dee4db31b021a06c6cbfd7c031b98f463ea9e",
+      "bytes": 159858,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_6.png",
+      "sha256": "2790b62926bf66e9ee65e291257418fb706aa09112523e999b9b8ec40155c19c",
+      "bytes": 160246,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_7.png",
+      "sha256": "fbdcac6c5e2cead46a448993e8c5c62dabd154da7158be306b6184b11c228587",
+      "bytes": 160061,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_8.png",
+      "sha256": "b26eedbb656b2b2ffd020dceb355beaa88a1675a1e3943b49c26ffb7bc891669",
+      "bytes": 160454,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_9.png",
+      "sha256": "974f93003ff36fe3cb5a52281d271486a21aba3431b1ec0788de381888ccfdc8",
+      "bytes": 159289,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/exact_pair.png",
+      "sha256": "ca1aa1dd6654185439392e8a97ed737819a311dd1c609d5372ca359179d103a6",
+      "bytes": 209074,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/redshank_note_admitted.png",
+      "sha256": "720c39adbd8056a486a6e1fba9c757477c417d5e6c435e5de01eb8385b52f5cc",
+      "bytes": 204966,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/redshank_note_private.png",
+      "sha256": "c0950455ff25267a4b96cb213008cd448c515c254a50f1b8a49de3f44975ac9d",
+      "bytes": 145561,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/redshank_note_shareable.png",
+      "sha256": "de69c5c5dd94119e2b6779a0e28e9b099150950d3c9ee119531f6c7bb051023e",
+      "bytes": 114933,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/redshank_private_action_absent.png",
+      "sha256": "9d86d087bb3aa8e1f5446a151e0dbe5dc69debb87075bad23499a24cb834246b",
+      "bytes": 131150,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/01_authored_note.png",
+      "sha256": "85515603717003ade79df8f3c483aab0b02fb0d6487c443fd34db006773f99b3",
+      "bytes": 100260,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/04_exact_A1.png",
+      "sha256": "62ddf12fc354596aea9851385619df3194d651d8e4565762e707c1d9a4a8be8e",
+      "bytes": 229390,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/05_note_citation.png",
+      "sha256": "5c01c0118ade99b4a152e1a1b64776203dcba5d94a6565a626624bbb78f1fc8e",
+      "bytes": 439962,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/07_selected_knot.png",
+      "sha256": "356a79ad5d49b7204676e6ea4261ddee5b02c3e20add96b9aec4fcb07004d8e3",
+      "bytes": 389513,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/08_selected_clip.png",
+      "sha256": "82737650e14281b2be718dd8dda821a37520b2882fd5a228463e15c18ac0028d",
+      "bytes": 472254,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/10_selection_admitted.png",
+      "sha256": "2bedcb4f3ebb8632402ed3855709ce19edb0c582a873fafdfb5b5672beaa9238",
+      "bytes": 178716,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_0.png",
+      "sha256": "954a28cc6f403a79a4989885d1e218428dab27bdd799500b3df9bfcb24d9feb3",
+      "bytes": 159668,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_1.png",
+      "sha256": "3ab8f26f20f7dc22ae135f2e04d4f798d1ddb63824d0271bb0429e5fdffd4fd4",
+      "bytes": 159709,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_10.png",
+      "sha256": "3c19d186852e6383a864dd15498e0c5aa6397991f2834d4108ffab4a6cd7dba5",
+      "bytes": 159715,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_11.png",
+      "sha256": "69e366c683f7af2f8549eae10148c7736e771d4da9a57d2d785449bbca6c4cf6",
+      "bytes": 159753,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_12.png",
+      "sha256": "ba4603329c567d5463838b5ba87e2502aa53eade317a66b3af0ee3f88de75e5a",
+      "bytes": 159729,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_13.png",
+      "sha256": "58e5c3e9cf1d9a642f17e3439ce6419c31a5b4e3be282d535440e2300eee861e",
+      "bytes": 160638,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_2.png",
+      "sha256": "7f9ab71909e92c88be56a6dfae83292b36dca000f4991b7824f7dea002f1c2b3",
+      "bytes": 159696,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_3.png",
+      "sha256": "790e84082f60cff22485864159c274227724d00bd72a832c86104bc736b48bc7",
+      "bytes": 159722,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_4.png",
+      "sha256": "0ced196c32970099bb359cbe29ccb6732ff1b68a42abc5084dc9dec7061ed521",
+      "bytes": 159679,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_5.png",
+      "sha256": "aedd5c48869602c41a7f47b408f92fcee35f3a775f63a41a0a9b7e89e4322c90",
+      "bytes": 160295,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_6.png",
+      "sha256": "eaf3fe8f995a573393182ff6cc7dd89796b875a52390e6e532b541660f21323e",
+      "bytes": 159668,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_7.png",
+      "sha256": "e26aa8010c08049f378fbc9ebec16ccf618ec612f6733bd2290753309735dc9c",
+      "bytes": 160498,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_8.png",
+      "sha256": "b8b9b90780404b3766095f4430397446ece5c3412ffedbc2f12d34a0e4107aa2",
+      "bytes": 159889,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/authored_9.png",
+      "sha256": "6ce3214f00dd252887c01e5d4c24a4858596757c98ead739da9ef1b941956665",
+      "bytes": 159719,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/exact_pair.png",
+      "sha256": "56157ae3acdac78aad6eeef473e386d8d8f4a95cf6b9d97e3447c052053290f2",
+      "bytes": 209913,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_Compare.png",
+      "sha256": "6ed0c9eaf74ecb8862cff63a334f8a9c58aa5527299146e14da8f2ef8389bd6b",
+      "bytes": 175266,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_CountByProducer.png",
+      "sha256": "aa48a51f8605541ad9395eeaf414236a1633d15e37611e610635583ebc04a670",
+      "bytes": 175355,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_CountBySource.png",
+      "sha256": "f00bdd339c1fcd4a5b23366d0ff6dc21aa8de876fce5c602cddfd6bbb20bc8cd",
+      "bytes": 173064,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_GroupValues.png",
+      "sha256": "30d5dc58f5b096085006a98744228c1edc51726425cf4bcff1f3991e13ec1ba0",
+      "bytes": 174829,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_JoinEntity.png",
+      "sha256": "58bd33ef6d3d63660ff2b8ba59fa72b3d0decefc55af2e000e8f2c9bd3903118",
+      "bytes": 173223,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_JoinSource.png",
+      "sha256": "41ab82ec63470ab3cf4bf2a33c4fbcd3fedb329ba221064cd85ea78e22be3720",
+      "bytes": 173373,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_PropertyLookup.png",
+      "sha256": "dc423e163cd83c6e5a25bdf6d7aee4eb86b7707e973d6cf273803e5711a0ea37",
+      "bytes": 173598,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_RecordTimeline.png",
+      "sha256": "9c1fca14e99f3c790f29d4368adfa471a6c63ee24a70fcc4d6a9472a61b9d6ba",
+      "bytes": 173187,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_SourceLookup.png",
+      "sha256": "6ea378b6d691d3392f150ad313fc3cdbcfe82f96109e0e4befc048e0cee0ba00",
+      "bytes": 172645,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_SourceTimeline.png",
+      "sha256": "1c4e45d0801afbc90ba97b02867968fceda5611d9614df81f27758faf4497421",
+      "bytes": 173077,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_Sum.png",
+      "sha256": "b5fe8f2186764a2fd21070d48ef779d7ec25af057fd7ff119d1d159ab9f4fa62",
+      "bytes": 176756,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_TagMembership.png",
+      "sha256": "6993ea17e9d7cdbc76035765efec4e8023c8db1537c7718666684c1133d4c54c",
+      "bytes": 173820,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/redshank_note_admitted.png",
+      "sha256": "cea0c2f3b0954b69674b4a59370eeca27e8fea71e4621e455766e55147a28108",
+      "bytes": 205032,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/redshank_note_private.png",
+      "sha256": "79cede20533322dc6a38b3be37880e6c8c51c71f24637f4f2c20d5f7703cfb8b",
+      "bytes": 146080,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/redshank_note_shareable.png",
+      "sha256": "2edac59e12e706885ecc460294e217701a1955ec6daf30c294375f42b491de51",
+      "bytes": 114933,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/redshank_private_action_absent.png",
+      "sha256": "7227077f6cf9128083e47d0937288871361827f30291706f603251dc39dd416a",
+      "bytes": 131580,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_before.png",
+      "sha256": "9228c849cc9118f589294a73413261983e902b21add2d1c7d8c8b6de12c6da7b",
+      "bytes": 178127,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_before_run.png",
+      "sha256": "1acd1edb74c8455e1f9da23d0b0696a961166ff41991c8ff9a01e50b079a5453",
+      "bytes": 165621,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_search.png",
+      "sha256": "1452802a72371cbf2db004274281f53d0729892b74ea1ed64fb1ea54c4ec2dfe",
+      "bytes": 149224,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_selector.png",
+      "sha256": "d74e9bf42af082bf04a070a25d0b5113d7e3a590c9e4869bab03a962fc2cccb5",
+      "bytes": 150362,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_before.png",
+      "sha256": "1d74c530fa873b01efaa947252f630aba15c2566f23e8b383b0f6944e94827ab",
+      "bytes": 173618,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_fresh.png",
+      "sha256": "e4371ce4a6b2da6e5720c88ee814866d62e1eb76523e2804e374d04bf64257aa",
+      "bytes": 173714,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_historical.png",
+      "sha256": "def9e17938540e75fc66467d0bbbc925e42aa3d205b0cacdc2c190e52633dc2c",
+      "bytes": 178110,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_history.png",
+      "sha256": "dda87965e269b6f072f5362984d7586a9736ed88c7f31e13d3fb11676bca8f86",
+      "bytes": 148487,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_inspected_active.png",
+      "sha256": "4dd6f80537f47c407fc8bae8d09489491f4873fb1f19031d84524a19980b24d4",
+      "bytes": 152959,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/01_authored_note.png",
+      "sha256": "a12987fcf949b51e279237ed08f55ed05f1842accd3775fffc5c34e7edbcb63e",
+      "bytes": 98907,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/04_exact_A1.png",
+      "sha256": "9cccf83570e6b10a9adf27322f5b7e532fc95bd7c825b19e735de5f4287558a1",
+      "bytes": 223392,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/05_note_citation.png",
+      "sha256": "d6894d7b337ccc0b642e2b38f2594530b8455ca3a485b446600684386b27d4c0",
+      "bytes": 434940,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/07_selected_knot.png",
+      "sha256": "b584d25876eea071a09626ac77cdea5f890a7f683213f87a47dad2336223cebc",
+      "bytes": 383469,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/08_selected_clip.png",
+      "sha256": "86de063a893a25e058dffbc895e2839dc73b35bba39d033d1151104cb9864634",
+      "bytes": 473316,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/10_selection_admitted.png",
+      "sha256": "76b5f384228104aabc5a57b3df7080b4e68086e13afd6fc656f9df87a94d07a3",
+      "bytes": 179365,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_0.png",
+      "sha256": "6d3e1d624873cbb785d4ed8242f3267240b89067d4afab34d08412ce01d58ea2",
+      "bytes": 160804,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_1.png",
+      "sha256": "d32d2c8c9098fd63459d23f0121b759953c7a33dc05d3efd5da2ac09281ea9ec",
+      "bytes": 160846,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_10.png",
+      "sha256": "783daf50db35b1252116cc9a8a762823b05ca9a29f55371bfb1f98d4104bfdd5",
+      "bytes": 160854,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_11.png",
+      "sha256": "dc503a7c254ccecf08c102f205bd76b79d450f8cc5d8f97bef95127b1dda89fd",
+      "bytes": 161434,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_12.png",
+      "sha256": "c629670e188be1e0f7bc364aafcff1b27b9af594dd9e6ff55377d3ecfd2f6e05",
+      "bytes": 161436,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_13.png",
+      "sha256": "b1a32fcec3ec90dd2b1148e13be2def860b970522064c42efeb443d5025c398b",
+      "bytes": 161783,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_2.png",
+      "sha256": "40297fee0ecca8b6b57f8706269c361761cf1ee1661ef437f51f1a860392f467",
+      "bytes": 160833,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_3.png",
+      "sha256": "6120ed72522dfbf1c41e5c884fc814272c0735301947825ecea76e8688e9e6ae",
+      "bytes": 160867,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_4.png",
+      "sha256": "d72474fce3041401cd53bfdaaee0c515a030cf852f0ebb99159e4f43ec9972ca",
+      "bytes": 160823,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_5.png",
+      "sha256": "d699d1bdb2a0f04f2c562e3312f5aafc2d4969c776b197ddab94297057aef7c7",
+      "bytes": 161433,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_6.png",
+      "sha256": "8141e0629553e143cf4c604c877beeaff7ab1db36fb6a5927113b6ea2785d73f",
+      "bytes": 161372,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_7.png",
+      "sha256": "30d5d3844b8ab223db776febf549c323d9dfe3a4990c9acf5320b6c5ebd8bc3b",
+      "bytes": 161638,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_8.png",
+      "sha256": "fd4434244079cb1c43cf7a042b1f30b740b3412aedf3747aa2087355f5a89c57",
+      "bytes": 161584,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/authored_9.png",
+      "sha256": "924f172baa9b0176e1745d70fabf66e49c41fcfeb614da2621e3dd2c86872f85",
+      "bytes": 160869,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/exact_pair.png",
+      "sha256": "e6a96fd2044d64d6153372ce03f47289d390b2959c697b47cf7caff4f6c83692",
+      "bytes": 210370,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/negative_no_match.png",
+      "sha256": "52ea89045fa568b012883d35a953251741496bd1da1183d23a2b24cbd73428fe",
+      "bytes": 175462,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/negative_over_limit.png",
+      "sha256": "16d439d6b559e411c42cfa388674eae3c5f3d60633ef0ae76225bfb9d232cede",
+      "bytes": 158567,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_Compare.png",
+      "sha256": "b7b9a8a0bb5f79abe4a8d2b971a551190759a47d8a9028154ddc921f391281a6",
+      "bytes": 177023,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_CountByProducer.png",
+      "sha256": "4e9886d46f6b951db6ccbe6c6ebcc2180dcdc8e4a52ca89760fb11319f7dce75",
+      "bytes": 177102,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_CountBySource.png",
+      "sha256": "a5cf92bbc234d9ec4b113f51ee941bac2a3bfff1a048e8e2244eaeb76e35b509",
+      "bytes": 174814,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_GroupValues.png",
+      "sha256": "78a1cea4e8c559f06e120ad83271b046958fc77dbe86a096ee5a6083762dcc69",
+      "bytes": 176578,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_JoinEntity.png",
+      "sha256": "9445d22f85fd6fe9adfdcf3bf70276f06bbb369060d7c05bc324b05e696325b3",
+      "bytes": 174976,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_JoinSource.png",
+      "sha256": "5f841700f4c58a8deb6f1b6f8e94c6d898e0d356aefa086cb4531bbbc2240ff9",
+      "bytes": 175120,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_PropertyLookup.png",
+      "sha256": "24d9d056e0a65fb329330f6553e8fe03ff1c482e96d35d15ae7fc87eec0f2f50",
+      "bytes": 175355,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_RecordTimeline.png",
+      "sha256": "99b54218a280a5c1caa0b20358516b7ce148fc35deb7f181702115d450d9cf2a",
+      "bytes": 174938,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_SourceLookup.png",
+      "sha256": "f8d96432b9270fd3974f221677685f75f3e9831a09863af633401f634a67fd5e",
+      "bytes": 174402,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_SourceTimeline.png",
+      "sha256": "7dad56ba36c6c24545ec5d08ac4b909d2b8c24d4ff25618321ec5bd29c2c7245",
+      "bytes": 174823,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_Sum.png",
+      "sha256": "d92ff3711cb8b03bd9cae26b51427888fcd723caded9ad35940194c4bf8e4a93",
+      "bytes": 178524,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_TagMembership.png",
+      "sha256": "691e689cc92284010ccc3c200ba675ddf7bece0cb06721795e790647ac92ccb2",
+      "bytes": 175584,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/redshank_note_admitted.png",
+      "sha256": "340be7b6f731b360f524ed618fc9afe2586a1b90d32692d5d9f21977c2c01e24",
+      "bytes": 206285,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/redshank_note_private.png",
+      "sha256": "ea4816344744a14fedb4d9d099c95023cc5e5175dec70bcfeb77e744395021cf",
+      "bytes": 146365,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/redshank_note_shareable.png",
+      "sha256": "2edac59e12e706885ecc460294e217701a1955ec6daf30c294375f42b491de51",
+      "bytes": 114933,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/redshank_private_action_absent.png",
+      "sha256": "f557fb4702418e61b504a137b3a1b759f10d1402857a28063c4963f8fd5df154",
+      "bytes": 131710,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_before.png",
+      "sha256": "9bc703d95c86a9475760ac0725b51a619f4f3398d239e3fe95aa1fe277ff2208",
+      "bytes": 179852,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_empty_before_run.png",
+      "sha256": "188ed2625c2bbf5c3f34425599462ec04ef245587e11ebd50346aae6ca1c2a3f",
+      "bytes": 167335,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_empty_fresh.png",
+      "sha256": "4554924ad19717fc654f20e1f8afda80e32ca400e0387be04acc642b6e1dc000",
+      "bytes": 173675,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_empty_search.png",
+      "sha256": "bb4b7de24496fd87037b0cf8d48744508617cbd8a84c39e80c2673735be9a90a",
+      "bytes": 150653,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_empty_selector.png",
+      "sha256": "71ba25443731fc24a67824d76bc0e1f9acebf3ea17f79523842087a598f5ff51",
+      "bytes": 152150,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/withdraw_before.png",
+      "sha256": "a5ffa711656180ca662f514be2ffa6c71dfea45632585d28d8cc027c1143b8d5",
+      "bytes": 175366,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/withdraw_fresh.png",
+      "sha256": "69b19df755634381a7e4a94988ec0fc7c49ca718bf0919d9c26d903b25ee8efa",
+      "bytes": 175456,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/withdraw_historical.png",
+      "sha256": "d3cdfb92617f81a79c109d869b78fda22202f21d9d32055e990dce7446dc0931",
+      "bytes": 179837,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/withdraw_history.png",
+      "sha256": "6da5d73a787777ea11c7a17ca8fe8562348e1968df37169a8bb857e659ec357b",
+      "bytes": 150011,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/withdraw_inspected_active.png",
+      "sha256": "bfd438a77b7ffffef79be24ba8b78666d85a9e5f6bfeb9783ac2f9ea0a34d92d",
+      "bytes": 154465,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/empty_structured.png",
+      "sha256": "48639447a31d3ac3bf64442f442080b33e63e28e828354e23624f61072f4318b",
+      "bytes": 115064,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/scope_result.png",
+      "sha256": "cd61708119edc3d54a314fa10a9a91eca6ea05d671e606c7f87a3bb77fbbc292",
+      "bytes": 71018,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/scope_selector.png",
+      "sha256": "347652c5cb0e920f92b8b87cb2d03867aca89a0600d164742335f3379d118788",
+      "bytes": 61385,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/01_authored_note.png",
+      "sha256": "4777c78d46ffedfa9d17344e58b5c609429e81d33e53f2a35f0ec69041a65d86",
+      "bytes": 99493,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/04_exact_A1.png",
+      "sha256": "1c67bcbbfa1c2cb7f70e8ecd43136b6428395b1005ec9a89ed6f9c6e96ef7544",
+      "bytes": 226345,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/05_note_citation.png",
+      "sha256": "3ae44f33160408631f89731066641dc10b5fe76bb6898b5b46e27665da5eb423",
+      "bytes": 431066,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/07_selected_knot.png",
+      "sha256": "221b815fc7c2e7e2cd55278663e5dba789793f4dcba3e6d1921974bc7a7a0e4f",
+      "bytes": 397015,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/08_selected_clip.png",
+      "sha256": "140a7cd1f2a7602ab43f8a031159a188dc21c2a6dc1d176c92ee81a8b41ab4b2",
+      "bytes": 473540,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/10_selection_admitted.png",
+      "sha256": "47e1d80bfa1b89746ab3880764f5186e952cf29284191aa8a6f3fa636ce0371a",
+      "bytes": 179950,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/authored_0.png",
+      "sha256": "230dfd9910497c52233dce2816a1600ae383ce645a6d3bd4775914f2e9719efa",
+      "bytes": 158901,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/empty_structured.png",
+      "sha256": "6a32ab5793f69ab834db32f7c92362e35206a76dacf4f2731d23fd55f0afb71b",
+      "bytes": 172179,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/exact_pair.png",
+      "sha256": "238f1b88ca37b23916a32660e67a405de3c991b723a7e097c6d2ecc69347cf81",
+      "bytes": 208929,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/redshank_note_admitted.png",
+      "sha256": "82ca0353e791f11bf8e74917bd13fcca8aed75db30b88d58919acde6310e73d7",
+      "bytes": 204728,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/redshank_note_private.png",
+      "sha256": "cdb40b374d27a58ad05210afacaead9400c84b0a8a9a7b40364d0e1ed20af983",
+      "bytes": 145597,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/redshank_note_shareable.png",
+      "sha256": "9f066481d6c480d6edac0865af37c1ebf70974341952a15d39bfa5a734cd8ff9",
+      "bytes": 114933,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/redshank_private_action_absent.png",
+      "sha256": "a0106a17be8d627441d10b768436f00c44fa4882adf8640b593c953185be8f43",
+      "bytes": 131061,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/scope_selector.png",
+      "sha256": "5a6acf6e0361ce03e331c9a3e8be9417e62a23cbfdd2aaab514255070482b8bc",
+      "bytes": 149945,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/seed/empty_structured_refusal.png",
+      "sha256": "0b66cf604404545fa747e23697d308cb3c6d6965df46baca20553eb74a8ec324",
+      "bytes": 91879,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/seed/scope_result.png",
+      "sha256": "23d959b285336123dd89ba18053902d70c3039833bc3bcc7038c73440e4643b1",
+      "bytes": 70973,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/seed/scope_selector.png",
+      "sha256": "aef6d654c993ee627f68b0600c1bae5ddd911823e05b35b77a54086924427cac",
+      "bytes": 61483,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/seed/empty_structured_result.png",
+      "sha256": "eb41a094a53b4a5bdb341fbf4562509416b107f5d9bff6cd895a0925c969925e",
+      "bytes": 114911,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/seed/scope_result.png",
+      "sha256": "6b77d32a8080890cdb315ee75e2ab27fb4e6aa7f480ad11516aca81249c13c07",
+      "bytes": 70845,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/seed/scope_selector.png",
+      "sha256": "404671da9cf166cc9afb0ab8ab6c3ea071b51d8ea36af6a7d1a1ee62e6a36960",
+      "bytes": 61225,
+      "copied": false
     }
   ],
   "excluded": "Native binaries, custody wallets/seeds, profile stores, shader caches, and active/incomplete E receipts.",
@@ -5565,6 +6699,776 @@
     {
       "attempt": "empty_scope_A",
       "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "empty-scope-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-b",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "knot-scroll-diagnostic-c",
+      "external_path": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-n",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-o",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-o/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "intact-collection-p",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "empty-structured-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "one-record-empty-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "empty-filter-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "attempt": "empty-clear-diagnostic-a",
+      "external_path": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/frozen/fixtures/selection.html",
       "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
       "bytes": 241,
       "copied": false
@@ -14921,5 +16825,1344 @@
     "empty_filter_and_clear": "Completed diagnostics; clear diagnostic reports zero results and source filters null; refusal is exact Unsupported.",
     "publication": "Metadata and publisher script only. Bundles are excluded.",
     "qualification": "M5 remains incomplete; these records are evidence archival only."
+  },
+  "failed_intact_P_safe_records": [
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/failure.json",
+      "archive_file": "additional-diagnostics/intact-P/failure.json",
+      "sha256": "bbf54e717690dd8cc8f681a59f7071d3092aea9090715262b24d894ccc7cc3ec",
+      "bytes": 101,
+      "copied_now": true,
+      "attempt": "P"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/inputs.json",
+      "archive_file": "additional-diagnostics/intact-P/inputs.json",
+      "sha256": "0aad9ecf42f8c7f5308b54dbcde9ce52f3bc3aff01342f5a72377988c9b4300a",
+      "bytes": 3951,
+      "copied_now": true,
+      "attempt": "P"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/seed-launcher.cleanup.json",
+      "archive_file": "additional-diagnostics/intact-P/seed-launcher.cleanup.json",
+      "sha256": "7bd82b7f62cf0ad7660e1f136476111b1e300a744943249fbcc785c9aeb78fbb",
+      "bytes": 365,
+      "copied_now": true,
+      "attempt": "P"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/seed-launcher.log",
+      "archive_file": "additional-diagnostics/intact-P/seed-launcher.log",
+      "sha256": "0b721d94196a89ac1d5ca261810f67a0507aacd2eae29ef0c9c21a28f7f6b1ee",
+      "bytes": 681,
+      "copied_now": true,
+      "attempt": "P"
+    }
+  ],
+  "intact_P_detached_controller_receipts": [
+    {
+      "source": "/home/markik/Code/testing/m5-intact-controller-20261030-p/command.json",
+      "archive_file": "additional-diagnostics/intact-P-controller/command.json",
+      "sha256": "87031e88b7fe282daa6ebdbc22a208671d0672cfafafe57d9c2e9183a35574ff",
+      "bytes": 2458,
+      "copied_now": true,
+      "attempt": "P",
+      "note": "finalized external controller receipt"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-controller-20261030-p/controller.log",
+      "archive_file": "additional-diagnostics/intact-P-controller/controller.log",
+      "sha256": "5b032886937a2b95a8ea4700aae380764eabb5854a347b77923c5cbf535855aa",
+      "bytes": 1100,
+      "copied_now": true,
+      "attempt": "P",
+      "note": "finalized external controller receipt"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-controller-20261030-p/launch.sh",
+      "archive_file": "additional-diagnostics/intact-P-controller/launch.sh",
+      "sha256": "29c5de69934b123945dc3f01c9be042bdf20e548325cecec152ab6fea1da0978",
+      "bytes": 2260,
+      "copied_now": true,
+      "attempt": "P",
+      "note": "finalized external controller receipt"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-controller-20261030-p/service-final.txt",
+      "archive_file": "additional-diagnostics/intact-P-controller/service-final.txt",
+      "sha256": "461e17557dd718615cfbfcdfc31c6f719daa2da0becbe516191eabc7d0694d90",
+      "bytes": 217,
+      "copied_now": true,
+      "attempt": "P",
+      "note": "finalized external controller receipt"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-controller-20261030-p/service-start.txt",
+      "archive_file": "additional-diagnostics/intact-P-controller/service-start.txt",
+      "sha256": "81cad10292730abc9abb256a864dad52205e60039ddf9eefd9529b2f66475eba",
+      "bytes": 352,
+      "copied_now": true,
+      "attempt": "P",
+      "note": "finalized external controller receipt"
+    }
+  ],
+  "intact_P_visual_review_seeds": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-visual-p-seed.json",
+      "archive_file": "review-packets/intact-P/m5-visual-p-seed.json",
+      "sha256": "5ebbe751d6abeb722733cda39904e14b586583578ee13db0ed486c6c7b46ed97",
+      "bytes": 4711,
+      "copied_now": true,
+      "attempt": "P visual review"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-p-structured.json",
+      "archive_file": "review-packets/intact-P/m5-visual-p-structured.json",
+      "sha256": "057e0586023734e44e5e977cb6a4ea3705a3cef5bc75f3ebe41a699657f1bb3c",
+      "bytes": 15251,
+      "copied_now": true,
+      "attempt": "P visual review",
+      "updated_after_reviewer_correction": true
+    }
+  ],
+  "harness_publication_metadata_and_script_only": [
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-harness/bundles.json",
+      "archive_file": "publication/harness/bundles.json",
+      "sha256": "a3f4499a85f251657de91fdb7f31d1bedb165d7d907d16bb96ea1bd4a4c26725",
+      "bytes": 237,
+      "copied_now": true,
+      "kind": "publication metadata or publisher script"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-harness/publication.json",
+      "archive_file": "publication/harness/publication.json",
+      "sha256": "acb676dd8e4d7641c8933ccc34c313f5d27a31e407be8bfe74ec1c79dc2237ae",
+      "bytes": 527,
+      "copied_now": true,
+      "kind": "publication metadata or publisher script"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-harness/publish_existing.py",
+      "archive_file": "publication/harness/publish_existing.py",
+      "sha256": "3e870db74cdf3e7545f4a1ea80fd1386fac375c0b8c15039f44bf957342a10a8",
+      "bytes": 2008,
+      "copied_now": true,
+      "kind": "publication metadata or publisher script"
+    }
+  ],
+  "intact_P_boundary": {
+    "result": "Failed normally after 14 authored records and 12 structured operations; the current projection was empty and negative queries were exercised. Cold reopen was not run.",
+    "cleanup": "The collection and finalized external controller receipts report the same invocation failed with an empty scope after cleanup.",
+    "product_finding": "The reviewer-corrected evidence identifies stale projected rows in the separate source trace. The over-limit screenshot itself shows no refusal; no scroll-position cause is established. Product fix remains ongoing.",
+    "visual_review": "Reviewer-corrected structured visual report: the over-limit screenshot shows no refusal. A separate source trace identifies stale projected rows; it does not establish scroll position as the cause. The report records 36 passes and 2 visual blocks on no-match and over-limit states.",
+    "publication": "Harness publication metadata records 69b38f78477186c267295d4bcd317ccce4c8479a as published and fetched; remote checkout remained unchanged. Metadata and publisher script only; bundle excluded.",
+    "boundary": "M5 remains incomplete. This archive records a failed collection, visual review, and source publication, not full qualification."
+  },
+  "latest_synthetic_observer_jsons": [
+    {
+      "source": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/empty-scope-diagnostic-b/sandbox/seed/diagnostics.json",
+      "sha256": "aa0ad2859824416fbddb262eb14576d30cd117e851744aecf171b6feaae8bd67",
+      "bytes": 2502,
+      "copied_now": true,
+      "attempt": "empty-scope-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/seed/prior_result.structured-research.json",
+      "archive_file": "observer-evidence/empty-scope-diagnostic-b/sandbox/seed/prior_result.structured-research.json",
+      "sha256": "51c3347a1ae6c51e88e1cf6a6b60fc906542118262a538953de642ce97c97b9f",
+      "bytes": 1734,
+      "copied_now": true,
+      "attempt": "empty-scope-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/empty-scope-diagnostic-b/sandbox/seed/processes-final.json",
+      "sha256": "6d61423f1dbcee71840af8f18e07fe8eefcc24c6ab18df86fd220ce0cdeefbe2",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "empty-scope-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-scope-diagnostic-20261030-b/sandbox/seed/scope_result.saved-sources.json",
+      "archive_file": "observer-evidence/empty-scope-diagnostic-b/sandbox/seed/scope_result.saved-sources.json",
+      "sha256": "461f28e7f18f5d50ffcb0418f6db9772f81777edbb87f93563ae07320d96afbe",
+      "bytes": 999,
+      "copied_now": true,
+      "attempt": "empty-scope-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-a/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "549b5d732f50e8ee62938944e6828cae05fd8a7d2a8835c5bcc1a51359a4c86c",
+      "bytes": 919,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-a/sandbox/seed/03_B.source-captures.json",
+      "sha256": "72aa804c8c8809265026be872d2e6a36be5f9db4afc3e04a2835ace4d7550dae",
+      "bytes": 1836,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-a/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "317fc5c668054d872e4c5727ae1046e150779bad5a1ca669756fb8f7f85703f6",
+      "bytes": 6274,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-a/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "95afe6dcf1e8b80fdb70d482571f07bc5f92f6daa8ada289dd4db03eef1ecccd",
+      "bytes": 6360,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-a/sandbox/seed/diagnostics.json",
+      "sha256": "7733a835a18b304fd70b51d3eba789369043412d000407a079b9224939b9ceb4",
+      "bytes": 28469,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-a/sandbox/seed/processes-final.json",
+      "sha256": "5f5152e5dac74659fa308d226853069ba2c726d2d02e7024e9d0bf7804c44ebf",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-b/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "de1600c2fc7459246c7b316595757f1fa88925e8d7103137e9d2bb452fd78c6a",
+      "bytes": 919,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-b/sandbox/seed/03_B.source-captures.json",
+      "sha256": "88110e8605471335d1f8b96f43e9568a27beb01078400ca5bf2576bb91f252b0",
+      "bytes": 1836,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-b/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "649215f032d6ce8fbeebd9bb535bfd52e4b138d0516453a961a7c67c965d6dcd",
+      "bytes": 6274,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-b/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "96adfbb08f186aa81b8bfb8b88e41d1c0f2dff345e7ebe3c6ffebffbeb9ef464",
+      "bytes": 6360,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-b/sandbox/seed/diagnostics.json",
+      "sha256": "b2c6b907e8f4eed5b66e16232be5e7b5e0110f8d829d11d24a839c45a4afc6e0",
+      "bytes": 28473,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-b/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-b/sandbox/seed/processes-final.json",
+      "sha256": "7f9059aa0cc296c9e60c6a58b4da28ebb6df45733c96e6891a32a8798b8c2f3a",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-b",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-c/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "3ec38c0d24738716a1e29b10ed05dc2cbffa61aa495d6d52f3b87053e6bc6ee1",
+      "bytes": 919,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-c",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-c/sandbox/seed/03_B.source-captures.json",
+      "sha256": "d8bbb46c086b539d1c36f58743b2a8421dd1beaf2de09b61bfc50126305d4ec1",
+      "bytes": 1836,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-c",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-c/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "04c09f868c0d912c1cdf3205304eb0171e4607945a5647ccb8478c7807a77728",
+      "bytes": 6274,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-c",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-c/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "89e6f5df029812b40113b25b7fdd8a21f97e53589a677d72316ba501c63e212a",
+      "bytes": 6360,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-c",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-c/sandbox/seed/diagnostics.json",
+      "sha256": "3525fce0a15940e591eb76f000318c302895d094c747a9695f1a9c0bbfc6391b",
+      "bytes": 28473,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-c",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-knot-scroll-diagnostic-20261030-c/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/knot-scroll-diagnostic-c/sandbox/seed/processes-final.json",
+      "sha256": "496dc11336f38b9e609c7d5dec971ec8e6540a9df993b1b2448df9bfabfb5856",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "knot-scroll-diagnostic-c",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-n/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "8a07cdd2abd679fd9cd213291daa55b96980a4db0c97e2348556ab0eab4a5bc2",
+      "bytes": 919,
+      "copied_now": true,
+      "attempt": "intact-collection-n",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-n/sandbox/seed/03_B.source-captures.json",
+      "sha256": "7df683d19d98a523d2510bdcf6610b7280d1ceceb032b06162e6cdd9d59de130",
+      "bytes": 1836,
+      "copied_now": true,
+      "attempt": "intact-collection-n",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-n/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "9be541abeb63ff851c96474641dfc03caa4cce971a97a327ffb097898b8c6a06",
+      "bytes": 6274,
+      "copied_now": true,
+      "attempt": "intact-collection-n",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-n/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "1e8479f92c9457cb290f05738f83237997dc65131ac65ea43d23e0cf68edd3b7",
+      "bytes": 6360,
+      "copied_now": true,
+      "attempt": "intact-collection-n",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/09_A2.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-n/sandbox/seed/09_A2.source-captures.json",
+      "sha256": "95ddc6567c296923cb8069dabc71ae7205cc1a9586355a49a97c446e9a04e27f",
+      "bytes": 2753,
+      "copied_now": true,
+      "attempt": "intact-collection-n",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-n/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "sha256": "3473fd98970ebc7773658ff9c8f67fa50f4e0bca6c1d195779053288f81c4361",
+      "bytes": 13683,
+      "copied_now": true,
+      "attempt": "intact-collection-n",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/exact_pair.comparison.json",
+      "archive_file": "observer-evidence/intact-collection-n/sandbox/seed/exact_pair.comparison.json",
+      "sha256": "f5b626418fdd7c36acabe3f038f2709556b7caa15731a7251a241534e6dc740d",
+      "bytes": 2819,
+      "copied_now": true,
+      "attempt": "intact-collection-n",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-n/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "sha256": "8983dba2bc38eb80a67e78081aa994dad77a28aedbedd1e432043dc3139752d4",
+      "bytes": 18108,
+      "copied_now": true,
+      "attempt": "intact-collection-n",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "1c47e7fca0fbe4c986e0ef3303453ac1b662c437f305c63b5b70d3db1e03bbfe",
+      "bytes": 919,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/03_B.source-captures.json",
+      "sha256": "3ff69d7e21b70c9de5d8dff23c31ba9595dc305eef007f0ab807c198debf177d",
+      "bytes": 1836,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "07216e5a26600ce44f90336e3577399b04d1a2f175ea971eb46de8641084f9a4",
+      "bytes": 6274,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "d5a3ffe5c0cf1d01db9d66352cbf5db1f63b802b3c4488d77b62fccf065065d2",
+      "bytes": 6360,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/09_A2.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/09_A2.source-captures.json",
+      "sha256": "0a24051454429d5b54af6f40adf61089d20928005df5e8a2b41772b3cc18ce71",
+      "bytes": 2753,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "sha256": "32e3ddd1233ebb51089fedd16e8c373182f7eedeee3dd15ca012b3b04ff7fc02",
+      "bytes": 13683,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/diagnostics.json",
+      "sha256": "6f2b87c476646d2d33f5d4c2050db92598339596d37889155db0776dbd5c71a3",
+      "bytes": 16693,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/exact_pair.comparison.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/exact_pair.comparison.json",
+      "sha256": "9b24744d880b77dc4be4c27a7d3753f2719e5e47d141158871565ef9b7843847",
+      "bytes": 2819,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_Compare.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_Compare.structured-research.json",
+      "sha256": "a1039f8b6300adb9d76de23f000efbbc3e801ae4c6229d1cbd685ac761a8c3e1",
+      "bytes": 101853,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_CountByProducer.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_CountByProducer.structured-research.json",
+      "sha256": "1d32e42cc4b5e1f3328c1f1b2e9aef5dbbe21e295e7482079894e8fb2b963049",
+      "bytes": 33540,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_CountBySource.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_CountBySource.structured-research.json",
+      "sha256": "ec13ad8212a2cb9bab797025160ad83efd0895c9cb5950883c39855635c9cbae",
+      "bytes": 32424,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_GroupValues.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_GroupValues.structured-research.json",
+      "sha256": "9b6ee2a4cd1d87730a6fa77bfab2dd1671e349740cf14c236355051401bb7b91",
+      "bytes": 47696,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_JoinEntity.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_JoinEntity.structured-research.json",
+      "sha256": "2fb45da816047c5142a2fdaa6b491569ce8a2ea32c6680a23c0865ca17a4d2bd",
+      "bytes": 75606,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_JoinSource.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_JoinSource.structured-research.json",
+      "sha256": "144c34eb7b2e7226b08dc67c005ad18fb648d7ddc6d236e0dc9972fb68426a91",
+      "bytes": 110926,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_PropertyLookup.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_PropertyLookup.structured-research.json",
+      "sha256": "818e37606dd30a2e269cc27c39ecc979bff317f6deb9de26f66b15125ac23ec7",
+      "bytes": 42675,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_RecordTimeline.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_RecordTimeline.structured-research.json",
+      "sha256": "2cc4d168e1c04e3b8b49d999d1df3c9fd9e3520e26b9e7ba5fc9dac6a8e3175d",
+      "bytes": 40755,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_SourceLookup.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_SourceLookup.structured-research.json",
+      "sha256": "78a32ba9244fb1580594b0c72917ec9868200c2c1762d263525dec9649219863",
+      "bytes": 36249,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_SourceTimeline.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_SourceTimeline.structured-research.json",
+      "sha256": "06b9a66d7759c75845b1826e295db9a837747209b005b9801ddee3a264e0204c",
+      "bytes": 33892,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_Sum.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_Sum.structured-research.json",
+      "sha256": "a0f4ab6e8310c04ae901229d9a7af14c3c44e3a749d36c0e9132a329200de025",
+      "bytes": 31380,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/op_TagMembership.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/op_TagMembership.structured-research.json",
+      "sha256": "72f57494e51070c47c5d7c4b028280086009899fe57bad8ee842e94c7876f91a",
+      "bytes": 30659,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/processes-final.json",
+      "sha256": "85d0580f5cbb8c03c0179b7b680a64dc035ce9fc590d8583c01d5f53615b368c",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "sha256": "0ef0b81aaaf6505847d3cdb6cc9f409fcaa504098ab9ee8599904545d53adb19",
+      "bytes": 18108,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_before.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/scope_before.structured-research.json",
+      "sha256": "bfc9afa93c2a2e5df38b2df34b80bf210f5ceaf1f953a923d47fceb6026e207a",
+      "bytes": 31254,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_before_run.structured-status.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/scope_empty_before_run.structured-status.json",
+      "sha256": "5f5a79734600f2e08d22fe925523b9957f84d316d435b63f74bc323aed09175e",
+      "bytes": 697,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/scope_empty_search.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/scope_empty_search.saved-sources.json",
+      "sha256": "bcebd1703963af1b18b40ac6bec90457fc02d4d48d095d13ca51dd1768da0fe7",
+      "bytes": 3339,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_before.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/withdraw_before.structured-research.json",
+      "sha256": "1130fece4195757d42a183aa344475439bcb34163b13eff3811d9cb772142fbf",
+      "bytes": 31343,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_fresh.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/withdraw_fresh.structured-research.json",
+      "sha256": "a835a114eee83f189437bd8d3bf9fde2c8092f9caa138a20259d2108f22cebd0",
+      "bytes": 28732,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-o/sandbox/seed/withdraw_historical.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-o/sandbox/seed/withdraw_historical.structured-research.json",
+      "sha256": "bfc9afa93c2a2e5df38b2df34b80bf210f5ceaf1f953a923d47fceb6026e207a",
+      "bytes": 31254,
+      "copied_now": true,
+      "attempt": "intact-collection-o",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "ed328b2b1e77fa618ec60a2e96d423f1792647bf1471cd73cfd3ff294cd15b37",
+      "bytes": 919,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/03_B.source-captures.json",
+      "sha256": "a035a04952e70f1f549e7070f022c561f26b9346cf9b3d30e9f2af9d0c667e35",
+      "bytes": 1836,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "94ec23dced2a386a353ea992924d3fb2aa1215b6d2833cfcef66d5ac84ac6ff7",
+      "bytes": 6274,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "2fed11a41d7be2a80237cc702b1853553d279e566aaa2ab1cf8a909258ea52d1",
+      "bytes": 6360,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/09_A2.source-captures.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/09_A2.source-captures.json",
+      "sha256": "4393df07718a8b8dab79897d3c3083f6d790bde9211bf0dde104ee6d8d449f70",
+      "bytes": 2753,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "sha256": "855ad85f38b05fdc3bf64316f99989361681a98c7ced0e671f7cc375aa1bc11f",
+      "bytes": 13683,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/diagnostics.json",
+      "sha256": "ac268fd126ae06e268f28fd14b778db5643489dde8a7e2ba1c4e7d445d7739a7",
+      "bytes": 14043,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/exact_pair.comparison.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/exact_pair.comparison.json",
+      "sha256": "81f933f90415fa171c4a3c1269a5f58c38300fca3ef6635262ce19ead2b8b942",
+      "bytes": 2819,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/negative_no_match.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/negative_no_match.structured-research.json",
+      "sha256": "4764bcd9439ac66d094dfec3656930ba2f5515babc10b875e8ee17dab3491127",
+      "bytes": 28730,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/negative_over_limit.structured-status.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/negative_over_limit.structured-status.json",
+      "sha256": "3d4222f511a512c6e2ff2b4eea40acb8be321570a7efc9537e961fd9b1b0dfcc",
+      "bytes": 1569,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_Compare.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_Compare.structured-research.json",
+      "sha256": "2c4bab418274c22f64f87b8b50d980e1d925cf5436815372351179c93531da3e",
+      "bytes": 101853,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_CountByProducer.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_CountByProducer.structured-research.json",
+      "sha256": "26d4a8678afcf5d4b0071c5be9cc72479a5e882616db90bcfeaea880916df9ac",
+      "bytes": 33540,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_CountBySource.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_CountBySource.structured-research.json",
+      "sha256": "6faa061c885fca1954f6b1f4e1822e784fb2a528c55e94b39ae97e15c0633443",
+      "bytes": 32424,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_GroupValues.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_GroupValues.structured-research.json",
+      "sha256": "d70dd6202a3ab5d3b462c79def030ed6a98e8d1856924db2d2d87dafa423e3d6",
+      "bytes": 47696,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_JoinEntity.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_JoinEntity.structured-research.json",
+      "sha256": "7e1e1ae55fb2a13c8235107cb73fb238aab83f169f7d9f64c9c5ae52124872b3",
+      "bytes": 75606,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_JoinSource.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_JoinSource.structured-research.json",
+      "sha256": "1fe0bee9c4ebf920ab2c27393c974fc1785b1cf817bd98ae488a59d828e274e4",
+      "bytes": 110926,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_PropertyLookup.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_PropertyLookup.structured-research.json",
+      "sha256": "36ac774939ad437634d02faf5e1c6bde961997692de1b8040e1e67d36f1a2285",
+      "bytes": 42675,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_RecordTimeline.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_RecordTimeline.structured-research.json",
+      "sha256": "e97445a745483663df38a64c7375dc361c47925d94294678273d3d95011333e3",
+      "bytes": 40755,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_SourceLookup.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_SourceLookup.structured-research.json",
+      "sha256": "b8673d15ea2b9587500b5e2e67863b23a64e3bcbaf5dac32f0d6bb07f50b9678",
+      "bytes": 36249,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_SourceTimeline.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_SourceTimeline.structured-research.json",
+      "sha256": "20bc031766d49ea126e22f72e9d84bd6bcfa4d56c54623fb75c52ec856fbedd2",
+      "bytes": 33892,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_Sum.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_Sum.structured-research.json",
+      "sha256": "8112d09c7b2b899fcf3b1a1faacbbab51ef86cdc122ce3dc5c250740fb8151be",
+      "bytes": 31380,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/op_TagMembership.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/op_TagMembership.structured-research.json",
+      "sha256": "6815a15057ae5492f404db6cc962a645d01ec27cb0c56df072550184b0304d53",
+      "bytes": 30659,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/processes-final.json",
+      "sha256": "a37e65e7ed4dd6b8f716b22aaacf3f4d82f010c868b63ba8601cc568035f4d60",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "sha256": "6e06dd64b43f81d765fd4ada8ee71eb7a482ec5ec17c90c01403b3294c5f4f23",
+      "bytes": 18108,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_before.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/scope_before.structured-research.json",
+      "sha256": "560a488608c386935cf8ab51e3040fde984a9ceea23b51afd3f71e4ed2189083",
+      "bytes": 31254,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_empty_before_run.structured-status.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/scope_empty_before_run.structured-status.json",
+      "sha256": "c3e7ed8e86ad7c5aa7842cf2501a8eba30e6a5ca99aa5f0d7790c84fdb775ce9",
+      "bytes": 697,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_empty_fresh.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/scope_empty_fresh.structured-research.json",
+      "sha256": "23f0f5a2a7c0449aa6f55d2cf8dc8acc95be351da45fa0a32893b18f358ae35b",
+      "bytes": 1754,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/scope_empty_search.saved-sources.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/scope_empty_search.saved-sources.json",
+      "sha256": "e6a865be3a7c938c4e82ae913830e8710e89547bad51e61b962d21c72b68433f",
+      "bytes": 3339,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/withdraw_before.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/withdraw_before.structured-research.json",
+      "sha256": "a8cebd92af2eab5e0d86c2a83a18cd5573b943cc9afa9ce7de5350e2093c9a7d",
+      "bytes": 31343,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/withdraw_fresh.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/withdraw_fresh.structured-research.json",
+      "sha256": "656ced633c4562f1b4d07ef2db4b73c677a6a50602df26ff2ae6028a1febf01d",
+      "bytes": 28732,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/sandbox/seed/withdraw_historical.structured-research.json",
+      "archive_file": "observer-evidence/intact-collection-p/sandbox/seed/withdraw_historical.structured-research.json",
+      "sha256": "560a488608c386935cf8ab51e3040fde984a9ceea23b51afd3f71e4ed2189083",
+      "bytes": 31254,
+      "copied_now": true,
+      "attempt": "intact-collection-p",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/empty-structured-diagnostic-a/sandbox/seed/diagnostics.json",
+      "sha256": "d26c1825598f92c9c5fac9974c2400d0892d8084c75d24b03020c98160ef7826",
+      "bytes": 2502,
+      "copied_now": true,
+      "attempt": "empty-structured-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/empty_structured.structured-status.json",
+      "archive_file": "observer-evidence/empty-structured-diagnostic-a/sandbox/seed/empty_structured.structured-status.json",
+      "sha256": "cdcf2312a23387bc2aedc92a3fb71d37f351c18d0e545ce202a4a313e1ebdf14",
+      "bytes": 763,
+      "copied_now": true,
+      "attempt": "empty-structured-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/empty_structured_result.structured-research.json",
+      "archive_file": "observer-evidence/empty-structured-diagnostic-a/sandbox/seed/empty_structured_result.structured-research.json",
+      "sha256": "17abe19b105e57e5477589043f9d527c05ca094ebe893d02d721e391bfb2bbe1",
+      "bytes": 1754,
+      "copied_now": true,
+      "attempt": "empty-structured-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/prior_result.structured-research.json",
+      "archive_file": "observer-evidence/empty-structured-diagnostic-a/sandbox/seed/prior_result.structured-research.json",
+      "sha256": "5b613d8fcf95e0acfbc15d9865146390fa75ce104fd1550456b59857deb1adc8",
+      "bytes": 1734,
+      "copied_now": true,
+      "attempt": "empty-structured-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/empty-structured-diagnostic-a/sandbox/seed/processes-final.json",
+      "sha256": "aa16e0f6807ed257aa655d98c37b69c34dec6151bda0780e58ed3e5dbe479377",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "empty-structured-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-structured-diagnostic-20261030-a/sandbox/seed/scope_result.saved-sources.json",
+      "archive_file": "observer-evidence/empty-structured-diagnostic-a/sandbox/seed/scope_result.saved-sources.json",
+      "sha256": "78f5454d72f3e8af268c51159f87ab96888a9d94526193a1340578c005bbb27c",
+      "bytes": 999,
+      "copied_now": true,
+      "attempt": "empty-structured-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "1daf8373dc3d4c16eda20f8b5232a8f1c233e9718f2f0000706b89669f9b7645",
+      "bytes": 919,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/03_B.source-captures.json",
+      "sha256": "03a16fc668eb13051f5f560dbbcef35e517e7023bac2cedccae870617c8ac325",
+      "bytes": 1836,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "152604f0907aba855068207a09a641e4cf1d62dec59fda245e2a035398505995",
+      "bytes": 6274,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/06_note_citation.saved-sources.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/06_note_citation.saved-sources.json",
+      "sha256": "e0a35211c64ab60a58389cf2efc1f5e0b79ee5751bc4e0613d64cd68f990bb87",
+      "bytes": 6360,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/09_A2.source-captures.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/09_A2.source-captures.json",
+      "sha256": "31aa427f036e5ccdc0388ce43c9398a3ee4d25bd5fac8635f229d7557f986c9f",
+      "bytes": 2753,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/10_selection_admitted.saved-sources.json",
+      "sha256": "64bfa90ec1e01c5b2826b6bf4bd60c52f6aadd64018c7110513b756e170d4c77",
+      "bytes": 13683,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/diagnostics.json",
+      "sha256": "e9113062b84c2e0b55ce59e217398486625bc04ccab54e8c5395d4e9724f68e4",
+      "bytes": 38494,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/empty_structured.structured-status.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/empty_structured.structured-status.json",
+      "sha256": "5ed6b4ad858c617f154414d13126ec6657d596d0484eae95d73db56cf8d5452b",
+      "bytes": 763,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/empty_structured_result.structured-research.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/empty_structured_result.structured-research.json",
+      "sha256": "ea1264314b7f5856c8b5400e043cfcdef2f866ee98bc43c645766781e022f7fb",
+      "bytes": 1754,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/exact_pair.comparison.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/exact_pair.comparison.json",
+      "sha256": "e3ebcb44317be3a77f7080101fd6ef553710222e517014b7aa40333ebfe6bf3c",
+      "bytes": 2819,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/prior_result.structured-research.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/prior_result.structured-research.json",
+      "sha256": "fd5a484874fd197b3c0e9d79ba0469d18a77cc8ac820231033a03c6d251c939f",
+      "bytes": 8398,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/processes-final.json",
+      "sha256": "8839b13c13929345d2876589acf67076e1966ab22fa05da47c100ee2ffdcf68c",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-one-record-empty-diagnostic-20261030-a/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "archive_file": "observer-evidence/one-record-empty-diagnostic-a/sandbox/seed/redshank_note_admitted.saved-sources.json",
+      "sha256": "343d8f7cc381e766b3622013c5859063ca42e3045329c07a7c361a3979360270",
+      "bytes": 18108,
+      "copied_now": true,
+      "attempt": "one-record-empty-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/empty-filter-diagnostic-a/sandbox/seed/diagnostics.json",
+      "sha256": "926d620bb6fbe23a396fffafdb6a21cac27422dc6e24efa2b1993aa6f73858fa",
+      "bytes": 2504,
+      "copied_now": true,
+      "attempt": "empty-filter-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/seed/empty_structured_refusal.structured-status.json",
+      "archive_file": "observer-evidence/empty-filter-diagnostic-a/sandbox/seed/empty_structured_refusal.structured-status.json",
+      "sha256": "baf049c04f8ec8614eac86a0494432ca1609f1085154f2dc734ec71303a49e7a",
+      "bytes": 691,
+      "copied_now": true,
+      "attempt": "empty-filter-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/seed/prior_result.structured-research.json",
+      "archive_file": "observer-evidence/empty-filter-diagnostic-a/sandbox/seed/prior_result.structured-research.json",
+      "sha256": "eb346ea75f3d4fab23c2db2804e590a12f56aa4a3758bba5e9c1b1f65e9d2f1d",
+      "bytes": 1734,
+      "copied_now": true,
+      "attempt": "empty-filter-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/empty-filter-diagnostic-a/sandbox/seed/processes-final.json",
+      "sha256": "49a12a39abe7b253316a3243739387ae5283afbdaf61f78697be18e92b9b0828",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "empty-filter-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-filter-diagnostic-20261030-a/sandbox/seed/scope_result.saved-sources.json",
+      "archive_file": "observer-evidence/empty-filter-diagnostic-a/sandbox/seed/scope_result.saved-sources.json",
+      "sha256": "580dadc13f3e937d8ca09ad89d304986368a70d16eb70339b3b608db427bb982",
+      "bytes": 999,
+      "copied_now": true,
+      "attempt": "empty-filter-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "observer-evidence/empty-clear-diagnostic-a/sandbox/seed/diagnostics.json",
+      "sha256": "65b6cb4acb129407f8463e515c0b8db770f76be3ebaedbe1afe603fed4834536",
+      "bytes": 2504,
+      "copied_now": true,
+      "attempt": "empty-clear-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/seed/empty_structured_result.structured-research.json",
+      "archive_file": "observer-evidence/empty-clear-diagnostic-a/sandbox/seed/empty_structured_result.structured-research.json",
+      "sha256": "003d10f0899533366e238ea5e6f99a01dd8fb41b5054214816d91af215071952",
+      "bytes": 1754,
+      "copied_now": true,
+      "attempt": "empty-clear-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/seed/prior_result.structured-research.json",
+      "archive_file": "observer-evidence/empty-clear-diagnostic-a/sandbox/seed/prior_result.structured-research.json",
+      "sha256": "9ffa1ab3ce9ff80cdbf95cd38a4b820b18a1b4843cfca69509c9737c412f7626",
+      "bytes": 1734,
+      "copied_now": true,
+      "attempt": "empty-clear-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "observer-evidence/empty-clear-diagnostic-a/sandbox/seed/processes-final.json",
+      "sha256": "674c67be9ff83d5a53d57a2974ae98442182120ec64427bbbe359ceccbd0f2cc",
+      "bytes": 1529,
+      "copied_now": true,
+      "attempt": "empty-clear-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-clear-diagnostic-20261030-a/sandbox/seed/scope_result.saved-sources.json",
+      "archive_file": "observer-evidence/empty-clear-diagnostic-a/sandbox/seed/scope_result.saved-sources.json",
+      "sha256": "d0423afaf51e612c5cd3b0a4d953d291b8218c4f462803fa3ee9af9adcefbe1d",
+      "bytes": 999,
+      "copied_now": true,
+      "attempt": "empty-clear-diagnostic-a",
+      "kind": "synthetic observer JSON"
+    }
+  ],
+  "observer_evidence_boundary": "Synthetic structured observer JSONs are copied with SHA-256/byte counts. Screenshot frames and synthetic HTML fixtures remain external and are bound by hashes; no stores, custody data, keys, binaries, or media are included.",
+  "visible_refusal_review_packet": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visible-refusal-report.md",
+      "archive_file": "review-packets/visible-refusal/m5-visible-refusal-report.md",
+      "sha256": "6981c5f99c3b5248641a0b097acfe527f6071fb3db04f8bc9279af1ec13cd4a9",
+      "bytes": 1696,
+      "copied_now": true,
+      "packet": "visible structured refusal"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visible-refusal-review.md",
+      "archive_file": "review-packets/visible-refusal/m5-visible-refusal-review.md",
+      "sha256": "b38b9756044c207f288ae2fc7d47dcd58d648373d61d866e52122022c4985ba2",
+      "bytes": 1298,
+      "copied_now": true,
+      "packet": "visible structured refusal"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visible-refusal.diff",
+      "archive_file": "review-packets/visible-refusal/m5-visible-refusal.diff",
+      "sha256": "1cd7019c6cb8077917ac2aa9d196437e8e07116c0d75626c9a1a574b31f1d0a3",
+      "bytes": 1907,
+      "copied_now": true,
+      "packet": "visible structured refusal"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visible-no-match-seed.diff",
+      "archive_file": "review-packets/visible-refusal/m5-visible-no-match-seed.diff",
+      "sha256": "ee10fda31fab0ca87a0b77523f5c42c2b548042b5b6669f965251e65932c08e3",
+      "bytes": 460,
+      "copied_now": true,
+      "packet": "visible structured refusal"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-reopen-route-audit.md",
+      "archive_file": "review-packets/visible-refusal/m5-reopen-route-audit.md",
+      "sha256": "bf8472dbd1bbb3a7791850b8547148f1d7686f7638395542cafdb32a1ea62176",
+      "bytes": 3873,
+      "copied_now": true,
+      "packet": "visible structured refusal"
+    },
+    {
+      "source": "derived from visible-refusal receipts and read-only Git metadata",
+      "archive_file": "review-packets/visible-refusal/upstream-reconciliation.json",
+      "sha256": "60fe2be1a97b481b0358ba87d836cef5a90f10f103daf5877a2480e0d3d08b04",
+      "bytes": 1641,
+      "copied_now": true,
+      "kind": "upstream reconciliation metadata"
+    }
+  ],
+  "visible_refusal_focused_gate_receipts": [
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-red-1.json",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-red-1.json",
+      "sha256": "1a01f266a24ba7520e095e39b4745ac6da7e865df10ed01be7e179db4f9f7c88",
+      "bytes": 1551,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-red-1"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-red-1.log",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-red-1.log",
+      "sha256": "530c2a3f404ba398541f6972e046761dbb1a8720097c62c860ffca3d91171fbe",
+      "bytes": 62753,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-red-1"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-red-2.json",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-red-2.json",
+      "sha256": "0de09a6da88effc017d2ec7fe5fa093eed6109f779b99e9ed0af283f3d41e327",
+      "bytes": 1551,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-red-2"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-red-2.log",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-red-2.log",
+      "sha256": "7b606bfe6fe0d00d621e440e6a621cd5796710562badec898aa879ab57fa8c6d",
+      "bytes": 62930,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-red-2"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-green-1.json",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-green-1.json",
+      "sha256": "00e90631265e621549b9b051cd36eba78e22205a882c8de9aedd491fa9831610",
+      "bytes": 1555,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-green-1"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-green-1.log",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-green-1.log",
+      "sha256": "4b01d8d9ca23981d6cbcc634ed241a2fd040affddd74c792e792ca238ddd5849",
+      "bytes": 61198,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-green-1"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-upstream-1.json",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-upstream-1.json",
+      "sha256": "5a53a9e81b9e54f1b8fc815aa2df7cbd3f453e8bd5a411a6cc20675a04840ea9",
+      "bytes": 1564,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-upstream-1"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-upstream-1.log",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-upstream-1.log",
+      "sha256": "dc6790e5b675953eb346add5c87bb47401970358e307e387383e5f8bbfcbb3f3",
+      "bytes": 1361,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-upstream-1"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-upstream-2.json",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-upstream-2.json",
+      "sha256": "ac252342eadf5739f4e9489206a407c56f9b8d6160d978965e55f89567445de2",
+      "bytes": 1564,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-upstream-2"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-refusal-visible-upstream-2.log",
+      "archive_file": "focused-receipts/visible-refusal/m5-refusal-visible-upstream-2.log",
+      "sha256": "1634b2661aaf26a090619527e5f3e8340336d9530003784f8f611c787ec7f7e4",
+      "bytes": 66966,
+      "copied_now": true,
+      "gate": "m5-refusal-visible-upstream-2"
+    }
+  ],
+  "visible_refusal_upstream_reconciliation": {
+    "turnstone_source_commit": "22628cf9 (after fast-forwarding current upstream 5b7dacd9)",
+    "genet_upstream": "5fdee500",
+    "lock_sha256": "e939676c1b7a9116fd8c68539e947c0e4e3b121c7493ff0524a4f0be84176b30",
+    "source_bytes": "Owner source and test source match the report hashes 3ae7bde2…0660f1ee and 6f6f6201…85544a20 at commit 22628cf9.",
+    "gate_sequence": "Red-1 wrong address mode; Red-2 reproduced stale Saved Sources structured rows; Green-1 passed 1 test on old base; Upstream-1 failed before compile due to missing offline Genet; Upstream-2 on current upstream passed with fix1, log SHA-256 1634b266…ec7f7e4.",
+    "qualification": "No new native qualification; separate fresh native build is running."
   }
 }

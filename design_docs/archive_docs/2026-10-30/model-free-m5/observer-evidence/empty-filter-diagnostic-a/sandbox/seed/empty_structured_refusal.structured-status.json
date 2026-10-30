@@ -1,0 +1,23 @@
+{
+  "author_save_ready": false,
+  "busy": false,
+  "error": "Structured query refused: Unsupported(\"record filters do not apply to source operations\")",
+  "held_result": false,
+  "limit_refusal": null,
+  "result_generation": null,
+  "result_scope_current": false,
+  "schema": "turnstone.structured-status/v1",
+  "session": "fc3e4a43-e485-4da7-844f-59c0cf2f9f09",
+  "structured_idle_ready": false,
+  "view": "Home",
+  "visible": true,
+  "visible_rows": [
+    "› Run in this scope",
+    "› Enter a sourced property…",
+    "› Saved results and replay…",
+    "› Withdrawn record history…",
+    "› Pending saves…",
+    "› Operation limits…",
+    "› Back to search"
+  ]
+}

@@ -1329,7 +1329,7 @@ receipt from a run; it cannot stand in for performing that run.
   existing generated-answer compatibility cases separately; keep the 8/15
   semantic result and other platform limits unchanged.
 
-**Progress (2026-10-30):** the current host changes are published through
+**Progress (2026-10-30):** the earlier host changes are published through
 Turnstone `d0d93da`, and the real custody fixture through Mere `8fec5603`.
 GitHub publication was recovered through an idle authorized host; exact commits
 were fetched back and remote checkouts were preserved. The host library suite
@@ -1345,9 +1345,14 @@ lookup. Failed full collections and an interrupted controller remain preserved.
 A scenario correction clears a record-only property filter before source lookup;
 the native refusal and corrected query were separately checked.
 
-The current intact seed/cold-reopen collection remains in progress. A successful
-complete run, independent copied-store inspection, missing-source fault run and
-final receipt verification are still required. The coherent provisional harness
+Collection P passed the fresh empty-scope lookup but failed while recovering
+from the over-limit refusal. The error callback left stale visible rows; a
+focused regression reproduced that product feedback defect. The reviewed fix is
+committed as `22628cf9` after receiving upstream `5b7dacd9` and its Genet
+`5fdee500` dependency. The focused refusal check passes on this combined source;
+the fresh native recheck is in progress. A successful complete run, independent copied-store
+inspection, missing-source fault run and final receipt verification are still
+required. The coherent provisional harness
 is retained under `design_docs/archive_docs/2026-10-30/model-free-m5/harness/`,
 including exact scripts, scenarios, fixtures and build guard. Its 66 Python
 checks pass; the fault launcher and final acceptance guard remain closed.

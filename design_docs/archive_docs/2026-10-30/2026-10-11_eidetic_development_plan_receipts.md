@@ -922,3 +922,49 @@ recipe. A separate review checked sibling imports, pinned validator hashes and
 exact synthetic audio reconstruction. Copied harness unit suites pass 4 + 3 +
 17 + 42 tests. The fault driver remains disabled and final verification remains
 DRAFT. This is reproducibility and helper-test evidence, not native acceptance.
+
+Collection P subsequently failed after the fresh empty-scope query and both
+negative queries. The bound over-limit observation contains the actual current
+request, Records 1 setting and exact worker refusal. The captured UI did not show
+that refusal, and the next navigation changed its row list. Source tracing found
+that `structured_error` returned Redraw without recomputing suggestions. The
+first regression attempt used the wrong omnibar lane; the corrected attempt
+reproduced stale structured rows. Those are separate test boundaries. The native
+no-match frame also omitted the existing explicit absence row. P's structured
+visual review records 36 passes and these two visual blocks; it does not infer a
+scroll-position cause from the screenshot. Seed cleanup verified an empty cgroup,
+and the detached controller failed under its original invocation. Cold reopen
+was not run.
+
+Safe observer JSON and external frame/fixture hash references for the latest
+completed diagnostics and N/O/P are now indexed. There are 1,775 copied archive
+references; all hash and byte-count checks passed. Original failed runs remain
+intact. The harness publication metadata records Eidetic `69b38f7`, independently
+fetched after exact-commit publication through the idle authorized host; its
+checkout was unchanged. The new error-display fix is still being qualified.
+
+### Receiving new upstream painting changes and immediate refusal feedback
+
+A later upstream check found Turnstone `5b7dacd9`, which includes deferred shared
+frame painting and Genet `5fdee500` retained used-color views. The worktree was
+fast-forwarded without changing the two in-progress refusal-fix files. This
+supersedes the earlier observation that Genet upstream had not advanced; the
+previous native receipts remain bound to their previous dependency cohort.
+
+The reviewed fix `22628cf9` recomputes the visible structured suggestions at
+once and resets their window when an error arrives in the open structured view.
+The focused test retains its request and scope checks and requires the refusal
+row to be immediately visible. The first new-base gate refused to compile
+because Cargo lacked the pinned Genet revision offline. Only that exact revision
+was fetched from the freshly fetched local supplier repository into the existing
+Cargo Git database; no dependency resolution or lockfile edit was performed.
+The repeated locked/offline gate passes 1/0. Its log hash is
+`1634b2661aaf26a090619527e5f3e8340336d9530003784f8f611c787ec7f7e4`.
+The received lock hash is
+`e939676c1b7a9116fd8c68539e947c0e4e3b121c7493ff0524a4f0be84176b30`.
+
+The read-only cold-route audit initially questioned the `seed_sum` name; inspection
+of the actual collector resolved it. The collector copies `op_Sum` to `seed_sum`
+and checks byte equality before reopen. No scenario change was required for that
+name. New native builds and the short refusal/recovery/no-match diagnostic are
+pending. The full seed/reopen, independent owner checks and fault case remain open.
