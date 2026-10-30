@@ -9,7 +9,7 @@ leaking above the seam?
 
 Production `muniment` is untouched. This is a standalone Cargo workspace, like
 `ports/distillery/probe`, so its redb 4.2 pin and wasm-bindgen pin never reach
-mere's product graph; muniment is consumed as a path dependency with its own
+mere's product graph; muniment is consumed as a git dependency on Eidetic with its own
 `redb` (2.x) feature off.
 
 ## What is where
@@ -87,10 +87,11 @@ Safari coverage.
 ## Provenance
 
 The probe is untracked while it is a probe, so a receipt cannot be identified
-by a commit alone. `run-probe.ps1` bakes three SHA-256 hashes into the wasm —
+by a commit alone. `run-probe.ps1` bakes provenance into the wasm —
 `probe_source_sha256` (every probe file bar generated output and receipts),
-`muniment_source_sha256` (the compiled-in path dependency, whose lockfile
-entry is only a version), and `cargo_lock_sha256` (the lockfile whole,
+`muniment_source` (muniment's locked git source, repository and revision;
+receipts before 2026-10-29 carry `muniment_source_sha256`, a hash of the
+former in-tree path dependency), and `cargo_lock_sha256` (the lockfile whole,
 sources and checksums included) — and the page adds SHA-256 of the wasm,
 `probe.js` and `worker.js` it actually loaded. Compare
 `environment.build.probe_source_sha256` across receipts to know two runs used

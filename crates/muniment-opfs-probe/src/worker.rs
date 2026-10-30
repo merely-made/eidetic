@@ -811,9 +811,8 @@ pub async fn run_command(command_json: String) -> Result<String, JsValue> {
 
 /// Build provenance baked in by run-probe.ps1, for the receipt.
 ///
-/// Every field that can change behaviour: the probe's own tree, the
-/// compiled-in muniment path dependency (whose lockfile version is only
-/// "0.1.1", so the source is what identifies it), and the real lockfile,
+/// Every field that can change behaviour: the probe's own tree, muniment's
+/// locked git source (repository and revision), and the real lockfile,
 /// hashed whole so sources and checksums are covered. `--locked` in the build
 /// proves that lockfile is the one that was used. The page adds hashes of the
 /// wasm and JS it actually loaded.
@@ -828,7 +827,7 @@ pub fn build_info() -> String {
         "commit": option_env!("MUNIMENT_OPFS_PROBE_COMMIT").unwrap_or("unknown"),
         "dirty": option_env!("MUNIMENT_OPFS_PROBE_DIRTY").and_then(|v| v.parse::<bool>().ok()),
         "probe_source_sha256": option_env!("MUNIMENT_OPFS_PROBE_SOURCE_SHA256").unwrap_or("unknown"),
-        "muniment_source_sha256": option_env!("MUNIMENT_OPFS_PROBE_MUNIMENT_SHA256").unwrap_or("unknown"),
+        "muniment_source": option_env!("MUNIMENT_OPFS_PROBE_MUNIMENT_SOURCE").unwrap_or("unknown"),
         "cargo_lock_sha256": option_env!("MUNIMENT_OPFS_PROBE_LOCK_SHA256").unwrap_or("unknown"),
         "locked_build": option_env!("MUNIMENT_OPFS_PROBE_LOCK_SHA256").is_some(),
         "built_at": option_env!("MUNIMENT_OPFS_PROBE_BUILT_AT").unwrap_or("unknown"),

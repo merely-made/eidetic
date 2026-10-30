@@ -27,10 +27,9 @@ $mereRoot = (Resolve-Path (Join-Path $probeRoot '..\..')).Path
 . (Join-Path $mereRoot 'scripts\repo-toolchain.ps1')
 Use-RepoToolchain -MereRoot $mereRoot
 $manifest = Join-Path $probeRoot 'Cargo.toml'
-$munimentRoot = Join-Path $mereRoot 'crates\eidetic\muniment'
 $env:CARGO_TARGET_DIR = $TargetDir
 $env:MUNIMENT_OPFS_PROBE_COMMIT = (git -C $mereRoot rev-parse HEAD).Trim()
-$ownedStatus = git -C $mereRoot status --porcelain -- ports/muniment-opfs-probe crates/eidetic/muniment
+$ownedStatus = git -C $mereRoot status --porcelain -- ports/muniment-opfs-probe
 $env:MUNIMENT_OPFS_PROBE_DIRTY = if ($ownedStatus) { 'true' } else { 'false' }
 
 New-Item -ItemType Directory -Force -Path $TargetDir, $NeutralDir | Out-Null
@@ -91,23 +90,24 @@ $probeFiles = Get-ChildItem -Path $probeRoot -Recurse -File |
     } | ForEach-Object { $_.FullName }
 $env:MUNIMENT_OPFS_PROBE_SOURCE_SHA256 = Get-TreeHash -Files $probeFiles -Root $probeRoot
 
-# The compiled-in path dependency. Its version in the lockfile is just "0.1.1";
-# only its source identifies what was actually built.
-$munimentFiles = Get-ChildItem -Path (Join-Path $munimentRoot 'src') -Recurse -File |
-    ForEach-Object { $_.FullName }
-$munimentFiles += (Join-Path $munimentRoot 'Cargo.toml')
-$env:MUNIMENT_OPFS_PROBE_MUNIMENT_SHA256 = Get-TreeHash -Files $munimentFiles -Root $munimentRoot
+# Muniment is a git supplier; its locked source (repository and revision)
+# identifies what was built.
+$lockPath = Join-Path $probeRoot 'Cargo.lock'
+$munimentLock = Select-String -LiteralPath $lockPath -Pattern '^name = "muniment"$' -Context 0, 2
+$munimentSource = $munimentLock.Context.PostContext | Where-Object { $_ -match '^source = "(.+)"$' } |
+    ForEach-Object { $Matches[1] }
+if (-not $munimentSource) { throw "Cargo.lock has no source for muniment." }
+$env:MUNIMENT_OPFS_PROBE_MUNIMENT_SOURCE = $munimentSource
 
 # The real lockfile, hashed whole: sources and checksums included, not just
 # names and versions. `--locked` below proves it is the one that was used.
-$lockPath = Join-Path $probeRoot 'Cargo.lock'
 $env:MUNIMENT_OPFS_PROBE_LOCK_SHA256 = if (Test-Path $lockPath) {
     Get-TreeHash -Files @($lockPath) -Root $probeRoot
 } else { 'absent' }
 $env:MUNIMENT_OPFS_PROBE_BUILT_AT = (Get-Date).ToUniversalTime().ToString('o')
 
 Write-Host "probe source  sha256: $env:MUNIMENT_OPFS_PROBE_SOURCE_SHA256"
-Write-Host "muniment src  sha256: $env:MUNIMENT_OPFS_PROBE_MUNIMENT_SHA256"
+Write-Host "muniment source:      $env:MUNIMENT_OPFS_PROBE_MUNIMENT_SOURCE"
 Write-Host "Cargo.lock    sha256: $env:MUNIMENT_OPFS_PROBE_LOCK_SHA256"
 
 $bindgenVersion = (& $WasmBindgen --version).Trim()
