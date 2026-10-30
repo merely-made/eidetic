@@ -1,0 +1,1539 @@
+{
+  "boundary": "Completed receipts only; source manifests distinguish interim and final freezes. Passing a diagnostic is not full M4 or M5 qualification.",
+  "gates": [
+    {
+      "gate": "m4-host-final-fix-source-capture",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "source_capture"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:35:32.310508+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix-source-capture.json",
+          "sha256": "b996854d0862ab99667ffc802fdc3cfe40ca9e7cc9f377de5d8ef441d92c788c"
+        },
+        {
+          "file": "m4-host-final-fix-source-capture.log",
+          "sha256": "54cbffb23713d5ac381e4d7e178b5d29db81e9e167efeeef5d9ba8b6e36d2792"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix2-default",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:38:17.515878+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix2-default.json",
+          "sha256": "0e9bf714a4d85e4173a6da60b839656a1cb8d57f21279cd0ace13535b03056f1"
+        },
+        {
+          "file": "m4-host-final-fix2-default.log",
+          "sha256": "426d9c238eb420c1efec560b82215cd77569f6321483183b50d2d9dd28267ad2"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix2-inference",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--features",
+        "inference"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:38:34.975027+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix2-inference.json",
+          "sha256": "11037219b262cf88b94585e39546d687ce0565166011801106242e2e4f5458f7"
+        },
+        {
+          "file": "m4-host-final-fix2-inference.log",
+          "sha256": "6c744a616f21f09741eec91e39db1b2cc41241350257511f177409ac58c4d244"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix2-session",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "host_session_refusal_blocks_save_fork_background_and_survives_graph_replacement"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:37:56.533490+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix2-session.json",
+          "sha256": "9b70c6bc5e5a2b438c2a0fd596f985a1ee1d83486c546fdfabed841c99158aee"
+        },
+        {
+          "file": "m4-host-final-fix2-session.log",
+          "sha256": "a6d4273831a9b2617314e31dca019d69714be0213c60d32ddc595944469d1457"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix2-source-capture",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "source_capture"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:37:44.480349+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix2-source-capture.json",
+          "sha256": "b4b3e5703173af5399d15645717650937e1ff624820a9ed65fd544ecbbb97af2"
+        },
+        {
+          "file": "m4-host-final-fix2-source-capture.log",
+          "sha256": "32e1b5e2bf371b960da0d8c8696bc8a72da82f08b7a0c8571c0b53c19a7e15c5"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix3-default",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:50:05.879386+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix3-default.json",
+          "sha256": "6e4f6dc16f3f137d0275bc4e6795a11126ec47367430e5ee06cfe9f838732440"
+        },
+        {
+          "file": "m4-host-final-fix3-default.log",
+          "sha256": "60768f94c231e2df4d0b77d0b80c03120e1f3b82f8f3f4789f7c3909382d1e28"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix3-inference",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--features",
+        "inference"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:50:28.742985+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix3-inference.json",
+          "sha256": "594a1f7a1aad1b2062674150383638053ee6d7052f84bcc3dfb5d8a12c3fca15"
+        },
+        {
+          "file": "m4-host-final-fix3-inference.log",
+          "sha256": "e59efab5708865d78f7fec7eda453ff67274ca0f8d7ec6593a45104f2e06c2e4"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix3-model-free",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:48:43.097267+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix3-model-free.json",
+          "sha256": "0f9ccbf6fd130ef01191cdab6ecc3181795b331d6ebecc8cdd5acef4d1028fb4"
+        },
+        {
+          "file": "m4-host-final-fix3-model-free.log",
+          "sha256": "6bcf2bc97e3290e16040b273df8c7925dd09542e540ae14375c0a77cf2b1560d"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix3-session",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "host_session_refusal_blocks_save_fork_background_and_survives_graph_replacement"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:49:43.877757+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix3-session.json",
+          "sha256": "0da964ca792c51773d29562215c8399b72b42540230008af2a246e6920c66c0c"
+        },
+        {
+          "file": "m4-host-final-fix3-session.log",
+          "sha256": "4e492927e19e54ca79ffd25216a8d9c8368047a81b8624a1d072c7f4cbd4fca4"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-final-fix3-source-capture",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "source_capture"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:49:40.596624+00:00",
+      "files": [
+        {
+          "file": "m4-host-final-fix3-source-capture.json",
+          "sha256": "b3624f03396105face454e1a389a2ff3494b9c10918d5e5ae60686338943857b"
+        },
+        {
+          "file": "m4-host-final-fix3-source-capture.log",
+          "sha256": "9c2912e41101bf04bb68aae3471a51ad1141c60bdef8acb0c31b15af20a39bdd"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-fetch-1",
+      "command": [
+        "cargo",
+        "fetch",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:03:29.612121+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-fetch-1.json",
+          "sha256": "b02782db2e85b5a3071edf77a0292b4249def98d5776a7764ab4d936fc6aef97"
+        },
+        {
+          "file": "m4-host-storage-fetch-1.log",
+          "sha256": "d7579b828fc4fe2f0088d41ff12c1e528ef9bba5b3c5a429506ce105f45d525e"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-final-full-lib-closure",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:55:59.250044+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-final-full-lib-closure.json",
+          "sha256": "5e6e8e6d3b9a0dc5bb1bd31b18f91f214295cd66a8f99ee13d404873054ba0bc"
+        },
+        {
+          "file": "m4-host-storage-final-full-lib-closure.log",
+          "sha256": "7c96888f7faf38b6b9b10f2cd880d99879f313c23c5af00c3ade7c61df02a9eb"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-final-full-lib-fixed",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T11:44:17.511938+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-final-full-lib-fixed.json",
+          "sha256": "bb6072d514894afda36794020cc590be24d83c5c0a2e77a333c4d1ed80c42917"
+        },
+        {
+          "file": "m4-host-storage-final-full-lib-fixed.log",
+          "sha256": "f52aeaab72d8a71834611b9e6d235df6cd247bd05c1349756812d9b09a16e92d"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-final-full-lib",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T11:16:12.917709+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-final-full-lib.json",
+          "sha256": "35e652c83d9c8c309bb3ac1a187e2483207c8ad1589fea14fb545c56aca67cf6"
+        },
+        {
+          "file": "m4-host-storage-final-full-lib.log",
+          "sha256": "370d59b78e6aeed4b5d123e915536b03fe47115ce170b213423848399d0f831a"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-freeze1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:11:34.630030+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-freeze1.json",
+          "sha256": "f34d0cdda0a93fa754bd150467060ed1853a69c7aca618cbbefaac120e6531ce"
+        },
+        {
+          "file": "m4-host-storage-freeze1.log",
+          "sha256": "a423c50bb187647fc9c00b892bc5af51b4cc04e3715ab1c7c1ca359463debf52"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-freeze2",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:14:08.937309+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-freeze2.json",
+          "sha256": "f9e0b2a88a38d9372dbbe29ae92b11b254158ce7146f0cb858b6c4e651715317"
+        },
+        {
+          "file": "m4-host-storage-freeze2.log",
+          "sha256": "d5157051905475b63ca740446e603edbfde673de7e8c0407ed3191cf4f76dc8e"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-freeze3",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:17:04.701539+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-freeze3.json",
+          "sha256": "46f241bac55e5d2d645f9c78a835608d9dae1b931a96f96048215ed87907d0ca"
+        },
+        {
+          "file": "m4-host-storage-freeze3.log",
+          "sha256": "2950b5c50c9f145b92f9de3f6d66a43c80bf4847af6df10ff27566db5ff8b5f8"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-inference-check",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--features",
+        "inference"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:23:08.544753+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-inference-check.json",
+          "sha256": "65c91c752fc93dd8b7ef33d2848f6f433b74d69036ccfedb09ec6d9f046c043c"
+        },
+        {
+          "file": "m4-host-storage-inference-check.log",
+          "sha256": "2ddf187a29558393bd04a0373aa7b3e5563dede5bb152bc791ea250b622f42ad"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-locked-offline-1",
+      "command": [
+        "cargo",
+        "metadata",
+        "--locked",
+        "--offline",
+        "--format-version",
+        "1"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:02:37.186094+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-locked-offline-1.json",
+          "sha256": "e5925ec6d1a0406340daa4b419ad9dc90a2deeb4b3317a5d75cf05cfa31fba0e"
+        },
+        {
+          "file": "m4-host-storage-locked-offline-1.log",
+          "sha256": "4e6a01617f70fe33a0f66a0e5e411b06c69a65786034c89fac394e36454e5301"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-receiving-1",
+      "command": [
+        "python3",
+        "/home/markik/Code/testing/model-free-m4-20261030/verify_host_storage_receiving.py"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:04:31.603230+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-receiving-1.json",
+          "sha256": "b77c580a8dac2db6d5a90d2e80c9616ea2bfa57395c5648e16b1c19d12ad4014"
+        },
+        {
+          "file": "m4-host-storage-receiving-1.log",
+          "sha256": "fdf405a05b6a71f83381dd3af60722f24b5f7198e0183d1c87339e3a0d2fbf39"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-receiving-final-1",
+      "command": [
+        "python3",
+        "/home/markik/Code/testing/model-free-m4-20261030/verify_host_storage_receiving.py"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:44:03.583745+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-receiving-final-1.json",
+          "sha256": "b8e73e10225b4cae4b380e4fe989f6ed5b4188c6758fc1cd2f1718cfa7e9604e"
+        },
+        {
+          "file": "m4-host-storage-receiving-final-1.log",
+          "sha256": "8919a83f406887353973e752a1297c1caacc89b69dc2d82e69eee673bb51f566"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-research",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "research"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:20:15.538065+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-research.json",
+          "sha256": "54432a5d7232da2f7bc759ce8ff8777f37bfb33961b4c932cd15619d6b6861a6"
+        },
+        {
+          "file": "m4-host-storage-research.log",
+          "sha256": "5fb202df6a524fd186f6e98d93b378ee8d1cd497e8dbc9018495af4ff6076ed8"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-retained-clip",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "retained_clip"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:20:55.939380+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-retained-clip.json",
+          "sha256": "77d996929e85b04fc38ede0f17c1e8c56d65dee6f258cac72d59574fd791281f"
+        },
+        {
+          "file": "m4-host-storage-retained-clip.log",
+          "sha256": "82986a5bcf3a0781f5b3316b3c361a173d44b88e0ec8a341f5594f32a69d011f"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-default",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:42:19.747116+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-default.json",
+          "sha256": "f6ef721f53fbee52aef09365d4365b1134cee1538fd2ce7821784bb19b9079c5"
+        },
+        {
+          "file": "m4-host-storage-review-default.log",
+          "sha256": "c3a9f86e2091dcd2abf5f828480a9731582ea4b8bba77977f17749fc1f96c3ee"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-diag1",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:29:24.571422+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-diag1.json",
+          "sha256": "73a12a01f0ba45c1b341af773481d58918cc0972268e81444c12ba6db85110f7"
+        },
+        {
+          "file": "m4-host-storage-review-diag1.log",
+          "sha256": "accecff5a0e8aea666e8f7be99285009c315f98df50f4726de1db49a14a7a9be"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-diag2",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:29:45.900027+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-diag2.json",
+          "sha256": "3e03d8d1c06d47819d1dbb09c13a1e0acdfcc316d36438dd99e06e4ba7cdf06f"
+        },
+        {
+          "file": "m4-host-storage-review-diag2.log",
+          "sha256": "089a3915eefa7d1727f9ca4af6f3e87b01468a4311a71adef35665d34f10355b"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-diag3",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:30:54.888568+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-diag3.json",
+          "sha256": "e84f5eb058864f24e349f41a0ce9d7751db7ded79c53d08349e99343e5dc634c"
+        },
+        {
+          "file": "m4-host-storage-review-diag3.log",
+          "sha256": "f5d987e0998261128d5d8899bcb8ad9651e41319def28d23624d426431bf725a"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-diag4",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:32:26.271908+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-diag4.json",
+          "sha256": "cece3c713dee265909b1d3a1dac69dfaeb130a54e10ce868448db06fec815370"
+        },
+        {
+          "file": "m4-host-storage-review-diag4.log",
+          "sha256": "4238d81a3597872623ea48843860f4afa6f12b7e722dfaf5100df10ce04db65e"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-diag5",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_actor_recovery_limit"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:34:01.143038+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-diag5.json",
+          "sha256": "51b7735687d73e3db0a611cd14271a3036497d6b9dd9cdb1b8635e46f8396d78"
+        },
+        {
+          "file": "m4-host-storage-review-diag5.log",
+          "sha256": "efe9b9f5a894bcfac59faa283bf91f8ab115e111c0ae700229d1a0672a88e71f"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-diag6",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_actor_recovery_limit"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:35:10.741785+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-diag6.json",
+          "sha256": "1fb84093bfc2b0714c591efac608217daab8dc993fb5600f55a3d1d8b2a75870"
+        },
+        {
+          "file": "m4-host-storage-review-diag6.log",
+          "sha256": "6ae3b54b6152573e4d7728fd3fc05385f1416bf4a34f3ddfdd3312340c28f224"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-diag7",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_actor_recovery_limit"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:36:43.875838+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-diag7.json",
+          "sha256": "5ee3b5b7619beac2dc9bfad3ed9bfd2a1118e730d20a691e37f24a189ead3acf"
+        },
+        {
+          "file": "m4-host-storage-review-diag7.log",
+          "sha256": "1c9f1db6f7c03d24ec3a411b70bfaee50686ac1a2f69d0fb0c30576aa77be3e2"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-final3",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:51:42.591545+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-final3.json",
+          "sha256": "04dd926bdc37d64a7576e8b4f3b14cdf9f9253c8c55808cc665bea54bed6a351"
+        },
+        {
+          "file": "m4-host-storage-review-final3.log",
+          "sha256": "f13d947c27da9af03d015c2ff86938a7d462be6ed888ca16b963e1468a4fb618"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-freeze1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:39:38.733374+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-freeze1.json",
+          "sha256": "21446bc474793da9460283c663b9e5430cb0ebf41825f0fc4e50b6dd616bc90f"
+        },
+        {
+          "file": "m4-host-storage-review-freeze1.log",
+          "sha256": "52f3c6854a94deacbac3733f9e8dff04b19fe61ad892276dddca69290c3f782b"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-freeze2",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:41:53.332803+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-freeze2.json",
+          "sha256": "da7df561828c551e8b647e465b8d1380f37d13f703787117f6d04a5bc5204605"
+        },
+        {
+          "file": "m4-host-storage-review-freeze2.log",
+          "sha256": "89bb0ebe406457484793289c0e33c0c74872135121256da6ba7524a61efca06f"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-inference",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--features",
+        "inference"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:42:44.321869+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-inference.json",
+          "sha256": "5664120c1b5da0706673b871f5cf9e29a9637cd80ba1b60c7a5551646fe3eb93"
+        },
+        {
+          "file": "m4-host-storage-review-inference.log",
+          "sha256": "544936abf8a822afc8fd6ca850df34aca9c8e64e5f0c6ec910d818c9dc5f3cb1"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-library1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_actor_publishes_unavailable_library"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:46:50.012277+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-library1.json",
+          "sha256": "25d8904887367a058f46c54b7d3da1bd44b3916d77a6807f0a715612112f3cf0"
+        },
+        {
+          "file": "m4-host-storage-review-library1.log",
+          "sha256": "1fe19688c8ed82cfd83a9ee6c68d5d4bbcf8ba70eec7ae2bb4c753db119f2d69"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-library2",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_actor_publishes_unavailable_library"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:48:25.725747+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-library2.json",
+          "sha256": "ea93e3837ffe46634f2670888b06e37214929d366fb3eec1622fc86ebe726f31"
+        },
+        {
+          "file": "m4-host-storage-review-library2.log",
+          "sha256": "bbdadaef2f258034f0ba31d01fd2e23af1d6273b60ec8d55ffc90f175a287524"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-library3",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_capture_library_publishes_unavailable"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:50:29.554214+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-library3.json",
+          "sha256": "0b7ecb2ccbcbe34d493eb417e9d36cdf616b4518d1f807d8c1039487106a2679"
+        },
+        {
+          "file": "m4-host-storage-review-library3.log",
+          "sha256": "2220bc3f98277fac6bd29246af5789fd914d7ed04ea00f4170225e665b40ab29"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-mixed1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_owner_enumeration"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:37:04.517426+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-mixed1.json",
+          "sha256": "fb83faa61515fd8f7c93c1561f8fa02b57cf6a46fc782126a706797bffb2576a"
+        },
+        {
+          "file": "m4-host-storage-review-mixed1.log",
+          "sha256": "a510deef3af8c5c55e3ad11a98fb100f336f31270faad78bb6b338b9cfeb17e3"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-mixed2",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_owner_enumeration"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:50:51.903382+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-mixed2.json",
+          "sha256": "8677c2cc6219e5078b4c2cb028ae51ebdbb7c6b98e6387552bff1d66c2ac553b"
+        },
+        {
+          "file": "m4-host-storage-review-mixed2.log",
+          "sha256": "9ff8d68dacd604a95d25ab9c2a66666b492e5912615302a9a382ee4de19d407b"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-negative1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_negative_prefix_lookup"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:50:34.166449+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-negative1.json",
+          "sha256": "61f1dc0ab2f114e82b24ef8ece11d8d8071acf337d6b9dc13abeb8f14c0d649f"
+        },
+        {
+          "file": "m4-host-storage-review-negative1.log",
+          "sha256": "f640c2af3d89b090e0f2666da675c0c8222d77b8ba9123a2621399b8694d9a03"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-red",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_owner_enumeration"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:26:07.320727+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-red.json",
+          "sha256": "e3584ff774a050d249e562b3c1238d648eecc3d18a1ba353c8e93cbcbcf25400"
+        },
+        {
+          "file": "m4-host-storage-review-red.log",
+          "sha256": "e484950515450c3c63579e60d34942d321e1be9e97742b48bca44382e054fc7f"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-research",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "research"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:43:09.119260+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-research.json",
+          "sha256": "2c800d788f027a0e9fe4a0fbb5e664cf1598817f2f5eab8d175c2ed8cbc46d6a"
+        },
+        {
+          "file": "m4-host-storage-review-research.log",
+          "sha256": "77878db12a4c09c99e1e1b1150115e6aff502966b5f4fc4a50302c5594943209"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-retained-clip",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "retained_clip"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:43:45.144348+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-retained-clip.json",
+          "sha256": "4dce127c173104e806ab08f5da8c773636ade4a23c04e5d579a7276885c414ef"
+        },
+        {
+          "file": "m4-host-storage-review-retained-clip.log",
+          "sha256": "24bc413fbac7b06a43f9c6548d923cf5ba5199d797ad60a507e5deb11f1622f3"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-saved-search",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "saved_search"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:43:27.498021+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-saved-search.json",
+          "sha256": "1314e07fc1b55913f9417969543d52a514daaf1a817cb8a5485bb30bcf939591"
+        },
+        {
+          "file": "m4-host-storage-review-saved-search.log",
+          "sha256": "ac3d7080b83eb0ef76abf8f7f1b668c743549680c21ae6bf5532f618ea482479"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review-saved-source",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "saved_source"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:43:23.228362+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review-saved-source.json",
+          "sha256": "599f512691c9362644d8e8374ce43e5b0269bfacff38ec6c2bb27f6ad474d978"
+        },
+        {
+          "file": "m4-host-storage-review-saved-source.log",
+          "sha256": "0af9b08dfd052c50195a96c9e4edea2eb681ad1c737aa313fdfce96c4fe7d4f2"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-actor",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_capture_and_ack_actor_replies"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:59:58.913357+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-actor.json",
+          "sha256": "0888b46c615c8fcb5a846b09a6d2ec980da7e94816582ed3621a57f9963166d7"
+        },
+        {
+          "file": "m4-host-storage-review2-actor.log",
+          "sha256": "486f8d4d17c59a4ffa69dd303a931bf84c8eca1817d6d77a151cb7de663fdb4e"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-context-red",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_comparison_storage_error_keeps_side"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:55:56.522795+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-context-red.json",
+          "sha256": "0297b5da5a8b9802990b123b5bc01658b4780d9408e8faed1b9b273507decb4d"
+        },
+        {
+          "file": "m4-host-storage-review2-context-red.log",
+          "sha256": "c1cdab394c537ffe12ea53bcc953c61bd46f6d2a98a452081a41fa297617ff13"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-context",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_comparison_storage_error_keeps_side"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:58:23.060046+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-context.json",
+          "sha256": "e783e3d6e03859fd076c2f78529eb5abc0b33116604d8dcf3724d7b206289e74"
+        },
+        {
+          "file": "m4-host-storage-review2-context.log",
+          "sha256": "4c6a4ff05848ff70430b91eb6e9a192203078cf4dee0716946a9928251f6bc5b"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-default",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:01:11.015274+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-default.json",
+          "sha256": "cca3b6b18ea18840190793c932aff8d861c0cb170bb1d31f896dc3f4a2326270"
+        },
+        {
+          "file": "m4-host-storage-review2-default.log",
+          "sha256": "947b971aa526bc6677b7d941d3ed89651c92a1aef0a79cf3c81b0a852ab9e037"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-full",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:00:47.221325+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-full.json",
+          "sha256": "6263eefabc89196214f40fcf4e22a1c392097cc65e5557193a6ecfa7adadf908"
+        },
+        {
+          "file": "m4-host-storage-review2-full.log",
+          "sha256": "553ca9d4af2f6bbdc7afc9b96221d6021d15a74e7b23ad9ba1b3f1b3f2dee25a"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-green",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_capture_and_ack_preserve"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:58:10.629395+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-green.json",
+          "sha256": "f51ef33185f6b16716d730e8319cc79f7284a641852fb8297a4830fde86b29dd"
+        },
+        {
+          "file": "m4-host-storage-review2-green.log",
+          "sha256": "b51a25ece0d62acae525d5445154bd538a23201b5fe154d98dbd275c62ca8383"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-inference",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--features",
+        "inference"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:01:36.442857+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-inference.json",
+          "sha256": "3d0d010bff57ff83d1400744ef48b71bd1f735f32e1a95c66a4a15e138cdcea6"
+        },
+        {
+          "file": "m4-host-storage-review2-inference.log",
+          "sha256": "96f58560480f0c98d3e1baf6e1dd5158944d92242476a53c13e141614ae41c3a"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-red",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_capture_and_ack_preserve"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T10:55:51.799039+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-red.json",
+          "sha256": "1a36d1467f5bdab7713cdd16cec541c0d48a6ff2900de148f722facbe0ede8e7"
+        },
+        {
+          "file": "m4-host-storage-review2-red.log",
+          "sha256": "ec02ef7bacbcf073b057e049fbc18a521b7908d5136994f137d3a53a3d5ba006"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review2-ui",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_recovery_limit_event"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:58:16.943796+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review2-ui.json",
+          "sha256": "64a462e4291bf6859c8287c364c55714c1437d370a36372a2fa96dcedad67b5f"
+        },
+        {
+          "file": "m4-host-storage-review2-ui.log",
+          "sha256": "9565fa940c012f0161bc65579d4bdfa6b72f29c751450b35c6c91872effae8c4"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review3-default",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:10:24.000256+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review3-default.json",
+          "sha256": "733df81701638365569b496c7004e34112e56ccf973a6d25dac5b4034fad4c0b"
+        },
+        {
+          "file": "m4-host-storage-review3-default.log",
+          "sha256": "dbb1169d96296dca5724592c4f612e54baeebeda38a5bca6c30d6dcd93e4164a"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review3-focused",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:09:59.393332+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review3-focused.json",
+          "sha256": "5963e8f08d5a199287c6fbe22bd1424f68a14323b73eda77d0654d93c1cacbe9"
+        },
+        {
+          "file": "m4-host-storage-review3-focused.log",
+          "sha256": "e1818cb36048c7497dbe7131a7a59d560ee56826e8bc2425c5720284fce0cd81"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review3-green",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_clip_open_refusal_explains"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:09:10.876456+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review3-green.json",
+          "sha256": "e4965c6c1a122608ee9aecb2d5c411bd0987cb5feff06fd54001336e862fdba9"
+        },
+        {
+          "file": "m4-host-storage-review3-green.log",
+          "sha256": "e47179942283533206a1d3c1935c480be654998ce65d77aa1bcd66641973b56e"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review3-inference",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--features",
+        "inference"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T11:10:48.775556+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review3-inference.json",
+          "sha256": "bd963cc461042b3eae6ad7b4208080c8b069bb809354681dc17534b343e3deb4"
+        },
+        {
+          "file": "m4-host-storage-review3-inference.log",
+          "sha256": "7050f03e5920e2e88d0f44c2420f4a87095aae97a92ccec8389ff87d55a2792d"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review3-red",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_clip_open_refusal_explains"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T11:05:46.406628+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review3-red.json",
+          "sha256": "ae85c85ad6379f57670fb15e2b7ef8112c9292b3f803efa09315ba7d0e840875"
+        },
+        {
+          "file": "m4-host-storage-review3-red.log",
+          "sha256": "d0dce9f5ba2dccba1f4ebc5d5debefb0e895cef16c722d65c8d45adc94e81fc4"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-review3-red2",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "model_free_clip_open_refusal_explains"
+      ],
+      "exit_code": 101,
+      "finished_utc": "2026-10-30T11:07:14.711495+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-review3-red2.json",
+          "sha256": "4ba4bc1b9f250e379e93298e4a99ce49fd2663fc0b76ababb17134eed97f2ba5"
+        },
+        {
+          "file": "m4-host-storage-review3-red2.log",
+          "sha256": "0e8909401275278c3eeb25e2d73daa8de07b4dc0be8d039eb6ef96853dc8d4ac"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-saved-search",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "saved_search"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:20:38.193166+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-saved-search.json",
+          "sha256": "9ce8e67bceb0e796a25518ef3d8510b5dc4d9a14f2012fe3ca1f72fe18e541a2"
+        },
+        {
+          "file": "m4-host-storage-saved-search.log",
+          "sha256": "755b71825e3e4b3da6c6f09c57ef7a211837be58d55e8627b2a11b3c3ca24405"
+        }
+      ]
+    },
+    {
+      "gate": "m4-host-storage-saved-source",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "saved_source"
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T10:20:33.270446+00:00",
+      "files": [
+        {
+          "file": "m4-host-storage-saved-source.json",
+          "sha256": "6eee6fc8469e58d3d08652ad3e292a994dec21982320b57da3cf6c7c0c019cb3"
+        },
+        {
+          "file": "m4-host-storage-saved-source.log",
+          "sha256": "175af4ebc4f8e5f78d651e587b4f7e64bf2acb47f79719891fed0bf3d0283cfb"
+        }
+      ]
+    }
+  ],
+  "source_manifests": [
+    {
+      "file": "host-final-fix-freeze1-sources.json",
+      "sha256": "babf0f53c3032d851dba384fe67aa8c753f633977c37f1421629780ff9521e66"
+    },
+    {
+      "file": "host-final-fix-freeze2-sources.json",
+      "sha256": "0a2d908390a91da7121b2783d0ff6769a846197370afa54fea7e049413e9cbe7"
+    },
+    {
+      "file": "host-final-fix-freeze3-sources.json",
+      "sha256": "e1ea8adbb9876352506461a75e639b364e3702da02cb8961b6028198ce550671"
+    },
+    {
+      "file": "host-storage-freeze1-sources.json",
+      "sha256": "9d89763daedaf0a04e91effc6ed187ae1020671ada68c24cfae24e505f157bb5"
+    },
+    {
+      "file": "host-storage-freeze2-sources.json",
+      "sha256": "ccf488366dc353d15f6fe5a19c722d15bec08e06eba6b57fd2eb0a9135f8b065"
+    },
+    {
+      "file": "host-storage-freeze3-sources.json",
+      "sha256": "122b8f30d64f3779d487e30eedd29175c553a67f5ee231c2e02fe126014b8796"
+    },
+    {
+      "file": "host-storage-review-diag1-sources.json",
+      "sha256": "b033265e5fa55a71829a4a265fe3838ef43c336bf396182adfc3b275d4e2fe29"
+    },
+    {
+      "file": "host-storage-review-diag2-sources.json",
+      "sha256": "831c258ae59f32c920443e1cc38603fba23fb49bb6225baaca0900691004912b"
+    },
+    {
+      "file": "host-storage-review-diag3-sources.json",
+      "sha256": "eba602534d570d251f9a9116fc3daa65a01a8ddffcdd0a79d8159a04c008ee3f"
+    },
+    {
+      "file": "host-storage-review-diag4-sources.json",
+      "sha256": "45061e2f6cd578cc6b3487bfe57e5b75168a28858d82d841ae48782f1d338423"
+    },
+    {
+      "file": "host-storage-review-diag5-sources.json",
+      "sha256": "e8633625993ac78970b80bc719d862951d704ddda6e7cdcaa88f0ad2113664b9"
+    },
+    {
+      "file": "host-storage-review-diag6-sources.json",
+      "sha256": "ef4dd3f29e2ca720e2cea83ae9ab59fda3a6d020de1a821c43f5a39deca8e0f0"
+    },
+    {
+      "file": "host-storage-review-diag7-sources.json",
+      "sha256": "c842174a2ac14c8d5b45f85561ea076c1d3308411027b208d520c2cfe09e3af3"
+    },
+    {
+      "file": "host-storage-review-final-sources.json",
+      "sha256": "5987b7edb4f47be791af6c2ea88ab79d9c057d9731370dd4ec95275325ec682c"
+    },
+    {
+      "file": "host-storage-review-final2-sources.json",
+      "sha256": "7b78902f0ec93a26dde050187dc095e4a12ab13f3b02682673c0290049464474"
+    },
+    {
+      "file": "host-storage-review-final3-sources.json",
+      "sha256": "0d117b92f48cbfe77e2d166508daabb02560b8aae2298112a57635924a3b97fe"
+    },
+    {
+      "file": "host-storage-review-freeze1-sources.json",
+      "sha256": "a0b626477437248f6a368b018792bc7492381b9a4989086bb8d4484df5f11b68"
+    },
+    {
+      "file": "host-storage-review-freeze2-sources.json",
+      "sha256": "280438f4aac76bd0e579c1bea90a78a4520d951b9115a91b09b84d5d67336682"
+    },
+    {
+      "file": "host-storage-review-red-sources.json",
+      "sha256": "ac3ee42f9bbd9e6bef2d06929562831bea1ba877c865500157e68fb20149b5a2"
+    },
+    {
+      "file": "host-storage-review2-freeze1-sources.json",
+      "sha256": "6a899376048467f347db2eaef98af968ca23285484221b5f8d3a520c9281b427"
+    },
+    {
+      "file": "host-storage-review2-freeze2-sources.json",
+      "sha256": "e649e343c3f4b358f5d5fb6d04c0ca6a93737efb27e880caffef93aac6a51c76"
+    },
+    {
+      "file": "host-storage-review2-red-sources.json",
+      "sha256": "aece1bcf53e00c944fe365d4172fa57a4fd7d1b4842248650fe19363f0b00869"
+    },
+    {
+      "file": "host-storage-review3-freeze1-sources.json",
+      "sha256": "66d45bb254c71cc8ae189121ad22c82ca6143c7b51ec0ee9793e5597c813d13f"
+    },
+    {
+      "file": "host-storage-review3-red-sources.json",
+      "sha256": "fa0e1f6c3da7d0cb39a5e4093a3d3cdac1a11e49b1eeadd6a1093ea55e206a4d"
+    },
+    {
+      "file": "host-storage-review3-red2-sources.json",
+      "sha256": "b7f0a1fde7ac107e05d40e18ebbabdc0340a9c062cd2604d2d35b09aa61a6948"
+    }
+  ]
+}

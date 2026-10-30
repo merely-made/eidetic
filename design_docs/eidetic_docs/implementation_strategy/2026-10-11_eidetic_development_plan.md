@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-11
 **Status (2026-10-30):** active plan, owned by the independent Eidetic
-repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), M1–M3 landed; M4 in progress; M5 open.**
+repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), M1–M4 landed; M5 in progress.**
 The preceding producer and model receipts keep their bounded historical scope. The bounded custody connection and first producer-to-retention
 paths below have published suppliers and locally qualified Turnstone integration.
 Focused checks and bounded headed macOS receipt runs qualify saved-document
@@ -728,7 +728,7 @@ becoming a personal tag or requiring an explicit clip-promotion operation.
 
 ### P4a. Next milestone: model-free retained research
 
-**Status (2026-10-30): M1–M3 landed; M4 in progress; M5 open.**
+**Status (2026-10-30): M1–M4 landed; M5 in progress.**
 This is the next Eidetic milestone. It advances P4's evidence and retrieval
 capabilities independently of model execution; it does not close the remaining
 P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
@@ -760,7 +760,7 @@ Links: area recall · plans P4a · summary Model-free retained research is the n
 
 For implementation, use `superpowers:executing-plans` or the user's chosen
 execution workflow task by task. Checkboxes below remain open until their
-specific deliverables and checks pass. Next is M4 structured queries; M5
+specific deliverables and checks pass. M4 structured queries are landed; M5
 product/restart qualification remains open.
 
 #### Findings: upstream basis and retained work, 2026-10-26
@@ -1117,7 +1117,7 @@ review fixes covered separately in the
 [M3 receipt archive](../../archive_docs/2026-10-30/2026-10-11_eidetic_development_plan_receipts.md).
 Stored capture and clip fixtures establish exact local reads and withdrawal
 refusal. They do not establish headed use or network-disabled cold restart;
-those remain M5. M4 structured queries are next.
+those remain M5. M4 structured queries are described below.
 
 
 #### M4. Answer the supported structured questions
@@ -1236,12 +1236,12 @@ infrastructure, background compaction and total process RSS.
   error propagation in the existing storage owner. Preserve source provenance;
   upstream files may retain their original shape while new code follows local
   size rules.
-- [ ] Receive the supplier in Turnstone; persist visible storage/recovery limits,
+- [x] Receive the supplier in Turnstone; persist visible storage/recovery limits,
   use bounded open for session memory, sealed memory and retained clips on every
   owner lifecycle path, and share one operation ledger across source, record and
   receipt reads, including actor handoffs. Reopen failures remain distinct from
   missing data or a locked profile.
-- [ ] Verify retained v2 compatibility, cold/cache/memtable and compressed paths,
+- [x] Verify retained v2 compatibility, cold/cache/memtable and compressed paths,
   exact/zero/overflow limits, complete inventories and existence, ordinary-owner
   reads, snapshot consistency, and every refusal-before-allocation boundary.
   Verify whole-store bytes stay unchanged after refused recovery and larger
@@ -1268,28 +1268,35 @@ and `evaluate` described above. No arbitrary-prose extractor enters this task.
   duplicate projection of one assertion counts once, while distinct assertions
   remain individually inspectable. Assert incomplete input refuses totals and
   absence claims even when a lexical shortlist happens to contain all matches.
-- [ ] Run the failing tests; implement metadata adapters and explicit typed
+- [x] Run the failing tests; implement metadata adapters and explicit typed
   annotation authoring through the existing graph owner, schema validator,
   durable graph snapshot and sealed payload storage. Withdrawal updates the existing lifecycle;
   derived query indexes never become the authority. Validate references and
   scope again when a query runs or a typed annotation is committed.
-- [ ] Implement structured query controls and templated result sentences/tables,
+- [x] Implement structured query controls and templated result sentences/tables,
   with visible input records and schema/status/time/unit filters. Unsupported
   free text returns passages and the supported-query choices, not a guessed
   structured answer. Preserve unknown values instead of defaulting them.
-- [ ] Run core/storage, shared evaluator and Turnstone focused tests; commit.
+- [x] Run core/storage, shared evaluator and Turnstone focused tests; commit.
 
 **Done when:** a user can enter an explicit sourced property, reopen it, run
 these queries, and inspect the exact records and operations behind each result.
 The ferry fixture demonstrates typed comparison, not general ferry prose reading.
 
-**Progress (2026-10-30):** portable definitions, sourced assertions, complete
-snapshots and the structured evaluator are published. Core schema/sealed-helper,
-evaluator and Wasm checks pass. Counts, grouping and comparison preserve explicit
-identity, status and time distinctions; joins and output materialization are
-bounded before allocation. Turnstone authoring, owner persistence, query controls
-and real-host reopen/withdrawal tests remain in progress. The portable store test
-uses a test sealer and does not establish native product qualification.
+**Progress (2026-10-30):** M4 is published. Portable definitions, sourced
+assertions, complete snapshots and the structured evaluator preserve explicit
+identity, status and time distinctions. Turnstone provides annotation authoring,
+query controls, exact input inspection and saved-result replay through the
+existing graph and sealed owners. The supported storage paths enforce named
+read and recovery limits, retain typed failure causes and preserve data after
+refused admission. Limits remain visible and configurable.
+
+Core/storage/evaluator, Wasm, production default/inference and full native
+library gates pass. The final cross-layer review and its diagnostic/test fixes
+are recorded in the dated receipt archive, including failed runs and deferred
+coverage gaps. These are source and library/actor qualifications; headed use,
+independent custody-process restart and network-disabled product acceptance
+remain M5. The portable test sealer is not cryptographic product qualification.
 
 #### M5. Qualify offline restart and ordinary product use
 
@@ -1321,6 +1328,14 @@ receipt from a run; it cannot stand in for performing that run.
 - [ ] Freeze the new receipt and commit it with a source-bound report. Run the
   existing generated-answer compatibility cases separately; keep the 8/15
   semantic result and other platform limits unchanged.
+
+**Progress (2026-10-30):** the real producer and custody paths are being
+qualified. The hosted Redshank text-note action currently lacks its editor and
+privacy controls; complete that existing path using the owning components
+before claiming native Note coverage. The custody fixture build also exposed
+two unmigrated Graphshell consumers of the typed clip-read API. Correct those
+at their existing adapters. Staged observers, parser checks and fixture builds
+are preparation, not headed or restart acceptance.
 
 **Done when:** all of the milestone goal passes in fresh native processes on
 the recorded platform. Portable shared-library/browser compilation is a separate

@@ -1,0 +1,471 @@
+Single final M4 fix wave: whole-review68-file source to host-final-fix-freeze2,70 current hashes independently verified.
+--- reviewed/src/app/session_persistence_tests/host_session_refusal_blocks_save_fork_background_and_cases.rs
++++ src/app/session_persistence_tests/host_session_refusal_blocks_save_fork_background_and_cases.rs
+@@ -19,7 +19,17 @@
+     assert!(
+         adopted
+             .iter()
+-            .all(|effect| matches!(effect, Effect::Redraw))
++            .any(|effect| matches!(effect, Effect::CancelResearchSearch))
++    );
++    assert!(
++        adopted
++            .iter()
++            .any(|effect| matches!(effect, Effect::Redraw))
++    );
++    assert!(
++        adopted
++            .iter()
++            .all(|effect| matches!(effect, Effect::CancelResearchSearch | Effect::Redraw))
+     );
+     assert!(app.session_load_refused());
+     app.update(Action::OmnibarOpen { command: true });
+--- reviewed/src/trail_memory/capture_source_document_in.rs
++++ src/trail_memory/capture_source_document_in.rs
+@@ -102,7 +102,10 @@
+     )?;
+     if raw_exists {
+         let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, raw_manifest))
+-            .map_err(crate::research_storage::SourceReadError::from)?
++            .map_err(|error| {
++                crate::research_storage::SourceReadError::from(error)
++                    .context("raw source preflight")
++            })?
+             .unwrap();
+         if !matches!(
+             manifest.provenance.origin,
+@@ -141,17 +144,23 @@
+             },
+             captured_at,
+         ))
+-        .map_err(crate::research_storage::SourceReadError::from)?;
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error).context("raw source deposit")
++        })?;
+     }
+-    pollster::block_on(fleece::bootstrap_fleece_annotation_schema(store))
+-        .map_err(crate::research_storage::SourceReadError::from)?;
++    pollster::block_on(fleece::bootstrap_fleece_annotation_schema(store)).map_err(|error| {
++        crate::research_storage::SourceReadError::from(error).context("Fleece schema bootstrap")
++    })?;
+     if !annotation_exists {
+         pollster::block_on(fleece::save_fleece_annotation(
+             store,
+             &record,
+             document.acquired_at_ms,
+         ))
+-        .map_err(crate::research_storage::SourceReadError::from)?;
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("Fleece annotation deposit")
++        })?;
+     } else {
+         // Reusing a complete annotation preserves its exact manifest metadata.
+         // Its resource association is independently idempotent and may have
+@@ -162,7 +171,10 @@
+             eidetic::CaptureContent::Acquired,
+             document.acquired_at_ms,
+         ))
+-        .map_err(crate::research_storage::SourceReadError::from)?;
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("Fleece capture association")
++        })?;
+     }
+     let stored = StoredSourceDocument {
+         raw_manifest: raw_manifest.to_string(),
+--- reviewed/src/trail_memory/emit_capture_recovery.rs
++++ src/trail_memory/emit_capture_recovery.rs
+@@ -42,6 +42,10 @@
+                     if let Err(error) =
+                         source_capture_receipts::verify_receipt_typed(&mut bounded, &receipt)
+                     {
++                        let error = error.context(&format!(
++                            "capture request {} verification failed",
++                            receipt.request.id
++                        ));
+                         if error.storage_error().is_some() {
+                             updates.clear();
+                             updates.push(Update::SourceCaptureRecoveryFailed {
+--- reviewed/src/trail_memory/emit_sealed_capture_recovery.rs
++++ src/trail_memory/emit_sealed_capture_recovery.rs
+@@ -41,6 +41,10 @@
+                             &receipt.request,
+                             &stored,
+                         ) {
++                            let error = error.context(&format!(
++                                "sealed capture request {} verification failed",
++                                receipt.request.id
++                            ));
+                             if error.storage_error().is_some() {
+                                 updates.clear();
+                                 updates.push(Update::SourceCaptureRecoveryFailed {
+--- reviewed/src/trail_memory/preflight_source_artifact.rs
++++ src/trail_memory/preflight_source_artifact.rs
+@@ -10,7 +10,11 @@
+     privacy: eidetic::PrivacyClass,
+     expected: Option<&[u8]>,
+ ) -> Result<bool, crate::research_storage::SourceReadError> {
+-    let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, id))?;
++    let manifest =
++        pollster::block_on(eidetic::manifest::load_manifest(store, id)).map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("source artifact preflight manifest")
++        })?;
+     if let Some(manifest) = &manifest {
+         if manifest.id != id
+             || manifest.content_hash != id.0
+@@ -24,7 +28,10 @@
+         }
+     }
+     let key = format!("blob:{}", id.0.to_hex());
+-    let bytes = pollster::block_on(store.get(&key))?;
++    let bytes = pollster::block_on(store.get(&key)).map_err(|error| {
++        crate::research_storage::SourceReadError::from(error)
++            .context("source artifact preflight payload")
++    })?;
+     if let Some(bytes) = &bytes {
+         if eidetic::Hash::of(bytes) != id.0 || expected.is_some_and(|expected| expected != bytes) {
+             return Err(
+--- reviewed/src/trail_memory/sealed_capture.rs
++++ src/trail_memory/sealed_capture.rs
+@@ -50,14 +50,19 @@
+         ciphertext,
+     })
+     .map_err(|_| "sealed capture envelope encoding")?;
+-    pollster::block_on(store.put(&k, &value)).map_err(HostError::from)
++    pollster::block_on(store.put(&k, &value))
++        .map_err(HostError::from)
++        .map_err(|error| HostError::from(error).context("sealed capture receipt write"))
+ }
+ fn read_receipt(
+     store: &mut dyn eidetic::Store,
+     sealer: &dyn PayloadSealer,
+     k: &str,
+ ) -> Result<Option<DepositReceipt>, HostError> {
+-    let Some(bytes) = pollster::block_on(store.get(k)).map_err(HostError::from)? else {
++    let Some(bytes) = pollster::block_on(store.get(k))
++        .map_err(HostError::from)
++        .map_err(|error| HostError::from(error).context("sealed capture receipt read"))?
++    else {
+         return Ok(None);
+     };
+     let envelope: ReceiptEnvelope =
+@@ -91,10 +96,13 @@
+         .serialize_to_bytes()
+         .map_err(|_| "sealed capture payload encoding")?;
+     let id = eidetic::ManifestId::of_blob(&clear);
+-    let manifest =
+-        pollster::block_on(eidetic::manifest::load_manifest(store, id)).map_err(HostError::from)?;
++    let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, id))
++        .map_err(HostError::from)
++        .map_err(|error| HostError::from(error).context("sealed capture manifest read"))?;
+     let blob_key = format!("blob:{}", id.0.to_hex());
+-    let existing = pollster::block_on(store.get(&blob_key)).map_err(HostError::from)?;
++    let existing = pollster::block_on(store.get(&blob_key))
++        .map_err(HostError::from)
++        .map_err(|error| HostError::from(error).context("sealed capture blob read"))?;
+     match (manifest, existing) {
+         (Some(m), Some(_)) => {
+             if m.id != id
+@@ -116,7 +124,9 @@
+                 Some(sealer),
+                 id,
+             ))
+-            .map_err(HostError::from)?
++            .map_err(|error| {
++                HostError::from(error).context("sealed capture existing artifact refused")
++            })?
+             .ok_or("sealed capture existing artifact missing")?;
+             if value
+                 .serialize_to_bytes()
+@@ -149,7 +159,7 @@
+         },
+         eidetic::Timestamp(0),
+     ))
+-    .map_err(HostError::from)
++    .map_err(|error| HostError::from(error).context("sealed capture artifact write refused"))
+ }
+ 
+ pub(super) fn load<T: TypedPayload>(
+@@ -157,7 +167,8 @@
+     sealer: &dyn PayloadSealer,
+     id: eidetic::ManifestId,
+ ) -> Result<T, crate::research_storage::SourceReadError> {
+-    let m = pollster::block_on(eidetic::manifest::load_manifest(store, id))?
++    let m = pollster::block_on(eidetic::manifest::load_manifest(store, id))
++        .map_err(|error| HostError::from(error).context("sealed source manifest read failed"))?
+         .ok_or("sealed source manifest missing")?;
+     let blob_key = format!("blob:{}", id.0.to_hex());
+     if m.id != id
+@@ -177,7 +188,8 @@
+         &mut eidetic::NoFetcher,
+         Some(sealer),
+         id,
+-    ))?
++    ))
++    .map_err(|error| HostError::from(error).context("sealed source custody or integrity refusal"))?
+     .ok_or("sealed source payload missing")?;
+     let encoded = value
+         .serialize_to_bytes()
+@@ -489,7 +501,9 @@
+     store: &mut dyn eidetic::Store,
+     sealer: &dyn PayloadSealer,
+ ) -> Result<Vec<DepositReceipt>, HostError> {
+-    let mut keys = pollster::block_on(store.list(PREFIX)).map_err(HostError::from)?;
++    let mut keys = pollster::block_on(store.list(PREFIX))
++        .map_err(HostError::from)
++        .map_err(|error| HostError::from(error).context("sealed capture inventory unavailable"))?;
+     keys.sort();
+     keys.into_iter()
+         .map(|key| {
+--- reviewed/src/trail_memory/source_capture_receipts.rs
++++ src/trail_memory/source_capture_receipts.rs
+@@ -30,7 +30,12 @@
+ fn put(store: &mut dyn eidetic::Store, receipt: &DepositReceipt) -> Result<(), HostError> {
+     let bytes = serde_json::to_vec(receipt)
+         .map_err(|error| format!("capture recovery receipt encode: {error}"))?;
+-    pollster::block_on(store.put(&key(&receipt.request), &bytes)).map_err(HostError::from)
++    pollster::block_on(store.put(&key(&receipt.request), &bytes))
++        .map_err(HostError::from)
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("capture recovery receipt write")
++        })
+ }
+ 
+ fn verify_request(
+@@ -56,7 +61,11 @@
+     }
+     let annotation_id = serde_json::from_value(serde_json::json!(stored.annotation_manifest))
+         .map_err(|error| format!("capture annotation identity: {error}"))?;
+-    let record = pollster::block_on(fleece::load_fleece_annotation(store, annotation_id))?
++    let record = pollster::block_on(fleece::load_fleece_annotation(store, annotation_id))
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("capture request annotation")
++        })?
+         .ok_or("capture request annotation is missing")?;
+     let evidence = record
+         .extraction
+@@ -83,7 +92,10 @@
+     let hash: eidetic::Hash = serde_json::from_value(serde_json::json!(source.hash))
+         .map_err(|error| format!("capture source identity: {error}"))?;
+     let bytes = pollster::block_on(store.get(&format!("blob:{}", hash.to_hex())))
+-        .map_err(HostError::from)?
++        .map_err(HostError::from)
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error).context("capture retry raw read")
++        })?
+         .ok_or("capture retry requires the original response; no local raw deposit exists")?;
+     if eidetic::Hash::of(&bytes) != hash {
+         return Err("capture retry raw payload integrity mismatch".into());
+@@ -91,7 +103,11 @@
+     let body_hash: eidetic::Hash = serde_json::from_value(serde_json::json!(source.body_hash))
+         .map_err(|error| format!("capture decoded-body identity: {error}"))?;
+     let body_bytes = pollster::block_on(store.get(&format!("blob:{}", body_hash.to_hex())))
+-        .map_err(HostError::from)?
++        .map_err(HostError::from)
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("capture retry decoded-body read")
++        })?
+         .ok_or(
+             "capture retry requires the original decoded response; no local body deposit exists",
+         )?;
+@@ -125,7 +141,11 @@
+         .as_ref()
+         .ok_or("capture request has no source identity")?;
+     let existing = pollster::block_on(store.get(&key(request)))
+-        .map_err(HostError::from)?
++        .map_err(HostError::from)
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("capture recovery receipt read")
++        })?
+         .map(|bytes| decode(&key(request), &bytes))
+         .transpose()?;
+     if let Some(existing) = &existing {
+@@ -170,7 +190,12 @@
+     // existing content-addressed blob namespace and is usually the raw blob.
+     let body_hash = eidetic::Hash::of(document.body.as_bytes());
+     let body_key = format!("blob:{}", body_hash.to_hex());
+-    match pollster::block_on(store.get(&body_key)).map_err(HostError::from)? {
++    match pollster::block_on(store.get(&body_key))
++        .map_err(HostError::from)
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("capture decoded-body deposit read")
++        })? {
+         Some(existing) if existing == document.body.as_bytes() => {},
+         Some(_) => {
+             return Err(
+@@ -180,7 +205,11 @@
+         None => {
+             let manifest_key = eidetic::ManifestId::from_hash(body_hash).store_key();
+             if pollster::block_on(store.get(&manifest_key))
+-                .map_err(HostError::from)?
++                .map_err(HostError::from)
++                .map_err(|error| {
++                    crate::research_storage::SourceReadError::from(error)
++                        .context("capture decoded-body manifest check")
++                })?
+                 .is_some()
+             {
+                 return Err(
+@@ -188,7 +217,11 @@
+                 );
+             }
+             pollster::block_on(store.put(&body_key, document.body.as_bytes()))
+-                .map_err(HostError::from)?;
++                .map_err(HostError::from)
++                .map_err(|error| {
++                    crate::research_storage::SourceReadError::from(error)
++                        .context("capture decoded-body deposit")
++                })?;
+         },
+     }
+     let stored = super::capture_source_document_in(store, document)?;
+@@ -213,7 +246,15 @@
+ ) -> Result<StoredSourceDocument, HostError> {
+     let receipt_key = key(request);
+     let bytes = pollster::block_on(store.get(&receipt_key))
+-        .map_err(HostError::from)?
++        .map_err(HostError::from)
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("capture save receipt read")
++        })
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("legacy capture receipt unavailable")
++        })?
+         .ok_or("legacy capture receipt missing")?;
+     let receipt = decode(&receipt_key, &bytes)?;
+     if receipt.request != *request {
+@@ -285,12 +326,21 @@
+ pub(super) fn recover_receipts(
+     store: &mut dyn eidetic::Store,
+ ) -> Result<Vec<DepositReceipt>, HostError> {
+-    let mut keys = pollster::block_on(store.list(PREFIX)).map_err(HostError::from)?;
++    let mut keys = pollster::block_on(store.list(PREFIX))
++        .map_err(HostError::from)
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("capture recovery inventory")
++        })?;
+     keys.sort();
+     keys.into_iter()
+         .map(|key| {
+             let bytes = pollster::block_on(store.get(&key))
+-                .map_err(HostError::from)?
++                .map_err(HostError::from)
++                .map_err(|error| {
++                    crate::research_storage::SourceReadError::from(error)
++                        .context(&format!("capture recovery receipt {key}"))
++                })?
+                 .ok_or_else(|| format!("capture recovery receipt {key} disappeared"))?;
+             decode(&key, &bytes)
+         })
+--- reviewed/src/trail_memory/source_capture_tests.rs
++++ src/trail_memory/source_capture_tests.rs
+@@ -155,3 +155,47 @@
+ mod partial_receipt_recovers_original_non_utf8_html_decoding_cases;
+ #[path = "source_capture_tests/same_directory_actor_reopen_rejects_old_opening_commands_cases.rs"]
+ mod same_directory_actor_reopen_rejects_old_opening_commands_cases;
++
++#[test]
++fn model_free_source_and_receipt_context_preserve_storage_limit() {
++    let root = tempfile::tempdir().unwrap();
++    let mut store = FjallStore::open(root.path()).unwrap();
++    let document = document("context");
++    let request = request(&document);
++    let saved =
++        source_capture_receipts::capture_request(&mut store, &request, Some(&document)).unwrap();
++    let mut limits = crate::research_storage::StorageLimits::default();
++    limits.operation_read.max_value_bytes = 0;
++    let mut bounded = crate::research_storage::BudgetStore {
++        store: &store,
++        budget: limits.budget(),
++    };
++    let error = verify_source_document_typed(&mut bounded, &saved).unwrap_err();
++    assert!(
++        error.to_string().contains("source manifest read"),
++        "{error}"
++    );
++    assert_eq!(
++        error.storage_error(),
++        Some(&StoreError::LimitExceeded {
++            kind: muniment::StoreLimitKind::ValueBytes,
++            limit: 0
++        })
++    );
++    let mut bounded = crate::research_storage::BudgetStore {
++        store: &store,
++        budget: limits.budget(),
++    };
++    let error = source_capture_receipts::capture_request(&mut bounded, &request, None).unwrap_err();
++    assert!(
++        error.to_string().contains("capture recovery receipt read"),
++        "{error}"
++    );
++    assert_eq!(
++        error.storage_error(),
++        Some(&StoreError::LimitExceeded {
++            kind: muniment::StoreLimitKind::ValueBytes,
++            limit: 0
++        })
++    );
++}
+--- reviewed/src/trail_memory/verify_source_document.rs
++++ src/trail_memory/verify_source_document.rs
+@@ -30,7 +30,11 @@
+         store: &mut dyn eidetic::Store,
+         id: ManifestId,
+     ) -> Result<eidetic::BlobManifest, crate::research_storage::SourceReadError> {
+-        let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, id))?
++        let manifest = pollster::block_on(eidetic::manifest::load_manifest(store, id))
++            .map_err(|error| {
++                crate::research_storage::SourceReadError::from(error)
++                    .context("source manifest read")
++            })?
+             .ok_or_else(|| format!("source manifest {id} is missing"))?;
+         if manifest.id != id || manifest.content_hash != id.0 {
+             return Err(format!("source manifest identity mismatch at {id}").into());
+@@ -44,7 +48,10 @@
+         ) {
+             return Err(format!("source manifest {id} has no exact local payload").into());
+         }
+-        let bytes = pollster::block_on(store.get(&key))?
++        let bytes = pollster::block_on(store.get(&key))
++            .map_err(|error| {
++                crate::research_storage::SourceReadError::from(error).context("source payload read")
++            })?
+             .ok_or_else(|| format!("source payload {id} is missing"))?;
+         if eidetic::Hash::of(&bytes) != id.0 || bytes.len() as u64 != manifest.byte_size {
+             return Err(format!("source payload integrity mismatch at {id}").into());
+@@ -56,7 +63,11 @@
+     let annotation_id = manifest_id(&stored.annotation_manifest)?;
+     let raw_manifest = checked_manifest(store, raw_id)?;
+     let annotation_manifest = checked_manifest(store, annotation_id)?;
+-    let record = pollster::block_on(fleece::load_fleece_annotation(store, annotation_id))?
++    let record = pollster::block_on(fleece::load_fleece_annotation(store, annotation_id))
++        .map_err(|error| {
++            crate::research_storage::SourceReadError::from(error)
++                .context("source annotation validation")
++        })?
+         .ok_or_else(|| "source annotation is missing".to_string())?;
+     let evidence = record
+         .extraction
+@@ -93,7 +104,10 @@
+         store,
+         &mut eidetic::NoFetcher,
+         raw_id,
+-    ))?
++    ))
++    .map_err(|error| {
++        crate::research_storage::SourceReadError::from(error).context("raw source validation")
++    })?
+     .ok_or_else(|| "raw source is missing".to_string())?;
+     Ok(())
+ }

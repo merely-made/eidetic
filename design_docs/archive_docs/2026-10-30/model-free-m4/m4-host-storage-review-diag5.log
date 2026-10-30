@@ -1,0 +1,2581 @@
+Running as unit: custody-contract-m4-host-storage-review-diag5.scope; invocation ID: 8668fce3dfb147689500603e3cba8181
+error: invalid type: boolean `true`, expected a map
+ --> ../../../.cargo/git/checkouts/servo-e53a6e7b994a25fe/aac43a3/python/tidy/tests/lints-configuration/no-workspace/Cargo.toml:8:7
+  |
+8 | foo = true
+  |       ^^^^
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+   Compiling turnstone v0.1.0 (/home/markik/Code/worktrees/turnstone-model-free-m1-20261029)
+warning: unused imports: `Suggestion` and `normalize_address`
+  --> src/app/mod.rs:20:31
+   |
+20 | use crate::ui::{OmnibarState, Suggestion, normalize_address};
+   |                               ^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `browse`
+  --> src/app/mod.rs:26:13
+   |
+26 | use crate::{browse, session};
+   |             ^^^^^^
+
+warning: unused import: `Binding`
+ --> src/app/research_record_completion.rs:5:31
+  |
+5 | use crate::research_records::{Binding, Job, JobResult, PendingChoice, SavedResultChoice};
+  |                               ^^^^^^^
+
+warning: unused import: `Action`
+ --> src/app/research_search_arms.rs:8:21
+  |
+8 | use crate::action::{Action, Effect};
+  |                     ^^^^^^
+
+warning: unused import: `ProducerKind`
+  --> src/app/research_search_arms.rs:11:29
+   |
+11 | use eidetic_search::query::{ProducerKind, QueryMode};
+   |                             ^^^^^^^^^^^^
+
+warning: unused import: `Admission`
+ --> src/app/r2_saved_source_tests.rs:7:28
+  |
+7 | use crate::saved_sources::{Admission, Content, Entry, Key, Selector, Target};
+  |                            ^^^^^^^^^
+
+warning: unused import: `Suggestion`
+ --> src/app/saved_source_arms.rs:8:44
+  |
+8 | use crate::ui::{OmnibarMode, OmnibarState, Suggestion};
+  |                                            ^^^^^^^^^^
+
+warning: unused import: `CaretMove`
+  --> src/app/omnibar_arms.rs:12:29
+   |
+12 | use crate::action::{Action, CaretMove, Effect};
+   |                             ^^^^^^^^^
+
+warning: unused import: `crate::panes::PaneContent`
+  --> src/app/palette.rs:16:5
+   |
+16 | use crate::panes::PaneContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `uuid::Uuid`
+  --> src/app/session_lifecycle.rs:17:5
+   |
+17 | use uuid::Uuid;
+   |     ^^^^^^^^^^
+
+warning: unused import: `PaneContent`
+  --> src/app/session_lifecycle.rs:22:44
+   |
+22 | use crate::panes::{FrisketLayout, GraphId, PaneContent, SessionId};
+   |                                            ^^^^^^^^^^^
+
+warning: unused import: `Update`
+ --> src/denizen/tests.rs:5:29
+  |
+5 | use crate::action::{Action, Update};
+  |                             ^^^^^^
+
+warning: unused import: `save_certs::save_certs`
+   --> src/denizen.rs:224:9
+    |
+224 | pub use save_certs::save_certs;
+    |         ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Update`
+ --> src/focus_card/tests.rs:6:22
+  |
+6 |     action::{Action, Update},
+  |                      ^^^^^^
+
+warning: unused import: `ScopeVisit`
+  --> src/scope_navigation.rs:13:65
+   |
+13 |     NodeActivation, ScopeCamera, ScopeControls, ScopeDirection, ScopeVisit,
+   |                                                                 ^^^^^^^^^^
+
+warning: unused import: `std::ffi::OsString`
+ --> src/authoring_address.rs:4:5
+  |
+4 | use std::ffi::OsString;
+  |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `place_held_rewrite::place_held_rewrite`
+  --> src/authoring_address.rs:17:16
+   |
+17 | pub(crate) use place_held_rewrite::place_held_rewrite;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `normalized_absolute::normalized_absolute`
+  --> src/authoring_address.rs:23:5
+   |
+23 | use normalized_absolute::normalized_absolute;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `mpsc`
+  --> src/device_receipts_service.rs:17:29
+   |
+17 | use std::sync::{Arc, Mutex, mpsc};
+   |                             ^^^^
+
+warning: unused import: `djinn::door::app_admission::AppId`
+  --> src/device_receipts_service.rs:19:5
+   |
+19 | use djinn::door::app_admission::AppId;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `graphshell_endpoint::door::projection::AppBrokerClient`
+  --> src/device_receipts_service.rs:20:5
+   |
+20 | use graphshell_endpoint::door::projection::AppBrokerClient;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `PaneContent`
+ --> src/panes/workspace_blueprint.rs:7:25
+  |
+7 | use super::{LayoutNode, PaneContent, SpaceBlueprint};
+  |                         ^^^^^^^^^^^
+
+warning: unused import: `BTreeSet`
+  --> src/place/captured_collection.rs:15:34
+   |
+15 | use std::collections::{BTreeMap, BTreeSet};
+   |                                  ^^^^^^^^
+
+warning: unused import: `servitor::AuthorityProvider`
+  --> src/place/captured_collection.rs:25:5
+   |
+25 | use servitor::AuthorityProvider;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CapturedCollectionCache`, `CapturedContentGroup`, `CapturedContributionStatus`, `CapturedContribution`, and `CapturedRejectionReason`
+  --> src/place/captured_collection.rs:28:5
+   |
+28 |     CapturedCollectionCache, CapturedContentGroup, CapturedContribution,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+29 |     CapturedContributionStatus, CapturedRejectionReason,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Write`
+  --> src/retained_clip.rs:16:16
+   |
+16 |     io::{Read, Write},
+   |                ^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/controller_input.rs:17:13
+   |
+17 | use super::{NodeSessions, NodeSurfaces, Shell, content_link_target};
+   |             ^^^^^^^^^^^^
+
+warning: unused import: `self`
+  --> src/shell/cue_content.rs:13:14
+   |
+13 |     webcue::{self, Surface as _, *},
+   |              ^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/drive.rs:17:23
+   |
+17 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_run_scenario_step.rs:16:13
+   |
+16 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+  --> src/shell/drive/shell_run_scenario_step.rs:17:31
+   |
+17 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^  ^^^^^^^
+
+warning: unused imports: `cmp_f32` and `cmp_usize`
+   --> src/shell/drive/shell_run_scenario_step.rs:123:35
+    |
+123 |         use super::super::drive::{cmp_f32, cmp_usize};
+    |                                   ^^^^^^^  ^^^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+   --> src/shell/drive/shell_run_scenario_step.rs:124:13
+    |
+124 |         use crate::action::CaretMove;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+   --> src/shell/drive/shell_run_scenario_step.rs:125:31
+    |
+125 |         use crate::scenario::{CmpOp, EditKey, Step};
+    |                               ^^^^^  ^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_scenario_assert_focused.rs:12:13
+   |
+12 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+  --> src/shell/drive/shell_scenario_assert_focused.rs:13:31
+   |
+13 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^  ^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_scenario_assert_no_surface.rs:12:13
+   |
+12 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+  --> src/shell/drive/shell_scenario_assert_no_surface.rs:13:31
+   |
+13 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^  ^^^^^^^
+
+warning: unused import: `std::sync::mpsc::Receiver`
+  --> src/shell/effects.rs:14:5
+   |
+14 | use std::sync::mpsc::Receiver;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `FetchUpdate`
+  --> src/shell/effects.rs:16:27
+   |
+16 | use fetch::{FetchCommand, FetchUpdate};
+   |                           ^^^^^^^^^^^
+
+warning: unused import: `SessionClick`
+  --> src/shell/effects.rs:18:46
+   |
+18 |     DocumentFindQuery, EngineProfileBinding, SessionClick, SessionSpawnRequest, SurfaceSpawnRequest,
+   |                                              ^^^^^^^^^^^^
+
+warning: unused import: `crate::panes::PaneContent`
+  --> src/shell/effects.rs:23:5
+   |
+23 | use crate::panes::PaneContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/effects/browser_profile_path.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+ --> src/shell/nomadnet_fetch.rs:2:5
+  |
+2 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::sync::mpsc::Receiver`
+ --> src/shell/nomadnet_fetch.rs:3:5
+  |
+3 | use std::sync::mpsc::Receiver;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ActorHandle` and `Emitter`
+ --> src/shell/nomadnet_fetch.rs:5:17
+  |
+5 | use armillary::{ActorHandle, Emitter, Wake};
+  |                 ^^^^^^^^^^^  ^^^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/render.rs:15:13
+   |
+15 | use super::{NodeSessions, NodeSurfaces};
+   |             ^^^^^^^^^^^^
+
+warning: unused import: `netrender::external_texture::ExternalTexturePlacement`
+  --> src/shell/render.rs:20:5
+   |
+20 | use netrender::external_texture::ExternalTexturePlacement;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `inker::SessionClick`
+  --> src/shell/lens.rs:29:5
+   |
+29 | use inker::SessionClick;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ContentKey`
+ --> src/shell/lens_tests.rs:7:20
+  |
+7 |     content_pool::{ContentKey, HostPlacement, NodeDocuments},
+  |                    ^^^^^^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/input.rs:15:13
+   |
+15 | use super::{NodeSessions, NodeSurfaces};
+   |             ^^^^^^^^^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/input.rs:17:23
+   |
+17 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `SessionClick` and `SessionScrollKey`
+  --> src/shell/input.rs:21:13
+   |
+21 | use inker::{SessionClick, SessionScrollKey};
+   |             ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused import: `CaretMove`
+  --> src/shell/input.rs:25:29
+   |
+25 | use crate::action::{Action, CaretMove};
+   |                             ^^^^^^^^^
+
+warning: unused import: `decode_sprite`
+  --> src/shell/input.rs:28:20
+   |
+28 | use super::{Shell, decode_sprite};
+   |                    ^^^^^^^^^^^^^
+
+warning: unused import: `frame_body_rects::frame_body_rects`
+  --> src/shell/outer_workspace.rs:59:16
+   |
+59 | pub(super) use frame_body_rects::frame_body_rects;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `SessionNavigationCommand`
+  --> src/shell/window_input_tests.rs:17:53
+   |
+17 |     Cookie, FocusReason, KeyboardEvent, MouseEvent, SessionNavigationCommand, SessionSpawnRequest,
+   |                                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `PeltLane`
+  --> src/shell/window_input_tests.rs:20:30
+   |
+20 | use pelt_core::{PeltContent, PeltLane, PeltRoute, PeltRouteSource, PeltRouteState};
+   |                              ^^^^^^^^
+
+warning: unused import: `input::pointer_button`
+  --> src/shell/mod.rs:61:5
+   |
+61 | use input::pointer_button;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+  --> src/shell/mod.rs:64:5
+   |
+64 | use std::path::Path;
+   |     ^^^^^^^^^^^^^^^
+
+warning: unused import: `image::ImageEncoder`
+  --> src/shell/mod.rs:71:5
+   |
+71 | use image::ImageEncoder;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `mere::canvas::WHEEL_PAN_SCALE`
+  --> src/shell/mod.rs:73:5
+   |
+73 | use mere::canvas::WHEEL_PAN_SCALE;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReaderSessionEngine`
+  --> src/shell/mod.rs:75:5
+   |
+75 |     ReaderSessionEngine, RemoteFetcher, SmolwebInlineMediaPolicy, SmolwebSessionEngine,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ColorLoad` and `NetrenderOptions`
+  --> src/shell/mod.rs:79:17
+   |
+79 | use netrender::{ColorLoad, NetrenderOptions};
+   |                 ^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused import: `winit::application::ApplicationHandler`
+  --> src/shell/mod.rs:80:5
+   |
+80 | use winit::application::ApplicationHandler;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `PhysicalPosition` and `PhysicalSize`
+  --> src/shell/mod.rs:81:18
+   |
+81 | use winit::dpi::{PhysicalPosition, PhysicalSize};
+   |                  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused imports: `ElementState`, `Ime`, `MouseButton`, and `MouseScrollDelta`
+  --> src/shell/mod.rs:82:20
+   |
+82 | use winit::event::{ElementState, Ime, MouseButton, MouseScrollDelta, WindowEvent};
+   |                    ^^^^^^^^^^^^  ^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/mod.rs:84:23
+   |
+84 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `A11yRoutes`
+ --> src/shell/window_a11y.rs:6:23
+  |
+6 |     a11y::{A11yRoute, A11yRoutes},
+  |                       ^^^^^^^^^^
+
+warning: unused import: `Effect`
+  --> src/shell/mod.rs:94:29
+   |
+94 | use crate::action::{Action, Effect, Update};
+   |                             ^^^^^^
+
+warning: unused import: `session`
+  --> src/shell/mod.rs:97:21
+   |
+97 | use crate::{browse, session};
+   |                     ^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/servo_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/weld_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/scry_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/servo_profile_directory.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `mere::canvas::palette`
+  --> src/swatch_pane/mod.rs:34:5
+   |
+34 | use mere::canvas::palette;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ColorF`
+  --> src/swatch_pane/mod.rs:35:17
+   |
+35 | use sprigging::{ColorF, LeafRegistry, RenderedLeaves};
+   |                 ^^^^^^
+
+warning: unused import: `crate::content::NodeContent`
+  --> src/swatch_pane/mod.rs:39:5
+   |
+39 | use crate::content::NodeContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::overmap`
+  --> src/swatch_pane/mod.rs:40:5
+   |
+40 | use crate::overmap;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `ime_cursor_area::ime_cursor_area`
+   --> src/ui.rs:371:9
+    |
+371 | pub use ime_cursor_area::ime_cursor_area;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `chrome_has_content::chrome_has_content`
+   --> src/ui.rs:377:9
+    |
+377 | pub use chrome_has_content::chrome_has_content;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `scene_from_dom_with_leaves::scene_from_dom_with_leaves`
+   --> src/ui.rs:481:9
+    |
+481 | pub use scene_from_dom_with_leaves::scene_from_dom_with_leaves;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `place_workbench_at`
+  --> src/workbench_pane.rs:36:48
+   |
+36 | use crate::workbench_tiling::{WorkbenchTiling, place_workbench_at};
+   |                                                ^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+ --> src/contributed_a11y/tests.rs:5:31
+  |
+5 | use accesskit::{Action, Node, Tree, TreeId};
+  |                               ^^^^
+  |
+  = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/contributed_a11y/tests.rs:20:24
+   |
+20 |             tree: Some(Tree::new(root)),
+   |                        ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/contributed_a11y/tests.rs:60:20
+   |
+60 |         tree: Some(Tree::new(NodeId(99))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+ --> src/foreign_a11y.rs:8:58
+  |
+8 | use accesskit::{ActionRequest, Node, NodeId, Rect, Role, Tree, TreeId, TreeUpdate};
+  |                                                          ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y.rs:15:11
+   |
+15 |     tree: Tree,
+   |           ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y/tests.rs:23:20
+   |
+23 |         tree: Some(Tree::new(NodeId(0))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y/tests.rs:41:20
+   |
+41 |         tree: Some(Tree::new(NodeId(0))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y/tests.rs:70:20
+   |
+70 |         tree: Some(Tree::new(NodeId(0))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y/tests/incomplete_tree_waits_and_invalid_host_frame_keeps_cases.rs:17:34
+   |
+17 |     for tree_data in [None, Some(Tree::new(NodeId(0)))] {
+   |                                  ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/foreign_a11y/tests/incomplete_tree_waits_and_invalid_host_frame_keeps_cases.rs:228:28
+    |
+228 |                 tree: Some(Tree::new(NodeId(0))),
+    |                            ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/document_a11y.rs:228:31
+    |
+228 |         tree: Some(accesskit::Tree::new(NodeId(projection.root().get()))),
+    |                               ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/shell/lens_tests.rs:11:62
+   |
+11 |     Action as A11yAction, ActionRequest, Node, NodeId, Role, Tree, TreeId, TreeUpdate,
+   |                                                              ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/lens_tests.rs:113:20
+    |
+113 |         tree: Some(Tree::new(NodeId(0))),
+    |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/a11y_bridge.rs:164:31
+    |
+164 |         tree: Some(accesskit::Tree::new(root)),
+    |                               ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/a11y_bridge.rs:191:35
+    |
+191 |             tree: Some(accesskit::Tree::new(root)),
+    |                                   ^^^^
+
+error[E0308]: mismatched types
+   --> src/app/source_capture_persistence_tests.rs:121:9
+    |
+121 |         result,
+    |         ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, research_storage::SourceReadError>`
+               found enum `Result<_, std::string::String>`
+
+error[E0308]: mismatched types
+   --> src/app/source_capture_persistence_tests/source_capture_real_stack_process_worker_cases.rs:238:57
+    |
+238 |                         acknowledge(&mut app, &request, result);
+    |                         -----------                     ^^^^^^ expected `Result<(), String>`, found `Result<(), SourceReadError>`
+    |                         |
+    |                         arguments to this function are incorrect
+    |
+    = note: expected enum `Result<_, std::string::String>`
+               found enum `Result<_, research_storage::SourceReadError>`
+note: function defined here
+   --> src/app/source_capture_persistence_tests.rs:117:4
+    |
+117 | fn acknowledge(app: &mut App, request: &CaptureRequest, result: Result<(), String>) {
+    |    ^^^^^^^^^^^                                          --------------------------
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> src/place/captured_collection.rs:149:14
+    |
+149 |             .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+149 -             .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+149 +             .try_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> src/shell/native_composition.rs:63:10
+   |
+63 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+63 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+63 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> src/shell/native_composition.rs:133:10
+    |
+133 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+    |          ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+133 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+133 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+    |
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_compare_tests.rs:125:19
+     |
+ 125 |     assert!(error.contains("Left withdrawn"), "{error}");
+     |                   ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_compare_tests.rs:126:20
+     |
+ 126 |     assert!(!error.contains("unavailable"), "{error}");
+     |                    ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_compare_tests.rs:129:19
+     |
+ 129 |     assert!(error.contains("Right withdrawn"), "{error}");
+     |                   ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_compare_tests.rs:130:20
+     |
+ 130 |     assert!(!error.contains("unavailable"), "{error}");
+     |                    ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_search_tests.rs:309:14
+     |
+ 307 | /         crate::research_compare::run(&bridge, &actor, &comparison_request)
+ 308 | |             .unwrap_err()
+ 309 | |             .contains("Left unavailable")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_search_tests.rs:316:14
+     |
+ 314 | /         crate::research_compare::run(&bridge, &actor, &comparison_request)
+ 315 | |             .unwrap_err()
+ 316 | |             .contains("refused")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_search_tests.rs:326:14
+     |
+ 324 | /         crate::research_compare::run(&bridge, &actor, &comparison_request)
+ 325 | |             .unwrap_err()
+ 326 | |             .contains("admissions changed")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_search_tests.rs:378:10
+     |
+ 373 | /         load_owner(
+ 374 | |             vec![admission.key.clone(), second_capture.key.clone()],
+ 375 | |             Some(budget)
+...    |
+ 378 | |         .contains("metadata")
+     | |         -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_search_tests.rs:413:14
+     |
+ 411 | /         crate::research_search::run(&bridge, &actor, &request)
+ 412 | |             .unwrap_err()
+ 413 | |             .contains("while loading retained clips")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_search_tests.rs:422:14
+     |
+ 420 | /         crate::research_search::run(&bridge, &actor, &request)
+ 421 | |             .unwrap_err()
+ 422 | |             .contains("metadata")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/research_search_tests.rs:428:14
+     |
+ 426 | /         crate::research_search::run(&bridge, &actor, &request)
+ 427 | |             .unwrap_err()
+ 428 | |             .contains("metadata")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/saved_sources.rs:430:45
+     |
+ 430 |                 assert!(result.unwrap_err().contains("Unlock the profile"));
+     |                                             ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/saved_sources.rs:530:30
+     |
+ 528 | /                         result
+ 529 | |                             .unwrap_err()
+ 530 | |                             .contains("another session opening or store"),
+     | |                             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________________________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/saved_sources.rs:572:30
+     |
+ 570 | /                         result
+ 571 | |                             .unwrap_err()
+ 572 | |                             .contains("another session opening or attachment"),
+     | |                             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________________________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/saved_sources_storage_tests.rs:55:19
+     |
+  55 |     assert!(error.contains("ValueBytes"));
+     |                   ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/saved_sources_storage_tests.rs:56:19
+     |
+  56 |     assert!(error.contains('7'));
+     |                   ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/saved_sources_storage_tests.rs:99:19
+     |
+  99 |     assert!(error.contains("VisitedItems"));
+     |                   ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `get` found for struct `muniment::FjallStore` in the current scope
+   --> src/trail_memory/sealed_capture/tests.rs:102:43
+    |
+102 |     let before = pollster::block_on(store.get(&key)).unwrap();
+    |                                           ^^^ method not found in `muniment::FjallStore`
+    |
+   ::: /home/markik/.cargo/git/checkouts/eidetic-52ab114568dd1263/b39a3dc/crates/muniment/src/backend.rs:85:14
+    |
+ 85 |     async fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError>;
+    |              --- the method is available for `muniment::FjallStore` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `Backend` which provides `get` is implemented but not in scope; perhaps you want to import it
+    |
+  4 + use muniment::Backend;
+    |
+
+error[E0599]: no method named `get` found for struct `muniment::FjallStore` in the current scope
+   --> src/trail_memory/sealed_capture/tests.rs:105:41
+    |
+105 |     assert_eq!(pollster::block_on(store.get(&key)).unwrap(), before);
+    |                                         ^^^ method not found in `muniment::FjallStore`
+    |
+   ::: /home/markik/.cargo/git/checkouts/eidetic-52ab114568dd1263/b39a3dc/crates/muniment/src/backend.rs:85:14
+    |
+ 85 |     async fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError>;
+    |              --- the method is available for `muniment::FjallStore` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `Backend` which provides `get` is implemented but not in scope; perhaps you want to import it
+    |
+  4 + use muniment::Backend;
+    |
+
+error[E0599]: no method named `list` found for struct `muniment::FjallStore` in the current scope
+   --> src/trail_memory/sealed_capture/tests.rs:133:38
+    |
+133 |     assert!(pollster::block_on(store.list("")).unwrap().is_empty());
+    |                                      ^^^^ method not found in `muniment::FjallStore`
+    |
+   ::: /home/markik/.cargo/git/checkouts/eidetic-52ab114568dd1263/b39a3dc/crates/muniment/src/backend.rs:94:14
+    |
+ 94 |     async fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError>;
+    |              ---- the method is available for `muniment::FjallStore` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `Backend` which provides `list` is implemented but not in scope; perhaps you want to import it
+    |
+  4 + use muniment::Backend;
+    |
+
+error[E0599]: no method named `list` found for struct `muniment::FjallStore` in the current scope
+   --> src/trail_memory/sealed_capture/tests.rs:136:40
+    |
+136 |     let all = pollster::block_on(store.list("")).unwrap();
+    |                                        ^^^^ method not found in `muniment::FjallStore`
+    |
+   ::: /home/markik/.cargo/git/checkouts/eidetic-52ab114568dd1263/b39a3dc/crates/muniment/src/backend.rs:94:14
+    |
+ 94 |     async fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError>;
+    |              ---- the method is available for `muniment::FjallStore` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `Backend` which provides `list` is implemented but not in scope; perhaps you want to import it
+    |
+  4 + use muniment::Backend;
+    |
+
+error[E0599]: no method named `get` found for struct `muniment::FjallStore` in the current scope
+   --> src/trail_memory/sealed_capture/tests.rs:138:46
+    |
+138 |         let bytes = pollster::block_on(store.get(&key)).unwrap().unwrap();
+    |                                              ^^^ method not found in `muniment::FjallStore`
+    |
+   ::: /home/markik/.cargo/git/checkouts/eidetic-52ab114568dd1263/b39a3dc/crates/muniment/src/backend.rs:85:14
+    |
+ 85 |     async fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError>;
+    |              --- the method is available for `muniment::FjallStore` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `Backend` which provides `get` is implemented but not in scope; perhaps you want to import it
+    |
+  4 + use muniment::Backend;
+    |
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/sealed_capture/tests.rs:308:41
+     |
+ 308 |             assert!(result.unwrap_err().contains("custody changed"));
+     |                                         ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `list` found for struct `muniment::FjallStore` in the current scope
+   --> src/trail_memory/sealed_capture/tests.rs:417:41
+    |
+417 |     for key in pollster::block_on(store.list("")).unwrap() {
+    |                                         ^^^^ method not found in `muniment::FjallStore`
+    |
+   ::: /home/markik/.cargo/git/checkouts/eidetic-52ab114568dd1263/b39a3dc/crates/muniment/src/backend.rs:94:14
+    |
+ 94 |     async fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError>;
+    |              ---- the method is available for `muniment::FjallStore` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `Backend` which provides `list` is implemented but not in scope; perhaps you want to import it
+    |
+  4 + use muniment::Backend;
+    |
+
+error[E0599]: no method named `get` found for struct `muniment::FjallStore` in the current scope
+   --> src/trail_memory/sealed_capture/tests.rs:418:46
+    |
+418 |         let bytes = pollster::block_on(store.get(&key)).unwrap().unwrap();
+    |                                              ^^^ method not found in `muniment::FjallStore`
+    |
+   ::: /home/markik/.cargo/git/checkouts/eidetic-52ab114568dd1263/b39a3dc/crates/muniment/src/backend.rs:85:14
+    |
+ 85 |     async fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError>;
+    |              --- the method is available for `muniment::FjallStore` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `Backend` which provides `get` is implemented but not in scope; perhaps you want to import it
+    |
+  4 + use muniment::Backend;
+    |
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/sealed_records_limits_tests.rs:51:23
+     |
+  51 |         assert!(error.contains("Unsupported prior"));
+     |                       ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0308]: mismatched types
+   --> src/trail_memory/structured_three_owner_case.rs:182:74
+    |
+182 |             record_actor::Kind::SaveResult(saved.clone(), value.clone(), reply)
+    |             ------------------------------                               ^^^^^ expected `SyncSender<Result<ManifestId, _>>`, found `SyncSender<Result<_, String>>`
+    |             |
+    |             arguments to this enum variant are incorrect
+    |
+    = note: expected struct `SyncSender<Result<eidetic::ManifestId, research_storage::SourceReadError>>`
+               found struct `SyncSender<Result<_, std::string::String>>`
+note: tuple variant defined here
+   --> src/trail_memory/record_actor.rs:28:5
+    |
+ 28 |     SaveResult(
+    |     ^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src/trail_memory/structured_three_owner_case.rs:193:13
+    |
+189 |         record_actor::Kind::MarkResultAttached(
+    |         -------------------------------------- arguments to this enum variant are incorrect
+...
+193 |             reply,
+    |             ^^^^^ expected `SyncSender<Result<(), SourceReadError>>`, found `SyncSender<Result<_, String>>`
+    |
+    = note: expected struct `SyncSender<Result<(), research_storage::SourceReadError>>`
+               found struct `SyncSender<Result<_, std::string::String>>`
+note: tuple variant defined here
+   --> src/trail_memory/record_actor.rs:52:5
+    |
+ 52 |     MarkResultAttached(
+    |     ^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src/trail_memory/structured_three_owner_case.rs:198:65
+    |
+198 |         record_actor::Kind::AcknowledgeResult(saved, statement, reply)
+    |         -------------------------------------                   ^^^^^ expected `SyncSender<Result<(), SourceReadError>>`, found `SyncSender<Result<_, String>>`
+    |         |
+    |         arguments to this enum variant are incorrect
+    |
+    = note: expected struct `SyncSender<Result<(), research_storage::SourceReadError>>`
+               found struct `SyncSender<Result<_, std::string::String>>`
+note: tuple variant defined here
+   --> src/trail_memory/record_actor.rs:51:5
+    |
+ 51 |     AcknowledgeResult(ResultRequest, String, SyncSender<Result<(), HostError>>),
+    |     ^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+  --> src/trail_memory/structured_owner_tests.rs:57:5
+   |
+41 | ) -> Result<(PropertyRecordV1, PropertyDefinitionV1), String> {
+   |      -------------------------------------------------------- expected `Result<(PropertyRecordV1, PropertyDefinitionV1), String>` because of return type
+...
+57 |     receive.recv_timeout(Duration::from_secs(5)).unwrap()
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Result<(PropertyRecordV1, _), String>`, found `Result<(PropertyRecordV1, _), _>`
+   |
+   = note: expected enum `Result<_, std::string::String>`
+              found enum `Result<_, research_storage::SourceReadError>`
+   = note: the full name for the type has been written to '/home/markik/Code/target/debug/deps/turnstone-45c5d7afe43010c1.long-type-8492196847630153539.txt'
+   = note: consider using `--verbose` to print the full type name to the console
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/structured_owner_tests.rs:201:18
+     |
+ 201 |         if error.contains("input byte limit"))
+     |                  ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0308]: mismatched types
+   --> src/trail_memory/structured_owner_tests.rs:240:58
+    |
+240 |             record_actor::Kind::Deposit(deposit.clone(), reply)
+    |             ---------------------------                  ^^^^^ expected `SyncSender<Result<ManifestId, _>>`, found `SyncSender<Result<_, String>>`
+    |             |
+    |             arguments to this enum variant are incorrect
+    |
+    = note: expected struct `SyncSender<Result<eidetic::ManifestId, research_storage::SourceReadError>>`
+               found struct `SyncSender<Result<_, std::string::String>>`
+note: tuple variant defined here
+   --> src/trail_memory/record_actor.rs:21:5
+    |
+ 21 |     Deposit(DepositRequest, SyncSender<Result<ManifestId, HostError>>),
+    |     ^^^^^^^
+
+error[E0308]: mismatched types
+   --> src/trail_memory/structured_owner_tests.rs:251:17
+    |
+246 |             record_actor::Kind::MarkAttached(
+    |             -------------------------------- arguments to this enum variant are incorrect
+...
+251 |                 reply,
+    |                 ^^^^^ expected `SyncSender<Result<(), SourceReadError>>`, found `SyncSender<Result<_, String>>`
+    |
+    = note: expected struct `SyncSender<Result<(), research_storage::SourceReadError>>`
+               found struct `SyncSender<Result<_, std::string::String>>`
+note: tuple variant defined here
+   --> src/trail_memory/record_actor.rs:44:5
+    |
+ 44 |     MarkAttached(
+    |     ^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src/trail_memory/structured_owner_tests.rs:270:17
+    |
+266 |             record_actor::Kind::Acknowledge(
+    |             ------------------------------- arguments to this enum variant are incorrect
+...
+270 |                 reply,
+    |                 ^^^^^ expected `SyncSender<Result<(), SourceReadError>>`, found `SyncSender<Result<_, String>>`
+    |
+    = note: expected struct `SyncSender<Result<(), research_storage::SourceReadError>>`
+               found struct `SyncSender<Result<_, std::string::String>>`
+note: tuple variant defined here
+   --> src/trail_memory/record_actor.rs:38:5
+    |
+ 38 |     Acknowledge(
+    |     ^^^^^^^^^^^
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/structured_owner_tests.rs:491:104
+     |
+ 491 | ...ult: Err(error), .. } if error.contains("Ambiguous property nonce"))
+     |                                   ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/structured_owner_tests.rs:518:104
+     |
+ 518 |         matches!(result, crate::research_records::JobResult::Query { result: Err(error), .. } if error.contains("incomplete"))
+     |                                                                                                        ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/structured_owner_tests.rs:566:18
+     |
+ 562 | /             receive
+ 563 | |                 .recv_timeout(Duration::from_secs(5))
+ 564 | |                 .unwrap()
+ 565 | |                 .unwrap_err()
+ 566 | |                 .contains("storage configuration refused")
+     | |                 -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_________________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:249:19
+     |
+ 249 |             error.contains("injected deposit write"),
+     |                   ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:266:23
+     |
+ 266 |                 error.contains("requires the original"),
+     |                       ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:316:18
+     |
+ 314 | /             capture_request(&mut store, &reused, None)
+ 315 | |                 .unwrap_err()
+ 316 | |                 .contains("identity was reused")
+     | |                 -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_________________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:325:14
+     |
+ 323 | /         recover_receipts(&mut store)
+ 324 | |             .unwrap_err()
+ 325 | |             .contains("unreadable")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:330:14
+     |
+ 328 | /         capture_request(&mut store, &request, None)
+ 329 | |             .unwrap_err()
+ 330 | |             .contains("unreadable")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:349:23
+     |
+ 349 |         assert!(error.contains("injected deposit write"));
+     |                       ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:393:14
+     |
+ 391 | /         acknowledge_saved(&mut store, &request)
+ 392 | |             .unwrap_err()
+ 393 | |             .contains("no deposit receipt")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:401:14
+     |
+ 399 | /         acknowledge_saved(&mut store, &wrong_request)
+ 400 | |             .unwrap_err()
+ 401 | |             .contains("different owner")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:413:14
+     |
+ 411 | /         acknowledge_saved(&mut store, &request)
+ 412 | |             .unwrap_err()
+ 413 | |             .contains("payload integrity"),
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/deposit_failure_at_each_real_write_reopens_preserves_cases.rs:446:41
+     |
+ 446 |             assert!(result.unwrap_err().contains("payload integrity"));
+     |                                         ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/partial_receipt_recovers_original_non_utf8_html_decoding_cases.rs:33:14
+     |
+  31 | /         capture_request(&mut interrupted, &request, Some(&document))
+  32 | |             .unwrap_err()
+  33 | |             .contains("receipt write")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/partial_receipt_recovers_original_non_utf8_html_decoding_cases.rs:54:14
+     |
+  52 | /         capture_request(&mut reopened, &request, None)
+  53 | |             .unwrap_err()
+  54 | |             .contains("decoded-body payload integrity")
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/partial_receipt_recovers_original_non_utf8_html_decoding_cases.rs:66:14
+     |
+  64 | /         capture_request(&mut unrelated, &request, Some(&replacement))
+  65 | |             .unwrap_err()
+  66 | |             .contains("differs from the admitted source"),
+     | |             -^^^^^^^^ method not found in `research_storage::SourceReadError`
+     | |_____________|
+     |
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 |   pub enum SourceReadError {
+     |   ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/partial_receipt_recovers_original_non_utf8_html_decoding_cases.rs:317:15
+     |
+ 317 |         error.contains("refuses missing existing artifact payload"),
+     |               ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/same_directory_actor_reopen_rejects_old_opening_commands_cases.rs:53:41
+     |
+  53 |             assert!(result.unwrap_err().contains("another session opening"));
+     |                                         ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/same_directory_actor_reopen_rejects_old_opening_commands_cases.rs:70:41
+     |
+  70 |             assert!(result.unwrap_err().contains("another session opening"));
+     |                                         ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/same_directory_actor_reopen_rejects_old_opening_commands_cases.rs:97:41
+     |
+  97 |             assert!(result.unwrap_err().contains("another session opening"));
+     |                                         ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/same_directory_actor_reopen_rejects_old_opening_commands_cases.rs:114:41
+     |
+ 114 |             assert!(result.unwrap_err().contains("another session opening"));
+     |                                         ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+error[E0599]: no method named `contains` found for enum `research_storage::SourceReadError` in the current scope
+    --> src/trail_memory/source_capture_tests/same_directory_actor_reopen_rejects_old_opening_commands_cases.rs:152:41
+     |
+ 152 |             assert!(result.unwrap_err().contains("another session opening"));
+     |                                         ^^^^^^^^ method not found in `research_storage::SourceReadError`
+     |
+    ::: src/research_storage.rs:509:1
+     |
+ 509 | pub enum SourceReadError {
+     | ------------------------ method `contains` not found for this enum
+     |
+note: the method `contains` exists on the type `std::string::String`
+    --> /home/markik/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:1383:5
+     |
+1383 |     pub fn contains<P: Pattern>(&self, pat: P) -> bool {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following traits define an item `contains`, perhaps you need to implement one of them:
+             candidate #1: `RangeBounds`
+             candidate #2: `bitflags::traits::Flags`
+             candidate #3: `ipnet::ipnet::Contains`
+             candidate #4: `itertools::Itertools`
+             candidate #5: `netrender::peniko::kurbo::Shape`
+             candidate #6: `nom::traits::NomRange`
+             candidate #7: `option_ext::OptionExt`
+             candidate #8: `parry2d::bounding_volume::bounding_volume::BoundingVolume`
+             candidate #9: `read_fonts::collections::int_set::Domain`
+             candidate #10: `regress::bytesearch::ByteSet`
+             candidate #11: `regress::bytesearch::SmallArraySet`
+
+warning: unused import: `super::NodeSessions`
+  --> src/shell/lens.rs:14:5
+   |
+14 | use super::NodeSessions;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `eidetic::Backend`
+ --> src/trail_memory/storage_owner_review_tests.rs:4:5
+  |
+4 | use eidetic::Backend as _;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `genet_clipboard::TextClipboard`
+  --> src/shell/effects/shell_effect_open_theme_workshop.rs:41:21
+   |
+41 |                 use genet_clipboard::TextClipboard as _;
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+ --> src/app/research_search_tests.rs:9:9
+  |
+9 |     let mut app = App::test_stub_at(root.to_path_buf());
+  |         ----^^^
+  |         |
+  |         help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `zoom`
+  --> src/chrome_view/window_chrome_view.rs:10:9
+   |
+10 |     let zoom = state.zoom;
+   |         ^^^^ help: if this is intentional, prefix it with an underscore: `_zoom`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `merged`
+  --> src/chrome_view/window_chrome_view.rs:19:9
+   |
+19 |     let merged = win.primary && state.shellbar_visible && !state.layout.toolbar_bottom;
+   |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_merged`
+
+warning: unused variable: `navigation_top`
+  --> src/chrome_view/window_chrome_view.rs:20:9
+   |
+20 |     let navigation_top = if state.layout.toolbar_bottom {
+   |         ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_navigation_top`
+
+warning: unused variable: `slot`
+ --> src/chrome_view/append_window_navigation.rs:9:5
+  |
+9 |     slot: usize,
+  |     ^^^^ help: if this is intentional, prefix it with an underscore: `_slot`
+
+warning: unused variable: `caption_at_top`
+  --> src/chrome_view/append_window_navigation.rs:16:9
+   |
+16 |     let caption_at_top = matches!(
+   |         ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_caption_at_top`
+
+warning: variable does not need to be mutable
+   --> src/shell/drive/shell_run_scenario_step.rs:507:21
+    |
+507 |                 let mut diagnostic = self.surface_a11y.publication_diagnostic(public_fixture);
+    |                     ----^^^^^^^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: unused variable: `caption`
+   --> src/shell/render/shell_render.rs:115:13
+    |
+115 |         let caption = self
+    |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_caption`
+
+warning: variable `surface_frame` is assigned to, but never used
+   --> src/shell/render/shell_render.rs:197:25
+    |
+197 |                     let mut surface_frame = None;
+    |                         ^^^^^^^^^^^^^^^^^
+    |
+    = note: consider using `_surface_frame` instead
+
+warning: value assigned to `surface_frame` is never read
+   --> src/shell/render/shell_render.rs:201:29
+    |
+201 | ...                   surface_frame = Some(frame);
+    |                       ^^^^^^^^^^^^^
+    |
+    = help: maybe it is overwritten before being read?
+    = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `host`
+  --> src/shell/lens/shell_render_lens.rs:41:18
+   |
+41 |         let Some(host) = lens.host.as_ref() else {
+   |                  ^^^^ help: if this is intentional, prefix it with an underscore: `_host`
+
+warning: unused variable: `space`
+  --> src/shell/lens/lens_content_plan_with_rects.rs:15:19
+   |
+15 |     let Some(Some(space)) = app.lenses.get(ordinal) else {
+   |                   ^^^^^ help: if this is intentional, prefix it with an underscore: `_space`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_ensure_render_recovery.rs:203:17
+    |
+203 |             let mut can_replace = true;
+    |                 ----^^^^^^^^^^^
+    |                 |
+    |                 help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:164:13
+    |
+164 |         let mut pending_publish_source = None;
+    |             ----^^^^^^^^^^^^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:169:13
+    |
+169 |         let mut content_engines = content_engines_with_client_limits(client_limits);
+    |             ----^^^^^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:174:13
+    |
+174 |         let mut knot_clip = None;
+    |             ----^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:175:13
+    |
+175 |         let mut knot_notes_root = None;
+    |             ----^^^^^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:176:13
+    |
+176 |         let mut publish_service = None;
+    |             ----^^^^^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: unused variable: `knot_wake`
+   --> src/shell/shell_new.rs:171:13
+    |
+171 |         let knot_wake: Arc<dyn Fn() + Send + Sync> = Arc::new(move || {
+    |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_knot_wake`
+
+warning: unused variable: `answers_wake`
+   --> src/shell/shell_new.rs:241:13
+    |
+241 |         let answers_wake: armillary::Wake = Arc::new(move || {
+    |             ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_answers_wake`
+
+Some errors have detailed explanations: E0308, E0599.
+For more information about an error, try `rustc --explain E0308`.
+warning: `turnstone` (lib test) generated 124 warnings
+error: could not compile `turnstone` (lib test) due to 58 previous errors; 124 warnings emitted
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline --lib model_free_actor_recovery_limit"
+	User time (seconds): 23.99
+	System time (seconds): 5.63
+	Percent of CPU this job got: 90%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:32.69
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1942104
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 2435
+	Minor (reclaiming a frame) page faults: 494121
+	Voluntary context switches: 8943
+	Involuntary context switches: 2426
+	Swaps: 0
+	File system inputs: 2993376
+	File system outputs: 2992
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

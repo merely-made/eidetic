@@ -1,0 +1,1562 @@
+Running as unit: custody-contract-m4-host-storage-review-diag2.scope; invocation ID: 2b6265cc4618468ba48ebf4f5f665258
+error: invalid type: boolean `true`, expected a map
+ --> ../../../.cargo/git/checkouts/servo-e53a6e7b994a25fe/aac43a3/python/tidy/tests/lints-configuration/no-workspace/Cargo.toml:8:7
+  |
+8 | foo = true
+  |       ^^^^
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+    Checking turnstone v0.1.0 (/home/markik/Code/worktrees/turnstone-model-free-m1-20261029)
+error[E0753]: expected outer doc comment
+ --> src/research_records_worker.rs:4:1
+  |
+4 | //! Structured evaluation over the complete admitted source snapshot.
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+5 | use crate::research::{self, Target};
+  | ------------------------------------ the inner doc comment doesn't annotate this `use` import
+  |
+help: to annotate the `use` import, change the doc comment from inner to outer style
+  |
+4 - //! Structured evaluation over the complete admitted source snapshot.
+4 + /// Structured evaluation over the complete admitted source snapshot.
+  |
+
+error[E0753]: expected outer doc comment
+ --> src/trail_memory/record_actor.rs:4:1
+  |
+4 | //! Structured records through the existing session-bound sealed actor.
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+5 | use super::{SourceCustody, sealed_record_receipts, sealed_records, sealed_result_receipts};
+  | ------------------------------------------------------------------------------------------- the inner doc comment doesn't annotate this `use` import
+  |
+help: to annotate the `use` import, change the doc comment from inner to outer style
+  |
+4 - //! Structured records through the existing session-bound sealed actor.
+4 + /// Structured records through the existing session-bound sealed actor.
+  |
+
+error[E0753]: expected outer doc comment
+ --> src/trail_memory/sealed_record_receipts.rs:4:1
+  |
+4 |   //! Encrypted deposit intents and save acknowledgements for structured records.
+  |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+5 | / use super::sealed_result_receipts::{
+6 | |     ResultReceipt, read_result_receipt, result_receipts, write_result_receipt,
+7 | | };
+  | |__- the inner doc comment doesn't annotate this `use` import
+  |
+help: to annotate the `use` import, change the doc comment from inner to outer style
+  |
+4 - //! Encrypted deposit intents and save acknowledgements for structured records.
+4 + /// Encrypted deposit intents and save acknowledgements for structured records.
+  |
+
+error[E0753]: expected outer doc comment
+ --> src/trail_memory/sealed_records.rs:4:1
+  |
+4 | //! Strict typed structured-research payloads in the existing sealed owner.
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+5 | use super::structured_bounded_store::StructuredStore;
+  | ----------------------------------------------------- the inner doc comment doesn't annotate this `use` import
+  |
+help: to annotate the `use` import, change the doc comment from inner to outer style
+  |
+4 - //! Strict typed structured-research payloads in the existing sealed owner.
+4 + /// Strict typed structured-research payloads in the existing sealed owner.
+  |
+
+warning: unused imports: `Suggestion` and `normalize_address`
+  --> src/app/mod.rs:20:31
+   |
+20 | use crate::ui::{OmnibarState, Suggestion, normalize_address};
+   |                               ^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Update`
+  --> src/app/mod.rs:22:47
+   |
+22 | use crate::action::{Action, Effect, SpaceRef, Update};
+   |                                               ^^^^^^
+
+warning: unused imports: `browse` and `session`
+  --> src/app/mod.rs:26:13
+   |
+26 | use crate::{browse, session};
+   |             ^^^^^^  ^^^^^^^
+
+warning: unused import: `JobResult`
+ --> src/app/research_record_owner.rs:7:59
+  |
+7 |     AuthorRequest, Binding, Candidate, EntityChoice, Job, JobResult, ManualProperty, PendingChoice,
+  |                                                           ^^^^^^^^^
+
+warning: unused import: `Binding`
+ --> src/app/research_record_completion.rs:5:31
+  |
+5 | use crate::research_records::{Binding, Job, JobResult, PendingChoice, SavedResultChoice};
+  |                               ^^^^^^^
+
+warning: unused import: `Action`
+ --> src/app/research_search_arms.rs:8:21
+  |
+8 | use crate::action::{Action, Effect};
+  |                     ^^^^^^
+
+warning: unused import: `ProducerKind`
+  --> src/app/research_search_arms.rs:11:29
+   |
+11 | use eidetic_search::query::{ProducerKind, QueryMode};
+   |                             ^^^^^^^^^^^^
+
+warning: unused import: `Suggestion`
+ --> src/app/saved_source_arms.rs:8:44
+  |
+8 | use crate::ui::{OmnibarMode, OmnibarState, Suggestion};
+  |                                            ^^^^^^^^^^
+
+warning: unused import: `CaretMove`
+  --> src/app/omnibar_arms.rs:12:29
+   |
+12 | use crate::action::{Action, CaretMove, Effect};
+   |                             ^^^^^^^^^
+
+warning: unused import: `crate::panes::PaneContent`
+  --> src/app/palette.rs:16:5
+   |
+16 | use crate::panes::PaneContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `uuid::Uuid`
+  --> src/app/session_lifecycle.rs:17:5
+   |
+17 | use uuid::Uuid;
+   |     ^^^^^^^^^^
+
+warning: unused import: `PaneContent`
+  --> src/app/session_lifecycle.rs:22:44
+   |
+22 | use crate::panes::{FrisketLayout, GraphId, PaneContent, SessionId};
+   |                                            ^^^^^^^^^^^
+
+warning: unused import: `titlebar_height::titlebar_height`
+   --> src/chrome_view.rs:246:16
+    |
+246 | pub(crate) use titlebar_height::titlebar_height;
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `save_certs::save_certs`
+   --> src/denizen.rs:224:9
+    |
+224 | pub use save_certs::save_certs;
+    |         ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `issue_install_certificates::issue_install_certificates`
+   --> src/denizen.rs:239:9
+    |
+239 | pub use issue_install_certificates::issue_install_certificates;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ScopeVisit`
+  --> src/scope_navigation.rs:13:65
+   |
+13 |     NodeActivation, ScopeCamera, ScopeControls, ScopeDirection, ScopeVisit,
+   |                                                                 ^^^^^^^^^^
+
+warning: unused import: `std::ffi::OsString`
+ --> src/authoring_address.rs:4:5
+  |
+4 | use std::ffi::OsString;
+  |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `place_held_rewrite::place_held_rewrite`
+  --> src/authoring_address.rs:17:16
+   |
+17 | pub(crate) use place_held_rewrite::place_held_rewrite;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `normalized_absolute::normalized_absolute`
+  --> src/authoring_address.rs:23:5
+   |
+23 | use normalized_absolute::normalized_absolute;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `mpsc`
+  --> src/device_receipts_service.rs:17:29
+   |
+17 | use std::sync::{Arc, Mutex, mpsc};
+   |                             ^^^^
+
+warning: unused import: `djinn::door::app_admission::AppId`
+  --> src/device_receipts_service.rs:19:5
+   |
+19 | use djinn::door::app_admission::AppId;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `graphshell_endpoint::door::projection::AppBrokerClient`
+  --> src/device_receipts_service.rs:20:5
+   |
+20 | use graphshell_endpoint::door::projection::AppBrokerClient;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `activation_safe_update::activation_safe_update`
+  --> src/foreign_a11y.rs:85:16
+   |
+85 | pub(crate) use activation_safe_update::activation_safe_update;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `PaneContent`
+ --> src/panes/workspace_blueprint.rs:7:25
+  |
+7 | use super::{LayoutNode, PaneContent, SpaceBlueprint};
+  |                         ^^^^^^^^^^^
+
+warning: unused import: `BTreeSet`
+  --> src/place/captured_collection.rs:15:34
+   |
+15 | use std::collections::{BTreeMap, BTreeSet};
+   |                                  ^^^^^^^^
+
+warning: unused import: `servitor::AuthorityProvider`
+  --> src/place/captured_collection.rs:25:5
+   |
+25 | use servitor::AuthorityProvider;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CapturedCollectionCache`, `CapturedContentGroup`, `CapturedContributionStatus`, `CapturedContribution`, and `CapturedRejectionReason`
+  --> src/place/captured_collection.rs:28:5
+   |
+28 |     CapturedCollectionCache, CapturedContentGroup, CapturedContribution,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+29 |     CapturedContributionStatus, CapturedRejectionReason,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Hash`
+  --> src/retained_clip.rs:12:15
+   |
+12 | use eidetic::{Hash, ManifestId, ProvenanceRecord, Timestamp, TrustEnvelope};
+   |               ^^^^
+
+warning: unused import: `Write`
+  --> src/retained_clip.rs:16:16
+   |
+16 |     io::{Read, Write},
+   |                ^^^^^
+
+warning: unused import: `load_place_collection::load_place_collection`
+   --> src/session.rs:130:16
+    |
+130 | pub(crate) use load_place_collection::load_place_collection;
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `save_place_collection::save_place_collection`
+   --> src/session.rs:133:16
+    |
+133 | pub(crate) use save_place_collection::save_place_collection;
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `remove_place_binding::remove_place_binding`
+   --> src/session.rs:155:9
+    |
+155 | pub use remove_place_binding::remove_place_binding;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `load_session_graph::load_session_graph`
+   --> src/session.rs:191:9
+    |
+191 | pub use load_session_graph::load_session_graph;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `load_node_facets::load_node_facets`
+   --> src/session.rs:220:9
+    |
+220 | pub use load_node_facets::load_node_facets;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `save_node_facets::save_node_facets`
+   --> src/session.rs:223:9
+    |
+223 | pub use save_node_facets::save_node_facets;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/controller_input.rs:17:13
+   |
+17 | use super::{NodeSessions, NodeSurfaces, Shell, content_link_target};
+   |             ^^^^^^^^^^^^
+
+warning: unused import: `self`
+  --> src/shell/cue_content.rs:13:14
+   |
+13 |     webcue::{self, Surface as _, *},
+   |              ^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/drive.rs:17:23
+   |
+17 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_run_scenario_step.rs:16:13
+   |
+16 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+  --> src/shell/drive/shell_run_scenario_step.rs:17:31
+   |
+17 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^  ^^^^^^^
+
+warning: unused imports: `cmp_f32` and `cmp_usize`
+   --> src/shell/drive/shell_run_scenario_step.rs:123:35
+    |
+123 |         use super::super::drive::{cmp_f32, cmp_usize};
+    |                                   ^^^^^^^  ^^^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+   --> src/shell/drive/shell_run_scenario_step.rs:124:13
+    |
+124 |         use crate::action::CaretMove;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+   --> src/shell/drive/shell_run_scenario_step.rs:125:31
+    |
+125 |         use crate::scenario::{CmpOp, EditKey, Step};
+    |                               ^^^^^  ^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_scenario_assert_focused.rs:12:13
+   |
+12 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+  --> src/shell/drive/shell_scenario_assert_focused.rs:13:31
+   |
+13 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^  ^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_scenario_assert_no_surface.rs:12:13
+   |
+12 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+  --> src/shell/drive/shell_scenario_assert_no_surface.rs:13:31
+   |
+13 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^  ^^^^^^^
+
+warning: unused import: `std::sync::mpsc::Receiver`
+  --> src/shell/effects.rs:14:5
+   |
+14 | use std::sync::mpsc::Receiver;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `FetchCommand` and `FetchUpdate`
+  --> src/shell/effects.rs:16:13
+   |
+16 | use fetch::{FetchCommand, FetchUpdate};
+   |             ^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: unused import: `SessionClick`
+  --> src/shell/effects.rs:18:46
+   |
+18 |     DocumentFindQuery, EngineProfileBinding, SessionClick, SessionSpawnRequest, SurfaceSpawnRequest,
+   |                                              ^^^^^^^^^^^^
+
+warning: unused import: `crate::panes::PaneContent`
+  --> src/shell/effects.rs:23:5
+   |
+23 | use crate::panes::PaneContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/effects/browser_profile_path.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+ --> src/shell/nomadnet_fetch.rs:2:5
+  |
+2 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::sync::mpsc::Receiver`
+ --> src/shell/nomadnet_fetch.rs:3:5
+  |
+3 | use std::sync::mpsc::Receiver;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ActorHandle` and `Emitter`
+ --> src/shell/nomadnet_fetch.rs:5:17
+  |
+5 | use armillary::{ActorHandle, Emitter, Wake};
+  |                 ^^^^^^^^^^^  ^^^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/render.rs:15:13
+   |
+15 | use super::{NodeSessions, NodeSurfaces};
+   |             ^^^^^^^^^^^^
+
+warning: unused import: `netrender::external_texture::ExternalTexturePlacement`
+  --> src/shell/render.rs:20:5
+   |
+20 | use netrender::external_texture::ExternalTexturePlacement;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `super::NodeSessions`
+  --> src/shell/lens.rs:14:5
+   |
+14 | use super::NodeSessions;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `inker::SessionClick`
+  --> src/shell/lens.rs:29:5
+   |
+29 | use inker::SessionClick;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/input.rs:15:13
+   |
+15 | use super::{NodeSessions, NodeSurfaces};
+   |             ^^^^^^^^^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/input.rs:17:23
+   |
+17 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `SessionClick` and `SessionScrollKey`
+  --> src/shell/input.rs:21:13
+   |
+21 | use inker::{SessionClick, SessionScrollKey};
+   |             ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused import: `CaretMove`
+  --> src/shell/input.rs:25:29
+   |
+25 | use crate::action::{Action, CaretMove};
+   |                             ^^^^^^^^^
+
+warning: unused import: `decode_sprite`
+  --> src/shell/input.rs:28:20
+   |
+28 | use super::{Shell, decode_sprite};
+   |                    ^^^^^^^^^^^^^
+
+warning: unused import: `frame_body_rects::frame_body_rects`
+  --> src/shell/outer_workspace.rs:59:16
+   |
+59 | pub(super) use frame_body_rects::frame_body_rects;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `input::pointer_button`
+  --> src/shell/mod.rs:61:5
+   |
+61 | use input::pointer_button;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+  --> src/shell/mod.rs:64:5
+   |
+64 | use std::path::Path;
+   |     ^^^^^^^^^^^^^^^
+
+warning: unused import: `image::ImageEncoder`
+  --> src/shell/mod.rs:71:5
+   |
+71 | use image::ImageEncoder;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `SessionClick` and `SessionSpawnRequest`
+  --> src/shell/mod.rs:72:30
+   |
+72 | use inker::{DocumentSession, SessionClick, SessionRegistry, SessionSpawnRequest};
+   |                              ^^^^^^^^^^^^                   ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `mere::canvas::WHEEL_PAN_SCALE`
+  --> src/shell/mod.rs:73:5
+   |
+73 | use mere::canvas::WHEEL_PAN_SCALE;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReaderSessionEngine`
+  --> src/shell/mod.rs:75:5
+   |
+75 |     ReaderSessionEngine, RemoteFetcher, SmolwebInlineMediaPolicy, SmolwebSessionEngine,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ColorLoad` and `NetrenderOptions`
+  --> src/shell/mod.rs:79:17
+   |
+79 | use netrender::{ColorLoad, NetrenderOptions};
+   |                 ^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused import: `winit::application::ApplicationHandler`
+  --> src/shell/mod.rs:80:5
+   |
+80 | use winit::application::ApplicationHandler;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `PhysicalPosition` and `PhysicalSize`
+  --> src/shell/mod.rs:81:18
+   |
+81 | use winit::dpi::{PhysicalPosition, PhysicalSize};
+   |                  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused imports: `ElementState`, `Ime`, `MouseButton`, and `MouseScrollDelta`
+  --> src/shell/mod.rs:82:20
+   |
+82 | use winit::event::{ElementState, Ime, MouseButton, MouseScrollDelta, WindowEvent};
+   |                    ^^^^^^^^^^^^  ^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/mod.rs:84:23
+   |
+84 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `A11yRoutes`
+ --> src/shell/window_a11y.rs:6:23
+  |
+6 |     a11y::{A11yRoute, A11yRoutes},
+  |                       ^^^^^^^^^^
+
+warning: unused import: `Effect`
+  --> src/shell/mod.rs:94:29
+   |
+94 | use crate::action::{Action, Effect, Update};
+   |                             ^^^^^^
+
+warning: unused import: `session`
+  --> src/shell/mod.rs:97:21
+   |
+97 | use crate::{browse, session};
+   |                     ^^^^^^^
+
+warning: unused import: `standard_content_engines::standard_content_engines`
+   --> src/shell/mod.rs:139:16
+    |
+139 | pub(crate) use standard_content_engines::standard_content_engines;
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/servo_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/weld_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/scry_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `mere::canvas::palette`
+  --> src/swatch_pane/mod.rs:34:5
+   |
+34 | use mere::canvas::palette;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ColorF`
+  --> src/swatch_pane/mod.rs:35:17
+   |
+35 | use sprigging::{ColorF, LeafRegistry, RenderedLeaves};
+   |                 ^^^^^^
+
+warning: unused import: `crate::content::NodeContent`
+  --> src/swatch_pane/mod.rs:39:5
+   |
+39 | use crate::content::NodeContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::overmap`
+  --> src/swatch_pane/mod.rs:40:5
+   |
+40 | use crate::overmap;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `spawn_trail::spawn_trail`
+   --> src/trail_memory.rs:414:9
+    |
+414 | pub use spawn_trail::spawn_trail;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `chrome_row_width::chrome_row_width`
+   --> src/ui.rs:327:16
+    |
+327 | pub(crate) use chrome_row_width::chrome_row_width;
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `recompute_suggestions::recompute_suggestions`
+   --> src/ui.rs:353:9
+    |
+353 | pub use recompute_suggestions::recompute_suggestions;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ime_cursor_area::ime_cursor_area`
+   --> src/ui.rs:371:9
+    |
+371 | pub use ime_cursor_area::ime_cursor_area;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `chrome_has_content::chrome_has_content`
+   --> src/ui.rs:377:9
+    |
+377 | pub use chrome_has_content::chrome_has_content;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `scene_from_dom_scrolled::scene_from_dom_scrolled`
+   --> src/ui.rs:449:9
+    |
+449 | pub use scene_from_dom_scrolled::scene_from_dom_scrolled;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `hit_test_scrolled::hit_test_scrolled`
+   --> src/ui.rs:452:9
+    |
+452 | pub use hit_test_scrolled::hit_test_scrolled;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `node_rect::node_rect`
+   --> src/ui.rs:461:16
+    |
+461 | pub(crate) use node_rect::node_rect;
+    |                ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `hit_test::hit_test`
+   --> src/ui.rs:464:16
+    |
+464 | pub(crate) use hit_test::hit_test;
+    |                ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `subtree_node_rect::subtree_node_rect`
+   --> src/ui.rs:475:16
+    |
+475 | pub(crate) use subtree_node_rect::subtree_node_rect;
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `scene_from_dom_with_leaves::scene_from_dom_with_leaves`
+   --> src/ui.rs:481:9
+    |
+481 | pub use scene_from_dom_with_leaves::scene_from_dom_with_leaves;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `row_text_budget::ROW_TEXT_BUDGET`
+   --> src/ui.rs:499:16
+    |
+499 | pub(crate) use row_text_budget::ROW_TEXT_BUDGET;
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `place_workbench_at`
+  --> src/workbench_pane.rs:36:48
+   |
+36 | use crate::workbench_tiling::{WorkbenchTiling, place_workbench_at};
+   |                                                ^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+ --> src/foreign_a11y.rs:8:58
+  |
+8 | use accesskit::{ActionRequest, Node, NodeId, Rect, Role, Tree, TreeId, TreeUpdate};
+  |                                                          ^^^^
+  |
+  = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y.rs:15:11
+   |
+15 |     tree: Tree,
+   |           ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/document_a11y.rs:228:31
+    |
+228 |         tree: Some(accesskit::Tree::new(NodeId(projection.root().get()))),
+    |                               ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/a11y_bridge.rs:164:31
+    |
+164 |         tree: Some(accesskit::Tree::new(root)),
+    |                               ^^^^
+
+error[E0308]: mismatched types
+   --> src/app/updates/app_update_gemini_certificate_changed.rs:242:29
+    |
+242 |                     target: error,
+    |                             ^^^^^ expected `String`, found `SourceReadError`
+    |
+help: try using a conversion method
+    |
+242 |                     target: error.to_string(),
+    |                                  ++++++++++++
+
+error[E0308]: mismatched types
+   --> src/app/updates/app_update_saved_sources_loaded.rs:19:73
+    |
+ 19 |                 self.saved_sources_loaded(request, session, admissions, result)
+    |                      --------------------                               ^^^^^^ expected `Result<Vec<Entry>, String>`, found `Result<Vec<Entry>, SourceReadError>`
+    |                      |
+    |                      arguments to this method are incorrect
+    |
+    = note: expected enum `Result<_, std::string::String>`
+               found enum `Result<_, SourceReadError>`
+note: method defined here
+   --> src/app/saved_source_arms.rs:158:19
+    |
+158 |     pub(crate) fn saved_sources_loaded(
+    |                   ^^^^^^^^^^^^^^^^^^^^
+...
+163 |         result: Result<Vec<Entry>, String>,
+    |         ----------------------------------
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+ 19 |                 self.saved_sources_loaded(request, session, admissions, Ok(result?))
+    |                                                                         +++      ++
+
+error[E0308]: mismatched types
+   --> src/app/updates/app_update_saved_sources_loaded.rs:32:68
+    |
+ 32 |                 self.saved_source_read(request, node, url, target, result)
+    |                      -----------------                             ^^^^^^ expected `Result<Content, String>`, found `Result<Content, SourceReadError>`
+    |                      |
+    |                      arguments to this method are incorrect
+    |
+    = note: expected enum `Result<_, std::string::String>`
+               found enum `Result<_, SourceReadError>`
+note: method defined here
+   --> src/app/saved_source_arms.rs:317:19
+    |
+317 |     pub(crate) fn saved_source_read(
+    |                   ^^^^^^^^^^^^^^^^^
+...
+323 |         result: Result<Content, String>,
+    |         -------------------------------
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+ 32 |                 self.saved_source_read(request, node, url, target, Ok(result?))
+    |                                                                    +++      ++
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> src/place/captured_collection.rs:149:14
+    |
+149 |             .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+149 -             .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+149 +             .try_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+    |
+
+error[E0308]: mismatched types
+   --> src/research_records_worker.rs:365:5
+    |
+253 |   ) -> Result<eidetic::records::RecordResult, HostError> {
+    |        ------------------------------------------------- expected `std::result::Result<RecordResult, SourceReadError>` because of return type
+...
+365 | /     eidetic_search::records::evaluate(&snapshot, &request.query, &request.settings)
+366 | |         .map_err(|e| format!("Structured query refused: {e:?}"))
+    | |________________________________________________________________^ expected `Result<RecordResult, SourceReadError>`, found `Result<RecordResult, String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+365 ~     Ok(eidetic_search::records::evaluate(&snapshot, &request.query, &request.settings)
+366 ~         .map_err(|e| format!("Structured query refused: {e:?}"))?)
+    |
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:124:17
+    |
+124 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+124 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:150:17
+    |
+150 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+150 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:178:17
+    |
+178 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+178 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:207:17
+    |
+207 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+207 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:234:17
+    |
+234 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+234 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:261:17
+    |
+261 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+261 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:334:17
+    |
+334 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+334 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:377:17
+    |
+377 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+377 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:429:17
+    |
+429 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+429 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:449:17
+    |
+449 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+449 |                 Ok(result?),
+    |                 +++      ++
+
+error[E0308]: mismatched types
+   --> src/research_records_dispatch.rs:580:17
+    |
+580 |                 result,
+    |                 ^^^^^^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+    |
+    = note: expected enum `Result<_, SourceReadError>`
+               found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+580 |                 Ok(result?),
+    |                 +++      ++
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> src/shell/native_composition.rs:63:10
+   |
+63 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+63 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+63 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> src/shell/native_composition.rs:133:10
+    |
+133 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+    |          ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+133 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+133 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+    |
+
+error[E0308]: mismatched types
+  --> src/trail_memory/sealed_records.rs:90:5
+   |
+89 |   fn schema<T: TypedPayload>(store: &mut dyn Store, value: &T) -> Result<(), HostError> {
+   |                                                                   --------------------- expected `std::result::Result<(), SourceReadError>` because of return type
+90 | /     pollster::block_on(eidetic::records::validate_required_schema(
+91 | |         store,
+92 | |         &mut eidetic::NoFetcher,
+93 | |         value,
+94 | |     ))
+95 | |     .map_err(|e| format!("Required record schema refused: {e}"))
+   | |________________________________________________________________^ expected `Result<(), SourceReadError>`, found `Result<(), String>`
+   |
+   = note: expected enum `Result<_, SourceReadError>`
+              found enum `Result<_, std::string::String>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+   |
+90 ~     Ok(pollster::block_on(eidetic::records::validate_required_schema(
+91 |         store,
+...
+94 |     ))
+95 ~     .map_err(|e| format!("Required record schema refused: {e}"))?)
+   |
+
+error[E0308]: mismatched types
+  --> src/trail_memory/worker_research_snapshot.rs:93:40
+   |
+93 |                     .unwrap_or_else(|| "The session evidence store is unavailable.".to_string())
+   |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `SourceReadError`, found `String`
+   |
+help: try wrapping the expression in `research_storage::SourceReadError::Other`
+   |
+93 |                     .unwrap_or_else(|| research_storage::SourceReadError::Other("The session evidence store is unavailable.".to_string()))
+   |                                        +++++++++++++++++++++++++++++++++++++++++                                                        +
+
+error[E0308]: `match` arms have incompatible types
+  --> src/trail_memory/worker_research_source.rs:53:25
+   |
+39 |                   match budget {
+   |                   ------------ `match` arms have incompatible types
+40 |                       None => Err(limits
+   |  _____________________________-
+41 | |                         .as_ref()
+42 | |                         .err()
+43 | |                         .cloned()
+44 | |                         .unwrap_or_else(|| "Storage limits unavailable".into())),
+   | |________________________________________________________________________________- this is found to be of type `std::result::Result<_, std::string::String>`
+...
+53 | /                         saved_sources::resolve_with_sealed(
+54 | |                             &mut legacy,
+55 | |                             sealed.as_mut().map(|s| s as &mut dyn eidetic::Store),
+56 | |                             custody
+...  |
+60 | |                             &target,
+61 | |                         )
+   | |_________________________^ expected `Result<_, String>`, found `Result<Content, SourceReadError>`
+   |
+   = note: expected enum `Result<_, std::string::String>`
+              found enum `Result<saved_sources::Content, SourceReadError>`
+
+error[E0308]: mismatched types
+  --> src/trail_memory/emit_capture_recovery.rs:50:40
+   |
+50 | ...                   error: format!("capture request {id} verification failed: {error}"),
+   |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `SourceReadError`, found `String`
+   |
+help: call `Into::into` on this expression to convert `std::string::String` into `SourceReadError`
+   |
+50 |                                 error: format!("capture request {id} verification failed: {error}").into(),
+   |                                                                                                    +++++++
+
+error[E0308]: mismatched types
+  --> src/trail_memory/emit_capture_recovery.rs:61:36
+   |
+61 | ...                   error: format!("capture request {id} verification failed: {error}"),
+   |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `SourceReadError`, found `String`
+   |
+help: call `Into::into` on this expression to convert `std::string::String` into `SourceReadError`
+   |
+61 |                             error: format!("capture request {id} verification failed: {error}").into(),
+   |                                                                                                +++++++
+
+error[E0308]: mismatched types
+  --> src/trail_memory/emit_capture_recovery.rs:86:13
+   |
+86 |             error,
+   |             ^^^^^ expected `SourceReadError`, found `String`
+   |
+help: try wrapping the expression in `research_storage::SourceReadError::Other`
+   |
+86 |             error: research_storage::SourceReadError::Other(error),
+   |             ++++++++++++++++++++++++++++++++++++++++++++++++     +
+
+error[E0308]: mismatched types
+  --> src/trail_memory/emit_sealed_capture_recovery.rs:49:44
+   |
+49 | ...                   error: format!("sealed capture verification refused: {error}"),
+   |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `SourceReadError`, found `String`
+   |
+help: call `Into::into` on this expression to convert `std::string::String` into `SourceReadError`
+   |
+49 |                                     error: format!("sealed capture verification refused: {error}").into(),
+   |                                                                                                   +++++++
+
+error[E0308]: mismatched types
+  --> src/trail_memory/emit_sealed_capture_recovery.rs:55:40
+   |
+55 | ...                   error: format!("sealed capture verification refused: {error}"),
+   |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `SourceReadError`, found `String`
+   |
+help: call `Into::into` on this expression to convert `std::string::String` into `SourceReadError`
+   |
+55 |                                 error: format!("sealed capture verification refused: {error}").into(),
+   |                                                                                               +++++++
+
+error[E0308]: mismatched types
+  --> src/trail_memory/emit_sealed_capture_recovery.rs:81:13
+   |
+81 |             error,
+   |             ^^^^^ expected `SourceReadError`, found `String`
+   |
+help: try wrapping the expression in `research_storage::SourceReadError::Other`
+   |
+81 |             error: research_storage::SourceReadError::Other(error),
+   |             ++++++++++++++++++++++++++++++++++++++++++++++++     +
+
+error[E0308]: mismatched types
+   --> src/trail_memory/worker.rs:159:33
+    |
+159 | / ...                   saved_sources::load_with_sealed_bounded(
+160 | | ...                       &mut legacy,
+161 | | ...                       sealed.as_mut().map(|s| s as &mut dyn eidetic::Store),
+162 | | ...                       custody
+...   |
+167 | | ...                       None,
+168 | | ...                   )
+    | |_______________________^ expected `Result<_, String>`, found `Result<Vec<Entry>, SourceReadError>`
+    |
+    = note: expected enum `Result<_, std::string::String>`
+               found enum `Result<Vec<saved_sources::Entry>, SourceReadError>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+159 ~                                 Ok(saved_sources::load_with_sealed_bounded(
+160 |                                     &mut legacy,
+...
+167 |                                     None,
+168 ~                                 )?)
+    |
+
+error[E0308]: `match` arms have incompatible types
+   --> src/trail_memory/worker.rs:171:33
+    |
+145 |                       match state.as_mut() {
+    |                       -------------------- `match` arms have incompatible types
+...
+151 | /                             budget.and_then(|budget| {
+152 | |                                 let mut legacy = crate::research_storage::BudgetStore {
+153 | |                                     store,
+154 | |                                     budget: budget.clone(),
+...   |
+169 | |                             })
+    | |______________________________- this is found to be of type `std::result::Result<_, std::string::String>`
+170 |                           },
+171 |                           None => Err(memory_error
+    |  _________________________________^
+172 | |                             .clone()
+173 | |                             .unwrap_or_else(|| "The session evidence store is unavailable".into())),
+    | |___________________________________________________________________________________________________^ expected `Result<_, String>`, found `Result<_, SourceReadError>`
+    |
+    = note: expected enum `Result<_, std::string::String>`
+               found enum `Result<_, SourceReadError>`
+
+error[E0308]: mismatched types
+   --> src/trail_memory/worker.rs:223:33
+    |
+223 | / ...                   saved_sources::resolve_with_budget(
+224 | | ...                       store,
+225 | | ...                       sealed_store.as_ref(),
+226 | | ...                       custody
+...   |
+231 | | ...                       limits.budget(),
+232 | | ...                   )
+    | |_______________________^ expected `Result<_, String>`, found `Result<Content, SourceReadError>`
+    |
+    = note: expected enum `Result<_, std::string::String>`
+               found enum `Result<saved_sources::Content, SourceReadError>`
+help: use `?` to coerce and return an appropriate `Err`, and wrap the resulting value in `Ok` so the expression remains of type `Result`
+    |
+223 ~                                 Ok(saved_sources::resolve_with_budget(
+224 |                                     store,
+...
+231 |                                     limits.budget(),
+232 ~                                 )?)
+    |
+
+error[E0308]: `match` arms have incompatible types
+   --> src/trail_memory/worker.rs:235:33
+    |
+220 |                       match state.as_mut() {
+    |                       -------------------- `match` arms have incompatible types
+221 |                           Some((store, _)) => {
+222 | /                             limits.as_ref().map_err(Clone::clone).and_then(|limits| {
+223 | |                                 saved_sources::resolve_with_budget(
+224 | |                                     store,
+225 | |                                     sealed_store.as_ref(),
+...   |
+233 | |                             })
+    | |______________________________- this is found to be of type `std::result::Result<_, std::string::String>`
+234 |                           },
+235 |                           None => Err(memory_error
+    |  _________________________________^
+236 | |                             .clone()
+237 | |                             .unwrap_or_else(|| "The session evidence store is unavailable".into())),
+    | |___________________________________________________________________________________________________^ expected `Result<_, String>`, found `Result<_, SourceReadError>`
+    |
+    = note: expected enum `Result<_, std::string::String>`
+               found enum `Result<_, SourceReadError>`
+
+error[E0308]: arguments to this function are incorrect
+   --> src/trail_memory/worker.rs:429:21
+    |
+429 |                     worker_capture_ops::apply(
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: expected `&Option<String>`, found `&Option<SourceReadError>`
+   --> src/trail_memory/worker.rs:434:25
+    |
+434 |                         &memory_error,
+    |                         ^^^^^^^^^^^^^
+    = note: expected reference `&Option<std::string::String>`
+               found reference `&Option<SourceReadError>`
+note: expected `&Option<String>`, found `&Option<SourceReadError>`
+   --> src/trail_memory/worker.rs:435:25
+    |
+435 |                         &sealed_error,
+    |                         ^^^^^^^^^^^^^
+    = note: expected reference `&Option<std::string::String>`
+               found reference `&Option<SourceReadError>`
+note: function defined here
+   --> src/trail_memory/worker_capture_ops.rs:5:15
+    |
+  5 | pub(super) fn apply(
+    |               ^^^^^
+...
+ 10 |     memory_error: &Option<String>,
+    |     -----------------------------
+ 11 |     sealed_error: &Option<String>,
+    |     -----------------------------
+
+error[E0308]: arguments to this function are incorrect
+   --> src/trail_memory/worker.rs:476:21
+    |
+476 |                     worker_capture_ops::apply(
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: expected `&Option<String>`, found `&Option<SourceReadError>`
+   --> src/trail_memory/worker.rs:481:25
+    |
+481 |                         &memory_error,
+    |                         ^^^^^^^^^^^^^
+    = note: expected reference `&Option<std::string::String>`
+               found reference `&Option<SourceReadError>`
+note: expected `&Option<String>`, found `&Option<SourceReadError>`
+   --> src/trail_memory/worker.rs:482:25
+    |
+482 |                         &sealed_error,
+    |                         ^^^^^^^^^^^^^
+    = note: expected reference `&Option<std::string::String>`
+               found reference `&Option<SourceReadError>`
+note: function defined here
+   --> src/trail_memory/worker_capture_ops.rs:5:15
+    |
+  5 | pub(super) fn apply(
+    |               ^^^^^
+...
+ 10 |     memory_error: &Option<String>,
+    |     -----------------------------
+ 11 |     sealed_error: &Option<String>,
+    |     -----------------------------
+
+warning: unused import: `Backend`
+ --> src/trail_memory/sealed_capture.rs:9:15
+  |
+9 | use eidetic::{Backend, PayloadSealer, TypedPayload};
+  |               ^^^^^^^
+
+warning: unused import: `genet_clipboard::TextClipboard`
+  --> src/shell/effects/shell_effect_open_theme_workshop.rs:41:21
+   |
+41 |                 use genet_clipboard::TextClipboard as _;
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `zoom`
+  --> src/chrome_view/window_chrome_view.rs:10:9
+   |
+10 |     let zoom = state.zoom;
+   |         ^^^^ help: if this is intentional, prefix it with an underscore: `_zoom`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `merged`
+  --> src/chrome_view/window_chrome_view.rs:19:9
+   |
+19 |     let merged = win.primary && state.shellbar_visible && !state.layout.toolbar_bottom;
+   |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_merged`
+
+warning: unused variable: `navigation_top`
+  --> src/chrome_view/window_chrome_view.rs:20:9
+   |
+20 |     let navigation_top = if state.layout.toolbar_bottom {
+   |         ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_navigation_top`
+
+warning: unused variable: `slot`
+ --> src/chrome_view/append_window_navigation.rs:9:5
+  |
+9 |     slot: usize,
+  |     ^^^^ help: if this is intentional, prefix it with an underscore: `_slot`
+
+warning: unused variable: `caption_at_top`
+  --> src/chrome_view/append_window_navigation.rs:16:9
+   |
+16 |     let caption_at_top = matches!(
+   |         ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_caption_at_top`
+
+warning: variable does not need to be mutable
+   --> src/shell/drive/shell_run_scenario_step.rs:507:21
+    |
+507 |                 let mut diagnostic = self.surface_a11y.publication_diagnostic(public_fixture);
+    |                     ----^^^^^^^^^^
+    |                     |
+    |                     help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `caption`
+   --> src/shell/render/shell_render.rs:115:13
+    |
+115 |         let caption = self
+    |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_caption`
+
+warning: variable `surface_frame` is assigned to, but never used
+   --> src/shell/render/shell_render.rs:197:25
+    |
+197 |                     let mut surface_frame = None;
+    |                         ^^^^^^^^^^^^^^^^^
+    |
+    = note: consider using `_surface_frame` instead
+
+warning: value assigned to `surface_frame` is never read
+   --> src/shell/render/shell_render.rs:201:29
+    |
+201 | ...                   surface_frame = Some(frame);
+    |                       ^^^^^^^^^^^^^
+    |
+    = help: maybe it is overwritten before being read?
+    = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `host`
+  --> src/shell/lens/shell_render_lens.rs:41:18
+   |
+41 |         let Some(host) = lens.host.as_ref() else {
+   |                  ^^^^ help: if this is intentional, prefix it with an underscore: `_host`
+
+warning: unused variable: `space`
+  --> src/shell/lens/lens_content_plan_with_rects.rs:15:19
+   |
+15 |     let Some(Some(space)) = app.lenses.get(ordinal) else {
+   |                   ^^^^^ help: if this is intentional, prefix it with an underscore: `_space`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_ensure_render_recovery.rs:203:17
+    |
+203 |             let mut can_replace = true;
+    |                 ----^^^^^^^^^^^
+    |                 |
+    |                 help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:164:13
+    |
+164 |         let mut pending_publish_source = None;
+    |             ----^^^^^^^^^^^^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:169:13
+    |
+169 |         let mut content_engines = content_engines_with_client_limits(client_limits);
+    |             ----^^^^^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:174:13
+    |
+174 |         let mut knot_clip = None;
+    |             ----^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:175:13
+    |
+175 |         let mut knot_notes_root = None;
+    |             ----^^^^^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_new.rs:176:13
+    |
+176 |         let mut publish_service = None;
+    |             ----^^^^^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: unused variable: `knot_wake`
+   --> src/shell/shell_new.rs:171:13
+    |
+171 |         let knot_wake: Arc<dyn Fn() + Send + Sync> = Arc::new(move || {
+    |             ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_knot_wake`
+
+warning: unused variable: `answers_wake`
+   --> src/shell/shell_new.rs:241:13
+    |
+241 |         let answers_wake: armillary::Wake = Arc::new(move || {
+    |             ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_answers_wake`
+
+Some errors have detailed explanations: E0308, E0753.
+For more information about an error, try `rustc --explain E0308`.
+warning: `turnstone` (lib) generated 128 warnings
+error: could not compile `turnstone` (lib) due to 34 previous errors; 128 warnings emitted
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo check --locked --offline --lib"
+	User time (seconds): 12.26
+	System time (seconds): 2.17
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:15.21
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1440364
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 284
+	Minor (reclaiming a frame) page faults: 367462
+	Voluntary context switches: 2631
+	Involuntary context switches: 227
+	Swaps: 0
+	File system inputs: 218016
+	File system outputs: 1208
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

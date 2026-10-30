@@ -420,3 +420,140 @@ members, 650/798 package names). The lock hash stayed
 `46120659f29809c6fd50e03d55ed2e70e9a41f73fde71a1878421b6e78842ac6`.
 Existing unused-patch and cached Servo metadata diagnostics remain recorded.
 This is dependency reception, not a host compile or runtime receipt.
+
+
+### Host bounded-storage receiving checkpoint
+
+The receiving source at Turnstone HEAD `3113ef7f`, plus the 51 changed/new
+files in `host-storage-freeze3-sources.json`, passes 65 focused model-free
+tests. The controller independently verified the source and receipt log hashes.
+`host-storage-gates-index.json` preserves the initial three compiler type
+mismatches, the following passing run, and the final frozen run. The first
+failure executed no tests. The final run used the existing 3 GiB, zero-process-
+swap guard and reported peak RSS 2,748,624 KiB.
+
+Coverage includes the shared operation ledger across a capture, note and sealed
+property; exact saved-result worker replay; concrete typed storage failure
+through Mere; per-call stored-value and inventory limits; read refusal before
+unseal/decode; open refusal with unchanged retained bytes and raised-limit retry;
+and editing valid storage settings while an owner error remains visible.
+Malformed or newer settings files refuse edits and preserve their bytes;
+repairing those files externally remains an explicit limitation. The active
+owner limits change only after restart. The mixed result fixture uses a
+synthetic assertion receipt, while separate App tests exercise actual graph
+attachment. The tight mixed-owner case does not instrument which owner first
+encounters exhaustion.
+
+Ordinary saved-source reads now share their operation ledger across legacy and
+sealed owners and preserve a sealed-owner startup failure. Research search,
+comparison and evidence use bounded adapters. The separate browsing-history
+RecallIndex still substitutes an empty stored-body collection after a read
+failure; this checkpoint does not establish its completeness. Host task review,
+wider compatibility checks, final whole-M4 review and headed M5 cold restart
+remain open. These are source-level and library runtime receipts, not product
+acceptance or publication of the host draft.
+
+
+### Host storage review fix wave
+
+The first host task review found three Important issues: `async-trait` was
+available only to test builds, storage failures lost their typed category before
+UI delivery, and actor-level refusal/retry evidence was incomplete. One fix
+wave promotes the existing exact dependency without changing Cargo.lock and
+carries typed causes through owner state, actor replies and research jobs. The
+separate external inference-service trait still requires formatting at its
+existing String API boundary. Known pre-existing compiler and unused-patch
+warnings remain; task-introduced unused imports were removed.
+
+The final `host-storage-review-final3-sources.json` freezes 66 changed/new files
+on Turnstone HEAD `3113ef7f`. All hashes were independently verified. The
+focused run `m4-host-storage-review-final3` passes 69 tests. Both production
+library checks (default and inference) and the ordinary route filters passed
+on the same production code: research 55, saved-source 28, saved-search 2,
+retained-clip 18 with one ignored process fixture. Counts overlap. Subsequent
+changes are confined to test modules and their cfg(test) declaration. The
+locked/offline receiving verification also passes with the unchanged lock hash.
+
+New regressions assert the exact typed recovery ValueBytes limit through actor
+startup/custody adoption and same-directory reopen, unchanged file inventories
+after refusal, and success with explicitly raised settings. Mixed query and
+saved-result replay refusals assert exact dynamic VisitedItems limits; the
+shared snapshot-to-record path demonstrates cross-owner accounting. A sealed
+capture refuses before its unseal counter advances. A negative prefix lookup
+returns AllocationBytes=0 rather than false on exhausted allocation budget,
+then returns valid absence/presence with a sufficient budget. Capture-library
+refresh refuses with OutputItems=0 and succeeds with a higher limit; its test
+explicitly invokes the same unavailable publication used by the actor and does
+not establish automatic actor publication of that particular refusal.
+
+All raw completed packets and source manifests are indexed in
+`host-storage-gates-index.json`. The archive preserves intermediate compiler
+failures, the comparison-message regression, a zero-match library test run,
+and the fixture whose limit also blocked owner startup. Those are not successful
+qualification receipts. The final scoped host re-review and whole-M4 review
+remain pending at this checkpoint; M5 headed/offline acceptance is still open.
+
+
+The scoped re-review of this wave accepted the production dependency repair
+and the expanded test evidence. It found two capture/ack branches still
+stringified retained owner-open failures, and the error-type cut had removed
+open/owner/settings/restart guidance and typed comparison-side context.
+A second narrow fix wave is in progress. The 69-test receipt above describes
+its frozen source, not the subsequent draft. Final M4 approval remains open.
+
+
+### Broader host gate before final M4 review
+
+The host storage task review approved the third scoped fix at the 68-file
+`host-storage-review3-freeze1-sources.json` closure. Its focused run passes
+74 tests and both production library checks pass. The controller then ran the
+full default library suite on that held source: `m4-host-storage-final-full-lib`
+finished with 1,179 passed, three failed and eight ignored, in 302.36 seconds,
+peak RSS 337,920 KiB and zero process swaps. This is a failed receipt.
+
+Two failures expose operation labels removed by the typed-error conversion:
+source annotation validation and capture recovery receipt write. The existing
+recursive context wrapper can restore those labels without losing the cause.
+The session-refusal test expected only redraw effects; the additional effect
+cancels stale research work, and its shell handler does not grant authority or
+write retained state. Its expected effects need to explicitly include that
+cancellation while preserving its refusal and byte-preservation assertions.
+Read-only diagnosis was supplied to the final cross-layer reviewer; the source
+remains held until that review returns a consolidated fix list. These findings
+are not silently reclassified as passing tests.
+
+
+### Published M4 host closure
+
+Turnstone `0089c9d331522343d81a69dcf1f3650ec662f4a4` is published to main,
+including the preceding structured-authoring/query checkpoints. Upstream was
+refreshed before integration, the exact committed blobs matched all 70 source
+hashes in `host-final-fix-freeze3-sources.json`, and the remote main revision
+was independently confirmed. Supplier pins remain Eidetic `b39a3dc` and Mere
+`c10356492`; the receiving lock hash is unchanged.
+
+`m4-host-storage-final-full-lib-closure` passes **1,183 tests, zero failures,
+eight ignored** in 302.01 seconds, peak RSS 339,208 KiB and zero process swaps.
+The raw log hash is
+`7c96888f7faf38b6b9b10f2cd880d99879f313c23c5af00c3ade7c61df02a9eb`.
+Covering model-free, source-capture and session-refusal tests and both production
+library checks also pass. The final context-label correction retains exact
+native storage causes; tests now inspect those causes through the context
+wrapper, preserve the pre-unseal/publication protections, and assert the
+acknowledgement label is not attached to legacy reads. The full failed runs
+remain in the archive.
+
+The final cross-layer review found no further production defect. Its two
+Important findings are closed by the scoped review, the controller's inspection
+of the prescribed residual correction and the fresh full gate. The direct
+standard-error-source assertion and broader optional serialization parity
+matrix remain nonblocking deferred coverage. `host-review-artifacts-index.json`
+records exact review packages/reports; `host-storage-gates-index.json` records
+raw gate packets and source freezes. Named allocation/work bounds, supported
+representations and platform limits remain as documented above. This closes
+M4, not the full P4a milestone.
+
+M5 implementation has begun from the published host revision. Preparation
+identified the normal `GRAPHSHELL_APP_ENDPOINT` custody route and the marked-root
+C1 fixture host, and staged ordinary-control observation and independent copied-
+store inspection. No M5 headed seed/restart acceptance result is claimed here.

@@ -1,0 +1,4424 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index c53e554..f39138e 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -3497,8 +3497,6 @@ checksum = "1d674e81391d1e1ab681a28d99df07927c6d4aa5b027d7da16ba32d1d21ecd99"
+ [[package]]
+ name = "fjall"
+ version = "2.11.2"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "0b25ad44cd4360a0448a9b5a0a6f1c7a621101cca4578706d43c9a821418aebc"
+ dependencies = [
+  "byteorder",
+  "byteview",
+@@ -5654,8 +5652,6 @@ checksum = "4050469837a6ff301cd14c1f8f24f88549e6d548f24f64e2148eb0f72cebc51f"
+ [[package]]
+ name = "lsm-tree"
+ version = "2.10.4"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "799399117a2bfb37660e08be33f470958babb98386b04185288d829df362ea15"
+ dependencies = [
+  "byteorder",
+  "crossbeam-skiplist",
+diff --git a/Cargo.toml b/Cargo.toml
+index 7088eab..515814b 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -1,5 +1,6 @@
+ [workspace]
+ resolver = "2"
++exclude = ["support/patches/fjall", "support/patches/lsm-tree"]
+ members = [
+     "crates/muniment",
+     "crates/chartulary",
+diff --git a/crates/eidetic-core/src/lib.rs b/crates/eidetic-core/src/lib.rs
+index 8dab0c0..ffadd5f 100644
+--- a/crates/eidetic-core/src/lib.rs
++++ b/crates/eidetic-core/src/lib.rs
+@@ -76,6 +76,7 @@ pub mod engram {
+ }
+ pub mod manifest;
+ pub mod retention;
++pub mod records;
+ pub mod models;
+ pub mod pack;
+ pub mod schema;
+@@ -161,14 +162,22 @@ pub enum Response {
+ #[derive(Clone, Debug, PartialEq, Eq)]
+ pub struct Error {
+     pub message: String,
++    storage_error: Option<muniment::error::StoreError>,
+ }
+ 
+ impl Error {
+     pub fn new(message: impl Into<String>) -> Self {
+         Self {
+             message: message.into(),
++            storage_error: None,
+         }
+     }
++
++    /// Return the original Muniment error when this error came from storage.
++    /// Semantic errors created with [`Error::new`] have no storage cause.
++    pub fn storage_error(&self) -> Option<&muniment::error::StoreError> {
++        self.storage_error.as_ref()
++    }
+ }
+ 
+ impl std::fmt::Display for Error {
+@@ -177,7 +186,13 @@ impl std::fmt::Display for Error {
+     }
+ }
+ 
+-impl std::error::Error for Error {}
++impl std::error::Error for Error {
++    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
++        self.storage_error
++            .as_ref()
++            .map(|cause| cause as &(dyn std::error::Error + 'static))
++    }
++}
+ 
+ /// Crate-level result alias.
+ pub type Result<T> = std::result::Result<T, Error>;
+@@ -202,7 +217,10 @@ pub use muniment::{Backend, Backend as Store, MemoryBackend, WriteOp};
+ /// layers above keep returning [`Result`] and `?` still works at every call.
+ impl From<muniment::error::StoreError> for Error {
+     fn from(err: muniment::error::StoreError) -> Self {
+-        Error::new(err.to_string())
++        Self {
++            message: err.to_string(),
++            storage_error: Some(err),
++        }
+     }
+ }
+ 
+@@ -235,7 +253,7 @@ pub async fn dispatch(store: &mut dyn Store, request: &Request) -> Result<Respon
+ mod tests {
+     use super::*;
+     use async_trait::async_trait;
+-    use muniment::error::StoreError;
++    use muniment::error::{StoreError, StoreLimitKind};
+ 
+     // The in-memory test store is muniment's (2026-07-12): eidetic's
+     // hand-rolled one was the same map behind the same seam.
+@@ -332,6 +350,98 @@ mod tests {
+             // and eidetic's From carries that through — the error vocabulary is
+             // now the seam's, which is the point of the swap.
+             assert_eq!(err.message, "backend: disk on fire");
++            assert_eq!(
++                err.storage_error(),
++                Some(&StoreError::Backend("disk on fire".into()))
++            );
++        });
++    }
++
++    #[test]
++    fn storage_error_conversion_preserves_the_exact_cause_without_changing_display() {
++        let cause = StoreError::LimitExceeded {
++            kind: StoreLimitKind::BlockDecodedBytes,
++            limit: 4096,
++        };
++        let error = Error::from(cause.clone());
++
++        assert_eq!(error.message, cause.to_string());
++        assert_eq!(error.to_string(), cause.to_string());
++        assert_eq!(error.storage_error(), Some(&cause));
++        assert!(Error::new("missing material").storage_error().is_none());
++    }
++
++    #[test]
++    fn typed_loads_preserve_a_storage_refusal_from_manifest_lookup() {
++        #[derive(Debug, serde::Serialize, serde::Deserialize)]
++        struct Payload;
++
++        impl typed::TypedPayload for Payload {
++            fn schema_ref() -> schema::SchemaRef {
++                schema::SchemaRef::from_id(schema::ManifestId::of_blob(b"payload-schema"))
++            }
++        }
++
++        struct LimitStore;
++        type StoreResult<T> = std::result::Result<T, StoreError>;
++
++        #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
++        #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
++        impl Backend for LimitStore {
++            async fn get(&self, _key: &str) -> StoreResult<Option<Vec<u8>>> {
++                Err(StoreError::LimitExceeded {
++                    kind: StoreLimitKind::MetadataBytes,
++                    limit: 8192,
++                })
++            }
++            async fn put(&self, _key: &str, _bytes: &[u8]) -> StoreResult<()> {
++                unreachable!("load does not write")
++            }
++            async fn delete(&self, _key: &str) -> StoreResult<()> {
++                unreachable!("load does not delete")
++            }
++            async fn list(&self, _prefix: &str) -> StoreResult<Vec<String>> {
++                unreachable!("load does not list")
++            }
++            async fn scan(&self, _start: &str, _end: &str) -> StoreResult<Vec<String>> {
++                unreachable!("load does not scan")
++            }
++            async fn apply(&self, _ops: &[WriteOp]) -> StoreResult<()> {
++                unreachable!("load does not apply writes")
++            }
++        }
++
++        pollster::block_on(async {
++            let id = schema::ManifestId::of_blob(b"manifest-id");
++            let mut fetcher = manifest::NoFetcher;
++            let mut store = LimitStore;
++
++            let err = typed::load_typed::<Payload>(&mut store, &mut fetcher, id)
++                .await
++                .unwrap_err();
++            assert!(matches!(
++                err.storage_error(),
++                Some(StoreError::LimitExceeded {
++                    kind: StoreLimitKind::MetadataBytes,
++                    limit: 8192,
++                })
++            ));
++
++            let err = typed::load_typed_sealed::<Payload>(
++                &mut store,
++                &mut fetcher,
++                None,
++                id,
++            )
++            .await
++            .unwrap_err();
++            assert!(matches!(
++                err.storage_error(),
++                Some(StoreError::LimitExceeded {
++                    kind: StoreLimitKind::MetadataBytes,
++                    limit: 8192,
++                })
++            ));
+         });
+     }
+ }
+diff --git a/crates/eidetic-core/src/records/mod.rs b/crates/eidetic-core/src/records/mod.rs
+new file mode 100644
+index 0000000..3a3c76d
+--- /dev/null
++++ b/crates/eidetic-core/src/records/mod.rs
+@@ -0,0 +1,280 @@
++// Copyright 2026 Mark Alan Boykin
++// This Source Code Form is subject to the terms of the Mozilla Public
++// License, v. 2.0. SPDX-License-Identifier: MPL-2.0
++//! Portable, explicit assertions and frozen structured-query inputs.
++//! Hosts own admission and journal observations; these records grant no access.
++use crate::models::recall::{PassageSelector, RecallSourceId};
++use crate::{Hash, ManifestId, SchemaRef, TypedPayload};
++use serde::{Deserialize, Serialize};
++
++mod schemas;
++mod validate;
++pub use schemas::{
++    bootstrap_record_schemas, property_definition_schema, property_record_schema,
++    record_query_schema, record_result_schema, record_snapshot_schema, validate_required_schema,
++};
++
++#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
++pub enum ValueType {
++    Text,
++    Boolean,
++    Integer,
++    Decimal,
++    CivilDate,
++    Timestamp,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub enum Cardinality {
++    Single,
++    Multiple,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct PropertyDefinitionV1 {
++    pub id: String,
++    pub revision: String,
++    pub value_type: ValueType,
++    pub unit: Option<String>,
++    pub cardinality: Cardinality,
++    pub statuses: Vec<String>,
++}
++/// Decimal is an integer coefficient and decimal scale. No implicit conversion.
++#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
++pub enum PropertyValue {
++    Text(String),
++    Boolean(bool),
++    Integer(i64),
++    Decimal {
++        coefficient: i64,
++        scale: u8,
++        unit: String,
++    },
++    CivilDate(CivilDate),
++    Timestamp(OffsetTimestamp),
++}
++#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
++pub struct CivilDate {
++    pub year: i32,
++    pub month: u8,
++    pub day: u8,
++}
++/// An offset-qualified local time; no machine timezone is consulted.
++#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
++pub struct OffsetTimestamp {
++    pub date: CivilDate,
++    pub hour: u8,
++    pub minute: u8,
++    pub second: u8,
++    pub offset_minutes: i16,
++}
++/// Half-open interval in UTC seconds; absent interval means unknown valid time.
++#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
++pub struct TimeInterval {
++    pub start: i64,
++    pub end: i64,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub enum Evidence {
++    Passage {
++        source: RecallSourceId,
++        version: String,
++        hash: Hash,
++        selector: PassageSelector,
++    },
++    Field {
++        source: RecallSourceId,
++        version: String,
++        record_id: String,
++        field: String,
++    },
++}
++impl Evidence {
++    pub fn source(&self) -> &RecallSourceId {
++        match self {
++            Self::Passage { source, .. } | Self::Field { source, .. } => source,
++        }
++    }
++    pub fn version(&self) -> &str {
++        match self {
++            Self::Passage { version, .. } | Self::Field { version, .. } => version,
++        }
++    }
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct PropertyRecordV1 {
++    pub id: String,
++    pub entity: String,
++    pub property: String,
++    pub schema_revision: String,
++    pub definition_manifest: ManifestId,
++    pub context: String,
++    pub value: PropertyValue,
++    pub valid_time: Option<TimeInterval>,
++    pub status: Option<String>,
++    pub author: String,
++    pub method: String,
++    pub evidence: Evidence,
++    pub recorded_at: Option<i64>,
++}
++#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
++pub struct TagIdentity {
++    pub owner: String,
++    pub concept: String,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct SourceRecord {
++    pub source: RecallSourceId,
++    pub version: String,
++    pub producer: String,
++    pub captured_at: Option<i64>,
++    pub tags: Vec<TagIdentity>,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub enum LifecycleState {
++    Active,
++    Withdrawn,
++    Denied,
++    Unavailable,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct LifecycleObservation {
++    pub record_id: String,
++    pub lifecycle_ref: String,
++    pub state: LifecycleState,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct RecordSnapshot {
++    pub scope_generation: String,
++    pub complete: bool,
++    pub exclusions: Vec<String>,
++    pub sources: Vec<SourceRecord>,
++    pub definitions: Vec<PropertyDefinitionV1>,
++    pub records: Vec<PropertyRecordV1>,
++    pub lifecycle: Vec<LifecycleObservation>,
++}
++#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
++pub struct RecordFilters {
++    pub source: Option<RecallSourceId>,
++    pub entity: Option<String>,
++    pub property: Option<String>,
++    pub schema_revision: Option<String>,
++    pub status: Option<String>,
++    pub valid_time: Option<TimeInterval>,
++    pub unit: Option<String>,
++    pub tag: Option<TagIdentity>,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub enum RecordOperation {
++    SourceLookup,
++    CountByProducer,
++    CountBySource,
++    SourceTimeline,
++    RecordTimeline,
++    TagMembership,
++    PropertyLookup,
++    GroupValues,
++    JoinEntity,
++    JoinSource,
++    Compare,
++    Sum,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct RecordQuery {
++    pub operation: RecordOperation,
++    pub filters: RecordFilters,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct RecordSettings {
++    pub max_sources: usize,
++    pub max_records: usize,
++    /// Pair operations plus bytes inspected for pair identity and value comparisons.
++    pub max_work: usize,
++    /// Cumulative schema bytes checked while validating assertions.
++    pub max_validation_bytes: usize,
++    pub max_rows: usize,
++    pub max_input_bytes: usize,
++    /// Maximum serialized row bytes, including per-row separators.
++    pub max_output_bytes: usize,
++}
++impl Default for RecordSettings {
++    fn default() -> Self {
++        Self {
++            max_sources: 10_000,
++            max_records: 100_000,
++            max_work: 1_000_000,
++            max_validation_bytes: 16 * 1024 * 1024,
++            max_rows: 100_000,
++            max_input_bytes: 16 * 1024 * 1024,
++            max_output_bytes: 16 * 1024 * 1024,
++        }
++    }
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub enum RowValue {
++    Source(RecallSourceId),
++    Text(String),
++    Time(Option<i64>),
++    Value(PropertyValue),
++    Count(u64),
++    Comparison(Comparison),
++    Pair(String, String),
++}
++#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub enum Comparison {
++    Equal,
++    Disagreement,
++    Distinct,
++    NonComparable,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct PropertyGroupKey {
++    pub entity: String,
++    pub property: String,
++    pub schema_revision: String,
++    pub context: String,
++    pub status: Option<String>,
++    pub valid_time: Option<TimeInterval>,
++    pub value: PropertyValue,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct RecordRow {
++    pub key: RowValue,
++    pub group: Option<PropertyGroupKey>,
++    pub count: Option<u64>,
++    pub record_ids: Vec<String>,
++    pub sources: Vec<RecallSourceId>,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub struct RecordResult {
++    pub operation_version: String,
++    pub snapshot: RecordSnapshot,
++    pub query: RecordQuery,
++    pub settings: RecordSettings,
++    pub rows: Vec<RecordRow>,
++}
++#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
++pub enum ResearchError {
++    Denied,
++    Withdrawn,
++    Unavailable,
++    Invalid(String),
++    Unsupported(String),
++    ChangedDuringOperation,
++    LimitExceeded,
++    Incomplete,
++    Overflow,
++}
++
++macro_rules! payload {
++    ($ty:ty, $schema:ident) => {
++        impl TypedPayload for $ty {
++            fn schema_ref() -> SchemaRef {
++                schemas::schema_ref($schema())
++            }
++        }
++    };
++}
++payload!(PropertyDefinitionV1, property_definition_schema);
++payload!(PropertyRecordV1, property_record_schema);
++payload!(RecordSnapshot, record_snapshot_schema);
++payload!(RecordQuery, record_query_schema);
++payload!(RecordResult, record_result_schema);
+diff --git a/crates/eidetic-core/src/records/schemas.rs b/crates/eidetic-core/src/records/schemas.rs
+new file mode 100644
+index 0000000..b2ea0bb
+--- /dev/null
++++ b/crates/eidetic-core/src/records/schemas.rs
+@@ -0,0 +1,169 @@
++use super::*;
++use crate::manifest::{BlobFetcher, BlobSource};
++use crate::schema::{
++    ModerationState, PrivacyClass, ProvenanceOrigin, ProvenanceRecord, Timestamp, TrustEnvelope,
++    TrustLevel,
++};
++use crate::schema_def::{
++    SchemaDefinition, SchemaFormat, bootstrap_meta_schema, load_schema, validate_payload,
++};
++use crate::typed::save_typed;
++use crate::{Error, Store};
++use serde_json::json;
++
++fn schema(id: &str, required: &[&str], fields: &[(&str, &str)]) -> SchemaDefinition {
++    let mut specifications = serde_json::Map::new();
++    for (name, kind) in fields {
++        specifications.insert((*name).into(), json!({"type": kind}));
++    }
++    SchemaDefinition {
++        format: SchemaFormat::MereNative,
++        schema_id: id.into(),
++        body: json!({"version": 1, "description": "Portable structured research record; intrinsic validation is also required.", "required": required, "fields": specifications}),
++    }
++}
++pub fn property_definition_schema() -> SchemaDefinition {
++    schema(
++        "eidetic.PropertyDefinition/v1",
++        &[
++            "id",
++            "revision",
++            "value_type",
++            "unit",
++            "cardinality",
++            "statuses",
++        ],
++        &[
++            ("id", "string"),
++            ("revision", "string"),
++            ("statuses", "array"),
++        ],
++    )
++}
++pub fn property_record_schema() -> SchemaDefinition {
++    schema(
++        "eidetic.PropertyRecord/v1",
++        &[
++            "id",
++            "entity",
++            "property",
++            "schema_revision",
++            "definition_manifest",
++            "context",
++            "value",
++            "valid_time",
++            "status",
++            "author",
++            "method",
++            "evidence",
++            "recorded_at",
++        ],
++        &[
++            ("id", "string"),
++            ("entity", "string"),
++            ("property", "string"),
++            ("schema_revision", "string"),
++            ("definition_manifest", "string"),
++            ("context", "string"),
++            ("author", "string"),
++            ("method", "string"),
++        ],
++    )
++}
++pub fn record_snapshot_schema() -> SchemaDefinition {
++    schema(
++        "eidetic.RecordSnapshot/v1",
++        &[
++            "scope_generation",
++            "complete",
++            "exclusions",
++            "sources",
++            "definitions",
++            "records",
++            "lifecycle",
++        ],
++        &[
++            ("scope_generation", "string"),
++            ("complete", "bool"),
++            ("exclusions", "array"),
++            ("sources", "array"),
++            ("definitions", "array"),
++            ("records", "array"),
++            ("lifecycle", "array"),
++        ],
++    )
++}
++pub fn record_query_schema() -> SchemaDefinition {
++    schema(
++        "eidetic.RecordQuery/v1",
++        &["operation", "filters"],
++        &[("operation", "string"), ("filters", "object")],
++    )
++}
++pub fn record_result_schema() -> SchemaDefinition {
++    schema(
++        "eidetic.RecordResult/v1",
++        &["operation_version", "snapshot", "query", "settings", "rows"],
++        &[
++            ("operation_version", "string"),
++            ("snapshot", "object"),
++            ("query", "object"),
++            ("settings", "object"),
++            ("rows", "array"),
++        ],
++    )
++}
++pub(super) fn schema_ref(definition: SchemaDefinition) -> SchemaRef {
++    SchemaRef::from_id(ManifestId::of_blob(
++        &serde_json::to_vec(&definition).expect("schema serializes"),
++    ))
++}
++/// Seed exact versioned schema payloads as ordinary schema codicils.
++pub async fn bootstrap_record_schemas(store: &mut dyn Store) -> crate::Result<()> {
++    bootstrap_meta_schema(store).await?;
++    for definition in [
++        property_definition_schema(),
++        property_record_schema(),
++        record_snapshot_schema(),
++        record_query_schema(),
++        record_result_schema(),
++    ] {
++        let provenance = ProvenanceRecord {
++            origin: ProvenanceOrigin::Generated,
++            upstream: vec![],
++            tooling: Some(format!("eidetic/{}", env!("CARGO_PKG_VERSION"))),
++            generated_at: Timestamp::ZERO,
++        };
++        let trust = TrustEnvelope {
++            level: TrustLevel::CheckpointAccepted,
++            signatures: vec![],
++            moderation_state: ModerationState::Accepted,
++        };
++        let id = save_typed(
++            store,
++            &definition,
++            Vec::<BlobSource>::new(),
++            PrivacyClass::PublicPortable,
++            provenance,
++            trust,
++            Timestamp::ZERO,
++        )
++        .await?;
++        if id != schema_ref(definition).0 {
++            return Err(Error::new("record schema identity mismatch"));
++        }
++    }
++    Ok(())
++}
++/// Require the declared schema to resolve before validating, unlike tolerant reads.
++/// This checks the outer schema; hosts must also invoke intrinsic validators.
++pub async fn validate_required_schema<T: TypedPayload>(
++    store: &mut dyn Store,
++    fetcher: &mut dyn BlobFetcher,
++    value: &T,
++) -> crate::Result<()> {
++    let definition = load_schema(store, fetcher, T::schema_ref().0)
++        .await?
++        .ok_or_else(|| Error::new("required record schema unavailable"))?;
++    validate_payload(&definition, &value.serialize_to_bytes()?)
++}
+diff --git a/crates/eidetic-core/src/records/validate.rs b/crates/eidetic-core/src/records/validate.rs
+new file mode 100644
+index 0000000..e73a37d
+--- /dev/null
++++ b/crates/eidetic-core/src/records/validate.rs
+@@ -0,0 +1,170 @@
++use super::*;
++use std::collections::BTreeSet;
++fn nonempty(s: &str) -> bool {
++    !s.trim().is_empty()
++}
++fn invalid(s: &str) -> ResearchError {
++    ResearchError::Invalid(s.into())
++}
++impl CivilDate {
++    pub fn validate(&self) -> Result<(), ResearchError> {
++        let leap = self.year % 4 == 0 && (self.year % 100 != 0 || self.year % 400 == 0);
++        let days = match self.month {
++            1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
++            4 | 6 | 9 | 11 => 30,
++            2 if leap => 29,
++            2 => 28,
++            _ => 0,
++        };
++        if !(1..=9999).contains(&self.year) || self.day == 0 || self.day > days {
++            return Err(invalid("invalid civil date"));
++        }
++        Ok(())
++    }
++    fn days_since_epoch(&self) -> i64 {
++        let y = i64::from(self.year) - i64::from(self.month <= 2);
++        let era = y.div_euclid(400);
++        let yoe = y - era * 400;
++        let m = i64::from(self.month);
++        let d = i64::from(self.day);
++        let doy = (153 * (m + if m > 2 { -3 } else { 9 }) + 2) / 5 + d - 1;
++        era * 146097 + yoe * 365 + yoe / 4 - yoe / 100 + doy - 719468
++    }
++}
++impl OffsetTimestamp {
++    pub fn utc_seconds(&self) -> Result<i64, ResearchError> {
++        self.date.validate()?;
++        if self.hour > 23
++            || self.minute > 59
++            || self.second > 59
++            || !(-1439..=1439).contains(&self.offset_minutes)
++        {
++            return Err(invalid("invalid offset timestamp"));
++        }
++        Ok(self.date.days_since_epoch() * 86400
++            + i64::from(self.hour) * 3600
++            + i64::from(self.minute) * 60
++            + i64::from(self.second)
++            - i64::from(self.offset_minutes) * 60)
++    }
++}
++impl TimeInterval {
++    pub fn validate(&self) -> Result<(), ResearchError> {
++        if self.start >= self.end {
++            Err(invalid("invalid interval"))
++        } else {
++            Ok(())
++        }
++    }
++}
++impl PropertyDefinitionV1 {
++    /// Content-addressed ID of the exact serialized definition payload.
++    pub fn manifest_id(&self) -> crate::Result<ManifestId> {
++        Ok(ManifestId::of_blob(&self.serialize_to_bytes()?))
++    }
++
++    pub fn validate(&self) -> Result<(), ResearchError> {
++        if !nonempty(&self.id)
++            || !(self.id.contains('.') || self.id.contains(':'))
++            || !nonempty(&self.revision)
++            || self.unit.as_ref().is_some_and(|u| !nonempty(u))
++        {
++            return Err(invalid("invalid property definition"));
++        }
++        if self.value_type == ValueType::Decimal && self.unit.is_none() {
++            return Err(invalid("decimal requires unit"));
++        }
++        if !matches!(self.value_type, ValueType::Decimal | ValueType::Integer)
++            && self.unit.is_some()
++        {
++            return Err(invalid("unit on nonnumeric property"));
++        }
++        let mut seen = BTreeSet::new();
++        if self
++            .statuses
++            .iter()
++            .any(|s| !nonempty(s) || !seen.insert(s))
++        {
++            return Err(invalid("invalid status definitions"));
++        }
++        Ok(())
++    }
++}
++impl PropertyRecordV1 {
++    pub fn validate(&self, definition: &PropertyDefinitionV1) -> Result<(), ResearchError> {
++        definition.validate()?;
++        if definition
++            .manifest_id()
++            .map_err(|_| invalid("cannot serialize definition"))?
++            != self.definition_manifest
++        {
++            return Err(invalid("definition manifest does not match assertion"));
++        }
++        if [
++            &self.id,
++            &self.entity,
++            &self.property,
++            &self.schema_revision,
++            &self.context,
++            &self.author,
++            &self.method,
++        ]
++        .iter()
++        .any(|s| !nonempty(s))
++            || self.property != definition.id
++            || self.schema_revision != definition.revision
++        {
++            return Err(invalid("invalid assertion identity or schema"));
++        }
++        if self
++            .status
++            .as_ref()
++            .is_some_and(|s| !definition.statuses.contains(s))
++        {
++            return Err(invalid("unknown status"));
++        }
++        if let Some(t) = &self.valid_time {
++            t.validate()?;
++        }
++        let valid = match (&self.value, &definition.value_type) {
++            (PropertyValue::Text(s), ValueType::Text) => nonempty(s),
++            (PropertyValue::Boolean(_), ValueType::Boolean)
++            | (PropertyValue::Integer(_), ValueType::Integer) => true,
++            (PropertyValue::Decimal { scale, unit, .. }, ValueType::Decimal) => {
++                *scale <= 18 && Some(unit) == definition.unit.as_ref()
++            }
++            (PropertyValue::CivilDate(d), ValueType::CivilDate) => {
++                d.validate()?;
++                true
++            }
++            (PropertyValue::Timestamp(t), ValueType::Timestamp) => {
++                t.utc_seconds()?;
++                true
++            }
++            _ => false,
++        };
++        if !valid {
++            return Err(invalid("value does not conform to definition"));
++        }
++        match &self.evidence {
++            Evidence::Passage {
++                source,
++                version,
++                selector,
++                ..
++            } if nonempty(&source.source) && nonempty(version) && selector.start < selector.end => {
++            }
++            Evidence::Field {
++                source,
++                version,
++                record_id,
++                field,
++            } if nonempty(&source.source)
++                && nonempty(version)
++                && nonempty(record_id)
++                && nonempty(field) => {}
++            _ => return Err(invalid("invalid evidence reference")),
++        }
++        Ok(())
++    }
++}
+diff --git a/crates/eidetic-core/tests/model_free_records.rs b/crates/eidetic-core/tests/model_free_records.rs
+new file mode 100644
+index 0000000..ce3c892
+--- /dev/null
++++ b/crates/eidetic-core/tests/model_free_records.rs
+@@ -0,0 +1,170 @@
++use eidetic::manifest::NoFetcher;
++use eidetic::models::recall::{RecallSourceId, RecallSourceKind};
++use eidetic::records::*;
++use eidetic::schema::{
++    Hash, ModerationState, PrivacyClass, ProvenanceOrigin, ProvenanceRecord, Timestamp,
++    TrustEnvelope, TrustLevel,
++};
++use eidetic::seal::{PayloadSealer, SealEpochId, SealedBlobRef};
++use eidetic::typed::{TypedPayload, load_typed_sealed, save_typed_sealed};
++use muniment::MemoryBackend;
++
++struct TestSealer;
++impl PayloadSealer for TestSealer {
++    fn seal(&self, _: &Hash, bytes: &[u8]) -> eidetic::Result<(Vec<u8>, SealedBlobRef)> {
++        Ok((
++            bytes.iter().map(|x| x ^ 0xaa).collect(),
++            SealedBlobRef {
++                epoch: SealEpochId([1; 16]),
++                format: "test".into(),
++            },
++        ))
++    }
++    fn unseal(&self, _: &Hash, _: &SealedBlobRef, bytes: &[u8]) -> eidetic::Result<Vec<u8>> {
++        Ok(bytes.iter().map(|x| x ^ 0xaa).collect())
++    }
++}
++fn definition() -> PropertyDefinitionV1 {
++    PropertyDefinitionV1 {
++        id: "ferry.departure".into(),
++        revision: "1".into(),
++        value_type: ValueType::Integer,
++        unit: None,
++        cardinality: Cardinality::Single,
++        statuses: vec!["approved".into()],
++    }
++}
++fn record() -> PropertyRecordV1 {
++    PropertyRecordV1 {
++        id: "assertion".into(),
++        entity: "boat".into(),
++        property: "ferry.departure".into(),
++        schema_revision: "1".into(),
++        definition_manifest: definition().manifest_id().unwrap(),
++        context: "route".into(),
++        value: PropertyValue::Integer(930),
++        valid_time: None,
++        status: None,
++        author: "owner".into(),
++        method: "manual".into(),
++        evidence: Evidence::Field {
++            source: RecallSourceId {
++                kind: RecallSourceKind::Capture,
++                owner: Some("owner".into()),
++                source: "source".into(),
++                node: None,
++            },
++            version: "v1".into(),
++            record_id: "field-record".into(),
++            field: "departure".into(),
++        },
++        recorded_at: None,
++    }
++}
++async fn roundtrip<T: TypedPayload + std::fmt::Debug + PartialEq>(
++    store: &mut MemoryBackend,
++    value: &T,
++) {
++    let provenance = ProvenanceRecord {
++        origin: ProvenanceOrigin::Generated,
++        upstream: vec![],
++        tooling: None,
++        generated_at: Timestamp(0),
++    };
++    let trust = TrustEnvelope {
++        level: TrustLevel::SelfAsserted,
++        signatures: vec![],
++        moderation_state: ModerationState::Unreviewed,
++    };
++    let id = save_typed_sealed(
++        store,
++        Some(&TestSealer),
++        value,
++        vec![],
++        PrivacyClass::LocalOnly,
++        provenance,
++        trust,
++        Timestamp(0),
++    )
++    .await
++    .unwrap();
++    let loaded: T = load_typed_sealed(store, &mut NoFetcher, Some(&TestSealer), id)
++        .await
++        .unwrap()
++        .unwrap();
++    assert_eq!(&loaded, value);
++}
++#[test]
++fn model_free_sealed_payloads_retain_inputs_settings_and_results() {
++    pollster::block_on(async {
++        let d = definition();
++        let r = record();
++        let snapshot = RecordSnapshot {
++            scope_generation: "generation".into(),
++            complete: true,
++            exclusions: vec![],
++            sources: vec![SourceRecord {
++                source: r.evidence.source().clone(),
++                version: "v1".into(),
++                producer: "capture".into(),
++                captured_at: None,
++                tags: vec![],
++            }],
++            definitions: vec![d.clone()],
++            records: vec![r.clone()],
++            lifecycle: vec![LifecycleObservation {
++                lifecycle_ref: "journal".into(),
++                record_id: r.id.clone(),
++                state: LifecycleState::Active,
++            }],
++        };
++        let result = RecordResult {
++            operation_version: "eidetic.structured-records/v1".into(),
++            snapshot,
++            query: RecordQuery {
++                operation: RecordOperation::PropertyLookup,
++                filters: RecordFilters::default(),
++            },
++            settings: RecordSettings::default(),
++            rows: vec![RecordRow {
++                key: RowValue::Value(r.value.clone()),
++                group: None,
++                count: None,
++                record_ids: vec![r.id.clone()],
++                sources: vec![r.evidence.source().clone()],
++            }],
++        };
++        let mut store = MemoryBackend::default();
++        roundtrip(&mut store, &d).await;
++        roundtrip(&mut store, &r).await;
++        roundtrip(&mut store, &result.query).await;
++        roundtrip(&mut store, &result).await;
++    });
++}
++#[test]
++fn model_free_schema_bootstrap_provides_resolvable_real_definitions() {
++    pollster::block_on(async {
++        let mut store = MemoryBackend::default();
++        assert!(
++            eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &definition())
++                .await
++                .is_err()
++        );
++        eidetic::records::bootstrap_record_schemas(&mut store)
++            .await
++            .unwrap();
++        eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &definition())
++            .await
++            .unwrap();
++        eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &record())
++            .await
++            .unwrap();
++        let query = RecordQuery {
++            operation: RecordOperation::PropertyLookup,
++            filters: RecordFilters::default(),
++        };
++        eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &query)
++            .await
++            .unwrap();
++    });
++}
+diff --git a/crates/eidetic-search/src/lib.rs b/crates/eidetic-search/src/lib.rs
+index 0c07983..6c007cb 100644
+--- a/crates/eidetic-search/src/lib.rs
++++ b/crates/eidetic-search/src/lib.rs
+@@ -53,6 +53,7 @@ pub mod document;
+ pub mod fusion;
+ pub mod index;
+ pub mod recall;
++pub mod records;
+ pub mod query;
+ pub mod spec;
+ pub mod tokenize;
+diff --git a/crates/eidetic-search/src/records/mod.rs b/crates/eidetic-search/src/records/mod.rs
+new file mode 100644
+index 0000000..ff40a76
+--- /dev/null
++++ b/crates/eidetic-search/src/records/mod.rs
+@@ -0,0 +1,199 @@
++// Copyright 2026 Mark Alan Boykin
++// This Source Code Form is subject to the terms of the Mozilla Public
++// License, v. 2.0. SPDX-License-Identifier: MPL-2.0
++//! Deterministic evaluation of already-authorized, complete snapshots.
++use eidetic::models::recall::RecallSourceId;
++use eidetic::records::*;
++use std::collections::{BTreeMap, BTreeSet};
++use std::io::{self, Write};
++mod operations;
++mod output;
++
++struct Budget {
++    left: usize,
++}
++impl Write for Budget {
++    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
++        self.left = self
++            .left
++            .checked_sub(buf.len())
++            .ok_or_else(|| io::Error::other("input limit"))?;
++        Ok(buf.len())
++    }
++    fn flush(&mut self) -> io::Result<()> {
++        Ok(())
++    }
++}
++fn invalid(s: &str) -> ResearchError {
++    ResearchError::Invalid(s.into())
++}
++fn push(
++    rows: &mut Vec<RecordRow>,
++    row: RecordRow,
++    settings: &RecordSettings,
++    output: &mut Budget,
++) -> Result<(), ResearchError> {
++    if rows.len() >= settings.max_rows {
++        return Err(ResearchError::LimitExceeded);
++    }
++    output
++        .write_all(b",")
++        .map_err(|_| ResearchError::LimitExceeded)?;
++    serde_json::to_writer(output, &row).map_err(|_| ResearchError::LimitExceeded)?;
++    rows.push(row);
++    Ok(())
++}
++fn matches_source(s: &SourceRecord, f: &RecordFilters) -> bool {
++    f.source.as_ref().is_none_or(|v| v == &s.source)
++        && f.tag.as_ref().is_none_or(|v| s.tags.contains(v))
++}
++fn matches_record(r: &PropertyRecordV1, f: &RecordFilters, d: &PropertyDefinitionV1) -> bool {
++    f.source.as_ref().is_none_or(|v| v == r.evidence.source())
++        && f.entity.as_ref().is_none_or(|v| v == &r.entity)
++        && f.property.as_ref().is_none_or(|v| v == &r.property)
++        && f.schema_revision
++            .as_ref()
++            .is_none_or(|v| v == &r.schema_revision)
++        && f.status
++            .as_ref()
++            .is_none_or(|v| r.status.as_ref() == Some(v))
++        && f.unit.as_ref().is_none_or(|v| d.unit.as_ref() == Some(v))
++        && f.valid_time.as_ref().is_none_or(|v| {
++            r.valid_time
++                .as_ref()
++                .is_some_and(|t| t.start < v.end && v.start < t.end)
++        })
++}
++/// Evaluate frozen inputs. The host must check current admission before and after
++/// building the snapshot and again before presenting or reopening evidence.
++pub fn evaluate(
++    snapshot: &RecordSnapshot,
++    query: &RecordQuery,
++    settings: &RecordSettings,
++) -> Result<RecordResult, ResearchError> {
++    if snapshot.sources.len() > settings.max_sources
++        || snapshot.records.len() > settings.max_records
++        || snapshot.definitions.len() > settings.max_records
++        || snapshot.lifecycle.len() > settings.max_records
++    {
++        return Err(ResearchError::LimitExceeded);
++    }
++    let mut budget = Budget {
++        left: settings.max_input_bytes,
++    };
++    serde_json::to_writer(&mut budget, &(snapshot, query, settings))
++        .map_err(|_| ResearchError::LimitExceeded)?;
++    if !snapshot.complete || !snapshot.exclusions.is_empty() {
++        return Err(ResearchError::Incomplete);
++    }
++    if snapshot.scope_generation.trim().is_empty() {
++        return Err(invalid("missing scope generation"));
++    }
++    if let Some(interval) = &query.filters.valid_time {
++        interval.validate()?;
++    }
++    let f = &query.filters;
++    if matches!(
++        query.operation,
++        RecordOperation::SourceLookup
++            | RecordOperation::CountByProducer
++            | RecordOperation::SourceTimeline
++            | RecordOperation::TagMembership
++    ) && (f.entity.is_some()
++        || f.property.is_some()
++        || f.schema_revision.is_some()
++        || f.status.is_some()
++        || f.valid_time.is_some()
++        || f.unit.is_some())
++    {
++        return Err(ResearchError::Unsupported(
++            "record filters do not apply to source operations".into(),
++        ));
++    }
++    let mut sources = BTreeMap::new();
++    for s in &snapshot.sources {
++        if s.source.source.trim().is_empty()
++            || s.version.trim().is_empty()
++            || s.producer.trim().is_empty()
++            || s.tags
++                .iter()
++                .any(|t| t.owner.trim().is_empty() || t.concept.trim().is_empty())
++            || sources.insert(&s.source, s).is_some()
++        {
++            return Err(invalid("invalid or repeated source"));
++        }
++    }
++    let mut definitions = BTreeMap::new();
++    for d in &snapshot.definitions {
++        d.validate()?;
++        if definitions.insert((&d.id, &d.revision), d).is_some() {
++            return Err(invalid("repeated definition"));
++        }
++    }
++    let mut observations = BTreeMap::new();
++    for o in &snapshot.lifecycle {
++        if o.lifecycle_ref.trim().is_empty()
++            || observations.insert(&o.record_id, &o.state).is_some()
++        {
++            return Err(invalid("repeated lifecycle observation"));
++        }
++    }
++    let mut records = BTreeMap::new();
++    let mut validation = Budget {
++        left: settings.max_validation_bytes,
++    };
++    for r in &snapshot.records {
++        let d = definitions
++            .get(&(&r.property, &r.schema_revision))
++            .ok_or_else(|| invalid("missing definition"))?;
++        serde_json::to_writer(&mut validation, d).map_err(|_| ResearchError::LimitExceeded)?;
++        r.validate(d)?;
++        let source = sources
++            .get(r.evidence.source())
++            .ok_or(ResearchError::Denied)?;
++        if source.version != r.evidence.version() {
++            return Err(ResearchError::Unavailable);
++        }
++        match observations.get(&r.id) {
++            Some(LifecycleState::Active) => {}
++            Some(LifecycleState::Withdrawn) => return Err(ResearchError::Withdrawn),
++            Some(LifecycleState::Denied) => return Err(ResearchError::Denied),
++            Some(LifecycleState::Unavailable) => return Err(ResearchError::Unavailable),
++            None => return Err(invalid("missing lifecycle observation")),
++        }
++        if let Some(previous) = records.insert(&r.id, r) {
++            if previous != r {
++                return Err(invalid("conflicting assertion projection"));
++            }
++        }
++    }
++    if observations.keys().any(|id| !records.contains_key(id)) {
++        return Err(invalid("orphan lifecycle observation"));
++    }
++    let selected_sources: Vec<_> = sources
++        .values()
++        .copied()
++        .filter(|s| matches_source(s, &query.filters))
++        .collect();
++    let admitted: BTreeSet<_> = selected_sources.iter().map(|s| &s.source).collect();
++    let selected: Vec<_> = records
++        .values()
++        .copied()
++        .filter(|r| {
++            admitted.contains(r.evidence.source())
++                && matches_record(
++                    r,
++                    &query.filters,
++                    definitions[&(&r.property, &r.schema_revision)],
++                )
++        })
++        .collect();
++    let rows = operations::run(query, settings, &selected_sources, &selected, &definitions)?;
++    Ok(RecordResult {
++        operation_version: "eidetic.structured-records/v2".into(),
++        snapshot: snapshot.clone(),
++        query: query.clone(),
++        settings: settings.clone(),
++        rows,
++    })
++}
+diff --git a/crates/eidetic-search/src/records/operations.rs b/crates/eidetic-search/src/records/operations.rs
+new file mode 100644
+index 0000000..fbd119c
+--- /dev/null
++++ b/crates/eidetic-search/src/records/operations.rs
+@@ -0,0 +1,355 @@
++use super::output::{Key, Numeric, Value, emit};
++use super::*;
++
++type Definitions<'a> = BTreeMap<(&'a String, &'a String), &'a PropertyDefinitionV1>;
++fn value_key(value: &PropertyValue) -> Result<String, ResearchError> {
++    match value {
++        PropertyValue::Timestamp(t) => Ok(format!("timestamp:{:020}", t.utc_seconds()?)),
++        _ => serde_json::to_string(value).map_err(|e| invalid(&e.to_string())),
++    }
++}
++fn relation(
++    a: &PropertyRecordV1,
++    b: &PropertyRecordV1,
++    d: &PropertyDefinitionV1,
++) -> Result<Comparison, ResearchError> {
++    if a.entity != b.entity
++        || a.property != b.property
++        || a.schema_revision != b.schema_revision
++        || a.context != b.context
++    {
++        return Ok(Comparison::Distinct);
++    }
++    if a.status.is_none()
++        || a.status != b.status
++        || a.valid_time.is_none()
++        || b.valid_time.is_none()
++    {
++        return Ok(Comparison::NonComparable);
++    }
++    let (x, y) = (
++        a.valid_time.as_ref().unwrap(),
++        b.valid_time.as_ref().unwrap(),
++    );
++    if x.start >= y.end || y.start >= x.end {
++        return Ok(Comparison::Distinct);
++    }
++    if let (PropertyValue::Decimal { scale: x, .. }, PropertyValue::Decimal { scale: y, .. }) =
++        (&a.value, &b.value)
++    {
++        if x != y {
++            return Ok(Comparison::NonComparable);
++        }
++    }
++    let equal = match (&a.value, &b.value) {
++        (PropertyValue::Timestamp(x), PropertyValue::Timestamp(y)) => {
++            x.utc_seconds()? == y.utc_seconds()?
++        }
++        (x, y) => x == y,
++    };
++    if equal {
++        Ok(Comparison::Equal)
++    } else if d.cardinality == Cardinality::Multiple {
++        Ok(Comparison::Distinct)
++    } else {
++        Ok(Comparison::Disagreement)
++    }
++}
++fn source_bytes(s: &RecallSourceId) -> Option<usize> {
++    s.source
++        .len()
++        .checked_add(s.owner.as_ref().map_or(0, String::len))?
++        .checked_add(s.node.as_ref().map_or(0, String::len))
++}
++fn value_bytes(value: &PropertyValue) -> usize {
++    match value {
++        PropertyValue::Text(v) => v.len(),
++        PropertyValue::Decimal { unit, .. } => unit.len(),
++        _ => 0,
++    }
++}
++fn charge_pair(
++    a: &PropertyRecordV1,
++    b: &PropertyRecordV1,
++    op: &RecordOperation,
++    remaining: &mut usize,
++) -> Result<(), ResearchError> {
++    let cost = match op {
++        RecordOperation::JoinEntity => a.entity.len().checked_add(b.entity.len()),
++        RecordOperation::JoinSource => source_bytes(a.evidence.source())
++            .and_then(|x| source_bytes(b.evidence.source()).and_then(|y| x.checked_add(y))),
++        RecordOperation::Compare => [a, b].iter().try_fold(0usize, |n, r| {
++            [
++                r.entity.len(),
++                r.property.len(),
++                r.schema_revision.len(),
++                r.context.len(),
++                r.status.as_ref().map_or(0, String::len),
++                value_bytes(&r.value),
++            ]
++            .into_iter()
++            .try_fold(n, usize::checked_add)
++        }),
++        _ => Some(0),
++    }
++    .ok_or(ResearchError::LimitExceeded)?;
++    *remaining = remaining
++        .checked_sub(cost)
++        .ok_or(ResearchError::LimitExceeded)?;
++    Ok(())
++}
++fn pair_work(n: usize, settings: &RecordSettings) -> Result<usize, ResearchError> {
++    let pairs = n
++        .checked_mul(n.saturating_sub(1))
++        .and_then(|x| x.checked_div(2))
++        .ok_or(ResearchError::LimitExceeded)?;
++    settings
++        .max_work
++        .checked_sub(pairs)
++        .ok_or(ResearchError::LimitExceeded)
++}
++fn source_refs<'a>(records: &[&'a PropertyRecordV1]) -> Vec<&'a RecallSourceId> {
++    records
++        .iter()
++        .map(|r| r.evidence.source())
++        .collect::<BTreeSet<_>>()
++        .into_iter()
++        .collect()
++}
++pub(super) fn run(
++    query: &RecordQuery,
++    settings: &RecordSettings,
++    sources: &[&SourceRecord],
++    records: &[&PropertyRecordV1],
++    definitions: &Definitions<'_>,
++) -> Result<Vec<RecordRow>, ResearchError> {
++    let mut rows = Vec::new();
++    let mut output = Budget {
++        left: settings.max_output_bytes,
++    };
++    match query.operation {
++        RecordOperation::SourceLookup
++        | RecordOperation::SourceTimeline
++        | RecordOperation::TagMembership => {
++            if matches!(query.operation, RecordOperation::TagMembership)
++                && query.filters.tag.is_none()
++            {
++                return Err(invalid("tag identity required"));
++            }
++            for s in sources {
++                let key = if matches!(query.operation, RecordOperation::SourceTimeline) {
++                    Key::Time(s.captured_at)
++                } else {
++                    Key::Source(&s.source)
++                };
++                emit(
++                    &mut rows,
++                    key,
++                    None,
++                    None,
++                    &[],
++                    vec![&s.source],
++                    settings,
++                    &mut output,
++                )?;
++            }
++            if matches!(query.operation, RecordOperation::SourceTimeline) {
++                rows.sort_by(|a, b| {
++                    if let (RowValue::Time(x), RowValue::Time(y)) = (&a.key, &b.key) {
++                        x.cmp(y).then(a.sources.cmp(&b.sources))
++                    } else {
++                        std::cmp::Ordering::Equal
++                    }
++                });
++            }
++        }
++        RecordOperation::CountByProducer => {
++            let mut groups: BTreeMap<&str, Vec<&RecallSourceId>> = BTreeMap::new();
++            for s in sources {
++                if !groups.contains_key(s.producer.as_str()) && groups.len() >= settings.max_rows {
++                    return Err(ResearchError::LimitExceeded);
++                }
++                groups.entry(&s.producer).or_default().push(&s.source);
++            }
++            for (producer, refs) in groups {
++                emit(
++                    &mut rows,
++                    Key::Text(producer),
++                    None,
++                    Some(refs.len() as u64),
++                    &[],
++                    refs,
++                    settings,
++                    &mut output,
++                )?;
++            }
++        }
++        RecordOperation::CountBySource => {
++            let mut groups: BTreeMap<&RecallSourceId, Vec<&PropertyRecordV1>> = BTreeMap::new();
++            for r in records {
++                if !groups.contains_key(r.evidence.source()) && groups.len() >= settings.max_rows {
++                    return Err(ResearchError::LimitExceeded);
++                }
++                groups.entry(r.evidence.source()).or_default().push(r);
++            }
++            for (source, rs) in groups {
++                emit(
++                    &mut rows,
++                    Key::Source(source),
++                    None,
++                    Some(rs.len() as u64),
++                    &rs,
++                    vec![source],
++                    settings,
++                    &mut output,
++                )?;
++            }
++        }
++        RecordOperation::PropertyLookup | RecordOperation::RecordTimeline => {
++            for r in records {
++                let key = if matches!(query.operation, RecordOperation::RecordTimeline) {
++                    Key::Time(r.recorded_at)
++                } else {
++                    Key::Value(Value::Existing(&r.value))
++                };
++                emit(
++                    &mut rows,
++                    key,
++                    None,
++                    None,
++                    &[*r],
++                    vec![r.evidence.source()],
++                    settings,
++                    &mut output,
++                )?;
++            }
++            if matches!(query.operation, RecordOperation::RecordTimeline) {
++                rows.sort_by(|a, b| {
++                    if let (RowValue::Time(x), RowValue::Time(y)) = (&a.key, &b.key) {
++                        x.cmp(y).then(a.record_ids.cmp(&b.record_ids))
++                    } else {
++                        std::cmp::Ordering::Equal
++                    }
++                });
++            }
++        }
++        RecordOperation::GroupValues => {
++            let mut groups = BTreeMap::new();
++            for r in records {
++                let k = (
++                    &r.entity,
++                    &r.property,
++                    &r.schema_revision,
++                    &r.context,
++                    &r.status,
++                    &r.valid_time,
++                    value_key(&r.value)?,
++                );
++                if !groups.contains_key(&k) && groups.len() >= settings.max_rows {
++                    return Err(ResearchError::LimitExceeded);
++                }
++                groups.entry(k).or_insert_with(Vec::new).push(*r);
++            }
++            for rs in groups.values() {
++                let first = rs[0];
++                emit(
++                    &mut rows,
++                    Key::Value(Value::Existing(&first.value)),
++                    Some(first),
++                    None,
++                    rs,
++                    source_refs(rs),
++                    settings,
++                    &mut output,
++                )?;
++            }
++        }
++        RecordOperation::JoinEntity | RecordOperation::JoinSource | RecordOperation::Compare => {
++            let mut remaining = pair_work(records.len(), settings)?;
++            for (i, a) in records.iter().enumerate() {
++                for b in &records[i + 1..] {
++                    charge_pair(a, b, &query.operation, &mut remaining)?;
++                    let key = match query.operation {
++                        RecordOperation::JoinEntity if a.entity == b.entity => {
++                            Some(Key::Pair(&a.id, &b.id))
++                        }
++                        RecordOperation::JoinSource
++                            if a.evidence.source() == b.evidence.source() =>
++                        {
++                            Some(Key::Pair(&a.id, &b.id))
++                        }
++                        RecordOperation::Compare => Some(Key::Comparison(relation(
++                            a,
++                            b,
++                            definitions[&(&a.property, &a.schema_revision)],
++                        )?)),
++                        _ => None,
++                    };
++                    if let Some(key) = key {
++                        let pair = [*a, *b];
++                        emit(
++                            &mut rows,
++                            key,
++                            None,
++                            None,
++                            &pair,
++                            source_refs(&pair),
++                            settings,
++                            &mut output,
++                        )?;
++                    }
++                }
++            }
++        }
++        RecordOperation::Sum => {
++            if let Some(first) = records.first() {
++                let definition = definitions[&(&first.property, &first.schema_revision)];
++                let mut sum = 0i64;
++                for r in records {
++                    if r.property != first.property || r.schema_revision != first.schema_revision {
++                        return Err(invalid("sum requires one property schema"));
++                    }
++                    let value = match (&first.value, &r.value) {
++                        (PropertyValue::Integer(_), PropertyValue::Integer(v)) => *v,
++                        (
++                            PropertyValue::Decimal {
++                                scale: a, unit: u, ..
++                            },
++                            PropertyValue::Decimal {
++                                coefficient,
++                                scale: b,
++                                unit: v,
++                            },
++                        ) if a == b && u == v && definition.unit.as_ref() == Some(u) => {
++                            *coefficient
++                        }
++                        _ => {
++                            return Err(invalid("sum requires compatible numeric units and scale"));
++                        }
++                    };
++                    sum = sum.checked_add(value).ok_or(ResearchError::Overflow)?;
++                }
++                let value = match &first.value {
++                    PropertyValue::Integer(_) => Numeric::Integer(sum),
++                    PropertyValue::Decimal { scale, unit, .. } => Numeric::Decimal {
++                        coefficient: sum,
++                        scale: *scale,
++                        unit,
++                    },
++                    _ => unreachable!(),
++                };
++                emit(
++                    &mut rows,
++                    Key::Value(Value::Numeric(value)),
++                    None,
++                    None,
++                    records,
++                    source_refs(records),
++                    settings,
++                    &mut output,
++                )?;
++            }
++        }
++    }
++    Ok(rows)
++}
+diff --git a/crates/eidetic-search/src/records/output.rs b/crates/eidetic-search/src/records/output.rs
+new file mode 100644
+index 0000000..0097984
+--- /dev/null
++++ b/crates/eidetic-search/src/records/output.rs
+@@ -0,0 +1,149 @@
++//! Borrowed row preflight, before materializing any output-owned strings.
++use super::*;
++use serde::{Serialize, Serializer, ser::SerializeSeq};
++
++#[derive(Serialize)]
++pub(super) enum Numeric<'a> {
++    Integer(i64),
++    Decimal {
++        coefficient: i64,
++        scale: u8,
++        unit: &'a str,
++    },
++}
++pub(super) enum Value<'a> {
++    Existing(&'a PropertyValue),
++    Numeric(Numeric<'a>),
++}
++impl Serialize for Value<'_> {
++    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
++        match self {
++            Self::Existing(v) => v.serialize(serializer),
++            Self::Numeric(v) => v.serialize(serializer),
++        }
++    }
++}
++impl Value<'_> {
++    fn into_owned(self) -> PropertyValue {
++        match self {
++            Self::Existing(value) => value.clone(),
++            Self::Numeric(Numeric::Integer(v)) => PropertyValue::Integer(v),
++            Self::Numeric(Numeric::Decimal {
++                coefficient,
++                scale,
++                unit,
++            }) => PropertyValue::Decimal {
++                coefficient,
++                scale,
++                unit: unit.into(),
++            },
++        }
++    }
++}
++#[derive(Serialize)]
++pub(super) enum Key<'a> {
++    Source(&'a RecallSourceId),
++    Text(&'a str),
++    Time(Option<i64>),
++    Value(Value<'a>),
++    Comparison(Comparison),
++    Pair(&'a str, &'a str),
++}
++impl Key<'_> {
++    fn into_owned(self) -> RowValue {
++        match self {
++            Self::Source(v) => RowValue::Source(v.clone()),
++            Self::Text(v) => RowValue::Text(v.into()),
++            Self::Time(v) => RowValue::Time(v),
++            Self::Value(v) => RowValue::Value(v.into_owned()),
++            Self::Comparison(v) => RowValue::Comparison(v),
++            Self::Pair(a, b) => RowValue::Pair(a.into(), b.into()),
++        }
++    }
++}
++#[derive(Serialize)]
++struct Group<'a> {
++    entity: &'a str,
++    property: &'a str,
++    schema_revision: &'a str,
++    context: &'a str,
++    status: &'a Option<String>,
++    valid_time: &'a Option<TimeInterval>,
++    value: &'a PropertyValue,
++}
++impl<'a> From<&'a PropertyRecordV1> for Group<'a> {
++    fn from(r: &'a PropertyRecordV1) -> Self {
++        Self {
++            entity: &r.entity,
++            property: &r.property,
++            schema_revision: &r.schema_revision,
++            context: &r.context,
++            status: &r.status,
++            valid_time: &r.valid_time,
++            value: &r.value,
++        }
++    }
++}
++struct Ids<'a, 'b>(&'a [&'b PropertyRecordV1]);
++impl Serialize for Ids<'_, '_> {
++    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
++        let mut seq = serializer.serialize_seq(Some(self.0.len()))?;
++        for record in self.0 {
++            seq.serialize_element(&record.id)?;
++        }
++        seq.end()
++    }
++}
++#[derive(Serialize)]
++struct RowView<'a, 'b> {
++    key: &'a Key<'b>,
++    group: Option<Group<'b>>,
++    count: Option<u64>,
++    record_ids: Ids<'a, 'b>,
++    sources: &'a [&'b RecallSourceId],
++}
++/// The serialized view has precisely RecordRow's shape, but borrows every
++/// potentially large field. A failed check never clones an output string.
++pub(super) fn emit<'a>(
++    rows: &mut Vec<RecordRow>,
++    key: Key<'a>,
++    group: Option<&'a PropertyRecordV1>,
++    count: Option<u64>,
++    records: &[&'a PropertyRecordV1],
++    sources: Vec<&'a RecallSourceId>,
++    settings: &RecordSettings,
++    output: &mut Budget,
++) -> Result<(), ResearchError> {
++    if rows.len() >= settings.max_rows {
++        return Err(ResearchError::LimitExceeded);
++    }
++    let view = RowView {
++        key: &key,
++        group: group.map(Group::from),
++        count,
++        record_ids: Ids(records),
++        sources: &sources,
++    };
++    let mut remaining = Budget { left: output.left };
++    remaining
++        .write_all(b",")
++        .map_err(|_| ResearchError::LimitExceeded)?;
++    serde_json::to_writer(&mut remaining, &view).map_err(|_| ResearchError::LimitExceeded)?;
++    let group = group.map(|r| PropertyGroupKey {
++        entity: r.entity.clone(),
++        property: r.property.clone(),
++        schema_revision: r.schema_revision.clone(),
++        context: r.context.clone(),
++        status: r.status.clone(),
++        valid_time: r.valid_time.clone(),
++        value: r.value.clone(),
++    });
++    let row = RecordRow {
++        key: key.into_owned(),
++        group,
++        count,
++        record_ids: records.iter().map(|r| r.id.clone()).collect(),
++        sources: sources.into_iter().cloned().collect(),
++    };
++    push(rows, row, settings, output)
++}
+diff --git a/crates/eidetic-search/tests/model_free_records.rs b/crates/eidetic-search/tests/model_free_records.rs
+new file mode 100644
+index 0000000..dfa058a
+--- /dev/null
++++ b/crates/eidetic-search/tests/model_free_records.rs
+@@ -0,0 +1,518 @@
++use eidetic::models::recall::{RecallSourceId, RecallSourceKind};
++use eidetic::records::*;
++use eidetic_search::records::evaluate;
++
++fn source(id: &str) -> RecallSourceId {
++    RecallSourceId {
++        kind: RecallSourceKind::Capture,
++        owner: Some("owner".into()),
++        source: id.into(),
++        node: None,
++    }
++}
++fn definition() -> PropertyDefinitionV1 {
++    PropertyDefinitionV1 {
++        id: "ferry.departure".into(),
++        revision: "1".into(),
++        value_type: ValueType::Integer,
++        unit: None,
++        cardinality: Cardinality::Single,
++        statuses: vec!["approved".into(), "guessed".into()],
++    }
++}
++fn record(id: &str, entity: &str, value: i64) -> PropertyRecordV1 {
++    PropertyRecordV1 {
++        id: id.into(),
++        entity: entity.into(),
++        property: "ferry.departure".into(),
++        schema_revision: "1".into(),
++        definition_manifest: definition().manifest_id().unwrap(),
++        context: "route".into(),
++        value: PropertyValue::Integer(value),
++        valid_time: Some(TimeInterval { start: 1, end: 2 }),
++        status: Some("approved".into()),
++        author: "owner".into(),
++        method: "manual".into(),
++        evidence: Evidence::Field {
++            source: source("a"),
++            version: "v1".into(),
++            record_id: "field".into(),
++            field: "departure".into(),
++        },
++        recorded_at: None,
++    }
++}
++fn bind_definition(s: &mut RecordSnapshot) {
++    let id = s.definitions[0].manifest_id().unwrap();
++    for record in &mut s.records {
++        record.definition_manifest = id;
++    }
++}
++fn snapshot() -> RecordSnapshot {
++    RecordSnapshot {
++        scope_generation: "g1".into(),
++        complete: true,
++        exclusions: vec![],
++        sources: vec![SourceRecord {
++            source: source("a"),
++            version: "v1".into(),
++            producer: "capture".into(),
++            captured_at: None,
++            tags: vec![],
++        }],
++        definitions: vec![definition()],
++        records: vec![
++            record("a", "entity1", 930),
++            record("b", "entity1", 930),
++            record("c", "entity1", 1015),
++        ],
++        lifecycle: vec![
++            LifecycleObservation {
++                lifecycle_ref: "journal".into(),
++                record_id: "a".into(),
++                state: LifecycleState::Active,
++            },
++            LifecycleObservation {
++                lifecycle_ref: "journal".into(),
++                record_id: "b".into(),
++                state: LifecycleState::Active,
++            },
++            LifecycleObservation {
++                lifecycle_ref: "journal".into(),
++                record_id: "c".into(),
++                state: LifecycleState::Active,
++            },
++        ],
++    }
++}
++#[test]
++fn model_free_groups_distinct_assertions_and_deduplicates_projection() {
++    let mut s = snapshot();
++    s.records.push(s.records[0].clone());
++    let query = RecordQuery {
++        operation: RecordOperation::GroupValues,
++        filters: RecordFilters::default(),
++    };
++    let r = evaluate(&s, &query, &RecordSettings::default()).unwrap();
++    assert_eq!(r.rows.len(), 2);
++    assert_eq!(
++        r.rows
++            .iter()
++            .find(|row| row.key == RowValue::Value(PropertyValue::Integer(930)))
++            .unwrap()
++            .record_ids,
++        vec!["a", "b"]
++    );
++    assert_eq!(
++        r.rows
++            .iter()
++            .find(|row| row.key == RowValue::Value(PropertyValue::Integer(1015)))
++            .unwrap()
++            .record_ids,
++        vec!["c"]
++    );
++    assert_eq!(evaluate(&r.snapshot, &r.query, &r.settings).unwrap(), r);
++}
++#[test]
++fn model_free_incomplete_inputs_refuse_count_and_absence() {
++    let mut s = snapshot();
++    s.complete = false;
++    let query = RecordQuery {
++        operation: RecordOperation::CountBySource,
++        filters: RecordFilters::default(),
++    };
++    assert_eq!(
++        evaluate(&s, &query, &RecordSettings::default()).unwrap_err(),
++        ResearchError::Incomplete
++    );
++    let query = RecordQuery {
++        operation: RecordOperation::PropertyLookup,
++        filters: RecordFilters {
++            entity: Some("missing".into()),
++            ..Default::default()
++        },
++    };
++    assert_eq!(
++        evaluate(&s, &query, &RecordSettings::default()).unwrap_err(),
++        ResearchError::Incomplete
++    );
++}
++#[test]
++fn model_free_checked_sum_refuses_overflow_and_conflicting_duplicate() {
++    let mut s = snapshot();
++    s.records = vec![record("a", "entity1", i64::MAX), record("b", "entity1", 1)];
++    s.lifecycle.pop();
++    let query = RecordQuery {
++        operation: RecordOperation::Sum,
++        filters: RecordFilters::default(),
++    };
++    assert_eq!(
++        evaluate(&s, &query, &RecordSettings::default()).unwrap_err(),
++        ResearchError::Overflow
++    );
++    s.records.push(record("a", "entity1", 3));
++    assert!(matches!(
++        evaluate(&s, &query, &RecordSettings::default()),
++        Err(ResearchError::Invalid(_))
++    ));
++}
++#[test]
++fn model_free_counts_timelines_and_tags_keep_exact_sources() {
++    let mut s = snapshot();
++    s.sources[0].tags.push(TagIdentity {
++        owner: "owner".into(),
++        concept: "harbor".into(),
++    });
++    let mut copied = s.sources[0].clone();
++    copied.source = source("copy");
++    copied.captured_at = Some(10);
++    s.sources.push(copied);
++    let query = RecordQuery {
++        operation: RecordOperation::CountByProducer,
++        filters: RecordFilters::default(),
++    };
++    let r = evaluate(&s, &query, &RecordSettings::default()).unwrap();
++    assert_eq!(r.rows[0].count, Some(2));
++    let query = RecordQuery {
++        operation: RecordOperation::TagMembership,
++        filters: RecordFilters {
++            tag: Some(TagIdentity {
++                owner: "owner".into(),
++                concept: "harbor".into(),
++            }),
++            ..Default::default()
++        },
++    };
++    assert_eq!(
++        evaluate(&s, &query, &RecordSettings::default())
++            .unwrap()
++            .rows
++            .len(),
++        2
++    );
++    let query = RecordQuery {
++        operation: RecordOperation::SourceTimeline,
++        filters: RecordFilters::default(),
++    };
++    let r = evaluate(&s, &query, &RecordSettings::default()).unwrap();
++    assert_eq!(r.rows[0].key, RowValue::Time(None));
++    assert_eq!(r.rows[1].key, RowValue::Time(Some(10)));
++}
++#[test]
++fn model_free_comparison_keeps_former_guessed_unknown_and_distinct_entities() {
++    let mut s = snapshot();
++    let mut former = record("d", "entity1", 1100);
++    former.valid_time = Some(TimeInterval { start: -10, end: 0 });
++    let mut guessed = record("e", "entity1", 1100);
++    guessed.status = Some("guessed".into());
++    let mut unknown = record("f", "entity1", 1100);
++    unknown.valid_time = None;
++    let other = record("g", "entity2", 1100);
++    for r in [former, guessed, unknown, other] {
++        s.lifecycle.push(LifecycleObservation {
++            lifecycle_ref: "journal".into(),
++            record_id: r.id.clone(),
++            state: LifecycleState::Active,
++        });
++        s.records.push(r);
++    }
++    let q = RecordQuery {
++        operation: RecordOperation::Compare,
++        filters: RecordFilters::default(),
++    };
++    let rows = evaluate(&s, &q, &RecordSettings::default()).unwrap().rows;
++    let pair = |a: &str, b: &str| {
++        rows.iter()
++            .find(|r| r.record_ids == [a, b])
++            .unwrap()
++            .key
++            .clone()
++    };
++    assert_eq!(pair("a", "b"), RowValue::Comparison(Comparison::Equal));
++    assert_eq!(
++        pair("a", "c"),
++        RowValue::Comparison(Comparison::Disagreement)
++    );
++    assert_eq!(pair("a", "d"), RowValue::Comparison(Comparison::Distinct));
++    assert_eq!(
++        pair("a", "e"),
++        RowValue::Comparison(Comparison::NonComparable)
++    );
++    assert_eq!(
++        pair("a", "f"),
++        RowValue::Comparison(Comparison::NonComparable)
++    );
++    assert_eq!(pair("a", "g"), RowValue::Comparison(Comparison::Distinct));
++    s.definitions[0].cardinality = Cardinality::Multiple;
++    bind_definition(&mut s);
++    assert_eq!(
++        evaluate(&s, &q, &RecordSettings::default())
++            .unwrap()
++            .rows
++            .iter()
++            .find(|r| r.record_ids == ["a", "c"])
++            .unwrap()
++            .key,
++        RowValue::Comparison(Comparison::Distinct)
++    );
++}
++#[test]
++fn model_free_rejects_unit_mismatch_and_invalid_civil_time() {
++    let mut s = snapshot();
++    s.definitions[0].value_type = ValueType::Decimal;
++    s.definitions[0].unit = Some("kg".into());
++    for r in &mut s.records {
++        r.value = PropertyValue::Decimal {
++            coefficient: 100,
++            scale: 1,
++            unit: "kg".into(),
++        };
++    }
++    s.records[1].value = PropertyValue::Decimal {
++        coefficient: 100,
++        scale: 1,
++        unit: "lb".into(),
++    };
++    bind_definition(&mut s);
++    let q = RecordQuery {
++        operation: RecordOperation::Sum,
++        filters: RecordFilters::default(),
++    };
++    assert!(matches!(
++        evaluate(&s, &q, &RecordSettings::default()),
++        Err(ResearchError::Invalid(_))
++    ));
++    s.definitions[0].value_type = ValueType::Timestamp;
++    s.definitions[0].unit = None;
++    for r in &mut s.records {
++        r.value = PropertyValue::Timestamp(OffsetTimestamp {
++            date: CivilDate {
++                year: 2026,
++                month: 2,
++                day: 30,
++            },
++            hour: 9,
++            minute: 30,
++            second: 0,
++            offset_minutes: 0,
++        });
++    }
++    bind_definition(&mut s);
++    assert!(matches!(
++        evaluate(&s, &q, &RecordSettings::default()),
++        Err(ResearchError::Invalid(_))
++    ));
++}
++#[test]
++fn model_free_filters_joins_and_work_limits_use_explicit_identity() {
++    let mut s = snapshot();
++    s.records[2].entity = "entity2".into();
++    let q = RecordQuery {
++        operation: RecordOperation::JoinEntity,
++        filters: RecordFilters::default(),
++    };
++    let rows = evaluate(&s, &q, &RecordSettings::default()).unwrap().rows;
++    assert_eq!(rows.len(), 1);
++    assert_eq!(rows[0].record_ids, ["a", "b"]);
++    let q = RecordQuery {
++        operation: RecordOperation::PropertyLookup,
++        filters: RecordFilters {
++            entity: Some("entity2".into()),
++            status: Some("approved".into()),
++            ..Default::default()
++        },
++    };
++    assert_eq!(
++        evaluate(&s, &q, &RecordSettings::default()).unwrap().rows[0].record_ids,
++        ["c"]
++    );
++    let q = RecordQuery {
++        operation: RecordOperation::Compare,
++        filters: RecordFilters::default(),
++    };
++    assert_eq!(
++        evaluate(
++            &s,
++            &q,
++            &RecordSettings {
++                max_work: 2,
++                ..Default::default()
++            }
++        )
++        .unwrap_err(),
++        ResearchError::LimitExceeded
++    );
++}
++#[test]
++fn model_free_source_queries_refuse_inapplicable_record_filters() {
++    let q = RecordQuery {
++        operation: RecordOperation::CountByProducer,
++        filters: RecordFilters {
++            entity: Some("missing".into()),
++            ..Default::default()
++        },
++    };
++    assert!(matches!(
++        evaluate(&snapshot(), &q, &RecordSettings::default()),
++        Err(ResearchError::Unsupported(_))
++    ));
++}
++#[test]
++fn model_free_grouping_preserves_identity_status_context_and_valid_time() {
++    let mut s = snapshot();
++    s.records[1].entity = "entity2".into();
++    s.records[2].value = PropertyValue::Integer(930);
++    s.records[2].status = Some("guessed".into());
++    let mut former = record("d", "entity1", 930);
++    former.valid_time = Some(TimeInterval { start: -10, end: 0 });
++    s.lifecycle.push(LifecycleObservation {
++        record_id: "d".into(),
++        lifecycle_ref: "journal-d".into(),
++        state: LifecycleState::Active,
++    });
++    s.records.push(former);
++    let q = RecordQuery {
++        operation: RecordOperation::GroupValues,
++        filters: RecordFilters::default(),
++    };
++    let rows = evaluate(&s, &q, &RecordSettings::default()).unwrap().rows;
++    assert_eq!(rows.len(), 4);
++    assert!(rows.iter().all(|r| r.record_ids.len() == 1));
++}
++#[test]
++fn model_free_source_count_counts_distinct_filtered_assertions() {
++    let q = RecordQuery {
++        operation: RecordOperation::CountBySource,
++        filters: RecordFilters::default(),
++    };
++    let result = evaluate(&snapshot(), &q, &RecordSettings::default()).unwrap();
++    assert_eq!(result.rows[0].count, Some(3));
++    assert_eq!(result.rows[0].record_ids, ["a", "b", "c"]);
++    let mut input = snapshot();
++    input.records.push(input.records[0].clone());
++    let q = RecordQuery {
++        operation: RecordOperation::CountBySource,
++        filters: RecordFilters {
++            entity: Some("entity1".into()),
++            ..Default::default()
++        },
++    };
++    assert_eq!(
++        evaluate(&input, &q, &RecordSettings::default())
++            .unwrap()
++            .rows[0]
++            .count,
++        Some(3)
++    );
++}
++#[test]
++fn model_free_offset_timestamps_group_equal_instants_and_reject_unknown_zone() {
++    let mut s = snapshot();
++    s.definitions[0].value_type = ValueType::Timestamp;
++    let at = |hour, minute, offset_minutes| {
++        PropertyValue::Timestamp(OffsetTimestamp {
++            date: CivilDate {
++                year: 2026,
++                month: 10,
++                day: 30,
++            },
++            hour,
++            minute,
++            second: 0,
++            offset_minutes,
++        })
++    };
++    s.records[0].value = at(9, 30, 0);
++    s.records[1].value = at(10, 30, 60);
++    s.records[2].value = at(10, 15, 0);
++    bind_definition(&mut s);
++    let q = RecordQuery {
++        operation: RecordOperation::GroupValues,
++        filters: RecordFilters::default(),
++    };
++    let rows = evaluate(&s, &q, &RecordSettings::default()).unwrap().rows;
++    assert_eq!(rows.len(), 2);
++    assert!(rows.iter().any(|r| r.record_ids == ["a", "b"]));
++    assert!(
++        serde_json::from_str::<OffsetTimestamp>(
++            r#"{"date":{"year":2026,"month":10,"day":30},"hour":9,"minute":30,"second":0}"#
++        )
++        .is_err()
++    );
++}
++#[test]
++fn model_free_group_rows_retain_complete_grouping_key() {
++    let q = RecordQuery {
++        operation: RecordOperation::GroupValues,
++        filters: RecordFilters::default(),
++    };
++    let r = evaluate(&snapshot(), &q, &RecordSettings::default()).unwrap();
++    let group = r
++        .rows
++        .iter()
++        .find(|row| row.record_ids == ["a", "b"])
++        .unwrap()
++        .group
++        .as_ref()
++        .unwrap();
++    assert_eq!(group.entity, "entity1");
++    assert_eq!(group.context, "route");
++    assert_eq!(group.status.as_deref(), Some("approved"));
++    assert_eq!(group.valid_time, Some(TimeInterval { start: 1, end: 2 }));
++}
++#[test]
++fn model_free_definition_reference_must_match_exact_definition_bytes() {
++    let mut s = snapshot();
++    s.records[0].definition_manifest = eidetic::ManifestId::of_blob(b"wrong-definition");
++    let q = RecordQuery {
++        operation: RecordOperation::PropertyLookup,
++        filters: RecordFilters::default(),
++    };
++    assert!(matches!(
++        evaluate(&s, &q, &RecordSettings::default()),
++        Err(ResearchError::Invalid(_))
++    ));
++}
++#[test]
++fn model_free_pair_results_refuse_multiplied_output_bytes() {
++    let mut s = snapshot();
++    for (i, r) in s.records.iter_mut().enumerate() {
++        r.id = format!("{}-{i}", "x".repeat(2048));
++        s.lifecycle[i].record_id = r.id.clone();
++    }
++    let q = RecordQuery {
++        operation: RecordOperation::Compare,
++        filters: RecordFilters::default(),
++    };
++    let settings = RecordSettings {
++        max_output_bytes: 4096,
++        ..Default::default()
++    };
++    assert_eq!(
++        evaluate(&s, &q, &settings).unwrap_err(),
++        ResearchError::LimitExceeded
++    );
++}
++#[test]
++fn model_free_definition_validation_work_is_bounded() {
++    let mut s = snapshot();
++    s.definitions[0].id = format!("test.{}", "x".repeat(1024));
++    for r in &mut s.records {
++        r.property = s.definitions[0].id.clone();
++    }
++    bind_definition(&mut s);
++    let q = RecordQuery {
++        operation: RecordOperation::PropertyLookup,
++        filters: RecordFilters::default(),
++    };
++    let settings = RecordSettings {
++        max_validation_bytes: 1000,
++        ..Default::default()
++    };
++    assert_eq!(
++        evaluate(&s, &q, &settings).unwrap_err(),
++        ResearchError::LimitExceeded
++    );
++}
++#[path = "records_bounds/mod.rs"]
++mod bounds;
+diff --git a/crates/eidetic-search/tests/records_bounds/mod.rs b/crates/eidetic-search/tests/records_bounds/mod.rs
+new file mode 100644
+index 0000000..cef63d2
+--- /dev/null
++++ b/crates/eidetic-search/tests/records_bounds/mod.rs
+@@ -0,0 +1,185 @@
++// Copyright 2026 Mark Alan Boykin
++// This Source Code Form is subject to the terms of the Mozilla Public
++// License, v. 2.0. SPDX-License-Identifier: MPL-2.0
++use super::*;
++
++#[test]
++fn model_free_compare_charges_repeated_long_values_to_work_limit() {
++    let mut s = snapshot();
++    s.definitions[0].value_type = ValueType::Text;
++    s.records.clear();
++    s.lifecycle.clear();
++    for i in 0..8 {
++        let id = format!("record-{i}");
++        let mut r = record(&id, "entity1", 0);
++        r.value = PropertyValue::Text("long value".repeat(200));
++        s.records.push(r);
++        s.lifecycle.push(LifecycleObservation {
++            record_id: id.clone(),
++            lifecycle_ref: id,
++            state: LifecycleState::Active,
++        });
++    }
++    bind_definition(&mut s);
++    let query = RecordQuery {
++        operation: RecordOperation::Compare,
++        filters: RecordFilters::default(),
++    };
++    let bounded = RecordSettings {
++        max_work: 10_000,
++        ..Default::default()
++    };
++    assert_eq!(
++        evaluate(&s, &query, &bounded).unwrap_err(),
++        ResearchError::LimitExceeded
++    );
++    let adequate = RecordSettings {
++        max_work: 1_000_000,
++        ..Default::default()
++    };
++    let rows = evaluate(&s, &query, &adequate).unwrap().rows;
++    assert_eq!(rows.len(), 28);
++    assert!(
++        rows.iter()
++            .all(|row| row.key == RowValue::Comparison(Comparison::Equal))
++    );
++}
++#[test]
++fn model_free_aggregate_output_budget_covers_exact_rows_before_emission() {
++    let mut s = snapshot();
++    s.records.clear();
++    s.lifecycle.clear();
++    s.sources[0].source.source = "source".repeat(500);
++    for i in 0..12 {
++        let id = format!("{}-{i}", "identifier".repeat(100));
++        let mut r = record(&id, "entity1", 930);
++        if let Evidence::Field { source, .. } = &mut r.evidence {
++            *source = s.sources[0].source.clone();
++        }
++        s.records.push(r);
++        s.lifecycle.push(LifecycleObservation {
++            record_id: id.clone(),
++            lifecycle_ref: id,
++            state: LifecycleState::Active,
++        });
++    }
++    for operation in [
++        RecordOperation::CountByProducer,
++        RecordOperation::CountBySource,
++        RecordOperation::GroupValues,
++        RecordOperation::Sum,
++    ] {
++        let query = RecordQuery {
++            operation,
++            filters: RecordFilters::default(),
++        };
++        let unrestricted = evaluate(&s, &query, &RecordSettings::default()).unwrap();
++        assert_eq!(unrestricted.rows.len(), 1);
++        let size = serde_json::to_vec(&unrestricted.rows[0]).unwrap().len() + 1;
++        let exact = RecordSettings {
++            max_output_bytes: size,
++            ..Default::default()
++        };
++        assert_eq!(
++            evaluate(&s, &query, &exact).unwrap().rows,
++            unrestricted.rows
++        );
++        let short = RecordSettings {
++            max_output_bytes: size - 1,
++            ..Default::default()
++        };
++        assert_eq!(
++            evaluate(&s, &query, &short).unwrap_err(),
++            ResearchError::LimitExceeded
++        );
++        let tiny = RecordSettings {
++            max_output_bytes: 8,
++            ..Default::default()
++        };
++        assert_eq!(
++            evaluate(&s, &query, &tiny).unwrap_err(),
++            ResearchError::LimitExceeded
++        );
++    }
++}
++#[test]
++fn model_free_decimal_sum_borrowed_preflight_matches_owned_row() {
++    let mut s = snapshot();
++    s.definitions[0].value_type = ValueType::Decimal;
++    s.definitions[0].unit = Some("kg".into());
++    for r in &mut s.records {
++        r.value = PropertyValue::Decimal {
++            coefficient: 100,
++            scale: 2,
++            unit: "kg".into(),
++        };
++    }
++    bind_definition(&mut s);
++    let query = RecordQuery {
++        operation: RecordOperation::Sum,
++        filters: RecordFilters::default(),
++    };
++    let result = evaluate(&s, &query, &RecordSettings::default()).unwrap();
++    assert_eq!(
++        result.rows[0].key,
++        RowValue::Value(PropertyValue::Decimal {
++            coefficient: 300,
++            scale: 2,
++            unit: "kg".into()
++        })
++    );
++    let bytes = serde_json::to_vec(&result.rows[0]).unwrap().len() + 1;
++    let settings = RecordSettings {
++        max_output_bytes: bytes,
++        ..Default::default()
++    };
++    assert_eq!(evaluate(&s, &query, &settings).unwrap().rows, result.rows);
++    let settings = RecordSettings {
++        max_output_bytes: bytes - 1,
++        ..Default::default()
++    };
++    assert_eq!(
++        evaluate(&s, &query, &settings).unwrap_err(),
++        ResearchError::LimitExceeded
++    );
++}
++#[test]
++fn model_free_group_output_budget_covers_long_value_and_identity() {
++    let mut s = snapshot();
++    s.definitions[0].value_type = ValueType::Text;
++    for r in &mut s.records {
++        r.value = PropertyValue::Text("long value".repeat(1000));
++    }
++    bind_definition(&mut s);
++    let query = RecordQuery {
++        operation: RecordOperation::GroupValues,
++        filters: RecordFilters::default(),
++    };
++    let r = evaluate(&s, &query, &RecordSettings::default()).unwrap();
++    let size = serde_json::to_vec(&r.rows[0]).unwrap().len() + 1;
++    assert_eq!(
++        evaluate(
++            &s,
++            &query,
++            &RecordSettings {
++                max_output_bytes: size,
++                ..Default::default()
++            }
++        )
++        .unwrap()
++        .rows,
++        r.rows
++    );
++    assert_eq!(
++        evaluate(
++            &s,
++            &query,
++            &RecordSettings {
++                max_output_bytes: size - 1,
++                ..Default::default()
++            }
++        )
++        .unwrap_err(),
++        ResearchError::LimitExceeded
++    );
++}
+diff --git a/crates/muniment/Cargo.toml b/crates/muniment/Cargo.toml
+index 7b1a90b..79622d7 100644
+--- a/crates/muniment/Cargo.toml
++++ b/crates/muniment/Cargo.toml
+@@ -85,6 +85,7 @@ optional = true
+ 
+ [target."cfg(not(target_arch = \"wasm32\"))".dependencies.fjall]
+ version = "2"
++path = "../../support/patches/fjall"
+ optional = true
+ 
+ [features]
+diff --git a/crates/muniment/src/error.rs b/crates/muniment/src/error.rs
+index 6d7f009..f0f98c9 100644
+--- a/crates/muniment/src/error.rs
++++ b/crates/muniment/src/error.rs
+@@ -8,14 +8,38 @@
+ 
+ use std::fmt;
+ 
++/// A resource whose configured storage limit was exceeded.
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum StoreLimitKind {
++    ValueBytes,
++    KeyBytes,
++    BlockEncodedBytes,
++    BlockDecodedBytes,
++    InputBytes,
++    DecodeBytes,
++    MetadataBytes,
++    AllocationBytes,
++    VisitedItems,
++    OutputItems,
++    OutputKeyBytes,
++    ReplayBytes,
++    ReplayItems,
++}
++
+ /// A storage failure.
+-#[derive(Debug, Clone, PartialEq)]
++#[derive(Debug, Clone, PartialEq, Eq)]
+ pub enum StoreError {
+     /// The host backend (filesystem, OPFS, redb, fjall, ...) failed. The string
+     /// is the backend's own error, stringified so the seam stays backend-agnostic.
+     Backend(String),
+     /// Encoding or decoding a typed value through a [`Codec`](crate::Codec) failed.
+     Codec(String),
++    /// The backend refused work exceeding an explicit resource limit.
++    LimitExceeded { kind: StoreLimitKind, limit: u64 },
++    /// A persisted format or tree cannot be safely handled by this backend.
++    Unsupported(String),
++    /// Persisted data is damaged or malformed.
++    Corruption(String),
+     /// This backend cannot honor [`Backend::transact`](crate::Backend::transact):
+     /// it has no way to run a caller's read-then-write closure against one
+     /// consistent snapshot and commit atomically. Distinct from `Backend` so a
+@@ -30,6 +54,9 @@ impl fmt::Display for StoreError {
+         match self {
+             StoreError::Backend(msg) => write!(f, "backend: {msg}"),
+             StoreError::Codec(msg) => write!(f, "codec: {msg}"),
++            StoreError::LimitExceeded { kind, limit } => write!(f, "storage {kind:?} limit exceeded ({limit})"),
++            StoreError::Unsupported(msg) => write!(f, "unsupported storage: {msg}"),
++            StoreError::Corruption(msg) => write!(f, "storage corruption: {msg}"),
+             StoreError::NotTransactional => {
+                 write!(f, "backend does not support transactional read-then-write")
+             },
+@@ -38,3 +65,19 @@ impl fmt::Display for StoreError {
+ }
+ 
+ impl std::error::Error for StoreError {}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn limit_error_retains_its_kind_and_limit() {
++        let error = StoreError::LimitExceeded {
++            kind: StoreLimitKind::ValueBytes,
++            limit: 4,
++        };
++        assert_eq!(error.clone(), error);
++        assert!(matches!(error, StoreError::LimitExceeded { kind: StoreLimitKind::ValueBytes, limit: 4 }));
++        assert!(error.to_string().contains('4'));
++    }
++}
+diff --git a/crates/muniment/src/fjall_backend.rs b/crates/muniment/src/fjall_backend.rs
+index 2d7e394..9923063 100644
+--- a/crates/muniment/src/fjall_backend.rs
++++ b/crates/muniment/src/fjall_backend.rs
+@@ -20,11 +20,37 @@
+ //! call in `tokio::task::spawn_blocking` at the call site.
+ 
+ use crate::error::StoreError;
++#[path = "fjall_bounded.rs"]
++mod bounded;
+ use crate::{Backend, WriteOp};
+ use async_trait::async_trait;
+-use fjall::{Config, Keyspace, PartitionCreateOptions, PartitionHandle};
++use fjall::{Config, Keyspace, PartitionCreateOptions, PartitionHandle, PersistMode};
+ use std::path::Path;
+ 
++#[cfg(test)]
++#[path = "fjall_recovery_tests.rs"]
++mod recovery_tests;
++#[cfg(test)]
++#[path = "fjall_recovery_fixture.rs"]
++mod recovery_fixture;
++#[cfg(test)]
++#[path = "fjall_recovery_set_tests.rs"]
++mod recovery_set_tests;
++
++#[cfg(test)]
++#[path = "fjall_recovery_open_tests.rs"]
++mod recovery_open_tests;
++#[cfg(test)]
++#[path = "fjall_partition_bounds_tests.rs"]
++mod partition_bounds_tests;
++#[cfg(test)]
++#[path = "fjall_bounds_tests.rs"]
++mod bounds_tests;
++
++
++
++
++
+ /// Default partition name used by [`FjallStore::open`]. Callers that want
+ /// to host multiple eidetic stores in one fjall keyspace use
+ /// [`FjallStore::open_partition`] with distinct names.
+@@ -37,8 +63,9 @@ pub const DEFAULT_PARTITION: &str = "eidetic";
+ /// Construct with [`FjallStore::open`] for the simple single-partition
+ /// case.
+ pub struct FjallStore {
+-    _keyspace: Keyspace,
++    keyspace: Keyspace,
+     partition: PartitionHandle,
++    owner_limits: Option<crate::FjallOwnerLimits>,
+ }
+ 
+ impl FjallStore {
+@@ -59,16 +86,29 @@ impl FjallStore {
+             .open_partition(partition, PartitionCreateOptions::default())
+             .map_err(|e| StoreError::Backend(format!("fjall partition: {e}")))?;
+         Ok(Self {
+-            _keyspace: keyspace,
++            keyspace,
+             partition,
++            owner_limits: None,
+         })
+     }
++
++    /// Flush and synchronize the keyspace's journal, including prior writes.
++    ///
++    /// This blocks on storage I/O and returns any persistence error to the caller.
++    pub fn sync_all(&self) -> Result<(), StoreError> {
++        self.keyspace
++            .persist(PersistMode::SyncAll)
++            .map_err(|e| StoreError::Backend(format!("fjall sync: {e}")))
++    }
+ }
+ 
+ #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+ #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
+ impl Backend for FjallStore {
+     async fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError> {
++        if let Some(owner) = &self.owner_limits {
++            return self.get_bounded(key, &crate::FjallReadLimits::unlimited(), &mut crate::FjallReadBudget::new(owner.read.clone())).map_err(Into::into);
++        }
+         match self.partition.get(key) {
+             Ok(Some(slice)) => Ok(Some(slice.to_vec())),
+             Ok(None) => Ok(None),
+@@ -77,6 +117,7 @@ impl Backend for FjallStore {
+     }
+ 
+     async fn put(&self, key: &str, bytes: &[u8]) -> Result<(), StoreError> {
++        self.admit_write(key, bytes)?;
+         self.partition
+             .insert(key, bytes)
+             .map_err(|e| StoreError::Backend(format!("fjall insert {key}: {e}")))?;
+@@ -84,6 +125,9 @@ impl Backend for FjallStore {
+     }
+ 
+     async fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError> {
++        if let Some(owner) = &self.owner_limits {
++            return self.list_bounded(prefix, &crate::FjallReadLimits::unlimited(), &mut crate::FjallReadBudget::new(owner.read.clone())).map_err(Into::into);
++        }
+         let mut keys = Vec::new();
+         for entry in self.partition.prefix(prefix) {
+             let (key, _value) =
+@@ -100,6 +144,7 @@ impl Backend for FjallStore {
+     /// that needs that — `delete_manifest`, for the age-out eviction count —
+     /// probes with `get` first.)
+     async fn delete(&self, key: &str) -> Result<(), StoreError> {
++        self.admit_key(key)?;
+         self.partition
+             .remove(key)
+             .map_err(|e| StoreError::Backend(format!("fjall remove {key}: {e}")))?;
+@@ -110,6 +155,9 @@ impl Backend for FjallStore {
+     /// is a native range scan — the ordered read a journal needs to replay
+     /// a per-author range in `seq` order.
+     async fn scan(&self, start: &str, end: &str) -> Result<Vec<String>, StoreError> {
++        if let Some(owner) = &self.owner_limits {
++            return self.scan_bounded(start, end, &crate::FjallReadLimits::unlimited(), &mut crate::FjallReadBudget::new(owner.read.clone())).map_err(Into::into);
++        }
+         let mut keys = Vec::new();
+         for entry in self.partition.range(start.to_string()..end.to_string()) {
+             let (key, _value) =
+@@ -127,6 +175,12 @@ impl Backend for FjallStore {
+     /// idempotent, so a crash mid-batch leaves recoverable orphans, never a
+     /// torn read of a mutated key.
+     async fn apply(&self, ops: &[WriteOp]) -> Result<(), StoreError> {
++        for op in ops {
++            match op {
++                WriteOp::Put { key, value } => self.admit_write(key, value)?,
++                WriteOp::Delete { key } => self.admit_key(key)?,
++            }
++        }
+         for op in ops {
+             match op {
+                 WriteOp::Put { key, value } => {
+@@ -156,6 +210,130 @@ mod tests {
+         (store, dir)
+     }
+ 
++    #[test]
++    fn concurrent_keyspace_open_refuses_until_owner_drops() {
++        let dir = TempDir::new().unwrap();
++        let first = Config::new(dir.path()).open().unwrap();
++        let partition = first.open_partition("held", PartitionCreateOptions::default()).unwrap();
++        assert!(Config::new(dir.path()).open().is_err());
++        drop(first);
++        assert!(Config::new(dir.path()).open().is_err());
++        drop(partition);
++        assert!(Config::new(dir.path()).open().is_ok());
++    }
++
++    #[test]
++    fn iterator_retains_keyspace_lease_after_partition_drops() {
++        let dir = TempDir::new().unwrap();
++        let keyspace = Config::new(dir.path()).open().unwrap();
++        let partition = keyspace.open_partition("held", PartitionCreateOptions::default()).unwrap();
++        partition.insert("key", "value").unwrap();
++        let mut iter = partition.iter();
++        drop(partition);
++        drop(keyspace);
++        assert!(Config::new(dir.path()).open().is_err());
++        assert!(iter.next().unwrap().is_ok());
++        drop(iter);
++        assert!(Config::new(dir.path()).open().is_ok());
++    }
++
++    #[test]
++    fn snapshot_retains_keyspace_lease_after_partition_drops() {
++        let dir = TempDir::new().unwrap();
++        let keyspace = Config::new(dir.path()).open().unwrap();
++        let partition = keyspace.open_partition("held", PartitionCreateOptions::default()).unwrap();
++        partition.insert("key", "value").unwrap();
++        let snapshot = partition.snapshot();
++        drop(partition);
++        drop(keyspace);
++        assert!(Config::new(dir.path()).open().is_err());
++        assert_eq!(snapshot.get("key").unwrap().unwrap().as_ref(), b"value");
++        drop(snapshot);
++        assert!(Config::new(dir.path()).open().is_ok());
++    }
++
++    #[test]
++    fn snapshot_iterator_retains_lease_after_snapshot_drops() {
++        let dir = TempDir::new().unwrap();
++        let keyspace = Config::new(dir.path()).open().unwrap();
++        let partition = keyspace.open_partition("held", PartitionCreateOptions::default()).unwrap();
++        partition.insert("key", "value").unwrap();
++        let snapshot = partition.snapshot();
++        let mut iter = snapshot.iter();
++        drop(snapshot);
++        drop(partition);
++        drop(keyspace);
++        assert!(Config::new(dir.path()).open().is_err());
++        assert!(iter.next().unwrap().is_ok());
++        drop(iter);
++        assert!(Config::new(dir.path()).open().is_ok());
++    }
++
++    #[test]
++    fn transaction_iterator_retains_lease_after_owner_drops() {
++        let dir = TempDir::new().unwrap();
++        let keyspace = Config::new(dir.path()).open_transactional().unwrap();
++        let partition = keyspace.open_partition("held", PartitionCreateOptions::default()).unwrap();
++        partition.insert("key", "value").unwrap();
++        let tx = keyspace.read_tx();
++        let mut iter = tx.iter(&partition);
++        drop(tx);
++        drop(partition);
++        drop(keyspace);
++        assert!(Config::new(dir.path()).open().is_err());
++        assert!(iter.next().unwrap().is_ok());
++        drop(iter);
++        assert!(Config::new(dir.path()).open().is_ok());
++    }
++
++    #[test]
++    fn owner_lock_refuses_second_process_until_drop() {
++        const CHILD_DIR: &str = "MUNIMENT_FJALL_LOCK_TEST_DIR";
++        const CHILD_EXPECT: &str = "MUNIMENT_FJALL_LOCK_TEST_EXPECT_OPEN";
++        if let Some(path) = std::env::var_os(CHILD_DIR) {
++            let opened = Config::new(path).open().is_ok();
++            let expected = std::env::var(CHILD_EXPECT).unwrap() == "yes";
++            std::process::exit(i32::from(opened != expected));
++        }
++        let dir = TempDir::new().unwrap();
++        let owner = Config::new(dir.path()).open().unwrap();
++        let child = |expected: &str| std::process::Command::new(std::env::current_exe().unwrap())
++            .args(["--exact", "fjall_backend::tests::owner_lock_refuses_second_process_until_drop"])
++            .env(CHILD_DIR, dir.path()).env(CHILD_EXPECT, expected).status().unwrap();
++        assert!(child("no").success());
++        drop(owner);
++        assert!(child("yes").success());
++    }
++
++    #[test]
++    fn journal_preparation_refuses_oversize_without_changing_file() {
++        use fjall::bounded_recovery::{prepare_journal, RecoveryBudget, RecoveryError, RecoveryLimitKind, RecoveryLimits};
++        let dir = TempDir::new().unwrap();
++        {
++            let store = FjallStore::open(dir.path()).unwrap();
++            pollster::block_on(async {
++                store.put("a", b"a").await.unwrap();
++                store.put("b", b"larger").await.unwrap();
++                store.put("c", b"c").await.unwrap();
++            });
++            store.sync_all().unwrap();
++        }
++        let paths: Vec<_> = std::fs::read_dir(dir.path().join("journals"))
++            .unwrap().map(|entry| entry.unwrap().path()).collect();
++        assert_eq!(paths.len(), 1);
++        let before = std::fs::read(&paths[0]).unwrap();
++        let limits = RecoveryLimits { max_value_bytes: 3, max_key_bytes: 128,
++            max_replay_bytes: 4096, max_replay_items: 100, max_metadata_bytes: 4096,
++            max_input_bytes: 134_217_728, max_alloc_bytes: 65_536 };
++        let err = prepare_journal(&paths[0], &mut RecoveryBudget::new(limits.clone()));
++        assert!(matches!(err, Err(RecoveryError::Limit { kind: RecoveryLimitKind::ValueBytes, .. })));
++        assert_eq!(std::fs::read(&paths[0]).unwrap(), before);
++        let larger = RecoveryLimits { max_value_bytes: 6, ..limits };
++        let admitted = prepare_journal(&paths[0], &mut RecoveryBudget::new(larger)).unwrap();
++        assert_eq!(admitted.item_count(), 3);
++        assert_eq!(std::fs::read(&paths[0]).unwrap(), before);
++    }
++
+     #[test]
+     fn save_then_load_returns_same_bytes() {
+         pollster::block_on(async {
+@@ -202,6 +380,35 @@ mod tests {
+         });
+     }
+ 
++    #[test]
++    fn sync_all_preserves_written_bytes_after_process_exit() {
++        const CHILD_DIR: &str = "MUNIMENT_FJALL_SYNC_TEST_DIR";
++        if let Some(path) = std::env::var_os(CHILD_DIR) {
++            let store = FjallStore::open(path).expect("open child store");
++            pollster::block_on(store.put("receipt", b"pending")).expect("write receipt");
++            store.sync_all().expect("sync receipt");
++            // Skip Fjall's drop-time sync so the parent reopens after the explicit sync.
++            std::process::exit(0);
++        }
++
++        let dir = TempDir::new().expect("tempdir");
++        let status = std::process::Command::new(std::env::current_exe().unwrap())
++            .args([
++                "--exact",
++                "fjall_backend::tests::sync_all_preserves_written_bytes_after_process_exit",
++            ])
++            .env(CHILD_DIR, dir.path())
++            .status()
++            .expect("run child");
++        assert!(status.success(), "child process failed: {status}");
++
++        let store = FjallStore::open(dir.path()).expect("reopen store");
++        assert_eq!(
++            pollster::block_on(store.get("receipt")).unwrap(),
++            Some(b"pending".to_vec())
++        );
++    }
++
+     #[test]
+     fn default_partition_preserves_existing_eidetic_keys() {
+         pollster::block_on(async {
+@@ -242,8 +449,12 @@ mod tests {
+     fn separate_partitions_isolate_keys() {
+         pollster::block_on(async {
+             let dir = TempDir::new().expect("tempdir");
+-            let mut alice = FjallStore::open_partition(dir.path(), "alice").unwrap();
+-            let mut bob = FjallStore::open_partition(dir.path(), "bob").unwrap();
++            let alice = FjallStore::open_partition(dir.path(), "alice").unwrap();
++            let keyspace = alice.keyspace.clone();
++            let partition = keyspace
++                .open_partition("bob", PartitionCreateOptions::default())
++                .unwrap();
++            let bob = FjallStore { keyspace, partition, owner_limits: None };
+ 
+             alice.put("k", b"alice-value").await.unwrap();
+             bob.put("k", b"bob-value").await.unwrap();
+diff --git a/crates/muniment/src/fjall_bounded.rs b/crates/muniment/src/fjall_bounded.rs
+new file mode 100644
+index 0000000..19cc6a1
+--- /dev/null
++++ b/crates/muniment/src/fjall_bounded.rs
+@@ -0,0 +1,300 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++//! Bounded operations for the concrete Fjall owner.
++
++use super::{DEFAULT_PARTITION, FjallStore};
++use crate::{
++    FjallBoundError, FjallOwnerLimits, FjallReadBudget, FjallReadLimits, StoreError,
++    StoreLimitKind as Kind,
++};
++use fjall::{
++    Config, PartitionCreateOptions, Slice,
++    bounded_budget::{BudgetError, BudgetKind},
++    bounded_read::ReadError,
++    bounded_recovery::{RecoveryError, RecoveryLimitKind, RecoveryLimits},
++};
++use std::path::Path;
++
++fn limit(kind: Kind, limit: u64) -> FjallBoundError {
++    FjallBoundError::Limit { kind, limit }
++}
++fn budget_error(error: BudgetError) -> FjallBoundError {
++    let kind = match error.kind {
++        BudgetKind::InputBytes => Kind::InputBytes,
++        BudgetKind::DecodeBytes => Kind::DecodeBytes,
++        BudgetKind::AllocationBytes => Kind::AllocationBytes,
++        BudgetKind::MetadataBytes => Kind::MetadataBytes,
++        BudgetKind::VisitedItems => Kind::VisitedItems,
++        BudgetKind::OutputItems => Kind::OutputItems,
++        BudgetKind::OutputKeyBytes => Kind::OutputKeyBytes,
++    };
++    limit(kind, error.limit)
++}
++fn read_error(error: ReadError) -> FjallBoundError {
++    match error {
++        ReadError::Budget(e) => budget_error(e),
++        ReadError::ValueLimit { limit: n } => limit(Kind::ValueBytes, n as u64),
++        ReadError::KeyLimit { limit: n } => limit(Kind::KeyBytes, n as u64),
++        ReadError::EncodedLimit { limit: n } => limit(Kind::BlockEncodedBytes, n as u64),
++        ReadError::DecodedLimit { limit: n } => limit(Kind::BlockDecodedBytes, n as u64),
++        ReadError::Corruption => {
++            FjallBoundError::Store(StoreError::Corruption("invalid Fjall data block".into()))
++        }
++        ReadError::Unsupported(s) => FjallBoundError::Store(StoreError::Unsupported(s.into())),
++        ReadError::Io(e) => FjallBoundError::Store(StoreError::Backend(format!("fjall read: {e}"))),
++    }
++}
++fn recovery_error(error: RecoveryError) -> StoreError {
++    match error {
++        RecoveryError::Limit { kind, limit } => StoreError::LimitExceeded {
++            kind: match kind {
++                RecoveryLimitKind::ValueBytes => Kind::ValueBytes,
++                RecoveryLimitKind::KeyBytes => Kind::KeyBytes,
++                RecoveryLimitKind::ReplayBytes => Kind::ReplayBytes,
++                RecoveryLimitKind::ReplayItems => Kind::ReplayItems,
++                RecoveryLimitKind::MetadataBytes => Kind::MetadataBytes,
++                RecoveryLimitKind::InputBytes => Kind::InputBytes,
++                RecoveryLimitKind::AllocationBytes => Kind::AllocationBytes,
++            },
++            limit,
++        },
++        RecoveryError::Unsupported(s) => StoreError::Unsupported(s.into()),
++        RecoveryError::Corruption(s) => StoreError::Corruption(s),
++        RecoveryError::Io(e) => StoreError::Backend(format!("fjall open: {e}")),
++    }
++}
++fn debit(
++    call: &mut FjallReadBudget,
++    operation: &mut FjallReadBudget,
++    kind: BudgetKind,
++    amount: u64,
++) -> Result<(), FjallBoundError> {
++    FjallReadBudget::charge_both(call, operation, kind, amount).map_err(budget_error)
++}
++fn prefix_end(
++    prefix: &str,
++    call: &mut FjallReadBudget,
++    operation: &mut FjallReadBudget,
++) -> Result<Option<Vec<u8>>, FjallBoundError> {
++    let key_limit = call
++        .limits()
++        .max_key_bytes
++        .min(operation.limits().max_key_bytes);
++    if prefix.len() > key_limit {
++        return Err(limit(Kind::KeyBytes, key_limit as u64));
++    }
++    if prefix.is_empty() {
++        return Ok(None);
++    }
++    let capacity = prefix.len();
++    debit(call, operation, BudgetKind::MetadataBytes, capacity as u64)?;
++    debit(
++        call,
++        operation,
++        BudgetKind::AllocationBytes,
++        capacity as u64,
++    )?;
++    let mut end = Vec::new();
++    end.try_reserve_exact(capacity).map_err(|_| {
++        FjallBoundError::Store(StoreError::Backend("prefix allocation failed".into()))
++    })?;
++    end.extend_from_slice(prefix.as_bytes());
++    *end.last_mut().expect("nonempty UTF-8 prefix") += 1;
++    Ok(Some(end))
++}
++fn strings(
++    keys: Vec<Slice>,
++    call: &mut FjallReadBudget,
++    operation: &mut FjallReadBudget,
++) -> Result<Vec<String>, FjallBoundError> {
++    let capacity = keys
++        .len()
++        .checked_mul(std::mem::size_of::<String>())
++        .ok_or_else(|| {
++            FjallBoundError::Store(StoreError::Corruption("key count overflow".into()))
++        })?;
++    debit(call, operation, BudgetKind::MetadataBytes, capacity as u64)?;
++    debit(
++        call,
++        operation,
++        BudgetKind::AllocationBytes,
++        capacity as u64,
++    )?;
++    let mut result = Vec::new();
++    result.try_reserve_exact(keys.len()).map_err(|_| {
++        FjallBoundError::Store(StoreError::Backend("key list allocation failed".into()))
++    })?;
++    for key in keys {
++        let text = std::str::from_utf8(&key).map_err(|_| {
++            FjallBoundError::Store(StoreError::Corruption("non-UTF-8 Fjall key".into()))
++        })?;
++        debit(
++            call,
++            operation,
++            BudgetKind::AllocationBytes,
++            text.len() as u64,
++        )?;
++        debit(call, operation, BudgetKind::OutputKeyBytes, 0)?;
++        let mut value = String::new();
++        value.try_reserve_exact(text.len()).map_err(|_| {
++            FjallBoundError::Store(StoreError::Backend("key allocation failed".into()))
++        })?;
++        value.push_str(text);
++        result.push(value);
++    }
++    Ok(result)
++}
++impl FjallStore {
++    pub(super) fn admit_write(&self, key: &str, value: &[u8]) -> Result<(), StoreError> {
++        let Some(owner) = &self.owner_limits else {
++            return Ok(());
++        };
++        let value_limit = owner
++            .read
++            .max_value_bytes
++            .min(owner.recovery.max_value_bytes);
++        if value.len() > value_limit {
++            return Err(StoreError::LimitExceeded {
++                kind: Kind::ValueBytes,
++                limit: value_limit as u64,
++            });
++        }
++        self.admit_key(key)
++    }
++    pub(super) fn admit_key(&self, key: &str) -> Result<(), StoreError> {
++        let Some(owner) = &self.owner_limits else {
++            return Ok(());
++        };
++        let key_limit = owner.read.max_key_bytes.min(u16::MAX as usize);
++        if key.len() > key_limit {
++            return Err(StoreError::LimitExceeded {
++                kind: Kind::KeyBytes,
++                limit: key_limit as u64,
++            });
++        }
++        if key
++            .len()
++            .checked_add(self.partition.name.len())
++            .is_none_or(|n| n > owner.recovery.max_key_bytes)
++        {
++            return Err(StoreError::LimitExceeded {
++                kind: Kind::KeyBytes,
++                limit: owner.recovery.max_key_bytes as u64,
++            });
++        }
++        Ok(())
++    }
++    /// Open a keyspace with owner recovery and read ceilings.
++    pub fn open_with_limits(
++        path: impl AsRef<Path>,
++        limits: FjallOwnerLimits,
++    ) -> Result<Self, StoreError> {
++        let r = &limits.recovery;
++        let recovery = RecoveryLimits {
++            max_value_bytes: r.max_value_bytes,
++            max_key_bytes: r.max_key_bytes,
++            max_replay_bytes: r.max_replay_bytes,
++            max_replay_items: r.max_replay_items,
++            max_metadata_bytes: r.max_metadata_bytes,
++            max_input_bytes: r.max_input_bytes,
++            max_alloc_bytes: r.max_alloc_bytes,
++        };
++        let keyspace = Config::new(path)
++            .open_with_recovery_limits(recovery)
++            .map_err(recovery_error)?;
++        let partition = keyspace
++            .open_partition(DEFAULT_PARTITION, PartitionCreateOptions::default())
++            .map_err(|e| StoreError::Backend(format!("fjall partition: {e}")))?;
++        Ok(Self {
++            keyspace,
++            partition,
++            owner_limits: Some(limits),
++        })
++    }
++    fn call_budget(&self, limits: &FjallReadLimits) -> FjallReadBudget {
++        FjallReadBudget::new(
++            self.owner_limits
++                .as_ref()
++                .map_or_else(|| limits.clone(), |owner| owner.read.intersect(limits)),
++        )
++    }
++    /// Get a value under an individual call ceiling and shared operation ledger.
++    pub fn get_bounded(
++        &self,
++        key: &str,
++        limits: &FjallReadLimits,
++        operation: &mut FjallReadBudget,
++    ) -> Result<Option<Vec<u8>>, FjallBoundError> {
++        let mut call = self.call_budget(limits);
++        let value = self
++            .partition
++            .get_bounded(key.as_bytes(), &mut call, operation)
++            .map_err(read_error)?;
++        value
++            .map(|value| {
++                debit(
++                    &mut call,
++                    operation,
++                    BudgetKind::AllocationBytes,
++                    value.len() as u64,
++                )?;
++                debit(
++                    &mut call,
++                    operation,
++                    BudgetKind::DecodeBytes,
++                    value.len() as u64,
++                )?;
++                let mut output = Vec::new();
++                output.try_reserve_exact(value.len()).map_err(|_| {
++                    FjallBoundError::Store(StoreError::Backend("value allocation failed".into()))
++                })?;
++                output.extend_from_slice(&value);
++                Ok(output)
++            })
++            .transpose()
++    }
++    /// Return every key matching a prefix, or a typed refusal.
++    pub fn list_bounded(
++        &self,
++        prefix: &str,
++        limits: &FjallReadLimits,
++        operation: &mut FjallReadBudget,
++    ) -> Result<Vec<String>, FjallBoundError> {
++        let mut call = self.call_budget(limits);
++        let end = prefix_end(prefix, &mut call, operation)?;
++        let keys = self
++            .partition
++            .scan_bounded(prefix.as_bytes(), end.as_deref(), &mut call, operation)
++            .map_err(read_error)?;
++        strings(keys, &mut call, operation)
++    }
++    /// Probe whether a prefix has a visible key, without creating an output list.
++    pub fn exists_bounded(
++        &self,
++        prefix: &str,
++        limits: &FjallReadLimits,
++        operation: &mut FjallReadBudget,
++    ) -> Result<bool, FjallBoundError> {
++        let mut call = self.call_budget(limits);
++        let end = prefix_end(prefix, &mut call, operation)?;
++        self.partition
++            .exists_bounded(prefix.as_bytes(), end.as_deref(), &mut call, operation)
++            .map_err(read_error)
++    }
++    /// Return every key in a half-open interval, or a typed refusal.
++    pub fn scan_bounded(
++        &self,
++        start: &str,
++        end: &str,
++        limits: &FjallReadLimits,
++        operation: &mut FjallReadBudget,
++    ) -> Result<Vec<String>, FjallBoundError> {
++        let mut call = self.call_budget(limits);
++        let keys = self
++            .partition
++            .scan_bounded(start.as_bytes(), Some(end.as_bytes()), &mut call, operation)
++            .map_err(read_error)?;
++        strings(keys, &mut call, operation)
++    }
++}
+diff --git a/crates/muniment/src/fjall_bounds_tests.rs b/crates/muniment/src/fjall_bounds_tests.rs
+new file mode 100644
+index 0000000..4443857
+--- /dev/null
++++ b/crates/muniment/src/fjall_bounds_tests.rs
+@@ -0,0 +1,145 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++use crate::{FjallBoundError, FjallReadBudget, FjallReadLimits};
++use tempfile::TempDir;
++
++fn limits(max_value_bytes: usize) -> FjallReadLimits {
++    FjallReadLimits {
++        max_value_bytes,
++        max_block_encoded_bytes: 1_048_576,
++        max_block_decoded_bytes: 1_048_576,
++        max_input_bytes: 4_194_304,
++        max_decode_bytes: 4_194_304,
++        max_metadata_bytes: 4_194_304,
++        max_alloc_bytes: 4_194_304,
++        max_visited_items: 1000,
++        max_key_bytes: 4096,
++        max_output_items: 100,
++        max_output_key_bytes: 65_536,
++    }
++}
++
++#[test]
++fn bounded_read_accepts_exact_size_and_refuses_oversize() {
++    let dir = TempDir::new().unwrap();
++    let store = FjallStore::open(dir.path()).unwrap();
++    pollster::block_on(store.put("key", b"hello")).unwrap();
++    let mut exact = FjallReadBudget::new(limits(5));
++    assert_eq!(store.get_bounded("key", &limits(5), &mut exact).unwrap(), Some(b"hello".to_vec()));
++    let mut small = FjallReadBudget::new(limits(4));
++    assert!(matches!(store.get_bounded("key", &limits(4), &mut small), Err(FjallBoundError::Limit { .. })));
++}
++
++#[test]
++fn bounded_read_missing_at_zero_value_limit_is_none() {
++    let dir = TempDir::new().unwrap();
++    let store = FjallStore::open(dir.path()).unwrap();
++    let mut budget = FjallReadBudget::new(limits(0));
++    assert_eq!(store.get_bounded("absent", &limits(0), &mut budget).unwrap(), None);
++}
++
++#[test]
++fn prefix_probe_is_distinct_from_a_complete_bounded_list() {
++    let dir = TempDir::new().unwrap();
++    let store = FjallStore::open(dir.path()).unwrap();
++    pollster::block_on(store.put("prefix-a", b"a")).unwrap();
++    pollster::block_on(store.put("prefix-b", b"b")).unwrap();
++    let mut call = limits(5);
++    call.max_output_items = 1;
++    let mut budget = FjallReadBudget::new(limits(5));
++    assert!(matches!(store.list_bounded("prefix-", &call, &mut budget), Err(FjallBoundError::Limit { kind: crate::StoreLimitKind::OutputItems, .. })));
++    let mut call = limits(5);
++    call.max_output_items = 0;
++    call.max_output_key_bytes = 0;
++    let mut budget = FjallReadBudget::new(limits(5));
++    assert!(store.exists_bounded("prefix-", &call, &mut budget).unwrap());
++}
++
++#[test]
++fn bounded_owner_rejects_oversize_write_and_preflights_batches() {
++    let dir = TempDir::new().unwrap();
++    let mut store = FjallStore::open(dir.path()).unwrap();
++    store.owner_limits = Some(crate::FjallOwnerLimits {
++        read: limits(4),
++        recovery: crate::FjallRecoveryLimits { max_value_bytes: 4, max_key_bytes: 4096,
++            max_replay_bytes: 100_000, max_replay_items: 100, max_metadata_bytes: 1_000_000,
++            max_input_bytes: 100_000, max_alloc_bytes: 1_000_000 },
++    });
++    pollster::block_on(store.put("good", b"four")).unwrap();
++    assert!(matches!(pollster::block_on(store.put("bad", b"five!")), Err(crate::StoreError::LimitExceeded { kind: crate::StoreLimitKind::ValueBytes, limit: 4 })));
++    let batch = [crate::WriteOp::Put { key: "first".into(), value: b"ok".to_vec() }, crate::WriteOp::Put { key: "second".into(), value: b"large".to_vec() }];
++    assert!(matches!(pollster::block_on(store.apply(&batch)), Err(crate::StoreError::LimitExceeded { kind: crate::StoreLimitKind::ValueBytes, limit: 4 })));
++    assert_eq!(pollster::block_on(store.get("first")).unwrap(), None);
++}
++
++fn owner_limits(read_value: usize, recovery_value: usize) -> crate::FjallOwnerLimits {
++    let mut read = limits(read_value);
++    read.max_input_bytes = 128 * 1024 * 1024;
++    read.max_decode_bytes = 128 * 1024 * 1024;
++    read.max_alloc_bytes = 128 * 1024 * 1024;
++    read.max_metadata_bytes = 128 * 1024 * 1024;
++    read.max_visited_items = 100_000;
++    crate::FjallOwnerLimits { read, recovery: crate::FjallRecoveryLimits { max_value_bytes: recovery_value,
++        max_key_bytes: 4096, max_replay_bytes: 64 * 1024 * 1024, max_replay_items: 100_000,
++        max_metadata_bytes: 32 * 1024 * 1024, max_input_bytes: 128 * 1024 * 1024, max_alloc_bytes: 64 * 1024 * 1024 } }
++}
++
++#[test]
++fn bounded_owner_reopens_and_ordinary_reads_obey_installed_limits() {
++    let dir = TempDir::new().unwrap();
++    {
++        let store = FjallStore::open(dir.path()).unwrap();
++        pollster::block_on(store.put("key", b"hello")).unwrap();
++        store.sync_all().unwrap();
++    }
++    let store = FjallStore::open_with_limits(dir.path(), owner_limits(4, 5)).unwrap();
++    assert!(matches!(pollster::block_on(store.get("key")), Err(crate::StoreError::LimitExceeded { kind: crate::StoreLimitKind::ValueBytes, limit: 4 })));
++    assert!(matches!(pollster::block_on(store.list("k")), Err(crate::StoreError::LimitExceeded { kind: crate::StoreLimitKind::ValueBytes, limit: 4 })));
++}
++
++#[test]
++fn bounded_owner_new_store_survives_sync_and_reopen() {
++    let dir = TempDir::new().unwrap();
++    {
++        let store = FjallStore::open_with_limits(dir.path(), owner_limits(5, 5)).unwrap();
++        pollster::block_on(store.put("key", b"hello")).unwrap();
++        store.sync_all().unwrap();
++    }
++    let store = FjallStore::open_with_limits(dir.path(), owner_limits(5, 5)).unwrap();
++    assert_eq!(pollster::block_on(store.get("key")).unwrap().unwrap(), b"hello");
++}
++
++#[test]
++fn delete_and_batch_delete_preflight_recovery_keys_before_reopen() {
++    let dir = TempDir::new().unwrap();
++    let mut owner = owner_limits(5, 5);
++    owner.recovery.max_key_bytes = DEFAULT_PARTITION.len() + 5;
++    {
++        let store = FjallStore::open_with_limits(dir.path(), owner.clone()).unwrap();
++        pollster::block_on(store.put("good", b"ok")).unwrap();
++        assert!(matches!(pollster::block_on(store.delete("longer")), Err(crate::StoreError::LimitExceeded { kind: crate::StoreLimitKind::KeyBytes, .. })));
++        let batch = [crate::WriteOp::Put { key: "other".into(), value: b"ok".to_vec() }, crate::WriteOp::Delete { key: "longer".into() }];
++        assert!(matches!(pollster::block_on(store.apply(&batch)), Err(crate::StoreError::LimitExceeded { kind: crate::StoreLimitKind::KeyBytes, .. })));
++        assert_eq!(pollster::block_on(store.get("other")).unwrap(), None);
++        store.sync_all().unwrap();
++    }
++    let store = FjallStore::open_with_limits(dir.path(), owner).unwrap();
++    assert_eq!(pollster::block_on(store.get("good")).unwrap().unwrap(), b"ok");
++}
++
++#[test]
++fn empty_prefix_includes_binary_boundary_keys_in_memory_and_on_disk() {
++    let dir = TempDir::new().unwrap();
++    let store = FjallStore::open(dir.path()).unwrap();
++    store.partition.insert([0xff, 0x00], "v").unwrap();
++    let cap = limits(5);
++    for cold in [false, true] {
++        if cold {
++            store.partition.rotate_memtable_and_wait().unwrap();
++        }
++        assert!(store.exists_bounded("", &cap, &mut FjallReadBudget::new(cap.clone())).unwrap());
++        assert!(matches!(store.list_bounded("", &cap, &mut FjallReadBudget::new(cap.clone())), Err(FjallBoundError::Store(crate::StoreError::Corruption(_)))));
++    }
++}
+diff --git a/crates/muniment/src/fjall_limits.rs b/crates/muniment/src/fjall_limits.rs
+new file mode 100644
+index 0000000..0c3332b
+--- /dev/null
++++ b/crates/muniment/src/fjall_limits.rs
+@@ -0,0 +1,62 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++//! Limits for the opt-in bounded Fjall owner.
++
++use crate::StoreError;
++pub use crate::StoreLimitKind as FjallLimitKind;
++pub use fjall::bounded_budget::{Budget as FjallReadBudget, ReadLimits as FjallReadLimits};
++
++/// Limits applied to recovery of the complete keyspace.
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub struct FjallRecoveryLimits {
++    pub max_value_bytes: usize,
++    pub max_key_bytes: usize,
++    pub max_replay_bytes: u64,
++    pub max_replay_items: u64,
++    pub max_metadata_bytes: u64,
++    pub max_input_bytes: u64,
++    pub max_alloc_bytes: u64,
++}
++
++/// Recovery and per-call ceilings installed on a bounded owner.
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub struct FjallOwnerLimits {
++    pub recovery: FjallRecoveryLimits,
++    pub read: FjallReadLimits,
++}
++
++/// A bounded operation refused a resource request or encountered a store error.
++#[derive(Debug, Clone, PartialEq)]
++pub enum FjallBoundError {
++    Limit { kind: FjallLimitKind, limit: u64 },
++    Store(StoreError),
++}
++
++impl std::fmt::Display for FjallBoundError {
++    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++        match self {
++            Self::Limit { kind, limit } => write!(f, "fjall {kind:?} limit exceeded ({limit})"),
++            Self::Store(error) => error.fmt(f),
++        }
++    }
++}
++impl std::error::Error for FjallBoundError {}
++impl From<FjallBoundError> for StoreError {
++    fn from(value: FjallBoundError) -> Self {
++        match value {
++            FjallBoundError::Limit { kind, limit } => Self::LimitExceeded { kind, limit },
++            FjallBoundError::Store(error) => error,
++        }
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    #[test]
++    fn bound_error_converts_without_losing_identity() {
++        let error: StoreError = FjallBoundError::Limit { kind: FjallLimitKind::ValueBytes, limit: 4 }.into();
++        assert_eq!(error, StoreError::LimitExceeded { kind: FjallLimitKind::ValueBytes, limit: 4 });
++    }
++}
+diff --git a/crates/muniment/src/fjall_partition_bounds_tests.rs b/crates/muniment/src/fjall_partition_bounds_tests.rs
+new file mode 100644
+index 0000000..85312af
+--- /dev/null
++++ b/crates/muniment/src/fjall_partition_bounds_tests.rs
+@@ -0,0 +1,18 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use fjall::{bounded_budget::{Budget, ReadLimits}, bounded_read::ReadError, Config, PartitionCreateOptions};
++
++#[test]
++fn partition_bounded_read_uses_snapshot_and_caller_ledger() {
++    let dir = tempfile::tempdir().unwrap();
++    let keyspace = Config::new(dir.path()).open().unwrap();
++    let partition = keyspace.open_partition("test", PartitionCreateOptions::default()).unwrap();
++    partition.insert("key", "hello").unwrap();
++    let mut limits = ReadLimits::unlimited();
++    limits.max_value_bytes = 4;
++    let mut operation = Budget::new(limits.clone());
++    assert!(matches!(partition.get_bounded(b"key", &mut Budget::new(limits.clone()), &mut operation), Err(ReadError::ValueLimit { limit: 4 })));
++    limits.max_value_bytes = 5;
++    assert_eq!(partition.get_bounded(b"key", &mut Budget::new(limits.clone()), &mut Budget::new(limits)).unwrap().unwrap().as_ref(), b"hello");
++}
+diff --git a/crates/muniment/src/fjall_recovery_fixture.rs b/crates/muniment/src/fjall_recovery_fixture.rs
+new file mode 100644
+index 0000000..6fea261
+--- /dev/null
++++ b/crates/muniment/src/fjall_recovery_fixture.rs
+@@ -0,0 +1,65 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++use fjall::bounded_recovery::RecoveryLimits;
++use std::{collections::BTreeMap, io::Read, path::Path};
++use tempfile::TempDir;
++
++pub(super) fn limits(max_value_bytes: usize) -> RecoveryLimits {
++    RecoveryLimits { max_value_bytes, max_key_bytes: 1024, max_replay_bytes: 65_536,
++        max_replay_items: 1000, max_metadata_bytes: 16_777_216,
++        max_input_bytes: 134_217_728, max_alloc_bytes: 33_554_432 }
++}
++
++pub(super) fn inventory(root: &Path) -> BTreeMap<String, Option<(u64, blake3::Hash)>> {
++    fn visit(root: &Path, path: &Path, output: &mut BTreeMap<String, Option<(u64, blake3::Hash)>>) {
++        for entry in std::fs::read_dir(path).unwrap() {
++            let entry = entry.unwrap();
++            let path = entry.path();
++            let name = path.strip_prefix(root).unwrap().to_string_lossy().into_owned();
++            if entry.file_type().unwrap().is_dir() {
++                output.insert(name, None);
++                visit(root, &path, output);
++            } else {
++                let mut file = std::fs::File::open(&path).unwrap();
++                let length = file.metadata().unwrap().len();
++                let mut hasher = blake3::Hasher::new();
++                let mut chunk = [0_u8; 8192];
++                loop {
++                    let count = file.read(&mut chunk).unwrap();
++                    if count == 0 { break; }
++                    hasher.update(&chunk[..count]);
++                }
++                output.insert(name, Some((length, hasher.finalize())));
++            }
++        }
++    }
++    let mut result = BTreeMap::new();
++    visit(root, root, &mut result);
++    result
++}
++
++pub(super) fn two_journals_with_repairable_tail() -> TempDir {
++    let dir = TempDir::new().unwrap();
++    {
++        let keyspace = Config::new(dir.path()).flush_workers(0).compaction_workers(0).open().unwrap();
++        let partition = keyspace.open_partition("eidetic", PartitionCreateOptions::default()).unwrap();
++        partition.insert("small", "first").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++        assert!(partition.rotate_memtable().unwrap());
++        partition.insert("large", "a much larger value").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let mut journals: Vec<_> = std::fs::read_dir(dir.path().join("journals")).unwrap()
++        .map(|entry| entry.unwrap().path()).collect();
++    journals.sort();
++    assert_eq!(journals.len(), 2);
++    // Start marker 15 bytes; item 26 bytes; end marker 13 bytes.
++    let mut sealed = std::fs::read(&journals[0]).unwrap();
++    sealed.truncate(54);
++    // A real interrupted Start marker at physical EOF, after a complete batch.
++    sealed.push(1);
++    std::fs::write(&journals[0], sealed).unwrap();
++    dir
++}
+diff --git a/crates/muniment/src/fjall_recovery_open_tests.rs b/crates/muniment/src/fjall_recovery_open_tests.rs
+new file mode 100644
+index 0000000..78563c9
+--- /dev/null
++++ b/crates/muniment/src/fjall_recovery_open_tests.rs
+@@ -0,0 +1,411 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++//! Whole-keyspace admission test; connect when the bounded-open API exists.
++
++use super::recovery_fixture::{inventory, limits, two_journals_with_repairable_tail};
++use super::*;
++use fjall::bounded_recovery::{RecoveryError, RecoveryLimitKind};
++
++#[test]
++fn bounded_open_refusal_preserves_earlier_repair_candidates_and_acknowledged_values() {
++    let dir = two_journals_with_repairable_tail();
++    let before = inventory(dir.path());
++    let refused = Config::new(dir.path()).open_with_recovery_limits(limits(5));
++    assert!(matches!(
++        refused,
++        Err(RecoveryError::Limit {
++            kind: RecoveryLimitKind::ValueBytes,
++            ..
++        })
++    ));
++    assert_eq!(inventory(dir.path()), before);
++
++    let keyspace = Config::new(dir.path())
++        .open_with_recovery_limits(limits(32))
++        .unwrap();
++    let partition = keyspace
++        .open_partition("eidetic", PartitionCreateOptions::default())
++        .unwrap();
++    assert_eq!(partition.get("small").unwrap().unwrap().as_ref(), b"first");
++    assert_eq!(
++        partition.get("large").unwrap().unwrap().as_ref(),
++        b"a much larger value"
++    );
++}
++
++#[test]
++fn bounded_open_defers_orphan_cleanup_until_all_inputs_are_admitted() {
++    let dir = two_journals_with_repairable_tail();
++    let orphan = dir.path().join("partitions/orphan");
++    std::fs::create_dir_all(orphan.join("nested")).unwrap();
++    std::fs::write(orphan.join("nested/keep"), b"preexisting").unwrap();
++    let before = inventory(dir.path());
++    assert!(matches!(
++        Config::new(dir.path()).open_with_recovery_limits(limits(5)),
++        Err(RecoveryError::Limit {
++            kind: RecoveryLimitKind::ValueBytes,
++            ..
++        })
++    ));
++    assert_eq!(inventory(dir.path()), before);
++    let keyspace = Config::new(dir.path())
++        .open_with_recovery_limits(limits(32))
++        .unwrap();
++    assert!(!orphan.exists());
++    let partition = keyspace
++        .open_partition("eidetic", PartitionCreateOptions::default())
++        .unwrap();
++    assert_eq!(
++        partition.get("large").unwrap().unwrap().as_ref(),
++        b"a much larger value"
++    );
++}
++
++#[test]
++fn bounded_open_creates_an_empty_owner_and_reopens_its_data() {
++    let dir = tempfile::tempdir().unwrap();
++    {
++        let keyspace = Config::new(dir.path())
++            .flush_workers(0)
++            .compaction_workers(0)
++            .open_with_recovery_limits(limits(32))
++            .unwrap();
++        let partition = keyspace
++            .open_partition("eidetic", PartitionCreateOptions::default())
++            .unwrap();
++        partition.insert("new", "value").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let keyspace = Config::new(dir.path())
++        .flush_workers(0)
++        .compaction_workers(0)
++        .open_with_recovery_limits(limits(32))
++        .unwrap();
++    let partition = keyspace
++        .open_partition("eidetic", PartitionCreateOptions::default())
++        .unwrap();
++    assert_eq!(partition.get("new").unwrap().unwrap().as_ref(), b"value");
++}
++
++#[test]
++fn bounded_open_rejects_nonempty_uninitialized_directory_without_mutation() {
++    let dir = tempfile::tempdir().unwrap();
++    std::fs::write(dir.path().join("retained"), b"do not overwrite").unwrap();
++    let before = inventory(dir.path());
++    assert!(matches!(
++        Config::new(dir.path()).open_with_recovery_limits(limits(32)),
++        Err(RecoveryError::Unsupported(_))
++    ));
++    let mut after = inventory(dir.path());
++    // The only allowed newly-created coordination artifact.
++    after.remove(".fjall-owner.lock");
++    assert_eq!(after, before);
++}
++
++#[test]
++fn bounded_open_metadata_exhaustion_after_journals_preserves_repair_candidate() {
++    use fjall::bounded_recovery::{prepare_journal_set, RecoveryBudget};
++    let dir = two_journals_with_repairable_tail();
++    let before = inventory(dir.path());
++    let mut measured = RecoveryBudget::new(limits(32));
++    let journals = prepare_journal_set(dir.path(), &mut measured).unwrap();
++    let after_journals = measured.metadata_bytes();
++    drop(journals);
++    let mut ceilings = limits(32);
++    // Version-path setup fits; partition directory admission exceeds this.
++    ceilings.max_metadata_bytes = after_journals + 2048;
++    assert!(matches!(
++        Config::new(dir.path()).open_with_recovery_limits(ceilings),
++        Err(RecoveryError::Limit {
++            kind: RecoveryLimitKind::MetadataBytes,
++            ..
++        })
++    ));
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[test]
++fn bounded_open_rejects_any_blob_partition_before_mutation() {
++    let dir = tempfile::tempdir().unwrap();
++    {
++        let keyspace = Config::new(dir.path())
++            .flush_workers(0)
++            .compaction_workers(0)
++            .open()
++            .unwrap();
++        let plain = keyspace
++            .open_partition("plain", PartitionCreateOptions::default())
++            .unwrap();
++        let blob = keyspace
++            .open_partition(
++                "blob",
++                PartitionCreateOptions::default().with_kv_separation(Default::default()),
++            )
++            .unwrap();
++        plain.insert("small", "value").unwrap();
++        blob.insert("other", "bytes").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let before = inventory(dir.path());
++    assert!(matches!(
++        Config::new(dir.path()).open_with_recovery_limits(limits(32)),
++        Err(RecoveryError::Unsupported(_))
++    ));
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[test]
++fn bounded_open_recovers_partial_flush_sealed_and_active_then_flushes_again() {
++    let dir = tempfile::tempdir().unwrap();
++    {
++        let keyspace = fjall::Keyspace::create_or_recover(
++            Config::new(dir.path())
++                .flush_workers(1)
++                .compaction_workers(0),
++        )
++        .unwrap();
++        let first = keyspace
++            .open_partition("first", PartitionCreateOptions::default())
++            .unwrap();
++        let second = keyspace
++            .open_partition("second", PartitionCreateOptions::default())
++            .unwrap();
++        first.insert("old", "disk-first").unwrap();
++        second.insert("old", "journal-second").unwrap();
++        assert!(first.rotate_memtable().unwrap());
++        keyspace.force_flush().unwrap();
++        assert!(first.flushes_completed() > 0);
++        first.insert("middle", "sealed-first").unwrap();
++        second.insert("middle", "sealed-second").unwrap();
++        assert!(second.rotate_memtable().unwrap());
++        first.insert("active", "active-first").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    {
++        let keyspace = Config::new(dir.path())
++            .flush_workers(1)
++            .compaction_workers(0)
++            .open_with_recovery_limits(limits(64))
++            .unwrap();
++        let first = keyspace
++            .open_partition("first", PartitionCreateOptions::default())
++            .unwrap();
++        let second = keyspace
++            .open_partition("second", PartitionCreateOptions::default())
++            .unwrap();
++        assert_eq!(first.get("old").unwrap().unwrap().as_ref(), b"disk-first");
++        assert_eq!(
++            first.get("middle").unwrap().unwrap().as_ref(),
++            b"sealed-first"
++        );
++        assert_eq!(
++            first.get("active").unwrap().unwrap().as_ref(),
++            b"active-first"
++        );
++        assert_eq!(
++            second.get("old").unwrap().unwrap().as_ref(),
++            b"journal-second"
++        );
++        assert_eq!(
++            second.get("middle").unwrap().unwrap().as_ref(),
++            b"sealed-second"
++        );
++        first.insert("later", "post-recovery").unwrap();
++        assert!(first.rotate_memtable().unwrap());
++        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
++        while (first.flushes_completed() < 2 || second.flushes_completed() < 2)
++            && std::time::Instant::now() < deadline
++        {
++            std::thread::sleep(std::time::Duration::from_millis(10));
++        }
++        assert!(
++            first.flushes_completed() >= 2,
++            "first partition's recovered flushes did not finish"
++        );
++        assert!(
++            second.flushes_completed() >= 2,
++            "second partition's recovered flushes did not finish"
++        );
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let keyspace = Config::new(dir.path())
++        .flush_workers(0)
++        .compaction_workers(0)
++        .open_with_recovery_limits(limits(64))
++        .unwrap();
++    let first = keyspace
++        .open_partition("first", PartitionCreateOptions::default())
++        .unwrap();
++    let second = keyspace
++        .open_partition("second", PartitionCreateOptions::default())
++        .unwrap();
++    assert_eq!(first.get("old").unwrap().unwrap().as_ref(), b"disk-first");
++    assert_eq!(
++        first.get("later").unwrap().unwrap().as_ref(),
++        b"post-recovery"
++    );
++    assert_eq!(
++        second.get("old").unwrap().unwrap().as_ref(),
++        b"journal-second"
++    );
++    assert_eq!(
++        second.get("middle").unwrap().unwrap().as_ref(),
++        b"sealed-second"
++    );
++}
++
++#[test]
++fn bounded_open_accounts_recovered_sealed_write_buffer() {
++    let dir = tempfile::tempdir().unwrap();
++    let expected;
++    {
++        let keyspace = fjall::Keyspace::create_or_recover(
++            Config::new(dir.path())
++                .flush_workers(0)
++                .compaction_workers(0),
++        )
++        .unwrap();
++        let partition = keyspace
++            .open_partition("data", PartitionCreateOptions::default())
++            .unwrap();
++        partition.insert("sealed", "value-before-rotation").unwrap();
++        assert!(partition.rotate_memtable().unwrap());
++        partition.insert("active", "value-after-rotation").unwrap();
++        expected = keyspace.write_buffer_size();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let keyspace = Config::new(dir.path())
++        .flush_workers(0)
++        .compaction_workers(0)
++        .open_with_recovery_limits(limits(64))
++        .unwrap();
++    assert_eq!(keyspace.write_buffer_size(), expected);
++}
++
++#[test]
++fn temporary_owner_survives_partition_snapshot_and_iterators() {
++    for mode in 0..3 {
++        let dir = tempfile::tempdir().unwrap();
++        let path = dir.path().join("store");
++        if mode == 2 {
++            drop(
++                Config::new(&path)
++                    .flush_workers(0)
++                    .compaction_workers(0)
++                    .open()
++                    .unwrap(),
++            );
++        }
++        let config = Config::new(&path)
++            .temporary(true)
++            .flush_workers(0)
++            .compaction_workers(0);
++        let keyspace = if mode != 0 {
++            config.open_with_recovery_limits(limits(64)).unwrap()
++        } else {
++            config.open().unwrap()
++        };
++        #[cfg(unix)]
++        let inode = {
++            use std::os::unix::fs::MetadataExt;
++            std::fs::metadata(path.join(".fjall-owner.lock"))
++                .unwrap()
++                .ino()
++        };
++        let partition = keyspace
++            .open_partition("data", PartitionCreateOptions::default())
++            .unwrap();
++        partition.insert("key", "value").unwrap();
++        let snapshot = partition.snapshot();
++        let mut iter = partition.iter();
++        let mut snapshot_iter = snapshot.iter();
++        drop(keyspace);
++        assert!(Config::new(&path).open().is_err());
++        assert_eq!(partition.get("key").unwrap().unwrap().as_ref(), b"value");
++        drop(partition);
++        assert!(Config::new(&path).open().is_err());
++        assert_eq!(snapshot.get("key").unwrap().unwrap().as_ref(), b"value");
++        drop(snapshot);
++        assert!(Config::new(&path).open().is_err());
++        assert!(iter.next().unwrap().is_ok());
++        drop(iter);
++        assert!(Config::new(&path).open().is_err());
++        assert!(snapshot_iter.next().unwrap().is_ok());
++        drop(snapshot_iter);
++        assert_eq!(std::fs::read_dir(&path).unwrap().count(), 1);
++        #[cfg(unix)]
++        {
++            use std::os::unix::fs::MetadataExt;
++            assert_eq!(
++                std::fs::metadata(path.join(".fjall-owner.lock"))
++                    .unwrap()
++                    .ino(),
++                inode
++            );
++        }
++        assert!(Config::new(&path).open().is_ok());
++    }
++}
++
++#[test]
++fn temporary_transaction_iterator_retains_owner() {
++    let dir = tempfile::tempdir().unwrap();
++    let path = dir.path().join("store");
++    let keyspace = Config::new(&path)
++        .temporary(true)
++        .open_transactional()
++        .unwrap();
++    let partition = keyspace
++        .open_partition("data", PartitionCreateOptions::default())
++        .unwrap();
++    partition.insert("key", "value").unwrap();
++    let tx = keyspace.read_tx();
++    let mut iter = tx.iter(&partition);
++    drop(tx);
++    drop(partition);
++    drop(keyspace);
++    assert!(Config::new(&path).open().is_err());
++    assert!(iter.next().unwrap().is_ok());
++    drop(iter);
++    assert_eq!(std::fs::read_dir(&path).unwrap().count(), 1);
++    assert!(Config::new(&path).open().is_ok());
++}
++
++#[cfg(unix)]
++#[test]
++fn failed_temporary_open_keeps_unrelated_store_data() {
++    use std::os::unix::fs::PermissionsExt;
++    let dir = tempfile::tempdir().unwrap();
++    let path = dir.path().join("store");
++    {
++        let keyspace = Config::new(&path)
++            .flush_workers(0)
++            .compaction_workers(0)
++            .open()
++            .unwrap();
++        let partition = keyspace
++            .open_partition("data", PartitionCreateOptions::default())
++            .unwrap();
++        partition.insert("key", "value").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let orphan = path.join("partitions/orphan");
++    std::fs::create_dir(&orphan).unwrap();
++    std::fs::write(orphan.join("cannot-remove"), b"sentinel").unwrap();
++    std::fs::set_permissions(&orphan, std::fs::Permissions::from_mode(0o500)).unwrap();
++    let result = Config::new(&path)
++        .temporary(true)
++        .flush_workers(0)
++        .compaction_workers(0)
++        .open_with_recovery_limits(limits(64));
++    if orphan.exists() {
++        std::fs::set_permissions(&orphan, std::fs::Permissions::from_mode(0o700)).unwrap();
++    }
++    assert!(matches!(result, Err(RecoveryError::Io(_))));
++    assert_eq!(
++        std::fs::read(orphan.join("cannot-remove")).unwrap(),
++        b"sentinel"
++    );
++    assert!(path.join("version").exists());
++}
+diff --git a/crates/muniment/src/fjall_recovery_set_tests.rs b/crates/muniment/src/fjall_recovery_set_tests.rs
+new file mode 100644
+index 0000000..f47efc6
+--- /dev/null
++++ b/crates/muniment/src/fjall_recovery_set_tests.rs
+@@ -0,0 +1,199 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::recovery_fixture::{inventory, limits, two_journals_with_repairable_tail};
++use fjall::bounded_recovery::{prepare_journal_set, RecoveryBudget, RecoveryError, RecoveryLimitKind};
++use fjall::Config;
++
++#[test]
++fn journal_set_refusal_preserves_earlier_tail_and_later_valid_batch() {
++    let dir = two_journals_with_repairable_tail();
++    let before = inventory(dir.path());
++    let result = prepare_journal_set(dir.path(), &mut RecoveryBudget::new(limits(5)));
++    assert!(matches!(result, Err(RecoveryError::Limit { kind: RecoveryLimitKind::ValueBytes, .. })));
++    assert_eq!(inventory(dir.path()), before);
++    let plan = prepare_journal_set(dir.path(), &mut RecoveryBudget::new(limits(32))).unwrap();
++    assert_eq!(plan.journal_count(), 2);
++    assert_eq!(plan.item_count(), 2);
++    drop(plan);
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[test]
++fn journal_set_plan_holds_lease_until_drop() {
++    let dir = two_journals_with_repairable_tail();
++    let plan = prepare_journal_set(dir.path(), &mut RecoveryBudget::new(limits(32))).unwrap();
++    assert!(Config::new(dir.path()).open().is_err());
++    drop(plan);
++    assert!(Config::new(dir.path()).open().is_ok());
++}
++
++#[test]
++fn journal_set_metadata_limit_refusal_preserves_inventory() {
++    let dir = two_journals_with_repairable_tail();
++    let before = inventory(dir.path());
++    let mut restricted = limits(32);
++    restricted.max_metadata_bytes = 1;
++    assert!(matches!(prepare_journal_set(dir.path(), &mut RecoveryBudget::new(restricted)), Err(RecoveryError::Limit { kind: RecoveryLimitKind::MetadataBytes, .. })));
++    assert_eq!(inventory(dir.path()), before);
++}
++
++fn replay_fixture() -> tempfile::TempDir {
++    let dir = tempfile::TempDir::new().unwrap();
++    {
++        let keyspace = Config::new(dir.path()).flush_workers(0).compaction_workers(0).open().unwrap();
++        let primary = keyspace.open_partition("primary", fjall::PartitionCreateOptions::default()).unwrap();
++        let unknown = keyspace.open_partition("unknown", fjall::PartitionCreateOptions::default()).unwrap();
++        primary.insert("old", "prior").unwrap();
++        primary.insert("gone", "old").unwrap();
++        unknown.insert("alien", "hidden").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++        assert!(primary.rotate_memtable().unwrap());
++        primary.insert("old", "new").unwrap();
++        primary.remove("gone").unwrap();
++        primary.insert("new", "value").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    dir
++}
++
++#[test]
++fn prepared_replay_retains_latest_values_without_mutation() {
++    use fjall::bounded_recovery::ReplayPartition;
++    let dir = replay_fixture();
++    let before = inventory(dir.path());
++    let mut budget = RecoveryBudget::new(limits(128));
++    let journals = prepare_journal_set(dir.path(), &mut budget).unwrap();
++    let replay = journals.prepare_replay(&[ReplayPartition { name: "primary", highest_persisted_seqno: None }], &mut budget).unwrap();
++    assert_eq!(replay.get("primary", b"old").as_deref(), Some(b"new".as_slice()));
++    assert_eq!(replay.get("primary", b"gone").as_deref(), None);
++    assert_eq!(replay.get("primary", b"new").as_deref(), Some(b"value".as_slice()));
++    assert_eq!(replay.get("unknown", b"alien").as_deref(), None);
++    drop(replay);
++    drop(journals);
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[test]
++fn prepared_replay_allocation_limit_preserves_inventory() {
++    use fjall::bounded_recovery::ReplayPartition;
++    let dir = replay_fixture();
++    let before = inventory(dir.path());
++    let mut budget = RecoveryBudget::new(limits(128));
++    let journals = prepare_journal_set(dir.path(), &mut budget).unwrap();
++    budget.tighten_allocation_limit(budget.allocated_bytes());
++    assert!(matches!(journals.prepare_replay(&[ReplayPartition { name: "primary", highest_persisted_seqno: None }], &mut budget), Err(RecoveryError::Limit { kind: RecoveryLimitKind::AllocationBytes, .. })));
++    drop(journals);
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[test]
++fn prepared_replay_skips_persisted_sealed_items_but_keeps_active_items() {
++    use fjall::bounded_recovery::ReplayPartition;
++    let dir = tempfile::TempDir::new().unwrap();
++    let watermark;
++    {
++        let keyspace = Config::new(dir.path()).flush_workers(0).compaction_workers(0).open().unwrap();
++        let primary = keyspace.open_partition("primary", fjall::PartitionCreateOptions::default()).unwrap();
++        primary.insert("sealed", "older").unwrap();
++        watermark = keyspace.instant().checked_sub(1).unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++        assert!(primary.rotate_memtable().unwrap());
++        primary.insert("active", "newer").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let before = inventory(dir.path());
++    let mut budget = RecoveryBudget::new(limits(128));
++    let journals = prepare_journal_set(dir.path(), &mut budget).unwrap();
++    let replay = journals.prepare_replay(&[ReplayPartition { name: "primary", highest_persisted_seqno: Some(watermark) }], &mut budget).unwrap();
++    assert_eq!(replay.get("primary", b"sealed").as_deref(), None);
++    assert_eq!(replay.get("primary", b"active").as_deref(), Some(b"newer".as_slice()));
++    let replay_without_watermark = journals.prepare_replay(&[ReplayPartition { name: "primary", highest_persisted_seqno: None }], &mut budget).unwrap();
++    assert_eq!(replay_without_watermark.get("primary", b"sealed").as_deref(), Some(b"older".as_slice()));
++    drop(replay_without_watermark);
++    drop(replay);
++    drop(journals);
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[test]
++fn prepared_replay_keeps_owner_lease_after_journal_plan_drops() {
++    use fjall::bounded_recovery::ReplayPartition;
++    let dir = replay_fixture();
++    let mut budget = RecoveryBudget::new(limits(128));
++    let journals = prepare_journal_set(dir.path(), &mut budget).unwrap();
++    let replay = journals.prepare_replay(&[ReplayPartition { name: "primary", highest_persisted_seqno: None }], &mut budget).unwrap();
++    drop(journals);
++    assert!(Config::new(dir.path()).open().is_err());
++    drop(replay);
++    assert!(Config::new(dir.path()).open().is_ok());
++}
++
++#[test]
++fn prepared_replay_rejects_a_fresh_budget() {
++    use fjall::bounded_recovery::ReplayPartition;
++    let dir = replay_fixture();
++    let before = inventory(dir.path());
++    let mut admission_budget = RecoveryBudget::new(limits(128));
++    let journals = prepare_journal_set(dir.path(), &mut admission_budget).unwrap();
++    let mut fresh_budget = RecoveryBudget::new(limits(128));
++    assert!(matches!(journals.prepare_replay(&[ReplayPartition { name: "primary", highest_persisted_seqno: None }], &mut fresh_budget), Err(RecoveryError::Unsupported(_))));
++    drop(journals);
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[cfg(any(target_os = "linux", target_os = "macos"))]
++#[test]
++fn journal_set_metadata_budget_covers_native_directory_name_bounds() {
++    let dir = two_journals_with_repairable_tail();
++    let before = inventory(dir.path());
++    let mut ceilings = limits(128);
++    ceilings.max_metadata_bytes = 1_000_000;
++    let plan = prepare_journal_set(dir.path(), &mut RecoveryBudget::new(ceilings)).unwrap();
++    assert_eq!(plan.journal_count(), 2);
++    drop(plan);
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[test]
++fn partition_options_admission_enforces_input_and_metadata_without_mutation() {
++    use fjall::bounded_recovery::prepare_partition_options;
++    let dir = tempfile::tempdir().unwrap();
++    {
++        let keyspace = Config::new(dir.path()).flush_workers(0).compaction_workers(0).open().unwrap();
++        keyspace.open_partition("plain", fjall::PartitionCreateOptions::default()).unwrap();
++    }
++    let path = dir.path().join("partitions/plain");
++    let size = std::fs::metadata(path.join("config")).unwrap().len();
++    let before = inventory(dir.path());
++    let mut exact = limits(128);
++    exact.max_input_bytes = size;
++    assert!(prepare_partition_options(&path, &mut RecoveryBudget::new(exact.clone())).is_ok());
++    exact.max_input_bytes = size - 1;
++    assert!(matches!(prepare_partition_options(&path, &mut RecoveryBudget::new(exact)), Err(RecoveryError::Limit { kind: RecoveryLimitKind::InputBytes, .. })));
++    let mut no_metadata = limits(128);
++    no_metadata.max_metadata_bytes = 0;
++    assert!(matches!(prepare_partition_options(&path, &mut RecoveryBudget::new(no_metadata)), Err(RecoveryError::Limit { kind: RecoveryLimitKind::MetadataBytes, .. })));
++    assert_eq!(inventory(dir.path()), before);
++}
++
++#[test]
++fn partition_options_reject_blob_and_malformed_compression_before_mutation() {
++    use fjall::bounded_recovery::prepare_partition_options;
++    let dir = tempfile::tempdir().unwrap();
++    {
++        let keyspace = Config::new(dir.path()).flush_workers(0).compaction_workers(0).open().unwrap();
++        keyspace.open_partition("plain", fjall::PartitionCreateOptions::default()).unwrap();
++        keyspace.open_partition("blob", fjall::PartitionCreateOptions::default().with_kv_separation(Default::default())).unwrap();
++    }
++    let plain = dir.path().join("partitions/plain");
++    let blob = dir.path().join("partitions/blob");
++    let mut malformed = std::fs::read(plain.join("config")).unwrap();
++    // Header(4), level/type(2), three u32 fields(12), then compression tag/padding.
++    malformed[19] = 255;
++    std::fs::write(plain.join("config"), malformed).unwrap();
++    let before = inventory(dir.path());
++    assert!(matches!(prepare_partition_options(blob, &mut RecoveryBudget::new(limits(128))), Err(RecoveryError::Unsupported(_))));
++    assert!(matches!(prepare_partition_options(plain, &mut RecoveryBudget::new(limits(128))), Err(RecoveryError::Corruption(_))));
++    assert_eq!(inventory(dir.path()), before);
++}
+diff --git a/crates/muniment/src/fjall_recovery_tests.rs b/crates/muniment/src/fjall_recovery_tests.rs
+new file mode 100644
+index 0000000..cde0419
+--- /dev/null
++++ b/crates/muniment/src/fjall_recovery_tests.rs
+@@ -0,0 +1,234 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++use fjall::bounded_recovery::{prepare_journal, RecoveryBudget, RecoveryError, RecoveryLimitKind, RecoveryLimits};
++use std::path::PathBuf;
++use tempfile::TempDir;
++
++fn limits() -> RecoveryLimits {
++    RecoveryLimits { max_value_bytes: 1024, max_key_bytes: 1024,
++        max_replay_bytes: 65_536, max_replay_items: 1000, max_metadata_bytes: 65_536,
++        max_input_bytes: 134_217_728, max_alloc_bytes: 65_536 }
++}
++
++fn journal(items: &[(&str, &[u8])]) -> (TempDir, PathBuf) {
++    let dir = TempDir::new().unwrap();
++    {
++        let keyspace = Config::new(dir.path()).open().unwrap();
++        let partition = keyspace.open_partition("p", PartitionCreateOptions::default()).unwrap();
++        let mut batch = keyspace.batch();
++        for (key, value) in items {
++            batch.insert(&partition, *key, *value);
++        }
++        batch.commit().unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let files: Vec<_> = std::fs::read_dir(dir.path().join("journals")).unwrap()
++        .map(|entry| entry.unwrap().path()).collect();
++    assert_eq!(files.len(), 1);
++    (dir, files[0].clone())
++}
++
++#[test]
++fn journal_allocation_limit_includes_checksum_scratch() {
++    let (_dir, path) = journal(&[("k", b"v")]);
++    let before = std::fs::read(&path).unwrap();
++    let limits = RecoveryLimits { max_alloc_bytes: 200, ..limits() };
++    let result = prepare_journal(&path, &mut RecoveryBudget::new(limits));
++    assert!(matches!(result, Err(RecoveryError::Limit { kind: RecoveryLimitKind::AllocationBytes, .. })));
++    assert_eq!(std::fs::read(path).unwrap(), before);
++}
++
++#[test]
++fn journal_rejects_input_limit_before_requesting_value_buffer() {
++    let value = vec![7; 8192];
++    let (_dir, path) = journal(&[("k", &value)]);
++    let before = std::fs::read(&path).unwrap();
++    let limits = RecoveryLimits { max_value_bytes: 8192, max_input_bytes: 26, ..limits() };
++    let mut budget = RecoveryBudget::new(limits);
++    assert!(matches!(prepare_journal(&path, &mut budget), Err(RecoveryError::Limit { kind: RecoveryLimitKind::InputBytes, .. })));
++    assert!(budget.allocated_bytes() < 8192, "value buffer was requested before input refusal");
++    assert_eq!(std::fs::read(path).unwrap(), before);
++}
++
++#[test]
++fn truncated_large_value_does_not_request_declared_buffer() {
++    let value = vec![7; 8192];
++    let (_dir, path) = journal(&[("k", &value)]);
++    let mut bytes = std::fs::read(&path).unwrap();
++    // The length field is present, but the declared body is incomplete.
++    bytes.truncate(38);
++    std::fs::write(&path, &bytes).unwrap();
++    let mut budget = RecoveryBudget::new(RecoveryLimits { max_value_bytes: 8192, ..limits() });
++    let result = prepare_journal(&path, &mut budget);
++    assert!(matches!(result, Err(RecoveryError::Corruption(_))));
++    assert!(budget.allocated_bytes() < 8192, "truncated value was allocated");
++    assert_eq!(std::fs::read(path).unwrap(), bytes);
++}
++
++#[test]
++fn journal_accepts_exact_key_value_boundaries_and_large_batch() {
++    let items: Vec<_> = (0..100).map(|_| ("key", b"123456".as_slice())).collect();
++    let (_dir, path) = journal(&items);
++    let exact = RecoveryLimits { max_key_bytes: 4, max_value_bytes: 6, ..limits() };
++    assert_eq!(prepare_journal(path, &mut RecoveryBudget::new(exact)).unwrap().item_count(), 100);
++}
++
++#[test]
++fn journal_replay_item_limit_accepts_exact_batch_boundary() {
++    let (_dir, path) = journal(&[("k", b"v")]);
++    let exact = RecoveryLimits { max_replay_items: 3, ..limits() };
++    assert_eq!(prepare_journal(&path, &mut RecoveryBudget::new(exact)).unwrap().item_count(), 1);
++    let small = RecoveryLimits { max_replay_items: 2, ..limits() };
++    assert!(matches!(prepare_journal(path, &mut RecoveryBudget::new(small)), Err(RecoveryError::Limit { kind: RecoveryLimitKind::ReplayItems, .. })));
++}
++
++#[test]
++fn journal_replay_budget_is_shared_between_files() {
++    let (_dir1, first) = journal(&[("k", b"v")]);
++    let (_dir2, second) = journal(&[("k", b"v")]);
++    let mut budget = RecoveryBudget::new(RecoveryLimits { max_replay_bytes: 5, ..limits() });
++    assert_eq!(prepare_journal(&first, &mut budget).unwrap().item_count(), 1);
++    assert!(matches!(prepare_journal(&second, &mut budget), Err(RecoveryError::Limit { kind: RecoveryLimitKind::ReplayBytes, .. })));
++}
++
++#[test]
++fn journal_reports_count_mismatch_without_mutation() {
++    let (_dir, path) = journal(&[("a", b"v"), ("b", b"v")]);
++    let mut bytes = std::fs::read(&path).unwrap();
++    bytes[1..5].copy_from_slice(&1_u32.to_be_bytes());
++    std::fs::write(&path, &bytes).unwrap();
++    assert!(matches!(prepare_journal(&path, &mut RecoveryBudget::new(limits())), Err(RecoveryError::Corruption(_))));
++    assert_eq!(std::fs::read(path).unwrap(), bytes);
++}
++
++#[test]
++fn journal_reports_checksum_mismatch_without_mutation() {
++    let (_dir, path) = journal(&[("k", b"v")]);
++    let mut bytes = std::fs::read(&path).unwrap();
++    // One-item batch: 15-byte start, 12-byte item, end tag then checksum.
++    bytes[29] ^= 1;
++    std::fs::write(&path, &bytes).unwrap();
++    assert!(matches!(prepare_journal(&path, &mut RecoveryBudget::new(limits())), Err(RecoveryError::Corruption(_))));
++    assert_eq!(std::fs::read(path).unwrap(), bytes);
++}
++
++#[test]
++fn journal_incomplete_tail_is_not_truncated_by_prepare() {
++    let (_dir, path) = journal(&[("k", b"v")]);
++    let mut bytes = std::fs::read(&path).unwrap();
++    // The journal is preallocated, so trim within the first batch trailer.
++    bytes.truncate(39);
++    std::fs::write(&path, &bytes).unwrap();
++    assert_eq!(prepare_journal(&path, &mut RecoveryBudget::new(limits())).unwrap().item_count(), 0);
++    assert_eq!(std::fs::read(path).unwrap(), bytes);
++}
++
++#[test]
++fn partial_flush_across_partitions_preserves_acknowledged_values_on_reopen() {
++    let dir = TempDir::new().unwrap();
++    {
++        let keyspace = Config::new(dir.path()).flush_workers(1).compaction_workers(0).open().unwrap();
++        let first = keyspace.open_partition("first", PartitionCreateOptions::default()).unwrap();
++        let second = keyspace.open_partition("second", PartitionCreateOptions::default()).unwrap();
++        first.insert("earlier", "first-old").unwrap();
++        second.insert("earlier", "second-old").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++        first.rotate_memtable_and_wait().unwrap();
++        assert!(first.flushes_completed() > 0);
++        first.insert("later", "first-new").unwrap();
++        second.insert("later", "second-new").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let keyspace = Config::new(dir.path()).flush_workers(0).compaction_workers(0).open().unwrap();
++    let first = keyspace.open_partition("first", PartitionCreateOptions::default()).unwrap();
++    let second = keyspace.open_partition("second", PartitionCreateOptions::default()).unwrap();
++    for (partition, earlier, later) in [(&first, b"first-old".as_slice(), b"first-new".as_slice()), (&second, b"second-old".as_slice(), b"second-new".as_slice())] {
++        assert_eq!(partition.get("earlier").unwrap().unwrap().as_ref(), earlier);
++        assert_eq!(partition.get("later").unwrap().unwrap().as_ref(), later);
++    }
++}
++
++#[test]
++fn journal_malformed_marker_before_later_batch_is_corruption_without_mutation() {
++    let dir = TempDir::new().unwrap();
++    {
++        let keyspace = Config::new(dir.path()).flush_workers(0).compaction_workers(0).open().unwrap();
++        let partition = keyspace.open_partition("p", PartitionCreateOptions::default()).unwrap();
++        partition.insert("a", "v").unwrap();
++        partition.insert("b", "w").unwrap();
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let path = std::fs::read_dir(dir.path().join("journals")).unwrap().next().unwrap().unwrap().path();
++    let original = std::fs::read(&path).unwrap();
++    // Each first batch is 15-byte start + 12-byte item + 13-byte end.
++    for damaged in [0xff_u8, 0] {
++        let mut bytes = original.clone();
++        bytes[40] = damaged;
++        std::fs::write(&path, &bytes).unwrap();
++        assert!(matches!(prepare_journal(&path, &mut RecoveryBudget::new(limits())), Err(RecoveryError::Corruption(_))));
++        assert_eq!(std::fs::read(&path).unwrap(), bytes);
++    }
++}
++
++#[test]
++fn journal_malformed_item_and_trailer_are_corruption_without_mutation() {
++    let (_dir, path) = journal(&[("k", b"v")]);
++    let original = std::fs::read(&path).unwrap();
++    // One item: value type at 16, partition at 18, end trailer at 36.
++    for index in [16_usize, 18, 36] {
++        let mut bytes = original.clone();
++        bytes[index] = 0xff;
++        std::fs::write(&path, &bytes).unwrap();
++        assert!(matches!(prepare_journal(&path, &mut RecoveryBudget::new(limits())), Err(RecoveryError::Corruption(_))));
++        assert_eq!(std::fs::read(&path).unwrap(), bytes);
++    }
++}
++
++#[test]
++fn journal_many_small_batches_use_bounded_geometric_metadata_growth() {
++    let dir = TempDir::new().unwrap();
++    {
++        let keyspace = Config::new(dir.path()).flush_workers(0).compaction_workers(0).open().unwrap();
++        let partition = keyspace.open_partition("p", PartitionCreateOptions::default()).unwrap();
++        for index in 0..256 {
++            partition.insert(format!("key-{index}"), b"v").unwrap();
++        }
++        keyspace.persist(fjall::PersistMode::SyncAll).unwrap();
++    }
++    let path = std::fs::read_dir(dir.path().join("journals")).unwrap().next().unwrap().unwrap().path();
++    let before = std::fs::read(&path).unwrap();
++    let ceilings = RecoveryLimits { max_metadata_bytes: 200_000, max_alloc_bytes: 1_000_000, ..limits() };
++    let plan = prepare_journal(&path, &mut RecoveryBudget::new(ceilings)).unwrap();
++    assert_eq!(plan.item_count(), 256);
++    assert_eq!(std::fs::read(path).unwrap(), before);
++}
++
++#[test]
++fn journal_declared_count_exceeding_remaining_input_does_not_allocate_batch() {
++    let (_dir, path) = journal(&[("k", b"v")]);
++    let mut bytes = std::fs::read(&path).unwrap();
++    bytes[1..5].copy_from_slice(&u32::MAX.to_be_bytes());
++    std::fs::write(&path, &bytes).unwrap();
++    let mut ceilings = limits();
++    ceilings.max_replay_items = u64::MAX;
++    ceilings.max_metadata_bytes = u64::MAX;
++    ceilings.max_alloc_bytes = u64::MAX;
++    let mut budget = RecoveryBudget::new(ceilings);
++    assert!(matches!(prepare_journal(&path, &mut budget), Err(RecoveryError::Corruption(_))));
++    assert!(budget.allocated_bytes() < 1024);
++    assert_eq!(std::fs::read(path).unwrap(), bytes);
++}
++
++#[test]
++fn journal_padding_input_budget_counts_all_physical_bytes() {
++    let (_dir, path) = journal(&[("k", b"v")]);
++    let before = std::fs::read(&path).unwrap();
++    let mut exact = limits();
++    exact.max_input_bytes = before.len() as u64;
++    assert_eq!(prepare_journal(&path, &mut RecoveryBudget::new(exact.clone())).unwrap().item_count(), 1);
++    exact.max_input_bytes -= 1;
++    assert!(matches!(prepare_journal(&path, &mut RecoveryBudget::new(exact)), Err(RecoveryError::Limit { kind: RecoveryLimitKind::InputBytes, .. })));
++    assert_eq!(std::fs::read(path).unwrap(), before);
++}
+diff --git a/crates/muniment/src/lib.rs b/crates/muniment/src/lib.rs
+index 7dcd429..62c5fb3 100644
+--- a/crates/muniment/src/lib.rs
++++ b/crates/muniment/src/lib.rs
+@@ -41,7 +41,14 @@ pub mod error;
+ #[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
+ pub mod fjall_backend;
+ #[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
++pub mod fjall_limits;
++#[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
+ pub use fjall_backend::FjallStore;
++#[cfg(all(feature = "fjall", not(target_arch = "wasm32")))]
++pub use fjall_limits::{
++    FjallBoundError, FjallLimitKind, FjallOwnerLimits, FjallReadBudget, FjallReadLimits,
++    FjallRecoveryLimits,
++};
+ #[cfg(all(feature = "indexeddb", target_arch = "wasm32"))]
+ pub mod indexeddb_backend;
+ pub mod journal;
+@@ -56,7 +63,7 @@ pub use blob::{BlobStore, Hash};
+ pub use codec::Codec;
+ #[cfg(feature = "directory")]
+ pub use directory_backend::DirectoryBackend;
+-pub use error::StoreError;
++pub use error::{StoreError, StoreLimitKind};
+ pub use journal::{CausalError, Journal, LogId, Provenance, Seq};
+ pub use slot::SlotStore;
+ 
+diff --git a/support/patches/README.md b/support/patches/README.md
+new file mode 100644
+index 0000000..363493e
+--- /dev/null
++++ b/support/patches/README.md
+@@ -0,0 +1,42 @@
++# Storage engine sources
++
++These sources derive from published crates fjall 2.11.2 and lsm-tree 2.10.4,
++both licensed MIT OR Apache-2.0. Upstream license files and notices are retained.
++
++- fjall 2.11.2: https://github.com/fjall-rs/fjall; crates.io checksum
++  `0b25ad44cd4360a0448a9b5a0a6f1c7a621101cca4578706d43c9a821418aebc`.
++- lsm-tree 2.10.4: https://github.com/fjall-rs/lsm-tree; crates.io checksum
++  `799399117a2bfb37660e08be33f470958babb98386b04185288d829df362ea15`.
++
++Direct path edges let Git consumers receive these exact sources. The M4
++bounded read and non-mutating recovery extension is not complete or qualified.
++Registry publication of Muniment needs a separate dependency strategy.
++The derived Fjall manifest uses the workspace's Rust 1.97.1 floor for native
++file locking; its upstream 2.11.2 manifest declared Rust 1.76.0.
++The derived Fjall makes the partition tree private and replaces snapshot Deref
++with forwarding methods so iterator and snapshot capabilities retain their
++cooperative owner lease. This is an intentional upstream API change.
++
++Bounded standard-tree preparation omits the optional Bloom filter and loads
++full indexes under admission limits. The bounded read path independently
++rereads index and data blocks under the shared call/operation ledger rather
++than using cache entries whose original work was not charged. This preserves
++lookup behavior but can increase disk reads. The byte-backed optional Slice
++feature remains unsupported by bounded recovery and reads pending an
++allocation audit.
++
++The current runtime receipts cover Linux with Rust 1.99.1. Linux and macOS
++path accounting follows the inspected standard-library Unix implementation;
++macOS has not been runtime tested. Windows short absolute paths use the
++source-audited UTF-16 conversion; long or nonabsolute paths explicitly refuse
++until their normalization allocations are audited. No Windows runtime result
++is claimed. Descriptor and path capacity bounds depend on the inspected Rust
++standard library and pinned collection implementations, and must be rechecked
++when the toolchain or those implementations change; the Rust 1.97.1 manifest
++floor alone does not establish qualification on every later compiler.
++
++After a successful temporary-store open, cleanup waits for the last owner
++capability, removes the store contents, and retains the root and
++`.fjall-owner.lock` coordination inode. Advisory locking covers cooperating
++updated owners; arbitrary deletion or modification by other processes is
++outside that contract.
