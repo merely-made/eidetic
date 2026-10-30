@@ -1329,63 +1329,47 @@ receipt from a run; it cannot stand in for performing that run.
   existing generated-answer compatibility cases separately; keep the 8/15
   semantic result and other platform limits unchanged.
 
-**Progress (2026-10-30):** the earlier host changes are published through
-Turnstone `22628cf9`, and the real custody fixture through Mere `8fec5603`.
-GitHub publication was recovered through an idle authorized host; exact commits
-were fetched back and remote checkouts were preserved. The host library suite
-passed 1,278 tests at `fe015c5`. Later reader, readiness, scope-order and Knot UI
-changes have focused test and native diagnostic evidence, rather than a renewed
-full-suite result.
+**Progress (2026-10-30):** M1–M4 are landed; M5 remains in progress. Intact
+collection V completed its seed and cold reopen on Turnstone `61c25b0c`: 49 seed
+and 9 cold captures, both independent real-owner inspections passed, the original
+profile remained unchanged, and all 58 frames were reviewed. The visual reports
+note the clipped trailing word “records” with historical count 14 still visible,
+the empty-scope query with no result rows but no explicit empty-state sentence,
+and initial restored-pane identity still pending at capture. V is evidence for
+its frozen source, not for the newer upstream source.
 
-Native runs now exercise all three real producers, 14 authored records and all
-12 structured operations. They exposed and drove fixes for scope cancellation,
-note scrolling and selection readability. Completed diagnostics verify the
-exact 24-byte selection, visible highlighting and a complete fresh empty-scope
-lookup. Failed full collections and an interrupted controller remain preserved.
-A scenario correction clears a record-only property filter before source lookup;
-the native refusal and corrected query were separately checked.
+V's disposable-copy missing-source attempt failed its graph-inventory boundary.
+The A1 raw blob was absent, A2 and the complete receipt inventory remained, and
+the original V collection was unchanged. The postcheck found only the sealed owner
+journal changed among 39 inventory entries. The failed run's graph guard excluded only legacy `memory/` while including the
+actual sealed owner root, so it flagged the expected sealed journal change. An
+intermediate candidate excluded both roots and was rejected by a red regression.
+The reviewed correction excludes only the exact `memory.sealed-sources-v1/` root
+and checks legacy memory, graph and similarly named siblings. The helper and
+postcheck each exited 0 in the original failed V run; that does not make the
+overall fault collection pass. The copied Python suites pass 76/0 (5 acceptance,
+3 seed/reopen, 24 missing-source, 44 receipt integration). No corrected native
+fault run has passed; final receipt assembly remains DRAFT.
 
-Collection P passed the fresh empty-scope lookup but failed while recovering
-from the over-limit refusal. The error callback left stale visible rows; a
-focused regression reproduced that product feedback defect. The reviewed fix is
-committed as `22628cf9` after receiving upstream `5b7dacd9` and its Genet
-`5fdee500` dependency. The focused refusal check passes on this combined source;
-the short native recheck passes visible no-match, immediate limit refusal and
-settings recovery. Collection Q passes its seed with 49 captures, but cold reopen
-fails a generic text probe that does not inspect the retained-note renderer. Its
-capture readers and model-unavailable state also need ordinary navigation steps
-to be visible. A copied-profile diagnostic confirms visible exact A1/A2 passages
-through Read and Maximize. A separate copied-profile run exposes retained-clip
-storage contention. A real overlapping-read regression reproduces Fjall's
-exclusive-open refusal; it does not identify that diagnostic's original lock holder.
+A separate process-identity correction preserves U as failed: its aggregate check
+rejected repeated cross-time PID-namespace inode labels even though its ordered
+process/custody lifetimes and distinct sequential scopes were recorded. The
+reviewed replacement checks each process's namespace, cgroup, launcher unit,
+owned scope, invocation and lifetime, and verifies distinct sequential scopes.
+Do not infer kernel namespace reuse from the repeated labels.
 
-The approved next implementation uses one bounded retained-clip owner worker for
-all production read, retain, import, export and playback paths. It serializes
-operations, preserves exact storage policy and per-request budgets, and reserves
-queue and completion capacity before accepting work. UI operations are asynchronous.
-Custody retirement invalidates pending work. Export prepares bytes in memory and
-requires a synchronized authorization claim before any plaintext file write;
-an authorized write that has already claimed may finish and reports its actual
-outcome. This is not a rollback guarantee or an atomic guarantee against external
-revocation that has not yet been observed locally. Implementation and tests are
-in progress.
-
-The worker implementation has focused regression evidence and independent source
-reviews. Its combined gate exposed a second store-lifetime issue: Fjall's worker
-counter could signal completion before its owner lease was released. The supplier
-fix registers workers before spawn and signals completion after their activity
-fields drop. Its Fjall library gate passes 33 tests and the Muniment capability
-gate passes 62. The consumer must receive that revision before final qualification.
-A release audit found no newer 2.x patch containing this fix.
-
-The full retained-reader verifier repair and guarded persistent-store copy have
-passed their focused helper tests. A successful complete native run, independent
-copied-store inspection, missing-source fault run and final receipt verification
-are still required. The provisional harness is retained under
-`design_docs/archive_docs/2026-10-30/model-free-m5/harness/`, including exact scripts,
-scenarios, fixtures and build guard. Helper-test counts and source hashes are
-recorded there separately from native evidence; the fault launcher and final
-acceptance guard remain closed. See the archived receipts for exact boundaries.
+The clip owner worker/supplier source correction was published in Turnstone
+`9ec0da11`; the inspector correction and refreshed Settings/projection source
+were published at `61c25b0c`. Its warm full host suite passed 1,402 tests, 0
+failures and 21 ignored (log SHA-256
+`cfc44318b75e27c95a13a2b519632dbc0fe7a9561f04c7c6e9193eff42a8ff63`). This
+result applies to `61c25b0c`, not current upstream. Eidetic `0c89079`, Turnstone
+`554f323f` and Genet `b7c0bef` are now merged. An initial current-source gate
+stopped before compilation while exact Mere `845fe1c4` was unavailable; that
+checkout has since been fetched and a locked build is running with the lockfile
+unchanged. No current-source gate result is available yet. The fault collector
+is enabled after scoped review; its V result is failed and the final verifier
+remains DRAFT.
 
 **Done when:** all of the milestone goal passes in fresh native processes on
 the recorded platform. Portable shared-library/browser compilation is a separate
@@ -1976,14 +1960,12 @@ The implementation proposals still need these concrete decisions:
   headed UI, browser, assessment/tag or second-device verdict.
 
 
-- **2026-10-30, M5 current findings.** S failed its export-completion event
-  assertion after the durable file appeared before the worker event drained. T
-  passed the 49-capture seed and export-event assertion; its nine-capture cold
-  phase returned `RESULT ok`, but the independent owner verifier failed on an
-  empty legacy-entry set. T visual review is recorded separately and does not
-  qualify cold owner verification. Diagnostic A stopped at permissions/readiness
-  before inspector execution; diagnostic B passed both real-owner checks (1/0)
-  with source integrity unchanged. Upstream `068f182e` is received; local inspector
-  fix `61c25b0c` remains pending the full host gate and publication. M1–M4 are
-  landed, M5 remains in progress, and the copied harness stays DRAFT with fault
-  collection disabled.
+- **2026-10-30, M5 current findings.** The clip owner worker/supplier and
+  inspector corrections are published; the warm full host suite passed 1,402/0/21
+  ignored on `61c25b0c`. Intact V completed on that frozen source, while its
+  disposable-copy fault attempt failed the graph-inventory boundary. The exact
+  sealed-root correction and 76 copied Python helper tests pass, but no corrected
+  native fault result exists and final receipt assembly remains DRAFT. Current
+  upstream Turnstone `554f323f` and Genet `b7c0bef` are merged; exact Mere
+  `845fe1c4` is fetched and the locked build is running, with no current-source
+  gate result yet. M1–M4 are landed; M5 remains in progress.

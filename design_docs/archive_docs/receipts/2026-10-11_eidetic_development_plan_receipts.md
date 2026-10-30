@@ -1463,3 +1463,61 @@ has SHA-256 `cfc44318b75e27c95a13a2b519632dbc0fe7a9561f04c7c6e9193eff42a8ff63`.
 The source-size and whitespace checks pass. This qualifies the host software
 suite on the refreshed source. Fresh app/test provenance builds and native
 collection U are in progress; M5 remains incomplete.
+
+
+### M5 intact collection V and missing-source fault, 2026-10-30
+
+V completed seed and cold reopen on frozen Turnstone `61c25b0c`. Its 49 seed and
+9 cold captures were reviewed across all 58 actual frames: 11 producer/comparison
+frames by Codex Terra, 38 structured/negative seed frames by Codex Luna, and 9 cold
+frames by Codex Terra. Both independent real-owner inspections passed, and
+source/profile checks found the original collection unchanged. The collection
+record is `/home/markik/Code/testing/m5-intact-collection-20261030-v/collection.json`
+(SHA-256 `b93e1bf2e5df571c898128ccea7ffb455dcf65754d11d1cf0c0b825354b3d432`).
+The visual review packets are `.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-v-seed-producers.json` (SHA-256 `3c246eaabf8c1a7ce5c1ed85c8a2ed5645eca446d1704089611d10c23b9225a6`), `m5-visual-v-structured.json` (SHA-256 `9b1d5a7f350d44b8007e1230f1012f2502282fc2099e41d8175b4bbffcc94ad5`), and `m5-visual-v-reopen.json` (SHA-256 `ed2d5c5dc3760ffab7e9d434207854867b6ef45a88362ecf909e4816ba343cde`).
+The visual review notes that the frozen-history summary clips the trailing word
+“records” while count 14 remains visible, that the empty-scope search shows
+“amber lantern” and no result rows without an explicit empty-state sentence, and
+that initial restored-pane identity remained pending at capture. V is an intact
+result for its frozen source, not final M5 acceptance.
+
+The disposable-copy missing-source fault attempt failed its post-fault graph
+inventory boundary. The helper and independent postcheck each passed 1/0: A1's
+raw blob was absent, A2 and the complete receipt inventory remained, cleanup
+completed, and the original V collection was unchanged. Only the intended
+`memory.sealed-sources-v1/journals/0` owner journal changed among 39 inventory
+entries. The original guard excluded only legacy `memory/` and included the actual sealed
+owner root, so it flagged the expected sealed journal change. The helper and
+postcheck stages each exited 0 in this original failed invocation; the aggregate
+fault collection still failed its graph-inventory boundary. An intermediate
+candidate excluded both roots and was rejected by a red regression. The reviewed
+correction excludes only the exact `memory.sealed-sources-v1/` root and keeps
+legacy `memory/`, graph data and similarly named siblings inside the integrity
+check. Root and Codex Terra approved the corrected graph guard. No corrected
+native fault run has passed.
+
+The copied provisional helper suites now pass 76/0 (5 acceptance, 3 seed/reopen,
+24 missing-source and 44 receipt-integration tests). The run log remains at
+`/home/markik/Code/testing/m5-harness-current-v-fault-checks-20261030.log`; it
+checks helper behavior only. Fault collection is enabled after scoped review, but
+the V fault result remains failed and final receipt assembly remains DRAFT.
+
+The earlier U process-identity aggregate failed because it required unequal
+cross-time PID-namespace inode labels. U's ordered exited-app/custody lifetimes,
+owned phase scopes and cleanup remain recorded; the repeated labels do not prove
+kernel namespace reuse. A separately reviewed verifier now checks each process's
+own namespace, cgroup, launcher unit, scope, invocation and lifetime, and checks
+that sequential process scopes are distinct. U remains failed and is not promoted
+by this process-evidence correction.
+
+The clip owner worker/supplier source correction was published in Turnstone
+`9ec0da11`; the inspector correction and refreshed Settings/projection source
+were published at `61c25b0c`. The warm full host suite on `61c25b0c` passed 1,402
+tests, 0 failures and 21 ignored (raw log SHA-256
+`cfc44318b75e27c95a13a2b519632dbc0fe7a9561f04c7c6e9193eff42a8ff63`). This is
+not a result for newer upstream. Eidetic `0c89079`, Turnstone `554f323f` and Genet
+`b7c0bef` are merged. An initial host attempt stopped before compilation while
+exact Mere `845fe1c4` was unavailable; that checkout has since been fetched and
+a locked build is running with Cargo.lock unchanged. No current-source gate result
+is available yet. V's fault result remains failed; M1–M4 are landed and M5 remains
+in progress.

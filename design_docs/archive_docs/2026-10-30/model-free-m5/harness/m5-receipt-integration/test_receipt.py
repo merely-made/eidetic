@@ -61,6 +61,38 @@ class ReceiptChecks(unittest.TestCase):
                                    'run_id':'test'})
 
 
+class PhaseIdentityChecks(unittest.TestCase):
+    def test_reused_inode_allowed_only_with_distinct_verified_scopes_and_lifetimes(self):
+        import copy
+        v = module('verify')
+        def phase(name, invocation, start, end):
+            scope = 'm5-' + name + '.scope'
+            launcher = {'scope':scope, 'ownership_observed':True, 'exit_code':0, 'timed_out':False,
+                        'start_ns':start, 'exit_ns':end,
+                        'argv':['--unit',scope.removesuffix('.scope'),'bwrap','--unshare-user','--unshare-net','--unshare-pid','--unshare-ipc']}
+            cleanup = {'scope':scope, 'invocation':invocation, 'normal':True, 'ownership_observed':True,
+                       'cleanup':[{'cgroup_empty_verified':True}]}
+            net = {'pidns':'pid:[123]', 'cgroup':{'path':'/user/app/' + scope}}
+            child = {'pid':3, 'pid_namespace':'pid:[123]', 'start_ns':start+1, 'exit_ns':end-1}
+            return launcher, cleanup, net, child
+        a = phase('seed','a'*32,0,10); b = phase('reopen','b'*32,11,20)
+        aid = v.check_phase_identity(*a[:3], [a[3]])
+        bid = v.check_phase_identity(*b[:3], [b[3]])
+        v.check_distinct_phases([(*aid,a[0]), (*bid,b[0])])
+        for field in ('child', 'cgroup', 'unshare', 'cleanup', 'unit'):
+            launch, clean, net, child = copy.deepcopy(b)
+            if field == 'child': child['pid_namespace'] = 'pid:[other]'
+            if field == 'cgroup': net['cgroup']['path'] = '/user/app/other.scope'
+            if field == 'unshare': launch['argv'].remove('--unshare-pid')
+            if field == 'cleanup': clean['cleanup'] = []
+            if field == 'unit': launch['argv'][1] = 'm5-other'
+            with self.assertRaises(ValueError): v.check_phase_identity(launch, clean, net, [child])
+        with self.assertRaises(ValueError): v.check_distinct_phases([(*aid,a[0]), (aid[0],bid[1],b[0])])
+        with self.assertRaises(ValueError): v.check_distinct_phases([(*aid,a[0]), (bid[0],aid[1],b[0])])
+        overlap = copy.deepcopy(b[0]); overlap['start_ns'] = 9
+        with self.assertRaises(ValueError): v.check_distinct_phases([(*aid,a[0]), (*bid,overlap)])
+
+
 class AdmissionChecks(unittest.TestCase):
     def test_fault_ledger_requires_real_outputs(self):
         assemble = module('assemble')

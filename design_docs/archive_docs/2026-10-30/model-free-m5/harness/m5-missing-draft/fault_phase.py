@@ -17,7 +17,10 @@ def read(path):
 
 def graph_inventory(session):
     tree = phase.tree_hashes(COPY / 'sessions' / session)
-    return {key:value for key,value in tree.items() if key != 'memory/' and not key.startswith('memory/')}
+    # The fault intentionally changes the sealed owner store, which is a
+    # sibling of memory/ rather than its child. Keep every other session byte.
+    excluded = 'memory.sealed-sources-v1/'
+    return {key:value for key,value in tree.items() if not key.startswith(excluded)}
 
 def validate_fault(fault, inp):
     if fault['schema'] != 'turnstone.m5-missing-fault/v1' or fault['run_id'] != inp['run_id']:

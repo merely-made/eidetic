@@ -8,7 +8,7 @@ from pathlib import Path
 import stat
 import types
 
-VERIFY_SHA256 = '98bae452a8602831133e6eb1f233852084c06fff58f646a0bc4601d9725120de'
+VERIFY_SHA256 = 'bfbcb982f04a2db835eb78317ec6fd874da31505c2346e612323a8a0c63bc890'
 verify_path = Path(__file__).with_name('verify.py')
 if verify_path.is_symlink() or not verify_path.is_file(): raise ValueError('missing validation module')
 verify_bytes = verify_path.read_bytes()
