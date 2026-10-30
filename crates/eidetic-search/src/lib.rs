@@ -48,6 +48,7 @@
 
 pub mod bm25;
 pub mod candidates;
+pub mod compare;
 pub mod document;
 pub mod fusion;
 pub mod index;
