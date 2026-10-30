@@ -1,0 +1,312 @@
+--- reviewed-preflight
++++ fix1-preflight
+@@ -2,12 +2,13 @@
+ FILE run_preflight.py
+ #!/usr/bin/env python3
+ """Bounded empty-profile GUI/custody startup, not an M5 acceptance run."""
+-import argparse, os, subprocess, time
++import argparse, json, os, subprocess, time, uuid
+ from pathlib import Path
+ import run_native as native
+ 
+ parser = argparse.ArgumentParser(description=__doc__)
+-for name in ('output', 'application', 'custodian', 'test-binary', 'wayland-socket', 'gpu-dir'):
++for name in ('output', 'application', 'custodian', 'test-binary', 'wayland-socket', 'gpu-device',
++             'app-build-receipt', 'test-build-receipt', 'custody-build-receipt', 'build-provenance'):
+     parser.add_argument('--' + name, required=True, type=Path)
+ args = parser.parse_args()
+ out = args.output.resolve()
+@@ -24,18 +25,54 @@
+           'namespace_phase.py': here / 'namespace_phase.py', 'preflight_phase.py': here / 'preflight_phase.py',
+           'fixture_server.py': here / 'fixture_server.py'}
+ try:
++    identities = native.device_identity(args.wayland_socket, args.gpu_device)
+     hashes = {name: native.freeze_file(path.resolve(), frozen / name) for name, path in inputs.items()}
+-    native.record(out / 'inputs.json', {'files': hashes, 'kind': 'empty-profile-preflight'})
++    provenance = json.loads(args.build_provenance.read_text())
++    receipts = {'turnstone': args.app_build_receipt, 'test-binary': args.test_build_receipt,
++                'custodian': args.custody_build_receipt}
++    if provenance.get('schema') != 'turnstone.m5-build-provenance/v1':
++        raise ValueError('invalid build provenance schema')
++    evidence = {}
++    for name, path in receipts.items():
++        receipt = json.loads(path.read_text()); saved = provenance['artifacts'][name]
++        if receipt.get('exit_code') != 0 or saved['receipt_sha256'] != native.sha(path) or saved['binary_sha256'] != hashes[name]:
++            raise ValueError('build receipt or frozen binary does not match provenance: ' + name)
++        source_hash = saved.get('source_before')
++        if not isinstance(source_hash, str) or len(source_hash) != 64 or any(c not in '0123456789abcdef' for c in source_hash) or source_hash != saved.get('source_after'):
++            raise ValueError('build source stability missing: ' + name)
++        command = receipt['command']
++        if '--locked' not in command or '--offline' not in command:
++            raise ValueError('build was not locked and offline: ' + name)
++        if name in ('turnstone', 'test-binary'):
++            features = set(command[command.index('--features') + 1].split(',')) if '--features' in command else set()
++            if not {'authoring', 'inference'} <= features:
++                raise ValueError('authoring and inference build features not evidenced: ' + name)
++        if name == 'turnstone' and ('build' not in command or '--bin' not in command or command[command.index('--bin') + 1] != 'turnstone'):
++            raise ValueError('application build command missing')
++        if name == 'test-binary' and not ('test' in command and '--lib' in command and '--no-run' in command):
++            raise ValueError('probe test build command missing')
++        if name == 'custodian' and not ('test' in command and '--test' in command and 'custody_payload' in command and '--no-run' in command and '--features' not in command):
++            raise ValueError('custody-only fixture build command missing')
++        evidence[name] = {'receipt_sha256':native.sha(path), 'command':command, 'binary_sha256':hashes[name],
++                          'source_hash':saved['source_before']}
++    if evidence['turnstone']['source_hash'] != evidence['test-binary']['source_hash']:
++        raise ValueError('application and probe were built from different host source')
++    native.record(out / 'inputs.json', {'files': hashes, 'kind': 'empty-profile-preflight',
++                                       'devices':identities, 'builds':evidence,
++                                       'provenance_sha256':native.sha(args.build_provenance)})
+     config = {'preflight': True, 'phase': 'seed', 'output': '/m5/run', 'scenario': '/m5/input/seed.scn',
+               'fixture_server': '/m5/input/fixture_server.py', 'custodian': '/m5/input/custodian',
+               'application': '/m5/input/turnstone', 'test_binary': '/m5/input/test-binary',
+               'timeout_seconds': 180, 'inspection_timeout_seconds': 30,
+               'memory_bytes': 3 * 1024**3, 'tasks_max': 128, 'cpu_percent': 150,
++              'devices': identities,
+               'environment': {'PATH': '/usr/bin', 'WAYLAND_DISPLAY': 'wayland-0', 'RUST_LOG': 'warn'}}
+     config_path = frozen / 'seed-config.json'; native.record(config_path, config)
+-    ns = native.namespace_command(sandbox, frozen, args.wayland_socket.resolve(), args.gpu_dir.resolve(),
++    ns = native.namespace_command(sandbox, frozen, args.wayland_socket, args.gpu_device,
+                                   'seed', config_path, preflight=True)
+-    unit = 'm5-preflight-' + str(os.getpid())
++    if native.device_identity(args.wayland_socket, args.gpu_device) != identities:
++        raise ValueError('Wayland socket or render device changed before launch')
++    unit = 'm5-preflight-' + uuid.uuid4().hex
+     result = native.run_scope(native.cgroup_scope(ns, config['memory_bytes'], config['tasks_max'],
+                                                   config['cpu_percent'], unit), unit,
+                               out / 'launcher.log', 240)
+@@ -48,7 +85,7 @@
+ FILE preflight_phase.py
+ #!/usr/bin/env python3
+ """Run only the minimal, empty-profile M5 GUI/custody startup preflight."""
+-import json, sys
++import json, os, stat, sys
+ from pathlib import Path
+ import namespace_phase
+ 
+@@ -62,6 +99,14 @@
+     raise SystemExit('preflight scenario is not the fixed empty-profile check')
+ if any(Path('/m5/run/fixture-source').iterdir()):
+     raise SystemExit('preflight fixture source is not empty')
++devices = config['devices']
++sock = Path('/m5/run/runtime/wayland-0').stat()
++render = Path('/dev/dri') / Path(devices['render']['path']).name
++dev = render.stat()
++if not stat.S_ISSOCK(sock.st_mode) or (sock.st_dev, sock.st_ino) != (devices['wayland']['device'], devices['wayland']['inode']):
++    raise SystemExit('mounted Wayland socket identity differs')
++if not stat.S_ISCHR(dev.st_mode) or (dev.st_dev, dev.st_ino, dev.st_rdev) != (devices['render']['device'], devices['render']['inode'], devices['render']['rdev']):
++    raise SystemExit('mounted render device identity differs')
+ namespace_phase.phase(config)
+ run = Path('/m5/run/seed')
+ runtime = json.loads((run / 'gui_preflight.runtime.json').read_text())
+@@ -76,18 +121,18 @@
+     raise SystemExit('GUI did not start idle with inference client present')
+ if runtime.get('offline_acquisition_attempts') != 0 or probe.get('outcome') != 'refused':
+     raise SystemExit('unexpected acquisition or inference route')
+-if not (run / 'gui_preflight.png').is_file():
+-    raise SystemExit('GUI frame missing')
++frame = run / 'gui_preflight.png'
++dimensions = namespace_phase.validate_png(frame)
+ namespace_phase.write(run / 'preflight-checked.json', {'schema': 'turnstone.m5-preflight/v1',
+     'app_pid': runtime['pid'], 'custody_pid': processes['custody_ready']['pid'],
+     'custody_principal': runtime['custody_principal'], 'route_probe': 'refused',
+-    'frame': 'gui_preflight.png', 'offline_acquisition_attempts': 0,
+-    'corpus_publications': 0, 'generation_requests': 0})
++    'frame': 'gui_preflight.png', 'frame_dimensions': dimensions,
++    'snapshot': {'offline_acquisition_attempts': 0, 'corpus_publications': 0, 'generation_requests': 0}})
+ 
+ FILE run_native.py
+ #!/usr/bin/env python3
+ """M5 staged launcher. Execution remains disabled pending containment review."""
+-import argparse, hashlib, json, os, shutil, subprocess, time
++import argparse, hashlib, json, os, shutil, signal, stat, subprocess, time, uuid
+ from pathlib import Path
+ 
+ READY_FOR_HOST_INTAKE = False
+@@ -129,33 +174,109 @@
+             '--property', 'TasksMax=' + str(tasks), '--property', 'CPUQuota=' + str(cpu_percent) + '%',
+             '--', *command]
+ 
++def scope_not_present(unit):
++    result = subprocess.run(['systemctl', '--user', 'show', '--property=LoadState', '--value', unit + '.scope'],
++                            capture_output=True, text=True, timeout=5, check=False)
++    return result.returncode == 0 and result.stdout.strip() == 'not-found'
++
++def scope_invocation(unit):
++    try:
++        result = subprocess.run(['systemctl', '--user', 'show', '--property=InvocationID', '--value', unit + '.scope'],
++                                capture_output=True, text=True, timeout=5, check=False)
++        value = result.stdout.strip()
++        return value if result.returncode == 0 and len(value) == 32 and all(c in '0123456789abcdef' for c in value) else None
++    except (OSError, subprocess.SubprocessError): return None
++
++def scope_contains_child(unit, root_pid):
++    """Prove ownership from this launcher's live descendant cgroup membership."""
++    pending, seen = [root_pid], set()
++    while pending and len(seen) < 512:
++        pid = pending.pop()
++        if pid in seen: continue
++        seen.add(pid)
++        try:
++            group = Path(f'/proc/{pid}/cgroup').read_text().splitlines()
++            if any(line.startswith('0::') and line.split(':', 2)[2].endswith('/' + unit + '.scope')
++                   for line in group): return True
++            children = Path(f'/proc/{pid}/task/{pid}/children').read_text().split()
++            pending.extend(int(child) for child in children)
++        except (OSError, ValueError): pass
++    return False
++
+ def run_scope(cmd, unit, log, timeout):
+-    """Terminate only the uniquely named scope created for this phase."""
+-    start = time.time_ns()
++    """Supervise and clean only a uniquely named, verified owned scope."""
++    if not scope_not_present(unit): raise ValueError('scope name already exists or cannot be checked')
++    start = time.time_ns(); proc = None; owned = False; invocation = None; cleanup = []; normal = False
+     with log.open('xb') as stream:
+-        proc = subprocess.Popen(cmd, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
+-        timed_out = False
+         try:
+-            code = proc.wait(timeout=timeout)
+-        except subprocess.TimeoutExpired:
+-            timed_out = True
+-            # Scope name is generated internally, never caller-supplied shell text.
+-            subprocess.run(['systemctl', '--user', 'kill', '--kill-who=all', '--signal=TERM', unit + '.scope'],
+-                           stdout=stream, stderr=subprocess.STDOUT, timeout=10, check=False)
+-            try: code = proc.wait(timeout=10)
+-            except subprocess.TimeoutExpired:
+-                subprocess.run(['systemctl', '--user', 'kill', '--kill-who=all', '--signal=KILL', unit + '.scope'],
+-                               stdout=stream, stderr=subprocess.STDOUT, timeout=10, check=False)
+-                try: code = proc.wait(timeout=10)
+-                except subprocess.TimeoutExpired:
+-                    os.killpg(proc.pid, 9); code = proc.wait(timeout=10)
+-    return {'argv': cmd, 'launcher_pid': proc.pid, 'start_ns': start, 'exit_ns': time.time_ns(),
+-            'exit_code': code, 'timed_out': timed_out, 'scope': unit + '.scope'}
+-
+-def namespace_command(sandbox, frozen, wayland_socket, gpu_dir, phase, config, preflight=False):
++            proc = subprocess.Popen(cmd, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
++            deadline = time.monotonic() + timeout
++            while proc.poll() is None:
++                if not owned and scope_contains_child(unit, proc.pid):
++                    invocation = scope_invocation(unit)
++                    owned = invocation is not None
++                if time.monotonic() >= deadline: raise TimeoutError('scope deadline exceeded')
++                time.sleep(.1)
++            code = proc.wait(timeout=5)
++            if code != 0: raise RuntimeError('scope launcher failed with exit ' + str(code))
++            if not owned: raise RuntimeError('scope ownership was not observed')
++            normal = True
++            return {'argv': cmd, 'launcher_pid': proc.pid, 'start_ns': start, 'exit_ns': time.time_ns(),
++                    'exit_code': code, 'timed_out': False, 'scope': unit + '.scope', 'ownership_observed': True}
++        finally:
++            if not normal and proc is not None:
++                if not owned and scope_contains_child(unit, proc.pid):
++                    invocation = scope_invocation(unit)
++                    owned = invocation is not None
++                if owned:
++                    for sig in ('TERM', 'KILL'):
++                        if scope_invocation(unit) != invocation:
++                            cleanup.append({'scope_signal':sig, 'reason':'invocation changed or exited'})
++                            break
++                        try:
++                            result = subprocess.run(['systemctl', '--user', 'kill', '--kill-who=all',
++                                '--signal=' + sig, unit + '.scope'], stdout=stream, stderr=subprocess.STDOUT,
++                                timeout=5, check=False)
++                            cleanup.append({'scope_signal':sig, 'exit_code':result.returncode})
++                        except BaseException as exc: cleanup.append({'scope_signal':sig, 'error':repr(exc)})
++                        if sig == 'TERM':
++                            try: proc.wait(timeout=3)
++                            except subprocess.TimeoutExpired: pass
++                else:
++                    cleanup.append({'scope_signal':'withheld', 'reason':'ownership not observed'})
++                if proc.poll() is None:
++                    try: os.killpg(proc.pid, signal.SIGTERM); cleanup.append({'process_group':'TERM'})
++                    except ProcessLookupError: pass
++                    try: proc.wait(timeout=3)
++                    except subprocess.TimeoutExpired:
++                        try: os.killpg(proc.pid, signal.SIGKILL); cleanup.append({'process_group':'KILL'})
++                        except ProcessLookupError: pass
++                        try: proc.wait(timeout=3)
++                        except subprocess.TimeoutExpired: cleanup.append({'process_group':'unreaped'})
++            record(log.with_suffix('.cleanup.json'), {'scope':unit + '.scope', 'normal':normal,
++                'ownership_observed':owned, 'invocation':invocation, 'cleanup':cleanup})
++
++def device_identity(wayland_socket, gpu_device):
++    runtime = os.environ.get('XDG_RUNTIME_DIR'); display = os.environ.get('WAYLAND_DISPLAY')
++    if not runtime or not display or '/' in display or display in ('.', '..'):
++        raise ValueError('host Wayland display unavailable')
++    expected = Path(runtime) / display
++    if wayland_socket != expected or wayland_socket.is_symlink(): raise ValueError('unexpected Wayland path')
++    socket_stat = wayland_socket.stat()
++    if not stat.S_ISSOCK(socket_stat.st_mode): raise ValueError('Wayland path is not a socket')
++    if gpu_device.parent != Path('/dev/dri') or not gpu_device.name.startswith('renderD') or not gpu_device.name[7:].isdigit() or gpu_device.is_symlink():
++        raise ValueError('invalid render device path')
++    device_stat = gpu_device.stat()
++    if not stat.S_ISCHR(device_stat.st_mode) or os.major(device_stat.st_rdev) != 226 or os.minor(device_stat.st_rdev) < 128:
++        raise ValueError('invalid DRM render device')
++    return {'wayland': {'path':str(wayland_socket), 'device':socket_stat.st_dev, 'inode':socket_stat.st_ino},
++            'render': {'path':str(gpu_device), 'device':device_stat.st_dev, 'inode':device_stat.st_ino,
++                       'rdev':device_stat.st_rdev}}
++
++def namespace_command(sandbox, frozen, wayland_socket, gpu_device, phase, config, preflight=False):
+     """Construct a narrow mount namespace; review on the actual host before use."""
+     if phase not in ('seed', 'reopen'): raise ValueError('invalid phase')
+-    for path in (sandbox, frozen, wayland_socket, gpu_dir):
++    for path in (sandbox, frozen, wayland_socket, gpu_device):
+         if not path.is_absolute() or not path.exists(): raise ValueError('missing namespace input ' + str(path))
+     # Do not bind frozen/ as a directory: it also contains original fixture bodies.
+     command = ['bwrap', '--die-with-parent', '--new-session', '--unshare-user', '--unshare-net', '--unshare-pid', '--unshare-ipc',
+@@ -163,7 +284,7 @@
+                '--ro-bind', '/usr', '/usr',
+                '--symlink', 'usr/lib', '/lib', '--symlink', 'usr/lib64', '/lib64',
+                '--dir', '/m5', '--dir', '/m5/input', '--bind', str(sandbox), '/m5/run',
+-               '--dev-bind', str(gpu_dir), '/dev/dri',
++               '--dir', '/dev/dri', '--dev-bind', str(gpu_device), '/dev/dri/' + gpu_device.name,
+                '--bind', str(wayland_socket), '/m5/run/runtime/wayland-0']
+     for name in ('turnstone', 'custodian', 'test-binary', 'namespace_phase.py', 'fixture_server.py', phase + '.scn'):
+         path = frozen / name
+@@ -215,8 +336,8 @@
+                       'cpu_percent': options.cpu_percent,
+                       'environment': {'PATH': '/usr/bin', 'WAYLAND_DISPLAY': 'wayland-0', 'RUST_LOG': 'warn'}}
+             config_path = frozen / (phase + '-config.json'); record(config_path, config)
+-            ns = namespace_command(sandbox, frozen, options.wayland_socket, options.gpu_dir, phase, config_path)
+-            unit = 'm5-' + phase + '-' + str(os.getpid())
++            ns = namespace_command(sandbox, frozen, options.wayland_socket, options.gpu_device, phase, config_path)
++            unit = 'm5-' + phase + '-' + uuid.uuid4().hex
+             cmd = cgroup_scope(ns, options.memory_bytes, options.tasks, options.cpu_percent, unit)
+             result = run_scope(cmd, unit, out / (phase + '-launcher.log'), options.timeout + 120)
+             record(out / (phase + '-launcher.json'), result)
+@@ -229,7 +350,7 @@
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     for name in ('output', 'application', 'custodian', 'test-binary', 'seed', 'reopen',
+-                 'fixtures', 'source-root', 'wayland-socket', 'gpu-dir'):
++                 'fixtures', 'source-root', 'wayland-socket', 'gpu-device'):
+         parser.add_argument('--' + name, type=Path, required=True)
+     parser.add_argument('--inspection-observation', required=True)
+     parser.add_argument('--source-observation', required=True)
+@@ -260,6 +381,16 @@
+     temp = path.with_suffix(path.suffix + '.tmp')
+     temp.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + '\n')
+     os.replace(temp, path)
++
++def validate_png(path):
++    from PIL import Image
++    with Image.open(path) as im:
++        if im.format != 'PNG' or im.width < 16 or im.height < 16 or im.width * im.height > 100_000_000:
++            raise PhaseError('GUI frame dimensions or format invalid')
++        im.load()
++        if im.convert('RGBA').getchannel('A').getbbox() is None:
++            raise PhaseError('GUI frame is entirely transparent')
++        return [im.width, im.height]
+ 
+ def wait_ready(proc, predicate, seconds):
+     deadline = time.monotonic() + seconds
+@@ -385,7 +516,8 @@
+     net = interfaces(); net['cgroup'] = verify_cgroup(config); write(run / 'namespace.json', net)
+     # Supplied by the parent launcher, constructed from an explicit allowlist.
+     env = dict(config['environment'])
+-    env.update({'HOME': str(out / 'home'), 'XDG_DATA_HOME': str(out / 'data'),
++    if 'HOME' in env or 'CODEX_HOME' in env: raise PhaseError('home environment must be absent')
++    env.update({'XDG_DATA_HOME': str(out / 'data'),
+                 'XDG_CONFIG_HOME': str(out / 'config'), 'XDG_CACHE_HOME': str(out / 'cache'),
+                 'XDG_RUNTIME_DIR': str(out / 'runtime'), 'MERE_ROOT': str(out / 'mere'),
+                 'TURNSTONE_ROOT': str(out / 'profile'), 'TURNSTONE_KNOT_ROOT': str(out / 'profile/notes'),

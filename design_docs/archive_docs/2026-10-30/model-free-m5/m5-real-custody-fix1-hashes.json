@@ -1,0 +1,6 @@
+{
+  "ports/djinn/custodian/src/fixture.rs": "e0e0459a73b6c107e52bd15269f85526905167dadc6f49d36eda39ff3260cd7d",
+  "ports/djinn/tests/custody_payload.rs": "c6ee9d37aab9b37a637281ba76bb67f60ffac6fa49c4ad7a9171ca24f1c83eaf",
+  "ports/djinn/tests/custody_receipt_tests/mod.rs": "b23b1730a7782330111ef81e315766a274dba543d579ef845032e12c758671f7",
+  "ports/djinn/custodian/src/driver.rs": "b86cde6d355721885f42c094de1414fbaf3a5006e99669f1f24749feb837ea31"
+}

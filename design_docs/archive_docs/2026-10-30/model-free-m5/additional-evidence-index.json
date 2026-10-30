@@ -1,0 +1,1570 @@
+{
+  "source_directory": "/home/markik/Code/testing/custody-contract-20261029",
+  "archive_directory": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/design_docs/archive_docs/2026-10-30/model-free-m5",
+  "additional_completed_packet_log_files": [
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-font-local-config-1.json",
+      "archive_file": "m5-font-local-config-1.json",
+      "sha256": "b78481d06c8ba8ec86c0c8d32b029d1779800e1c4925124728026dd50dc3ee8a",
+      "bytes": 2493,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-font-local-config-1.log",
+      "archive_file": "m5-font-local-config-1.log",
+      "sha256": "49b5c3770c090a65ce3f852e96b3d3cb9e99013bf9c8594fb4cb59285819a917",
+      "bytes": 1407,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-font-no-config-1.json",
+      "archive_file": "m5-font-no-config-1.json",
+      "sha256": "b053a53e40ae7dd77e605a7c60d6016f6d2c8282e01b2739b2827b5516cec91b",
+      "bytes": 1984,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-font-no-config-1.log",
+      "archive_file": "m5-font-no-config-1.log",
+      "sha256": "0f68b8ddee04640163d93b71a9d2ddb64daf22fa69c0c6dc260fc94ec039c859",
+      "bytes": 1259,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-host-full-after-upstream-1.json",
+      "archive_file": "m5-host-full-after-upstream-1.json",
+      "sha256": "a186a243a1731cb09d30c89a30aeadfb5c53940c550320d8fa8d57dffc311544",
+      "bytes": 1369,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-host-full-after-upstream-1.log",
+      "archive_file": "m5-host-full-after-upstream-1.log",
+      "sha256": "62dd8866467f1be84f13cb37683d8a1fb39bb2d79f6bb080e0fafb19f145d9c9",
+      "bytes": 209073,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-note-generation-red-1.json",
+      "archive_file": "m5-note-generation-red-1.json",
+      "sha256": "730efa95c66c815f0c9c92f00b2f43fa07460f65ad4d42c9d8ac2d48cfccd4ec",
+      "bytes": 1522,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-note-generation-red-1.log",
+      "archive_file": "m5-note-generation-red-1.log",
+      "sha256": "3f9dfbb952e88a77e42bcbc380ba41393d6775f0cd4560c2af54d65886b48c5f",
+      "bytes": 69727,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-note-pointer-1.json",
+      "archive_file": "m5-note-pointer-1.json",
+      "sha256": "ff877ed02564411eabd239b96cce338dfc50b94c9dbb2338db85b60f5ec7120f",
+      "bytes": 1521,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-note-pointer-1.log",
+      "archive_file": "m5-note-pointer-1.log",
+      "sha256": "266b8f384e9b6825a3e87fdf153647cd062378de54d693a0c4e4e129c40d7904",
+      "bytes": 60787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-note-pointer-2.json",
+      "archive_file": "m5-note-pointer-2.json",
+      "sha256": "d78348c19e5372d44d5513fe97a67538ed7c32fe5771cf9ffd5b29e79703d5b6",
+      "bytes": 1521,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-note-pointer-2.log",
+      "archive_file": "m5-note-pointer-2.log",
+      "sha256": "ef9e9c5fab14c0b283fa15e5ff14c6947012a623ab6ca83284a2e8fadd34acf5",
+      "bytes": 60787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-custodian-3dd0f229eea6.json",
+      "archive_file": "m5-provenance-custodian-3dd0f229eea6.json",
+      "sha256": "b0bc61abb88af58fa7aa04553ecedc006aee89596b44f3c37b64fd480cc31f38",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-custodian-3dd0f229eea6.log",
+      "archive_file": "m5-provenance-custodian-3dd0f229eea6.log",
+      "sha256": "10c36d5977fca1c079149f5af1287c0df96f4b715705c5afe774bec206e0e7ce",
+      "bytes": 70725,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-custodian-c89bbb3d37bf.json",
+      "archive_file": "m5-provenance-custodian-c89bbb3d37bf.json",
+      "sha256": "6e8216cafcb3595900f06601c00f1eeddedfad20e387ebb07d05529f1be0d34c",
+      "bytes": 1382,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-custodian-c89bbb3d37bf.log",
+      "archive_file": "m5-provenance-custodian-c89bbb3d37bf.log",
+      "sha256": "e8a2b58d8b718afa6ba44904cf24b7971b67f83120851f69a47fad170de2cb77",
+      "bytes": 70695,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-56f892818ef1.json",
+      "archive_file": "m5-provenance-test-binary-56f892818ef1.json",
+      "sha256": "01b4adc48a0996a722f8038c5b0c240a71ca71c771bc53253a35c70db66d61dc",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-56f892818ef1.log",
+      "archive_file": "m5-provenance-test-binary-56f892818ef1.log",
+      "sha256": "fc73a035b0d5888c4bef997e6ccda431921e7c5543fa42b9f99333aae9ab0651",
+      "bytes": 60649,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-76845a290f55.json",
+      "archive_file": "m5-provenance-test-binary-76845a290f55.json",
+      "sha256": "7a548e3c60ddd1fdbbf35b6eef5c088f93356b6d1a1a222e8dd75f1ea683c0c4",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-76845a290f55.log",
+      "archive_file": "m5-provenance-test-binary-76845a290f55.log",
+      "sha256": "70aaba0f62acd62f8c74f474ad06342137de1776765ecf1cd434e11bae1c65d6",
+      "bytes": 60435,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-97f3ad59cdb0.json",
+      "archive_file": "m5-provenance-test-binary-97f3ad59cdb0.json",
+      "sha256": "48dee022612588c5ec1baecc41f5955f50e616cdd9059cc4f1e6771d4cdb179c",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-97f3ad59cdb0.log",
+      "archive_file": "m5-provenance-test-binary-97f3ad59cdb0.log",
+      "sha256": "3e2e59460c29fe72aa783f14a491443537b9d07616246897d56328edc3482667",
+      "bytes": 60542,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-c06661175483.json",
+      "archive_file": "m5-provenance-test-binary-c06661175483.json",
+      "sha256": "79743de55e6befa7a46918e801c897c8e7e6097be9f3ff78ef428ee01614e3a6",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-c06661175483.log",
+      "archive_file": "m5-provenance-test-binary-c06661175483.log",
+      "sha256": "01b16919cf15d1bef58d237d92762498a55ab242db39d1aa01880ee14327dca2",
+      "bytes": 60435,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-4351a5356334.json",
+      "archive_file": "m5-provenance-turnstone-4351a5356334.json",
+      "sha256": "4089d9d3880473f0f44a7aa3fb9e5668fb13da3e6989fed70d1bb4c0d7e5e9e3",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-4351a5356334.log",
+      "archive_file": "m5-provenance-turnstone-4351a5356334.log",
+      "sha256": "817ebea2d868fd461ac13d1cb3efbef99787685cf5e508eba6fc94fedde6cb46",
+      "bytes": 79143,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-9ffaa2856ed9.json",
+      "archive_file": "m5-provenance-turnstone-9ffaa2856ed9.json",
+      "sha256": "826e01df8844518463e734566bf866384b2a28303ea19e3b62cae325aa72c50a",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-9ffaa2856ed9.log",
+      "archive_file": "m5-provenance-turnstone-9ffaa2856ed9.log",
+      "sha256": "e396ab4b553fd8a2d3e84a85cffe38d017c6f03b93d3049a6daf19a65d1f2821",
+      "bytes": 79146,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-a7a290f907cd.json",
+      "archive_file": "m5-provenance-turnstone-a7a290f907cd.json",
+      "sha256": "8bbb8a365780dd243dd19773899d71baa57b831e5aea31a92c92a89e56728b36",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-a7a290f907cd.log",
+      "archive_file": "m5-provenance-turnstone-a7a290f907cd.log",
+      "sha256": "b5da1a91ed4f9e298abb39e597e80b648aa11090831b0a5b8ae2ffb0a8ebf440",
+      "bytes": 79529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-dc76eb50edb7.json",
+      "archive_file": "m5-provenance-turnstone-dc76eb50edb7.json",
+      "sha256": "3cb808929150f7bfc258d95bb9b68b629a9d5b25caf9967c7f040c7e849f66c6",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-dc76eb50edb7.log",
+      "archive_file": "m5-provenance-turnstone-dc76eb50edb7.log",
+      "sha256": "48f17f933e155bbc46be0399c51e435e1c0b98a70f1ebd57845a2938f26b0173",
+      "bytes": 78898,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-f35a5d28a5f2.json",
+      "archive_file": "m5-provenance-turnstone-f35a5d28a5f2.json",
+      "sha256": "bfc354170f2449fb94f7ca040c66e7414c348d202215c0a10ff8d3f42f0a4b6a",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-f35a5d28a5f2.log",
+      "archive_file": "m5-provenance-turnstone-f35a5d28a5f2.log",
+      "sha256": "8bb6a5c73c182be35c0ad4f0364b0b00a71ca92865f3af8610266d6e9b540514",
+      "bytes": 79146,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-focused-1.json",
+      "archive_file": "m5-real-custody-focused-1.json",
+      "sha256": "1cea48114b97072bb09395956c3a595ee438803c9fbdfed0666661c98c4f0df6",
+      "bytes": 1677,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-focused-1.log",
+      "archive_file": "m5-real-custody-focused-1.log",
+      "sha256": "f5339a2e4d2c1ef5b3e43314e7355868aa83d8f9c7d427d969f7b6545d300325",
+      "bytes": 71256,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-focused-2.json",
+      "archive_file": "m5-real-custody-focused-2.json",
+      "sha256": "9f4b1d8e8eac595e2754ccaa7cc32256da02b4bc9a8200d35bece613dee08057",
+      "bytes": 1531,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-focused-2.log",
+      "archive_file": "m5-real-custody-focused-2.log",
+      "sha256": "dd52c16f06e6b5c0749f0632c1b32ae4b8710803305d3e383d93562e9e5b9f34",
+      "bytes": 71885,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-focused-3.json",
+      "archive_file": "m5-real-custody-focused-3.json",
+      "sha256": "74b9591372a090c3dc8b03011ce2638b2d809fd917b028e1e78641cd2ad92e8f",
+      "bytes": 1530,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-focused-3.log",
+      "archive_file": "m5-real-custody-focused-3.log",
+      "sha256": "9a09b55cf484c4bcaea9701c57e91875e7c34d15ba612f109f937254c899f8e7",
+      "bytes": 71231,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-lease-fix-1.json",
+      "archive_file": "m5-real-custody-lease-fix-1.json",
+      "sha256": "3498004298e3523b62a48ef60ad79fb8f6259e157ecaa5ef807f26737d655555",
+      "bytes": 1608,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-lease-fix-1.log",
+      "archive_file": "m5-real-custody-lease-fix-1.log",
+      "sha256": "e3cdcadc9d8bb49584fe471c9e6229b4aeb6596155d8ecd5847c5f1677956f22",
+      "bytes": 32333,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-lease-fix-2.json",
+      "archive_file": "m5-real-custody-lease-fix-2.json",
+      "sha256": "3f3b7abfb4dc1082d774de987674f13225b608bec45c79287bd911d0fdd9acc7",
+      "bytes": 1605,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-lease-fix-2.log",
+      "archive_file": "m5-real-custody-lease-fix-2.log",
+      "sha256": "0817d5775dee447ee67e3d8310f45d7ee39a2fa495a6c3594aad91bafd1ea16d",
+      "bytes": 27178,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-lock-fence-1.json",
+      "archive_file": "m5-real-custody-lock-fence-1.json",
+      "sha256": "e77ddbcf97659030167ca48821c1c8026f82d4151e6997357b2b69adef374803",
+      "bytes": 1655,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-lock-fence-1.log",
+      "archive_file": "m5-real-custody-lock-fence-1.log",
+      "sha256": "3132ca7d5583e2264451ef3a3c990d10b9e4f501b53407d07c1bd3b641baab36",
+      "bytes": 71106,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-post-lease-1.json",
+      "archive_file": "m5-real-custody-post-lease-1.json",
+      "sha256": "b303b1e73fcd5fc55bc81e966596b7c5fdbfdc27723a96e5736e2a34b892ddba",
+      "bytes": 1540,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-real-custody-post-lease-1.log",
+      "archive_file": "m5-real-custody-post-lease-1.log",
+      "sha256": "7d747271d485b8b1f1d7836f7d12e2d23a2fdfff894831d17dcab4de3544ac66",
+      "bytes": 71358,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-combined-1.json",
+      "archive_file": "m5-redshank-combined-1.json",
+      "sha256": "140619cc5672258dda68d1b1bbe14fb849c95bb5ac655d764aaa4072645b261d",
+      "bytes": 1440,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-combined-1.log",
+      "archive_file": "m5-redshank-combined-1.log",
+      "sha256": "509b44d3b9da9a43b0e9ba5c495f73575e16530ec718e44af162abe7064be52e",
+      "bytes": 60865,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-combined-2.json",
+      "archive_file": "m5-redshank-combined-2.json",
+      "sha256": "d7afeed6905b76b589c226c1a34bfce65fc965d6becc61ffe2e7cd0248243291",
+      "bytes": 1438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-combined-2.log",
+      "archive_file": "m5-redshank-combined-2.log",
+      "sha256": "8af3406230e32597755164a904cc6d9b52d6c5f818304ef772e9f02485e95366",
+      "bytes": 63733,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-combined-3.json",
+      "archive_file": "m5-redshank-combined-3.json",
+      "sha256": "23b1e8c1ddd8fcc1e1e7a71ff34ce69982cdcbfe5e42f05ae96feeace41fb835",
+      "bytes": 1438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-combined-3.log",
+      "archive_file": "m5-redshank-combined-3.log",
+      "sha256": "a02f5af695919d0e821e63de4c0e0e720fb32621eeeadc35dd1d9181f244ca51",
+      "bytes": 63862,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-reopen-green-1.json",
+      "archive_file": "m5-redshank-reopen-green-1.json",
+      "sha256": "cb03719af66bf16077e721e810c5afcef0bb6b3efa36a5830743bd18ee9e44ad",
+      "bytes": 1450,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-reopen-green-1.log",
+      "archive_file": "m5-redshank-reopen-green-1.log",
+      "sha256": "3b6e6901e7f11bc1d61cb19937909a093aaf9c353eae25f06b39270e935dfb30",
+      "bytes": 64339,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-reopen-red-1.json",
+      "archive_file": "m5-redshank-reopen-red-1.json",
+      "sha256": "9b8ec7a3d43b9cc05c1e2cf9b712ed9b570109d8a5a5a1a5b36da23c4365512d",
+      "bytes": 1561,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-reopen-red-1.log",
+      "archive_file": "m5-redshank-reopen-red-1.log",
+      "sha256": "3422c6da37cb62b78cb485134cdfd8a09f0b46744b4dc12ffd2a2a323ebb6e93",
+      "bytes": 61408,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-stale-green-1.json",
+      "archive_file": "m5-redshank-stale-green-1.json",
+      "sha256": "504b23ff6e706b3b4bb34a37c3d509bb21db1afbc3c18b205fdb53e368a51cf2",
+      "bytes": 1449,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-stale-green-1.log",
+      "archive_file": "m5-redshank-stale-green-1.log",
+      "sha256": "69163e839b03ae508147bd4cd0086d4a0f5a0ceec06992fef848b69a7063b8fc",
+      "bytes": 42518,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-stale-green-2.json",
+      "archive_file": "m5-redshank-stale-green-2.json",
+      "sha256": "16c5ea6cf889992b4aea20ff027aea2e3286ebd9e1790bdf40234e8166fa6dc8",
+      "bytes": 1447,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-stale-green-2.log",
+      "archive_file": "m5-redshank-stale-green-2.log",
+      "sha256": "dc6b3307baeb23846b6c5c12e2f93c2421397c58f5e1f3b47da8e073eb20bd12",
+      "bytes": 64224,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-stale-red-1.json",
+      "archive_file": "m5-redshank-stale-red-1.json",
+      "sha256": "6d575597861e1b917f75075d4a8a65442484e371090cdd3457ce4325053bc4eb",
+      "bytes": 1455,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-redshank-stale-red-1.log",
+      "archive_file": "m5-redshank-stale-red-1.log",
+      "sha256": "ffb77199cf99d6f18074ef079db803c82c8667bd4e7d35f07a52d938c1af56c4",
+      "bytes": 61767,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-search-observe-green-1.json",
+      "archive_file": "m5-search-observe-green-1.json",
+      "sha256": "7ab7a10708de78d226c9c7e88c23182686c453a152287ae25d003ae711b08b35",
+      "bytes": 1554,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-search-observe-green-1.log",
+      "archive_file": "m5-search-observe-green-1.log",
+      "sha256": "7b9ebe9e0b25e5d1512841e3c6571c2dc9f8e9ffa60423aa19dfc58038a5e881",
+      "bytes": 60819,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-search-observe-red-1.json",
+      "archive_file": "m5-search-observe-red-1.json",
+      "sha256": "e8ac484469f6474666e887cbfaef7330dbb52fc86ebd3d6b7b6ec6975fa8827b",
+      "bytes": 1548,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-search-observe-red-1.log",
+      "archive_file": "m5-search-observe-red-1.log",
+      "sha256": "aa4fb778b2c11f0c6a44605d3bee51dcd28928ffe7612fb55dd2979d56c47511",
+      "bytes": 42996,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-vulkan-narrow-sys-1.json",
+      "archive_file": "m5-vulkan-narrow-sys-1.json",
+      "sha256": "1ad26167d02decb0992a33985557e8bf00360090c7fa074de2f1dbad93440a46",
+      "bytes": 3391,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-vulkan-narrow-sys-1.log",
+      "archive_file": "m5-vulkan-narrow-sys-1.log",
+      "sha256": "e5678eeea0bfd8cfe40e7fca44e8038cef5db1f5abb1846da51d92cd91500f76",
+      "bytes": 4418,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-vulkan-nosys-1.json",
+      "archive_file": "m5-vulkan-nosys-1.json",
+      "sha256": "0941710783d2da7ea43395a496e11ddc2e8fcddf0e32c5c0bc9e63a3500d3843",
+      "bytes": 2432,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-vulkan-nosys-1.log",
+      "archive_file": "m5-vulkan-nosys-1.log",
+      "sha256": "cfb40d9251a2b15980ddbffd8a59fa76eeda9816a32fcf7800bb079d7159fdb3",
+      "bytes": 1779,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-vulkan-sys-1.json",
+      "archive_file": "m5-vulkan-sys-1.json",
+      "sha256": "e56f9ea02db087b7efa944e58bea96c94d595a7458f8951fde310bbc8c3e9f42",
+      "bytes": 2386,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-vulkan-sys-1.log",
+      "archive_file": "m5-vulkan-sys-1.log",
+      "sha256": "5f64683a6e993fe77a98ac7804b56ad1b30e0dbe326d21a9b8d2484bb06ddab0",
+      "bytes": 4044,
+      "copied_now": true
+    }
+  ],
+  "scoped_reviews_and_reports": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-review.md",
+      "archive_file": "m5-note-host-review.md",
+      "sha256": "1f802c6f5295a14a23ac20527a9d212ac42f7229fc5bca69ece9d4e410c55dcf",
+      "bytes": 3631,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-review.diff",
+      "archive_file": "m5-note-host-review.diff",
+      "sha256": "d0f55151e55d3175df11b8fc08440ae7b6d8bd72afe147e4a263254510b493bd",
+      "bytes": 58203,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-review-hashes.json",
+      "archive_file": "m5-note-host-review-hashes.json",
+      "sha256": "27bcb59b3d4639fb38d0adc5dab26ca065169265ea73cfff953f443a31901dc1",
+      "bytes": 1428,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-fix1-review.md",
+      "archive_file": "m5-note-host-fix1-review.md",
+      "sha256": "3f8ad7d35c00adf6a6232cf7002d93cd9a6e548a7b8dc49a56a04bead1300089",
+      "bytes": 3007,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-fix1.diff",
+      "archive_file": "m5-note-host-fix1.diff",
+      "sha256": "f6dc2e532147fe271f9b30ad9d567bb6f9088f43acdeac8ed63aeb7e769142b6",
+      "bytes": 28670,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-fix1-hashes.json",
+      "archive_file": "m5-note-host-fix1-hashes.json",
+      "sha256": "e3918159cfe8b100312e799c7c80dcf0b5eae99d2fb79dbd7216ecf9c3fe7c60",
+      "bytes": 1654,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-fix2-review.md",
+      "archive_file": "m5-note-host-fix2-review.md",
+      "sha256": "a242d53097a6c4b297ff2bf130d8761a24330a544d57ffdcab915741faafa9ef",
+      "bytes": 1416,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-fix2.diff",
+      "archive_file": "m5-note-host-fix2.diff",
+      "sha256": "3962544b2ae8cd8026654b9b6961da83bb86e80d10e20629444adcdff9db8c5a",
+      "bytes": 7448,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-note-host-fix2-hashes.json",
+      "archive_file": "m5-note-host-fix2-hashes.json",
+      "sha256": "31d7416dbdc4552479f2bce76c79b6dcbd4fdc4850138c15fd4f9b456d5d2e63",
+      "bytes": 1762,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-real-custody-review.md",
+      "archive_file": "m5-real-custody-review.md",
+      "sha256": "14591738d8598ad1b0654c1b83f250e62b93fde18b05ce8093da90abac9bfb01",
+      "bytes": 3048,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-real-custody-review.diff",
+      "archive_file": "m5-real-custody-review.diff",
+      "sha256": "caecdbeffb1ee6b9518ca0638302e9dd032de3fad585b770ce57391ca0590e5a",
+      "bytes": 24042,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-real-custody-review-hashes.json",
+      "archive_file": "m5-real-custody-review-hashes.json",
+      "sha256": "e059e810654793b1439158fd47b1fa75eb94a9a89c0f49de3060f99e00bfa3f4",
+      "bytes": 343,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-real-custody-fixture-report.md",
+      "archive_file": "m5-real-custody-fixture-report.md",
+      "sha256": "c69d359d39b75c27eb24c73beb802c55a5d0a0dc2759de81cfb60e50ce1bd884",
+      "bytes": 5430,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-real-custody-fix1-review.md",
+      "archive_file": "m5-real-custody-fix1-review.md",
+      "sha256": "416e91a4a7264d426b27bf7e657c41a9826b239e8d3524bde92a1f870e75d55e",
+      "bytes": 1767,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-real-custody-fix1.diff",
+      "archive_file": "m5-real-custody-fix1.diff",
+      "sha256": "e8a71ff0acc9163159c9ae5bc3e108eb6a57efe0e3721120a02f16df8cea2322",
+      "bytes": 6087,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-real-custody-fix1-hashes.json",
+      "archive_file": "m5-real-custody-fix1-hashes.json",
+      "sha256": "98e647ff2ebf3316abf263dbd3fe47064d431cc224ce16923f872e112b58e300",
+      "bytes": 452,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-review.md",
+      "archive_file": "m5-preflight-review.md",
+      "sha256": "bc3b5dbeec1f42f7bc95da0e47795448d6cbb109b4f090c3fbcf04d613d9c35e",
+      "bytes": 3395,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-review.txt",
+      "archive_file": "m5-preflight-review.txt",
+      "sha256": "75753dbd2bd54eff66a69a4a1b6f610b3a5edd334f236acb3c62eac7c059c7df",
+      "bytes": 32498,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-review-hashes.json",
+      "archive_file": "m5-preflight-review-hashes.json",
+      "sha256": "a72b9cf6c89f536c171b4454da7ec91459cba83874d9c32231a90445d3f47bd1",
+      "bytes": 542,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix1-review.md",
+      "archive_file": "m5-preflight-fix1-review.md",
+      "sha256": "df8adccd6d4bc4b2385634f135d3ea93ccc6f02641e042b0533e63fa95c771a5",
+      "bytes": 2570,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix1-reviewed.txt",
+      "archive_file": "m5-preflight-fix1-reviewed.txt",
+      "sha256": "41e6efb1453b16bae0ec06e739356185a6211640976a6fa183c708b0ba9330d6",
+      "bytes": 41580,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix1-report.md",
+      "archive_file": "m5-preflight-fix1-report.md",
+      "sha256": "e81a34b9a9f6d550feed208735ad1d3145e51d3e19b31df47d9108d2ecc2c513",
+      "bytes": 2797,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix1-hashes.json",
+      "archive_file": "m5-preflight-fix1-hashes.json",
+      "sha256": "73207135695585345097ce53cb5a1d7f7d0dcd14805c99cf030107d26db3562c",
+      "bytes": 542,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix1.diff",
+      "archive_file": "m5-preflight-fix1.diff",
+      "sha256": "4b2f1a00f8a4042d6e06b4b8b2441f487a10927091904ba682471cb650a5d2d9",
+      "bytes": 20131,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix2-review.md",
+      "archive_file": "m5-preflight-fix2-review.md",
+      "sha256": "38e17a80a7cca9677c071914858cdc41e6e4e17f0b5170948e3782de0db0a3b9",
+      "bytes": 1216,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix2-reviewed.txt",
+      "archive_file": "m5-preflight-fix2-reviewed.txt",
+      "sha256": "d87ba482fd014c35eae78faf07ba1993df379a98c01e485f8120fe466f0a5e74",
+      "bytes": 43844,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix2-report.md",
+      "archive_file": "m5-preflight-fix2-report.md",
+      "sha256": "da22db157afb53a6cebc3dfb5fe66994f4f952b9dc93642b2d214f5a096ab0d3",
+      "bytes": 2105,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix2-hashes.json",
+      "archive_file": "m5-preflight-fix2-hashes.json",
+      "sha256": "3fec39d1b457011fd201ddd064617e29ad96b7e0320cda50ce39903e2df76f3a",
+      "bytes": 542,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-fix2.diff",
+      "archive_file": "m5-preflight-fix2.diff",
+      "sha256": "3d6e02fa6bedc4fd5008b97b46786f5b5369afb13c1db410d7993f2cbb1c666d",
+      "bytes": 6087,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-route-fix-review.md",
+      "archive_file": "m5-preflight-route-fix-review.md",
+      "sha256": "25765008b5ee0159b128815cde62b8afdbe4282f898fefa79a6a34606d2f232f",
+      "bytes": 1824,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-route-reviewed.txt",
+      "archive_file": "m5-preflight-route-reviewed.txt",
+      "sha256": "f916b1c4e9c023990f79136c169695137ef52eee35c5e2f15424841d7d9b8879",
+      "bytes": 45731,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-route-fix-report.md",
+      "archive_file": "m5-preflight-route-fix-report.md",
+      "sha256": "7477f920368fb4932003b3baaed495f4a9c76b3e056d5fdcb51cd1b5def7a7a1",
+      "bytes": 3240,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-route-fix-hashes.json",
+      "archive_file": "m5-preflight-route-fix-hashes.json",
+      "sha256": "9f73630445d483610fa6380fedcab65f27369a23780852b18fac67de430d2835",
+      "bytes": 646,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-route-fix.diff",
+      "archive_file": "m5-preflight-route-fix.diff",
+      "sha256": "8424af3347b5cce778d240942cd5895727c69354125edca4a9e8fa7573b7d56b",
+      "bytes": 6442,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-route-label-review.md",
+      "archive_file": "m5-preflight-route-label-review.md",
+      "sha256": "4ac77022d342441e58a23d14351782699928baac8ce5058601cdaf4c1d5b1a38",
+      "bytes": 806,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-route-label-report.md",
+      "archive_file": "m5-preflight-route-label-report.md",
+      "sha256": "8d5d8e4099934be7f897784f8f9ee736c940f106d5ca053f1c78cb620b5dbe7a",
+      "bytes": 1265,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-route-label-only.diff",
+      "archive_file": "m5-preflight-route-label-only.diff",
+      "sha256": "6a441c03d237526f2fc16311cceb1eb2e5cd84d7b7e2b756ff665abea7e45001",
+      "bytes": 2229,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-network-fix-review.md",
+      "archive_file": "m5-preflight-network-fix-review.md",
+      "sha256": "bdfd51eaeb5bbc32172b7112ee6f2c34bc8cfd9dd2f64b597ff7e1b94fcffd5e",
+      "bytes": 1252,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-network-fix-report.md",
+      "archive_file": "m5-preflight-network-fix-report.md",
+      "sha256": "a6cf82c5828e7bf712448da46c774f69e3549542065b1138936eb58a95997f9e",
+      "bytes": 2303,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-network-fix-hashes.json",
+      "archive_file": "m5-preflight-network-fix-hashes.json",
+      "sha256": "273cde5d09e2d493556aa0b5a259ee29812b75407d8a852629d0b5dc2d32c06e",
+      "bytes": 542,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-network-fix.diff",
+      "archive_file": "m5-preflight-network-fix.diff",
+      "sha256": "9fdc9919254cc7ae9a3e061d3c94628ab6c7cb77091a569310440c6237b80a38",
+      "bytes": 3670,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-network-reviewed.txt",
+      "archive_file": "m5-preflight-network-reviewed.txt",
+      "sha256": "9851931198afe086f71b1e3777874389ec373c4a002cbe591c9523ae7ba3c866",
+      "bytes": 45222,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-gpu-fix-review.md",
+      "archive_file": "m5-preflight-gpu-fix-review.md",
+      "sha256": "998236f442a529d826fc44f20155ebd70fd1cde4207551800a6be061edb0d864",
+      "bytes": 1270,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-gpu-fix-report.md",
+      "archive_file": "m5-preflight-gpu-fix-report.md",
+      "sha256": "ba37bb544ee926c9448e4218aa058ac36e69a51b4ac13812372aab5ea250d7fb",
+      "bytes": 3033,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-gpu-fix-hashes.json",
+      "archive_file": "m5-preflight-gpu-fix-hashes.json",
+      "sha256": "bd4e7340e2b3bdb5ce3bbbfc6c9ca25d7833c29f04c53d6bda11d4f0f9771d00",
+      "bytes": 542,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-gpu-fix.diff",
+      "archive_file": "m5-preflight-gpu-fix.diff",
+      "sha256": "a6aa6cb0b5f4a248d41bf9bcfdc8f792501482ad24a0907fce7f913ed2925677",
+      "bytes": 5818,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-gpu-reviewed.txt",
+      "archive_file": "m5-preflight-gpu-reviewed.txt",
+      "sha256": "8bc89a7fed0294a0369d8f45a4be896271d294e7f84c6fb2a0f2ac0ff486da3f",
+      "bytes": 48031,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-real-custody-feature-review.md",
+      "archive_file": "m5-preflight-real-custody-feature-review.md",
+      "sha256": "8f38f1cbb1a5189d5c22a7c111be52d377aa531c64ed5e6f07174e6dddeba674",
+      "bytes": 1010,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-real-custody-feature-report.md",
+      "archive_file": "m5-preflight-real-custody-feature-report.md",
+      "sha256": "72b584327008c06f006ac6c3635dbc9b1ff8208e8b882a6504ec1c71a7dbbe88",
+      "bytes": 2042,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-preflight-real-custody-feature.diff",
+      "archive_file": "m5-preflight-real-custody-feature.diff",
+      "sha256": "07350759eaaf42ec9a1222835a1bfea2481775b15b7bdc67710c1caa03f5ad94",
+      "bytes": 1795,
+      "copied_now": true
+    }
+  ],
+  "native_attempts_A_to_D": [
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/failure.json",
+      "archive_file": "native-attempt-A/failure.json",
+      "sha256": "303a5a87c7e779b398ecd7965716c0b2796e6b635ed894d9e575259d5f91193a",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/frozen/fixture_server.py",
+      "archive_file": "native-attempt-A/frozen/fixture_server.py",
+      "sha256": "71198b8d604d59a849b3c5c0218f7e26735cfae285b066cea88efb9c369becca",
+      "bytes": 1937,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/frozen/namespace_phase.py",
+      "archive_file": "native-attempt-A/frozen/namespace_phase.py",
+      "sha256": "0fe0233f0f1a20c2e3da5acab51237a3523e269cef512138ad9394e02b2d1348",
+      "bytes": 16109,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/frozen/preflight_phase.py",
+      "archive_file": "native-attempt-A/frozen/preflight_phase.py",
+      "sha256": "571332afdc4cde7d1f8b7e2604a61ec7cf14da7ef351f7e277ddffe2d3b7e2df",
+      "bytes": 2971,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/frozen/seed-config.json",
+      "archive_file": "native-attempt-A/frozen/seed-config.json",
+      "sha256": "b75a9222ef460742258dd4cf23924560d757febc9c77ab771f327640e7e9b3d7",
+      "bytes": 758,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/frozen/seed.scn",
+      "archive_file": "native-attempt-A/frozen/seed.scn",
+      "sha256": "961b17e4c0432d6b29b97bc47bec11722bcf906fe795146f7a12c2bb9000b8dc",
+      "bytes": 131,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/inputs.json",
+      "archive_file": "native-attempt-A/inputs.json",
+      "sha256": "c7150661cca95f9082e4b75d3934898409a72292ff2a09a4e61a41d41dc95208",
+      "bytes": 2584,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/launcher.cleanup.json",
+      "archive_file": "native-attempt-A/launcher.cleanup.json",
+      "sha256": "9d91a3b13bed615f52db1b4ccb27e33bcc4c00f233c37f78a00375ed5dc783a2",
+      "bytes": 359,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-a/launcher.log",
+      "archive_file": "native-attempt-A/launcher.log",
+      "sha256": "a5de7ac45ff3c51ff7ecad22bfa095a0d6cf7214d0b1bc6749aebafb476035eb",
+      "bytes": 818,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/failure.json",
+      "archive_file": "native-attempt-B/failure.json",
+      "sha256": "0f259b5a947aad871d8d9f7c4d86e63ab6cd363d1bd6696b9f70737c30182e5e",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/frozen/fixture_server.py",
+      "archive_file": "native-attempt-B/frozen/fixture_server.py",
+      "sha256": "71198b8d604d59a849b3c5c0218f7e26735cfae285b066cea88efb9c369becca",
+      "bytes": 1937,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/frozen/namespace_phase.py",
+      "archive_file": "native-attempt-B/frozen/namespace_phase.py",
+      "sha256": "411b50e3e8ce9e7e12200ea2a73d902b1ebb8ce1363733920d2fb92afedc4efa",
+      "bytes": 17414,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/frozen/preflight_phase.py",
+      "archive_file": "native-attempt-B/frozen/preflight_phase.py",
+      "sha256": "571332afdc4cde7d1f8b7e2604a61ec7cf14da7ef351f7e277ddffe2d3b7e2df",
+      "bytes": 2971,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/frozen/seed-config.json",
+      "archive_file": "native-attempt-B/frozen/seed-config.json",
+      "sha256": "b75a9222ef460742258dd4cf23924560d757febc9c77ab771f327640e7e9b3d7",
+      "bytes": 758,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/frozen/seed.scn",
+      "archive_file": "native-attempt-B/frozen/seed.scn",
+      "sha256": "961b17e4c0432d6b29b97bc47bec11722bcf906fe795146f7a12c2bb9000b8dc",
+      "bytes": 131,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/inputs.json",
+      "archive_file": "native-attempt-B/inputs.json",
+      "sha256": "fece9633adb2ce95460bcd6b23bbd678ebea0a931101e2d76d9516a67a426609",
+      "bytes": 2584,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/launcher.cleanup.json",
+      "archive_file": "native-attempt-B/launcher.cleanup.json",
+      "sha256": "9c4ceba4ea1e48bf5438198bd223dc7c56e1de578b548f2d04365597f3de8a9b",
+      "bytes": 359,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/launcher.log",
+      "archive_file": "native-attempt-B/launcher.log",
+      "sha256": "c01d422031e97322a8ad2ef0f3f7247e315a0fff0839fc8b728278d7b1d4cbbc",
+      "bytes": 455,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/sandbox/fixture-requests.json",
+      "archive_file": "native-attempt-B/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/sandbox/origin-info.json",
+      "archive_file": "native-attempt-B/sandbox/origin-info.json",
+      "sha256": "2b33772d97afa751141d008aad7b93fb617e2e9eb2088965a3409665945b6204",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/sandbox/seed/custody.log",
+      "archive_file": "native-attempt-B/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/sandbox/seed/namespace.json",
+      "archive_file": "native-attempt-B/sandbox/seed/namespace.json",
+      "sha256": "59aa075d88a1e528fe288cfc6e67228cf12515aa0d4e3e999bd62dcc0623a931",
+      "bytes": 2303,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/sandbox/seed/origin-ready.json",
+      "archive_file": "native-attempt-B/sandbox/seed/origin-ready.json",
+      "sha256": "e615a60703450e250df2a47c541460d6abdd88cce4a5af87f59c78d4ff9fe60c",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/sandbox/seed/origin.log",
+      "archive_file": "native-attempt-B/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/sandbox/seed/processes-final.json",
+      "archive_file": "native-attempt-B/sandbox/seed/processes-final.json",
+      "sha256": "fbc13162588b185535137837acf67ff22a4bc06c909738d81d9ab63d8295fd62",
+      "bytes": 1215,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-b/sandbox/seed/route-probe.log",
+      "archive_file": "native-attempt-B/sandbox/seed/route-probe.log",
+      "sha256": "fd19d2a16dad95b5975e5d71780c9d8030d61c3ee2a77d73171ed7b27e07b2f3",
+      "bytes": 560,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/failure.json",
+      "archive_file": "native-attempt-C/failure.json",
+      "sha256": "1f448be2d3f9d7e281219fd55e724919a87d115e15d7a6d5c3f0eb1315c74365",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/frozen/fixture_server.py",
+      "archive_file": "native-attempt-C/frozen/fixture_server.py",
+      "sha256": "71198b8d604d59a849b3c5c0218f7e26735cfae285b066cea88efb9c369becca",
+      "bytes": 1937,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/frozen/namespace_phase.py",
+      "archive_file": "native-attempt-C/frozen/namespace_phase.py",
+      "sha256": "f17afe791dfb7b3d02a63be5f00497ee59ddff45bfda6822e89d5c5445071121",
+      "bytes": 17747,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/frozen/preflight_phase.py",
+      "archive_file": "native-attempt-C/frozen/preflight_phase.py",
+      "sha256": "95d36ebf4d1dc1f3fe18ad0bc8261965b91252c873ae2bcb48903121a90d8b4b",
+      "bytes": 3137,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/frozen/seed-config.json",
+      "archive_file": "native-attempt-C/frozen/seed-config.json",
+      "sha256": "b75a9222ef460742258dd4cf23924560d757febc9c77ab771f327640e7e9b3d7",
+      "bytes": 758,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/frozen/seed.scn",
+      "archive_file": "native-attempt-C/frozen/seed.scn",
+      "sha256": "961b17e4c0432d6b29b97bc47bec11722bcf906fe795146f7a12c2bb9000b8dc",
+      "bytes": 131,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/inputs.json",
+      "archive_file": "native-attempt-C/inputs.json",
+      "sha256": "d889aff56d2493ecac010883801c92019d73261408aaf439cfbc168114234887",
+      "bytes": 2584,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/launcher.cleanup.json",
+      "archive_file": "native-attempt-C/launcher.cleanup.json",
+      "sha256": "d043db0cbc6887b48d99d624f17a970bbe5b1d6ff8765c26d80673e54326a13e",
+      "bytes": 359,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/launcher.log",
+      "archive_file": "native-attempt-C/launcher.log",
+      "sha256": "4fb11beab0ac8eb0df8a89e05e54612ad4f046649aadb03574025f150dadf69b",
+      "bytes": 541,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/fixture-requests.json",
+      "archive_file": "native-attempt-C/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/origin-info.json",
+      "archive_file": "native-attempt-C/sandbox/origin-info.json",
+      "sha256": "c3e2806e17f8abfd030379b7ac9815510907e064e03962660408d3ae4e10812f",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/app.log",
+      "archive_file": "native-attempt-C/sandbox/seed/app.log",
+      "sha256": "05706dd6d5ac6914d92e05dd40fab3644d6dcf48db2cb10634cb55e08a463efd",
+      "bytes": 2046,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/custody.log",
+      "archive_file": "native-attempt-C/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/diagnostics.json",
+      "archive_file": "native-attempt-C/sandbox/seed/diagnostics.json",
+      "sha256": "915c224590612589a8634e28866429abd64ce3b665ff83ce63defb23184d84cf",
+      "bytes": 1842,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/inference-route.json",
+      "archive_file": "native-attempt-C/sandbox/seed/inference-route.json",
+      "sha256": "144255a8c5b9f6787a05a6435ea31ca9ca100983154f017a56ff67c865bfad20",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/namespace.json",
+      "archive_file": "native-attempt-C/sandbox/seed/namespace.json",
+      "sha256": "1957d04d6c1df652493c35b26d70b6a4272a7899ee7178821d9430107d182b70",
+      "bytes": 2303,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/origin-ready.json",
+      "archive_file": "native-attempt-C/sandbox/seed/origin-ready.json",
+      "sha256": "c7df31a4deeeba6fd992454055acc5cb7789a77c7f1734c7a2833821d8670d8b",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/origin.log",
+      "archive_file": "native-attempt-C/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/processes-final.json",
+      "archive_file": "native-attempt-C/sandbox/seed/processes-final.json",
+      "sha256": "970df1e636ff853c3cc266a32938f045eb434f34c1c15d172c4414495b12213e",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/route-probe.log",
+      "archive_file": "native-attempt-C/sandbox/seed/route-probe.log",
+      "sha256": "1751a5609ef34b73135da0dfb93f78c3830be070ca55d4a3632881d147165205",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-c/sandbox/seed/scenario.done",
+      "archive_file": "native-attempt-C/sandbox/seed/scenario.done",
+      "sha256": "4ec45f8d76b2b8e1e08d27557aead94697c7303efc23d8f7e54f3e1fe29b0602",
+      "bytes": 707,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/failure.json",
+      "archive_file": "native-attempt-D/failure.json",
+      "sha256": "ec1622417baa102d68b52296e20ef84290be439979a51ddcd9ba33685e92e6ff",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/frozen/fixture_server.py",
+      "archive_file": "native-attempt-D/frozen/fixture_server.py",
+      "sha256": "71198b8d604d59a849b3c5c0218f7e26735cfae285b066cea88efb9c369becca",
+      "bytes": 1937,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/frozen/namespace_phase.py",
+      "archive_file": "native-attempt-D/frozen/namespace_phase.py",
+      "sha256": "f17afe791dfb7b3d02a63be5f00497ee59ddff45bfda6822e89d5c5445071121",
+      "bytes": 17747,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/frozen/preflight_phase.py",
+      "archive_file": "native-attempt-D/frozen/preflight_phase.py",
+      "sha256": "48238cab03fc20a2925d83e99dc06e66d0c50c41967b838ad7a382130385b48f",
+      "bytes": 3639,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/frozen/seed-config.json",
+      "archive_file": "native-attempt-D/frozen/seed-config.json",
+      "sha256": "1ff7b83724d8cabffaf2c9ba7687741f0add38c5a429bf22d5f21002243d723c",
+      "bytes": 1080,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/frozen/seed.scn",
+      "archive_file": "native-attempt-D/frozen/seed.scn",
+      "sha256": "961b17e4c0432d6b29b97bc47bec11722bcf906fe795146f7a12c2bb9000b8dc",
+      "bytes": 131,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/inputs.json",
+      "archive_file": "native-attempt-D/inputs.json",
+      "sha256": "9ae5b1ba9153ffa8cc8a3a3f313a8a961488be9993a8556e9080eafb660d0dbc",
+      "bytes": 2880,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/launcher.cleanup.json",
+      "archive_file": "native-attempt-D/launcher.cleanup.json",
+      "sha256": "cf6574098ddd7f67fb052c50b151df14bf6960e7e9f59af631b5a653aec06df4",
+      "bytes": 359,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/launcher.log",
+      "archive_file": "native-attempt-D/launcher.log",
+      "sha256": "3e892dc404879abcc724995f343d4aba28642d292ef5f362af03751cd1836703",
+      "bytes": 158,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/fixture-requests.json",
+      "archive_file": "native-attempt-D/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/origin-info.json",
+      "archive_file": "native-attempt-D/sandbox/origin-info.json",
+      "sha256": "5c273f50d8e7a4cc058f92b834ef05793f34a963bb080ba3c22e34d591772204",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/app.log",
+      "archive_file": "native-attempt-D/sandbox/seed/app.log",
+      "sha256": "9f1fad9a46af4bf9cce5ecc6e418e265950dae9192d3a2a059ffe9cededb2541",
+      "bytes": 3784,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/custody.log",
+      "archive_file": "native-attempt-D/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/diagnostics.json",
+      "archive_file": "native-attempt-D/sandbox/seed/diagnostics.json",
+      "sha256": "d214668fa186239bcc44a233300379c0b47f1930238ba533d715f82ebdfac89e",
+      "bytes": 1842,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/gui_preflight.runtime.json",
+      "archive_file": "native-attempt-D/sandbox/seed/gui_preflight.runtime.json",
+      "sha256": "fd0304279c29f752f6445bdab212804931850b69e538b00651dd6bc6245834d5",
+      "bytes": 377,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/inference-route.json",
+      "archive_file": "native-attempt-D/sandbox/seed/inference-route.json",
+      "sha256": "144255a8c5b9f6787a05a6435ea31ca9ca100983154f017a56ff67c865bfad20",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/namespace.json",
+      "archive_file": "native-attempt-D/sandbox/seed/namespace.json",
+      "sha256": "701ae077966b57306d84aceaa8758586e9805df405b3d79876a0267b51419099",
+      "bytes": 2303,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/origin-ready.json",
+      "archive_file": "native-attempt-D/sandbox/seed/origin-ready.json",
+      "sha256": "b15c964e8dd13cd2f67d57351a7c0f1223fae510c428c9d7f7159155e4dc9d64",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/origin.log",
+      "archive_file": "native-attempt-D/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/processes-final.json",
+      "archive_file": "native-attempt-D/sandbox/seed/processes-final.json",
+      "sha256": "a8643df128b7f32e7bc5ec3602e3bb792a42253cc84804c290b535d8a919411f",
+      "bytes": 1564,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/processes.json",
+      "archive_file": "native-attempt-D/sandbox/seed/processes.json",
+      "sha256": "a8643df128b7f32e7bc5ec3602e3bb792a42253cc84804c290b535d8a919411f",
+      "bytes": 1564,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/requests-at-stop.json",
+      "archive_file": "native-attempt-D/sandbox/seed/requests-at-stop.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/route-probe.log",
+      "archive_file": "native-attempt-D/sandbox/seed/route-probe.log",
+      "sha256": "5aa8c5a1ef95123d5b65b5580ff2d2b79c7dad96242bebb029bf5c263e0b552c",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/scenario.done",
+      "archive_file": "native-attempt-D/sandbox/seed/scenario.done",
+      "sha256": "cd9b8fb9c0b6cee41654371fbf41321676883c69bf0ec68982cb06e1638be0f3",
+      "bytes": 150,
+      "copied_now": true
+    }
+  ],
+  "external_frames_not_copied": [
+    {
+      "attempt": "D",
+      "external_path": "/home/markik/Code/testing/m5-empty-preflight-20261030-d/sandbox/seed/gui_preflight.png",
+      "sha256": "ee849aa079aed94cf01c0e26d610de62315e65316d38fb102db36e3229a782b8",
+      "bytes": 52948,
+      "runtime_metadata_sha256": "fd0304279c29f752f6445bdab212804931850b69e538b00651dd6bc6245834d5"
+    },
+    {
+      "attempt": "E",
+      "external_path": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/gui_preflight.png",
+      "sha256": "4baac7781cd72f0f16cfac3bdeae489a27ca3662189f450f3c99cf5c037f51f2",
+      "bytes": 50410,
+      "runtime_metadata_sha256": "4a204299707297f39313aab6b7d7e89b06b8f21b35bd6babd512c4f4413c3717"
+    }
+  ],
+  "excluded": "Native binaries, custody wallets/seeds, profile stores, shader caches, and active/incomplete E receipts.",
+  "native_attempt_E_startup_only": [
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/frozen/fixture_server.py",
+      "archive_file": "native-attempt-E/frozen/fixture_server.py",
+      "sha256": "71198b8d604d59a849b3c5c0218f7e26735cfae285b066cea88efb9c369becca",
+      "bytes": 1937,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/frozen/namespace_phase.py",
+      "archive_file": "native-attempt-E/frozen/namespace_phase.py",
+      "sha256": "f17afe791dfb7b3d02a63be5f00497ee59ddff45bfda6822e89d5c5445071121",
+      "bytes": 17747,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/frozen/preflight_phase.py",
+      "archive_file": "native-attempt-E/frozen/preflight_phase.py",
+      "sha256": "48238cab03fc20a2925d83e99dc06e66d0c50c41967b838ad7a382130385b48f",
+      "bytes": 3639,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/frozen/seed-config.json",
+      "archive_file": "native-attempt-E/frozen/seed-config.json",
+      "sha256": "1ff7b83724d8cabffaf2c9ba7687741f0add38c5a429bf22d5f21002243d723c",
+      "bytes": 1080,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/frozen/seed.scn",
+      "archive_file": "native-attempt-E/frozen/seed.scn",
+      "sha256": "961b17e4c0432d6b29b97bc47bec11722bcf906fe795146f7a12c2bb9000b8dc",
+      "bytes": 131,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/inputs.json",
+      "archive_file": "native-attempt-E/inputs.json",
+      "sha256": "e1bbd8188bda9afb109369c16a312b769966a28b01f1aabaa05596761cbfcb27",
+      "bytes": 2934,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/launcher.cleanup.json",
+      "archive_file": "native-attempt-E/launcher.cleanup.json",
+      "sha256": "eba202162887e1e42c371afb8be44dc9e5b598dd8b3608b3efeddc91b8fb4dab",
+      "bytes": 268,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/launcher.json",
+      "archive_file": "native-attempt-E/launcher.json",
+      "sha256": "7ce0c96a5bb11520710be3278e7a02e1a06feed6ac4a0d2be86a5500dbe6203e",
+      "bytes": 3169,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/launcher.log",
+      "archive_file": "native-attempt-E/launcher.log",
+      "sha256": "42e99ae25eb0de06e600a6c053df9a9e407211bdb7044c2a2ce0004070216148",
+      "bytes": 118,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/fixture-requests.json",
+      "archive_file": "native-attempt-E/sandbox/fixture-requests.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/origin-info.json",
+      "archive_file": "native-attempt-E/sandbox/origin-info.json",
+      "sha256": "65e3e77c8a8f62a58f25fc063ef2a8fcfa04c82912b83dc495d7c1b9f2c2d24b",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/app.log",
+      "archive_file": "native-attempt-E/sandbox/seed/app.log",
+      "sha256": "4058fda4c9078080b4d038a3a484ed0866b424a9991e9321649276591ed4534b",
+      "bytes": 3784,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/custody.log",
+      "archive_file": "native-attempt-E/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/diagnostics.json",
+      "archive_file": "native-attempt-E/sandbox/seed/diagnostics.json",
+      "sha256": "c1bfed128946790299143ac78f75cb9ae6fdea07ecc2ef23f9a31b1a4a8900a6",
+      "bytes": 2504,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/gui_preflight.runtime.json",
+      "archive_file": "native-attempt-E/sandbox/seed/gui_preflight.runtime.json",
+      "sha256": "4a204299707297f39313aab6b7d7e89b06b8f21b35bd6babd512c4f4413c3717",
+      "bytes": 764,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/inference-route.json",
+      "archive_file": "native-attempt-E/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/namespace.json",
+      "archive_file": "native-attempt-E/sandbox/seed/namespace.json",
+      "sha256": "98bfe9da45ad7863a01ef1cde638aa82c3bfb0f86e5b02ed9ff8f582e42ff4dd",
+      "bytes": 2303,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/origin-ready.json",
+      "archive_file": "native-attempt-E/sandbox/seed/origin-ready.json",
+      "sha256": "495489d8746a1135a508a22e30872751e5b73d0d8bfa13d6450b3abd769057cd",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/origin.log",
+      "archive_file": "native-attempt-E/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/preflight-checked.json",
+      "archive_file": "native-attempt-E/sandbox/seed/preflight-checked.json",
+      "sha256": "7c09fb1367fcd632e512afa05d3f951ede1390b39c4ddb3cf572cecf6d64c621",
+      "bytes": 734,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/processes-final.json",
+      "archive_file": "native-attempt-E/sandbox/seed/processes-final.json",
+      "sha256": "43caf3c97ad073d0824c97759758484d40875c2b90b1aa36a10e5337a79dac7d",
+      "bytes": 1564,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/processes.json",
+      "archive_file": "native-attempt-E/sandbox/seed/processes.json",
+      "sha256": "43caf3c97ad073d0824c97759758484d40875c2b90b1aa36a10e5337a79dac7d",
+      "bytes": 1564,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/requests-at-stop.json",
+      "archive_file": "native-attempt-E/sandbox/seed/requests-at-stop.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/route-probe.log",
+      "archive_file": "native-attempt-E/sandbox/seed/route-probe.log",
+      "sha256": "1e3aeb8f441a647ecabdb6a8240aa945a12187ed264d7f066ad03586d0306095",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-empty-preflight-20261030-e/sandbox/seed/scenario.done",
+      "archive_file": "native-attempt-E/sandbox/seed/scenario.done",
+      "sha256": "6adb7e39a5cb1642c4c26e154ad936883f0831d809b0acf9c5f5359a91a7cbff",
+      "bytes": 150,
+      "copied_now": true
+    }
+  ],
+  "attempt_E_boundary": "Startup/preflight passed: app and probe used the same family principal; route probe observed closed-during-open; offline acquisition, corpus publication and generation counters were zero; scope cleanup confirmed the cgroup empty. This does not qualify full M5 acceptance."
+}

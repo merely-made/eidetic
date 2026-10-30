@@ -1,0 +1,1559 @@
+diff --git a/src/app/redshank_arms.rs b/src/app/redshank_arms.rs
+index b0fde29e..dfd7f29f 100644
+--- a/src/app/redshank_arms.rs
++++ b/src/app/redshank_arms.rs
+@@ -12,25 +12,30 @@
+ //! notes into the graph so they reopen after a restart.
+ 
+ use chartulary::FacetId;
+ use redshank_model::ItemId;
+ use redshank_surfaces::{CompactCommand, CompactPlayerState};
+ use serde_json::json;
+ use uuid::Uuid;
+ 
+ use crate::action::Effect;
+ use crate::content_classes::{REDSHANK_NOTE_FACET, REDSHANK_PROGRESS_FACET};
+-use crate::redshank_episode_surface::{PANE_KIND, RedshankEpisodeSourceV1, episode_source};
++use crate::redshank_episode_surface::{
++    PANE_KIND, RedshankEpisodeSourceV1, episode_source,
++};
+ use crate::redshank_host::HostOutcome;
+ 
+ use super::App;
+ 
++#[path = "redshank_notes.rs"]
++mod notes;
++
+ /// The tag an episode note node carries, beside `feed-entry` and `unread` on
+ /// the episode itself.
+ pub const REDSHANK_NOTE_TAG: &str = "redshank-note";
+ 
+ /// One note's stable graph address. The node is durable session-graph state,
+ /// so a restart finds it without reattaching anything.
+ pub fn note_address(id: &redshank_model::AnnotationId) -> String {
+     format!("mere://redshank/note/{}", id.0)
+ }
+ 
+@@ -296,44 +301,44 @@ fn note_title(plain_text: &str, offset_ms: u64) -> String {
+         format!("{stamp} {body}")
+     }
+ }
+ 
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+     use crate::action::{Action, FetchedPage, Update};
+     use crate::panes::{PaneContent, PaneKindId, SessionId};
+     use crate::redshank_host::Output;
+-    use redshank_model::{AnnotationId, CaptureAnchor, RepresentationReceipt};
++    use redshank_model::AnnotationId;
+     use std::path::{Path, PathBuf};
+ 
+-    const FEED: &str = "https://podcast.test/feed.xml";
+-    const PAGE: &str = "https://podcast.test/episodes/one";
++    pub(super) const FEED: &str = "https://podcast.test/feed.xml";
++    pub(super) const PAGE: &str = "https://podcast.test/episodes/one";
+     const ENCLOSURE: &str = "https://cdn.podcast.test/one.mp3";
+ 
+     fn rss() -> FetchedPage {
+         FetchedPage::text(
+             Some("application/rss+xml".into()),
+             format!(
+                 "<rss version=\"2.0\"><channel><title>Pod</title><item><guid>episode-1</guid>\
+                  <title>Marsh at dawn</title><link>{PAGE}</link>\
+                  <enclosure url=\"{ENCLOSURE}\" type=\"audio/mpeg\" /></item></channel></rss>"
+             ),
+         )
+     }
+ 
+     fn scratch_root() -> PathBuf {
+         std::env::temp_dir().join(format!("turnstone-redshank-{}", uuid::Uuid::new_v4()))
+     }
+ 
+     /// An app on `root`/`session` with one subscribed feed and its episode.
+-    fn subscribed(root: &Path, session: SessionId) -> App {
++    pub(super) fn subscribed(root: &Path, session: SessionId) -> App {
+         let mut app = App::test_stub();
+         app.data_root = root.to_path_buf();
+         std::fs::create_dir_all(crate::session::session_dir(root, session)).unwrap();
+         app.adopt_session(session);
+         app.now_ms = Some(1_000);
+         // Visited directly on the active canvas rather than through the
+         // omnibar: an adopted session installs its own pane selection, so
+         // `OpenAddress` would leave the node in a pane the test cannot name.
+         let key = app.graph_runtimes.visit(FEED);
+         let source = app.graph_runtimes.graph().get_node(key).unwrap().id;
+@@ -393,39 +398,30 @@ mod tests {
+     fn a_note_and_progress_project_into_the_graph_and_reopen_after_a_restart() {
+         let root = scratch_root();
+         let session = SessionId::new();
+         let sdir = crate::session::session_dir(&root, session);
+         let item = crate::redshank_episode_surface::item_id(FEED, "episode-1");
+ 
+         let mut app = subscribed(&root, session);
+         app.update(Action::OpenAddress(PAGE.to_string()));
+         let member = app.redshank_member(&item).expect("the episode's member");
+ 
+-        let anchor = CaptureAnchor {
+-            item_id: item.clone(),
+-            offset_ms: 62_000,
+-            end_offset_ms: None,
+-            pressed_offset_ms: None,
+-            representation: RepresentationReceipt::default(),
+-            fingerprint: None,
+-        };
+-        // Begin freezes a capture target; cancelling releases it, so the
+-        // editor's own anchor is the one that reaches the model.
++        // Begin freezes the actual target the editor must return on save.
+         app.apply_redshank_commands(vec![(item.clone(), CompactCommand::BeginTextNote)]);
+         assert_eq!(
+             app.redshank
+                 .pending_anchor(&item)
+                 .map(|a| a.item_id.clone()),
+             Some(item.clone())
+         );
+-        app.apply_redshank_commands(vec![(item.clone(), CompactCommand::CancelTextNote)]);
+-        assert!(app.redshank.pending_anchor(&item).is_none());
++        let anchor = app.redshank.pending_anchor(&item).unwrap().clone();
++        let offset = anchor.offset_ms;
+         let effects = app.apply_redshank_commands(vec![(
+             item.clone(),
+             CompactCommand::SaveTextNote {
+                 anchor,
+                 plain_text: "The bittern calls here".into(),
+             },
+         )]);
+         assert!(
+             effects
+                 .iter()
+@@ -454,21 +450,21 @@ mod tests {
+                 .as_deref()
+                 == Some("The bittern calls here")
+         );
+         let anchor_field = app
+             .graph_runtimes
+             .facets()
+             .get(&node, &FacetId::new(REDSHANK_NOTE_FACET))
+             .expect("the note carries its anchor as a field");
+         assert_eq!(
+             anchor_field.get("offset_ms").and_then(|v| v.as_u64()),
+-            Some(62_000)
++            Some(offset)
+         );
+         let progress_field = app
+             .graph_runtimes
+             .facets()
+             .get(&member, &FacetId::new(REDSHANK_PROGRESS_FACET))
+             .expect("the episode carries progress as a field");
+         assert_eq!(
+             progress_field.get("item_id").and_then(|v| v.as_str()),
+             Some(item.0.as_str())
+         );
+@@ -512,15 +508,15 @@ mod tests {
+                 .get(&member, &FacetId::new(REDSHANK_PROGRESS_FACET))
+                 .is_some()
+         );
+         assert_eq!(
+             reopened
+                 .graph_runtimes
+                 .facets()
+                 .get(&reborn, &FacetId::new(REDSHANK_NOTE_FACET))
+                 .and_then(|value| value.get("offset_ms"))
+                 .and_then(|value| value.as_u64()),
+-            Some(62_000)
++            Some(offset)
+         );
+         let _ = std::fs::remove_dir_all(&root);
+     }
+ }
+
+diff --git a/src/app/redshank_notes.rs b/src/app/redshank_notes.rs
+new file mode 100644
+index 00000000..dad0a7f4
+--- /dev/null
++++ b/src/app/redshank_notes.rs
+@@ -0,0 +1,161 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++use crate::redshank_episode_surface::{NoteCommand, NoteProjection, NoteScope};
++
++impl App {
++    pub(crate) fn redshank_note_scope(&self, item: &ItemId) -> Option<NoteScope> {
++        if self.redshank.selected() != Some(item)
++            || !self.redshank.model().library.contains_key(item)
++        {
++            return None;
++        }
++        let custody_epoch = (self.research.clip_access().ok()?.epoch)()?;
++        Some(NoteScope {
++            session: self.session_id,
++            generation: self.source_capture_generation,
++            custody_epoch,
++            item: item.clone(),
++        })
++    }
++
++    pub(crate) fn redshank_note_projection(&self, item: &ItemId) -> NoteProjection {
++        use redshank_model::{NoteBody, NotePrivacy};
++        use redshank_surfaces::{NoteSummary, NoteSummaryBody, VoiceNotePreview};
++        let scope = self.redshank_note_scope(item);
++        let mut compact = self.redshank.project(item);
++        let capture = scope.as_ref().and_then(|_| {
++            Some((
++                self.redshank.pending_capture_generation(item)?,
++                self.redshank.pending_anchor(item)?.clone(),
++            ))
++        });
++        compact.text_capture_available = Some(scope.is_some() && capture.is_none());
++        let notes = if scope.is_some() {
++            self.redshank
++                .model()
++                .annotations_for_item(item)
++                .into_iter()
++                .map(|note| NoteSummary {
++                    id: note.id.clone(),
++                    item_id: note.target.item_id.clone(),
++                    offset_ms: note.target.offset_ms,
++                    end_offset_ms: note.target.end_offset_ms,
++                    body: match &note.body {
++                        NoteBody::Text { plain_text } => NoteSummaryBody::Text(plain_text.clone()),
++                        NoteBody::Audio { duration_ms, .. } => NoteSummaryBody::Voice {
++                            duration_ms: *duration_ms,
++                            preview: VoiceNotePreview::Idle,
++                        },
++                    },
++                    private: note.privacy == NotePrivacy::Private,
++                })
++                .collect()
++        } else {
++            Vec::new()
++        };
++        NoteProjection {
++            compact,
++            scope,
++            capture,
++            notes,
++        }
++    }
++
++    /// Reject a queued note command unless its rendered owner and capture still match.
++    pub(crate) fn apply_redshank_note_command(
++        &mut self,
++        item: &ItemId,
++        issued: NoteCommand,
++    ) -> Vec<Effect> {
++        let write = matches!(
++            &issued.command,
++            CompactCommand::AddTextNote
++                | CompactCommand::BeginTextNote
++                | CompactCommand::SaveTextNote { .. }
++                | CompactCommand::CancelTextNote
++                | CompactCommand::SetNotePrivacy { .. }
++                | CompactCommand::SetRate(_)
++                | CompactCommand::SetVolume(_)
++        );
++        let forbidden = matches!(
++            &issued.command,
++            CompactCommand::BeginEditNote(_)
++                | CompactCommand::EditNote { .. }
++                | CompactCommand::DeleteNote(_)
++                | CompactCommand::SaveSpanNote { .. }
++        );
++        if forbidden {
++            return Vec::new();
++        }
++        if !write
++            && !matches!(
++                &issued.command,
++                CompactCommand::Play
++                    | CompactCommand::Pause
++                    | CompactCommand::Replay
++                    | CompactCommand::Seek(_)
++                    | CompactCommand::SkipBackward(_)
++                    | CompactCommand::SkipForward(_)
++                    | CompactCommand::OpenNote(_)
++                    | CompactCommand::OpenNoteApproximately(_)
++                    | CompactCommand::OpenAlignedNote(_)
++                    | CompactCommand::PlaySpan(_)
++                    | CompactCommand::OpenVoiceNote(_)
++                    | CompactCommand::PlayVoiceNote(_)
++                    | CompactCommand::StopVoiceNote(_)
++            )
++        {
++            return Vec::new();
++        }
++        if write {
++            let Some(scope) = issued.scope.as_ref() else {
++                return Vec::new();
++            };
++            if self.redshank_note_scope(item).as_ref() != Some(scope) {
++                return Vec::new();
++            }
++            match &issued.command {
++                CompactCommand::SaveTextNote { .. } | CompactCommand::CancelTextNote => {
++                    if issued.capture_generation.is_none()
++                        || issued.capture_generation
++                            != self.redshank.pending_capture_generation(item)
++                    {
++                        return Vec::new();
++                    }
++                },
++                CompactCommand::BeginTextNote | CompactCommand::AddTextNote => {
++                    if issued.capture_generation.is_some()
++                        || self.redshank.pending_capture_generation(item).is_some()
++                    {
++                        return Vec::new();
++                    }
++                },
++                _ => {},
++            }
++        }
++        self.apply_redshank_commands(vec![(item.clone(), issued.command)])
++    }
++
++    pub(crate) fn invalidate_redshank_capture(&mut self, item: &ItemId, old: &NoteProjection) {
++        if old
++            .scope
++            .as_ref()
++            .is_some_and(|scope| scope.session == self.session_id)
++            && old.capture.as_ref().is_some_and(|(generation, _)| {
++                Some(*generation) == self.redshank.pending_capture_generation(item)
++            })
++        {
++            let _ = self.redshank.command(
++                item,
++                CompactCommand::CancelTextNote,
++                self.now_ms.unwrap_or_else(crate::denizen::now_ms),
++            );
++        }
++    }
++}
++
++#[cfg(test)]
++#[path = "redshank_notes_tests.rs"]
++mod tests;
+
+diff --git a/src/app/redshank_notes_tests.rs b/src/app/redshank_notes_tests.rs
+new file mode 100644
+index 00000000..363f2651
+--- /dev/null
++++ b/src/app/redshank_notes_tests.rs
+@@ -0,0 +1,172 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::super::tests::{FEED, PAGE, subscribed};
++use super::*;
++use crate::action::Action;
++use crate::panes::SessionId;
++
++#[test]
++fn note_commands_reject_stale_owner_and_capture_before_writing() {
++    use redshank_model::{NoteBody, NotePrivacy};
++    let root = tempfile::tempdir().unwrap();
++    let session = SessionId::new();
++    let mut app = subscribed(root.path(), session);
++    app.update(Action::OpenAddress(PAGE.to_string()));
++    let item = crate::redshank_episode_surface::item_id(FEED, "episode-1");
++    let custody = crate::trail_memory::custody_test_fixture::custody();
++    app.research.set_available(true);
++    app.research.access(Some(crate::research::ClipAccess {
++        root: root.path().to_path_buf(),
++        sealer: custody.sealer,
++        epoch: custody.epoch,
++    }));
++    let scope = app.redshank_note_scope(&item).unwrap();
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope.clone()),
++            capture_generation: None,
++            command: CompactCommand::BeginTextNote,
++        },
++    );
++    let anchor = app.redshank.pending_anchor(&item).unwrap().clone();
++    let first = app.redshank.pending_capture_generation(&item).unwrap();
++    let mut stale = Vec::new();
++    let mut changed = scope.clone();
++    changed.session = SessionId::new();
++    stale.push(changed);
++    let mut changed = scope.clone();
++    changed.generation = Uuid::new_v4();
++    stale.push(changed);
++    let mut changed = scope.clone();
++    changed.custody_epoch += 1;
++    stale.push(changed);
++    let mut changed = scope.clone();
++    changed.item = ItemId("other".into());
++    stale.push(changed);
++    for scope in stale {
++        app.apply_redshank_note_command(
++            &item,
++            NoteCommand {
++                scope: Some(scope),
++                capture_generation: Some(first),
++                command: CompactCommand::SaveTextNote {
++                    anchor: anchor.clone(),
++                    plain_text: "stale".into(),
++                },
++            },
++        );
++        assert!(app.redshank.model().annotations.is_empty());
++        assert_eq!(app.redshank.pending_capture_generation(&item), Some(first));
++    }
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope.clone()),
++            capture_generation: Some(first),
++            command: CompactCommand::CancelTextNote,
++        },
++    );
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope.clone()),
++            capture_generation: None,
++            command: CompactCommand::BeginTextNote,
++        },
++    );
++    assert_eq!(app.redshank.pending_anchor(&item), Some(&anchor));
++    let second = app.redshank.pending_capture_generation(&item).unwrap();
++    assert_ne!(first, second);
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope.clone()),
++            capture_generation: Some(first),
++            command: CompactCommand::SaveTextNote {
++                anchor: anchor.clone(),
++                plain_text: "old editor".into(),
++            },
++        },
++    );
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope.clone()),
++            capture_generation: Some(first),
++            command: CompactCommand::CancelTextNote,
++        },
++    );
++    assert!(app.redshank.model().annotations.is_empty());
++    assert_eq!(app.redshank.pending_capture_generation(&item), Some(second));
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope.clone()),
++            capture_generation: Some(second),
++            command: CompactCommand::SaveTextNote {
++                anchor,
++                plain_text: "actual note".into(),
++            },
++        },
++    );
++    let note = app
++        .redshank
++        .model()
++        .annotations
++        .values()
++        .next()
++        .unwrap()
++        .clone();
++    assert_eq!(note.privacy, NotePrivacy::Private);
++    assert!(matches!(&note.body, NoteBody::Text { plain_text } if plain_text == "actual note"));
++    assert!(app.redshank.model().export_selected_note(&note.id).is_err());
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope),
++            capture_generation: None,
++            command: CompactCommand::SetNotePrivacy {
++                id: note.id.clone(),
++                privacy: NotePrivacy::Shareable,
++            },
++        },
++    );
++    assert!(app.redshank.model().export_selected_note(&note.id).is_ok());
++    assert_eq!(app.redshank.annotation(&note.id).unwrap().body, note.body);
++    let scope = app.redshank_note_scope(&item).unwrap();
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope.clone()),
++            capture_generation: None,
++            command: CompactCommand::BeginTextNote,
++        },
++    );
++    let old_projection = app.redshank_note_projection(&item);
++    let (generation, anchor) = old_projection.capture.clone().unwrap();
++    app.research.set_available(false);
++    app.apply_redshank_note_command(
++        &item,
++        NoteCommand {
++            scope: Some(scope),
++            capture_generation: Some(generation),
++            command: CompactCommand::SaveTextNote {
++                anchor,
++                plain_text: "after custody loss".into(),
++            },
++        },
++    );
++    assert_eq!(app.redshank.model().annotations.len(), 1);
++    assert_eq!(
++        app.redshank.pending_capture_generation(&item),
++        Some(generation)
++    );
++    app.invalidate_redshank_capture(&item, &old_projection);
++    assert!(app.redshank.pending_capture_generation(&item).is_none());
++    assert_eq!(
++        app.redshank.annotation(&note.id).unwrap().privacy,
++        NotePrivacy::Shareable
++    );
++}
+
+diff --git a/src/redshank_episode_surface.rs b/src/redshank_episode_surface.rs
+index 369f56a4..4c8d7562 100644
+--- a/src/redshank_episode_surface.rs
++++ b/src/redshank_episode_surface.rs
+@@ -14,32 +14,35 @@
+ //! Redshank's library, store, or device authority, which the app owns once in
+ //! [`crate::redshank_host`].
+ 
+ use std::cell::RefCell;
+ use std::collections::BTreeMap;
+ use std::rc::Rc;
+ 
+ use cambium::{DomHandle, RetainedSurfaceSession};
+ use mere_surface_api::SurfaceDescriptor;
+ use redshank_model::{FeedEpisodeFacts, ItemId, LibraryItem, MediaSource};
+-use redshank_surfaces::surface_api::{
+-    CompactDock, EPISODE_SOURCE_KIND, compact_descriptor, compact_session, compact_stylesheet,
+-};
++use redshank_surfaces::surface_api::{EPISODE_SOURCE_KIND, compact_descriptor, compact_stylesheet};
+ use redshank_surfaces::{
+-    CompactCommand, CompactPlayerState, Face, Mode, NowPlaying, Seed, SourceKind, TransportState,
++    CompactCommand, CompactPlayerState, Face, NowPlaying, SourceKind, TransportState,
+ };
+ use serde::{Deserialize, Serialize};
+ use uuid::Uuid;
+ 
+ use crate::contributed_surface::{SurfaceAdmissionError, SurfaceProvider};
+ use crate::panes::{PaneKindId, PaneSource, SerializedSource, SourceRef, SourceSchemaId};
+ 
++#[path = "redshank_notes_session.rs"]
++mod notes_session;
++use notes_session::NoteDock;
++pub(crate) use notes_session::{NoteCommand, NoteProjection, NoteScope};
++
+ pub const PANE_KIND: &str = "turnstone.redshank-episode";
+ /// The schema a pane source must name. It is Redshank's word, not Turnstone's:
+ /// the port publishes the source kind its descriptor accepts, and a registry
+ /// refuses a provider whose schema disagrees with the descriptor.
+ pub const SOURCE_SCHEMA: &str = EPISODE_SOURCE_KIND;
+ pub const SOURCE_VERSION: u32 = 1;
+ 
+ /// The durable source payload for one podcast episode tile.
+ ///
+ /// Every field is a projection fact Turnstone's feed store already holds.
+@@ -108,75 +111,84 @@ pub fn episode_source(payload: RedshankEpisodeSourceV1) -> PaneSource {
+ }
+ 
+ /// Every mounted dock, by library identity.
+ ///
+ /// One dock per episode, not per pane: the app owns one Redshank authority,
+ /// so two tiles on the same episode are two views of one transport. The
+ /// handles are `Rc`-shared with the admitted sessions, so this lives in the
+ /// shell beside the other retained product state.
+ #[derive(Clone, Default)]
+ pub struct RedshankDocks {
+-    docks: Rc<RefCell<BTreeMap<ItemId, CompactDock>>>,
++    docks: Rc<RefCell<BTreeMap<ItemId, NoteDock>>>,
+ }
+ 
+ impl RedshankDocks {
+     pub fn new() -> Self {
+         Self::default()
+     }
+ 
+     /// The dock for `item`, minting one seeded with `seed` if it is new.
+-    fn dock(&self, item: &ItemId, seed: CompactPlayerState) -> CompactDock {
++    fn dock(&self, item: &ItemId, seed: CompactPlayerState) -> NoteDock {
+         self.docks
+             .borrow_mut()
+             .entry(item.clone())
+-            .or_insert_with(|| CompactDock::new(seed))
++            .or_insert_with(|| NoteDock::new(seed))
+             .clone()
+     }
+ 
+     pub fn items(&self) -> Vec<ItemId> {
+         self.docks.borrow().keys().cloned().collect()
+     }
+ 
+     pub fn is_empty(&self) -> bool {
+         self.docks.borrow().is_empty()
+     }
+ 
+     /// Show `state` on `item`'s dock, if one is mounted.
+     pub fn project(&self, item: &ItemId, state: CompactPlayerState) {
+         if let Some(dock) = self.docks.borrow().get(item) {
+-            dock.project(state);
++            let mut projection = dock.snapshot();
++            projection.compact = state;
++            dock.project(projection);
++        }
++    }
++
++    pub(crate) fn project_notes(&self, item: &ItemId, projection: NoteProjection) {
++        if let Some(dock) = self.docks.borrow().get(item) {
++            dock.project(projection);
+         }
+     }
+ 
++    pub(crate) fn note_projection(&self, item: &ItemId) -> Option<NoteProjection> {
++        self.docks.borrow().get(item).map(NoteDock::snapshot)
++    }
++
+     /// Take every command the listener issued on every mounted dock.
+-    pub fn drain(&self) -> Vec<(ItemId, CompactCommand)> {
++    pub(crate) fn drain_scoped(&self) -> Vec<(ItemId, NoteCommand)> {
+         let docks = self.docks.borrow();
+         let mut drained = Vec::new();
+         for (item, dock) in docks.iter() {
+             drained.extend(
+                 dock.drain()
+                     .into_iter()
+                     .map(|command| (item.clone(), command)),
+             );
+         }
+         drained
+     }
+ 
+-    /// Queue a command as the dock would. Turnstone's own chrome (a note
+-    /// editor beside the tile) speaks the same vocabulary.
+-    pub fn request(&self, item: &ItemId, command: CompactCommand) -> bool {
+-        let docks = self.docks.borrow();
+-        let Some(dock) = docks.get(item) else {
+-            return false;
+-        };
+-        dock.request(command);
+-        true
++    #[cfg(test)]
++    pub fn drain(&self) -> Vec<(ItemId, CompactCommand)> {
++        self.drain_scoped()
++            .into_iter()
++            .map(|(item, command)| (item, command.command))
++            .collect()
+     }
+ }
+ 
+ /// What a tile shows before the host's first projection reaches it: the facts
+ /// the source payload carries, and an honest "loading" transport.
+ fn seed_state(source: &RedshankEpisodeSourceV1) -> CompactPlayerState {
+     let mut state = CompactPlayerState::default();
+     state.transport = TransportState::Buffering;
+     state.voice_capture_available = false;
+     state.now_playing = Some(NowPlaying {
+@@ -272,21 +284,21 @@ impl SurfaceProvider for RedshankEpisodeProvider {
+         }
+         let source: RedshankEpisodeSourceV1 = serde_json::from_value(payload.payload.clone())
+             .map_err(|error| invalid_payload(error.to_string()))?;
+         if source.enclosure_url.trim().is_empty() {
+             return Err(invalid_payload("the episode has no enclosure".to_owned()));
+         }
+         if source.guid.trim().is_empty() {
+             return Err(invalid_payload("the episode has no stable guid".to_owned()));
+         }
+         let dock = self.docks.dock(&source.item_id(), seed_state(&source));
+-        Ok(compact_session(dom, dock, Seed::Wetland, Mode::Dark))
++        Ok(notes_session::session(dom, dock))
+     }
+ }
+ 
+ fn invalid_payload(message: String) -> SurfaceAdmissionError {
+     SurfaceAdmissionError::InvalidPayload {
+         schema: SourceSchemaId::new(SOURCE_SCHEMA),
+         message,
+     }
+ }
+ 
+@@ -401,20 +413,32 @@ mod tests {
+         projected.transport = TransportState::Paused;
+         projected.now_playing = seed_state(&payload()).now_playing;
+         docks.project(&payload().item_id(), projected);
+         let _ = pane.scene(720, 160, 1.0);
+         let dom = pane.dom_ref();
+         assert!(text_present(&dom, "Marsh at dawn"));
+         assert!(text_present(&dom, "PODCAST.TEST"));
+         let _ = node_with_label(&dom, pane.session().root(), "Play");
+     }
+ 
++    #[test]
++    fn admitted_episode_exposes_its_note_list_alongside_the_dock() {
++        let docks = RedshankDocks::new();
++        let pane = registry(&docks)
++            .admit(&PaneKindId::new(PANE_KIND), &episode_source(payload()))
++            .expect("Redshank episode admission");
++        assert!(text_present(
++            &pane.dom_ref(),
++            "No notes for this episode yet."
++        ));
++    }
++
+     /// The done-condition the port plan calls "the same action and snapshot
+     /// contract": the assertions `redshank-surfaces`' own dock tests make,
+     /// re-run against a session admitted through Turnstone's registry.
+     #[test]
+     fn the_dock_emits_the_same_commands_through_turnstones_registry() {
+         let docks = RedshankDocks::new();
+         let item = payload().item_id();
+         let mut pane = registry(&docks)
+             .admit(&PaneKindId::new(PANE_KIND), &episode_source(payload()))
+             .expect("Redshank episode admission");
+@@ -466,11 +490,13 @@ mod tests {
+         unavailable.now_playing = seed_state(&payload()).now_playing;
+         docks.project(&item, unavailable);
+         pane.session_mut().sync_viewport(SurfaceViewport {
+             width: 720.0,
+             height: 160.0,
+             scale_factor: 1.0,
+         });
+         assert!(!pane.availability().is_available());
+         assert!(text_present(&pane.dom_ref(), "No audio output"));
+     }
++
++    include!("redshank_episode_surface_event_tests.rs");
+ }
+
+diff --git a/src/redshank_episode_surface_event_tests.rs b/src/redshank_episode_surface_event_tests.rs
+new file mode 100644
+index 00000000..6227b3d6
+--- /dev/null
++++ b/src/redshank_episode_surface_event_tests.rs
+@@ -0,0 +1,136 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++#[test]
++fn redshank_session_routes_typed_draft_and_note_privacy() {
++    use cambium::{Key, KeyEvent, ResolvedSurfaceEvent};
++    use redshank_model::{AnnotationId, CaptureAnchor, NotePrivacy};
++    use redshank_surfaces::{NoteSummary, NoteSummaryBody};
++    use uuid::Uuid;
++
++    let docks = RedshankDocks::new();
++    let item = payload().item_id();
++    let mut pane = registry(&docks)
++        .admit(&PaneKindId::new(PANE_KIND), &episode_source(payload()))
++        .expect("Redshank episode admission");
++    let scope = NoteScope {
++        session: crate::panes::SessionId::new(),
++        generation: Uuid::new_v4(),
++        custody_epoch: 9,
++        item: item.clone(),
++    };
++    let mut compact = seed_state(&payload());
++    compact.transport = TransportState::Unavailable("No output".into());
++    compact.text_capture_available = Some(true);
++    let mut projected = NoteProjection {
++        compact,
++        scope: Some(scope.clone()),
++        capture: None,
++        notes: Vec::new(),
++    };
++    let viewport = SurfaceViewport {
++        width: 720.0,
++        height: 500.0,
++        scale_factor: 1.0,
++    };
++    docks.project_notes(&item, projected.clone());
++    pane.session_mut().sync_viewport(viewport);
++    let add = node_with_label(&pane.dom_ref(), pane.session().root(), "Add text note");
++    pane.session_mut().dispatch(ResolvedSurfaceEvent::Click {
++        target: add,
++        event: PointerClick::at((1.0, 1.0)),
++    });
++    let issued = docks.drain_scoped();
++    assert_eq!(issued.len(), 1);
++    assert_eq!(issued[0].1.scope.as_ref(), Some(&scope));
++    assert!(matches!(issued[0].1.command, CompactCommand::AddTextNote));
++
++    let anchor = CaptureAnchor {
++        item_id: item.clone(),
++        offset_ms: 0,
++        end_offset_ms: None,
++        pressed_offset_ms: None,
++        representation: Default::default(),
++        fingerprint: None,
++    };
++    let generation = Uuid::new_v4();
++    projected.capture = Some((generation, anchor.clone()));
++    projected.compact.text_capture_available = Some(false);
++    docks.project_notes(&item, projected.clone());
++    pane.session_mut().sync_viewport(viewport);
++    let textbox = {
++        let dom = pane.dom_ref();
++        let mut pending = vec![pane.session().root()];
++        let namespace = Namespace::from("");
++        let role = LocalName::from("role");
++        loop {
++            let node = pending.pop().expect("note textbox");
++            if dom
++                .attribute(node, &namespace, &role)
++                .is_some_and(|value| value == "textbox")
++            {
++                break node;
++            }
++            pending.extend(dom.dom_children(node));
++        }
++    };
++    pane.session_mut().set_focus(Some(textbox));
++    pane.session_mut()
++        .dispatch(ResolvedSurfaceEvent::Key(KeyEvent::new(Key::Character(
++            "typed note".into(),
++        ))));
++    projected.compact.volume_percent = 37;
++    docks.project_notes(&item, projected.clone());
++    pane.session_mut().sync_viewport(viewport);
++    let save = node_with_label(&pane.dom_ref(), pane.session().root(), "Save text note");
++    pane.session_mut().dispatch(ResolvedSurfaceEvent::Click {
++        target: save,
++        event: PointerClick::at((1.0, 1.0)),
++    });
++    let issued = docks.drain_scoped();
++    assert_eq!(issued.len(), 1);
++    assert_eq!(issued[0].1.capture_generation, Some(generation));
++    assert_eq!(issued[0].1.scope.as_ref(), Some(&scope));
++    assert!(
++        matches!(&issued[0].1.command, CompactCommand::SaveTextNote { anchor: actual, plain_text } if actual == &anchor && plain_text == "typed note")
++    );
++
++    projected.capture = None;
++    projected.notes = vec![NoteSummary {
++        id: AnnotationId("note-0".into()),
++        item_id: item.clone(),
++        offset_ms: 0,
++        end_offset_ms: None,
++        body: NoteSummaryBody::Text("typed note".into()),
++        private: true,
++    }];
++    docks.project_notes(&item, projected);
++    pane.session_mut().sync_viewport(viewport);
++    let more = node_with_label(
++        &pane.dom_ref(),
++        pane.session().root(),
++        "More actions for note at 0:00",
++    );
++    pane.session_mut().dispatch(ResolvedSurfaceEvent::Click {
++        target: more,
++        event: PointerClick::at((1.0, 1.0)),
++    });
++    let html = pane.dom_ref().outer_html(pane.session().root());
++    assert!(!html.contains("Edit note at 0:00"));
++    assert!(!html.contains("Delete note at 0:00"));
++    let share = node_with_label(
++        &pane.dom_ref(),
++        pane.session().root(),
++        "Make shareable: note at 0:00",
++    );
++    pane.session_mut().dispatch(ResolvedSurfaceEvent::Click {
++        target: share,
++        event: PointerClick::at((1.0, 1.0)),
++    });
++    let issued = docks.drain_scoped();
++    assert_eq!(issued.len(), 1);
++    assert_eq!(issued[0].1.scope.as_ref(), Some(&scope));
++    assert!(
++        matches!(&issued[0].1.command, CompactCommand::SetNotePrivacy { id, privacy: NotePrivacy::Shareable } if id.0 == "note-0")
++    );
++}
+
+diff --git a/src/redshank_host.rs b/src/redshank_host.rs
+index 0879be20..b5bc0015 100644
+--- a/src/redshank_host.rs
++++ b/src/redshank_host.rs
+@@ -87,33 +87,39 @@ pub struct RedshankHost {
+     fetch: Option<Arc<dyn Fetch>>,
+     output: Output,
+     /// The playback identity of the current selection. A snapshot belongs to
+     /// the selection only when its load token matches.
+     token: u64,
+     selected: Option<ItemId>,
+     /// Saved progress the selection resumed from, for the dock's mark.
+     resumed_from_ms: Option<u64>,
+     /// A frozen capture target per item, taken when a note begins.
+     anchors: BTreeMap<ItemId, CaptureAnchor>,
++    /// A fresh identity for every capture, even at the same source offset.
++    capture_generations: BTreeMap<ItemId, uuid::Uuid>,
+     next_note: u64,
+     pending_note_open: Option<PendingNoteOpen>,
+     pending_note_seek: Option<u64>,
+     next_note_seek: u64,
+     hold_progress: bool,
+     span_stop_ms: Option<u64>,
+     note_warning: Option<NoteOpenWarning>,
+ }
+ 
+ #[cfg(test)]
+ #[path = "redshank_host/tests.rs"]
+ mod tests;
+ 
++#[cfg(test)]
++#[path = "redshank_host/note_capture_tests.rs"]
++mod note_capture_tests;
++
+ #[path = "redshank_host/feed_title.rs"]
+ mod feed_title;
+ #[path = "redshank_host/host_outcome_changed.rs"]
+ mod host_outcome_changed;
+ #[path = "redshank_host/impl_default_for_redshank_host.rs"]
+ mod impl_default_for_redshank_host;
+ #[path = "redshank_host/redshank_host_command.rs"]
+ mod redshank_host_command;
+ #[path = "redshank_host/redshank_host_project.rs"]
+ mod redshank_host_project;
+
+diff --git a/src/redshank_host/impl_default_for_redshank_host.rs b/src/redshank_host/impl_default_for_redshank_host.rs
+index c82bd959..d7576765 100644
+--- a/src/redshank_host/impl_default_for_redshank_host.rs
++++ b/src/redshank_host/impl_default_for_redshank_host.rs
+@@ -10,20 +10,21 @@ impl Default for RedshankHost {
+             store: None,
+             runtime: OnceLock::new(),
+             playback_wake: None,
+             retained_voice: Arc::default(),
+             fetch: None,
+             output: Output::Silent,
+             token: 0,
+             selected: None,
+             resumed_from_ms: None,
+             anchors: BTreeMap::new(),
++            capture_generations: BTreeMap::new(),
+             next_note: 0,
+             pending_note_open: None,
+             pending_note_seek: None,
+             next_note_seek: 0,
+             hold_progress: false,
+             span_stop_ms: None,
+             note_warning: None,
+         }
+     }
+ }
+
+diff --git a/src/redshank_host/redshank_host_command.rs b/src/redshank_host/redshank_host_command.rs
+index cc131e36..39955e6c 100644
+--- a/src/redshank_host/redshank_host_command.rs
++++ b/src/redshank_host/redshank_host_command.rs
+@@ -90,26 +90,35 @@ impl RedshankHost {
+                 self.model.settings.playback_rate_percent = percent;
+                 self.send(PlaybackCommand::SetRate(percent));
+                 HostOutcome::changed()
+             },
+             CompactCommand::SetVolume(percent) => {
+                 self.model.settings.volume_percent = percent;
+                 self.send(PlaybackCommand::SetVolume(percent));
+                 HostOutcome::changed()
+             },
+             CompactCommand::BeginTextNote | CompactCommand::AddTextNote => {
++                if self.selected.as_ref() != Some(item) || !self.model.library.contains_key(item) {
++                    return HostOutcome::notice("Select this episode before adding a note");
++                }
++                if self.anchors.contains_key(item) {
++                    return HostOutcome::notice("Save or cancel the current note first");
++                }
+                 let anchor = self.anchor(item);
+                 self.anchors.insert(item.clone(), anchor);
++                self.capture_generations
++                    .insert(item.clone(), uuid::Uuid::new_v4());
+                 HostOutcome::default()
+             },
+             CompactCommand::CancelTextNote => {
+                 self.anchors.remove(item);
++                self.capture_generations.remove(item);
+                 HostOutcome::default()
+             },
+             CompactCommand::SaveTextNote { anchor, plain_text } => {
+                 self.save_text_note(item, anchor, plain_text, now_ms)
+             },
+             CompactCommand::DeleteNote(id) => match self.model.delete_annotation(&id) {
+                 Ok(()) => HostOutcome::changed(),
+                 Err(error) => HostOutcome::notice(format!("Could not delete that note: {error:?}")),
+             },
+             CompactCommand::EditNote { id, plain_text } => {
+@@ -354,34 +363,32 @@ impl RedshankHost {
+     pub(super) fn save_text_note(
+         &mut self,
+         item: &ItemId,
+         anchor: CaptureAnchor,
+         plain_text: String,
+         now_ms: u64,
+     ) -> HostOutcome {
+         if plain_text.trim().is_empty() {
+             return HostOutcome::notice("Write a note before saving");
+         }
+-        // The host froze the target when the note began; that is the truth.
+-        // A dock that supplies its own anchor is honoured only when it names
+-        // this item, and a note with no frozen target anchors where the
+-        // listener stands now.
+-        let frozen = self.anchors.remove(item);
+-        let anchor = match frozen {
+-            Some(frozen) => frozen,
+-            None if anchor.item_id == *item => anchor,
+-            None => self.anchor(item),
+-        };
++        if self.selected.as_ref() != Some(item) || self.anchors.get(item) != Some(&anchor) {
++            return HostOutcome::notice("That note capture is no longer current");
++        }
+         let id = self.next_note_id();
+         match self
+             .model
+             .add_text_annotation(id.clone(), anchor, plain_text, now_ms)
+         {
+-            Ok(()) => HostOutcome {
+-                model_changed: true,
+-                added_note: Some(id),
+-                notice: None,
++            Ok(()) => {
++                // Keep the target on a rejected save so the editor can retry.
++                self.anchors.remove(item);
++                self.capture_generations.remove(item);
++                HostOutcome {
++                    model_changed: true,
++                    added_note: Some(id),
++                    notice: None,
++                }
+             },
+             Err(error) => HostOutcome::notice(format!("Could not add that note: {error:?}")),
+         }
+     }
+ }
+
+diff --git a/src/redshank_host/redshank_host_retained_voice_preview.rs b/src/redshank_host/redshank_host_retained_voice_preview.rs
+index 0a20bfd2..e288fb35 100644
+--- a/src/redshank_host/redshank_host_retained_voice_preview.rs
++++ b/src/redshank_host/redshank_host_retained_voice_preview.rs
+@@ -190,20 +190,24 @@ impl RedshankHost {
+     }
+ 
+     pub(super) fn load_selection(
+         &mut self,
+         id: &ItemId,
+         resume_override: Option<u64>,
+     ) -> Option<PlaybackCommand> {
+         let Some(source) = self.model.library.get(id).map(|item| item.source().clone()) else {
+             return None;
+         };
++        if self.selected.as_ref() != Some(id) {
++            self.anchors.clear();
++            self.capture_generations.clear();
++        }
+         self.pending_note_open = None;
+         self.pending_note_seek = None;
+         self.span_stop_ms = None;
+         self.note_warning = None;
+         self.hold_progress = false;
+         self.token = self.token.wrapping_add(1);
+         self.selected = Some(id.clone());
+         self.model.selected_item = Some(id.clone());
+         let resume = resume_override.unwrap_or_else(|| {
+             self.model
+@@ -388,14 +392,19 @@ impl RedshankHost {
+         let id = AnnotationId(format!("note-{}", self.next_note));
+         self.next_note += 1;
+         id
+     }
+ 
+     /// The anchor a `BeginTextNote` froze, if the host is still holding one.
+     pub fn pending_anchor(&self, item: &ItemId) -> Option<&CaptureAnchor> {
+         self.anchors.get(item)
+     }
+ 
++    /// Identity of the currently frozen capture, distinct after every begin.
++    pub fn pending_capture_generation(&self, item: &ItemId) -> Option<uuid::Uuid> {
++        self.capture_generations.get(item).copied()
++    }
++
+     pub fn annotation(&self, id: &AnnotationId) -> Option<&Annotation> {
+         self.model.annotations.get(id)
+     }
+ }
+
+diff --git a/src/redshank_host/tests.rs b/src/redshank_host/tests.rs
+index 9bb9a9e1..9eaf03b1 100644
+--- a/src/redshank_host/tests.rs
++++ b/src/redshank_host/tests.rs
+@@ -14,21 +14,21 @@ fn retained_voice_stop_cannot_discard_a_different_pending_preview() {
+ }
+ 
+ fn receipt(byte: char) -> RepresentationReceipt {
+     RepresentationReceipt {
+         byte_length: Some(1_000),
+         complete_digest: Some(format!("blake3:{}", byte.to_string().repeat(64))),
+         ..Default::default()
+     }
+ }
+ 
+-fn note_host() -> (RedshankHost, PlaybackSnapshot, AnnotationId) {
++pub(super) fn note_host() -> (RedshankHost, PlaybackSnapshot, AnnotationId) {
+     let mut host = RedshankHost::default();
+     let item = ItemId("episode".into());
+     host.model
+         .add_item(LibraryItem::DirectAudio {
+             id: item.clone(),
+             title: "Episode".into(),
+             source: MediaSource::Enclosure {
+                 url: "https://example.invalid/audio.mp3".into(),
+             },
+         })
+
+diff --git a/src/redshank_host/note_capture_tests.rs b/src/redshank_host/note_capture_tests.rs
+new file mode 100644
+index 00000000..8eab8429
+--- /dev/null
++++ b/src/redshank_host/note_capture_tests.rs
+@@ -0,0 +1,72 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::tests::note_host;
++use super::*;
++
++#[test]
++fn text_note_save_requires_the_current_frozen_anchor() {
++    let (mut host, _, existing) = note_host();
++    let item = ItemId("episode".into());
++    host.command(&item, CompactCommand::BeginTextNote, 1);
++    let frozen = host.pending_anchor(&item).unwrap().clone();
++    let mut stale = frozen.clone();
++    stale.offset_ms += 1;
++    let refused = host.command(
++        &item,
++        CompactCommand::SaveTextNote {
++            anchor: stale,
++            plain_text: "stale".into(),
++        },
++        2,
++    );
++    assert!(refused.notice.is_some());
++    assert!(!refused.model_changed);
++    assert_eq!(host.pending_anchor(&item), Some(&frozen));
++    assert_eq!(host.model.annotations.len(), 1);
++    assert!(host.annotation(&existing).is_some());
++    host.command(&item, CompactCommand::CancelTextNote, 3);
++    let refused = host.command(
++        &item,
++        CompactCommand::SaveTextNote {
++            anchor: frozen,
++            plain_text: "after cancellation".into(),
++        },
++        4,
++    );
++    assert!(refused.notice.is_some());
++    assert!(!refused.model_changed);
++    assert_eq!(host.model.annotations.len(), 1);
++}
++
++#[test]
++fn same_offset_captures_have_distinct_generations() {
++    let (mut host, _, _) = note_host();
++    let item = ItemId("episode".into());
++    host.command(&item, CompactCommand::BeginTextNote, 1);
++    let first_anchor = host.pending_anchor(&item).unwrap().clone();
++    let first = host
++        .pending_capture_generation(&item)
++        .expect("first capture generation");
++    host.command(&item, CompactCommand::CancelTextNote, 2);
++    host.command(&item, CompactCommand::BeginTextNote, 3);
++    let second_anchor = host.pending_anchor(&item).unwrap();
++    let second = host
++        .pending_capture_generation(&item)
++        .expect("second capture generation");
++    assert_eq!(&first_anchor, second_anchor);
++    assert_ne!(first, second);
++    let other = ItemId("other".into());
++    host.model
++        .add_item(LibraryItem::DirectAudio {
++            id: other.clone(),
++            title: "Other".into(),
++            source: MediaSource::Enclosure {
++                url: "https://example.invalid/other.mp3".into(),
++            },
++        })
++        .unwrap();
++    assert!(host.load_selection(&other, None).is_some());
++    assert!(host.pending_anchor(&item).is_none());
++    assert!(host.pending_capture_generation(&item).is_none());
++}
+
+diff --git a/src/redshank_notes_session.rs b/src/redshank_notes_session.rs
+new file mode 100644
+index 00000000..ed5af046
+--- /dev/null
++++ b/src/redshank_notes_session.rs
+@@ -0,0 +1,325 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++//! A retained host bridge for Redshank's existing listening controls.
++
++use std::cell::RefCell;
++use std::collections::VecDeque;
++use std::rc::Rc;
++
++use cambium::{
++    DomHandle, GenetAppRunner, ResolvedSurfaceEvent, RetainedSurfaceSession, SurfaceEffect,
++    SurfaceViewport, el, lens,
++};
++use genet_scripted_dom::NodeId;
++use mere_surface_api::{SurfaceAvailability, SurfaceDescriptor, SurfaceUnavailableReason};
++use redshank_model::{CaptureAnchor, ItemId};
++use redshank_surfaces::{
++    CompactCommand, CompactPlayerState, FullView, ItemRow, ListenPane, NoteRowActions, NoteSummary,
++    RedshankSurfaceState, TextCapture, TransportState,
++};
++use uuid::Uuid;
++
++use crate::panes::SessionId;
++
++/// Every private mutation is tied to the owner that rendered its control.
++#[derive(Clone, Debug, Eq, PartialEq)]
++pub(crate) struct NoteScope {
++    pub session: SessionId,
++    pub generation: Uuid,
++    pub custody_epoch: u64,
++    pub item: ItemId,
++}
++
++#[derive(Clone, Debug, Eq, PartialEq)]
++pub(crate) struct NoteProjection {
++    pub compact: CompactPlayerState,
++    pub scope: Option<NoteScope>,
++    pub capture: Option<(Uuid, CaptureAnchor)>,
++    pub notes: Vec<NoteSummary>,
++}
++
++pub(crate) struct NoteCommand {
++    pub scope: Option<NoteScope>,
++    pub capture_generation: Option<Uuid>,
++    pub command: CompactCommand,
++}
++
++#[derive(Clone)]
++pub(crate) struct NoteDock {
++    projection: Rc<RefCell<NoteProjection>>,
++    commands: Rc<RefCell<VecDeque<NoteCommand>>>,
++}
++
++impl NoteDock {
++    pub fn new(compact: CompactPlayerState) -> Self {
++        Self {
++            projection: Rc::new(RefCell::new(NoteProjection {
++                compact,
++                scope: None,
++                capture: None,
++                notes: Vec::new(),
++            })),
++            commands: Rc::new(RefCell::new(VecDeque::new())),
++        }
++    }
++
++    pub fn snapshot(&self) -> NoteProjection {
++        self.projection.borrow().clone()
++    }
++    pub fn project(&self, projection: NoteProjection) {
++        *self.projection.borrow_mut() = projection;
++    }
++    pub fn drain(&self) -> Vec<NoteCommand> {
++        self.commands.borrow_mut().drain(..).collect()
++    }
++}
++
++type Logic = fn(&RedshankSurfaceState) -> FullView;
++type Runner = GenetAppRunner<RedshankSurfaceState, Logic, FullView, ()>;
++
++fn view(state: &RedshankSurfaceState) -> FullView {
++    let dock: FullView = Box::new(lens(
++        |compact: &mut CompactPlayerState| redshank_surfaces::compact_surface(compact),
++        |state: &mut RedshankSurfaceState| &mut state.compact,
++    ));
++    Box::new(
++        el(
++            "div",
++            vec![redshank_surfaces::tabs::listen::panel(state), dock],
++        )
++        .attr(
++            "class",
++            format!("rs-app rs-hosted-dock {}", state.scope_class()),
++        ),
++    )
++}
++
++fn project_state(
++    state: &mut RedshankSurfaceState,
++    old: Option<&NoteProjection>,
++    next: &NoteProjection,
++) {
++    let changed_capture =
++        old.is_none_or(|old| old.scope != next.scope || old.capture != next.capture);
++    if changed_capture {
++        state.text_capture = next.capture.as_ref().map(|(_, anchor)| TextCapture {
++            anchor: anchor.clone(),
++            draft: String::new(),
++            end_offset_ms: None,
++        });
++        state.set_text_draft("");
++        state.editing_note = None;
++        state.open_menu = None;
++        state.listen_pane = ListenPane::Notes;
++    }
++    state.compact = next.compact.clone();
++    state.notes = next.notes.clone();
++    state.items = next
++        .compact
++        .now_playing
++        .as_ref()
++        .map(|now| ItemRow {
++            id: now.item_id.clone(),
++            title: now.title.clone(),
++            feed_url: None,
++            feed_title: now.feed_title.clone(),
++            face: now.face.clone(),
++            source: now.source,
++            duration_ms: now.duration_ms,
++            position_ms: now.position_ms,
++            completed: false,
++            published: None,
++            cached_bytes: None,
++            note_count: next.notes.len(),
++            unavailable: None,
++            pinned: false,
++            representation: None,
++        })
++        .into_iter()
++        .collect();
++}
++
++struct NoteSession {
++    runner: Runner,
++    dock: NoteDock,
++    projection: NoteProjection,
++    viewport: Option<SurfaceViewport>,
++    descriptor: SurfaceDescriptor,
++}
++
++impl NoteSession {
++    fn refresh(&mut self) -> Vec<SurfaceEffect> {
++        let next = self.dock.snapshot();
++        if next == self.projection {
++            return Vec::new();
++        }
++        let old = self.projection.clone();
++        self.runner
++            .update(|state| project_state(state, Some(&old), &next));
++        self.projection = next;
++        vec![SurfaceEffect::Redraw]
++    }
++
++    fn take_commands(&mut self) {
++        let mut outbound = Vec::new();
++        self.runner.update(|state| {
++            let commands: Vec<_> = state.drain_commands().collect();
++            for command in commands {
++                if !state.apply_presentation(&command) {
++                    outbound.push(command);
++                }
++            }
++        });
++        let mut queue = self.dock.commands.borrow_mut();
++        for command in outbound {
++            queue.push_back(NoteCommand {
++                scope: self.projection.scope.clone(),
++                capture_generation: self.projection.capture.as_ref().map(|(id, _)| *id),
++                command,
++            });
++        }
++    }
++}
++
++impl RetainedSurfaceSession for NoteSession {
++    fn descriptor(&self) -> &SurfaceDescriptor {
++        &self.descriptor
++    }
++    fn availability(&self) -> SurfaceAvailability {
++        match &self.runner.state().compact.transport {
++            TransportState::Unavailable(message) => {
++                SurfaceAvailability::Unavailable(SurfaceUnavailableReason::Other(message.clone()))
++            },
++            _ => SurfaceAvailability::Available,
++        }
++    }
++    fn dom(&self) -> DomHandle {
++        self.runner.dom()
++    }
++    fn root(&self) -> NodeId {
++        self.runner.root()
++    }
++    fn focus(&self) -> Option<NodeId> {
++        self.runner.focus()
++    }
++    fn set_focus(&mut self, node: Option<NodeId>) -> Vec<SurfaceEffect> {
++        self.runner.set_focus(node);
++        vec![SurfaceEffect::Redraw]
++    }
++    fn focus_traverse(&mut self, forward: bool) -> Vec<SurfaceEffect> {
++        self.runner.focus_traverse(forward);
++        vec![SurfaceEffect::Redraw]
++    }
++    fn focusables(&self) -> Vec<NodeId> {
++        self.runner.focusables()
++    }
++    fn pointer_capture(&self) -> Option<NodeId> {
++        self.runner.pointer_capture()
++    }
++    fn pointer_target(&self, hit: NodeId) -> Option<NodeId> {
++        self.runner.pointer_target(hit)
++    }
++    fn hover_target(&self, hit: NodeId) -> Option<NodeId> {
++        self.runner.hover_target(hit)
++    }
++    fn wheel_target(&self, hit: NodeId) -> Option<NodeId> {
++        self.runner.wheel_target(hit)
++    }
++    fn sync_viewport(&mut self, viewport: SurfaceViewport) -> Vec<SurfaceEffect> {
++        let resized = self.viewport != Some(viewport);
++        self.viewport = Some(viewport);
++        let mut effects = self.refresh();
++        if resized && effects.is_empty() {
++            effects.push(SurfaceEffect::Redraw);
++        }
++        effects
++    }
++    fn dispatch(&mut self, event: ResolvedSurfaceEvent) -> Vec<SurfaceEffect> {
++        match event {
++            ResolvedSurfaceEvent::Click { target, event } => {
++                self.runner.dispatch_click(target, event)
++            },
++            ResolvedSurfaceEvent::Key(event) => self.runner.dispatch_key(event),
++            ResolvedSurfaceEvent::PointerDown { target, event } => {
++                self.runner.dispatch_pointer_down(target, event)
++            },
++            ResolvedSurfaceEvent::PointerMove(event) => self.runner.dispatch_pointer_move(event),
++            ResolvedSurfaceEvent::PointerUp(event) => self.runner.dispatch_pointer_up(event),
++            ResolvedSurfaceEvent::Hover { target, event } => {
++                self.runner.dispatch_hover(target, event)
++            },
++            ResolvedSurfaceEvent::Wheel { target, event } => {
++                self.runner.dispatch_wheel(target, event)
++            },
++        };
++        self.take_commands();
++        let mut effects = vec![SurfaceEffect::Redraw];
++        effects.extend(self.refresh());
++        effects
++    }
++}
++
++pub(crate) fn session(dom: DomHandle, dock: NoteDock) -> Box<dyn RetainedSurfaceSession> {
++    let projection = dock.snapshot();
++    let mut state = RedshankSurfaceState::default();
++    state.note_row_actions = NoteRowActions::PrivacyOnly;
++    state.listen_pane = ListenPane::Notes;
++    project_state(&mut state, None, &projection);
++    let runner = Runner::new(dom, view as Logic, state);
++    Box::new(NoteSession {
++        runner,
++        dock,
++        projection,
++        viewport: None,
++        descriptor: redshank_surfaces::surface_api::compact_descriptor(),
++    })
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn projection_refresh_preserves_the_draft_until_capture_invalidation() {
++        let item = ItemId("episode".into());
++        let scope = NoteScope {
++            session: SessionId::new(),
++            generation: Uuid::new_v4(),
++            custody_epoch: 7,
++            item: item.clone(),
++        };
++        let anchor = CaptureAnchor {
++            item_id: item,
++            offset_ms: 42,
++            end_offset_ms: None,
++            pressed_offset_ms: None,
++            representation: Default::default(),
++            fingerprint: None,
++        };
++        let initial = NoteProjection {
++            compact: CompactPlayerState::default(),
++            scope: Some(scope),
++            capture: Some((Uuid::new_v4(), anchor.clone())),
++            notes: Vec::new(),
++        };
++        let mut state = RedshankSurfaceState::default();
++        project_state(&mut state, None, &initial);
++        state.set_text_draft("draft in progress");
++        let mut refreshed = initial.clone();
++        refreshed.compact.volume_percent = 35;
++        project_state(&mut state, Some(&initial), &refreshed);
++        assert_eq!(state.text_editor.text(), "draft in progress");
++        assert_eq!(state.text_capture.as_ref().unwrap().anchor, anchor);
++        let mut restarted = refreshed.clone();
++        restarted.capture.as_mut().unwrap().0 = Uuid::new_v4();
++        project_state(&mut state, Some(&refreshed), &restarted);
++        assert_eq!(state.text_editor.text(), "");
++        assert_eq!(state.text_capture.as_ref().unwrap().anchor, anchor);
++        let mut invalid = restarted.clone();
++        invalid.scope = None;
++        invalid.capture = None;
++        project_state(&mut state, Some(&restarted), &invalid);
++        assert!(state.text_capture.is_none());
++    }
++}
+
+diff --git a/src/shell/events/shell_drain_actor_updates.rs b/src/shell/events/shell_drain_actor_updates.rs
+index 66fbca5a..12e4864e 100644
+--- a/src/shell/events/shell_drain_actor_updates.rs
++++ b/src/shell/events/shell_drain_actor_updates.rs
+@@ -201,21 +201,27 @@ impl Shell {
+                             self.app.open_research_clip(target)
+                         },
+                     }
+                 },
+             };
+             self.run_effects(effects);
+         }
+     }
+ 
+     pub(super) fn pump_redshank(&mut self) {
+-        let commands = self.redshank_docks.drain();
+-        if !commands.is_empty() {
+-            let effects = self.app.apply_redshank_commands(commands);
++        for item in self.redshank_docks.items() {
++            if let Some(old) = self.redshank_docks.note_projection(&item)
++                && old.scope != self.app.redshank_note_scope(&item)
++            {
++                self.app.invalidate_redshank_capture(&item, &old);
++            }
++        }
++        for (item, command) in self.redshank_docks.drain_scoped() {
++            let effects = self.app.apply_redshank_note_command(&item, command);
+             self.run_effects(effects);
+         }
+         for item in self.redshank_docks.items() {
+-            let projection = self.app.redshank_projection(&item);
+-            self.redshank_docks.project(&item, projection);
++            let projection = self.app.redshank_note_projection(&item);
++            self.redshank_docks.project_notes(&item, projection);
+         }
+     }
+ }

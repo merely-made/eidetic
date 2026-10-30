@@ -1,0 +1,6 @@
+RESULT fail
+FAIL: no successful window presentation for ten seconds
+FAIL: no successful main presentation
+presentation frames=0 captures=0 blank=0
+FAIL: window=0 surface=0: capture refused: ProviderError { generation: 1, source_key: Some(0), error: WgpuErrorFromScope(Internal { source: Custom { kind: Other, error: "native frame qualification exceeded five seconds" }, description: "native frame qualification exceeded five seconds" }) }
+FAIL: window=0 surface=0: capture refused: ProviderError { generation: 1, source_key: Some(0), error: WgpuErrorFromScope(Internal { source: Custom { kind: Other, error: "native frame attribution unavailable" }, description: "native frame attribution unavailable" }) }

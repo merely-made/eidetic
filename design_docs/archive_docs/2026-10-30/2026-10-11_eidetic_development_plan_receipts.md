@@ -595,3 +595,46 @@ No headed capture, real-note retention or fresh-process M5 acceptance is claimed
 The initial 19 completed preparation packet/log pairs, supplier reviews and
 receiving records are preserved under `model-free-m5/`;
 `preparation-gates-index.json` records their verified checksums and exit codes.
+
+
+### M5 evidence archive update
+
+The completed M5 packet/log pairs added since the initial 19, the scoped note and
+custody review materials, and the five completed native-preflight attempts are
+indexed in `model-free-m5/additional-evidence-index.json`. It records source and
+archive SHA-256 values; failed receipts remain included. Native manifests,
+cleanup records and synthetic observations are preserved without binaries,
+profile stores, graphics caches, wallets or custody seeds. The D frame remains
+at its external testing path; its path and SHA-256 are recorded in the index.
+
+On the local Turnstone working tree based on upstream `1f371cbd`, the full
+`authoring,inference` library gate passed **1,262 tests, zero failures, 17
+ignored**. The archived packet is `m5-host-full-after-upstream-1.json`; its raw
+log SHA-256 is `62dd8866467f1be84f13cb37683d8a1fb39bb2d79f6bb080e0fafb19f145d9c9`.
+This is local WIP evidence. Turnstone commit `293eb103` and Mere commit
+`8fec5603` remain local because their pushes failed; remote main remains
+Turnstone `1f371cbd` and Mere `a4cbd4b`. Neither commit is described here as
+published.
+
+The scoped note-host fix-2 review is approved; its focused gate reports **34
+passed, zero failed, one ignored**. The real-custody service-lease fix review is
+approved; the corrected lease regression passed **1/0**, and the post-lease
+custody fixture passed **3/0**. The earlier failed attempt and review materials
+are retained alongside them.
+
+Native preflight attempts A through D failed at different stages: A could not
+enable loopback; B reached custody but expected the wrong route-refusal variant;
+C started the app but produced no frame before its rendering deadline; D rendered
+but failed the custody-principal check. None qualifies M5. Attempt D selected
+AMD Radeon Graphics (RADV Renoir) on Vulkan; the scenario recorded 66 frames,
+one nonblank capture and zero blank captures. The runtime receipt still reports
+`custody_principal: null`, and the launcher failed because the GUI and probe
+principals differed. Its screenshot is preserved by external path and hash only.
+Attempt E later passed the empty-profile startup/preflight gate. The app and
+probe reported the same family custody principal, the probe observed
+`closed-during-open`, offline acquisition, corpus publication and generation
+counts were all zero, and cleanup confirmed the scope cgroup empty. Its safe
+manifests and logs are indexed in `model-free-m5/additional-evidence-index.json`;
+the frame remains external with its path and SHA-256 recorded there. This
+qualifies startup/preflight only. No retained note, fresh-process restart or
+ordinary-use M5 acceptance is claimed, and the full M5 gate was not run.

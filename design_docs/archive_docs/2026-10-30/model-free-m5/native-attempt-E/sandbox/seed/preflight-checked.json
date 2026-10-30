@@ -1,0 +1,53 @@
+{
+  "schema": "turnstone.m5-preflight/v1",
+  "app_pid": 26,
+  "custody_pid": 7,
+  "custody_principal": {
+    "profile": "family",
+    "public_key": [
+      192,
+      80,
+      197,
+      99,
+      122,
+      68,
+      250,
+      134,
+      41,
+      255,
+      243,
+      204,
+      204,
+      226,
+      48,
+      12,
+      179,
+      98,
+      166,
+      61,
+      153,
+      217,
+      95,
+      197,
+      65,
+      69,
+      38,
+      111,
+      67,
+      50,
+      68,
+      90
+    ]
+  },
+  "route_probe": "closed-during-open",
+  "frame": "gui_preflight.png",
+  "frame_dimensions": [
+    1024,
+    600
+  ],
+  "snapshot": {
+    "offline_acquisition_attempts": 0,
+    "corpus_publications": 0,
+    "generation_requests": 0
+  }
+}

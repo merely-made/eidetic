@@ -1,0 +1,36 @@
+--- before/preflight_phase.py
++++ after/preflight_phase.py
+@@ -36,12 +36,12 @@
+ activity = runtime['inference']
+ if not activity.get('client_compiled') or activity.get('corpus_publications') != 0 or activity.get('generation_requests') != 0:
+     raise SystemExit('GUI did not start idle with inference client present')
+-if runtime.get('offline_acquisition_attempts') != 0 or probe.get('outcome') != 'closed-before-challenge':
++if runtime.get('offline_acquisition_attempts') != 0 or probe.get('outcome') != 'closed-during-open':
+     raise SystemExit('unexpected acquisition or inference route')
+ frame = run / 'gui_preflight.png'
+ dimensions = namespace_phase.validate_png(frame)
+ namespace_phase.write(run / 'preflight-checked.json', {'schema': 'turnstone.m5-preflight/v1',
+     'app_pid': runtime['pid'], 'custody_pid': processes['custody_ready']['pid'],
+-    'custody_principal': runtime['custody_principal'], 'route_probe': 'closed-before-challenge',
++    'custody_principal': runtime['custody_principal'], 'route_probe': 'closed-during-open',
+     'frame': 'gui_preflight.png', 'frame_dimensions': dimensions,
+     'snapshot': {'offline_acquisition_attempts': 0, 'corpus_publications': 0, 'generation_requests': 0}})
+--- before/inference_service/tests.rs
++++ after/inference_service/tests.rs
+@@ -267,7 +267,7 @@
+     ));
+     match result {
+         Err(AppClientError::Closed) => {},
+-        Err(error) => panic!("inference route did not close before challenge: {error:?}"),
++        Err(error) => panic!("inference route did not close during open: {error:?}"),
+         Ok(_) => panic!("inference route unexpectedly admitted"),
+     }
+     let after = crate::identity::RootIdentity::Custody(
+@@ -278,6 +278,6 @@
+     std::fs::write(std::env::var_os("TURNSTONE_M5_ROUTE_RECEIPT").expect("route receipt"),
+         serde_json::to_vec_pretty(&serde_json::json!({
+             "schema":"turnstone.m5-route-probe/v1", "route":wire::INFERENCE_ASK_ROUTE,
+-            "outcome":"closed-before-challenge", "pid":std::process::id(), "profile":profile.0, "public_key":public_key
++            "outcome":"closed-during-open", "pid":std::process::id(), "profile":profile.0, "public_key":public_key
+         })).unwrap()).unwrap();
+ }

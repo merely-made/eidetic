@@ -1,0 +1,33 @@
+{
+  "preflight": true,
+  "phase": "seed",
+  "output": "/m5/run",
+  "scenario": "/m5/input/seed.scn",
+  "fixture_server": "/m5/input/fixture_server.py",
+  "custodian": "/m5/input/custodian",
+  "application": "/m5/input/turnstone",
+  "test_binary": "/m5/input/test-binary",
+  "timeout_seconds": 180,
+  "inspection_timeout_seconds": 30,
+  "memory_bytes": 3221225472,
+  "tasks_max": 128,
+  "cpu_percent": 150,
+  "devices": {
+    "wayland": {
+      "path": "/run/user/1000/wayland-0",
+      "device": 111,
+      "inode": 134
+    },
+    "render": {
+      "path": "/dev/dri/renderD128",
+      "device": 7,
+      "inode": 555,
+      "rdev": 57984
+    }
+  },
+  "environment": {
+    "PATH": "/usr/bin",
+    "WAYLAND_DISPLAY": "wayland-0",
+    "RUST_LOG": "warn"
+  }
+}

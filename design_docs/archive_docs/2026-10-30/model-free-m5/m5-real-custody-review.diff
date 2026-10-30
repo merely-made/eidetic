@@ -1,0 +1,432 @@
+diff --git a/ports/djinn/custodian/src/fixture.rs b/ports/djinn/custodian/src/fixture.rs
+index d2712b686..2159eb2ce 100644
+--- a/ports/djinn/custodian/src/fixture.rs
++++ b/ports/djinn/custodian/src/fixture.rs
+@@ -42,48 +42,102 @@ pub struct Spec<'a> {
+     pub consent: &'a str,
+     pub mechanism: Option<Arc<dyn Mechanism>>,
+     /// Serve the SSH agent beside the custody socket, as an installed
+     /// custodian does (the service bridges its per-use requests to consent).
+     pub agent: bool,
+ }
+ 
+ /// Create the vault under `root` and serve it on a socket there.
+ #[cfg(unix)]
+ pub fn start(root: &Path, spec: Spec<'_>) -> Result<Fixture, String> {
++    start_inner(root, spec, true, root.join("run"), None)
++}
++
++/// Open a marked receipt fixture on a fresh runtime directory. The caller
++/// holds an exclusive lease for the serving thread; the existing vault is never reseeded.
++#[cfg(unix)]
++pub fn receipt(root: &Path, spec: Spec<'_>, create: bool) -> Result<Fixture, String> {
++    use std::os::unix::fs::MetadataExt;
++    let meta = std::fs::symlink_metadata(root).map_err(|e| e.to_string())?;
++    if !root.is_absolute() || root == Path::new("/") || root.canonicalize().map_err(|e| e.to_string())? != root
++        || !meta.is_dir() || meta.uid() != custody_wire::peer::effective_uid() || meta.mode() & 0o077 != 0 {
++        return Err("receipt fixture root must be private, owned, and canonical".into());
++    }
++    fn reject_symlinks(path: &Path) -> Result<(), String> {
++        for entry in std::fs::read_dir(path).map_err(|e| e.to_string())? {
++            let entry = entry.map_err(|e| e.to_string())?;
++            let ty = entry.file_type().map_err(|e| e.to_string())?;
++            if ty.is_symlink() { return Err("symlink in receipt fixture root".into()); }
++            if ty.is_dir() { reject_symlinks(&entry.path())?; }
++        }
++        Ok(())
++    }
++    reject_symlinks(root)?;
++    if std::fs::read(root.join("fixture-marker")).map_err(|e| e.to_string())? != b"eidetic-retention-20261019\n" {
++        return Err("receipt fixture marker mismatch".into());
++    }
++    let lock = std::fs::OpenOptions::new().read(true).write(true).create(true)
++        .open(root.join("fixture.lock")).map_err(|e| e.to_string())?;
++    lock.try_lock().map_err(|e| format!("fixture root already in use: {e}"))?;
++    let lock = Arc::new(lock);
++    let state = root.join("custodian");
++    if create {
++        for entry in std::fs::read_dir(root).map_err(|e| e.to_string())? {
++            let name = entry.map_err(|e| e.to_string())?.file_name();
++            if name != "fixture-marker" && name != "fixture.lock" {
++                return Err("unrecognized content in new fixture root".into());
++            }
++        }
++        std::fs::create_dir(&state).map_err(|e| e.to_string())?;
++    } else if !state.is_dir() || state.is_symlink() {
++        return Err("receipt fixture state missing or unsafe".into());
++    }
++    if !create && (!state.join("vault").join(bootstrap::PASSPHRASE_VAULT_FILE).is_file()
++        || std::fs::read(state.join("initialized")).ok().as_deref() != Some(b"receipt-fixture-v1\n")) {
++        return Err("incomplete receipt fixture state".into());
++    }
++    let run = state.join(format!("run-{}", uuid::Uuid::new_v4()));
++    start_inner(&state, spec, create, run, Some(lock))
++}
++
++#[cfg(unix)]
++fn start_inner(root: &Path, spec: Spec<'_>, create: bool, run: PathBuf, lease: Option<Arc<std::fs::File>>) -> Result<Fixture, String> {
+     use std::os::unix::fs::PermissionsExt;
+     let vault = root.join("vault");
+     let data_root = root.join("data");
+-    std::fs::create_dir_all(&data_root).map_err(|e| e.to_string())?;
+-    let opened = bootstrap::open_storage(&vault, Unlock::passphrase(spec.passphrase)).map_err(|e| e.to_string())?;
+-    for (id, name, seed) in spec.profiles {
+-        let profile = Profile::new(ProfileId((*id).into()), *name, Ed25519Keypair::from_seed(*seed));
+-        opened.storage.save_profile(&profile).map_err(|e| e.to_string())?;
++    if create {
++        std::fs::create_dir_all(&data_root).map_err(|e| e.to_string())?;
++        let opened = bootstrap::open_storage(&vault, Unlock::passphrase(spec.passphrase)).map_err(|e| e.to_string())?;
++        for (id, name, seed) in spec.profiles {
++            let profile = Profile::new(ProfileId((*id).into()), *name, Ed25519Keypair::from_seed(*seed));
++            opened.storage.save_profile(&profile).map_err(|e| e.to_string())?;
++        }
++    } else if !vault.is_dir() || vault.is_symlink() || !data_root.is_dir() || data_root.is_symlink() {
++        return Err("receipt fixture vault or wallet root missing or unsafe".into());
+     }
+-    drop(opened);
+     let uid = custody_wire::peer::effective_uid();
+     let first = spec.profiles.first().ok_or("a fixture needs a profile")?.0;
+     let config = serde_json::json!({
+         "vault": {"directory": vault, "profile": first, "data_root": data_root},
+         "owner": {"unix_uid": uid}, "consent": spec.consent, "development": true,
+         "principals": [{"name": "djinn", "match": {"unix-uid": uid}, "grants": spec.grants}]
+     });
+     let config = Config::parse(&serde_json::to_vec(&config).map_err(|e| e.to_string())?).map_err(|e| e.0)?;
+-    let run = root.join("run");
+     std::fs::create_dir(&run).map_err(|e| e.to_string())?;
+     std::fs::set_permissions(&run, std::fs::Permissions::from_mode(0o700)).map_err(|e| e.to_string())?;
+     let socket = run.join("custody.sock");
+     let listener = custody_wire::transport::UnixSocketListener::bind(&socket).map_err(|e| e.to_string())?;
+     let service = Arc::new(Service::new(Core::start(config).map_err(|r| r.to_string())?, spec.mechanism));
+     let serving = Arc::clone(&service);
+     std::thread::Builder::new()
+         .name("fixture-custodian".into())
+-        .spawn(move || serving.serve(&listener))
++        .spawn(move || { let _lease = lease; serving.serve(&listener) })
+         .map_err(|e| e.to_string())?;
+     let agent = match spec.agent {
+         true => {
+             let path = run.join("agent.sock");
+             let listener = std::os::unix::net::UnixListener::bind(&path).map_err(|e| e.to_string())?;
+             std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o600)).map_err(|e| e.to_string())?;
+             crate::agent::spawn(Service::clone(&service), listener, Some(uid)).map_err(|e| e.to_string())?;
+             Some(path)
+         },
+         false => None,
+
+diff --git a/ports/djinn/tests/custody_payload.rs b/ports/djinn/tests/custody_payload.rs
+index fabbadf03..88250b441 100644
+--- a/ports/djinn/tests/custody_payload.rs
++++ b/ports/djinn/tests/custody_payload.rs
+@@ -1,19 +1,19 @@
+ // Copyright 2026 Mark Alan Boykin
+ // This Source Code Form is subject to the terms of the Mozilla Public
+ // License, v. 2.0. If a copy of the MPL was not distributed with this
+ // file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ // SPDX-License-Identifier: MPL-2.0
+ //! Actual admitted IPC with a wallet epoch. No keys cross the custody wire.
+ use castellan::authority::PersonaeHost;
+ use castellan::custody::{
+-    IdentityStorage, IdentityVault, InMemoryStorage, Profile, SealedProfileStorage,
++    IdentityStorage, IdentityVault, Profile, SealedProfileStorage,
+ };
+ use mere_resident::{
+     door::app_broker::{AppEndpointCatalog, serve_app_broker},
+     keeper::Keeper,
+ };
+ use eidetic::{Hash, PayloadSealer};
+ use djinn::door::app_admission::{AllowedAppRoutes, AppId, AppRouteGrants};
+ use djinn::door::custody::{CustodyAnswer, CustodyCall, CustodyRefusal};
+ use djinn::door::custody_client::{CustodyClient, CustodyClientError};
+ use djinn::door::custody_identity::CustodyIdentity;
+@@ -310,58 +310,91 @@ async fn private_payloads_use_bound_custody_and_survive_epoch_rotation() {
+     assert!(matches!(
+         client.call(CustodyCall::Payload(read)).await,
+         Err(CustodyClientError::Refused(CustodyRefusal::Locked))
+     ));
+     tokio::task::spawn_blocking(move || assert!(reader.seal(&Hash::of(clear), clear).is_err()))
+         .await
+         .unwrap();
+     server.abort();
+ }
+ 
+-/// Explicit process fixture only. The caller owns and removes this marked root.
++/// Explicit process fixture only. The caller owns this marked disposable root.
++#[cfg(unix)]
+ #[test]
+ #[ignore]
+ fn retained_custody_receipt_host() {
+-    let root = std::path::PathBuf::from(
+-        std::env::var_os("EIDETIC_CUSTODY_FIXTURE_ROOT").expect("fixture root"),
+-    );
+-    assert_eq!(
+-        std::fs::read_to_string(root.join("fixture-marker")).unwrap(),
+-        "eidetic-retention-20261019\n"
+-    );
++    use std::os::unix::fs::MetadataExt;
++    use mere_resident::custodian::InstalledCustodian;
++    use mere_resident::custody_host::{remote::RemoteHost, ResidentCustody};
++
++    let root = std::path::PathBuf::from(std::env::var_os("EIDETIC_CUSTODY_FIXTURE_ROOT").expect("fixture root"));
++    let endpoint = std::path::PathBuf::from(std::env::var_os("EIDETIC_CUSTODY_FIXTURE_ENDPOINT").expect("fixture endpoint"));
++    let meta = std::fs::symlink_metadata(&root).expect("fixture root metadata");
++    assert!(root.is_absolute() && root != std::path::Path::new("/") && root.canonicalize().unwrap() == root);
++    assert!(meta.is_dir() && !meta.file_type().is_symlink() && meta.uid() == custody_wire::peer::effective_uid() && meta.mode() & 0o077 == 0, "private owned root required");
++    assert_eq!(std::fs::read(root.join("fixture-marker")).unwrap(), b"eidetic-retention-20261019\n");
++    assert_eq!(endpoint, root.join("app.sock"), "endpoint must be inside the fixture root");
++    assert!(std::fs::symlink_metadata(&endpoint).is_err_and(|e| e.kind() == std::io::ErrorKind::NotFound), "endpoint already exists");
++    fn reject_symlinks(path: &std::path::Path) {
++        for entry in std::fs::read_dir(path).unwrap() {
++            let entry = entry.unwrap();
++            let ty = entry.file_type().unwrap();
++            assert!(!ty.is_symlink(), "symlink in fixture root");
++            if ty.is_dir() { reject_symlinks(&entry.path()); }
++        }
++    }
++    reject_symlinks(&root);
++    let state = root.join("custodian");
++    let create = !state.exists();
++    if create {
++        for entry in std::fs::read_dir(&root).unwrap() {
++            let name = entry.unwrap().file_name();
++            assert!(name == "fixture-marker" || name == "fixture.lock", "unrecognized content in new fixture root");
++        }
++    } else {
++        assert_eq!(std::fs::read(state.join("initialized")).unwrap(), b"receipt-fixture-v1\n", "incomplete fixture state");
++    }
++    let profiles = [("family", "Family", [0x51; 32])];
++    let fixture = djinn_custodian::fixture::receipt(&root, djinn_custodian::fixture::Spec {
++        passphrase: "public synthetic receipt fixture", profiles: &profiles,
++        grants: serde_json::json!([
++            {"operation":"status"}, {"operation":"lock"}, {"operation":"unlock"},
++            {"operation":"snapshot"}, {"operation":"wallet", "consent":"none"},
++            {"operation":"payload", "consent":"none"}
++        ]), consent: "deny", mechanism: None, agent: false,
++    }, create).unwrap();
+     let persona = PersonaId::from_uuid(uuid::Uuid::from_u128(0xe1de_2026_1019));
+-    castellan::custody::wallet::ensure_wallet_state(&root, persona, "Retained process fixture")
+-        .unwrap();
+-    let profile = Profile::new(
+-        ProfileId("family".into()),
+-        "Family",
+-        Ed25519Keypair::from_seed([0x51; 32]),
+-    );
+-    let storage = InMemoryStorage::new();
+-    storage.save_profile(&profile).unwrap();
+-    let host = Arc::new(PersonaeHost::new(
+-        IdentityVault::with_profile(storage, profile),
+-        None,
+-        VaultProtectionView::Ephemeral,
+-    ));
+-    let keeper = Arc::new(Keeper::new(host));
+-    keeper
+-        .configure_payload_custody(ProfileId("family".into()), persona, root.clone())
+-        .unwrap();
++    if create {
++        castellan::custody::wallet::ensure_wallet_state(&fixture.data_root, persona, "Retained process fixture").unwrap();
++        std::fs::write(state.join("initialized"), b"receipt-fixture-v1\n").unwrap();
++    } else {
++        use pandect::wallet_store as store;
++        let data = &fixture.data_root;
++        assert!(castellan::custody::wallet::load_identity_seed_read_only(data).unwrap().is_some(), "missing wallet seed");
++        let identity = store::load_identity_wallet(data).unwrap().expect("missing identity wallet");
++        assert_eq!(identity.personas.len(), 1);
++        assert_eq!(identity.personas[0].persona_id, persona);
++        assert!(store::load_device_roster(data).unwrap().is_some(), "missing roster");
++        let wallet = store::load_persona_wallet(data, persona).unwrap().expect("missing persona wallet");
++        assert_eq!(wallet.persona_id, persona);
++        assert!(store::persona_epoch_bridge_path(data, persona).is_file(), "missing epoch bridge");
++    }
++    if !create {
++        let direct = fixture.direct("public synthetic receipt fixture", "family").expect("existing fixture profile must open");
++        assert_eq!(direct.master_public_key(), Ed25519Keypair::from_seed([0x51; 32]).public_key(), "existing fixture identity differs");
++    }
++    let installed = InstalledCustodian::from_path(&fixture.client_file, false).unwrap();
++    let remote = RemoteHost::connect(installed).unwrap();
++    remote.unlock_with_passphrase(b"public synthetic receipt fixture").unwrap();
++    assert_eq!(remote.master_public_key(), Ed25519Keypair::from_seed([0x51; 32]).public_key());
++    assert_eq!(remote.wallet_public(&fixture.data_root).unwrap().personas, vec![persona]);
++    assert!(remote.custody_epoch().unwrap().is_some());
++    let keeper = Arc::new(Keeper::new(remote));
++    keeper.configure_payload_custody(ProfileId("family".into()), persona, fixture.data_root.clone()).unwrap();
+     let grants = AppRouteGrants::new(AllowedAppRoutes::none());
+     mere_resident::custody::grant(&grants).unwrap();
+-    let endpoint = std::env::var("EIDETIC_CUSTODY_FIXTURE_ENDPOINT").expect("fixture endpoint");
+-    tokio::runtime::Builder::new_multi_thread()
+-        .worker_threads(2)
+-        .enable_all()
+-        .build()
+-        .unwrap()
+-        .block_on(serve_app_broker(
+-            &endpoint,
+-            keeper,
+-            grants,
+-            60_000,
+-            None,
+-            AppEndpointCatalog::default(),
+-        ))
+-        .unwrap();
++    tokio::runtime::Builder::new_multi_thread().worker_threads(2).enable_all().build().unwrap()
++        .block_on(serve_app_broker(endpoint.to_str().unwrap(), keeper, grants, 60_000, None, AppEndpointCatalog::default())).unwrap();
+ }
++
++#[cfg(unix)]
++mod custody_receipt_tests;
+
+diff --git a/ports/djinn/tests/custody_receipt_tests/mod.rs b/ports/djinn/tests/custody_receipt_tests/mod.rs
+new file mode 100644
+index 000000000..667f6bccb
+--- /dev/null
++++ b/ports/djinn/tests/custody_receipt_tests/mod.rs
+@@ -0,0 +1,151 @@
++// Copyright 2026 Mark Alan Boykin
++// This Source Code Form is subject to the terms of the Mozilla Public
++// License, v. 2.0. If a copy of the MPL was not distributed with this
++// file, You can obtain one at https://mozilla.org/MPL/2.0/.
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++use std::collections::BTreeMap;
++use std::os::unix::fs::{MetadataExt, PermissionsExt};
++use std::process::{Child, Command, Stdio};
++use std::path::{Path, PathBuf};
++
++struct Host { child: Child, endpoint: PathBuf, inode: (u64, u64) }
++impl Host {
++    fn start(root: &Path) -> (Self, CustodyIdentity) {
++        let endpoint = root.join("app.sock");
++        let mut child = Command::new(std::env::current_exe().unwrap())
++            .args(["retained_custody_receipt_host", "--ignored", "--exact", "--nocapture"])
++            .env("EIDETIC_CUSTODY_FIXTURE_ROOT", root).env("EIDETIC_CUSTODY_FIXTURE_ENDPOINT", &endpoint)
++            .stdout(Stdio::null()).stderr(Stdio::inherit()).spawn().unwrap();
++        let deadline = std::time::Instant::now() + Duration::from_secs(30);
++        let identity = loop {
++            if let Ok(identity) = CustodyIdentity::connect_at_timeout(endpoint.to_str().unwrap(), "turnstone", Duration::from_secs(1)) { break identity; }
++            assert!(child.try_wait().unwrap().is_none(), "fixture process exited");
++            assert!(std::time::Instant::now() < deadline, "fixture did not start");
++            std::thread::sleep(Duration::from_millis(50));
++        };
++        let meta = std::fs::symlink_metadata(&endpoint).unwrap();
++        (Self { child, endpoint, inode: (meta.dev(), meta.ino()) }, identity)
++    }
++    fn stop(mut self) {
++        self.child.kill().unwrap();
++        self.child.wait().unwrap();
++        let meta = std::fs::symlink_metadata(&self.endpoint).unwrap();
++        assert_eq!((meta.dev(), meta.ino()), self.inode, "endpoint was replaced");
++        assert!(std::os::unix::net::UnixStream::connect(&self.endpoint).is_err(), "endpoint still has a listener");
++        std::fs::remove_file(&self.endpoint).unwrap();
++    }
++}
++impl Drop for Host { fn drop(&mut self) { let _ = self.child.kill(); let _ = self.child.wait(); } }
++
++fn files(root: &Path) -> BTreeMap<PathBuf, Vec<u8>> {
++    fn walk(base: &Path, path: &Path, result: &mut BTreeMap<PathBuf, Vec<u8>>) {
++        for entry in std::fs::read_dir(path).unwrap() {
++            let entry = entry.unwrap();
++            if entry.file_type().unwrap().is_dir() { walk(base, &entry.path(), result); }
++            else { result.insert(entry.path().strip_prefix(base).unwrap().to_owned(), std::fs::read(entry.path()).unwrap()); }
++        }
++    }
++    let mut result = BTreeMap::new(); walk(root, root, &mut result); result
++}
++
++#[test]
++fn real_receipt_process_reopens_wallet_and_fences_stale_epoch() {
++    let root = tempfile::tempdir().unwrap();
++    std::fs::set_permissions(root.path(), std::fs::Permissions::from_mode(0o700)).unwrap();
++    std::fs::write(root.path().join("fixture-marker"), b"eidetic-retention-20261019\n").unwrap();
++    let (first, old) = Host::start(root.path());
++    let old_status = old.connected_status().clone();
++    let old_epoch = old_status.custody_epoch.clone().unwrap();
++    let clear = b"SYNTHETIC-RECEIPT-PAYLOAD";
++    let (sealed, marker) = old.seal(&Hash::of(clear), clear).unwrap();
++    assert_ne!(sealed, clear);
++    let profiles = [("family", "Family", [0x51; 32])];
++    let spec = djinn_custodian::fixture::Spec { passphrase: "public synthetic receipt fixture", profiles: &profiles,
++        grants: serde_json::json!([]), consent: "deny", mechanism: None, agent: false };
++    assert!(djinn_custodian::fixture::receipt(root.path(), spec, false).is_err(), "live process owns root lease");
++    drop(old);
++    first.stop();
++    let state = root.path().join("custodian");
++    let vault = std::fs::read(state.join("vault/vault.json")).unwrap();
++    let wallet = files(&state.join("data"));
++    let (second, fresh) = Host::start(root.path());
++    let fresh_status = fresh.connected_status().clone();
++    let fresh_epoch = fresh_status.custody_epoch.clone().unwrap();
++    assert_ne!(old_epoch.instance, fresh_epoch.instance);
++    assert_eq!(old_status.profile, fresh_status.profile);
++    assert_eq!(old_status.persona_public_key, fresh_status.persona_public_key);
++    assert_eq!(old_status.wallet_public_key, fresh_status.wallet_public_key);
++    assert_eq!(fresh.unseal(&Hash::of(clear), &marker, &sealed).unwrap(), clear);
++    let endpoint = root.path().join("app.sock").to_string_lossy().into_owned();
++    tokio::runtime::Runtime::new().unwrap().block_on(async {
++        let mut client = CustodyClient::open_at(&endpoint, AppId::new("turnstone")).await.unwrap();
++        let request = PayloadRequest { profile: old_status.profile.unwrap(), master: old_status.persona_public_key.unwrap(),
++            content_hash: Hash::of(clear), operation: PayloadOperation::Seal { bytes: PayloadBytes(clear.to_vec()) }, custody_epoch: Some(old_epoch) };
++        assert!(client.call(CustodyCall::Payload(request)).await.is_err(), "old instance epoch cannot write after restart");
++    });
++    drop(fresh);
++    second.stop();
++    assert_eq!(std::fs::read(state.join("vault/vault.json")).unwrap(), vault);
++    assert_eq!(files(&state.join("data")), wallet, "reopen must not reseed or change wallet files");
++}
++
++#[path = "../custodian_fixture/mod.rs"]
++mod custodian_fixture;
++
++#[test]
++fn profile_roundtrip_fences_a_stale_payload_write() {
++    use custodian_fixture::{TestCustodian, manage_grants};
++    use mere_resident::custody_host::ResidentCustody;
++    use dramatis::intents::SwitchProfileIntentV1;
++    let host = TestCustodian::start("profile fence fixture", &[("work", [0x31; 32]), ("home", [0x32; 32])], manage_grants());
++    let persona = PersonaId::new();
++    castellan::custody::wallet::ensure_wallet_state(&host.data_root, persona, "profile fence fixture").unwrap();
++    let remote = host.remote();
++    remote.unlock_with_passphrase(b"profile fence fixture").unwrap();
++    let old = remote.custody_epoch().unwrap().unwrap();
++    let clear = b"SYNTHETIC-PROFILE-FENCE";
++    let request = PayloadRequest { profile: ProfileId("work".into()), master: remote.master_public_key().to_bytes(),
++        content_hash: Hash::of(clear), operation: PayloadOperation::Seal { bytes: PayloadBytes(clear.to_vec()) }, custody_epoch: Some(old.clone()) };
++    let scope = b"profile-fence".to_vec();
++    assert!(remote.payload(host.dir.path(), persona, request.clone(), scope.clone()).is_ok());
++    remote.switch_profile(SwitchProfileIntentV1 { profile: "home".into() }).unwrap();
++    remote.switch_profile(SwitchProfileIntentV1 { profile: "work".into() }).unwrap();
++    assert_ne!(remote.custody_epoch().unwrap().unwrap(), old);
++    assert!(remote.payload(host.dir.path(), persona, request, scope).is_err(), "profile roundtrip must fence the old writer");
++}
++
++#[test]
++fn incomplete_wallet_is_refused_without_reseeding() {
++    let root = tempfile::tempdir().unwrap();
++    std::fs::set_permissions(root.path(), std::fs::Permissions::from_mode(0o700)).unwrap();
++    std::fs::write(root.path().join("fixture-marker"), b"eidetic-retention-20261019\n").unwrap();
++    let (host, identity) = Host::start(root.path());
++    drop(identity);
++    host.stop();
++    let data = root.path().join("custodian/data");
++    let persona = PersonaId::from_uuid(uuid::Uuid::from_u128(0xe1de_2026_1019));
++    let missing = pandect::wallet_store::persona_wallet_path(&data, persona);
++    let saved = std::fs::read(&missing).unwrap();
++    std::fs::remove_file(&missing).unwrap();
++    let before = files(&data);
++    let status = Command::new(std::env::current_exe().unwrap())
++        .args(["retained_custody_receipt_host", "--ignored", "--exact", "--nocapture"])
++        .env("EIDETIC_CUSTODY_FIXTURE_ROOT", root.path()).env("EIDETIC_CUSTODY_FIXTURE_ENDPOINT", root.path().join("app.sock"))
++        .stdout(Stdio::null()).stderr(Stdio::null()).status().unwrap();
++    assert!(!status.success(), "an incomplete wallet must be refused");
++    assert!(!missing.exists(), "reopen must not recreate the missing manifest");
++    assert_eq!(files(&data), before, "failed reopen must not change wallet files");
++    std::fs::write(missing, saved).unwrap();
++    let vault = root.path().join("custodian/vault/vault.json");
++    std::fs::write(&vault, b"corrupt synthetic vault").unwrap();
++    let before = files(&data);
++    let status = Command::new(std::env::current_exe().unwrap())
++        .args(["retained_custody_receipt_host", "--ignored", "--exact", "--nocapture"])
++        .env("EIDETIC_CUSTODY_FIXTURE_ROOT", root.path()).env("EIDETIC_CUSTODY_FIXTURE_ENDPOINT", root.path().join("app.sock"))
++        .stdout(Stdio::null()).stderr(Stdio::null()).status().unwrap();
++    assert!(!status.success(), "a corrupt vault must be refused");
++    assert_eq!(std::fs::read(vault).unwrap(), b"corrupt synthetic vault");
++    assert_eq!(files(&data), before, "failed vault open must not change wallet files");
++}

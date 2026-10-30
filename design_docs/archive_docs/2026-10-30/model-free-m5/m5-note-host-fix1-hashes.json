@@ -1,0 +1,17 @@
+{
+  "src/app/redshank_arms.rs": "257fedc6f2eb535458411e0de177dadb0437e20e639ff418f968b75f1fee40b6",
+  "src/app/redshank_notes.rs": "10d3d776871df7d2230dca35b1086a1c20388e0c09614033b78254b0da34c3f6",
+  "src/app/redshank_notes_tests.rs": "6b68313f53296695be47adff76131882e4cf36c5f7ea70df0e4aaec5899f8565",
+  "src/app/redshank_transport_tests.rs": "4bfb8dc2e1dea99b94f3b9cd75f626e2fa19b10d06bcb2940c3512aafe6a1f06",
+  "src/redshank_episode_surface.rs": "49b572a7c40b8fa61e15f347e19da1a62fe8b14406fc178698ad8acabab0f5fe",
+  "src/redshank_notes_session.rs": "adff44b9f7c0948111d13981f5a4aafc095d3fc2f13f5b2e94327e3e345ccb17",
+  "src/redshank_episode_surface_event_tests.rs": "1c721e4f8943e112eabcab38e07f4c084186c9e4ce0ffa124b6990ee24ad637c",
+  "src/redshank_stale_transport_event_tests.rs": "d9226cfe5ab103ff8a722cbea87034db17120dcd68f130bd3ddd935410b3b257",
+  "src/redshank_host.rs": "dd58ff3961d366c0c2a358ba771475cb3b9f32a7d68867e727fd39ecbe2371dc",
+  "src/redshank_host/impl_default_for_redshank_host.rs": "777948d2f047376264d6ff361af00250f123c8e97535bc71d12abd69898559a9",
+  "src/redshank_host/redshank_host_command.rs": "d733774bd4dfe48960d3d5aab6b052af5f2de146eb59a0fb82f4e5a6bed8d9ef",
+  "src/redshank_host/redshank_host_retained_voice_preview.rs": "c12f6fa9670290c366475a62b4f81cbbb5cd0fc306db4fbfeaa5f1df130f61a9",
+  "src/redshank_host/tests.rs": "ca94304578940277d886199404be8b9e5e7a227799d2c8fa27e0b7bdd5b5005c",
+  "src/redshank_host/note_capture_tests.rs": "fe4f3a749be699f0ca0ae41a597fba540bda0df318199c7c7253e8689d1c54fa",
+  "src/shell/events/shell_drain_actor_updates.rs": "efeee2b40210539dbd3107b3ff844e15600e2d4f665fcd3e53b96b324e5b8093"
+}

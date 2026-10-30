@@ -1,0 +1,78 @@
+{
+  "files": {
+    "turnstone": "cffdeddaf7c616192d27c2f25d610deb97fdbfbc0ed9ed34e16c8091d2277b1a",
+    "custodian": "f4ec2260854eff4d74ec088b442b84e4659bf353246ce7151f7234b328d5c53a",
+    "test-binary": "c03e1e61ec38f4f1b3432a7646acd0f9bb6673fa8f908413fdc20c5bb910bef3",
+    "seed.scn": "961b17e4c0432d6b29b97bc47bec11722bcf906fe795146f7a12c2bb9000b8dc",
+    "namespace_phase.py": "411b50e3e8ce9e7e12200ea2a73d902b1ebb8ce1363733920d2fb92afedc4efa",
+    "preflight_phase.py": "571332afdc4cde7d1f8b7e2604a61ec7cf14da7ef351f7e277ddffe2d3b7e2df",
+    "fixture_server.py": "71198b8d604d59a849b3c5c0218f7e26735cfae285b066cea88efb9c369becca"
+  },
+  "kind": "empty-profile-preflight",
+  "devices": {
+    "wayland": {
+      "path": "/run/user/1000/wayland-0",
+      "device": 111,
+      "inode": 134
+    },
+    "render": {
+      "path": "/dev/dri/renderD128",
+      "device": 7,
+      "inode": 555,
+      "rdev": 57984
+    }
+  },
+  "builds": {
+    "turnstone": {
+      "receipt_sha256": "bfc354170f2449fb94f7ca040c66e7414c348d202215c0a10ff8d3f42f0a4b6a",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "-p",
+        "turnstone",
+        "--features",
+        "authoring,inference",
+        "--bin",
+        "turnstone"
+      ],
+      "binary_sha256": "cffdeddaf7c616192d27c2f25d610deb97fdbfbc0ed9ed34e16c8091d2277b1a",
+      "source_hash": "3694075aae5ff11fb483b799504349e1fc0bc463823637b3c4c76a8ca7e69382"
+    },
+    "test-binary": {
+      "receipt_sha256": "7a548e3c60ddd1fdbbf35b6eef5c088f93356b6d1a1a222e8dd75f1ea683c0c4",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "turnstone",
+        "--features",
+        "authoring,inference",
+        "--lib",
+        "--no-run"
+      ],
+      "binary_sha256": "c03e1e61ec38f4f1b3432a7646acd0f9bb6673fa8f908413fdc20c5bb910bef3",
+      "source_hash": "3694075aae5ff11fb483b799504349e1fc0bc463823637b3c4c76a8ca7e69382"
+    },
+    "custodian": {
+      "receipt_sha256": "6e8216cafcb3595900f06601c00f1eeddedfad20e387ebb07d05529f1be0d34c",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "mere-resident",
+        "--test",
+        "custody_payload",
+        "--no-run"
+      ],
+      "binary_sha256": "f4ec2260854eff4d74ec088b442b84e4659bf353246ce7151f7234b328d5c53a",
+      "source_hash": "22d31aee36fc5493dcc0cb407d5b738f87c79f1c05f4fcf623f5c31e39d43761"
+    }
+  },
+  "provenance_sha256": "37a85523d4dddb7d4607487a42aa9e18fbb5a3070865ed143d0a4680bc280c9f"
+}

@@ -1,0 +1,58 @@
+--- reviewed-fix2
++++ network-fix
+@@ -313,7 +313,8 @@
+     for path in (sandbox, frozen, wayland_socket, gpu_device):
+         if not path.is_absolute() or not path.exists(): raise ValueError('missing namespace input ' + str(path))
+     # Do not bind frozen/ as a directory: it also contains original fixture bodies.
+-    command = ['bwrap', '--die-with-parent', '--new-session', '--unshare-user', '--unshare-net', '--unshare-pid', '--unshare-ipc',
++    command = ['bwrap', '--die-with-parent', '--new-session', '--unshare-user', '--uid', '0', '--gid', '0', '--cap-add', 'CAP_NET_ADMIN',
++               '--unshare-net', '--unshare-pid', '--unshare-ipc',
+                '--proc', '/proc', '--dev', '/dev', '--ro-bind', '/sys/fs/cgroup', '/sys/fs/cgroup',
+                '--ro-bind', '/usr', '/usr',
+                '--symlink', 'usr/lib', '/lib', '--symlink', 'usr/lib64', '/lib64',
+@@ -406,7 +407,7 @@
+ network and cgroup limits before invoking this module. Source bodies enter only
+ through files copied into the private fixture directory.
+ """
+-import hashlib, json, os, shutil, signal, socket, stat, struct, subprocess, sys, time
++import ctypes, hashlib, json, os, shutil, signal, socket, stat, struct, subprocess, sys, time
+ from pathlib import Path
+ 
+ class PhaseError(RuntimeError): pass
+@@ -463,6 +464,25 @@
+                 os.killpg(self.proc.pid, signal.SIGKILL); self.proc.wait(timeout=5)
+         value = self.result(); self.log.close(); return value
+ 
++def drop_setup_capabilities():
++    """Drop all setup capabilities before starting any supervised child."""
++    class Header(ctypes.Structure):
++        _fields_ = [('version', ctypes.c_uint32), ('pid', ctypes.c_int)]
++    class Data(ctypes.Structure):
++        _fields_ = [('effective', ctypes.c_uint32), ('permitted', ctypes.c_uint32),
++                    ('inheritable', ctypes.c_uint32)]
++    libc = ctypes.CDLL(None, use_errno=True)
++    if libc.prctl(38, 1, 0, 0, 0) != 0:  # PR_SET_NO_NEW_PRIVS
++        raise OSError(ctypes.get_errno(), 'PR_SET_NO_NEW_PRIVS failed')
++    header, data = Header(0x20080522, 0), (Data * 2)()
++    if libc.capset(ctypes.byref(header), ctypes.byref(data)) != 0:
++        raise OSError(ctypes.get_errno(), 'capset failed')
++    fields = dict(line.split(':', 1) for line in Path('/proc/self/status').read_text().splitlines() if ':' in line)
++    for name in ('CapInh', 'CapPrm', 'CapEff', 'CapAmb'):
++        if int(fields[name].strip(), 16) != 0: raise PhaseError('setup capability remained: ' + name)
++    if fields['NoNewPrivs'].strip() != '1': raise PhaseError('no_new_privs not enforced')
++    return {'effective':'0', 'permitted':'0', 'inheritable':'0', 'ambient':'0', 'no_new_privs':True}
++
+ def interfaces():
+     addr = json.loads(subprocess.check_output(['ip', '-json', 'address', 'show'], text=True))
+     routes = json.loads(subprocess.check_output(['ip', '-json', 'route', 'show', 'table', 'all'], text=True))
+@@ -547,7 +567,9 @@
+             raise PhaseError('saved seed result observation changed while copying')
+     control = out / 'control'; control.mkdir(exist_ok=True)
+     subprocess.run(['ip', 'link', 'set', 'lo', 'up'], check=True, timeout=5)
+-    net = interfaces(); net['cgroup'] = verify_cgroup(config); write(run / 'namespace.json', net)
++    dropped = drop_setup_capabilities()
++    net = interfaces(); net['setup_capabilities'] = dropped
++    net['cgroup'] = verify_cgroup(config); write(run / 'namespace.json', net)
+     # Supplied by the parent launcher, constructed from an explicit allowlist.
+     env = dict(config['environment'])
+     if 'HOME' in env or 'CODEX_HOME' in env: raise PhaseError('home environment must be absent')

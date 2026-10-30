@@ -1,0 +1,552 @@
+
+FILE run_preflight.py
+#!/usr/bin/env python3
+"""Bounded empty-profile GUI/custody startup, not an M5 acceptance run."""
+import argparse, os, subprocess, time
+from pathlib import Path
+import run_native as native
+
+parser = argparse.ArgumentParser(description=__doc__)
+for name in ('output', 'application', 'custodian', 'test-binary', 'wayland-socket', 'gpu-dir'):
+    parser.add_argument('--' + name, required=True, type=Path)
+args = parser.parse_args()
+out = args.output.resolve()
+if out.exists(): raise SystemExit('output must be a new directory')
+out.mkdir(mode=0o700, parents=True)
+sandbox, frozen = out / 'sandbox', out / 'frozen'
+sandbox.mkdir(mode=0o700); frozen.mkdir(mode=0o700)
+(sandbox / 'm5-disposable-marker').write_text('m5-disposable/v1\n')
+for name in ('home', 'data', 'config', 'cache', 'runtime', 'mere', 'profile', 'control', 'fixture-source'):
+    (sandbox / name).mkdir(mode=0o700)
+here = Path(__file__).resolve().parent
+inputs = {'turnstone': args.application, 'custodian': args.custodian,
+          'test-binary': args.test_binary, 'seed.scn': here / 'preflight.scn',
+          'namespace_phase.py': here / 'namespace_phase.py', 'preflight_phase.py': here / 'preflight_phase.py',
+          'fixture_server.py': here / 'fixture_server.py'}
+try:
+    hashes = {name: native.freeze_file(path.resolve(), frozen / name) for name, path in inputs.items()}
+    native.record(out / 'inputs.json', {'files': hashes, 'kind': 'empty-profile-preflight'})
+    config = {'preflight': True, 'phase': 'seed', 'output': '/m5/run', 'scenario': '/m5/input/seed.scn',
+              'fixture_server': '/m5/input/fixture_server.py', 'custodian': '/m5/input/custodian',
+              'application': '/m5/input/turnstone', 'test_binary': '/m5/input/test-binary',
+              'timeout_seconds': 180, 'inspection_timeout_seconds': 30,
+              'memory_bytes': 3 * 1024**3, 'tasks_max': 128, 'cpu_percent': 150,
+              'environment': {'PATH': '/usr/bin', 'WAYLAND_DISPLAY': 'wayland-0', 'RUST_LOG': 'warn'}}
+    config_path = frozen / 'seed-config.json'; native.record(config_path, config)
+    ns = native.namespace_command(sandbox, frozen, args.wayland_socket.resolve(), args.gpu_dir.resolve(),
+                                  'seed', config_path, preflight=True)
+    unit = 'm5-preflight-' + str(os.getpid())
+    result = native.run_scope(native.cgroup_scope(ns, config['memory_bytes'], config['tasks_max'],
+                                                  config['cpu_percent'], unit), unit,
+                              out / 'launcher.log', 240)
+    native.record(out / 'launcher.json', result)
+    if result['exit_code'] or result['timed_out']: raise RuntimeError('preflight launcher failed')
+except BaseException as exc:
+    native.record(out / 'failure.json', {'error': repr(exc), 'time_ns': time.time_ns()})
+    raise
+
+FILE preflight_phase.py
+#!/usr/bin/env python3
+"""Run only the minimal, empty-profile M5 GUI/custody startup preflight."""
+import json, sys
+from pathlib import Path
+import namespace_phase
+
+config = json.loads(Path('/m5/input/config.json').read_text())
+if sys.argv != ['/m5/input/preflight_phase.py', '/m5/input/config.json']:
+    raise SystemExit('unexpected preflight arguments')
+if config.get('preflight') is not True or config.get('phase') != 'seed':
+    raise SystemExit('invalid preflight configuration')
+scenario = Path('/m5/input/seed.scn').read_text()
+if scenario != '# Bounded GUI and custody startup only; contains no retained content.\nsettle 60\nrecord-runtime gui_preflight\ncapture gui_preflight\n':
+    raise SystemExit('preflight scenario is not the fixed empty-profile check')
+if any(Path('/m5/run/fixture-source').iterdir()):
+    raise SystemExit('preflight fixture source is not empty')
+namespace_phase.phase(config)
+run = Path('/m5/run/seed')
+runtime = json.loads((run / 'gui_preflight.runtime.json').read_text())
+probe = json.loads((run / 'inference-route.json').read_text())
+processes = json.loads((run / 'processes.json').read_text())
+if runtime.get('pid') != processes['app']['pid'] or runtime.get('network_offline') is not True:
+    raise SystemExit('GUI runtime identity or offline state differs')
+if runtime.get('custody_principal') != {'profile': probe.get('profile'), 'public_key': probe.get('public_key')}:
+    raise SystemExit('GUI and probe custody principals differ')
+activity = runtime['inference']
+if not activity.get('client_compiled') or activity.get('corpus_publications') != 0 or activity.get('generation_requests') != 0:
+    raise SystemExit('GUI did not start idle with inference client present')
+if runtime.get('offline_acquisition_attempts') != 0 or probe.get('outcome') != 'refused':
+    raise SystemExit('unexpected acquisition or inference route')
+if not (run / 'gui_preflight.png').is_file():
+    raise SystemExit('GUI frame missing')
+namespace_phase.write(run / 'preflight-checked.json', {'schema': 'turnstone.m5-preflight/v1',
+    'app_pid': runtime['pid'], 'custody_pid': processes['custody_ready']['pid'],
+    'custody_principal': runtime['custody_principal'], 'route_probe': 'refused',
+    'frame': 'gui_preflight.png', 'offline_acquisition_attempts': 0,
+    'corpus_publications': 0, 'generation_requests': 0})
+
+FILE run_native.py
+#!/usr/bin/env python3
+"""M5 staged launcher. Execution remains disabled pending containment review."""
+import argparse, hashlib, json, os, shutil, subprocess, time
+from pathlib import Path
+
+READY_FOR_HOST_INTAKE = False
+
+def sha(path):
+    h = hashlib.sha256()
+    with path.open('rb') as f:
+        for block in iter(lambda: f.read(1024 * 1024), b''): h.update(block)
+    return h.hexdigest()
+
+def record(path, value):
+    temp = path.with_suffix(path.suffix + '.tmp')
+    temp.write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n')
+    os.replace(temp, path)
+
+def freeze_file(src, dest):
+    if not src.is_file() or dest.exists() or src.is_symlink(): raise ValueError('invalid freeze source/destination')
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dest)
+    if sha(src) != sha(dest): raise ValueError('input changed while freezing')
+    return sha(dest)
+
+def tracked_sources(root):
+    names = subprocess.check_output(['git', 'ls-files', '-z', '--cached', '--others', '--exclude-standard',
+                                     '--', 'src', 'scenarios', 'Cargo.toml', 'Cargo.lock'], cwd=root).split(b'\0')
+    result = {}
+    for name in sorted(set(names)):
+        if not name: continue
+        rel = os.fsdecode(name); p = root / rel
+        if p.is_file() and not p.is_symlink(): result[rel] = sha(p)
+    if not result: raise ValueError('empty source inventory')
+    return result
+
+def cgroup_scope(command, memory_bytes, tasks, cpu_percent, unit):
+    if memory_bytes <= 0 or tasks <= 0 or cpu_percent <= 0: raise ValueError('invalid cgroup limits')
+    if not unit.startswith('m5-') or not unit.replace('-', '').isalnum(): raise ValueError('invalid scope name')
+    return ['systemd-run', '--user', '--scope', '--collect', '--unit', unit,
+            '--property', 'MemoryMax=' + str(memory_bytes), '--property', 'MemorySwapMax=0',
+            '--property', 'TasksMax=' + str(tasks), '--property', 'CPUQuota=' + str(cpu_percent) + '%',
+            '--', *command]
+
+def run_scope(cmd, unit, log, timeout):
+    """Terminate only the uniquely named scope created for this phase."""
+    start = time.time_ns()
+    with log.open('xb') as stream:
+        proc = subprocess.Popen(cmd, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
+        timed_out = False
+        try:
+            code = proc.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            # Scope name is generated internally, never caller-supplied shell text.
+            subprocess.run(['systemctl', '--user', 'kill', '--kill-who=all', '--signal=TERM', unit + '.scope'],
+                           stdout=stream, stderr=subprocess.STDOUT, timeout=10, check=False)
+            try: code = proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                subprocess.run(['systemctl', '--user', 'kill', '--kill-who=all', '--signal=KILL', unit + '.scope'],
+                               stdout=stream, stderr=subprocess.STDOUT, timeout=10, check=False)
+                try: code = proc.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    os.killpg(proc.pid, 9); code = proc.wait(timeout=10)
+    return {'argv': cmd, 'launcher_pid': proc.pid, 'start_ns': start, 'exit_ns': time.time_ns(),
+            'exit_code': code, 'timed_out': timed_out, 'scope': unit + '.scope'}
+
+def namespace_command(sandbox, frozen, wayland_socket, gpu_dir, phase, config, preflight=False):
+    """Construct a narrow mount namespace; review on the actual host before use."""
+    if phase not in ('seed', 'reopen'): raise ValueError('invalid phase')
+    for path in (sandbox, frozen, wayland_socket, gpu_dir):
+        if not path.is_absolute() or not path.exists(): raise ValueError('missing namespace input ' + str(path))
+    # Do not bind frozen/ as a directory: it also contains original fixture bodies.
+    command = ['bwrap', '--die-with-parent', '--new-session', '--unshare-user', '--unshare-net', '--unshare-pid', '--unshare-ipc',
+               '--proc', '/proc', '--dev', '/dev', '--ro-bind', '/sys/fs/cgroup', '/sys/fs/cgroup',
+               '--ro-bind', '/usr', '/usr',
+               '--symlink', 'usr/lib', '/lib', '--symlink', 'usr/lib64', '/lib64',
+               '--dir', '/m5', '--dir', '/m5/input', '--bind', str(sandbox), '/m5/run',
+               '--dev-bind', str(gpu_dir), '/dev/dri',
+               '--bind', str(wayland_socket), '/m5/run/runtime/wayland-0']
+    for name in ('turnstone', 'custodian', 'test-binary', 'namespace_phase.py', 'fixture_server.py', phase + '.scn'):
+        path = frozen / name
+        if not path.is_file(): raise ValueError('missing frozen input ' + str(path))
+        command += ['--ro-bind', str(path), '/m5/input/' + name]
+    entry = '/m5/input/namespace_phase.py'
+    if preflight:
+        path = frozen / 'preflight_phase.py'
+        if not path.is_file(): raise ValueError('missing frozen preflight entry')
+        command += ['--ro-bind', str(path), '/m5/input/preflight_phase.py']
+        entry = '/m5/input/preflight_phase.py'
+    command += ['--ro-bind', str(config), '/m5/input/config.json', '--chdir', '/m5/run',
+                '/usr/bin/python3', entry, '/m5/input/config.json']
+    return command
+
+def verify_source_unchanged(root, before):
+    if tracked_sources(root) != before: raise ValueError('source set or contents changed')
+
+def execute(options):
+    out = options.output.resolve()
+    if out.exists(): raise ValueError('output directory already exists')
+    out.mkdir(mode=0o700, parents=True)
+    sandbox, frozen = out / 'sandbox', out / 'frozen'
+    sandbox.mkdir(mode=0o700); frozen.mkdir(mode=0o700)
+    (sandbox / 'm5-disposable-marker').write_text('m5-disposable/v1\n')
+    for name in ('home', 'data', 'config', 'cache', 'runtime', 'mere', 'profile', 'control'):
+        (sandbox / name).mkdir(mode=0o700)
+    inputs = {'turnstone': options.application, 'custodian': options.custodian,
+              'test-binary': options.test_binary, 'seed.scn': options.seed,
+              'reopen.scn': options.reopen, 'namespace_phase.py': Path(__file__).with_name('namespace_phase.py'),
+              'fixture_server.py': Path(__file__).with_name('fixture_server.py')}
+    hashes = {name: freeze_file(path.resolve(), frozen / name) for name, path in inputs.items()}
+    shutil.copytree(options.fixtures, frozen / 'fixtures')
+    fixture_hashes = {str(p.relative_to(frozen)): sha(p) for p in (frozen / 'fixtures').rglob('*') if p.is_file()}
+    shutil.copytree(frozen / 'fixtures', sandbox / 'fixture-source')
+    source_before = tracked_sources(options.source_root)
+    record(out / 'inputs.json', {'files': hashes, 'fixtures': fixture_hashes, 'source': source_before,
+                               'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=options.source_root, text=True).strip()})
+    try:
+        for phase in ('seed', 'reopen'):
+            verify_source_unchanged(options.source_root, source_before)
+            config = {'phase': phase, 'output': '/m5/run', 'scenario': '/m5/input/' + phase + '.scn',
+                      'fixture_server': '/m5/input/fixture_server.py', 'custodian': '/m5/input/custodian',
+                      'application': '/m5/input/turnstone', 'test_binary': '/m5/input/test-binary',
+                      'inspection_observation': options.inspection_observation,
+                      'source_observation': options.source_observation,
+                      'timeout_seconds': options.timeout, 'inspection_timeout_seconds': 60,
+                      'memory_bytes': options.memory_bytes, 'tasks_max': options.tasks,
+                      'cpu_percent': options.cpu_percent,
+                      'environment': {'PATH': '/usr/bin', 'WAYLAND_DISPLAY': 'wayland-0', 'RUST_LOG': 'warn'}}
+            config_path = frozen / (phase + '-config.json'); record(config_path, config)
+            ns = namespace_command(sandbox, frozen, options.wayland_socket, options.gpu_dir, phase, config_path)
+            unit = 'm5-' + phase + '-' + str(os.getpid())
+            cmd = cgroup_scope(ns, options.memory_bytes, options.tasks, options.cpu_percent, unit)
+            result = run_scope(cmd, unit, out / (phase + '-launcher.log'), options.timeout + 120)
+            record(out / (phase + '-launcher.json'), result)
+            if result['exit_code'] or result['timed_out']: raise ValueError(phase + ' launcher failed')
+        verify_source_unchanged(options.source_root, source_before)
+    except BaseException as exc:
+        record(out / 'failure.json', {'error': repr(exc), 'time_ns': time.time_ns()})
+        raise
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in ('output', 'application', 'custodian', 'test-binary', 'seed', 'reopen',
+                 'fixtures', 'source-root', 'wayland-socket', 'gpu-dir'):
+        parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--inspection-observation', required=True)
+    parser.add_argument('--source-observation', required=True)
+    parser.add_argument('--memory-bytes', type=int, required=True)
+    parser.add_argument('--tasks', type=int, required=True)
+    parser.add_argument('--cpu-percent', type=int, required=True)
+    parser.add_argument('--timeout', type=int, default=600)
+    options = parser.parse_args()
+    if not READY_FOR_HOST_INTAKE:
+        raise SystemExit('DRAFT ONLY: no processes started; complete and review intake gates first')
+    execute(options)
+if __name__ == '__main__': main()
+
+FILE namespace_phase.py
+#!/usr/bin/env python3
+"""Staged phase supervisor; run only inside the reviewed isolated cgroup/namespace.
+
+Not an independent isolation boundary. The parent launcher must verify mount,
+network and cgroup limits before invoking this module. Source bodies enter only
+through files copied into the private fixture directory.
+"""
+import hashlib, json, os, shutil, signal, socket, stat, struct, subprocess, sys, time
+from pathlib import Path
+
+class PhaseError(RuntimeError): pass
+
+def write(path, obj):
+    temp = path.with_suffix(path.suffix + '.tmp')
+    temp.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + '\n')
+    os.replace(temp, path)
+
+def wait_ready(proc, predicate, seconds):
+    deadline = time.monotonic() + seconds
+    while time.monotonic() < deadline:
+        if proc.poll() is not None: raise PhaseError('process exited before readiness')
+        value = predicate()
+        if value is not None: return value
+        time.sleep(.05)
+    raise PhaseError('readiness deadline exceeded')
+
+def json_for_pid(path, pid):
+    try:
+        value = json.loads(path.read_text())
+        return value if value.get('pid') == pid else None
+    except (OSError, ValueError): return None
+
+class Child:
+    def __init__(self, argv, log, env, stdin=None):
+        self.argv, self.start_ns, self.exit_ns = argv, time.time_ns(), None
+        self.log = log.open('xb')
+        self.proc = subprocess.Popen(argv, env=env, stdin=stdin, stdout=self.log,
+                                     stderr=subprocess.STDOUT, start_new_session=True)
+    def result(self):
+        if self.proc.poll() is None: raise PhaseError('process has not exited')
+        if self.exit_ns is None: self.exit_ns = time.time_ns()
+        return {'argv': self.argv, 'pid': self.proc.pid, 'start_ns': self.start_ns,
+                'exit_ns': self.exit_ns, 'exit_code': self.proc.returncode,
+                'pid_namespace': os.readlink('/proc/self/ns/pid')}
+    def stop(self, graceful_stdin=False):
+        if self.proc.poll() is None:
+            if graceful_stdin and self.proc.stdin:
+                self.proc.stdin.write(b'\n'); self.proc.stdin.flush(); self.proc.stdin.close()
+            else: os.killpg(self.proc.pid, signal.SIGTERM)
+            try: self.proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                os.killpg(self.proc.pid, signal.SIGKILL); self.proc.wait(timeout=5)
+        value = self.result(); self.log.close(); return value
+
+def interfaces():
+    addr = json.loads(subprocess.check_output(['ip', '-json', 'address', 'show'], text=True))
+    routes = json.loads(subprocess.check_output(['ip', '-json', 'route', 'show', 'table', 'all'], text=True))
+    if any(item.get('ifname') != 'lo' for item in addr): raise PhaseError('external interface visible')
+    if any(r.get('dev') not in (None, 'lo') for r in routes): raise PhaseError('external route visible')
+    return {'addresses': addr, 'routes': routes, 'netns': os.readlink('/proc/self/ns/net'),
+            'mountns': os.readlink('/proc/self/ns/mnt'), 'userns': os.readlink('/proc/self/ns/user'),
+            'pidns': os.readlink('/proc/self/ns/pid'), 'ipcns': os.readlink('/proc/self/ns/ipc')}
+
+def fixture_ready(path, expected_pid):
+    if not path.exists(): return None
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+        sock.settimeout(1)
+        try:
+            sock.connect(str(path))
+            pid, uid, gid = struct.unpack('3i', sock.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, 12))
+        except OSError:
+            return None
+    if pid != expected_pid: raise PhaseError('custody socket belongs to a different process')
+    info = path.stat()
+    if not stat.S_ISSOCK(info.st_mode): raise PhaseError('custody endpoint is not a socket')
+    return {'pid': pid, 'uid': uid, 'gid': gid, 'device': info.st_dev, 'inode': info.st_ino}
+
+def remove_own_socket(root, path, child):
+    if child.proc.poll() is None: raise PhaseError('custody still running')
+    if path.parent != root or path.name != 'app.sock': raise PhaseError('unsafe socket path')
+    try: info = path.lstat()
+    except FileNotFoundError: return
+    if not stat.S_ISSOCK(info.st_mode): raise PhaseError('fixture endpoint replaced by non-socket')
+    path.unlink()
+
+def refused(host, port):
+    with socket.socket() as s:
+        s.settimeout(1)
+        return s.connect_ex((host, port)) != 0
+
+def tree_hashes(root):
+    result = {}
+    for path in sorted(root.rglob('*')):
+        if path.is_symlink(): raise PhaseError('symlink in inspection source tree')
+        if path.is_file():
+            h = hashlib.sha256()
+            with path.open('rb') as stream:
+                for chunk in iter(lambda: stream.read(1024 * 1024), b''): h.update(chunk)
+            result[str(path.relative_to(root))] = h.hexdigest()
+    return result
+
+def verify_cgroup(config):
+    lines = Path('/proc/self/cgroup').read_text().splitlines()
+    entry = next((line.split(':', 2)[2] for line in lines if line.startswith('0::')), None)
+    if entry is None: raise PhaseError('cgroup v2 membership unavailable')
+    root = (Path('/sys/fs/cgroup') / entry.lstrip('/')).resolve()
+    if not root.is_relative_to(Path('/sys/fs/cgroup')): raise PhaseError('invalid cgroup path')
+    memory = (root / 'memory.max').read_text().strip()
+    swap = (root / 'memory.swap.max').read_text().strip()
+    tasks = (root / 'pids.max').read_text().strip()
+    quota, period = (root / 'cpu.max').read_text().split()
+    if memory == 'max' or int(memory) > config['memory_bytes']: raise PhaseError('memory cap missing')
+    if swap != '0': raise PhaseError('swap cap missing')
+    if tasks == 'max' or int(tasks) > config['tasks_max']: raise PhaseError('task cap missing')
+    if quota == 'max' or int(quota) * 100 > config['cpu_percent'] * int(period):
+        raise PhaseError('CPU cap missing')
+    return {'path': entry, 'memory_max': memory, 'memory_swap_max': swap,
+            'pids_max': tasks, 'cpu_max': quota + ' ' + period}
+
+def phase(config):
+    phase_name = config['phase']
+    if phase_name not in ('seed', 'reopen'): raise PhaseError('unknown phase')
+    out = Path(config['output']).resolve()
+    if not (out / 'm5-disposable-marker').is_file(): raise PhaseError('missing disposable marker')
+    fixture = out / 'fixture-source'
+    custody_root = out / 'custody'
+    endpoint = custody_root / 'app.sock'
+    run = out / phase_name
+    run.mkdir(exist_ok=False)
+    if phase_name == 'reopen':
+        seed_result = out / 'seed' / 'op_Sum.structured-research.json'
+        if seed_result.is_symlink() or not seed_result.is_file():
+            raise PhaseError('saved seed result observation missing')
+        shutil.copy2(seed_result, run / 'seed_sum.structured-research.json')
+        if seed_result.read_bytes() != (run / 'seed_sum.structured-research.json').read_bytes():
+            raise PhaseError('saved seed result observation changed while copying')
+    control = out / 'control'; control.mkdir(exist_ok=True)
+    subprocess.run(['ip', 'link', 'set', 'lo', 'up'], check=True, timeout=5)
+    net = interfaces(); net['cgroup'] = verify_cgroup(config); write(run / 'namespace.json', net)
+    # Supplied by the parent launcher, constructed from an explicit allowlist.
+    env = dict(config['environment'])
+    env.update({'HOME': str(out / 'home'), 'XDG_DATA_HOME': str(out / 'data'),
+                'XDG_CONFIG_HOME': str(out / 'config'), 'XDG_CACHE_HOME': str(out / 'cache'),
+                'XDG_RUNTIME_DIR': str(out / 'runtime'), 'MERE_ROOT': str(out / 'mere'),
+                'TURNSTONE_ROOT': str(out / 'profile'), 'TURNSTONE_KNOT_ROOT': str(out / 'profile/notes'),
+                'GRAPHSHELL_APP_ENDPOINT': str(endpoint), 'TURNSTONE_CAPTURE_DIR': str(run),
+                'TURNSTONE_SCENARIO': config['scenario'], 'TURNSTONE_OFFLINE': '1' if phase_name == 'reopen' or config.get('preflight') is True else '0',
+                'M5_SELECTION_PACKAGE': '/m5/run/selected.mereclip'})
+    children, receipts = [], {}
+    try:
+        if phase_name == 'seed':
+            if not fixture.is_dir(): raise PhaseError('fixture source copy missing')
+            ready = run / 'origin-ready.json'
+            origin = Child([sys.executable, config['fixture_server'], '--ready', str(ready), '--log',
+                            str(out / 'fixture-requests.json'), '--source-dir', str(fixture)], run / 'origin.log', env)
+            children.append(origin)
+            origin_info = wait_ready(origin.proc, lambda: json_for_pid(ready, origin.proc.pid), 15)
+            env['M5_ORIGIN'] = 'http://127.0.0.1:' + str(origin_info['port'])
+            write(out / 'origin-info.json', origin_info)
+        else:
+            if fixture.exists(): raise PhaseError('fixture source remains in reopen environment')
+            origin_info = json.loads((out / 'origin-info.json').read_text())
+            if not refused('127.0.0.1', origin_info['port']): raise PhaseError('origin reachable on reopen')
+            env['M5_ORIGIN'] = 'http://127.0.0.1:' + str(origin_info['port'])
+        if phase_name == 'seed':
+            if custody_root.exists(): raise PhaseError('fixture custody root already exists')
+            custody_root.mkdir(mode=0o700)
+            (custody_root / 'fixture-marker').write_text('eidetic-retention-20261019\n')
+        else:
+            if (custody_root / 'fixture-marker').read_text() != 'eidetic-retention-20261019\n':
+                raise PhaseError('fixture custody marker mismatch')
+            if endpoint.exists(): raise PhaseError('stale endpoint was not cleaned after seed')
+        custody_env = dict(env)
+        custody_env.update({'EIDETIC_CUSTODY_FIXTURE_ROOT': str(custody_root),
+                            'EIDETIC_CUSTODY_FIXTURE_ENDPOINT': str(endpoint)})
+        custodian = Child([config['custodian'], 'retained_custody_receipt_host', '--ignored', '--exact', '--nocapture'],
+                          run / 'custody.log', custody_env)
+        children.append(custodian)
+        custody_info = wait_ready(custodian.proc, lambda: fixture_ready(endpoint, custodian.proc.pid), 30)
+        probe_env = dict(custody_env)
+        probe_env['TURNSTONE_M5_ROUTE_RECEIPT'] = str(run / 'inference-route.json')
+        probe = Child([config['test_binary'], 'inference_service::tests::model_free_fixture_refuses_inference_route',
+                       '--ignored', '--exact', '--nocapture'], run / 'route-probe.log', probe_env)
+        children.append(probe)
+        try: probe.proc.wait(timeout=30)
+        except subprocess.TimeoutExpired: raise PhaseError('route probe timed out')
+        receipts['route_probe'] = probe.result(); probe.log.close(); children.remove(probe)
+        if probe.proc.returncode != 0 or not (run / 'inference-route.json').is_file():
+            raise PhaseError('custody-only route probe failed')
+        app = Child([config['application']], run / 'app.log', env)
+        children.append(app)
+        deadline = time.monotonic() + config['timeout_seconds']
+        origin_stopped = False
+        while app.proc.poll() is None:
+            if phase_name == 'seed' and not origin_stopped and (control / 'stop-origin').exists():
+                receipts['origin'] = origin.stop(); children.remove(origin)
+                if not refused('127.0.0.1', origin_info['port']): raise PhaseError('origin still reachable')
+                shutil.copy2(out / 'fixture-requests.json', run / 'requests-at-stop.json')
+                (control / 'origin-stopped').write_text('origin stopped and refused\n')
+                origin_stopped = True
+            if custodian.proc.poll() is not None: raise PhaseError('custodian exited while app active')
+            if time.monotonic() >= deadline: raise PhaseError('app deadline exceeded')
+            time.sleep(.1)
+        receipts['app'] = app.result(); app.log.close(); children.remove(app)
+        if app.proc.returncode != 0: raise PhaseError('app failed')
+        done = (run / 'scenario.done').read_text()
+        if not done.startswith('RESULT ok\n'): raise PhaseError('scenario failed')
+        if phase_name == 'seed':
+            if not origin_stopped:
+                receipts['origin'] = origin.stop(); children.remove(origin)
+                if not refused('127.0.0.1', origin_info['port']): raise PhaseError('origin still reachable')
+                shutil.copy2(out / 'fixture-requests.json', run / 'requests-at-stop.json')
+            # Only the explicitly named, freshly copied fixture directory is removed.
+            if fixture.parent != out or fixture.name != 'fixture-source': raise PhaseError('unsafe fixture source')
+            shutil.rmtree(fixture)
+        if phase_name == 'reopen':
+            profile = out / 'profile'
+            copy = out / 'inspection-copy'
+            before = tree_hashes(profile)
+            shutil.copytree(profile, copy, symlinks=False)
+            if tree_hashes(copy) != before or tree_hashes(profile) != before:
+                raise PhaseError('inspection copy differs or source changed')
+            (copy / 'm5-inspection-copy-marker').write_text('m5-isolated-copy/v1\n')
+            write(run / 'inspection-source-hashes.json', before)
+            inspect_env = dict(env)
+            inspect_env.update({'TURNSTONE_M5_INSPECTION_COPY': str(copy),
+                'TURNSTONE_M5_FIXTURE_ROOT': str(custody_root),
+                'TURNSTONE_M5_SOURCE_OBSERVATION': config['source_observation'],
+                'TURNSTONE_M5_SOURCE_PROFILE': '/m5/run/profile',
+                'TURNSTONE_M5_SELECTED_PACKAGE': '/m5/run/selected.mereclip',
+                'TURNSTONE_M5_SELECTED_QUOTE': 'only this linked finding',
+                'TURNSTONE_M5_NOTE_TEXT': 'M5 authored Redshank note',
+                'TURNSTONE_M5_STRUCTURED_OBSERVATION': config['inspection_observation'],
+                'TURNSTONE_M5_INSPECTION_OUTPUT': str(run / 'structured-inspection.json')})
+            reader = Child([config['test_binary'], 'trail_memory::research_owner_tests::model_free_inspect_exited_structured_copy',
+                '--ignored', '--exact', '--nocapture'], run / 'inspection.log', inspect_env)
+            children.append(reader)
+            try: reader.proc.wait(timeout=config['inspection_timeout_seconds'])
+            except subprocess.TimeoutExpired: raise PhaseError('inspection deadline exceeded')
+            receipts['inspection'] = reader.result(); reader.log.close(); children.remove(reader)
+            if reader.proc.returncode != 0: raise PhaseError('independent inspection failed')
+            if tree_hashes(profile) != before: raise PhaseError('original profile changed during inspection')
+        receipts['custody'] = custodian.stop(); children.remove(custodian)
+        if receipts['custody']['exit_code'] != -signal.SIGTERM: raise PhaseError('unexpected custody exit')
+        receipts['custody']['stop_requested'] = 'SIGTERM'
+        remove_own_socket(custody_root, endpoint, custodian)
+        receipts['custody_ready'] = custody_info
+        write(run / 'processes.json', receipts)
+    except BaseException as exc:
+        receipts['failure'] = repr(exc)
+        raise
+    finally:
+        for child in reversed(children):
+            try: receipts.setdefault('cleanup', []).append(child.stop())
+            except BaseException as exc: receipts.setdefault('cleanup_errors', []).append(repr(exc))
+        write(run / 'processes-final.json', receipts)
+
+if __name__ == '__main__':
+    # Staged only: prevent direct execution before the containment review.
+    raise SystemExit('DRAFT ONLY: namespace supervisor requires integrated cgroup and mount review')
+
+FILE fixture_server.py
+#!/usr/bin/env python3
+"""M5 draft loopback fixture; never writes Turnstone state."""
+import argparse, json, os, time
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.server.requests.append({"path": self.path, "time_ns": time.time_ns()})
+        self.server.persist()
+        if self.path == '/swap-a':
+            self.server.a2 = True
+            body = b'swapped'
+        else:
+            names = {'/A': 'a2.html' if self.server.a2 else 'a1.html',
+                     '/B': 'b.html', '/Foreign': 'foreign.html', '/selection': 'selection.html'}
+            name = names.get(self.path)
+            if name is None:
+                self.send_error(404); return
+            try: body = (self.server.source_dir / name).read_bytes()
+            except OSError:
+                self.send_error(404); return
+        self.send_response(200); self.send_header('Content-Type', 'text/html; charset=utf-8'); self.end_headers()
+        self.wfile.write(body)
+    def log_message(self, *_): pass
+class Server(ThreadingHTTPServer):
+    def persist(self):
+        tmp = self.log.with_suffix('.tmp')
+        tmp.write_text(json.dumps(self.requests, ensure_ascii=False, indent=2) + '\n')
+        os.replace(tmp, self.log)
+
+def main():
+    p = argparse.ArgumentParser(); p.add_argument('--ready', type=Path, required=True); p.add_argument('--log', type=Path, required=True); p.add_argument('--port', type=int, default=0); p.add_argument('--source-dir', type=Path, required=True); a = p.parse_args()
+    s = Server(('127.0.0.1', a.port), Handler); s.log = a.log; s.source_dir = a.source_dir; s.requests = []; s.a2 = False; s.persist()
+    a.ready.write_text(json.dumps({'pid': os.getpid(), 'host': '127.0.0.1', 'port': s.server_port}) + '\n')
+    try: s.serve_forever()
+    finally: s.server_close()
+if __name__ == '__main__': main()
+
+FILE preflight.scn
+# Bounded GUI and custody startup only; contains no retained content.
+settle 60
+record-runtime gui_preflight
+capture gui_preflight

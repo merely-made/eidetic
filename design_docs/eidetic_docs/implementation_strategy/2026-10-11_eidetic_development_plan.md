@@ -1329,15 +1329,22 @@ receipt from a run; it cannot stand in for performing that run.
   existing generated-answer compatibility cases separately; keep the 8/15
   semantic result and other platform limits unchanged.
 
-**Progress (2026-10-30):** the real producer and custody paths are being
-qualified. The hosted Redshank text-note action currently lacks its editor and
-privacy controls; complete that existing path using the owning components
-before claiming native Note coverage. The custody fixture build also exposed
-three unmigrated Graphshell consumers of the typed clip-read API. Their
-existing adapters are now corrected and published; the Redshank supplier
-capabilities are also published after 111 passing surface tests. The hosted
-note bridge and native acceptance run remain in progress. Staged observers, parser checks and fixture builds
-are preparation, not headed or restart acceptance.
+**Progress (2026-10-30):** the hosted Redshank text-note editor and privacy
+controls passed scoped review and 34 focused tests; its supplier capabilities
+are published after 111 surface tests. The refreshed host working tree passed
+1,262 library tests with `authoring,inference`. The real custody fixture now
+uses authoritative epochs and preserves its service lease through listener
+failure. Its scoped review and lifecycle tests pass. The host bridge and
+fixture are committed locally; publication is waiting on GitHub authentication.
+
+The isolated empty-profile startup gate passed with a visually inspected frame,
+the same custody principal in app and probe, a refused inference route and
+verified process cleanup. Earlier failed attempts remain recorded. This is
+startup evidence only. The full seed/reopen collector, exact input inventory,
+private-field projection and copied-store inspection are still being completed
+and reviewed before the actual three-producer run. Native Note retention,
+structured ordinary use, cold restart and missing-source refusal remain open.
+See the archived receipts for exact source and test boundaries.
 
 **Done when:** all of the milestone goal passes in fresh native processes on
 the recorded platform. Portable shared-library/browser compilation is a separate

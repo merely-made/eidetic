@@ -1,0 +1,9 @@
+Running as unit: m5-preflight-e3fe5ae4dd5140829fc0ad8e5eef37e5.scope; invocation ID: 535c264db4604a4fa8c0a77400e7c178
+Traceback (most recent call last):
+  File "/m5/input/preflight_phase.py", line 25, in <module>
+    namespace_phase.phase(config)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/m5/input/namespace_phase.py", line 243, in phase
+    if not done.startswith('RESULT ok\n'): raise PhaseError('scenario failed')
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+namespace_phase.PhaseError: scenario failed

@@ -1,0 +1,9 @@
+# Empty-startup route probe correction review
+
+Verdict: **not yet sufficient for the claimed `closed-before-challenge` observation**. One concrete evidence error remains; compilation and fixture runtime are also pending.
+
+**Medium: `AppClientError::Closed` does not identify the handshake stage.** The new probe at `turnstone-model-free-m1-20261029/src/inference_service/tests.rs:263-281` accepts `Closed` from the entire `open_route_at` call and labels it `closed-before-challenge`. The pinned Armillary client invokes the same `read_host` both for the initial challenge and again for the connected response after it sends `Connect` (`crates/djinn/src/door/app_client.rs:108-137`); either EOF becomes `Closed`. A post-challenge close therefore passes and receives the same label. The custody-only fixture source makes a pre-challenge denial the expected path, but that source expectation does not measure the stage in this actual exchange. Directly send the named route hello and assert EOF before any challenge, or use a stage-aware client observation; alternatively label the actual observation `closed-during-open` and do not claim before-challenge behavior.
+
+The revised probe otherwise accepts only the exact `Closed` variant, reconnects to the same custody principal, and rejects admission or other errors. The supervisor compares the live custodian PID and socket identity across the probe. These checks support the stated fixture-continuity boundary, but do not distinguish the handshake stage. The earlier failed run did not print its actual variant, so it does not establish which error occurred. No model-load counter is claimed.
+
+The changed Rust probe has not yet compiled or run against the fixture; the supplied eight helper tests do not resolve that. No tests, builds, or runtime were rerun in this review.
