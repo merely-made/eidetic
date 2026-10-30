@@ -151,3 +151,44 @@ fn model_free_identity_and_zero_limits_are_bounded() {
         Err(ComparisonError::WorkLimit)
     );
 }
+
+#[test]
+fn model_free_long_repeated_lines_consume_comparison_work() {
+    let line = format!("{}\n", "x".repeat(1000));
+    let a = source("a", "1", &line.repeat(16));
+    let b = source("a", "2", &format!("{}y\n", line.repeat(15)));
+    let settings = ComparisonSettings {
+        max_diff_work: 1000,
+        ..Default::default()
+    };
+    assert_eq!(
+        compare(&a, &b, ComparisonRelationship::Explicit, &settings),
+        Err(ComparisonError::WorkLimit)
+    );
+}
+
+#[test]
+fn model_free_ties_prefer_deletion_with_exact_selectors() {
+    use eidetic::models::recall::PassageSelector;
+    let result = check("a\nb\n", "b\na\n");
+    assert_eq!(
+        result.spans,
+        vec![
+            ComparisonSpan {
+                kind: SpanKind::Delete,
+                old: Some(PassageSelector { start: 0, end: 2 }),
+                new: None
+            },
+            ComparisonSpan {
+                kind: SpanKind::Equal,
+                old: Some(PassageSelector { start: 2, end: 4 }),
+                new: Some(PassageSelector { start: 0, end: 2 })
+            },
+            ComparisonSpan {
+                kind: SpanKind::Insert,
+                old: None,
+                new: Some(PassageSelector { start: 2, end: 4 })
+            },
+        ]
+    );
+}

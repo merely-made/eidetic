@@ -24,7 +24,9 @@ pub struct ComparisonSettings {
     pub max_input_bytes: usize,
     /// Combined bytes of source and version identifiers.
     pub max_identity_bytes: usize,
-    /// Maximum number of dynamic-programming table cells, including boundaries.
+    /// Budget for table cells and bytes inspected by line comparisons.
+    /// Line comparisons of equal byte length are charged their full length,
+    /// including traceback, even if the first differing byte ends the scan.
     pub max_diff_work: usize,
     /// Maximum number of emitted spans.
     pub max_output_spans: usize,
@@ -93,6 +95,15 @@ fn lines(text: &str) -> Vec<Line<'_>> {
             }
         })
         .collect()
+}
+fn equal_lines(a: &Line<'_>, b: &Line<'_>, remaining: &mut usize) -> Result<bool, ComparisonError> {
+    if a.text.len() != b.text.len() {
+        return Ok(false);
+    }
+    *remaining = remaining
+        .checked_sub(a.text.len())
+        .ok_or(ComparisonError::WorkLimit)?;
+    Ok(a.text == b.text)
 }
 fn selector(line: &Line<'_>) -> PassageSelector {
     PassageSelector {
@@ -181,10 +192,11 @@ pub fn compare(
     let a = lines(&old.text);
     let b = lines(&new.text);
     let width = m + 1;
+    let mut remaining_work = settings.max_diff_work - cells;
     let mut dp = vec![0usize; cells];
     for i in (0..n).rev() {
         for j in (0..m).rev() {
-            dp[i * width + j] = if a[i].text == b[j].text {
+            dp[i * width + j] = if equal_lines(&a[i], &b[j], &mut remaining_work)? {
                 1 + dp[(i + 1) * width + j + 1]
             } else {
                 dp[(i + 1) * width + j].max(dp[i * width + j + 1])
@@ -196,7 +208,7 @@ pub fn compare(
         if result.spans.len() >= settings.max_output_spans {
             return Err(ComparisonError::OutputLimit);
         }
-        let span = if i < n && j < m && a[i].text == b[j].text {
+        let span = if i < n && j < m && equal_lines(&a[i], &b[j], &mut remaining_work)? {
             let s = ComparisonSpan {
                 kind: SpanKind::Equal,
                 old: Some(selector(&a[i])),
