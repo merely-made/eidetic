@@ -690,3 +690,30 @@ These results narrow the next full-collection work to the ordinary source-save
 interaction. They do not qualify the intact sequence, fresh-process reopen,
 fault injection or full M5 acceptance; the next full collection remains
 pending.
+
+
+### M5 research-search and passage-clip diagnostics
+
+Safe run records for intact collections F, G and H, the research diagnostic, and
+passage-clip diagnostics A and B are indexed in
+`model-free-m5/additional-evidence-index.json`. The shared research-response
+drain packet and root review, focused green-2 receipt, earlier failure receipts,
+and the reviewed fault-ledger-fix1 packet/tests/reviews are archived there too.
+The shared drain passed its focused real-worker test and root approved the
+scoped integration; it does not establish headed Shell behavior. Fault-ledger
+fix1 has no remaining scoped review findings, but its guard remains false and
+no native fault injection ran. The changing integration verifier is excluded.
+
+F and G each recorded two source captures, then failed their current-result
+search waits. H displayed the actual retained A1 reader, but the scenario used
+an incorrect expected passage substring and then missed the citation/readback
+step. Research diagnostic A observed a current Complete search with one Capture
+hit. Passage diagnostic A showed the correct full quote but missed the clip
+action. Diagnostic B used ordinary expand/scroll input, after which the clip
+was reported saved. The note readback is still unqualified. All diagnostics
+stopped intentionally; screenshots and synthetic fixture media remain external
+with hashes in the index.
+
+These runs do not qualify a full collection, note citation/readback, fresh
+reopen, fault injection or M5 acceptance. The next full collection remains
+pending.

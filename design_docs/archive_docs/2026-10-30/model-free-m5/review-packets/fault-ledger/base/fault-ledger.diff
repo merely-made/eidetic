@@ -1,0 +1,122 @@
+--- run_missing.before-ledger.py.txt
++++ run_missing.py
+@@ -138,9 +138,10 @@
+     if native.sha(provenance) != inputs['provenance_sha256']: raise ValueError('build provenance changed')
+     receipts = {n:root / 'frozen' / (n + '-build.json') for n in FROZEN}
+     provenance_doc = load(provenance)
++    inventories = {n:root / 'frozen' / (n + '-source-inventory.json') for n in FROZEN}
+     builds = acceptance.verify_builds(provenance_doc, receipts,
+-        {n:inputs['files'][n] for n in FROZEN}, {n:inputs['builds'][n]['source_hash'] for n in FROZEN})
+-    if builds != {n:{k:v for k,v in inputs['builds'][n].items() if k != 'source_inventory'} for n in FROZEN}:
++        {n:inputs['files'][n] for n in FROZEN}, {n:inputs['builds'][n]['source_hash'] for n in FROZEN}, inventories)
++    if builds != inputs['builds']:
+         raise ValueError('build evidence changed')
+     for n in FROZEN:
+         path = root / 'frozen' / (n + '-source-inventory.json')
+@@ -225,6 +226,61 @@
+     original, check = bound(case['fault']), bound(case['postcheck'])
+     if check['schema'] != 'turnstone.m5-missing-postcheck/v1' or check['run_id'] != case['run_id'] or check['capture_receipts_hash'] != original['capture_receipts_hash'] or not all(check[k] is True for k in ('capture_receipts_preserved','a1_raw_absent','a1_owner_refused','a2_owner_unchanged')):
+         raise ValueError('independent owner postcheck differs')
++
++
++FAULT_LEDGER_REQUIRED = (
++    'inputs.json', 'primary-integrity.json', 'launcher.json', 'launcher.log', 'launcher.cleanup.json',
++    *("frozen/" + name for name in ('registration-lock.json','missing-input.json','config.json',
++        'missing.scn','fault_phase.py','namespace_phase.py','acceptance_phase.py','verify_missing.py',
++        'run_missing.py','run_native.py','run_acceptance.py','fault_helper.rs','citation_event_history.rs','citation-observer.patch')),
++    *("output/" + name for name in ('namespace.json','route.json','phase-checked.json','processes.json',
++        'processes-final.json','fault.json','fault-postcheck.json','graph-integrity.json','scenario.done',
++        'missing_runtime.runtime.json','missing_all_scope.saved-sources.json',
++        'missing_before_click.saved-sources.json','missing_A1_open.saved-sources.json','missing_A2_open.saved-sources.json',
++        'missing_before_click.png','missing_A1_refusal.png','missing_A2_ready.png')),
++)
++
++def complete_collection(out, run_id):
++    """Publish the artifact ledger only after cleanup and primary integrity."""
++    if out.is_symlink() or not out.is_dir() or (out / 'collection.json').exists():
++        raise ValueError('invalid or already completed fault output')
++    ledger = {}
++    def add(path):
++        st = path.lstat()
++        if not stat.S_ISREG(st.st_mode) or st.st_nlink != 1:
++            raise ValueError('nonregular or linked fault artifact: ' + str(path))
++        rel = str(path.relative_to(out))
++        if rel in ledger: raise ValueError('duplicate fault artifact: ' + rel)
++        ledger[rel] = native.sha(path)
++    def walk(directory):
++        if not stat.S_ISDIR(directory.lstat().st_mode):
++            raise ValueError('linked or non-directory fault artifact parent: ' + str(directory))
++        for path in sorted(directory.iterdir()):
++            mode = path.lstat().st_mode
++            if stat.S_ISDIR(mode): walk(path)
++            elif path.parent == out / 'frozen' and path.name in FROZEN:
++                if not stat.S_ISREG(mode) or path.stat().st_nlink != 1:
++                    raise ValueError('invalid frozen executable')
++            else: add(path)
++    for name in ('inputs.json','primary-integrity.json','launcher.json','launcher.log','launcher.cleanup.json'):
++        add(out / name)
++    for name in ('frozen','output'): walk(out / name)
++    if not set(FAULT_LEDGER_REQUIRED) <= set(ledger):
++        raise ValueError('required fault artifact missing')
++    primary = load(out / 'primary-integrity.json')
++    cleanup = load(out / 'launcher.cleanup.json')
++    final = load(out / 'output/processes-final.json')
++    if primary.get('unchanged') is not True or primary.get('before') is None or primary['before'] != primary.get('after'):
++        raise ValueError('primary integrity not established')
++    if cleanup.get('normal') is not True or cleanup.get('ownership_observed') is not True or not any(item.get('cgroup_empty_verified') is True for item in cleanup.get('cleanup', [])):
++        raise ValueError('owned scope cleanup not established')
++    if final.get('cleanup_errors') or final.get('failure') or final.get('socket_cleanup') != 'owned socket absent':
++        raise ValueError('fault process cleanup not established')
++    # Fail if records changed while being checked; successful source runs are immutable.
++    if any(native.sha(out / rel) != expected for rel, expected in ledger.items()):
++        raise ValueError('fault artifact changed during completion')
++    native.record(out / 'collection.json', {'schema':'turnstone.m5-missing-collection/v1',
++        'status':'collected-awaiting-headed-and-semantic-verification','run_id':run_id,'files':ledger})
+ 
+ def execute(args):
+     root = args.collection.resolve(strict=True)
+@@ -278,10 +334,6 @@
+             raise ValueError('fault process sequence differs')
+         if observed['app']['pid_namespace'] in (processes['seed']['pid_namespace'], processes['reopen']['pid_namespace']):
+             raise ValueError('fault namespace was reused')
+-        # The caller assembles a fully hash-bound receipt and supplies reviewed
+-        # frame links; do not turn collection alone into semantic approval.
+-        native.record(out / 'collection.json', {'schema':'turnstone.m5-missing-collection/v1',
+-            'status':'collected-awaiting-headed-and-semantic-verification', 'run_id':str(run_id)})
+     except BaseException as exc:
+         native.record(out / 'failure.json', {'error':repr(exc), 'time_ns':time.time_ns()})
+         raise
+@@ -297,6 +349,8 @@
+             native.record(out / 'primary-integrity-failure.json', evidence)
+             raise
+ 
++    complete_collection(out, str(run_id))
++
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     for name in ('collection','output','wayland-socket','gpu-device','source-root','registration-lock'): parser.add_argument('--'+name, type=Path, required=True)
+--- missing.before-research-wait.scn.txt
++++ missing.scn
+@@ -10,14 +10,12 @@
+ # Explicitly select the full admitted-source scope using ordinary controls.
+ act Search saved sources
+ type violet compass
+-wait-saved-sources 600
+ wait-research-search 600
+ choose-suggestion Search options…
+ choose-suggestion Sources and scope
+ choose-suggestion All admitted
+ choose-suggestion Back
+ choose-suggestion Back to results
+-wait-saved-sources 600
+ wait-research-search 600
+ record-saved-sources missing_all_scope
+ act Open research note
+@@ -36,7 +34,6 @@
+ capture missing_A1_refusal
+ act Search saved sources
+ type violet compass
+-wait-saved-sources 600
+ wait-research-search 600
+ choose-suggestion Capture: M5 A
+ wait-saved-reader 600

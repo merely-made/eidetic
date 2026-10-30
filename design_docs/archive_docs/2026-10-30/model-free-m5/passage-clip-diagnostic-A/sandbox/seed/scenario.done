@@ -1,0 +1,11 @@
+RESULT fail
+captured 01_authored_note
+captured 04_exact_A1
+captured 07_before_passage_clip
+captured 08_after_passage_clip
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["interaction-missed role:button 'Clip saved passage'", "content b082965e-b511-473a-b05d-c4509f66a6e8 live", "content-title b082965e-b511-473a-b05d-c4509f66a6e8 M5 A", "content-title b082965e-b511-473a-b05d-c4509f66a6e8 Saved: M5 A", "address-opened mere://saved-source/sealed-v1/bd8af837-7a25-4d02-b1bf-c06ce197f66e/979420e6-fd4c-4e3e-b45a-5fdcd6f9e453/a2905904-d64c-4f80-bede-4129f7c346c4/2793d3cb9fdee7b57dc5180cca7549988bdf153830914e301b09c19fccd25fd8/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57", "source-document-capture-progress request=8ac52107-967e-4e80-952c-311dbf91ea92 session=SessionId(bd8af837-7a25-4d02-b1bf-c06ce197f66e) node=e97d3a2d-6ba2-4fe7-badd-79c5ac6572c6 stage=saved stored=Some(StoredSourceDocument { raw_manifest: \"blake3:2daa6279017e4ea73a8e691e194a802610eef1c48e4e597b592549e1061f05ae\", annotation_manifest: \"sealed-v1:blake3:741754b8ace055dcbcf51e5cb2a40c0dc8ddbdfbf8a044dd4c7ac1d4e9973e5e\" }) "])
+presentation frames=237 captures=4 blank=0
+capture /m5/run/seed/01_authored_note.png digest=c5fbb18f54415ada blank=false
+capture /m5/run/seed/04_exact_A1.png digest=26589d178751da39 blank=false
+capture /m5/run/seed/07_before_passage_clip.png digest=657088de7cc0912e blank=false
+capture /m5/run/seed/08_after_passage_clip.png digest=26589d178751da39 blank=false

@@ -1452,6 +1452,108 @@
       "external_path": "/home/markik/Code/testing/m5-source-click-diagnostic-20261030-b/sandbox/seed/03_after_source_click.png",
       "sha256": "4131ed3308ab3ed53517b1ff6d81afc5ed03a7286f37b2bb207e998fa6029a00",
       "bytes": 126823
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/01_authored_note.png",
+      "sha256": "3c23b18e2011813677d556ae354935242bb364a11d73196acb8c1bfff0d3afb4",
+      "bytes": 100296
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/01_authored_note.png",
+      "sha256": "516466246dc8806aeca46f0ae16fae5c13c66e5666729f7e4ce2ba89cb02a052",
+      "bytes": 100409
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/01_authored_note.png",
+      "sha256": "616be5199e951c5089623175509b1c8fc7cc37b6733bf4209d5f812617114c32",
+      "bytes": 99942
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/04_exact_A1.png",
+      "sha256": "cd69373b5538c64ada958add12926e534c3cdbfce9d7d100ad851f1748e805f2",
+      "bytes": 228233
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/05_note_citation.png",
+      "sha256": "f16a76362a111b106844fe352ebd0ac258e90239e582c355fa89373460f66200",
+      "bytes": 159556
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/01_authored_note.png",
+      "sha256": "e55006ec4b6254f398b0515eb112ccedde8c1a62151cf12968a91fbaa061d7ac",
+      "bytes": 100082
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/05_research_before_wait.png",
+      "sha256": "e1994038bcf260947903931e12479cad27127c0000407ec70cd7b258ee2d16d1",
+      "bytes": 145619
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/06_research_accepted.png",
+      "sha256": "abdf49c02ceb560c0696e4a5aea7c0431373c7a6a635d8367d0158e6ca742359",
+      "bytes": 145608
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/01_authored_note.png",
+      "sha256": "93c1b8a3fded1aae11929bea9ced6e97a9260fbf497f91320cf9c397ab980b96",
+      "bytes": 99765
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/04_exact_A1.png",
+      "sha256": "02534493de474ab8212334a5961402f241b8feb0ce5937dda2ff41c12be2283c",
+      "bytes": 227728
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/07_before_passage_clip.png",
+      "sha256": "e36bdb58efd7de30c2c8503d73ff657a6fffb23b34164fcba69ad3979ead451a",
+      "bytes": 227728
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/08_after_passage_clip.png",
+      "sha256": "02534493de474ab8212334a5961402f241b8feb0ce5937dda2ff41c12be2283c",
+      "bytes": 227728
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/01_authored_note.png",
+      "sha256": "6a55bcf1d5a22472d34886728a59395b88bcced1eed4de69bfe248c632818ad8",
+      "bytes": 100344
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/04_exact_A1.png",
+      "sha256": "2496ff1e38549836f95d7bc0039e235f8c1c38fa434593f9e745b17787f84f8b",
+      "bytes": 227082
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/07_before_passage_clip.png",
+      "sha256": "dbad4b8484adbaf3f575497b43fdd153ca7d6a2831327b4952324978bb2524c2",
+      "bytes": 255340
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/07_before_research_tools.png",
+      "sha256": "b041372bde27c77eabb0f32b5e946b38d00220970470671ba3ab7031ad9e93a9",
+      "bytes": 241734
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/08_after_passage_clip.png",
+      "sha256": "31637c8bbef0eb4640f2fd1e220b575b50ebb43cde95bf84b795e3c02980e539",
+      "bytes": 256120
     }
   ],
   "excluded": "Native binaries, custody wallets/seeds, profile stores, shader caches, and active/incomplete E receipts.",
@@ -3235,6 +3337,510 @@
       "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
       "bytes": 241,
       "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/fixtures/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/fixture-source/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "intact-F",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/fixtures/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/fixture-source/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "intact-G",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/fixtures/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/fixture-source/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "intact-H",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/fixtures/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/fixture-source/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "research-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/fixtures/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/fixture-source/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-A",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/fixtures/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/fixture-source/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "bytes": 131,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/fixture-source/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "bytes": 123,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/fixture-source/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "bytes": 120,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/fixture-source/episode.mp3",
+      "sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+      "bytes": 2925,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/fixture-source/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "bytes": 101,
+      "copied": false
+    },
+    {
+      "run": "passage-clip-diagnostic-B",
+      "external_path": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/fixture-source/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "bytes": 241,
+      "copied": false
     }
   ],
   "native_collection_boundaries": {
@@ -3995,5 +4601,1304 @@
     "diagnostic_A": "Scenario intentionally stopped after observing interaction-missed and an empty source-capture observation list. No capture was attempted.",
     "diagnostic_B": "Ordinary scroll moved the Save source button into view; the ordinary click produced an A capture marked saved with keep=true. The scenario then intentionally stopped.",
     "boundary": "These are diagnosis runs. No full collection/reopen/acceptance is claimed. Frozen executables, profile/custody stores, screenshots and fixture media were not copied; manifests/logs are archived and image/media paths with hashes remain external."
-  }
+  },
+  "completed_intact_F_G_H_and_research_passage_diagnostics_safe_records": [
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/failure.json",
+      "archive_file": "intact-F/failure.json",
+      "sha256": "e69076654a6092e9d667ce99db53cb6339ccf930b38d7cc38b01567ef6ae085b",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/build-provenance.json",
+      "archive_file": "intact-F/frozen/build-provenance.json",
+      "sha256": "88f4a2d9e9e7825ef75014376fced06ced4d8ddad90ced60fd23941243b7c3bd",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/custodian-build.json",
+      "archive_file": "intact-F/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/custodian-source-inventory.json",
+      "archive_file": "intact-F/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/seed-config.json",
+      "archive_file": "intact-F/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/test-binary-build.json",
+      "archive_file": "intact-F/frozen/test-binary-build.json",
+      "sha256": "ea96f731701318da6279f48c37640a9fed0e374ec0640183d746904b2c0c12f6",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/test-binary-source-inventory.json",
+      "archive_file": "intact-F/frozen/test-binary-source-inventory.json",
+      "sha256": "f569900bac75022bfa876a5fcb3571ee331b05e66e3bfc292c35abea6558dd46",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/turnstone-build.json",
+      "archive_file": "intact-F/frozen/turnstone-build.json",
+      "sha256": "64e55a2cc0695ba67838ae76861f19822ea0be6e4cf200b68e91aa7b55d755a8",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/frozen/turnstone-source-inventory.json",
+      "archive_file": "intact-F/frozen/turnstone-source-inventory.json",
+      "sha256": "f569900bac75022bfa876a5fcb3571ee331b05e66e3bfc292c35abea6558dd46",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/inputs.json",
+      "archive_file": "intact-F/inputs.json",
+      "sha256": "8238bcfbf3238b0bf7139eefd2ff8ceb106f814661c8bcd64aa09119786f714a",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/fixture-requests.json",
+      "archive_file": "intact-F/sandbox/fixture-requests.json",
+      "sha256": "73fe21e0829247c5ca56c89c2267de210f5fdc6c43ccbadd00b321910100870c",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/origin-info.json",
+      "archive_file": "intact-F/sandbox/origin-info.json",
+      "sha256": "408ca1ef32d0a10ef10d0fa3fdc64414a2fb373abd30be64921399a619875e03",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "intact-F/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "49e48d96b1c441ade540e56eb03cb20ce27343509014029d98c34d594ebe1906",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "intact-F/sandbox/seed/03_B.source-captures.json",
+      "sha256": "ea6c2b32e96286cb9d8027ed12440bf7b525c1cb64b41390730793958aebef2b",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/app.log",
+      "archive_file": "intact-F/sandbox/seed/app.log",
+      "sha256": "fab5552258d215b92de8f368c877857df8d39cff421e5f253e0ec6444d5dd5b3",
+      "bytes": 8705,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/custody.log",
+      "archive_file": "intact-F/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/diagnostics.json",
+      "archive_file": "intact-F/sandbox/seed/diagnostics.json",
+      "sha256": "e724e70b00dd150d24d1d00d8074aecc739ca253e48e16ae5a5546f3e1095412",
+      "bytes": 19192,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/inference-route.json",
+      "archive_file": "intact-F/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/namespace.json",
+      "archive_file": "intact-F/sandbox/seed/namespace.json",
+      "sha256": "337541e1a76f5cf2fd8b908c1f34fe8986d91f163f6a920d1247ad683adb73c8",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/origin-ready.json",
+      "archive_file": "intact-F/sandbox/seed/origin-ready.json",
+      "sha256": "d8688cfb03c13472a268aef1d3215d2f3bcb38ccc222ed57afde584680f7931b",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/origin.log",
+      "archive_file": "intact-F/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/processes-final.json",
+      "archive_file": "intact-F/sandbox/seed/processes-final.json",
+      "sha256": "4016811e8fc3b73d3fac790215ec9a050774fa93791d3091857827330b747996",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/route-probe.log",
+      "archive_file": "intact-F/sandbox/seed/route-probe.log",
+      "sha256": "88c8ab5ba868b881f0776849a6c49458bd6add6f2161f0bf8830d07469a935b5",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/sandbox/seed/scenario.done",
+      "archive_file": "intact-F/sandbox/seed/scenario.done",
+      "sha256": "9b657ed4b78326779be5adeed123605cff020afdb90a9136d6dd5f6dd3fae78d",
+      "bytes": 289,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/seed-launcher.cleanup.json",
+      "archive_file": "intact-F/seed-launcher.cleanup.json",
+      "sha256": "7bd6116f9473613bc2cd34a67eeba25e7394f8aa84cf6b48b9d3b0a3baeb72a7",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-f/seed-launcher.log",
+      "archive_file": "intact-F/seed-launcher.log",
+      "sha256": "c014cf35f2aa63294673ab746bca184a618a3eddcb9f7a2aa222b254e3d8534e",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/failure.json",
+      "archive_file": "intact-G/failure.json",
+      "sha256": "dca831dabb5e96fc0b60ad2ac2b8e9b1e9094fdaecfd6f4009810bf8de96c84c",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/build-provenance.json",
+      "archive_file": "intact-G/frozen/build-provenance.json",
+      "sha256": "88f4a2d9e9e7825ef75014376fced06ced4d8ddad90ced60fd23941243b7c3bd",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/custodian-build.json",
+      "archive_file": "intact-G/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/custodian-source-inventory.json",
+      "archive_file": "intact-G/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/seed-config.json",
+      "archive_file": "intact-G/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/test-binary-build.json",
+      "archive_file": "intact-G/frozen/test-binary-build.json",
+      "sha256": "ea96f731701318da6279f48c37640a9fed0e374ec0640183d746904b2c0c12f6",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/test-binary-source-inventory.json",
+      "archive_file": "intact-G/frozen/test-binary-source-inventory.json",
+      "sha256": "f569900bac75022bfa876a5fcb3571ee331b05e66e3bfc292c35abea6558dd46",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/turnstone-build.json",
+      "archive_file": "intact-G/frozen/turnstone-build.json",
+      "sha256": "64e55a2cc0695ba67838ae76861f19822ea0be6e4cf200b68e91aa7b55d755a8",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/frozen/turnstone-source-inventory.json",
+      "archive_file": "intact-G/frozen/turnstone-source-inventory.json",
+      "sha256": "f569900bac75022bfa876a5fcb3571ee331b05e66e3bfc292c35abea6558dd46",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/inputs.json",
+      "archive_file": "intact-G/inputs.json",
+      "sha256": "68a028685cb36a3f1abc842f985669c05f9bb217e61ddc3d71b4a33f5e2745e6",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/fixture-requests.json",
+      "archive_file": "intact-G/sandbox/fixture-requests.json",
+      "sha256": "f1dff45ac8adb95e23848339643eb5dc4c103c0b3f3403a1c0343289ed45c337",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/origin-info.json",
+      "archive_file": "intact-G/sandbox/origin-info.json",
+      "sha256": "c22273a723152e26c87d352ffbe754fa162b27a405388c4f38375d4500da10b8",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "intact-G/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "2c13121775b5e66de98ca5fb997961f1d49c36461fb595600528cd765bd7ff85",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "intact-G/sandbox/seed/03_B.source-captures.json",
+      "sha256": "588def029dd4d74e47f47628081b5a1950d8069139fe8a828175efa9fac52a6f",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/app.log",
+      "archive_file": "intact-G/sandbox/seed/app.log",
+      "sha256": "5039839de01a01db52b6eb078a20229b260d8557827b85e62dcdda4a2501c9c4",
+      "bytes": 8705,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/custody.log",
+      "archive_file": "intact-G/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/diagnostics.json",
+      "archive_file": "intact-G/sandbox/seed/diagnostics.json",
+      "sha256": "756038b7b66c55accff40c106375a48b8000ca7117e8808ad09513c0348a6841",
+      "bytes": 19187,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/inference-route.json",
+      "archive_file": "intact-G/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/namespace.json",
+      "archive_file": "intact-G/sandbox/seed/namespace.json",
+      "sha256": "eb8c61137c00414b2e8b5541d916095478b5e8bc5d921c9bb7fca412460d352c",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/origin-ready.json",
+      "archive_file": "intact-G/sandbox/seed/origin-ready.json",
+      "sha256": "0a88a397a3ee47f297b77bb6f557df94781ee77f2ba3a653206cee537a3281df",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/origin.log",
+      "archive_file": "intact-G/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/processes-final.json",
+      "archive_file": "intact-G/sandbox/seed/processes-final.json",
+      "sha256": "5ea8c766bdfc49ed29034d3f2c8e31cf20605b42bcd1538b7f59fbbb9c63cd7d",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/route-probe.log",
+      "archive_file": "intact-G/sandbox/seed/route-probe.log",
+      "sha256": "88c8ab5ba868b881f0776849a6c49458bd6add6f2161f0bf8830d07469a935b5",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/sandbox/seed/scenario.done",
+      "archive_file": "intact-G/sandbox/seed/scenario.done",
+      "sha256": "9631f823917be1376eef148317875a7eac03bcfc767106ec7c7e186a4272cc51",
+      "bytes": 287,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/seed-launcher.cleanup.json",
+      "archive_file": "intact-G/seed-launcher.cleanup.json",
+      "sha256": "39abb1e53b2e2fe2e4825517524d348edb967e6dac3d23635aa55e1dce6c5b34",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-g/seed-launcher.log",
+      "archive_file": "intact-G/seed-launcher.log",
+      "sha256": "610161bed9cb4abc9c6c3aa2d1753813c0dbe6e70f260ec5b07859cd965702a3",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/failure.json",
+      "archive_file": "intact-H/failure.json",
+      "sha256": "9aac7de10459ca0f12f29f1fdf36685801c789b9e7d9ceab5f6e568372d7a03b",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/build-provenance.json",
+      "archive_file": "intact-H/frozen/build-provenance.json",
+      "sha256": "2830bbfc65c76a24eb4b0d267b53f8f07397ed0ba16eefe6161ed6773eec815a",
+      "bytes": 2793,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/custodian-build.json",
+      "archive_file": "intact-H/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/custodian-source-inventory.json",
+      "archive_file": "intact-H/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/seed-config.json",
+      "archive_file": "intact-H/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/test-binary-build.json",
+      "archive_file": "intact-H/frozen/test-binary-build.json",
+      "sha256": "523cb6511bceb4f34d53fd0b75cbb486409843e4da0bfcd07f435d86e54b550f",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/test-binary-source-inventory.json",
+      "archive_file": "intact-H/frozen/test-binary-source-inventory.json",
+      "sha256": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/turnstone-build.json",
+      "archive_file": "intact-H/frozen/turnstone-build.json",
+      "sha256": "4de46c644465a55a198c5b073a54a91158ed4e51fbe5836f0ef485a18329f800",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/frozen/turnstone-source-inventory.json",
+      "archive_file": "intact-H/frozen/turnstone-source-inventory.json",
+      "sha256": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/inputs.json",
+      "archive_file": "intact-H/inputs.json",
+      "sha256": "dae528db05d16c4b4625ee9af77914cd82a388e6a5680bd153f69f2e3dba6e64",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/fixture-requests.json",
+      "archive_file": "intact-H/sandbox/fixture-requests.json",
+      "sha256": "74529268cc0fce08a1a2d7e3e29afdf9b3fd8c282c53a228e065de789acf88bb",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/origin-info.json",
+      "archive_file": "intact-H/sandbox/origin-info.json",
+      "sha256": "4e19468849962183a737272655a66b903665cc4cc74aa4cddb950e887ad15936",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "intact-H/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "aeb345b97f9b447ebb4b3847179fbfe2b352662c86ddcafa273c646af90f963c",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "intact-H/sandbox/seed/03_B.source-captures.json",
+      "sha256": "905c304915b8226295fbce64e16a75d5741130aaf72d2ec4e0aa22c44dcfc8e3",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "intact-H/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "56ca980326c60b1c95e5adfff150c94ad0853576f3993d644cebc46257f07bf8",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/app.log",
+      "archive_file": "intact-H/sandbox/seed/app.log",
+      "sha256": "86666f12622c578c2af36add577fc5b7dcd82800213abd5075d5105d7cbffcbd",
+      "bytes": 9949,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/custody.log",
+      "archive_file": "intact-H/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/diagnostics.json",
+      "archive_file": "intact-H/sandbox/seed/diagnostics.json",
+      "sha256": "931685b075874575d40c7164d6add5303ec36770d2fbe41ea067b4a7944cb203",
+      "bytes": 22509,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/inference-route.json",
+      "archive_file": "intact-H/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/namespace.json",
+      "archive_file": "intact-H/sandbox/seed/namespace.json",
+      "sha256": "7ea935f34b7272f71ecd11cb58f1403ac504e7ee3b301fd359467b058093c6b5",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/origin-ready.json",
+      "archive_file": "intact-H/sandbox/seed/origin-ready.json",
+      "sha256": "b60f3558f468d4afa4c211851639783ecfaa008817e734a09945a17bd2d359a5",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/origin.log",
+      "archive_file": "intact-H/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/processes-final.json",
+      "archive_file": "intact-H/sandbox/seed/processes-final.json",
+      "sha256": "d8dc2338da141c2f2693eb1f4d1d30d2989f27a022fe064371cddac0c09a7fd3",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/route-probe.log",
+      "archive_file": "intact-H/sandbox/seed/route-probe.log",
+      "sha256": "f5f9cd36a633ae83475d7fd6e29bb459f4517858c01eeb6283e2f328f41ed2f0",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/sandbox/seed/scenario.done",
+      "archive_file": "intact-H/sandbox/seed/scenario.done",
+      "sha256": "bbf22fd265f40ee0f4fa170e7f36614a027a3c720780a34b1b6a04ff3d454d3d",
+      "bytes": 686,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/seed-launcher.cleanup.json",
+      "archive_file": "intact-H/seed-launcher.cleanup.json",
+      "sha256": "1ef3316d295a1709a79a9c60428366fb38a571ce1ddc8fac7f212a1db2f9747a",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-h/seed-launcher.log",
+      "archive_file": "intact-H/seed-launcher.log",
+      "sha256": "a332d07c2bec19d53ca668ddea0e74fd160fe77fd9fddac8a91bb1aff62c1474",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/failure.json",
+      "archive_file": "research-diagnostic-A/failure.json",
+      "sha256": "c365d8bcb3ed48d11d48ac964d9d53dc874da819792dd854a463c430677069c4",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/build-provenance.json",
+      "archive_file": "research-diagnostic-A/frozen/build-provenance.json",
+      "sha256": "88f4a2d9e9e7825ef75014376fced06ced4d8ddad90ced60fd23941243b7c3bd",
+      "bytes": 2787,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/custodian-build.json",
+      "archive_file": "research-diagnostic-A/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/custodian-source-inventory.json",
+      "archive_file": "research-diagnostic-A/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/seed-config.json",
+      "archive_file": "research-diagnostic-A/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/test-binary-build.json",
+      "archive_file": "research-diagnostic-A/frozen/test-binary-build.json",
+      "sha256": "ea96f731701318da6279f48c37640a9fed0e374ec0640183d746904b2c0c12f6",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/test-binary-source-inventory.json",
+      "archive_file": "research-diagnostic-A/frozen/test-binary-source-inventory.json",
+      "sha256": "f569900bac75022bfa876a5fcb3571ee331b05e66e3bfc292c35abea6558dd46",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/turnstone-build.json",
+      "archive_file": "research-diagnostic-A/frozen/turnstone-build.json",
+      "sha256": "64e55a2cc0695ba67838ae76861f19822ea0be6e4cf200b68e91aa7b55d755a8",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/frozen/turnstone-source-inventory.json",
+      "archive_file": "research-diagnostic-A/frozen/turnstone-source-inventory.json",
+      "sha256": "f569900bac75022bfa876a5fcb3571ee331b05e66e3bfc292c35abea6558dd46",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/inputs.json",
+      "archive_file": "research-diagnostic-A/inputs.json",
+      "sha256": "e5bd85ccd0df30d700d1d5c6597de0bfc8ce75183c974cdba5109bfa91fb7c83",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/fixture-requests.json",
+      "archive_file": "research-diagnostic-A/sandbox/fixture-requests.json",
+      "sha256": "772d3b5c7525851380f9a8dc2ba513c0b08418d4693461aef9f79488eb8a3668",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/origin-info.json",
+      "archive_file": "research-diagnostic-A/sandbox/origin-info.json",
+      "sha256": "0f6f1f75ef3b0999fcc744486442b34ec73fac50635dd219d9341702dd257a2a",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "research-diagnostic-A/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "759989e77c5f30aad026186645ec8f6af8fa5aaef71d10b174f4f025b0555650",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "research-diagnostic-A/sandbox/seed/03_B.source-captures.json",
+      "sha256": "661cd5be6a75536e9f5053d3625591530c4121f8f08cdc0052c0f1e94561e45d",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/07_research_accepted.saved-sources.json",
+      "archive_file": "research-diagnostic-A/sandbox/seed/07_research_accepted.saved-sources.json",
+      "sha256": "315c2adc6edb1432d2803d8cd02a3a777c7655cea29d85f4ed66e7ff1cae8976",
+      "bytes": 5111,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/app.log",
+      "archive_file": "research-diagnostic-A/sandbox/seed/app.log",
+      "sha256": "605d67bf4eff57e17248df6e95a8ae9283e6a2eb5e2a4e6a5dfdbaa86d26787b",
+      "bytes": 8859,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/custody.log",
+      "archive_file": "research-diagnostic-A/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "research-diagnostic-A/sandbox/seed/diagnostics.json",
+      "sha256": "2e9912504db30072e141e9a381d4802784e156768da37e4ee2ee3298d7287b3a",
+      "bytes": 19189,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/inference-route.json",
+      "archive_file": "research-diagnostic-A/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/namespace.json",
+      "archive_file": "research-diagnostic-A/sandbox/seed/namespace.json",
+      "sha256": "b1eb390c55ac03a6d7fbc252937a545ef4bb9e6ecb76a472cf17582538f61045",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/origin-ready.json",
+      "archive_file": "research-diagnostic-A/sandbox/seed/origin-ready.json",
+      "sha256": "3966eff5758d545d947f8348d619b8dd16de6f9b5fcf2c954fc4bbc5e5fd27af",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/origin.log",
+      "archive_file": "research-diagnostic-A/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "research-diagnostic-A/sandbox/seed/processes-final.json",
+      "sha256": "5af7c0334954b7b7bf26395d12503b094d32546c4e8b36c590624ebee32847b2",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/route-probe.log",
+      "archive_file": "research-diagnostic-A/sandbox/seed/route-probe.log",
+      "sha256": "88c8ab5ba868b881f0776849a6c49458bd6add6f2161f0bf8830d07469a935b5",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/sandbox/seed/scenario.done",
+      "archive_file": "research-diagnostic-A/sandbox/seed/scenario.done",
+      "sha256": "fcc1b407a5aa429a6e228e50c452923b0f06d58113dd6efbbdd372cb2b553c91",
+      "bytes": 2282,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/seed-launcher.cleanup.json",
+      "archive_file": "research-diagnostic-A/seed-launcher.cleanup.json",
+      "sha256": "e2926fdc8445811df2db35c86cd536b1771fefac4b58b4ace38aabb28e06154b",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-research-diagnostic-20261030-a/seed-launcher.log",
+      "archive_file": "research-diagnostic-A/seed-launcher.log",
+      "sha256": "4e13afeab9e3ce1bff71948d3321607f1f1a70ab6acab00435d79991105dcc15",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/failure.json",
+      "archive_file": "passage-clip-diagnostic-A/failure.json",
+      "sha256": "01bfb4ef353d22b9b2a3bdddf820c59337620aac561ed867fcb007a85cbe5bb8",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/build-provenance.json",
+      "archive_file": "passage-clip-diagnostic-A/frozen/build-provenance.json",
+      "sha256": "2830bbfc65c76a24eb4b0d267b53f8f07397ed0ba16eefe6161ed6773eec815a",
+      "bytes": 2793,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/custodian-build.json",
+      "archive_file": "passage-clip-diagnostic-A/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/custodian-source-inventory.json",
+      "archive_file": "passage-clip-diagnostic-A/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/seed-config.json",
+      "archive_file": "passage-clip-diagnostic-A/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/test-binary-build.json",
+      "archive_file": "passage-clip-diagnostic-A/frozen/test-binary-build.json",
+      "sha256": "523cb6511bceb4f34d53fd0b75cbb486409843e4da0bfcd07f435d86e54b550f",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/test-binary-source-inventory.json",
+      "archive_file": "passage-clip-diagnostic-A/frozen/test-binary-source-inventory.json",
+      "sha256": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/turnstone-build.json",
+      "archive_file": "passage-clip-diagnostic-A/frozen/turnstone-build.json",
+      "sha256": "4de46c644465a55a198c5b073a54a91158ed4e51fbe5836f0ef485a18329f800",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/frozen/turnstone-source-inventory.json",
+      "archive_file": "passage-clip-diagnostic-A/frozen/turnstone-source-inventory.json",
+      "sha256": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/inputs.json",
+      "archive_file": "passage-clip-diagnostic-A/inputs.json",
+      "sha256": "f713224c0b45f8e0b2545108160cc4060d80af99ca4b8378d707e4853eda24da",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/fixture-requests.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/fixture-requests.json",
+      "sha256": "ab5aa0f8486aa602f3d703b0492e266cc91e1633746d3f3cc56c0615acfd94cb",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/origin-info.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/origin-info.json",
+      "sha256": "aef3b6e3a7a2d0a7dfc590e15129bc0f0a20c07f3f344ff6d89884afd98504d0",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "18bc445fd0d58e44b008cbc5901cd009f1b27f79733769e2aa6bf646ec91331a",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/03_B.source-captures.json",
+      "sha256": "1c48b02d427ef982a7c8c805c313f2bf36676ff7f50601ba222efaedb889691a",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "12881ad68ee01d22e10dba8d8d1170bce72cb7198c2ad874263cb2840deeb919",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/app.log",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/app.log",
+      "sha256": "23ec77305f9bf748adebeb3978be3194bfda79acd4fe130c3afdecb18fb0e07a",
+      "bytes": 9949,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/custody.log",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/diagnostics.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/diagnostics.json",
+      "sha256": "b1c8a0b4787f7bd21005f72167ffa5baaf1af5ee290849846d7f2be86f7f053d",
+      "bytes": 21850,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/inference-route.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/namespace.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/namespace.json",
+      "sha256": "a135c79891b937e35d0fecfbf11fd22a269350cbe285e38699f0d22f74e93add",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/origin-ready.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/origin-ready.json",
+      "sha256": "7bbdfb2eb910af84ad1f8253063f3d9585be507fdb711e8645e4167a38af33c2",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/origin.log",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/processes-final.json",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/processes-final.json",
+      "sha256": "0e46afe8e2e57bce7e400c08643a53c337138ae58c4b70f378bbff77d96a2340",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/route-probe.log",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/route-probe.log",
+      "sha256": "f5f9cd36a633ae83475d7fd6e29bb459f4517858c01eeb6283e2f328f41ed2f0",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/sandbox/seed/scenario.done",
+      "archive_file": "passage-clip-diagnostic-A/sandbox/seed/scenario.done",
+      "sha256": "a46182a182c68ba27f1d29be42c9200f92518a1a6cc0bae095e73414fd02d51a",
+      "bytes": 1528,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/seed-launcher.cleanup.json",
+      "archive_file": "passage-clip-diagnostic-A/seed-launcher.cleanup.json",
+      "sha256": "a97428a859c688d90d9a6a2c05b1b4ff946782f46c2faf984a09e65c5c895ef3",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-a/seed-launcher.log",
+      "archive_file": "passage-clip-diagnostic-A/seed-launcher.log",
+      "sha256": "f45a000de4bfc28a3a0999aade4e4aa7f8ed129c8049da6720f40fc2a407b5ff",
+      "bytes": 681,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/failure.json",
+      "archive_file": "passage-clip-diagnostic-B/failure.json",
+      "sha256": "3257d1dc792153013f7f8a284391e20762f21e88e39b2e7e27a995bd46dd74fe",
+      "bytes": 101,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/build-provenance.json",
+      "archive_file": "passage-clip-diagnostic-B/frozen/build-provenance.json",
+      "sha256": "2830bbfc65c76a24eb4b0d267b53f8f07397ed0ba16eefe6161ed6773eec815a",
+      "bytes": 2793,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/custodian-build.json",
+      "archive_file": "passage-clip-diagnostic-B/frozen/custodian-build.json",
+      "sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "bytes": 1474,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/custodian-source-inventory.json",
+      "archive_file": "passage-clip-diagnostic-B/frozen/custodian-source-inventory.json",
+      "sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "bytes": 2237788,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/seed-config.json",
+      "archive_file": "passage-clip-diagnostic-B/frozen/seed-config.json",
+      "sha256": "00e5443e944e8ab17c98389a292889ce3d6a6bdad76367b8e158bdad53cee6f6",
+      "bytes": 1221,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/test-binary-build.json",
+      "archive_file": "passage-clip-diagnostic-B/frozen/test-binary-build.json",
+      "sha256": "523cb6511bceb4f34d53fd0b75cbb486409843e4da0bfcd07f435d86e54b550f",
+      "bytes": 1427,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/test-binary-source-inventory.json",
+      "archive_file": "passage-clip-diagnostic-B/frozen/test-binary-source-inventory.json",
+      "sha256": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/turnstone-build.json",
+      "archive_file": "passage-clip-diagnostic-B/frozen/turnstone-build.json",
+      "sha256": "4de46c644465a55a198c5b073a54a91158ed4e51fbe5836f0ef485a18329f800",
+      "bytes": 1426,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/frozen/turnstone-source-inventory.json",
+      "archive_file": "passage-clip-diagnostic-B/frozen/turnstone-source-inventory.json",
+      "sha256": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "bytes": 1635413,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/inputs.json",
+      "archive_file": "passage-clip-diagnostic-B/inputs.json",
+      "sha256": "a4f44c6998153a2ce0ef6cf4a1841eff062c77b056dd8fda5466dc7d88cf92cf",
+      "bytes": 3951,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/fixture-requests.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/fixture-requests.json",
+      "sha256": "8e68af43e9d45842a0d40a1a926553f77b6e576f295aa0883840dd1b5b040761",
+      "bytes": 271,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/origin-info.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/origin-info.json",
+      "sha256": "7eb883664cf315b79da4ddde413cb48250b56101d9cdefeece46d10c6b7e69c5",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/02_A1.source-captures.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/02_A1.source-captures.json",
+      "sha256": "2fa108b314fca0218774c9869fa046608ed76a5ca59df75a3fd6c7ffec6c08ab",
+      "bytes": 919,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/03_B.source-captures.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/03_B.source-captures.json",
+      "sha256": "6ef09064f645b5583cc7a8a87436c6ee4749b300b68bc6f0ea5c7efd7713dce3",
+      "bytes": 1836,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/04_exact_A1.saved-sources.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/04_exact_A1.saved-sources.json",
+      "sha256": "63ef5ab0ca0f883653d54c2ffe2953b6f38845510bb2683804898072e5067cd0",
+      "bytes": 6117,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/app.log",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/app.log",
+      "sha256": "00470d6b4ecb247c38360900b1a20f399ca7914ed394508dc099bc7f015abfcd",
+      "bytes": 9949,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/custody.log",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/custody.log",
+      "sha256": "90566a5b17964e4eebbcafaae4d2269fdf00850a6ca1806ae7cc3bb8e0037221",
+      "bytes": 55,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/diagnostics.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/diagnostics.json",
+      "sha256": "4d4784defbf3b0c6f8e85600e10c8ebe5ccff0d9d54c54241da5ef6f313b1e26",
+      "bytes": 21849,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/inference-route.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/inference-route.json",
+      "sha256": "fc2d8320a4bdd022acd704896a94eaf067e89a36d9f0717a5aad0784fda0c883",
+      "bytes": 438,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/namespace.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/namespace.json",
+      "sha256": "277fdab9369bd2efbca72cdd13bbe36950c50cf999f0a468c5606790bba2c766",
+      "bytes": 2309,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/origin-ready.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/origin-ready.json",
+      "sha256": "eebfddf33a4cc466523b6141f46b10d6d0021276d705de7427070db07677d63c",
+      "bytes": 47,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/origin.log",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/origin.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/processes-final.json",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/processes-final.json",
+      "sha256": "c4c3d816ca3ae9936d6777e8ffe05fee4b7874a5420e9f8c19fff123f6aa77ba",
+      "bytes": 1529,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/route-probe.log",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/route-probe.log",
+      "sha256": "f5f9cd36a633ae83475d7fd6e29bb459f4517858c01eeb6283e2f328f41ed2f0",
+      "bytes": 196,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/sandbox/seed/scenario.done",
+      "archive_file": "passage-clip-diagnostic-B/sandbox/seed/scenario.done",
+      "sha256": "dff296036fd1954f3cb466f8b62bed5a60545ccbb868bab281e6cfc39ff53d23",
+      "bytes": 1852,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/seed-launcher.cleanup.json",
+      "archive_file": "passage-clip-diagnostic-B/seed-launcher.cleanup.json",
+      "sha256": "d6fd75db08216341de5918cacd5c83792591384f58a10043009341caeaa3d669",
+      "bytes": 365,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-passage-clip-diagnostic-20261030-b/seed-launcher.log",
+      "archive_file": "passage-clip-diagnostic-B/seed-launcher.log",
+      "sha256": "15911c849ba5fca7a57e0c76438b9d97eb287ac9d1a186613eb316388d636ede",
+      "bytes": 681,
+      "copied_now": true
+    }
+  ],
+  "research_drain_packet_and_root_review": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-research-wait-report.md",
+      "archive_file": "review-packets/research-drain/m5-research-wait-report.md",
+      "sha256": "56c6ec81490db9e5e1b7e8eb1f14db0495a1b73cbdac2754adcb5434cf1c4ddb",
+      "bytes": 2146,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-research-wait-review-final/hashes.json",
+      "archive_file": "review-packets/research-drain/m5-research-wait-review-final/hashes.json",
+      "sha256": "9333e5c4fb0e280f049ce66139f4144773464d72fa1dc82a2e0ea91939451516",
+      "bytes": 3929,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-research-wait-review-final/root-review.md",
+      "archive_file": "review-packets/research-drain/m5-research-wait-review-final/root-review.md",
+      "sha256": "f3c8064b3a6ea1de40a1667718fabde9e20eca30f3384f64b86e6d6508fac34e",
+      "bytes": 917,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-research-wait-review-final/since-fetch-wait.diff",
+      "archive_file": "review-packets/research-drain/m5-research-wait-review-final/since-fetch-wait.diff",
+      "sha256": "5f6aad7cacf1c2d03824e1c152b768f22c99e5bd2c9946463c3454b04dd1be09",
+      "bytes": 6561,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-research-wait-review-final/tracked.diff",
+      "archive_file": "review-packets/research-drain/m5-research-wait-review-final/tracked.diff",
+      "sha256": "66106d372fcc84875fb31243448cdfe15b486e5c0f936473466673d623a86004",
+      "bytes": 68324,
+      "copied_now": true
+    }
+  ],
+  "fault_ledger_base_and_fix1_packet_tests_reviews": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault-ledger-review.md",
+      "archive_file": "review-packets/fault-ledger/base/fault-ledger-review.md",
+      "sha256": "e86516e6e7fdc208d0cfb85f8c9710f7d97352bc8cd77d52a4d681a622aaaac8",
+      "bytes": 2685,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault-ledger-hashes.json",
+      "archive_file": "review-packets/fault-ledger/base/fault-ledger-hashes.json",
+      "sha256": "3c0442e80edf0dc2fca4321b44b626b93161579862b6dc3ff2a072a4c5f320dc",
+      "bytes": 642,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault-ledger.diff",
+      "archive_file": "review-packets/fault-ledger/base/fault-ledger.diff",
+      "sha256": "c8501b0573cc44981600ff085ce0692b2cfe7b9a0a1fcccf2ef409bc69921d6f",
+      "bytes": 7098,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault-ledger-red.log",
+      "archive_file": "review-packets/fault-ledger/base/fault-ledger-red.log",
+      "sha256": "8aea2b1846c79a68c93b21076700726b8f2414149051136d7b65d8488c305d29",
+      "bytes": 9807,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault-ledger-green.log",
+      "archive_file": "review-packets/fault-ledger/base/fault-ledger-green.log",
+      "sha256": "02c03424772f693acf857cea7998ee3878eb10816772716e2a140131980cd21a",
+      "bytes": 2322,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault-ledger-fix1-review.md",
+      "archive_file": "review-packets/fault-ledger/fix1/fault-ledger-fix1-review.md",
+      "sha256": "fef4b8b8543f1a17c6c67b932dbf7c4435ed141ec238dddb294c656a0abc1b96",
+      "bytes": 1061,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault-ledger-fix1-hashes.json",
+      "archive_file": "review-packets/fault-ledger/fix1/fault-ledger-fix1-hashes.json",
+      "sha256": "8bf2a7ef54ce87d210efc8e9420e9999470ac81a3d25fac2926e50a6d803ef41",
+      "bytes": 462,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault-ledger-fix1-green.log",
+      "archive_file": "review-packets/fault-ledger/fix1/fault-ledger-fix1-green.log",
+      "sha256": "9cf7cce050bd325758bb07b51684e65514d6c12809af2af5cbda6fc8dbf64a3f",
+      "bytes": 2479,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py",
+      "archive_file": "review-packets/fault-ledger/fix1/run_missing.py",
+      "sha256": "f7eb35b99c97c9c609cc6018fda524e6e35ecfeb1f9d695378fbe764e28c5762",
+      "bytes": 26504,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_acceptance.py",
+      "archive_file": "review-packets/fault-ledger/fix1/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db",
+      "bytes": 14011,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/missing.scn",
+      "archive_file": "review-packets/fault-ledger/fix1/missing.scn",
+      "sha256": "becaf41072b1cd4c72346e514aca337817cf0bed75e348f23f78ef4727f9452b",
+      "bytes": 1418,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py",
+      "archive_file": "review-packets/fault-ledger/fix1/test_fault_ledger.py",
+      "sha256": "4c54e948b8174a17dbda9aa624dd848cbd1a4bdc5ec18aaf138b290603368773",
+      "bytes": 3847,
+      "copied_now": true
+    }
+  ],
+  "research_wait_green2_and_failure_receipts": [
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-research-wait-red-1.json",
+      "archive_file": "m5-research-wait-red-1.json",
+      "sha256": "e9f5bbed8074e7c3f34ffcfdd2013bdf8aae366c759f79b9f577b242aa3cb6b1",
+      "bytes": 1528,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-research-wait-red-1.log",
+      "archive_file": "m5-research-wait-red-1.log",
+      "sha256": "1339c0f96f2b5df94154fe9eeafd39df3841aecb8026477fab21fc70dc3b18ff",
+      "bytes": 42764,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-research-wait-green-1.json",
+      "archive_file": "m5-research-wait-green-1.json",
+      "sha256": "b040d2f7e4dc8af68b090f0e4266fe5abe59a9805f45735ac8f99d09909503fa",
+      "bytes": 1534,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-research-wait-green-1.log",
+      "archive_file": "m5-research-wait-green-1.log",
+      "sha256": "25f4f65283e2d9b5e0f346c94f74ce23c2e54186bb77be494a975844ea0d44b2",
+      "bytes": 61795,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-research-wait-green-2.json",
+      "archive_file": "m5-research-wait-green-2.json",
+      "sha256": "ae96f292d761edfba280b299ebf1d9cac832cd7666462ad0891836092421950f",
+      "bytes": 1532,
+      "copied_now": true
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-research-wait-green-2.log",
+      "archive_file": "m5-research-wait-green-2.log",
+      "sha256": "61b07cd51470038f23874709d673a5607678a13b3a9e843b113dd268c9e47586",
+      "bytes": 61203,
+      "copied_now": true
+    }
+  ],
+  "intact_F_G_H_and_diagnostic_boundaries": {
+    "F": "Two source captures were recorded, then the research-search wait found an empty status and no request. The sequence did not advance to a current result.",
+    "G": "Two source captures were recorded, then the research-search wait found no current admitted result.",
+    "H": "The exact A1 retained reader was observed. The scenario then used an incorrect expected passage substring and missed the citation/readback step. Do not treat the reader observation as successful note citation or qualified readback.",
+    "research_diagnostic_A": "An intentionally stopped diagnostic observed a current Complete search with one Capture hit. It diagnoses wait delivery only; no reopen or acceptance.",
+    "passage_clip_diagnostic_A": "The full selected quote was correct, but the clip action missed. Diagnostic stopped intentionally.",
+    "passage_clip_diagnostic_B": "Ordinary expand/scroll exposed the clip action and the clip was reported saved. Note readback remains unqualified; diagnostic stopped intentionally.",
+    "all": "Scopes were cleaned and verified empty. No complete collection/reopen or M5 acceptance is claimed."
+  },
+  "excluded_currently_changing_integration_verifier": "Not archived; its review is still changing."
 }

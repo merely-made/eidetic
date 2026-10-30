@@ -1,0 +1,13 @@
+RESULT fail
+captured 01_authored_note
+captured 04_exact_A1
+captured 07_before_research_tools
+captured 07_before_passage_clip
+captured 08_after_passage_clip
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["content 6c009272-a889-4f80-acfa-6609e5f9194c live", "content-title 6c009272-a889-4f80-acfa-6609e5f9194c M5 A", "content-title 6c009272-a889-4f80-acfa-6609e5f9194c Saved: M5 A", "address-opened mere://saved-source/sealed-v1/619d142f-b871-42a7-b29b-9126cdccacb1/6357ab61-4e14-473b-82d5-bf9e4f01797a/32605a6d-2073-4746-99ef-fb0f9f09d887/3bfc636a207fdc13eb7d4b4b5765ac4127edd2e5ffb30d2ebe342fc497e35523/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57", "source-document-capture-progress request=68b77966-12d1-456e-9fb0-23ba521d8caa session=SessionId(619d142f-b871-42a7-b29b-9126cdccacb1) node=3050fbc5-2f81-4d16-8afe-a2fbf26f8a62 stage=saved stored=Some(StoredSourceDocument { raw_manifest: \"blake3:2daa6279017e4ea73a8e691e194a802610eef1c48e4e597b592549e1061f05ae\", annotation_manifest: \"sealed-v1:blake3:fa4b2a25a94a1b988e7fde8418fa4ace0b9b6804954e8b8ece53dcb4c45da0e8\" }) ", "source-document-captured 3050fbc5-2f81-4d16-8afe-a2fbf26f8a62 http://127.0.0.1:36623/B raw=blake3:2daa6279017e4ea73a8e691e194a802610eef1c48e4e597b592549e1061f05ae annotation=sealed-v1:blake3:fa4b2a25a94a1b988e7fde8418fa4ace0b9b6804954e8b8ece53dcb4c45da0e8"])
+presentation frames=257 captures=5 blank=0
+capture /m5/run/seed/01_authored_note.png digest=3d2f3aef2ae1ecfd blank=false
+capture /m5/run/seed/04_exact_A1.png digest=91c036bbe81b839d blank=false
+capture /m5/run/seed/07_before_research_tools.png digest=0b198e4f719e8a10 blank=false
+capture /m5/run/seed/07_before_passage_clip.png digest=6305a9b929a3d3e2 blank=false
+capture /m5/run/seed/08_after_passage_clip.png digest=d8ed353be7d0059f blank=false

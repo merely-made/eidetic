@@ -1,0 +1,12 @@
+RESULT fail
+captured 01_authored_note
+FAIL: assert snap saved-reader-quote Eq 'naïve — 東京 🐦': got 'M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.'
+captured 04_exact_A1
+FAIL: assert text 'Read saved passage 1:': not on any surface
+captured 05_note_citation
+FAIL: wait-saved-reader after 600 frames: focused reader state is None
+FAIL: no successful window presentation for ten seconds
+presentation frames=288 captures=3 blank=0
+capture /m5/run/seed/01_authored_note.png digest=c69275f83917c471 blank=false
+capture /m5/run/seed/04_exact_A1.png digest=1f85345e44a8e579 blank=false
+capture /m5/run/seed/05_note_citation.png digest=80dbe7855a0ab0eb blank=false

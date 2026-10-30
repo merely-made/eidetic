@@ -1,0 +1,161 @@
+--- a/src/shell/drive/shell_wait_frames.rs
++++ b/src/shell/drive/shell_wait_frames.rs
+@@ -26,6 +26,7 @@
+             // next viewport sync. Poll the same native drain during waits.
+             self.drain_fetch_updates();
+             self.pump_research();
++            self.drain_research_worker_updates();
+             while let Ok(update) = self.trail_rx.try_recv() {
+                 let effects = self.app.apply_update(update);
+                 self.run_effects(effects);
+--- a/src/shell/events/shell_drain_actor_updates.rs
++++ b/src/shell/events/shell_drain_actor_updates.rs
+@@ -8,6 +8,17 @@
+     second: impl FnOnce() -> Option<FetchUpdate>,
+ ) -> Option<FetchUpdate> {
+     first().or_else(second)
++}
++
++fn next_research_search_update(
++    worker: &crate::research_search::Worker,
++) -> Option<crate::action::Update> {
++    worker
++        .take()
++        .map(|response| crate::action::Update::ResearchSearchFinished {
++            request: response.request,
++            result: response.result,
++        })
+ }
+ 
+ impl Shell {
+@@ -49,6 +60,32 @@
+         }
+     }
+ 
++    /// Apply the same queued worker completions during native scenario waits.
++    pub(in crate::shell) fn drain_research_worker_updates(&mut self) {
++        while let Some(update) = next_research_search_update(&self.research_worker) {
++            self.service_private_custody();
++            let effects = self.app.apply_update(update);
++            self.run_effects(effects);
++        }
++        while let Some(response) = self.research_worker.take_compare() {
++            self.service_private_custody();
++            let effects = self
++                .app
++                .apply_update(crate::action::Update::ResearchCompareFinished {
++                    request: response.request,
++                    result: response.result,
++                });
++            self.run_effects(effects);
++        }
++        while let Some(response) = self.research_worker.take_records() {
++            self.service_private_custody();
++            let effects = self
++                .app
++                .apply_update(crate::action::Update::ResearchRecords(response));
++            self.run_effects(effects);
++        }
++    }
++
+     pub(super) fn drain_actor_updates(&mut self, event_loop: &ActiveEventLoop) {
+         self.service_private_custody();
+         let started = std::time::Instant::now();
+@@ -62,33 +99,7 @@
+             let effects = self.app.apply_update(update);
+             self.run_effects(effects);
+         }
+-        while let Some(response) = self.research_worker.take() {
+-            self.service_private_custody();
+-            let effects = self
+-                .app
+-                .apply_update(crate::action::Update::ResearchSearchFinished {
+-                    request: response.request,
+-                    result: response.result,
+-                });
+-            self.run_effects(effects);
+-        }
+-        while let Some(response) = self.research_worker.take_compare() {
+-            self.service_private_custody();
+-            let effects = self
+-                .app
+-                .apply_update(crate::action::Update::ResearchCompareFinished {
+-                    request: response.request,
+-                    result: response.result,
+-                });
+-            self.run_effects(effects);
+-        }
+-        while let Some(response) = self.research_worker.take_records() {
+-            self.service_private_custody();
+-            let effects = self
+-                .app
+-                .apply_update(crate::action::Update::ResearchRecords(response));
+-            self.run_effects(effects);
+-        }
++        self.drain_research_worker_updates();
+         while let Ok(update) = self.trail_rx.try_recv() {
+             // Recall answers (RecallHits / RecallFailed), already app-owned.
+             self.service_private_custody();
+@@ -237,6 +248,62 @@
+ #[cfg(test)]
+ mod source_wait_tests {
+     use super::*;
++    #[test]
++    fn model_free_wait_drains_queued_research_worker_result() {
++        let root = tempfile::tempdir().unwrap();
++        let mut app = crate::app::App::test_stub_at(root.path().to_path_buf());
++        let custody = crate::trail_memory::custody_test_fixture::custody();
++        app.research.set_available(true);
++        app.research.access(Some(crate::research::ClipAccess {
++            root: root.path().to_path_buf(),
++            sealer: custody.sealer.clone(),
++            epoch: custody.epoch.clone(),
++        }));
++        app.sync_research_context();
++        let directory = crate::trail_memory::memory_dir(&crate::session::session_dir(
++            root.path(),
++            app.session_id,
++        ));
++        std::fs::create_dir_all(&directory).unwrap();
++        let (actor, _updates) = crate::trail_memory::spawn_trail_for_session(
++            std::sync::Arc::new(|| {}),
++            Some(directory),
++            Default::default(),
++            app.source_capture_generation,
++        );
++        assert!(actor.command(crate::trail_memory::TrailCommand::SetCustody(Some(custody))));
++        let (wake, receive) = std::sync::mpsc::channel();
++        let worker = crate::research_search::Worker::spawn(
++            app.research.clone(),
++            std::sync::Arc::new(actor),
++            std::sync::Arc::new(move || {
++                let _ = wake.send(());
++            }),
++        );
++        let request = app
++            .update(crate::action::Action::SearchSavedSources)
++            .into_iter()
++            .find_map(|effect| match effect {
++                crate::action::Effect::ResearchSearch(request) => Some(request),
++                _ => None,
++            })
++            .expect("ordinary search request");
++        worker.submit(request);
++        receive
++            .recv_timeout(std::time::Duration::from_secs(5))
++            .expect("worker completion");
++        assert!(app.scenario_research_search_summary().is_none());
++        let update = next_research_search_update(&worker).expect("queued research response");
++        if let crate::action::Update::ResearchSearchFinished {
++            result: Err(error), ..
++        } = &update
++        {
++            panic!("research worker refused fixture: {error}");
++        }
++        app.apply_update(update);
++        assert!(app.scenario_research_search_summary().is_some());
++        assert!(next_research_search_update(&worker).is_none());
++    }
+     #[test]
+     fn model_free_wait_pumps_real_correlated_fetch_to_source_action() {
+         let mut app = crate::app::App::test_stub();

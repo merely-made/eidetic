@@ -1,0 +1,38 @@
+{
+  "schema": "turnstone.m5-build-provenance/v1",
+  "artifacts": {
+    "turnstone": {
+      "kind": "turnstone",
+      "receipt": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-turnstone-67111d9e859d.json",
+      "receipt_sha256": "4de46c644465a55a198c5b073a54a91158ed4e51fbe5836f0ef485a18329f800",
+      "binary": "/home/markik/Code/target/debug/turnstone",
+      "binary_sha256": "b03f6727eea481de308e072c273f237153eebfbc19ff18a17a900d238c0f6ee1",
+      "source_before": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "source_after": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "source_inventory": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/builds/turnstone-research-i/source-inventory.json",
+      "source_inventory_sha256": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316"
+    },
+    "test-binary": {
+      "kind": "test-binary",
+      "receipt": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-test-binary-0fe020adbf7f.json",
+      "receipt_sha256": "523cb6511bceb4f34d53fd0b75cbb486409843e4da0bfcd07f435d86e54b550f",
+      "binary": "/home/markik/Code/target/debug/deps/turnstone-077499b95bb42cec",
+      "binary_sha256": "57590ef9f2964563bf7c348e20d7a6a444cd8a4ae3d50ab5eb3ec688c53cded4",
+      "source_before": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "source_after": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316",
+      "source_inventory": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/builds/probe-research-i/source-inventory.json",
+      "source_inventory_sha256": "fe55cefaa7bc8c372364f5ee2836f389b7e2fc76fcfbb2772e9a5929f0b04316"
+    },
+    "custodian": {
+      "kind": "custodian",
+      "receipt": "/home/markik/Code/testing/custody-contract-20261029/m5-provenance-custodian-fa4a08aaba5d.json",
+      "receipt_sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "binary": "/home/markik/Code/target/debug/deps/custody_payload-509891a7c0ea396f",
+      "binary_sha256": "2b18444702cc0f198962125af8ac29a623257ff17f91f7190734c39dabaacf5e",
+      "source_before": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "source_after": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "source_inventory": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/builds/custodian-fix2-f/source-inventory.json",
+      "source_inventory_sha256": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff"
+    }
+  }
+}
