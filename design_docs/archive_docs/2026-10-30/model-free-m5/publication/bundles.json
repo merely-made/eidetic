@@ -1,0 +1,20 @@
+{
+  "mere": {
+    "sha256": "3592fde4413b3e2f6793d157ac336081730bf0c70d093d3bcafefa3a8097ce13",
+    "bytes": 9404,
+    "head": "8fec5603c01e2d881e28a5fd055ae124edba2ff8",
+    "base": "a4cbd4baf3411b597bdcfc13653de0444b5d480d"
+  },
+  "turnstone": {
+    "sha256": "ecdd6f9dbcdf284784d590b80b68b03a1d77de34c413f2fa60cd1a779733508c",
+    "bytes": 66248,
+    "head": "cf459cd832abc877c79ae3c68e61eb7014ccf533",
+    "base": "1f371cbd2d9871e59bd4adc2fedada09b3a87cdd"
+  },
+  "eidetic": {
+    "sha256": "5076d16aeea8bb808e630ee6cebe900cbb3fdd99f1952ea8746914b80ad11254",
+    "bytes": 1780325,
+    "head": "0919a72bb1857b380ce6ef5d284505b540df4dee",
+    "base": "76dce97e2ddd043a30fc2a005ccbfc1a6f825529"
+  }
+}

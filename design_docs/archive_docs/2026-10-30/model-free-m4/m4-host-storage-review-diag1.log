@@ -1,0 +1,388 @@
+Running as unit: custody-contract-m4-host-storage-review-diag1.scope; invocation ID: 13be0574245c4a278cadb5079df11c28
+error: invalid type: boolean `true`, expected a map
+ --> ../../../.cargo/git/checkouts/servo-e53a6e7b994a25fe/aac43a3/python/tidy/tests/lints-configuration/no-workspace/Cargo.toml:8:7
+  |
+8 | foo = true
+  |       ^^^^
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+    Checking parking_lot_core v0.9.12
+    Checking parking_lot v0.12.5
+    Checking tracing v0.1.44
+    Checking icu_normalizer v2.3.0
+    Checking idna_adapter v1.2.2
+    Checking idna v1.1.0
+    Checking url v2.5.8
+    Checking digest v0.11.3
+    Checking blake3 v1.8.7
+    Checking sha2 v0.11.0
+    Checking path-dedot v3.1.1
+    Checking tokio v1.53.1
+    Checking path-absolutize v3.1.1
+    Checking tempfile v3.27.0
+    Checking value-log v1.9.0
+    Checking lsm-tree v2.10.4 (https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)
+    Checking dashmap v6.2.1
+    Checking fjall v2.11.2 (https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)
+    Checking naga-types v30.0.1
+    Checking muniment v0.2.0 (https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)
+    Checking naga v30.0.1
+    Checking wgpu-types v30.0.1
+    Checking wgpu-naga-bridge v30.0.1
+    Checking wgpu-hal v30.0.1
+    Checking string_cache v0.11.0
+    Checking chartulary v0.2.2 (https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)
+    Checking wgpu-core-deps-windows-linux-android v30.0.1
+    Checking wgpu-core v30.0.1
+    Checking web_atoms v0.3.0
+    Checking markup5ever v0.40.0
+    Checking wgpu v30.0.1
+    Checking getrandom v0.3.4
+    Checking vello_encoding v0.11.0 (https://github.com/mark-ik/vello?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+    Checking vello_shaders v0.11.0 (https://github.com/mark-ik/vello?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+    Checking layout-dom-api v0.1.1 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking futures-intrusive v0.5.0
+    Checking netrender-vello v0.11.0 (https://github.com/mark-ik/vello?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+    Checking postcard v1.1.3
+    Checking ahash v0.8.12
+    Checking curve25519-dalek v5.0.0
+    Checking rustls v0.23.46
+    Checking html5ever v0.40.1
+    Checking xml5ever v0.40.0
+    Checking genet-static-dom v0.1.1 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking ed25519-dalek v3.0.0
+    Checking insigne v0.0.2 (https://github.com/merely-made/dramatis.git?branch=main#051e95a6)
+    Checking encoding_rs v0.8.41
+    Checking wayland-backend v0.3.17
+    Checking netrender_device v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+    Checking personae v0.3.0 (https://github.com/merely-made/dramatis.git?branch=main#051e95a6)
+    Checking genet-scripted-dom v0.1.2 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking netrender v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+    Checking genet-fontique v0.10.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking icu_segmenter v2.3.0
+    Checking wayland-client v0.31.15
+    Checking inker v0.1.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking tokio-rustls v0.26.5
+    Checking jsonschema v0.18.3
+    Checking genet-parley v0.10.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking eidetic v0.0.2 (https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)
+    Checking wuff v0.2.9
+    Checking wuff-capi v0.2.0
+    Checking cadency v0.0.1 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking wayland-protocols v0.32.13
+    Checking paint_list_render v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+    Checking buckram v0.0.3 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking fontsan v0.7.0
+    Checking livery v0.0.5 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking genet-document-resources v0.2.1 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking tokio-util v0.7.19
+    Checking genet-livery v0.0.4 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking portable-atomic v1.15.0
+    Checking wayland-cursor v0.31.14
+    Checking wayland-csd-frame v0.3.0
+    Checking x11rb v0.13.2
+    Checking meristem v0.2.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking mere-kernel v0.0.2 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking calloop-wayland-source v0.3.0
+    Checking fastbloom v0.17.0
+    Checking h2 v0.4.19
+    Checking rustls-platform-verifier v0.7.0
+    Checking wayland-protocols-wlr v0.3.12
+    Checking gemini-protocol v0.1.7 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking genet-events v0.0.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking sprigging v0.3.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking quinn-proto v0.11.18
+    Checking cambium v0.6.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking zbus v5.19.0
+    Checking scroll-protocol v0.1.0 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking smithay-client-toolkit v0.19.2
+    Checking hyper v1.11.1
+    Checking misfin v0.0.4 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking quinn-udp v0.5.15
+    Checking gopher-protocol v0.2.0 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking finger-protocol v0.1.1 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking nex-protocol v0.1.1 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking spartan-protocol v0.1.1 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking guppy-protocol v0.1.1 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking sha1 v0.11.0
+    Checking hyper-util v0.1.20
+    Checking tungstenite v0.30.0
+    Checking errand v0.4.0 (https://github.com/merely-made/errand.git?rev=897fb963d184f0e379ab9041d68e17e726cb7763#897fb963)
+    Checking sctk-adwaita v0.10.1
+    Checking quinn v0.11.12
+    Checking atspi-common v0.13.0
+    Checking x11-dl v2.21.0
+    Checking wayland-protocols-plasma v0.3.12
+    Checking h3 v0.0.8
+    Checking winit v0.30.13
+    Checking hyper-rustls v0.27.9
+    Checking h3-quinn v0.0.10
+    Checking tokio-tungstenite v0.30.0
+    Checking genet-render v0.2.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking murm-wire v0.1.0 (https://github.com/merely-made/murm.git?branch=main#75eb9108)
+    Checking async-compression v0.4.48
+    Checking atspi-proxies v0.13.0
+    Checking mere-alembic v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking genet-presenter v0.2.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking notochord v0.1.1 (https://github.com/merely-made/dramatis.git?branch=main#051e95a6)
+    Checking armillary v0.1.1 (https://www.github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)
+    Checking accesskit_consumer v0.39.1
+    Checking parry2d v0.31.1
+    Checking fleece v0.5.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking netfetcher v0.1.1 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking pandect v0.1.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking accesskit_atspi_common v0.21.0
+    Checking atspi v0.29.0
+    Checking nematic v0.1.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking chirograph v0.0.2 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking cambium-winit v0.3.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking document-canvas v0.1.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking cambium-rootstock v0.1.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking accesskit_unix v0.24.0
+    Checking rapier2d v0.36.0
+    Checking uxtree v0.0.2 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking gaz v0.0.2 (https://github.com/merely-made/dramatis.git?branch=main#051e95a6)
+    Checking seiche v0.0.6 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking dramatis v0.0.3 (https://github.com/merely-made/dramatis.git?branch=main#051e95a6)
+    Checking genet-winit v0.2.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking grafting v0.6.1 (https://github.com/merely-made/wgpu-graft.git?rev=9f410f193eb82a9a70ff704674bba7df3eed981b#9f410f19)
+    Checking mere-fleece v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking taproot v0.1.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking redshank-model v0.0.0 (https://github.com/merely-made/woodshed.git?branch=main#a4356b74)
+    Checking djinn v0.0.3 (https://github.com/merely-made/armillary.git?rev=721e17d41a8f258073f440adbbb39ad145250868#721e17d4)
+    Checking mere-lanes v0.1.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking wgpu-cue v0.1.3
+    Checking cambium-a11y v0.3.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking knot-catalog v0.0.1 (https://github.com/merely-made/knot-editor.git?branch=main#055e1f4e)
+    Checking mere-cartography v0.0.2 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking genet-browsing v0.1.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking base64 v0.23.1
+    Checking pictograph v0.2.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking pem v4.0.0
+    Checking cambium-desktop v0.1.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking genet-documents v0.1.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking knot-capture v0.0.1 (https://github.com/merely-made/knot-editor.git?branch=main#055e1f4e)
+    Checking mere-rdf v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking cue-netrender v0.1.2 (https://github.com/merely-made/wgpu-cue.git?rev=b5b70c2c9c40748abedc0c18d2b6ec5373e48958#b5b70c2c)
+    Checking graphshell-endpoint v0.0.2 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking mere-fetch v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking platen v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking graphshell-client v0.0.2 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking knot-editor-host v0.1.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking arboard v3.6.1 (https://github.com/mark-ik/arboard.git?branch=custom-formats#bec2dcd1)
+    Checking servitor v0.0.2 (https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)
+    Checking reference-data v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking tracing-subscriber v0.3.23
+    Checking redshank-surfaces v0.0.0 (https://github.com/merely-made/woodshed.git?branch=main#a4356b74)
+    Checking knot-document v0.0.1 (https://github.com/merely-made/knot-editor.git?branch=main#055e1f4e)
+    Checking mesquite v0.1.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking knot-composition v0.0.1 (https://github.com/merely-made/knot-editor.git?branch=main#055e1f4e)
+    Checking rcgen v0.14.10
+    Checking mere-athanor v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking genet-clipboard v0.1.0 (https://github.com/merely-made/genet.git?branch=main#23e795a7)
+    Checking graphshell-host v0.0.2 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking mere v0.0.2 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking redshank-playback v0.0.0 (https://github.com/merely-made/woodshed.git?branch=main#a4356b74)
+    Checking pelt-core v0.2.0 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking rfd v0.17.2
+    Checking tabard-workshop v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking redshank-storage v0.0.0 (https://github.com/merely-made/woodshed.git?branch=main#a4356b74)
+    Checking mere-chrome v0.0.1 (https://github.com/merely-made/mere.git?branch=main#c1035649)
+    Checking eidetic-search v0.0.1 (https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)
+    Checking mere-proofs v0.1.0 (https://www.github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)
+    Checking turnstone v0.1.0 (/home/markik/Code/worktrees/turnstone-model-free-m1-20261029)
+error: visibility `pub(crate)` is not followed by an item
+   --> src/lib.rs:120:1
+    |
+120 | pub(crate) pub mod research_storage;
+    | ^^^^^^^^^^ the visibility
+    |
+    = help: you likely meant to define an item, e.g., `pub(crate) fn foo() {}`
+
+error: expected item, found keyword `pub`
+   --> src/lib.rs:120:12
+    |
+120 | pub(crate) pub mod research_storage;
+    |            ^^^ expected item
+    |
+    = note: for a full list of items that can appear in modules, see <https://doc.rust-lang.org/reference/items.html>
+
+error: could not compile `turnstone` (lib) due to 2 previous errors
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo check --locked --offline --lib"
+	User time (seconds): 105.86
+	System time (seconds): 28.14
+	Percent of CPU this job got: 96%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:19.15
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 691700
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 848
+	Minor (reclaiming a frame) page faults: 4647620
+	Voluntary context switches: 9912
+	Involuntary context switches: 2449
+	Swaps: 0
+	File system inputs: 1098128
+	File system outputs: 382560
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

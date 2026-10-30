@@ -1,0 +1,49 @@
+Running as unit: custody-contract-eidetic-m4-group-key-red.scope; invocation ID: f653abbd63e84a0c99679875adc7eb75
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+error[E0609]: no field `group` on type `&RecordRow`
+   --> crates/eidetic-search/tests/model_free_records.rs:420:81
+    |
+420 |     let group = r.rows.iter().find(|row| row.record_ids == ["a", "b"]).unwrap().group.as_ref().unwrap();
+    |                                                                                 ^^^^^ unknown field
+    |
+    = note: available fields are: `key`, `count`, `record_ids`, `sources`
+
+error[E0609]: no field `definition_manifest` on type `eidetic::records::PropertyRecordV1`
+   --> crates/eidetic-search/tests/model_free_records.rs:428:42
+    |
+428 |     let mut s = snapshot(); s.records[0].definition_manifest = eidetic::ManifestId::of_blob(b"wrong-definition");
+    |                                          ^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `entity`, `property`, `schema_revision`, `context` ... and 7 others
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `eidetic-search` (test "model_free_records") due to 2 previous errors
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic-search --no-default-features --test model_free_records model_free_group_rows_retain_complete_grouping_key"
+	User time (seconds): 0.29
+	System time (seconds): 0.41
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.71
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 165004
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 51129
+	Voluntary context switches: 147
+	Involuntary context switches: 6
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 32
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

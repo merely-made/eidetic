@@ -1,0 +1,270 @@
+Running as unit: custody-contract-m4-store-review-wave-bytes-1.scope; invocation ID: cdb5c7bdbb91475dad34393d634cc724
+   Compiling lsm-tree v2.10.4 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/support/patches/lsm-tree)
+warning: unused imports: `BlockIndexImpl`, `block_handle::KeyedBlockHandle`, `bounded_index_block::read_index_block_until`, `bounded_trailer::read_segment_metadata`, `full_index::FullBlockIndex`, and `inner::Inner`
+  --> src/bounded_segment.rs:7:5
+   |
+ 7 |     bounded_index_block::read_index_block_until,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 8 |     bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource},
+ 9 |     bounded_trailer::read_segment_metadata,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+14 |         block_index::{BlockIndexImpl, block_handle::KeyedBlockHandle, full_index::FullBlockIndex},
+   |                       ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+15 |         inner::Inner,
+   |         ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `SeekFrom`, `Seek`, `atomic::AtomicBool`, and `fs::File`
+  --> src/bounded_segment.rs:20:5
+   |
+20 |     fs::File,
+   |     ^^^^^^^^
+21 |     io::{Seek, SeekFrom},
+   |          ^^^^  ^^^^^^^^
+22 |     path::Path,
+23 |     sync::{Arc, atomic::AtomicBool},
+   |                 ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Decode`
+  --> src/bounded_segment_tests.rs:45:26
+   |
+45 |     use crate::{coding::{Decode, Encode}, segment::{block::offset::BlockOffset, block_index::IndexBlock}};
+   |                          ^^^^^^
+
+warning: usage of an `unsafe` block
+  --> src/binary_search.rs:25:20
+   |
+25 |         let item = unsafe { slice.get_unchecked(mid) };
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> src/binary_search.rs:24:16
+   |
+24 |         #[warn(unsafe_code)]
+   |                ^^^^^^^^^^^
+
+warning: unreachable statement
+   --> src/bounded_read.rs:134:5
+    |
+133 |       return Err(ReadError::Unsupported("bytes-backed bounded reads"));
+    |       ---------------------------------------------------------------- any code following this expression is unreachable
+134 | /     let key_limit = call
+135 | |         .limits
+136 | |         .max_key_bytes
+137 | |         .min(operation.limits.max_key_bytes);
+    | |_____________________________________________^ unreachable statement
+    |
+    = note: `#[warn(unreachable_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: unreachable statement
+   --> src/bounded_tree.rs:252:5
+    |
+247 |     return Err(PrepareError::Unsupported("bytes-backed bounded recovery"));
+    |     ---------------------------------------------------------------------- any code following this expression is unreachable
+...
+252 |     let manifest_path = join(&config.path, MANIFEST_FILE, budget)?;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unreachable statement
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:273:43
+    |
+273 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:373:43
+    |
+373 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:574:47
+    |
+574 |             let folder = tempfile::tempdir()?.into_path();
+    |                                               ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:678:43
+    |
+678 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:367:43
+    |
+367 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:415:43
+    |
+415 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:453:43
+    |
+453 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:523:43
+    |
+523 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: unused variable: `tree`
+   --> src/bounded_read.rs:124:5
+    |
+124 |     tree: &Tree,
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_tree`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `lower`
+   --> src/bounded_read.rs:125:5
+    |
+125 |     lower: &[u8],
+    |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_lower`
+
+warning: unused variable: `upper`
+   --> src/bounded_read.rs:126:5
+    |
+126 |     upper: Option<&[u8]>,
+    |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_upper`
+
+warning: unused variable: `point`
+   --> src/bounded_read.rs:127:5
+    |
+127 |     point: bool,
+    |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_point`
+
+warning: unused variable: `seqno`
+   --> src/bounded_read.rs:128:5
+    |
+128 |     seqno: Option<SeqNo>,
+    |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_seqno`
+
+warning: unused variable: `call`
+   --> src/bounded_read.rs:129:5
+    |
+129 |     call: &mut Budget,
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_call`
+
+warning: unused variable: `operation`
+   --> src/bounded_read.rs:130:5
+    |
+130 |     operation: &mut Budget,
+    |     ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_operation`
+
+warning: unused variable: `path`
+  --> src/bounded_segment.rs:36:5
+   |
+36 |     path: &Path,
+   |     ^^^^ help: if this is intentional, prefix it with an underscore: `_path`
+
+warning: unused variable: `tree_id`
+  --> src/bounded_segment.rs:37:5
+   |
+37 |     tree_id: TreeId,
+   |     ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_tree_id`
+
+warning: unused variable: `cache`
+  --> src/bounded_segment.rs:38:5
+   |
+38 |     cache: Arc<Cache>,
+   |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_cache`
+
+warning: unused variable: `descriptor_table`
+  --> src/bounded_segment.rs:39:5
+   |
+39 |     descriptor_table: Arc<FileDescriptorTable>,
+   |     ^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_descriptor_table`
+
+warning: unused variable: `budget`
+  --> src/bounded_segment.rs:40:5
+   |
+40 |     budget: &mut dyn RecoveryBudget,
+   |     ^^^^^^ help: if this is intentional, prefix it with an underscore: `_budget`
+
+warning: variable does not need to be mutable
+   --> src/bounded_tree.rs:243:5
+    |
+243 |     mut config: Config,
+    |     ----^^^^^^
+    |     |
+    |     help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `config`
+   --> src/bounded_tree.rs:243:5
+    |
+243 |     mut config: Config,
+    |     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_config`
+
+warning: unused variable: `budget`
+   --> src/bounded_tree.rs:244:5
+    |
+244 |     budget: &mut dyn RecoveryBudget,
+    |     ^^^^^^ help: if this is intentional, prefix it with an underscore: `_budget`
+
+warning: function `corrupt` is never used
+  --> src/bounded_segment.rs:26:4
+   |
+26 | fn corrupt() -> PrepareError {
+   |    ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `charge_capacity` is never used
+  --> src/bounded_segment.rs:29:4
+   |
+29 | fn charge_capacity(budget: &mut dyn RecoveryBudget, bytes: usize) -> Result<(), PrepareError> {
+   |    ^^^^^^^^^^^^^^^
+
+warning: associated function `from_items` is never used
+  --> src/segment/block_index/full_index.rs:23:19
+   |
+22 | impl FullBlockIndex {
+   | ------------------- associated function in this implementation
+23 |     pub(crate) fn from_items(items: Vec<KeyedBlockHandle>) -> Self {
+   |                   ^^^^^^^^^^
+
+warning: `lsm-tree` (lib test) generated 32 warnings (run `cargo fix --lib -p lsm-tree --tests` to apply 18 suggestions)
+    Finished `test` profile [unoptimized] target(s) in 3.98s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/lsm_tree-dcc4ee2f6f0d9eed)
+
+running 2 tests
+test bounded_prepare_tests::bytes_backed_prepare_refuses_before_mutation ... ok
+test bounded_read_tests::bytes_backed_read_is_explicitly_unsupported ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 187 filtered out; finished in 0.00s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline --manifest-path support/patches/lsm-tree/Cargo.toml --features bytes,lz4,miniz --lib bytes_backed -- --test-threads=1"
+	User time (seconds): 3.57
+	System time (seconds): 0.49
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.03
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 376592
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 4
+	Minor (reclaiming a frame) page faults: 115251
+	Voluntary context switches: 685
+	Involuntary context switches: 76
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 31920
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

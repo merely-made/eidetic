@@ -1,0 +1,111 @@
+test_artifact_links_and_linked_parent_refused (test_fault_ledger.FaultLedger.test_artifact_links_and_linked_parent_refused) ... 
+  test_artifact_links_and_linked_parent_refused (test_fault_ledger.FaultLedger.test_artifact_links_and_linked_parent_refused) (kind='symlink') ... ERROR
+  test_artifact_links_and_linked_parent_refused (test_fault_ledger.FaultLedger.test_artifact_links_and_linked_parent_refused) (kind='hardlink') ... ERROR
+  test_artifact_links_and_linked_parent_refused (test_fault_ledger.FaultLedger.test_artifact_links_and_linked_parent_refused) (kind='parent') ... ERROR
+test_completed_ledger_binds_artifacts_excludes_stores_and_binaries (test_fault_ledger.FaultLedger.test_completed_ledger_binds_artifacts_excludes_stores_and_binaries) ... ERROR
+test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) ... 
+  test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) (bad='missing') ... ERROR
+  test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) (bad='cleanup') ... ERROR
+  test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) (bad='primary') ... ERROR
+  test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) (bad='process') ... ERROR
+
+======================================================================
+ERROR: test_artifact_links_and_linked_parent_refused (test_fault_ledger.FaultLedger.test_artifact_links_and_linked_parent_refused) (kind='symlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 39, in test_artifact_links_and_linked_parent_refused
+    root=Path(d)/'run'; root.mkdir(); self.fixture(root)
+                                      ~~~~~~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 7, in fixture
+    for rel in run.FAULT_LEDGER_REQUIRED:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'run_missing' has no attribute 'FAULT_LEDGER_REQUIRED'
+
+======================================================================
+ERROR: test_artifact_links_and_linked_parent_refused (test_fault_ledger.FaultLedger.test_artifact_links_and_linked_parent_refused) (kind='hardlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 39, in test_artifact_links_and_linked_parent_refused
+    root=Path(d)/'run'; root.mkdir(); self.fixture(root)
+                                      ~~~~~~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 7, in fixture
+    for rel in run.FAULT_LEDGER_REQUIRED:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'run_missing' has no attribute 'FAULT_LEDGER_REQUIRED'
+
+======================================================================
+ERROR: test_artifact_links_and_linked_parent_refused (test_fault_ledger.FaultLedger.test_artifact_links_and_linked_parent_refused) (kind='parent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 39, in test_artifact_links_and_linked_parent_refused
+    root=Path(d)/'run'; root.mkdir(); self.fixture(root)
+                                      ~~~~~~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 7, in fixture
+    for rel in run.FAULT_LEDGER_REQUIRED:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'run_missing' has no attribute 'FAULT_LEDGER_REQUIRED'
+
+======================================================================
+ERROR: test_completed_ledger_binds_artifacts_excludes_stores_and_binaries (test_fault_ledger.FaultLedger.test_completed_ledger_binds_artifacts_excludes_stores_and_binaries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 18, in test_completed_ledger_binds_artifacts_excludes_stores_and_binaries
+    root=Path(d); self.fixture(root); run.complete_collection(root,'run')
+                  ~~~~~~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 7, in fixture
+    for rel in run.FAULT_LEDGER_REQUIRED:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'run_missing' has no attribute 'FAULT_LEDGER_REQUIRED'
+
+======================================================================
+ERROR: test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) (bad='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 28, in test_missing_file_cleanup_and_primary_fail_before_completion
+    root=Path(d); self.fixture(root)
+                  ~~~~~~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 7, in fixture
+    for rel in run.FAULT_LEDGER_REQUIRED:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'run_missing' has no attribute 'FAULT_LEDGER_REQUIRED'
+
+======================================================================
+ERROR: test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) (bad='cleanup')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 28, in test_missing_file_cleanup_and_primary_fail_before_completion
+    root=Path(d); self.fixture(root)
+                  ~~~~~~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 7, in fixture
+    for rel in run.FAULT_LEDGER_REQUIRED:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'run_missing' has no attribute 'FAULT_LEDGER_REQUIRED'
+
+======================================================================
+ERROR: test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) (bad='primary')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 28, in test_missing_file_cleanup_and_primary_fail_before_completion
+    root=Path(d); self.fixture(root)
+                  ~~~~~~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 7, in fixture
+    for rel in run.FAULT_LEDGER_REQUIRED:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'run_missing' has no attribute 'FAULT_LEDGER_REQUIRED'
+
+======================================================================
+ERROR: test_missing_file_cleanup_and_primary_fail_before_completion (test_fault_ledger.FaultLedger.test_missing_file_cleanup_and_primary_fail_before_completion) (bad='process')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 28, in test_missing_file_cleanup_and_primary_fail_before_completion
+    root=Path(d); self.fixture(root)
+                  ~~~~~~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py", line 7, in fixture
+    for rel in run.FAULT_LEDGER_REQUIRED:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'run_missing' has no attribute 'FAULT_LEDGER_REQUIRED'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.005s
+
+FAILED (errors=8)

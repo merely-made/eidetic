@@ -1,0 +1,780 @@
+Scoped fix round2: reviewed round1 final3 to host-storage-review2-freeze2; all67 current source hashes verified.
+--- round1/src/app/research_structured_tests.rs
++++ src/app/research_structured_tests.rs
+@@ -325,3 +325,24 @@
+         super::research_search_state::View::Sources
+     );
+ }
++
++#[test]
++fn model_free_recovery_limit_event_names_owner_setting_and_restart() {
++    let root = tempfile::tempdir().unwrap();
++    let mut app = super::App::test_stub_at(root.path().to_path_buf());
++    app.apply_update(crate::action::Update::SourceCaptureRecoveryFailed {
++        capture_generation: app.source_capture_generation,
++        error: crate::research_storage::SourceReadError::StorageOpen {
++            owner: "Session capture",
++            error: muniment::StoreError::LimitExceeded {
++                kind: muniment::StoreLimitKind::ValueBytes,
++                limit: 16,
++            },
++        },
++    });
++    assert!(app.events.iter().any(|event| matches!(event,
++        crate::observe::AppEvent::InteractionMissed { what: "recover-source-captures", target }
++        if target.contains("Session capture") && target.contains("open") && target.contains("ValueBytes")
++            && target.contains("16") && target.contains("Open: value bytes") && target.contains("settings") && target.contains("restart")
++    )));
++}
+--- round1/src/research_search.rs
++++ src/research_search.rs
+@@ -349,8 +349,8 @@
+                 }
+                 sources.push(source);
+             },
+-            Err(crate::research_storage::SourceReadError::Storage(error)) => {
+-                return Err(error.into());
++            Err(error) if error.storage_error().is_some() => {
++                return Err(error);
+             },
+             Err(error) => {
+                 let exclusion = format!("{}: {error}", admission.manifest);
+--- round1/src/research_storage.rs
++++ src/research_storage.rs
+@@ -360,188 +360,37 @@
+ }
+ 
+ #[cfg(test)]
+-mod tests {
+-    use super::*;
+-    use muniment::Backend;
+-
+-    #[test]
+-    fn model_free_storage_error_survives_eidetic_source_boundary() {
+-        let failure = muniment::StoreError::LimitExceeded {
+-            kind: muniment::StoreLimitKind::BlockDecodedBytes,
+-            limit: 12,
+-        };
+-        let wrapped = eidetic::Error::from(failure.clone());
+-        assert!(
+-            matches!(SourceReadError::from(wrapped), SourceReadError::Storage(error) if error == failure)
+-        );
+-    }
+-
+-    #[test]
+-    fn model_free_storage_open_refusal_preserves_existing_data_and_can_retry() {
+-        fn files(
+-            root: &std::path::Path,
+-            dir: &std::path::Path,
+-            out: &mut Vec<(std::path::PathBuf, Vec<u8>)>,
+-        ) {
+-            for entry in std::fs::read_dir(dir).unwrap() {
+-                let path = entry.unwrap().path();
+-                if path.is_dir() {
+-                    files(root, &path, out);
+-                } else if path.is_file() {
+-                    out.push((
+-                        path.strip_prefix(root).unwrap().to_owned(),
+-                        std::fs::read(path).unwrap(),
+-                    ));
+-                }
+-            }
+-        }
+-        fn snapshot(root: &std::path::Path) -> Vec<(std::path::PathBuf, Vec<u8>)> {
+-            let mut out = Vec::new();
+-            files(root, root, &mut out);
+-            out.sort_by(|a, b| a.0.cmp(&b.0));
+-            out
+-        }
+-        let root = tempfile::tempdir().unwrap();
+-        let owner = muniment::FjallStore::open(root.path()).unwrap();
+-        pollster::block_on(owner.put("retained", &vec![42; 8192])).unwrap();
+-        owner.sync_all().unwrap();
+-        drop(owner);
+-        let before = snapshot(root.path());
+-        let mut limits = StorageLimits::default();
+-        limits.recovery.max_value_bytes = 16;
+-        assert!(matches!(
+-            muniment::FjallStore::open_with_limits(root.path(), limits.owner()),
+-            Err(muniment::StoreError::LimitExceeded { .. })
+-        ));
+-        assert_eq!(snapshot(root.path()), before);
+-        let reopened =
+-            muniment::FjallStore::open_with_limits(root.path(), StorageLimits::default().owner())
+-                .unwrap();
+-        assert_eq!(
+-            pollster::block_on(reopened.get("retained")).unwrap(),
+-            Some(vec![42; 8192])
+-        );
+-    }
+-
+-    #[test]
+-    fn model_free_storage_owner_ceilings_apply_to_ordinary_backend_calls() {
+-        let root = tempfile::tempdir().unwrap();
+-        let initial = muniment::FjallStore::open(root.path()).unwrap();
+-        pollster::block_on(initial.put("stored", &[1; 32])).unwrap();
+-        initial.sync_all().unwrap();
+-        drop(initial);
+-        let mut limits = StorageLimits::default();
+-        limits.owner_read.max_value_bytes = 8;
+-        let store = muniment::FjallStore::open_with_limits(root.path(), limits.owner()).unwrap();
+-        assert!(matches!(
+-            pollster::block_on(store.get("stored")),
+-            Err(muniment::StoreError::LimitExceeded { .. })
+-        ));
+-        drop(store);
+-        limits.owner_read.max_value_bytes = 64;
+-        limits.owner_read.max_output_items = 0;
+-        let store = muniment::FjallStore::open_with_limits(root.path(), limits.owner()).unwrap();
+-        assert!(matches!(
+-            pollster::block_on(store.list("")),
+-            Err(muniment::StoreError::LimitExceeded { .. })
+-        ));
+-        assert!(matches!(
+-            pollster::block_on(store.scan("", "z")),
+-            Err(muniment::StoreError::LimitExceeded { .. })
+-        ));
+-    }
+-
+-    #[test]
+-    fn model_free_negative_prefix_lookup_refuses_when_budget_is_exhausted() {
+-        let root = tempfile::tempdir().unwrap();
+-        let limits = StorageLimits::default();
+-        let store = muniment::FjallStore::open_with_limits(root.path(), limits.owner()).unwrap();
+-        pollster::block_on(store.put("retained/present", b"value")).unwrap();
+-        let mut tight = limits.clone();
+-        tight.operation_read.max_alloc_bytes = 0;
+-        let adapter = BudgetStore {
+-            store: &store,
+-            budget: tight.budget(),
+-        };
+-        assert!(matches!(
+-            adapter.exists("retained/missing"),
+-            Err(muniment::StoreError::LimitExceeded {
+-                kind: muniment::StoreLimitKind::AllocationBytes,
+-                limit: 0
+-            })
+-        ));
+-        let adapter = BudgetStore {
+-            store: &store,
+-            budget: limits.budget(),
+-        };
+-        assert!(!adapter.exists("retained/missing").unwrap());
+-        assert!(adapter.exists("retained/present").unwrap());
+-    }
+-
+-    #[test]
+-    fn model_free_storage_budget_is_shared_across_distinct_owners() {
+-        let root = tempfile::tempdir().unwrap();
+-        let limits = StorageLimits::default();
+-        let first =
+-            muniment::FjallStore::open_with_limits(root.path().join("first"), limits.owner())
+-                .unwrap();
+-        let second =
+-            muniment::FjallStore::open_with_limits(root.path().join("second"), limits.owner())
+-                .unwrap();
+-        pollster::block_on(first.put("first", b"one")).unwrap();
+-        pollster::block_on(second.put("second", b"two")).unwrap();
+-        let mut low = 0;
+-        let mut high = 1_000_000;
+-        while low < high {
+-            let middle = (low + high) / 2;
+-            let mut trial = limits.clone();
+-            trial.operation_read.max_visited_items = middle;
+-            let each_fits =
+-                [(&first, "first"), (&second, "second")]
+-                    .into_iter()
+-                    .all(|(store, key)| {
+-                        let adapter = BudgetStore {
+-                            store,
+-                            budget: trial.budget(),
+-                        };
+-                        pollster::block_on(adapter.get(key)).is_ok_and(|value| value.is_some())
+-                    });
+-            if each_fits {
+-                high = middle;
+-            } else {
+-                low = middle + 1;
+-            }
+-        }
+-        assert!(low > 0 && low < 1_000_000);
+-        let mut small = limits.clone();
+-        small.operation_read.max_visited_items = low;
+-        let budget = small.budget();
+-        let a = BudgetStore {
+-            store: &first,
+-            budget: budget.clone(),
+-        };
+-        let b = BudgetStore {
+-            store: &second,
+-            budget,
+-        };
+-        assert!(pollster::block_on(a.get("first")).unwrap().is_some());
+-        assert!(matches!(
+-            pollster::block_on(b.get("second")),
+-            Err(muniment::StoreError::LimitExceeded { .. })
+-        ));
+-    }
+-}
++#[path = "research_storage_tests.rs"]
++mod tests;
+ 
+ #[derive(Clone, Debug, PartialEq, Eq)]
+ pub enum SourceReadError {
+     Storage(muniment::StoreError),
++    StorageOpen {
++        owner: &'static str,
++        error: muniment::StoreError,
++    },
++    Context {
++        label: String,
++        cause: Box<SourceReadError>,
++    },
+     Other(String),
+ }
+ impl SourceReadError {
+     pub(crate) fn context(self, context: &str) -> Self {
++        Self::Context {
++            label: context.into(),
++            cause: Box::new(self),
++        }
++    }
++    pub(crate) fn open(owner: &'static str, error: muniment::StoreError) -> Self {
++        Self::StorageOpen { owner, error }
++    }
++    pub fn storage_error(&self) -> Option<&muniment::StoreError> {
+         match self {
+-            Self::Storage(_) => self,
+-            Self::Other(message) => Self::Other(format!("{context}: {message}")),
++            Self::Storage(error) | Self::StorageOpen { error, .. } => Some(error),
++            Self::Context { cause, .. } => cause.storage_error(),
++            Self::Other(_) => None,
+         }
+     }
+ }
+@@ -572,6 +421,27 @@
+     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+         match self {
+             Self::Storage(error) => error.fmt(f),
++            Self::StorageOpen { owner, error } => {
++                write!(f, "{owner} storage open: {error}")?;
++                if let muniment::StoreError::LimitExceeded { kind, .. } = error {
++                    let setting = match kind {
++                        muniment::StoreLimitKind::ValueBytes => "Open: value bytes",
++                        muniment::StoreLimitKind::KeyBytes => "Open: key bytes",
++                        muniment::StoreLimitKind::ReplayBytes => "Open: replay bytes",
++                        muniment::StoreLimitKind::ReplayItems => "Open: recovery item visits",
++                        muniment::StoreLimitKind::MetadataBytes => "Open: metadata bytes",
++                        muniment::StoreLimitKind::InputBytes => "Open: input bytes",
++                        muniment::StoreLimitKind::AllocationBytes => "Open: allocation bytes",
++                        _ => "Open storage limit",
++                    };
++                    write!(
++                        f,
++                        ". Raise {setting} in settings and restart Turnstone to retry."
++                    )?;
++                }
++                Ok(())
++            },
++            Self::Context { label, cause } => write!(f, "{label}: {cause}"),
+             Self::Other(error) => f.write_str(error),
+         }
+     }
+--- round1/src/research_storage_tests.rs
++++ src/research_storage_tests.rs
+@@ -0,0 +1,183 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++use super::*;
++use muniment::Backend;
++
++#[test]
++fn model_free_comparison_storage_error_keeps_side_context() {
++    let failure = SourceReadError::Storage(muniment::StoreError::LimitExceeded {
++        kind: muniment::StoreLimitKind::ValueBytes,
++        limit: 16,
++    });
++    let left = failure.clone().context("Left unavailable");
++    assert!(left.to_string().contains("Left unavailable"));
++    assert_eq!(left.storage_error(), failure.storage_error());
++    assert!(left.to_string().contains("ValueBytes"));
++    let right = failure.clone().context("Right unavailable");
++    assert!(right.to_string().contains("Right unavailable"));
++    assert_eq!(right.storage_error(), failure.storage_error());
++}
++
++#[test]
++fn model_free_storage_error_survives_eidetic_source_boundary() {
++    let failure = muniment::StoreError::LimitExceeded {
++        kind: muniment::StoreLimitKind::BlockDecodedBytes,
++        limit: 12,
++    };
++    let wrapped = eidetic::Error::from(failure.clone());
++    assert!(
++        matches!(SourceReadError::from(wrapped), SourceReadError::Storage(error) if error == failure)
++    );
++}
++
++#[test]
++fn model_free_storage_open_refusal_preserves_existing_data_and_can_retry() {
++    fn files(
++        root: &std::path::Path,
++        dir: &std::path::Path,
++        out: &mut Vec<(std::path::PathBuf, Vec<u8>)>,
++    ) {
++        for entry in std::fs::read_dir(dir).unwrap() {
++            let path = entry.unwrap().path();
++            if path.is_dir() {
++                files(root, &path, out);
++            } else if path.is_file() {
++                out.push((
++                    path.strip_prefix(root).unwrap().to_owned(),
++                    std::fs::read(path).unwrap(),
++                ));
++            }
++        }
++    }
++    fn snapshot(root: &std::path::Path) -> Vec<(std::path::PathBuf, Vec<u8>)> {
++        let mut out = Vec::new();
++        files(root, root, &mut out);
++        out.sort_by(|a, b| a.0.cmp(&b.0));
++        out
++    }
++    let root = tempfile::tempdir().unwrap();
++    let owner = muniment::FjallStore::open(root.path()).unwrap();
++    pollster::block_on(owner.put("retained", &vec![42; 8192])).unwrap();
++    owner.sync_all().unwrap();
++    drop(owner);
++    let before = snapshot(root.path());
++    let mut limits = StorageLimits::default();
++    limits.recovery.max_value_bytes = 16;
++    assert!(matches!(
++        muniment::FjallStore::open_with_limits(root.path(), limits.owner()),
++        Err(muniment::StoreError::LimitExceeded { .. })
++    ));
++    assert_eq!(snapshot(root.path()), before);
++    let reopened =
++        muniment::FjallStore::open_with_limits(root.path(), StorageLimits::default().owner())
++            .unwrap();
++    assert_eq!(
++        pollster::block_on(reopened.get("retained")).unwrap(),
++        Some(vec![42; 8192])
++    );
++}
++
++#[test]
++fn model_free_storage_owner_ceilings_apply_to_ordinary_backend_calls() {
++    let root = tempfile::tempdir().unwrap();
++    let initial = muniment::FjallStore::open(root.path()).unwrap();
++    pollster::block_on(initial.put("stored", &[1; 32])).unwrap();
++    initial.sync_all().unwrap();
++    drop(initial);
++    let mut limits = StorageLimits::default();
++    limits.owner_read.max_value_bytes = 8;
++    let store = muniment::FjallStore::open_with_limits(root.path(), limits.owner()).unwrap();
++    assert!(matches!(
++        pollster::block_on(store.get("stored")),
++        Err(muniment::StoreError::LimitExceeded { .. })
++    ));
++    drop(store);
++    limits.owner_read.max_value_bytes = 64;
++    limits.owner_read.max_output_items = 0;
++    let store = muniment::FjallStore::open_with_limits(root.path(), limits.owner()).unwrap();
++    assert!(matches!(
++        pollster::block_on(store.list("")),
++        Err(muniment::StoreError::LimitExceeded { .. })
++    ));
++    assert!(matches!(
++        pollster::block_on(store.scan("", "z")),
++        Err(muniment::StoreError::LimitExceeded { .. })
++    ));
++}
++
++#[test]
++fn model_free_negative_prefix_lookup_refuses_when_budget_is_exhausted() {
++    let root = tempfile::tempdir().unwrap();
++    let limits = StorageLimits::default();
++    let store = muniment::FjallStore::open_with_limits(root.path(), limits.owner()).unwrap();
++    pollster::block_on(store.put("retained/present", b"value")).unwrap();
++    let mut tight = limits.clone();
++    tight.operation_read.max_alloc_bytes = 0;
++    let adapter = BudgetStore {
++        store: &store,
++        budget: tight.budget(),
++    };
++    assert!(matches!(
++        adapter.exists("retained/missing"),
++        Err(muniment::StoreError::LimitExceeded {
++            kind: muniment::StoreLimitKind::AllocationBytes,
++            limit: 0
++        })
++    ));
++    let adapter = BudgetStore {
++        store: &store,
++        budget: limits.budget(),
++    };
++    assert!(!adapter.exists("retained/missing").unwrap());
++    assert!(adapter.exists("retained/present").unwrap());
++}
++
++#[test]
++fn model_free_storage_budget_is_shared_across_distinct_owners() {
++    let root = tempfile::tempdir().unwrap();
++    let limits = StorageLimits::default();
++    let first =
++        muniment::FjallStore::open_with_limits(root.path().join("first"), limits.owner()).unwrap();
++    let second =
++        muniment::FjallStore::open_with_limits(root.path().join("second"), limits.owner()).unwrap();
++    pollster::block_on(first.put("first", b"one")).unwrap();
++    pollster::block_on(second.put("second", b"two")).unwrap();
++    let mut low = 0;
++    let mut high = 1_000_000;
++    while low < high {
++        let middle = (low + high) / 2;
++        let mut trial = limits.clone();
++        trial.operation_read.max_visited_items = middle;
++        let each_fits = [(&first, "first"), (&second, "second")]
++            .into_iter()
++            .all(|(store, key)| {
++                let adapter = BudgetStore {
++                    store,
++                    budget: trial.budget(),
++                };
++                pollster::block_on(adapter.get(key)).is_ok_and(|value| value.is_some())
++            });
++        if each_fits {
++            high = middle;
++        } else {
++            low = middle + 1;
++        }
++    }
++    assert!(low > 0 && low < 1_000_000);
++    let mut small = limits.clone();
++    small.operation_read.max_visited_items = low;
++    let budget = small.budget();
++    let a = BudgetStore {
++        store: &first,
++        budget: budget.clone(),
++    };
++    let b = BudgetStore {
++        store: &second,
++        budget,
++    };
++    assert!(pollster::block_on(a.get("first")).unwrap().is_some());
++    assert!(matches!(
++        pollster::block_on(b.get("second")),
++        Err(muniment::StoreError::LimitExceeded { .. })
++    ));
++}
+--- round1/src/retained_clip.rs
++++ src/retained_clip.rs
+@@ -317,7 +317,7 @@
+         return Err("This mere has no retained clip store".into());
+     }
+     let store = muniment::FjallStore::open_with_limits(path, limits.owner())
+-        .map_err(crate::research_storage::SourceReadError::from)?;
++        .map_err(|error| crate::research_storage::SourceReadError::open("Retained clip", error))?;
+     let mut bounded = crate::research_storage::BudgetStore {
+         store: &store,
+         budget,
+--- round1/src/trail_memory/emit_capture_recovery.rs
++++ src/trail_memory/emit_capture_recovery.rs
+@@ -42,7 +42,7 @@
+                     if let Err(error) =
+                         source_capture_receipts::verify_receipt_typed(&mut bounded, &receipt)
+                     {
+-                        if matches!(error, crate::research_storage::SourceReadError::Storage(_)) {
++                        if error.storage_error().is_some() {
+                             updates.clear();
+                             updates.push(Update::SourceCaptureRecoveryFailed {
+                                 capture_generation,
+--- round1/src/trail_memory/emit_sealed_capture_recovery.rs
++++ src/trail_memory/emit_sealed_capture_recovery.rs
+@@ -41,8 +41,7 @@
+                             &receipt.request,
+                             &stored,
+                         ) {
+-                            if matches!(error, crate::research_storage::SourceReadError::Storage(_))
+-                            {
++                            if error.storage_error().is_some() {
+                                 updates.clear();
+                                 updates.push(Update::SourceCaptureRecoveryFailed {
+                                     capture_generation,
+--- round1/src/trail_memory/open_memory.rs
++++ src/trail_memory/open_memory.rs
+@@ -14,17 +14,20 @@
+     if let Err(err) = std::fs::create_dir_all(dir) {
+         capture_library.unavailable(format!("create session capture directory: {err}"));
+         tracing::warn!(%err, dir = %dir.display(), "trail memory: create dir failed; capture disabled until reopen");
+-        return Err(muniment::StoreError::Backend(format!(
+-            "create session capture directory: {err}"
+-        ))
+-        .into());
++        return Err(crate::research_storage::SourceReadError::open(
++            "Session capture",
++            muniment::StoreError::Backend(format!("create session capture directory: {err}")),
++        ));
+     }
+     let store = match FjallStore::open_with_limits(dir, limits.owner()) {
+         Ok(store) => store,
+         Err(err) => {
+             capture_library.unavailable(format!("open session capture store: {err}"));
+             tracing::warn!(%err, dir = %dir.display(), "trail memory: open failed; capture disabled until reopen");
+-            return Err(err.into());
++            return Err(crate::research_storage::SourceReadError::open(
++                "Session capture",
++                err,
++            ));
+         },
+     };
+     let mut bounded = crate::research_storage::BudgetStore {
+--- round1/src/trail_memory/saved_sources.rs
++++ src/trail_memory/saved_sources.rs
+@@ -60,8 +60,8 @@
+                 content: Some(content),
+                 error: None,
+             },
+-            Err(crate::research_storage::SourceReadError::Storage(error)) => {
+-                return Err(error.into());
++            Err(error) if error.storage_error().is_some() => {
++                return Err(error);
+             },
+             Err(error) => Entry {
+                 admission: admission.clone(),
+--- round1/src/trail_memory/storage_owner_review_tests.rs
++++ src/trail_memory/storage_owner_review_tests.rs
+@@ -54,12 +54,13 @@
+     assert!(matches!(
+         update,
+         Update::SourceCaptureRecoveryFailed {
+-            error: crate::research_storage::SourceReadError::Storage(
+-                muniment::StoreError::LimitExceeded {
++            error: crate::research_storage::SourceReadError::StorageOpen {
++                owner: "Session capture",
++                error: muniment::StoreError::LimitExceeded {
+                     kind: muniment::StoreLimitKind::ValueBytes,
+                     limit: 16
+                 }
+-            ),
++            },
+             ..
+         }
+     ));
+@@ -80,12 +81,13 @@
+         }));
+         assert!(matches!(
+             receive.recv_timeout(Duration::from_secs(5)).unwrap(),
+-            Err(crate::research_storage::SourceReadError::Storage(
+-                muniment::StoreError::LimitExceeded {
++            Err(crate::research_storage::SourceReadError::StorageOpen {
++                owner: "Session capture",
++                error: muniment::StoreError::LimitExceeded {
+                     kind: muniment::StoreLimitKind::ValueBytes,
+                     limit: 16
+                 }
+-            ))
++            })
+         ));
+     };
+     check(generation);
+@@ -136,3 +138,91 @@
+     receive.recv_timeout(Duration::from_secs(5)).unwrap();
+     retry.join().unwrap();
+ }
++
++#[test]
++fn model_free_capture_and_ack_actor_replies_preserve_real_owner_open_limits() {
++    for sealed in [false, true] {
++        let root = tempfile::tempdir().unwrap();
++        let session = crate::panes::SessionId::new();
++        let directory = root
++            .path()
++            .join(session.as_uuid().to_string())
++            .join("memory");
++        std::fs::create_dir_all(directory.parent().unwrap()).unwrap();
++        let seeded = if sealed {
++            sealed_memory_dir(&directory)
++        } else {
++            directory.clone()
++        };
++        let store = FjallStore::open(&seeded).unwrap();
++        pollster::block_on(store.put("retained", &vec![42; 65536])).unwrap();
++        store.sync_all().unwrap();
++        drop(store);
++        let mut limits = crate::research_storage::StorageLimits::default();
++        limits.recovery.max_value_bytes = 4096;
++        let generation = uuid::Uuid::new_v4();
++        let (actor, updates) = spawn_trail_for_session_with_limits(
++            Arc::new(|| {}),
++            Some(directory.clone()),
++            Default::default(),
++            generation,
++            Ok(limits),
++        );
++        assert!(actor.command(TrailCommand::SetCustody(Some(
++            custody_test_fixture::custody()
++        ))));
++        let update = updates.recv_timeout(Duration::from_secs(5)).unwrap();
++        let expected_owner = if sealed {
++            "Sealed session"
++        } else {
++            "Session capture"
++        };
++        assert!(matches!(update, Update::SourceCaptureRecoveryFailed {
++            error: crate::research_storage::SourceReadError::StorageOpen {
++                owner, error: muniment::StoreError::LimitExceeded {
++                    kind: muniment::StoreLimitKind::ValueBytes, limit: 4096
++                },
++            }, ..
++        } if owner == expected_owner));
++        let request = crate::source_capture::CaptureRequest {
++            id: uuid::Uuid::new_v4(),
++            session,
++            graph: crate::panes::GraphId::new(),
++            node: uuid::Uuid::new_v4(),
++            url: "https://example.test".into(),
++            source: None,
++            keep: true,
++        };
++        assert!(actor.command(TrailCommand::CaptureSourceDocument {
++            capture_generation: generation,
++            request: request.clone(),
++            directory: directory.clone(),
++            document: None,
++        }));
++        let update = updates.recv_timeout(Duration::from_secs(5)).unwrap();
++        assert!(matches!(update, Update::SourceDocumentCaptured {
++            result: Err(crate::research_storage::SourceReadError::StorageOpen {
++                owner, error: muniment::StoreError::LimitExceeded {
++                    kind: muniment::StoreLimitKind::ValueBytes, limit: 4096
++                },
++            }), ..
++        } if owner == expected_owner));
++        assert!(actor.command(TrailCommand::AcknowledgeSourceCapture {
++            capture_generation: generation,
++            request,
++            directory,
++        }));
++        let update = updates.recv_timeout(Duration::from_secs(5)).unwrap();
++        assert!(matches!(update, Update::SourceCaptureSaved {
++            result: Err(crate::research_storage::SourceReadError::StorageOpen {
++                owner, error: muniment::StoreError::LimitExceeded {
++                    kind: muniment::StoreLimitKind::ValueBytes, limit: 4096
++                },
++            }), ..
++        } if owner == expected_owner));
++        let (release, receive) = mpsc::sync_channel(1);
++        assert!(actor.command(TrailCommand::Release(release)));
++        receive.recv_timeout(Duration::from_secs(5)).unwrap();
++        actor.join().unwrap();
++    }
++}
+--- round1/src/trail_memory/worker_capture_ops.rs
++++ src/trail_memory/worker_capture_ops.rs
+@@ -18,8 +18,7 @@
+         .as_mut()
+         .ok_or_else(|| {
+             memory_error
+-                .as_ref()
+-                .map(ToString::to_string)
++                .clone()
+                 .unwrap_or_else(|| "legacy capture store unavailable".into())
+         })?
+         .0;
+@@ -38,8 +37,7 @@
+     }
+     let store = sealed.as_mut().ok_or_else(|| {
+         sealed_error
+-            .as_ref()
+-            .map(ToString::to_string)
++            .clone()
+             .unwrap_or_else(|| "sealed capture store unavailable".into())
+     })?;
+     let mut sealed = crate::research_storage::BudgetStore { store, budget };
+@@ -68,3 +66,72 @@
+         library,
+     )
+ }
++
++#[cfg(test)]
++mod review_tests {
++    use super::*;
++    #[test]
++    fn model_free_capture_and_ack_preserve_both_owner_failures() {
++        let root = tempfile::tempdir().unwrap();
++        let store = FjallStore::open_with_limits(
++            root.path(),
++            crate::research_storage::StorageLimits::default().owner(),
++        )
++        .unwrap();
++        let request = crate::source_capture::CaptureRequest {
++            id: uuid::Uuid::new_v4(),
++            session: crate::panes::SessionId::new(),
++            graph: crate::panes::GraphId::new(),
++            node: uuid::Uuid::new_v4(),
++            url: "https://example.test".into(),
++            source: None,
++            keep: true,
++        };
++        let failure = crate::research_storage::SourceReadError::Storage(
++            muniment::StoreError::LimitExceeded {
++                kind: muniment::StoreLimitKind::ValueBytes,
++                limit: 16,
++            },
++        );
++        let custody = custody_test_fixture::custody();
++        let limits = Ok(crate::research_storage::StorageLimits::default());
++        for acknowledge in [false, true] {
++            let mut state = None;
++            let mut sealed = None;
++            assert_eq!(
++                apply(
++                    &mut state,
++                    &mut sealed,
++                    &custody,
++                    &limits,
++                    &Some(failure.clone()),
++                    &None,
++                    &request,
++                    None,
++                    acknowledge
++                )
++                .unwrap_err(),
++                failure
++            );
++        }
++        let mut state = Some((store, BrowsingMemory::new(64)));
++        for acknowledge in [false, true] {
++            let mut sealed = None;
++            assert_eq!(
++                apply(
++                    &mut state,
++                    &mut sealed,
++                    &custody,
++                    &limits,
++                    &None,
++                    &Some(failure.clone()),
++                    &request,
++                    None,
++                    acknowledge
++                )
++                .unwrap_err(),
++                failure
++            );
++        }
++    }
++}
+--- round1/src/trail_memory/worker_open_sealed.rs
++++ src/trail_memory/worker_open_sealed.rs
+@@ -13,8 +13,9 @@
+         .as_ref()
+         .map_err(|e| crate::research_storage::SourceReadError::from(e.clone()))
+         .and_then(|limits| {
+-            FjallStore::open_with_limits(sealed_memory_dir(directory), limits.owner())
+-                .map_err(crate::research_storage::SourceReadError::from)
++            FjallStore::open_with_limits(sealed_memory_dir(directory), limits.owner()).map_err(
++                |error| crate::research_storage::SourceReadError::open("Sealed session", error),
++            )
+         });
+     match result {
+         Ok(store) => (Some(store), None),

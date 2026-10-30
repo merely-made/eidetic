@@ -1,0 +1,34 @@
+# COMPOSED DRAFT: unrun, not accepted; missing-source fault injection is separate.
+# Draft: real capture, authored citation and real Knot selection; not acceptance complete.
+settle 20
+key escape
+act New session
+settle 5
+act Rename session
+type M5 seed
+key enter
+settle 5
+act New research note
+wait-knot 600 local file:///m5/run/profile/notes/research-
+assert content-live
+click surface:knot role:textbox
+key end
+key enter
+insert M5 authored research note
+key ctrl+s
+settle 30
+assert text saved
+capture 01_authored_note
+act Show document in map
+open ${M5_ORIGIN}/A
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/A
+settle 3
+capture 02_before_source_click
+click surface:inspector role:button Save source and keep
+settle 30
+capture 03_after_source_click
+record-source-captures 04_after_source_click
+assert event m5-intentional-diagnostic-stop

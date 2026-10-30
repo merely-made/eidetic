@@ -1,0 +1,308 @@
+commit 180df8758ba7c3be3d796287e1fcc0464a59dc9d
+Author:     markik <mark_ik@outlook.com>
+AuthorDate: Fri Oct 30 13:59:12 2026 -0400
+Commit:     markik <mark_ik@outlook.com>
+CommitDate: Fri Oct 30 13:59:12 2026 -0400
+
+    Fix scope search ordering and retained note scrolling
+
+diff --git a/src/app/research_record_scenario_tests.rs b/src/app/research_record_scenario_tests.rs
+index 9fd673de..82625f7c 100644
+--- a/src/app/research_record_scenario_tests.rs
++++ b/src/app/research_record_scenario_tests.rs
+@@ -230,3 +230,30 @@ fn model_free_scenario_observation_is_scope_checked_and_read_only() {
+     app.graph_runtimes.get_mut(graph).unwrap().instance = uuid::Uuid::new_v4();
+     assert!(app.structured_scenario_observation().is_err());
+ }
++
++#[test]
++fn model_free_scope_change_cancels_stale_work_before_dispatching_fresh_search() {
++    let root = tempfile::tempdir().unwrap();
++    let mut app = App::test_stub_at(root.path().to_path_buf());
++    let custody = crate::trail_memory::custody_test_fixture::custody();
++    app.research.set_available(true);
++    app.research.access(Some(crate::research::ClipAccess {
++        root: root.path().into(),
++        sealer: custody.sealer,
++        epoch: custody.epoch,
++    }));
++    app.sync_research_context();
++    for (command, selected) in [
++        (crate::action::ResearchSearchAction::ScopeChosen, Some(vec![])),
++        (crate::action::ResearchSearchAction::ScopeAll, None),
++    ] {
++        app.research_search.structured.controller.view_scope = Some(app.structured_scope().unwrap());
++        let effects = app.research_search_command(command);
++        let cancel = effects.iter().position(|effect| matches!(effect, Effect::CancelResearchSearch)).expect("stale structured work canceled");
++        let search = effects.iter().position(|effect| matches!(effect, Effect::ResearchSearch(_))).expect("fresh search dispatched");
++        assert!(cancel < search, "cancel must precede the replacement search");
++        assert_eq!(app.research_search.selected, selected);
++        assert!(app.research_search.structured.controller.view_scope.is_none());
++        assert!(matches!(&effects[search], Effect::ResearchSearch(request) if request.selected == selected));
++    }
++}
+diff --git a/src/app/research_search_arms.rs b/src/app/research_search_arms.rs
+index d2f24883..d9c7f65b 100644
+--- a/src/app/research_search_arms.rs
++++ b/src/app/research_search_arms.rs
+@@ -369,14 +369,18 @@ impl App {
+             },
+             _ => {},
+         }
+-        let mut effects = if refresh {
+-            self.research_search.error = None;
+-            self.issue_research_search()
++        // Cancel work for the old structured scope before submitting the
++        // replacement search; canceling afterward would cancel the new job.
++        let mut effects = if scope_changed {
++            self.invalidate_structured()
+         } else {
+-            vec![Effect::Redraw]
++            vec![]
+         };
+-        if scope_changed {
+-            effects.extend(self.invalidate_structured());
++        if refresh {
++            self.research_search.error = None;
++            effects.extend(self.issue_research_search());
++        } else {
++            effects.push(Effect::Redraw);
+         }
+         self.recompute_omnibar_suggestions();
+         effects.push(Effect::Redraw);
+diff --git a/src/knot_authoring.rs b/src/knot_authoring.rs
+index 818445b3..637cf382 100644
+--- a/src/knot_authoring.rs
++++ b/src/knot_authoring.rs
+@@ -329,6 +329,7 @@ pub struct KnotDocumentSession {
+     /// re-shaped the whole document to draw an unchanged screen; see
+     /// [`crate::ui::RetainedLayout`] for the measurement.
+     layout: crate::ui::RetainedLayout,
++    scroll: crate::ui::PaneScroll,
+     text_drag: Option<genet_scripted_dom::NodeId>,
+ }
+ 
+diff --git a/src/knot_authoring/impl_document_session_scene_for.rs b/src/knot_authoring/impl_document_session_scene_for.rs
+index 95496096..bf7b8f8a 100644
+--- a/src/knot_authoring/impl_document_session_scene_for.rs
++++ b/src/knot_authoring/impl_document_session_scene_for.rs
+@@ -13,12 +13,24 @@ impl DocumentSession<Scene> for KnotDocumentSession {
+             });
+         }
+         let sheet = format!("{} {}", crate::ui::CAMBIUM_SHEET, KNOT_SHEET);
+-        self.layout
+-            .scene(&mut self.dom.borrow_mut(), &sheet, width, height)
++        self.layout.scene_scrolled(
++            &mut self.dom.borrow_mut(),
++            &sheet,
++            width,
++            height,
++            &mut self.scroll,
++        )
+     }
+ 
+-    fn scroll_by(&mut self, _dx: f32, _dy: f32) -> bool {
+-        false
++    fn scroll_by(&mut self, dx: f32, dy: f32) -> bool {
++        if dx == 0.0 && dy == 0.0 {
++            return false;
++        }
++        let before = self.scroll.offset();
++        self.scroll.nudge(dx, dy);
++        let (width, height) = (self.runner.state().width, self.runner.state().height);
++        let _ = self.frame(width, height);
++        self.scroll.offset() != before
+     }
+ 
+     fn scroll_for_key(&mut self, _key: SessionScrollKey) -> bool {
+@@ -85,9 +97,15 @@ impl DocumentSession<Scene> for KnotDocumentSession {
+         self.drain_events();
+         let size = (self.runner.state().width, self.runner.state().height);
+         let sheet = format!("{} {}", crate::ui::CAMBIUM_SHEET, KNOT_SHEET);
+-        let hit = self
+-            .layout
+-            .hit_test(&mut self.dom.borrow_mut(), &sheet, size.0, size.1, x, y);
++        let hit = self.layout.hit_test_scrolled(
++            &mut self.dom.borrow_mut(),
++            &sheet,
++            size.0,
++            size.1,
++            x,
++            y,
++            &self.scroll,
++        );
+         let Some(node) = hit else {
+             return SessionClick::Miss;
+         };
+diff --git a/src/knot_authoring/knot_document_session_pointer_event.rs b/src/knot_authoring/knot_document_session_pointer_event.rs
+index 960dd235..55e2adca 100644
+--- a/src/knot_authoring/knot_document_session_pointer_event.rs
++++ b/src/knot_authoring/knot_document_session_pointer_event.rs
+@@ -147,6 +147,7 @@ impl KnotDocumentSession {
+             dom,
+             runner,
+             layout: crate::ui::RetainedLayout::new(),
++            scroll: crate::ui::PaneScroll::new(),
+             text_drag: None,
+         };
+         if auto_resolve && resolve_available {
+diff --git a/src/knot_authoring/knot_sheet.rs b/src/knot_authoring/knot_sheet.rs
+index 00a46f6d..8eddaf15 100644
+--- a/src/knot_authoring/knot_sheet.rs
++++ b/src/knot_authoring/knot_sheet.rs
+@@ -18,13 +18,13 @@ pub(crate) const KNOT_SHEET: &str = "\
+     .knot-citations { padding: 4px 10px; } \
+     .knot-saved-citation { color: rgb(103, 184, 235); background-color: rgb(28, 34, 50); padding: 3px 8px; } \
+     .knot-body { display: flex; } \
+-    .knot-editor-wrap { width: 70%; padding: 10px; } \
++    .knot-editor-wrap { width: 70%; min-width: 0; box-sizing: border-box; padding: 10px; overflow: hidden; } \
+     .knot-editor-wrap textarea, .knot-editor-wrap [role=textbox][data-cambium-text-value] { color: rgb(218, 224, 236); \
+                                  background-color: rgb(25, 30, 44); \
+-                                 font-size: 13px; white-space: pre-wrap; \
++                                 font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; \
+                                  padding: 10px; border: 1px solid rgb(52, 62, 86); } \
+-    .knot-readout { width: 30%; padding: 10px; color: rgb(172, 183, 204); \
+-                    font-size: 12px; white-space: pre-wrap; overflow: hidden; } \
++    .knot-readout { width: 30%; min-width: 0; box-sizing: border-box; padding: 10px; color: rgb(172, 183, 204); \
++                    font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; overflow: hidden; } \
+     .syntax-heading { color: rgb(240, 179, 94); } \
+     .syntax-link { color: rgb(103, 184, 235); } \
+     .syntax-strong { color: rgb(235, 239, 247); } \
+diff --git a/src/knot_authoring/tests.rs b/src/knot_authoring/tests.rs
+index 816334b8..20612566 100644
+--- a/src/knot_authoring/tests.rs
++++ b/src/knot_authoring/tests.rs
+@@ -220,3 +220,5 @@ mod research_note_revision_grant_and_citation_control_refuse_cases;
+ mod saved_selection_from_embedded_pool_pointer_gesture_cases;
+ #[path = "tests/sharing_rewrites_a_locally_held_document_to_its_cases.rs"]
+ mod sharing_rewrites_a_locally_held_document_to_its_cases;
++#[path = "tests/note_scroll_cases.rs"]
++mod note_scroll_cases;
+diff --git a/src/knot_authoring/tests/note_scroll_cases.rs b/src/knot_authoring/tests/note_scroll_cases.rs
+new file mode 100644
+index 00000000..3947ddc2
+--- /dev/null
++++ b/src/knot_authoring/tests/note_scroll_cases.rs
+@@ -0,0 +1,122 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++
++#[test]
++fn long_note_scrolls_to_unicode_text_and_pointer_selection_uses_scrolled_geometry() {
++    let root = tempfile::tempdir().unwrap();
++    let path = root.path().join("note.djot");
++    let token = format!("mere://saved-source/{}", "a".repeat(160));
++    let source = format!(
++        "# Note\n\n{token}\n{}\nselected café 雪 passage\n",
++        "metadata line\n".repeat(60)
++    );
++    fs::write(&path, &source).unwrap();
++    let (hub, _) = KnotHub::host(
++        HostedKnot::Directory {
++            root: root.path().into(),
++        },
++        None,
++        None,
++        65536,
++        Arc::new(|| {}),
++    )
++    .unwrap();
++    let address = file_address(&path);
++    let mut session = KnotDocumentSession::new(
++        hub.clone(),
++        hub.open(&address).unwrap(),
++        (500, 300),
++        false,
++        false,
++        false,
++    );
++    let _ = session.frame(500, 300);
++    let field = find_text_control(&session.dom.borrow(), session.runner.root()).unwrap();
++    let token_end = source.find(&token).unwrap() + token.len();
++    let mut last_visible = None;
++    for y in 0..250 {
++        for x in 20..330 {
++            let caret = session.layout.text_caret_at(
++                &mut session.dom.borrow_mut(),
++                field,
++                x as f32 + 0.5,
++                y as f32 + 0.5,
++            );
++            if caret.is_some_and(|p| p.byte == token_end) {
++                last_visible = Some((x, y));
++                break;
++            }
++        }
++        if last_visible.is_some() {
++            break;
++        }
++    }
++    let (_, token_end_y) = last_visible.expect("end of long URI must wrap into the editor column");
++    assert!(
++        token_end_y > 100,
++        "the long URI should occupy multiple lines"
++    );
++    assert!(
++        !session.scroll_by(0.0, -100.0),
++        "scroll at the top does not move"
++    );
++    assert!(session.scroll_by(0.0, 100.0));
++    let _ = session.frame(500, 300);
++    assert!(
++        session.scroll.offset().1 > 0.0,
++        "long note must move within the viewport"
++    );
++    let start = source.find("selected café 雪 passage").unwrap();
++    let end = start + "selected café 雪 passage".len();
++    let mut row = None;
++    for _ in 0..30 {
++        let _ = session.frame(500, 300);
++        for y in 0..300 {
++            let y = y as f32 + 0.5;
++            let at_left =
++                session
++                    .layout
++                    .text_caret_at(&mut session.dom.borrow_mut(), field, 25.0, y);
++            if !at_left.is_some_and(|p| (start..=end).contains(&p.byte)) {
++                continue;
++            }
++            let mut first = None;
++            let mut last = None;
++            for x in 10..340 {
++                let x = x as f32 + 0.5;
++                let caret =
++                    session
++                        .layout
++                        .text_caret_at(&mut session.dom.borrow_mut(), field, x, y);
++                if caret.is_some_and(|p| p.byte == start) {
++                    first = Some(x);
++                }
++                if caret.is_some_and(|p| p.byte == end) {
++                    last = Some(x);
++                    break;
++                }
++            }
++            if let (Some(a), Some(b)) = (first, last) {
++                row = Some((a, b, y));
++                break;
++            }
++        }
++        if row.is_some() {
++            break;
++        }
++        assert!(session.scroll_by(0.0, 100.0));
++    }
++    let (a, b, y) = row.expect("selected phrase must be visible after scrolling");
++    session.pointer_down(a, y);
++    session.pointer_move(b, y);
++    session.pointer_up(b, y);
++    let selection = session.runner.state().editor.selection();
++    assert_eq!(
++        &source[selection.anchor.byte.min(selection.focus.byte)
++            ..selection.anchor.byte.max(selection.focus.byte)],
++        "selected café 雪 passage"
++    );
++    assert_eq!(session.runner.state().editor.source(), source);
++}

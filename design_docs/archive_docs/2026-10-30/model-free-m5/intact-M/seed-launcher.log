@@ -1,0 +1,12 @@
+Running as unit: m5-acceptance-seed-77b1f923278d4deeb8a6774a15a46669.scope; invocation ID: 05cf50e927ce4e46a40a383f88f2ddd4
+Traceback (most recent call last):
+  File "/m5/input/acceptance_phase.py", line 78, in <module>
+    if __name__ == '__main__': main()
+                               ~~~~^^
+  File "/m5/input/acceptance_phase.py", line 74, in main
+    namespace_phase.phase(config)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/m5/input/namespace_phase.py", line 280, in phase
+    if not done.startswith('RESULT ok\n'): raise PhaseError('scenario failed')
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+namespace_phase.PhaseError: scenario failed

@@ -1,0 +1,68 @@
+[
+  {
+    "error": null,
+    "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+    "keep": true,
+    "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+    "ordinal": 1,
+    "phase": "saved",
+    "request": "45201d22-32ce-4e1b-9505-5de8ef3b7f2c",
+    "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+    "source": {
+      "acquired_at_ms": 1793385897834,
+      "body_hash": "blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be",
+      "content_type": "text/html; charset=utf-8",
+      "effective_url": "http://127.0.0.1:36981/A",
+      "hash": "blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be"
+    },
+    "stored": {
+      "annotation_manifest": "sealed-v1:blake3:8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2",
+      "raw_manifest": "blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be"
+    },
+    "url": "http://127.0.0.1:36981/A"
+  },
+  {
+    "error": null,
+    "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+    "keep": true,
+    "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+    "ordinal": 3,
+    "phase": "saved",
+    "request": "c489b18f-49db-4dd3-92a9-ed1d1a103cc0",
+    "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+    "source": {
+      "acquired_at_ms": 1793386017666,
+      "body_hash": "blake3:595e11f6ef7af778289b94655b4bfa07a7d379e77114425a312810607ad09fae",
+      "content_type": "text/html; charset=utf-8",
+      "effective_url": "http://127.0.0.1:36981/A",
+      "hash": "blake3:595e11f6ef7af778289b94655b4bfa07a7d379e77114425a312810607ad09fae"
+    },
+    "stored": {
+      "annotation_manifest": "sealed-v1:blake3:9660f90bfc49a344d6bc9a0b46ad1fb7f649adedb8a022eac4985cce6bd1256c",
+      "raw_manifest": "blake3:595e11f6ef7af778289b94655b4bfa07a7d379e77114425a312810607ad09fae"
+    },
+    "url": "http://127.0.0.1:36981/A"
+  },
+  {
+    "error": null,
+    "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+    "keep": true,
+    "node": "853dbf1a-61de-4fcc-94b3-c3584c4fcc1c",
+    "ordinal": 2,
+    "phase": "saved",
+    "request": "e67e9685-aeda-42ab-89ef-5974b0f90ad2",
+    "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+    "source": {
+      "acquired_at_ms": 1793385903975,
+      "body_hash": "blake3:2daa6279017e4ea73a8e691e194a802610eef1c48e4e597b592549e1061f05ae",
+      "content_type": "text/html; charset=utf-8",
+      "effective_url": "http://127.0.0.1:36981/B",
+      "hash": "blake3:2daa6279017e4ea73a8e691e194a802610eef1c48e4e597b592549e1061f05ae"
+    },
+    "stored": {
+      "annotation_manifest": "sealed-v1:blake3:67ffe86b17ee7980cf9fc364e337c58123c7a7ae4c1c49e129a94fa51af578da",
+      "raw_manifest": "blake3:2daa6279017e4ea73a8e691e194a802610eef1c48e4e597b592549e1061f05ae"
+    },
+    "url": "http://127.0.0.1:36981/B"
+  }
+]

@@ -1,0 +1,57 @@
+Running as unit: custody-contract-eidetic-m4-schema-red.scope; invocation ID: 06046855d23c4a40858ba7b4156ca0d1
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+error[E0425]: cannot find function `validate_required_schema` in module `eidetic::records`
+  --> crates/eidetic-core/tests/model_free_records.rs:36:35
+   |
+36 |         assert!(eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &definition()).await.is_err());
+   |                                   ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `eidetic::records`
+
+error[E0425]: cannot find function `bootstrap_record_schemas` in module `eidetic::records`
+  --> crates/eidetic-core/tests/model_free_records.rs:37:27
+   |
+37 |         eidetic::records::bootstrap_record_schemas(&mut store).await.unwrap();
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `eidetic::records`
+
+error[E0425]: cannot find function `validate_required_schema` in module `eidetic::records`
+  --> crates/eidetic-core/tests/model_free_records.rs:38:27
+   |
+38 |         eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &definition()).await.unwrap();
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `eidetic::records`
+
+error[E0425]: cannot find function `validate_required_schema` in module `eidetic::records`
+  --> crates/eidetic-core/tests/model_free_records.rs:39:27
+   |
+39 |         eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &record()).await.unwrap();
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `eidetic::records`
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `eidetic` (test "model_free_records") due to 4 previous errors
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic --no-default-features --test model_free_records model_free_schema_bootstrap_provides_resolvable_real_definitions"
+	User time (seconds): 0.46
+	System time (seconds): 1.66
+	Percent of CPU this job got: 69%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.05
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 259956
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 993
+	Minor (reclaiming a frame) page faults: 70362
+	Voluntary context switches: 2020
+	Involuntary context switches: 52
+	Swaps: 0
+	File system inputs: 1317848
+	File system outputs: 272
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

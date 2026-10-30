@@ -1,0 +1,22 @@
+--- verify.py.before
++++ verify.py
+@@ -43,7 +43,7 @@
+ TOOLS = {
+     'verify_receipt.py': ('../m5-draft/verify_receipt.py','c7890e11e3000694949247d1dd38b5206c1046d9657aa02848cddc4972f46019'),
+     'verify_missing.py': ('../m5-missing-draft/verify_missing.py','ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939'),
+-    'run_missing.py': ('../m5-missing-draft/run_missing.py','9556edae322fa658f7f4ad3dc1828253f63c2294ee176fd79ebada976eaf9e95'),
++    'run_missing.py': ('../m5-missing-draft/run_missing.py','260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5'),
+ }
+ 
+ 
+--- assemble.py.before
++++ assemble.py
+@@ -8,7 +8,7 @@
+ import stat
+ import types
+ 
+-VERIFY_SHA256 = '4b48074459f282b90e184abe9ceddd237bc52a67c7650ff884d79a6f8cfd7383'
++VERIFY_SHA256 = 'd0e181a75e6a1d4d142b3bc4e3aa50461259c25d24ba0bc87b1992a30b5280e2'
+ verify_path = Path(__file__).with_name('verify.py')
+ if verify_path.is_symlink() or not verify_path.is_file(): raise ValueError('missing validation module')
+ verify_bytes = verify_path.read_bytes()

@@ -1,0 +1,883 @@
+Running as unit: custody-contract-m4-mere-kernel-lib.scope; invocation ID: fcf7bda83a6d4813bd8ec8a5b27e9cba
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=864f107d44bf759111ad2ea3c9036b2cfbf03f4c#864f107d)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=864f107d44bf759111ad2ea3c9036b2cfbf03f4c#864f107d)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=864f107d44bf759111ad2ea3c9036b2cfbf03f4c#864f107d)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: unused imports: `astar`, `dijkstra`, `has_path_connecting`, and `kosaraju_scc`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:21:22
+   |
+21 | use petgraph::algo::{astar, dijkstra, has_path_connecting, kosaraju_scc};
+   |                      ^^^^^  ^^^^^^^^  ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `Archived`, `Place`, `Resolver`, and `rancor::Fallible`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:25:21
+   |
+25 | use rkyv::{Archive, Archived, Deserialize, Place, Resolver, Serialize, rancor::Fallible};
+   |                     ^^^^^^^^               ^^^^^  ^^^^^^^^             ^^^^^^^^^^^^^^^^
+
+warning: unused import: `HashSet`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:26:43
+   |
+26 | use std::collections::{BTreeMap, HashMap, HashSet};
+   |                                           ^^^^^^^
+
+warning: unused imports: `GraphSnapshot`, `PersistedAddress`, `PersistedArrangementEdgeData`, `PersistedArrangementSubKind`, `PersistedContainmentEdgeData`, `PersistedContainmentSubKind`, `PersistedImportedEdgeData`, `PersistedImportedSubKind`, `PersistedNavigationTrigger`, `PersistedNodeSessionState`, `PersistedNode`, `PersistedProvenanceEdgeData`, `PersistedProvenanceSubKind`, `PersistedTraversalEdgeData`, `PersistedTraversalMetrics`, and `PersistedTraversalRecord`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:35:5
+   |
+35 |     GraphSnapshot, PersistedAddress, PersistedArrangementEdgeData, PersistedArrangementSubKind,
+   |     ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+36 |     PersistedContainmentEdgeData, PersistedContainmentSubKind, PersistedEdge, PersistedEdgeFamily,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+37 |     PersistedImportedEdgeData, PersistedImportedSubKind, PersistedNavigationTrigger, PersistedNode,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^
+38 |     PersistedNodeSessionState, PersistedProvenanceEdgeData, PersistedProvenanceSubKind,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+39 |     PersistedSemanticEdgeData, PersistedSemanticSubKind, PersistedTraversalEdgeData,
+   |                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+40 |     PersistedTraversalMetrics, PersistedTraversalRecord,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `NodeTagPresentationState`
+  --> crates/graph/graph-kernel/src/graph/node_facets.rs:18:54
+   |
+18 | use crate::types::{NodeClassification, NodeProperty, NodeTagPresentationState};
+   |                                                      ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `uuid::Uuid`
+   --> crates/graph/graph-kernel/src/graph/display.rs:212:9
+    |
+212 |     use uuid::Uuid;
+    |         ^^^^^^^^^^
+
+warning: unused imports: `address_from_url` and `detect_mime`
+  --> crates/graph/graph-kernel/src/graph/snapshot/from.rs:19:22
+   |
+19 | use crate::address::{address_from_url, detect_mime};
+   |                      ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/graph/graph-kernel/src/graph/input_key.rs:17:10
+   |
+17 |     NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+17 -     NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+17 +     NEXT.try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/graph/graph-kernel/src/graph/membership.rs:21:18
+   |
+21 |             NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |                  ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+21 -             NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+21 +             NEXT.try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |
+
+warning: unused import: `EdgeRef`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:24:23
+   |
+24 | use petgraph::visit::{EdgeRef, IntoEdgeReferences};
+   |                       ^^^^^^^
+
+warning: unused variable: `copy`
+   --> crates/graph/graph-kernel/src/graph/cross_graph.rs:416:13
+    |
+416 |         let copy = b.get_node(copy_key).unwrap();
+    |             ^^^^ help: if this is intentional, prefix it with an underscore: `_copy`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> crates/graph/graph-kernel/src/graph/legacy_family_attribution.rs:500:13
+    |
+500 |         let mut attribution = LegacyFamilyAttribution::from_baseline(&graph);
+    |             ----^^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `key`
+   --> crates/graph/graph-kernel/src/graph/assertion_write.rs:996:19
+    |
+996 |         let Some((key, current)) = self.find_semantic_statement(statement_id) else {
+    |                   ^^^ help: if this is intentional, prefix it with an underscore: `_key`
+
+warning: variable does not need to be mutable
+    --> crates/graph/graph-kernel/src/graph/query.rs:1341:13
+     |
+1341 |         let mut node = |g: &mut Graph, i: usize| {
+     |             ----^^^^
+     |             |
+     |             help: remove this `mut`
+
+warning: method `remove_statements_with_sub_kind` is never used
+   --> crates/graph/graph-kernel/src/graph/edge_data.rs:549:19
+    |
+350 | impl SemanticData {
+    | ----------------- method in this implementation
+...
+549 |     pub(crate) fn remove_statements_with_sub_kind(&mut self, sub_kind: SemanticSubKind) -> bool {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `insert`, `remove`, `contains`, and `is_empty` are never used
+   --> crates/graph/graph-kernel/src/graph/edge_data.rs:793:19
+    |
+792 | impl ContainmentData {
+    | -------------------- methods in this implementation
+793 |     pub(crate) fn insert(&mut self, sub_kind: ContainmentSubKind) -> bool {
+    |                   ^^^^^^
+...
+797 |     pub(crate) fn remove(&mut self, sub_kind: ContainmentSubKind) -> bool {
+    |                   ^^^^^^
+...
+801 |     pub(crate) fn contains(&self, sub_kind: ContainmentSubKind) -> bool {
+    |                   ^^^^^^^^
+...
+805 |     pub(crate) fn is_empty(&self) -> bool {
+    |                   ^^^^^^^^
+
+warning: methods `insert`, `remove`, `contains`, and `is_empty` are never used
+   --> crates/graph/graph-kernel/src/graph/edge_data.rs:811:19
+    |
+810 | impl ArrangementData {
+    | -------------------- methods in this implementation
+811 |     pub(crate) fn insert(&mut self, sub_kind: ArrangementSubKind) -> bool {
+    |                   ^^^^^^
+...
+815 |     pub(crate) fn remove(&mut self, sub_kind: ArrangementSubKind) -> bool {
+    |                   ^^^^^^
+...
+819 |     pub(crate) fn contains(&self, sub_kind: ArrangementSubKind) -> bool {
+    |                   ^^^^^^^^
+...
+823 |     pub(crate) fn is_empty(&self) -> bool {
+    |                   ^^^^^^^^
+
+warning: methods `assert_semantic_predicate`, `assert_semantic_relation_in_scope`, `assert_semantic_predicate_in_scope`, and `withdraw_semantic_statement` are never used
+   --> crates/graph/graph-kernel/src/graph/edge_payload.rs:183:19
+    |
+ 67 | impl EdgePayload {
+    | ---------------- methods in this implementation
+...
+183 |     pub(crate) fn assert_semantic_predicate(&mut self, predicate: String) -> bool {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+186 |     pub(crate) fn assert_semantic_relation_in_scope(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+201 |     pub(crate) fn assert_semantic_predicate_in_scope(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+215 |     pub(crate) fn withdraw_semantic_statement(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `LogIdAsString` is never constructed
+   --> crates/graph/graph-kernel/src/graph/identity.rs:160:19
+    |
+160 | pub(crate) struct LogIdAsString;
+    |                   ^^^^^^^^^^^^^
+
+warning: methods `remove_node_classification`, `set_node_classification_status`, and `set_node_primary_classification` are never used
+   --> crates/graph/graph-kernel/src/graph/resource_content.rs:129:19
+    |
+112 | impl Graph {
+    | ---------- methods in this implementation
+...
+129 |     pub(crate) fn remove_node_classification(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+143 |     pub(crate) fn set_node_classification_status(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+158 |     pub(crate) fn set_node_primary_classification(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: methods `replay_set_edge_semantic_predicate_by_ids`, `dissolve_remove_node_collect_traversals`, `replay_retract_relations`, and `set_edge_semantic_predicate` are never used
+    --> crates/graph/graph-kernel/src/graph/edge_ops.rs:443:19
+     |
+  41 | impl Graph {
+     | ---------- methods in this implementation
+...
+ 443 |     pub(crate) fn replay_set_edge_semantic_predicate_by_ids(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 512 |     pub(crate) fn dissolve_remove_node_collect_traversals(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 859 |     pub(crate) fn replay_retract_relations(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1019 |     pub(crate) fn set_edge_semantic_predicate(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `mere-kernel` (lib test) generated 21 warnings (run `cargo fix --lib -p mere-kernel --tests` to apply 13 suggestions)
+    Finished `test` profile [unoptimized] target(s) in 0.86s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/kernel-8b1938f29cbca772)
+
+running 528 tests
+test accessibility::tests::apply_writes_role_and_label_to_accesskit_node ... ok
+test accessibility::tests::every_surface_has_a_non_empty_label ... ok
+test accessibility::tests::keyboard_shortcuts_include_modifier_keys ... ok
+test actions::tests::every_shared_command_round_trips_through_the_typed_catalogue ... ok
+test address::tests::address_address_kind_bridge_matches_legacy_inference ... ok
+test address::tests::address_as_url_str_roundtrips_for_all_variants ... ok
+test address::tests::address_from_url_clip_stores_full_url ... ok
+test address::tests::address_from_url_data_and_custom ... ok
+test address::tests::address_from_url_file_and_directory ... ok
+test address::tests::address_from_url_http ... ok
+test address::tests::address_kind_from_url_data_clip_directory_and_unknown ... ok
+test address::tests::address_kind_from_url_file ... ok
+test address::tests::address_kind_from_url_file_directory_classification_is_syntax_based ... ok
+test address::tests::address_kind_from_url_http ... ok
+test address::tests::detect_mime_falls_back_to_extension_when_magic_unknown ... ok
+test address::tests::detect_mime_prefers_extension_when_unambiguous ... ok
+test address::tests::detect_mime_returns_none_for_no_extension ... ok
+test address::tests::detect_mime_returns_pdf_for_pdf_path ... ok
+test address::tests::detect_mime_returns_text_plain_for_txt_path ... ok
+test address::tests::detect_mime_uses_magic_bytes_when_extension_is_missing ... ok
+test async_host::tests::blocking_task_receiver_reports_type_mismatch ... ok
+test async_host::tests::spawn_blocking_rejects_new_work_after_cancel ... ok
+test async_host::tests::spawn_blocking_returns_typed_value ... ok
+test async_request::tests::arm_pending_bumps_generation_and_reports_prior_pending ... ok
+test async_request::tests::arm_pending_transitions_from_idle_and_reports_prior ... ok
+test async_request::tests::clear_from_any_state_returns_to_idle ... ok
+test async_request::tests::default_is_idle ... ok
+test async_request::tests::interrupt_moves_pending_to_interrupted ... ok
+test async_request::tests::resolve_accepts_matching_generation ... ok
+test async_request::tests::resolve_rejects_on_idle ... ok
+test async_request::tests::resolve_rejects_stale_generation ... ok
+test async_request::tests::serde_json_round_trips_each_variant ... ok
+test async_request::tests::stale_late_result_example_flow ... ok
+test async_request::tests::take_without_ready_leaves_state_unchanged ... ok
+test content::tests::default_is_complete ... ok
+test content::tests::from_persisted_name_rejects_unknown_values ... ok
+test content::tests::is_complete_only_matches_complete ... ok
+test content::tests::is_interactive_matches_head_parsed_and_complete ... ok
+test content::tests::persisted_name_round_trips_all_variants ... ok
+test content::tests::persisted_names_are_lowercase_kebab ... ok
+test content::tests::serde_json_round_trips_all_variants ... ok
+test content::viewer_instance_id_tests::different_providers_with_same_payload_dont_collide ... ok
+test content::viewer_instance_id_tests::hashset_membership_works_across_clone ... ok
+test content::viewer_instance_id_tests::provider_name_covers_all_variants ... ok
+test content::viewer_instance_id_tests::serde_json_roundtrip_preserves_variant_and_payload ... ok
+test content::viewer_instance_id_tests::servo_equal_payloads_are_equal ... ok
+test geometry::tests::portable_types_are_send_sync ... ok
+test geometry::tests::rect_constructs_with_origin_and_size ... ok
+test geometry::tests::rect_contains_point_inside_bounds ... ok
+test graph::assertion_handles_tests::a_graph_without_copies_loads_and_freezes_both_ways ... ok
+test graph::assertion_handles_tests::a_repeat_is_refused_across_strata_and_within_one_row_whether_or_not_identical ... ok
+test graph::assertion_handles_tests::identical_copies_on_parallel_rows_are_refused_by_load_and_both_freezes_with_one_reason ... ok
+test graph::assertion_write::migrated_handle_tests::ambiguous_content_requires_exact_id_and_updates_reach_the_one_row ... ok
+test graph::assertion_write::tests::caller_selected_handle_cannot_change_claim_with_distinct_handle_control ... ok
+test graph::assertion_write::tests::conflict_blocks_new_writes_atomically_with_existing_and_unaffected_controls ... ok
+test graph::assertion_write::tests::nature_changes_keep_held_handles_and_route_only_new_assertions ... ok
+test graph::capture::decay_compat_tests::baseline_json_postcard_and_rkyv_captured_deltas_decode_without_decay ... ok
+test graph::capture::decay_compat_tests::direct_edge_assertion_json_rejects_the_retired_field ... ok
+test graph::capture::decay_compat_tests::legacy_json_assertion_replays_and_new_captured_json_omits_decay ... ok
+test graph::capture::replay_outcome_tests::a_live_write_refuses_both_a_skip_and_a_malformed_record ... ok
+test graph::capture::replay_outcome_tests::a_malformed_facet_record_replays_as_malformed_naming_node_facet_and_error ... ok
+test graph::capture::replay_outcome_tests::a_refusal_position_counts_the_skipped_entries_before_it ... ok
+test graph::capture::replay_outcome_tests::an_obsolete_thumbnail_record_is_skipped_silently_by_checked_and_tolerant_replay ... ok
+test graph::capture::replay_outcome_tests::checked_replay_refuses_the_malformed_facet_record_a_tolerant_replay_skips ... ok
+test graph::capture::replay_outcome_tests::journal_tail_replay_stops_at_a_malformed_facet_record ... ok
+test graph::capture::replay_outcome_tests::obsolete_thumbnail_and_favicon_records_replay_as_an_explicit_skip ... ok
+test graph::capture::replay_outcome_tests::snapshot_at_from_refuses_a_journal_entry_whose_facet_json_is_malformed ... ok
+test graph::capture::replay_outcome_tests::tolerant_replay_drops_a_malformed_facet_record_and_continues ... ok
+test graph::capture::resource_capture_tests::resource_capture_codecs_preserve_old_ordinals_and_new_payloads ... ok
+test graph::capture::resource_capture_tests::resource_capture_journal_preserves_mint_source_across_withdrawal ... ok
+test graph::capture::resource_capture_tests::resource_capture_replay_preserves_strata_exact_data_and_noops ... ok
+test graph::capture::tests::a_legacy_inline_image_record_still_decodes_and_is_skipped_on_replay ... ok
+test graph::capture::tests::arbitrary_facets_use_the_same_capture_and_replay_spine ... ok
+test graph::capture::tests::capture_hook_receives_replayable_apply_events ... ok
+test graph::capture::tests::classification_admin_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::field_admin_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::field_layer_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::frame_history_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::import_records_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::last_visited_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::navigation_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::node_content_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::node_enrichment_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::node_media_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::replay_captured_deltas_rebuilds_relation_traversal_media_navigation_field_enrichment_and_frame_history_state ... ok
+test graph::capture::tests::semantic_edge_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::structural_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::tag_presentation_captured_delta_round_trips_through_postcard ... ok
+test graph::capture::tests::traversal_captured_delta_round_trips_through_postcard ... ok
+test graph::chart::tests::a_bearing_node_reports_its_nested_graph ... ok
+test graph::chart::tests::a_web_node_projects_its_identity_address_and_label ... ok
+test graph::chart::tests::a_web_node_reports_its_body_as_content ... ok
+test graph::chart::tests::generic_projection_uses_only_held_semantic_statements ... ok
+test graph::chart::tests::semantic_edges_project_experience_edges_do_not ... ok
+test graph::chart::tests::web_node_satisfies_the_container_capabilities ... ok
+test graph::coverage::residency_scope_tests::surface_scope_does_not_hide_absent_resources ... ok
+test graph::cross_graph::tests::copy_component_carries_a_resource_relation_whole ... ok
+test graph::cross_graph::tests::copy_component_clones_the_connected_subgraph_with_edges_and_provenance ... ok
+test graph::cross_graph::tests::copy_does_not_carry_the_donor_import_provenance ... ok
+test graph::cross_graph::tests::copy_mints_a_fresh_node_cloning_content_with_derivation ... ok
+test graph::display::tests::anonymous_entity_falls_to_incoming_role_then_type ... ok
+test graph::display::tests::anonymous_entity_with_a_name_uses_the_name ... ok
+test graph::display::tests::anonymous_with_nothing_known_gets_a_short_id ... ok
+test graph::display::tests::caption_adds_the_host_only_when_the_label_lacks_it ... ok
+test graph::display::tests::image_resource_uses_its_filename ... ok
+test graph::display::tests::real_title_wins_for_any_node ... ok
+test graph::display::tests::type_display_uses_affirmative_statuses_and_retains_review_records ... ok
+test graph::display::tests::untitled_page_is_named_by_its_address_not_its_host ... ok
+test graph::edge_data::canonical_family_controls::canonical_predicate_owns_classification_and_legacy_hint_is_only_a_fallback ... ok
+test graph::edge_ops::legacy_predicate_revision_tests::legacy_predicate_attribution_repair_alone_advances_revision ... ok
+test graph::edge_ops::legacy_predicate_revision_tests::legacy_predicate_replay_advances_revision_only_for_changed_payload ... ok
+test graph::facet_projection::tests::classification_facets_include_affirmative_statuses_without_discarding_review ... ok
+test graph::facet_projection::tests::projection_computes_in_out_degree ... ok
+test graph::facet_projection::tests::projection_includes_address_and_domain ... ok
+test graph::facet_projection::tests::projection_omits_lifecycle ... ok
+test graph::facet_projection::tests::projection_udc_classes_includes_classification_values ... ok
+test graph::facet_projection::tests::projection_udc_classes_keeps_suggested_classifications_for_review ... ok
+test graph::field_ops::tests::add_field_and_query_round_trip ... ok
+test graph::field_ops::tests::content_tag_selectors_and_facets_follow_shared_resource_after_navigation ... ok
+test graph::field_ops::tests::couplings_add_query_and_retract ... ok
+test graph::field_ops::tests::kind_selection_uses_affirmative_classifications_and_retains_review_records ... ok
+test graph::field_ops::tests::nodes_matching_resolves_selectors ... ok
+test graph::field_ops::tests::retire_field_marks_retired_keeps_definition ... ok
+test graph::frozen_link_tests::freezes_surface_pair_buckets_as_independent_immutable_resource_facets ... ok
+test graph::frozen_link_tests::frozen_link_refuses_identical_parallel_surface_copies_with_the_shared_reason ... ok
+test graph::frozen_link_tests::refuses_empty_pairs_invalid_source_and_mutation_or_removal_of_frozen_owner ... ok
+test graph::frozen_link_tests::resource_freeze_is_separate_and_receiver_reports_missing_references ... ok
+test graph::frozen_selection::canonical_record_tests::frozen_selection_rejects_conflicting_canonical_ids_across_pairs ... ok
+test graph::frozen_selection::canonical_record_tests::frozen_selection_rejects_identical_copies_on_parallel_rows ... ok
+test graph::frozen_selection_tests::frozen_resource_bears_exact_immutable_nested_selection_and_surfaces_show_it ... ok
+test graph::frozen_selection_tests::frozen_selection_copies_parallel_rows_self_relations_and_opaque_handles_exactly ... ok
+test graph::frozen_selection_tests::frozen_wire_accepts_known_default_metadata_but_retained_owner_cannot_drop_it ... ok
+test graph::frozen_selection_tests::immutable_frozen_carrier_refuses_wire_changes_hidden_by_float_decoding ... ok
+test graph::frozen_selection_tests::invalid_frozen_member_refusal_is_atomic_and_records_nothing ... ok
+test graph::frozen_selection_tests::malformed_nested_records_refuse_before_admission_and_nonce_reuse_is_atomic ... ok
+test graph::frozen_selection_tests::transferred_owner_opens_missing_refs_with_coverage_and_refuses_payload_replacement ... ok
+test graph::history::tests::nodes_have_independent_histories_in_one_space ... ok
+test graph::history::tests::record_visit_back_forward_and_forward_fork ... ok
+test graph::history::tests::revisiting_a_url_is_a_distinct_visit ... ok
+test graph::history::tests::seed_linear_and_remove ... ok
+test graph::history::tests::spawned_child_anchors_under_the_parents_current_visit ... ok
+test graph::input_key::tests::input_keys_preserve_clones_separate_forks_and_do_not_cross_snapshots ... ok
+test graph::journal::tests::a_graph_records_its_own_deltas_and_a_clone_does_not ... ok
+test graph::journal::tests::an_author_writes_every_field ... ok
+test graph::journal::tests::assertion_attribution_ignores_automated_versions_and_recording_application ... ok
+test graph::journal::tests::assertion_attribution_keeps_person_iris_and_encodes_opaque_ids ... ok
+test graph::journal::tests::entries_are_attributed_and_author_scoping_works ... ok
+test graph::journal::tests::exact_capture_attribution_survives_later_authors_and_absent_checkpoint_handles ... ok
+test graph::journal::tests::exact_statement_capture_preserves_source_over_journal_recorder ... ok
+test graph::journal::tests::fork_carries_history_then_diverges ... ok
+test graph::journal::tests::journal_round_trips_through_a_muniment_slot ... ok
+test graph::journal::tests::legacy_checkpoint_empty_tail_recovers_proven_minting_attribution ... ok
+test graph::journal::tests::legacy_exact_capture_attribution_matches_checkpoint_replay ... ok
+test graph::journal::tests::legacy_journal_assertions_use_each_entry_author_on_full_and_prefix_replay ... ok
+test graph::journal::tests::prefix_cursors_replay_historical_graphs_without_touching_live_history ... ok
+test graph::journal::tests::records_and_replays_reconstruct_the_graph ... ok
+test graph::journal::tests::replay_records_nothing ... ok
+test graph::journal::tests::replay_reproduces_visit_stamps_and_statement_ids ... ok
+test graph::journal::tests::source_time_contract_selects_immutable_journal_prefixes ... ok
+test graph::journal::tests::the_capture_hook_feeds_the_journal_and_replay_matches_live ... ok
+test graph::legacy_content_migration::tests::content_migration_aliases_keep_divergent_classifications_and_exact_literal_copies ... ok
+test graph::legacy_content_migration::tests::content_migration_baseline_requires_original_mere_only_for_unknown_tags ... ok
+test graph::legacy_content_migration::tests::content_migration_historical_mints_do_not_follow_later_navigation ... ok
+test graph::legacy_family_attribution::tests::checkpoint_writer_does_not_replace_prefix_proven_legacy_member_author ... ok
+test graph::legacy_family_attribution::tests::empty_prefix_and_unknown_baseline_do_not_invent_authors ... ok
+test graph::legacy_family_attribution::tests::prefix_replay_preserves_first_author_then_reassertion_owns_new_generation ... ok
+test graph::legacy_family_attribution::tests::repair_never_rewrites_a_carried_canonical_statement_id ... ok
+test graph::legacy_family_attribution::tests::snapshot_introduces_unknown_members_without_borrowing_checkpoint_writer ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_aggregate_original_pair_survives_withdrawal_and_typed_takeover ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_authored_overrides_apply_at_mint_and_conflicts_keep_typed_history ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_canonical_family_records_keep_exact_ids_without_aggregate_copies ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_claim_identity_survives_absence_and_allows_metadata_updates ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_dedupes_identical_parallel_handle_copies_and_says_so ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_effective_captures_undo_claim_after_later_navigation ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_exact_facet_effects_freeze_birth_clock_and_unknown_values ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_handle_collision_is_atomic_with_distinct_handle_control ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_lifetime_and_pair_membership_survive_navigation_and_restore ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_new_carried_conflicted_placement_refuses_with_known_handle_controls ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_new_handles_honor_selected_baseline_declarations ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_preserves_baseline_handles_and_uncertainty_with_surface_controls ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_probe_reports_mixed_raw_and_carried_evidence_without_aliasing ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_raw_assertion_retains_author_and_historical_endpoints ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_surface_placed_claims_need_no_resource_origin_resolution ... ok
+test graph::legacy_resource_migration::tests::legacy_resource_migration_typed_pair_owns_only_its_pair_and_is_not_repopulated ... ok
+test graph::legacy_resource_migration_copies_tests::legacy_migration_dedupes_identical_copies_in_pre_existing_resource_rows_and_says_so ... ok
+test graph::legacy_resource_migration_copies_tests::legacy_migration_dedupes_identical_copies_of_a_surface_placed_claim_and_says_so ... ok
+test graph::legacy_resource_migration_copies_tests::legacy_migration_dedupes_identical_surface_rows_that_a_journal_entry_sets ... ok
+test graph::legacy_resource_migration_copies_tests::legacy_migration_refuses_a_repeated_handle_on_rows_that_differ ... ok
+test graph::legacy_resource_migration_malformed_tests::legacy_migration_refuses_a_malformed_facet_record_naming_the_node_and_facet ... ok
+test graph::legacy_resource_migration_malformed_tests::legacy_migration_still_skips_an_obsolete_thumbnail_record ... ok
+test graph::legacy_resource_migration_reason_tests::legacy_migration_and_checked_writer_agree_which_reason_changes_a_carried_claim ... ok
+test graph::membership::tests::adding_an_existing_id_live_keeps_the_node_and_the_url_index_honest ... ok
+test graph::membership::tests::copies_share_the_insert_boundary_and_remove_never_keeps_a_dead_witness ... ok
+test graph::membership::tests::copy_onto_an_existing_id_keeps_the_first_node_and_a_repeated_snapshot_id_is_refused ... ok
+test graph::membership::tests::ordinary_edits_upserts_and_clones_keep_membership_but_recreation_does_not ... ok
+test graph::membership::tests::persisted_content_restores_with_new_runtime_membership ... ok
+test graph::merge::tests::an_import_as_edits_matches_the_rebuilt_union ... ok
+test graph::merge::tests::importing_what_the_graph_already_holds_writes_nothing ... ok
+test graph::merge::tests::surface_import_stops_before_losing_resources_with_legacy_positive_control ... ok
+test graph::predicate_declarations::tests::predicate_declarations_checked_load_and_raw_record_reject_invalid_typed_data ... ok
+test graph::predicate_declarations::tests::predicate_declarations_conditional_undo_keeps_later_facets_and_declarations ... ok
+test graph::predicate_declarations::tests::predicate_declarations_conflicts_require_exact_choice_with_unambiguous_controls ... ok
+test graph::predicate_declarations::tests::predicate_declarations_nature_changes_leave_held_claims_in_both_strata_exact ... ok
+test graph::predicate_declarations::tests::predicate_declarations_persist_exact_origins_identity_and_replay ... ok
+test graph::predicate_declarations::tests::predicate_declarations_reused_origin_and_builtin_edits_are_atomic_errors ... ok
+test graph::predicate_registry::tests::all_recognized_kinds_match_the_settled_placement_table ... ok
+test graph::predicate_registry::tests::canonical_predicates_tags_and_open_defaults_have_distinct_controls ... ok
+test graph::predicate_registry::tests::relation_predicate_mapping_is_unique_bidirectional_and_placement_preserving ... ok
+test graph::query::derivation_tests::antiparallel_pair_is_crossed_from_either_end ... ok
+test graph::query::derivation_tests::component_members_is_the_whole_connected_component ... ok
+test graph::query::derivation_tests::ego_members_is_radius_bounded ... ok
+test graph::query::derivation_tests::shown_joins_cost_zero_and_hidden_resources_carry_relation_hops ... ok
+test graph::query::derivation_tests::the_selector_projection_changes_the_derived_shape ... ok
+test graph::query::projected_relation_tests::projected_rows_keep_owner_direction_multiplicity_and_all_shown_pairs ... ok
+test graph::query::row_family_parity_tests::families_equal_row_families_for_every_edge_shape ... ok
+test graph::query::row_family_parity_tests::open_predicate_tag_round_trips_and_keeps_the_semantic_family_byte ... ok
+test graph::relation_read::tests::relation_read_display_role_uses_shown_content_with_surface_control ... ok
+test graph::relation_read::tests::relation_read_equal_indices_select_only_the_named_store ... ok
+test graph::relation_read::tests::relation_read_projection_preserves_parallel_direction_and_binding_fanout ... ok
+test graph::residency::tests::replacement_advances_cache_revisions_and_refuses_atomically ... ok
+test graph::resource::tests::chartulary_indexes_resources_by_the_shared_identity ... ok
+test graph::resource::tests::exact_term_records_and_resource_edge_endpoints_survive_checked_load ... ok
+test graph::resource::tests::resource_identity_is_common_and_canonical_without_renumbering_surfaces ... ok
+test graph::resource::tests::resource_pair_rejects_conflicting_handles_before_replacing_truth ... ok
+test graph::resource::tests::resource_record_validation_is_atomic_and_replacement_clears_old_facets ... ok
+test graph::resource::tests::shown_resource_is_explicit_and_references_guard_inverse_creation ... ok
+test graph::resource::tests::vocabulary_term_identity_preserves_fragments_query_and_case ... ok
+test graph::resource_content_edge_tests::checked_replay_reports_a_refused_edge_set_instead_of_dropping_it ... ok
+test graph::resource_content_edge_tests::legacy_migration_reads_its_source_through_the_staged_state_repeated_rows_included ... ok
+test graph::resource_content_edge_tests::legacy_migration_stages_edge_admission_and_refuses_a_result_that_would_not_reopen ... ok
+test graph::resource_content_edge_tests::replayed_resource_edges_are_refused_where_checked_open_refuses_them ... ok
+test graph::resource_content_edge_tests::replayed_surface_edges_are_refused_where_checked_open_refuses_them ... ok
+test graph::resource_content_handle_tests::checked_replay_reports_a_refused_literal_handle_instead_of_dropping_it ... ok
+test graph::resource_content_handle_tests::installing_facets_that_steal_a_resource_handle_is_refused_and_leaves_the_store ... ok
+test graph::resource_content_handle_tests::replayed_literal_handles_are_refused_where_checked_open_refuses_them ... ok
+test graph::resource_content_tests::resource_content_aliases_literals_navigation_and_exact_retraction ... ok
+test graph::resource_content_tests::resource_content_checked_resource_handles_keep_equal_copies_and_reject_bad_owners ... ok
+test graph::resource_content_tests::resource_content_classification_conflicts_require_precise_edits ... ok
+test graph::resource_content_tests::resource_content_concept_identity_validation_is_atomic_and_exact ... ok
+test graph::resource_content_tests::resource_content_empty_batches_preserve_unbound_and_unknown_state ... ok
+test graph::resource_content_tests::resource_content_legacy_replay_remains_surface_only ... ok
+test graph::resource_content_tests::resource_content_literal_collision_is_atomic_with_distinct_id_control ... ok
+test graph::resource_content_tests::resource_content_tag_owners_exact_labels_and_explicit_reuse ... ok
+test graph::resource_content_tests::resource_content_variant_union_preserves_records_and_origin_controls ... ok
+test graph::resource_lifecycle_tests::canonical_alias_surfaces_share_existing_resource_without_erasing_facets ... ok
+test graph::resource_lifecycle_tests::captured_live_lifecycle_replays_exact_resource_records_and_shown_associations ... ok
+test graph::resource_lifecycle_tests::ensure_binding_is_explicit_and_idempotent_with_missing_surface_control ... ok
+test graph::resource_lifecycle_tests::explicit_refresh_preserves_old_claims_and_ensure_retains_recorded_binding ... ok
+test graph::resource_lifecycle_tests::live_navigation_and_history_switch_binding_without_moving_held_assertions ... ok
+test graph::resource_lifecycle_tests::old_surface_only_captures_do_not_infer_resource_records_or_bindings ... ok
+test graph::resource_tags::canonical_snapshot_tests::repeated_tag_ensure_reads_canonical_assertions_without_adding_a_reason ... ok
+test graph::revert::remap_tests::a_facet_value_is_remapped_only_through_the_ids_it_declares ... ok
+test graph::revert::remap_tests::remap_ids_leaves_an_id_the_map_does_not_name ... ok
+test graph::revert::remap_tests::remap_ids_rewrites_what_touched_names_and_nothing_else ... ok
+test graph::revert::resource_revert_tests::resource_touched_parts_keep_equal_surface_ids_separate ... ok
+test graph::revert::resource_revert_tests::resource_undo_creation_clears_pairs_and_bindings_before_record ... ok
+test graph::revert::resource_revert_tests::resource_undo_creation_keeps_later_surface_and_pair_references ... ok
+test graph::revert::resource_revert_tests::resource_undo_keeps_later_facet_keys_and_reports_same_key_conflicts ... ok
+test graph::revert::resource_revert_tests::surface_creation_undo_preserves_later_shown_binding ... ok
+test graph::revert::resource_revert_tests::surface_removal_undo_restores_shown_binding_and_keeps_later_recreation ... ok
+test graph::revert::tests::a_made_node_goes_with_its_relations_unless_linked_since ... ok
+test graph::revert::tests::a_removed_node_comes_back_whole ... ok
+test graph::revert::tests::a_restored_node_keeps_its_visit_stamp_across_a_clock_tick ... ok
+test graph::revert::tests::a_retitle_reverts_unless_someone_retitled_since ... ok
+test graph::revert::tests::an_undo_reverts_exactly_and_reverting_the_undo_redoes ... ok
+test graph::revert::tests::recreation_restores_facets_when_the_birth_clock_changes ... ok
+test graph::revert::tests::tags_and_facets_revert_part_by_part ... ok
+test graph::revert::tests::the_field_layer_and_import_records_revert ... ok
+test graph::revert::tests::touched_parts_reach_the_edits_that_name_them ... ok
+test graph::snapshot::bounded_resource_tests::borrowed_preflight_serializes_exactly_like_live_conversion ... ok
+test graph::snapshot::bounded_resource_tests::bounded_pair_preserves_all_live_assertions_and_accepts_exact_limits ... ok
+test graph::snapshot::bounded_resource_tests::bounded_pair_refuses_missing_endpoints_and_ignores_other_large_bucket ... ok
+test graph::snapshot::bounded_resource_tests::live_capture_survives_pair_replacement_with_session_assertions ... ok
+test graph::snapshot::bounded_resource_tests::persisted_bytes_can_be_larger_than_raw_bytes ... ok
+test graph::snapshot::checked::assertion_schema_tests::canonical_schema_requires_assertions_and_valid_surface_endpoints ... ok
+test graph::snapshot::checked::assertion_schema_tests::canonical_surface_assertion_handles_are_global_and_identical_copies_are_refused ... ok
+test graph::snapshot::checked::assertion_schema_tests::checked_load_refuses_an_unparseable_or_repeated_surface_id ... ok
+test graph::snapshot::checked::assertion_schema_tests::schema_gate_rejects_unknown_and_mixed_formats_but_accepts_explicit_empty ... ok
+test graph::snapshot::handle_tests::checked_load_refuses_a_resource_row_copied_verbatim_and_keeps_the_original ... ok
+test graph::snapshot::handle_tests::schema_zero_surface_rows_may_repeat_a_handle_but_a_resource_row_may_not_reuse_it ... ok
+test graph::snapshot::tests::checked_loads_refuse_a_navigation_index_that_names_no_row ... ok
+test graph::snapshot::tests::checked_resource_load_accepts_identical_duplicates_and_legacy_empty_columns ... ok
+test graph::snapshot::tests::checked_resource_load_rejects_invalid_endpoints_and_unhandled_semantic_data ... ok
+test graph::snapshot::tests::checked_resource_load_rejects_invalid_facets_and_conflicting_records ... ok
+test graph::snapshot::tests::checked_resource_load_rejects_reused_handles_and_conflicting_shown_resources ... ok
+test graph::snapshot::tests::checked_snapshot_compatibility_wrappers_stop_before_partial_materialization ... ok
+test graph::snapshot::tests::checked_snapshot_recorded_loader_preserves_same_host_resource_containment_and_surface_handles ... ok
+test graph::snapshot::tests::legacy_json_keeps_surfaces_and_has_no_resource_auto_population ... ok
+test graph::snapshot::tests::recorded_load_keeps_a_set_node_url_over_the_navigation_cursor ... ok
+test graph::snapshot::tests::resource_snapshot_columns_and_assertion_metadata_are_postcard_compatible ... ok
+test graph::snapshot::tests::resource_snapshot_json_and_rkyv_preserve_records_pairs_and_shown_resources ... ok
+test graph::snapshot::tests::resource_snapshot_normalizes_only_missing_legacy_attribution ... ok
+test graph::snapshot::tests::shared_payload_conversion_preserves_every_sidecar_and_separate_assertions ... ok
+test graph::snapshot::tests::surface_restore_retains_revision_bumps_and_normalization_boundary ... ok
+test graph::tests::assertion_lifecycle::authored_missing_time_is_stamped_but_imported_missing_time_stays_undated ... ok
+test graph::tests::assertion_lifecycle::authored_reason_reconfirm_stamps_missing_time_but_membership_ensure_does_not ... ok
+test graph::tests::assertion_lifecycle::carried_tombstone_withdraws_exact_held_id_and_stale_assert_cannot_revive_it ... ok
+test graph::tests::assertion_lifecycle::exact_metadata_note_edits_and_clears_basis_note_through_snapshot_roundtrip ... ok
+test graph::tests::assertion_lifecycle::exact_reconfirm_withdraw_and_stale_import_preserve_lifecycle_history ... ok
+test graph::tests::assertion_lifecycle::imported_withdrawal_checks_resource_bucket_pair_ownership ... ok
+test graph::tests::assertion_lifecycle::plain_claim_is_an_empty_reason_key_and_tombstone_only_buckets_leave_topology ... ok
+test graph::tests::assertion_lifecycle::reason_key_reuses_method_version_and_evidence_order_but_splits_changed_reason ... ok
+test graph::tests::assertion_replay::asserting_deltas_carry_source_attribution ... ok
+test graph::tests::assertion_replay::assertion_updates_and_precise_retractions_replay_exactly ... ok
+test graph::tests::assertion_replay::exact_reingest_preserves_each_carried_assertion_id ... ok
+test graph::tests::assertion_replay::exact_replay_normalizes_legacy_buckets_and_aggregate_predicates ... ok
+test graph::tests::assertion_replay::exact_surface_pair_replay_keeps_parallel_traversals_and_complete_payloads ... ok
+test graph::tests::assertion_replay::legacy_semantic_replay_never_stamps_missing_times ... ok
+test graph::tests::assertion_replay::open_predicate_assertion_supplies_attribution_on_an_existing_pair ... ok
+test graph::tests::assertion_replay::predicate_replacement_mints_an_id_and_preserves_the_other_asserter_on_replay ... ok
+test graph::tests::assertion_writers::explicit_source_overrides_writer_fallback_on_both_statement_apis ... ok
+test graph::tests::assertion_writers::new_engine_version_updates_its_assertion_and_other_author_stays_separate ... ok
+test graph::tests::assertion_writers::statement_writers_all_record_the_current_author ... ok
+test graph::tests::assertion_writers::writer_scope_restores_after_nested_returns_and_panic ... ok
+test graph::tests::assertions::legacy_attribution_preserves_known_provenance_ids_and_times ... ok
+test graph::tests::assertions::legacy_insert_api_deduplicates_by_asserter_too ... ok
+test graph::tests::assertions::separate_asserters_keep_their_own_assertions_and_retract_alone ... ok
+test graph::tests::edge_taxonomy::from_tag_rejects_unknown_family ... ok
+test graph::tests::edge_taxonomy::from_tag_rejects_unknown_sub_kind ... ok
+test graph::tests::edge_taxonomy::predicate_iri_round_trips_for_every_semantic_sub_kind ... ok
+test graph::tests::edge_taxonomy::tag_is_unique_per_kind ... ok
+test graph::tests::edge_taxonomy::tag_round_trips_for_every_relation_kind ... ok
+test graph::tests::family_assertions::all_nonsemantic_families_preserve_metadata_and_arrangement_durability ... ok
+test graph::tests::family_assertions::collection_member_reasons_keep_exact_handles_and_stale_replay_cannot_revive ... ok
+test graph::tests::family_assertions::derived_admission_refuses_a_retained_stable_id_on_another_pair ... ok
+test graph::tests::family_assertions::derived_url_and_domain_records_are_rebuilt_without_stale_assertion_metadata ... ok
+test graph::tests::family_assertions::legacy_four_sidecar_json_migrates_to_stable_unknown_records ... ok
+test graph::tests::family_assertions::legacy_surface_identity_uses_pair_local_ordinal_in_snapshot_and_replay ... ok
+test graph::tests::family_assertions::live_resource_rule_output_keeps_recorded_owner_during_compatibility_rebuild ... ok
+test graph::tests::family_assertions::ordinary_legacy_sidecar_rebuild_replaces_only_surface_rule_rows ... ok
+test graph::tests::family_assertions::ordinary_snapshot_rebuild_keeps_withdrawn_rule_identity_terminal ... ok
+test graph::tests::family_assertions::snapshot_rebuild_preserves_unmarked_canonical_urlpath_and_domain_claims ... ok
+test graph::tests::family_read_budget::family_read_budget_keeps_fifty_thousand_withdrawals_out_of_held_rows ... ok
+test graph::tests::filter::and_expr_requires_all_predicates ... ok
+test graph::tests::filter::canonical_keys_are_valid_non_namespaced_extensions_are_not ... ok
+test graph::tests::filter::contains_any_predicate_matches_collection_facet ... ok
+test graph::tests::filter::eq_predicate_matches_scalar_facet ... ok
+test graph::tests::filter::exists_predicate_checks_key_presence ... ok
+test graph::tests::filter::invalid_extension_key_returns_error ... ok
+test graph::tests::filter::not_expr_inverts_predicate ... ok
+test graph::tests::filter::omnibar_facet_token_accepts_namespaced_extension ... ok
+test graph::tests::filter::omnibar_facet_token_parses_eq ... ok
+test graph::tests::filter::omnibar_facet_token_parses_exists ... ok
+test graph::tests::filter::omnibar_facet_token_parses_not_eq ... ok
+test graph::tests::filter::omnibar_facet_token_rejects_invalid_key ... ok
+test graph::tests::filter::omnibar_token_without_prefix_returns_none ... ok
+test graph::tests::filter::omnibar_udc_token_uses_collection_operator ... ok
+test graph::tests::filter::range_predicate_matches_numeric_facet ... ok
+test graph::tests::filter::type_mismatch_returns_error_not_panic ... ok
+test graph::tests::filter::udc_contains_any_supports_parent_prefix_match ... ok
+test graph::tests::legacy_assertions::aggregate_only_snapshots_receive_unknown_attribution_for_both_predicate_forms ... ok
+test graph::tests::legacy_assertions::legacy_statement_load_preserves_ids_times_and_known_attribution ... ok
+test graph::tests::literal_assertions::batched_literal_writer_keeps_asserters_and_replays_first_handles ... ok
+test graph::tests::literal_assertions::single_literal_writer_keeps_asserters_and_replays_first_handles ... ok
+test graph::tests::nodes_and_edges::content_revision_advances_on_node_text_and_membership_only ... ok
+test graph::tests::nodes_and_edges::node_namespace_id_is_deterministic_v5 ... ok
+test graph::tests::nodes_and_edges::projected_neighbors_reads_both_strata_and_a_self_loop_once ... ok
+test graph::tests::nodes_and_edges::retract_relations_where_leaves_what_the_predicate_refuses ... ok
+test graph::tests::nodes_and_edges::revision_advances_on_structural_change_only ... ok
+test graph::tests::nodes_and_edges::statement_assert_dedups_by_content_and_retracts_by_id ... ok
+test graph::tests::nodes_and_edges::test_add_multiple_nodes ... ok
+test graph::tests::nodes_and_edges::test_add_node ... ok
+test graph::tests::nodes_and_edges::test_assert_multiple_relations ... ok
+test graph::tests::nodes_and_edges::test_assert_relation ... ok
+test graph::tests::nodes_and_edges::test_assert_relation_invalid_nodes ... ok
+test graph::tests::nodes_and_edges::test_assert_relation_keeps_surface_and_resource_semantics_separate ... ok
+test graph::tests::nodes_and_edges::test_assert_relation_preserves_generic_semantic_subkind ... ok
+test graph::tests::nodes_and_edges::test_duplicate_url_nodes_have_distinct_ids ... ok
+test graph::tests::nodes_and_edges::test_edge_count ... ok
+test graph::tests::nodes_and_edges::test_empty_graph_operations ... ok
+test graph::tests::nodes_and_edges::test_get_node_by_url ... ok
+test graph::tests::nodes_and_edges::test_get_node_mut ... ok
+test graph::tests::nodes_and_edges::test_graph_new ... ok
+test graph::tests::nodes_and_edges::test_node_count ... ok
+test graph::tests::nodes_and_edges::test_nodes_iterator ... ok
+test graph::tests::nodes_and_edges::test_relations_iterator ... ok
+test graph::tests::nodes_and_edges::test_remove_node ... ok
+test graph::tests::nodes_and_edges::test_remove_nonexistent_node ... ok
+test graph::tests::nodes_and_edges::test_retract_relation_by_sub_kind_between_nodes ... ok
+test graph::tests::nodes_and_edges::test_statement_bucket_keeps_multiple_predicates_on_one_stored_edge ... ok
+test graph::tests::nodes_and_edges::url_grouping_key_matches_site_kanban_authority ... ok
+test graph::tests::nodes_and_edges::visit_revision_advances_on_visit_history_only ... ok
+test graph::tests::production_routing::production_routing_all_fixed_families_have_exact_captures_and_controls ... ok
+test graph::tests::production_routing::production_routing_custom_nature_preserves_handles_and_refuses_conflicts ... ok
+test graph::tests::production_routing::production_routing_live_containment_and_legacy_snapshot_controls_are_separate ... ok
+test graph::tests::production_routing::production_routing_selector_retracts_both_held_stores_but_raw_replay_is_surface_only ... ok
+test graph::tests::production_routing::production_routing_semantic_and_literal_handles_cannot_cross_claim_types ... ok
+test graph::tests::production_routing::production_routing_undo_preserves_later_navigation_and_surface_controls ... ok
+test graph::tests::queries_and_address::component_accessors_handle_empty_graph ... ok
+test graph::tests::queries_and_address::frame_layout_hint_move_reorders_hints ... ok
+test graph::tests::queries_and_address::frame_layout_metadata_survives_snapshot_roundtrip ... ok
+test graph::tests::queries_and_address::hop_distances_shortest_path_and_reachability_use_undirected_connectivity ... ok
+test graph::tests::queries_and_address::navigation_to_a_new_host_clears_the_favicon_a_same_host_path_keeps_it ... ok
+test graph::tests::queries_and_address::node_address_field_is_consistent_with_url_and_address_kind_at_creation ... ok
+test graph::tests::queries_and_address::node_address_field_stays_in_sync_after_url_update ... ok
+test graph::tests::queries_and_address::node_created_with_file_pdf_url_gets_pdf_mime_hint ... ok
+test graph::tests::queries_and_address::node_created_with_file_url_has_file_address_kind ... ok
+test graph::tests::queries_and_address::node_created_with_http_url_has_http_address_kind ... ok
+test graph::tests::queries_and_address::node_created_with_http_url_has_no_mime_hint_by_default ... ok
+test graph::tests::queries_and_address::orphan_and_weak_component_accessors_report_expected_partitions ... ok
+test graph::tests::queries_and_address::removing_tag_prunes_stale_icon_override ... ok
+test graph::tests::queries_and_address::snapshot_roundtrip_preserves_mime_hint_and_address_kind ... ok
+test graph::tests::queries_and_address::sorted_neighbor_and_connected_import_accessors_are_stable ... ok
+test graph::tests::queries_and_address::strongly_connected_components_reports_cycle_partition ... ok
+test graph::tests::queries_and_address::system_tag_icon_cannot_be_overridden ... ok
+test graph::tests::snapshot_basic::a_dated_snapshot_compares_equal_across_a_second_tick ... ok
+test graph::tests::snapshot_basic::assert_semantic_predicate_creates_open_predicate_edge ... ok
+test graph::tests::snapshot_basic::derived_containment_is_rebuilt_child_to_parent_on_load ... ok
+test graph::tests::snapshot_basic::every_authored_containment_sub_kind_survives_snapshot_roundtrip ... ok
+test graph::tests::snapshot_basic::legacy_node_metadata_columns_migrate_once_into_facets ... ok
+test graph::tests::snapshot_basic::nested_graph_survives_snapshot_roundtrip ... ok
+test graph::tests::snapshot_basic::node_properties_survive_snapshot_roundtrip ... ok
+test graph::tests::snapshot_basic::open_predicate_only_edge_survives_snapshot_roundtrip ... ok
+test graph::tests::snapshot_basic::statement_bucket_survives_snapshot_roundtrip ... ok
+test graph::tests::snapshot_basic::test_snapshot_duplicate_urls_last_wins ... ok
+test graph::tests::snapshot_basic::test_snapshot_edge_with_missing_url_is_dropped ... ok
+test graph::tests::snapshot_basic::test_snapshot_empty_graph ... ok
+test graph::tests::snapshot_basic::test_snapshot_preserves_edge_types ... ok
+test graph::tests::snapshot_basic::test_snapshot_preserves_favicon_data ... ok
+test graph::tests::snapshot_basic::test_snapshot_preserves_generic_semantic_relations ... ok
+test graph::tests::snapshot_basic::test_snapshot_preserves_thumbnail_data ... ok
+test graph::tests::snapshot_basic::test_snapshot_preserves_user_grouped_edge_label ... ok
+test graph::tests::snapshot_basic::test_snapshot_preserves_uuid_identity ... ok
+test graph::tests::snapshot_basic::test_snapshot_roundtrip ... ok
+test graph::tests::snapshot_basic::test_snapshot_roundtrips_fields_and_couplings ... ok
+test graph::tests::snapshot_basic::test_snapshot_roundtrips_open_coupling_response ... ok
+test graph::tests::snapshot_basic::test_snapshot_without_field_layer_loads_empty ... ok
+test graph::tests::snapshot_canonical::a_snapshot_is_canonical_whatever_the_insertion_or_hash_order ... ok
+test graph::tests::snapshot_imports::node_provenance_write_changes_only_that_nodes_memberships ... ok
+test graph::tests::snapshot_imports::test_delete_import_record_removes_derived_provenance ... ok
+test graph::tests::snapshot_imports::test_snapshot_roundtrip_preserves_classifications ... ok
+test graph::tests::snapshot_imports::test_snapshot_roundtrip_preserves_import_provenance ... ok
+test graph::tests::snapshot_imports::test_snapshot_roundtrip_preserves_import_records_and_suppression_state ... ok
+test graph::tests::snapshot_imports::test_snapshot_roundtrip_preserves_imported_and_provenance_edge_sub_kinds ... ok
+test graph::tests::snapshot_imports::test_suppress_import_record_membership_updates_node_projection ... ok
+test graph::tests::snapshot_navigation::a_set_address_is_the_address_until_the_next_history_step ... ok
+test graph::tests::snapshot_navigation::live_and_replayed_navigation_leave_one_state ... ok
+test graph::tests::snapshot_navigation::navigate_forward_fork_preserves_the_alternate_branch ... ok
+test graph::tests::snapshot_navigation::navigating_a_node_in_place_moves_its_recency ... ok
+test graph::tests::snapshot_navigation::node_body_round_trips ... ok
+test graph::tests::snapshot_navigation::node_content_round_trips_and_excludes_inline_body ... ok
+test graph::tests::snapshot_navigation::replacing_a_navigation_parents_history_keeps_the_branched_child ... ok
+test graph::tests::snapshot_navigation::snapshot_without_content_hash_stays_readable ... ok
+test graph::tests::snapshot_navigation::test_cold_restore_reapplies_history_index ... ok
+test graph::tests::snapshot_navigation::test_cold_restore_reapplies_last_visited ... ok
+test graph::tests::snapshot_navigation::test_legacy_session_state_stays_readable_for_host_migration ... ok
+test graph::tests::snapshot_navigation::test_restore_fallback_without_session_state ... ok
+test graph::tests::snapshot_navigation::test_update_node_url ... ok
+test graph::tests::snapshot_navigation::test_update_node_url_nonexistent ... ok
+test graph::tests::snapshot_size::common_case_property_metadata_stays_cheap_in_the_facet_sidecar ... ok
+test graph::tests::snapshot_size::common_case_semantic_statement_stays_cheap_in_the_snapshot ... ok
+test graph::tests::snapshot_size::shared_resource_statement_cost_and_metadata_roundtrip_stay_bounded ... ok
+test host_event::tests::command_surface_event_round_trips_with_payload ... ok
+test host_event::tests::host_event_serde_round_trip ... ok
+test host_event::tests::modifiers_default_is_all_false ... ok
+test host_event::tests::pointer_button_other_preserves_value ... ok
+test host_toolkit::tests::preferred_host_order_keeps_egui_last ... ok
+test host_toolkit::tests::toolkit_ids_and_crate_names_are_stable ... ok
+test overlay::tests::glyph_anchor_serde_uses_variant_names ... ok
+test overlay::tests::glyph_overlay_serde_round_trip ... ok
+test overlay::tests::overlay_affordance_style_variants_distinct ... ok
+test paint::tests::color_constants_have_expected_channel_values ... ok
+test paint::tests::color_default_is_white ... ok
+test paint::tests::color_serde_round_trip ... ok
+test paint::tests::stroke_carries_color_and_width ... ok
+test pane::tests::pane_id_display_uses_pane_prefix ... ok
+test pane::tests::pane_id_from_uuid_preserves_value ... ok
+test pane::tests::pane_id_new_produces_distinct_values ... ok
+test pane::tests::pane_id_serde_round_trip ... ok
+test pane::tests::tile_render_mode_default_is_placeholder ... ok
+test pane::tests::tile_render_mode_serde_uses_variant_names ... ok
+test permissions::tests::all_inherit_falls_back_to_default ... ok
+test permissions::tests::decided_by_is_the_narrowest_among_equally_restrictive ... ok
+test permissions::tests::narrower_allow_cannot_broaden_a_broader_deny ... ok
+test permissions::tests::narrower_deny_overrides_broader_allow ... ok
+test permissions::tests::prompt_sits_between_allow_and_deny ... ok
+test permissions::tests::scopes_are_ordered_broad_to_narrow ... ok
+test persistence_edge::statement_serialization_tests::legacy_postcard_sequence_is_not_a_supported_store_format ... ok
+test persistence_edge::statement_serialization_tests::legacy_time_falls_back_only_when_first_time_is_absent ... ok
+test persistence_edge::statement_serialization_tests::statement_binary_current_shape_round_trips ... ok
+test persistence_edge::statement_serialization_tests::statement_json_omits_absent_metadata_and_preserves_explicit_values ... ok
+test persistence_fields::tests::field_and_coupling_rkyv_roundtrip ... ok
+test persistence_fields::tests::field_extent_and_lifecycle_serde_roundtrip ... ok
+test persistence_fields::tests::selector_and_response_serde_roundtrip ... ok
+test signal_router::tests::lifecycle_envelope_reports_lifecycle_topic ... ok
+test signal_router::tests::registry_envelope_reports_registry_topic ... ok
+test tests::actions::a_variant_names_what_it_acts_on ... ok
+test tests::actions::action_id_serde_json_round_trips ... ok
+test tests::actions::the_variants_are_the_catalogue_one_for_one ... ok
+test time::tests::deadline_pattern_round_trip ... ok
+test time::tests::has_reached_is_true_at_and_after_deadline ... ok
+test time::tests::ordering_is_consistent_with_u64 ... ok
+test time::tests::origin_is_zero ... ok
+test time::tests::saturating_add_ms_saturates_at_max ... ok
+test time::tests::saturating_elapsed_since_handles_reverse_order ... ok
+test time::tests::serde_round_trip_preserves_value ... ok
+test time::tests::sub_operator_mirrors_saturating_elapsed_since ... ok
+test time::tests::wall_clock_now_reads_the_platform_clock ... ok
+test types::minting_tests::statement_ids_carry_salt_and_stay_unique ... ok
+test types::property_serialization_tests::property_binary_bytes_match_the_complete_legacy_shape ... ok
+test types::property_serialization_tests::property_json_omits_absent_metadata_and_preserves_explicit_values ... ok
+test verso_address::tests::graph_address_display_roundtrips ... ok
+test verso_address::tests::graphshell_address_display_roundtrips_clip_route ... ok
+test verso_address::tests::graphshell_address_display_roundtrips_note_view_route ... ok
+test verso_address::tests::graphshell_address_display_roundtrips_other_route ... ok
+test verso_address::tests::graphshell_address_display_roundtrips_settings_route ... ok
+test verso_address::tests::graphshell_address_display_roundtrips_tile_group_route ... ok
+test verso_address::tests::graphshell_address_display_roundtrips_tool_route_without_instance ... ok
+test verso_address::tests::graphshell_address_display_roundtrips_view_route ... ok
+test verso_address::tests::node_address_display_roundtrips ... ok
+test verso_address::tests::note_address_display_roundtrips ... ok
+test verso_address::tests::parse_graphshell_settings_advanced_route ... ok
+test verso_address::tests::parse_graphshell_settings_history_route ... ok
+test verso_address::tests::parse_graphshell_settings_root_as_general ... ok
+test verso_address::tests::parse_graphshell_strips_query_and_fragment ... ok
+test verso_address::tests::parse_graphshell_tile_group_route ... ok
+test verso_address::tests::parse_graphshell_tool_route_with_instance ... ok
+test verso_address::tests::parse_graphshell_unknown_route_preserves_segments ... ok
+test verso_address::tests::parse_note_address_strips_query_and_fragment ... ok
+test verso_address::tests::parse_verso_settings_history_route ... ok
+test verso_address::tests::parse_verso_view_note_route ... ok
+test verso_address::tests::test_cjk_safe ... ok
+test verso_address::tests::test_emoji_safe ... ok
+test verso_address::tests::test_empty_string ... ok
+test verso_address::tests::test_exact_length_unchanged ... ok
+test verso_address::tests::test_long_string_truncated ... ok
+test verso_address::tests::test_max_one ... ok
+test verso_address::tests::test_short_string_unchanged ... ok
+
+test result: ok. 528 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.79s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -j1 -p mere-kernel --lib -- --test-threads=1"
+	User time (seconds): 2.73
+	System time (seconds): 0.62
+	Percent of CPU this job got: 89%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.75
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 200860
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 81815
+	Voluntary context switches: 1120
+	Involuntary context switches: 159
+	Swaps: 0
+	File system inputs: 320
+	File system outputs: 128
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

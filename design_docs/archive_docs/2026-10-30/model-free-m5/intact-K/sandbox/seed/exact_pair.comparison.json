@@ -1,0 +1,71 @@
+{
+  "left": {
+    "key": {
+      "annotation_manifest": "sealed-v1:blake3:d6ef457c51677f43f83c0c46581bdf2abaae0f53f38a4e32bf821c93f7af2b59",
+      "graph": "030d6343-0729-4b36-af93-d30e6ce79876",
+      "node": "11bd65fc-adb0-4be9-98d2-a2ffddb51091",
+      "session": "693d917d-4d85-4bbb-999b-96257072b0b8"
+    },
+    "selector": null,
+    "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+  },
+  "new": {
+    "source": {
+      "kind": "fleece",
+      "node": "11bd65fc-adb0-4be9-98d2-a2ffddb51091",
+      "owner": "turnstone/693d917d-4d85-4bbb-999b-96257072b0b8/research/v1",
+      "source": "mere://saved-source/sealed-v1/693d917d-4d85-4bbb-999b-96257072b0b8/030d6343-0729-4b36-af93-d30e6ce79876/11bd65fc-adb0-4be9-98d2-a2ffddb51091/6e6ad8c9267b6441caa70fa6a497af0c496a6b4542086c67028756bc1a23ad61/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+    },
+    "text_hash": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d",
+    "version": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+  },
+  "old": {
+    "source": {
+      "kind": "fleece",
+      "node": "11bd65fc-adb0-4be9-98d2-a2ffddb51091",
+      "owner": "turnstone/693d917d-4d85-4bbb-999b-96257072b0b8/research/v1",
+      "source": "mere://saved-source/sealed-v1/693d917d-4d85-4bbb-999b-96257072b0b8/030d6343-0729-4b36-af93-d30e6ce79876/11bd65fc-adb0-4be9-98d2-a2ffddb51091/d6ef457c51677f43f83c0c46581bdf2abaae0f53f38a4e32bf821c93f7af2b59/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+    },
+    "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e",
+    "version": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+  },
+  "operation": "eidetic.line-comparison/v1",
+  "relationship": "Explicit",
+  "request": "dbcd0a7a-223c-4d5a-993a-82e8f00d3c15",
+  "right": {
+    "key": {
+      "annotation_manifest": "sealed-v1:blake3:6e6ad8c9267b6441caa70fa6a497af0c496a6b4542086c67028756bc1a23ad61",
+      "graph": "030d6343-0729-4b36-af93-d30e6ce79876",
+      "node": "11bd65fc-adb0-4be9-98d2-a2ffddb51091",
+      "session": "693d917d-4d85-4bbb-999b-96257072b0b8"
+    },
+    "selector": null,
+    "text_hash": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+  },
+  "schema": "turnstone.comparison-observation/v1",
+  "session": "693d917d-4d85-4bbb-999b-96257072b0b8",
+  "settings": {
+    "max_diff_work": 1000000,
+    "max_identity_bytes": 65536,
+    "max_input_bytes": 4194304,
+    "max_output_spans": 100000
+  },
+  "spans": [
+    {
+      "kind": "Delete",
+      "new": null,
+      "old": {
+        "end": 57,
+        "start": 0
+      }
+    },
+    {
+      "kind": "Insert",
+      "new": {
+        "end": 59,
+        "start": 0
+      },
+      "old": null
+    }
+  ]
+}

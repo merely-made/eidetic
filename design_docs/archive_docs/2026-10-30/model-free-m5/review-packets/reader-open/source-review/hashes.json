@@ -1,0 +1,11 @@
+{
+  "head": "fe015c5df394f7be514609ebe2e5ecb25528f618",
+  "files": {
+    "src/focus_card.rs": "457ea2d7f27074e2110199c17c84b4fe3d7f9a989f48b5822075c8ee643ebb9b",
+    "src/shell/citation_event_history.rs": "a12f49ec3b4c2bc2f9ee4ea772370640cc64fa324cd45f606db18462645e35e8",
+    "src/shell/drive/shell_scenario_assert_no_surface.rs": "60fead64d7fbd2224bb4f4cfa15d237779e8abe17a79ab584f0f1d8a04223e22",
+    "src/shell/effects/shell_refresh_diagnostic_inspection.rs": "73aee31bc6acaf79e1b7b702dc23f05841147a0295acb5e313d724605a199c49",
+    "src/shell/shell.rs": "634a6e5213e529524051a55df0a24b41c69017deefed07a0ecbe683f78f0c176",
+    "src/shell/shell_new.rs": "8f93684d57bf516692f8d44f5821e3b5284ef8609a2a53197dc0cb649c90d3e1"
+  }
+}

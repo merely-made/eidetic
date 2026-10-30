@@ -1,0 +1,16 @@
+{
+  "scope": "m5-preflight-0d816aaeea63427aa4c002903ec4af4c.scope",
+  "normal": false,
+  "ownership_observed": true,
+  "invocation": "b73859848fa24ca0b40cbc784437744e",
+  "cleanup": [
+    {
+      "scope_signal": "TERM",
+      "reason": "invocation changed or exited"
+    },
+    {
+      "cgroup_empty_verified": true,
+      "backstop_seconds": 243
+    }
+  ]
+}

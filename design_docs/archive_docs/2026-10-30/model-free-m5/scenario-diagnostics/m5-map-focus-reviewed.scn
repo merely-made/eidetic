@@ -1,0 +1,930 @@
+# COMPOSED DRAFT: unrun, not accepted; missing-source fault injection is separate.
+# Draft: real capture, authored citation and real Knot selection; not acceptance complete.
+settle 20
+key escape
+act New session
+settle 5
+act Rename session
+type M5 seed
+key enter
+settle 5
+act New research note
+wait-knot 600 local file:///m5/run/profile/notes/research-
+assert content-live
+click surface:knot role:textbox
+key end
+key enter
+insert M5 authored research note
+key ctrl+s
+settle 30
+assert text saved
+capture 01_authored_note
+act Show document in map
+open ${M5_ORIGIN}/A
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/A
+settle 3
+click-row Save source and keep
+wait-row 600 Source save: Saved
+record-source-captures 02_A1
+act Show document in map
+open ${M5_ORIGIN}/B
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/B
+settle 3
+click-row Save source and keep
+wait-row 600 Source save: Saved
+record-source-captures 03_B
+act Search saved sources
+type naïve — 東京 🐦
+wait-saved-sources 600
+wait-research-search 600
+choose-suggestion Capture: M5 A
+wait-saved-reader 600
+assert snap saved-reader-quote == naïve — 東京 🐦
+record-saved-sources 04_exact_A1
+capture 04_exact_A1
+act Open Inspector pane
+settle 8
+click role:button Clip saved passage
+settle 60
+act Open research note
+settle 20
+assert text M5 authored research note
+assert text Read saved passage 1:
+capture 05_note_citation
+click .knot-saved-citation Read saved passage 1:
+wait-saved-reader 600
+assert snap saved-reader-quote == naïve — 東京 🐦
+record-saved-sources 06_note_citation
+act Open research note
+settle 20
+click surface:knot role:textbox
+key end
+key enter
+insert M5 private preface zebra only this linked finding M5 private suffix otter
+key ctrl+s
+settle 30
+assert text saved
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+key shift+left
+settle 8
+assert snap actions ~ Retain selected Knot text
+capture 07_selected_knot
+act Retain selected Knot text
+settle 60
+act Open node in Workbench
+settle 15
+assert content-live
+assert snap actions ~ Export retained clip
+export-clip ${M5_SELECTION_PACKAGE}
+wait-file 600 ${M5_SELECTION_PACKAGE}
+assert event clip-package-exported
+capture 08_selected_clip
+act Show document in map
+open ${M5_ORIGIN}/swap-a
+settle 15
+act Show document in map
+open ${M5_ORIGIN}/A
+settle 20
+act Open Inspector pane
+settle 5
+wait-source-target 600 ${M5_ORIGIN}/A
+settle 3
+click-row Save source and keep
+wait-row 600 Source save: Saved
+assert row Saved captures: 2
+record-source-captures 09_A2
+act Search saved sources
+type only this linked finding
+wait-saved-sources 600
+wait-research-search 600
+assert snap suggestions ~ Selection:
+capture 10_selection_admitted
+record-saved-sources 10_selection_admitted
+act Save session
+settle 20
+# Draft ordinary Redshank controls; the source is a generated half-second tone
+# copied into the isolated fixture directory, which is removed before reopen.
+open file:///m5/run/fixture-source/episode.mp3
+settle 60
+assert pane turnstone.redshank-episode
+click role:button Add text note
+settle 20
+click role:textbox
+input-text M5 authored Redshank note
+click role:button Save text note
+settle 60
+capture redshank_note_private
+click-note-member
+assert-no-action Retain selected Redshank note
+capture redshank_private_action_absent
+click role:button More actions for note at 0:00
+click role:button Make shareable: note at 0:00
+settle 60
+capture redshank_note_shareable
+click-note-member
+assert snap actions ~ Retain selected Redshank note
+act Retain selected Redshank note
+settle 60
+act Search saved sources
+type M5 authored Redshank note
+wait-saved-sources 600
+wait-research-search 600
+assert snap suggestions ~ Note:
+record-saved-sources redshank_note_admitted
+capture redshank_note_admitted
+# Run while the seed process and its 09_A2.source-captures.json are current.
+# Labels must resolve uniquely; this uses ordinary arrow/enter handling.
+act Search saved sources
+type archive
+wait-saved-sources 600
+wait-research-search 600
+choose-suggestion Compare sources…
+choose-suggestion Left:
+choose-captured-source 09_A2 1
+choose-suggestion Right:
+choose-captured-source 09_A2 3
+choose-suggestion Compare selected sources
+settle 300
+record-comparison exact_pair
+capture exact_pair
+# Draft: ordinary property form actions using actual B passage and graph entities.
+# Search B first; values remain drafts until each ordinary Save acknowledgement.
+act Search saved sources
+type amber lantern
+wait-saved-sources 600
+wait-research-search 600
+choose-suggestion Structured records…
+choose-suggestion Enter a sourced property…
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:clock
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Timestamp
+choose-suggestion Single value
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 2026-10-10T09:30:00Z
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_0
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:clock
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Timestamp
+choose-suggestion Single value
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 2026-10-10T09:30:00Z
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_1
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:clock
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Timestamp
+choose-suggestion Single value
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 2026-10-10T10:15:00Z
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_2
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:clock
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Timestamp
+choose-suggestion Single value
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 2026-10-10T09:30:00Z
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_3
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:clock
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Timestamp
+choose-suggestion Single value
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 2026-10-10T09:30:00Z
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-08-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-09-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_4
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:amount
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Integer
+choose-suggestion Single value
+choose-suggestion Unit
+type units
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 12
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_5
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/B
+choose-suggestion Namespaced property ID
+type m5:amount
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Integer
+choose-suggestion Single value
+choose-suggestion Unit
+type units
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 7
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_6
+# A separate same-named distinct-entity case, multivalued/incompatible and overflow
+# records plus save acknowledgements and independent assertions are still required.
+# Draft ordinary form controls. Run after authoring.scn.fragment while the form and B search result remain active.
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:overflow
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Integer
+choose-suggestion Single value
+choose-suggestion Unit
+type units
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 9223372036854775807
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_7
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/B
+choose-suggestion Namespaced property ID
+type m5:overflow
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Integer
+choose-suggestion Single value
+choose-suggestion Unit
+type units
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 1
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_8
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:multi
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Text
+choose-suggestion Multiple values
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type birch
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_9
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:multi
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Text
+choose-suggestion Multiple values
+choose-suggestion Unit
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type cedar
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_10
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/B
+choose-suggestion Namespaced property ID
+type m5:decimal
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Decimal
+choose-suggestion Single value
+choose-suggestion Unit
+type units
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 1.2
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_11
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/B
+choose-suggestion Namespaced property ID
+type m5:decimal
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Decimal
+choose-suggestion Single value
+choose-suggestion Unit
+type units
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 1.20
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_12
+choose-suggestion Existing entity:
+choose-suggestion ${M5_ORIGIN}/A
+choose-suggestion Namespaced property ID
+type m5:withdraw
+key enter
+choose-suggestion Schema revision
+type 1
+key enter
+choose-suggestion Integer
+choose-suggestion Single value
+choose-suggestion Unit
+type units
+key enter
+choose-suggestion Allowed statuses (comma separated)
+type approved,guessed
+key enter
+choose-suggestion Value:
+type 33
+key enter
+choose-suggestion Context
+type observation
+key enter
+choose-suggestion Status (empty means unknown)
+type approved
+key enter
+choose-suggestion Valid from
+type 2026-10-01T00:00:00Z
+key enter
+choose-suggestion Valid until (exclusive)
+type 2026-11-01T00:00:00Z
+key enter
+choose-suggestion Exact evidence:
+choose-suggestion M5 B
+choose-suggestion Save sourced property
+settle 300
+capture authored_13
+# Return from the authoring form to the current search results.
+choose-suggestion Back
+choose-suggestion Back to search
+# DRAFT fragment: append after real source search and UI-authored properties.
+# This covers menu routes only; meaningful filters, negative cases and assertions remain.
+choose-suggestion Structured records…
+settle 5
+choose-suggestion Operation:
+choose-suggestion Source lookup
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_SourceLookup
+capture op_SourceLookup
+choose-suggestion Operation:
+choose-suggestion Count by source kind
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_CountByProducer
+capture op_CountByProducer
+choose-suggestion Operation:
+choose-suggestion Count by source
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_CountBySource
+capture op_CountBySource
+choose-suggestion Operation:
+choose-suggestion Source timeline
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_SourceTimeline
+capture op_SourceTimeline
+choose-suggestion Operation:
+choose-suggestion Record timeline
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_RecordTimeline
+capture op_RecordTimeline
+choose-suggestion Operation:
+choose-suggestion Tag membership
+choose-suggestion Filters…
+choose-suggestion Tag owner|concept
+type urn:m5:tag-owner|urn:m5:absent-tag
+key enter
+choose-suggestion Back
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_TagMembership
+capture op_TagMembership
+choose-suggestion Filters…
+choose-suggestion Tag owner|concept
+key enter
+choose-suggestion Back
+choose-suggestion Operation:
+choose-suggestion Property lookup
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_PropertyLookup
+capture op_PropertyLookup
+choose-suggestion Operation:
+choose-suggestion Group equal values
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_GroupValues
+capture op_GroupValues
+choose-suggestion Operation:
+choose-suggestion Join by entity ID
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_JoinEntity
+capture op_JoinEntity
+choose-suggestion Operation:
+choose-suggestion Join by source ID
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_JoinSource
+capture op_JoinSource
+choose-suggestion Operation:
+choose-suggestion Compare properties
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_Compare
+capture op_Compare
+choose-suggestion Operation:
+choose-suggestion Sum compatible values
+choose-suggestion Filters…
+choose-suggestion Property ID
+type m5:amount
+key enter
+choose-suggestion Back
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research op_Sum
+capture op_Sum
+# Starts at structured home. Requires exactly one ordinary-authored m5:withdraw
+# assertion and a complete all-admitted scope. Retain withdraw_before as a
+# saved result before withdrawal; the record has a unique result row here.
+choose-suggestion Filters…
+choose-suggestion Property ID
+type m5:withdraw
+key enter
+choose-suggestion Back
+choose-suggestion Operation:
+choose-suggestion Property lookup
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research withdraw_before
+capture withdraw_before
+choose-suggestion Inspect record
+choose-suggestion Inspect current assertion
+settle 300
+# Home is reset to the first row. The inspected record is penultimate,
+# immediately before Back to search; result row has the same label.
+key up
+key up
+key enter
+key up
+key up
+key up
+key up
+assert snap suggestions ~ Current assertion: active
+capture withdraw_inspected_active
+choose-suggestion Withdraw this assertion
+settle 300
+# Withdrawal clears the current structured projection. History opens the
+# current owner binding, which must visibly report withdrawn.
+choose-suggestion Withdrawn record history…
+settle 300
+choose-suggestion Inspect withdrawn assertion
+settle 300
+choose-suggestion Inspect record
+key up
+key up
+key up
+assert snap suggestions ~ Current assertion: withdrawn
+capture withdraw_history
+choose-suggestion Back
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research withdraw_fresh
+capture withdraw_fresh
+choose-suggestion Saved results and replay…
+settle 300
+choose-saved-result withdraw_before
+wait-structured-result 600
+assert snap suggestions ~ frozen historical input
+record-structured-research withdraw_historical
+capture withdraw_historical
+# Starts at structured home with a saved nonempty all-admitted result and a
+# search query already present. Snapshot both sides of the scope change.
+record-structured-research scope_before
+capture scope_before
+choose-suggestion Back to search
+choose-suggestion Search options…
+choose-suggestion Sources and scope
+choose-suggestion Choose sources
+capture scope_empty_selector
+choose-suggestion Back
+choose-suggestion Back to results
+wait-saved-sources 600
+wait-research-search 600
+record-saved-sources scope_empty_search
+capture scope_empty_search
+choose-suggestion Structured records…
+assert snap suggestions ~ Scope: No sources chosen
+# The prior result must have been invalidated; record status before fresh run.
+record-structured-status scope_empty_before_run
+capture scope_empty_before_run
+choose-suggestion Operation:
+choose-suggestion Source lookup
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research scope_empty_fresh
+capture scope_empty_fresh
+# Restore all admitted sources after recording the empty-scope case.
+choose-suggestion Back to search
+choose-suggestion Search options…
+choose-suggestion Sources and scope
+choose-suggestion All admitted
+choose-suggestion Back
+choose-suggestion Back to results
+wait-saved-sources 600
+wait-research-search 600
+choose-suggestion Structured records…
+# Draft: starts at structured home after the successful Sum observation.
+# Each interaction uses ordinary offered menu rows and keyboard input.
+choose-suggestion Filters…
+choose-suggestion Property ID
+type m5:absent
+key enter
+choose-suggestion Back
+choose-suggestion Operation:
+choose-suggestion Property lookup
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research negative_no_match
+capture negative_no_match
+choose-suggestion Filters…
+choose-suggestion Property ID
+key enter
+choose-suggestion Back
+choose-suggestion Operation limits…
+choose-suggestion Records:
+type 1
+key enter
+choose-suggestion Back
+choose-suggestion Run in this scope
+settle 300
+record-structured-status negative_over_limit
+capture negative_over_limit
+# Restore the previous Records value using the reviewed default or an observed
+# before/after setting, then exercise scope-switch, exact missing source, and
+# withdrawn-history controls. These remain unresolved, not asserted here.
+# Restore the known fresh disposable-profile default after the limit case.
+choose-suggestion Operation limits…
+choose-suggestion Records:
+type 100000
+key enter
+choose-suggestion Back
+choose-suggestion Back to search
+act Save session
+settle 60
+record-runtime seed_runtime

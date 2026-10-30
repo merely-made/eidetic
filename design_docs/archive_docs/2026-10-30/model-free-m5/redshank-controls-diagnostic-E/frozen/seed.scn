@@ -1,0 +1,52 @@
+settle 20
+act Open Inspector pane
+settle 5
+act Search saved sources
+type example
+key escape
+act Close pane
+open file:///m5/run/fixture-source/episode.mp3
+settle 60
+assert pane turnstone.redshank-episode
+capture 01_episode_visible
+click surface:contributed role:button Add text note
+settle 20
+capture 02_note_editor
+click surface:contributed role:textbox
+insert M5 authored Redshank note
+click surface:contributed role:button Save text note
+settle 60
+capture 03_saved_note
+assert text M5 authored Redshank note
+click-at 300 300
+settle 5
+act Fit to view
+settle 10
+click-note-member
+assert-no-action Retain selected Redshank note
+capture 04_private_member
+click-at 700 130
+act Maximize pane
+settle 10
+click surface:contributed role:button More actions for note at 0:00
+settle 8
+click surface:contributed role:button Make shareable: note at 0:00
+settle 20
+capture 05_shareable_note
+act Maximize pane
+settle 10
+click-at 300 300
+settle 5
+act Fit to view
+settle 10
+click-note-member
+assert snap actions ~ Retain selected Redshank note
+act Retain selected Redshank note
+settle 60
+act Search saved sources
+type M5 authored Redshank note
+wait-research-search 600
+assert snap suggestions ~ Note:
+record-saved-sources 06_note_research
+capture 06_note_research
+assert event m5-intentional-diagnostic-stop

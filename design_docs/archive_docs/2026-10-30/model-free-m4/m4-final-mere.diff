@@ -1,0 +1,670 @@
+M4 changes only, unrelated concurrent Mere commits omitted
+commit 229f277a252440a8e47aefe367febca3cf502bbb
+Author:     markik <mark_ik@outlook.com>
+AuthorDate: Fri Oct 30 03:10:00 2026 -0400
+Commit:     markik <mark_ik@outlook.com>
+CommitDate: Fri Oct 30 03:10:00 2026 -0400
+
+    Expose bounded live resource-pair capture for exact recovery
+
+diff --git a/crates/graph/graph-kernel/src/graph/mod.rs b/crates/graph/graph-kernel/src/graph/mod.rs
+index 8a9af2b38..532421755 100644
+--- a/crates/graph/graph-kernel/src/graph/mod.rs
++++ b/crates/graph/graph-kernel/src/graph/mod.rs
+@@ -112,6 +112,7 @@ pub mod predicate_declarations;
+ pub mod predicate_registry;
+ mod relation_read;
+ pub mod resource;
++mod resource_pair_bounds;
+ pub mod resource_classifications;
+ pub mod resource_content;
+ #[cfg(test)]
+diff --git a/crates/graph/graph-kernel/src/graph/resource.rs b/crates/graph/graph-kernel/src/graph/resource.rs
+index bdff7d72e..ecd023a5c 100644
+--- a/crates/graph/graph-kernel/src/graph/resource.rs
++++ b/crates/graph/graph-kernel/src/graph/resource.rs
+@@ -12,6 +12,8 @@ use chartulary::{Address, Addressed, Identified};
+ use petgraph::visit::{EdgeRef, IntoEdgeReferences};
+ use uuid::Uuid;
+ 
++pub use super::resource_pair_bounds::ResourceEdgesBoundError;
++
+ /// A tagging assertion points from the tagged resource to its concept resource.
+ pub const TAGGED_WITH_IRI: &str = "https://mere.computer/ns/rel#taggedWith";
+ 
+diff --git a/crates/graph/graph-kernel/src/graph/resource_pair_bounds.rs b/crates/graph/graph-kernel/src/graph/resource_pair_bounds.rs
+new file mode 100644
+index 000000000..25cf48dfd
+--- /dev/null
++++ b/crates/graph/graph-kernel/src/graph/resource_pair_bounds.rs
+@@ -0,0 +1,230 @@
++// Copyright 2026 Mark Alan Boykin
++// This Source Code Form is subject to the terms of the Mozilla Public
++// License, v. 2.0. If a copy of the MPL was not distributed with this
++// file, You can obtain one at https://mozilla.org/MPL/2.0/.
++// SPDX-License-Identifier: MPL-2.0
++
++//! Bounded live capture of a resource pair for exact replacement.
++
++use std::collections::BTreeSet;
++use std::io::{self, Write};
++
++use serde::ser::{SerializeSeq, SerializeStruct};
++use serde::{Serialize, Serializer};
++use uuid::Uuid;
++
++use super::{EdgeFamily, EdgePayload, Graph, SemanticStatement};
++use crate::graph::edge_data::TraversalData;
++use crate::persistence::PersistedEdge;
++use crate::types::GraphScope;
++
++/// A bounded pair capture refused without returning any partial rows.
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum ResourceEdgesBoundError {
++    MissingEndpoint,
++    EdgeLimitExceeded,
++    ByteLimitExceeded,
++    Serialization,
++}
++
++impl std::fmt::Display for ResourceEdgesBoundError {
++    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++        let message = match self {
++            Self::MissingEndpoint => "resource pair endpoint missing",
++            Self::EdgeLimitExceeded => "resource pair edge limit exceeded",
++            Self::ByteLimitExceeded => "resource pair byte limit exceeded",
++            Self::Serialization => "resource pair serialization failed",
++        };
++        f.write_str(message)
++    }
++}
++
++impl std::error::Error for ResourceEdgesBoundError {}
++
++impl Graph {
++    /// Capture all live rows for a directed resource pair, including session
++    /// assertions omitted from durable snapshots. This is suitable for exact
++    /// replacement, not a substitute for a durable graph snapshot.
++    ///
++    /// `max_edges` limits pair rows. `max_bytes` independently limits each of
++    /// the raw payload and returned row JSON arrays, including array framing.
++    /// Both limits are checked before cloning any persisted rows. Pair lookup
++    /// scans source adjacency metadata; unrelated payloads are not serialized.
++    pub fn persisted_resource_edges_between_bounded(
++        &self,
++        from: Uuid,
++        to: Uuid,
++        max_edges: usize,
++        max_bytes: usize,
++    ) -> Result<Vec<PersistedEdge>, ResourceEdgesBoundError> {
++        let (Some(source), Some(target)) =
++            (self.resources.key_of(&from), self.resources.key_of(&to))
++        else {
++            return Err(ResourceEdgesBoundError::MissingEndpoint);
++        };
++        let pair = || self.resources.inner().edges_connecting(source, target);
++        let mut count = 0usize;
++        for _ in pair() {
++            if count == max_edges {
++                return Err(ResourceEdgesBoundError::EdgeLimitExceeded);
++            }
++            count += 1;
++        }
++
++        measure_array(pair().map(|edge| edge.weight()), max_bytes)?;
++        measure_array(
++            pair().map(|edge| BorrowedEdge::new(from, to, edge.weight())),
++            max_bytes,
++        )?;
++
++        Ok(pair()
++            .map(|edge| {
++                let payload = edge.weight();
++                let mut persisted = super::snapshot::persisted_edge_for_ids(from, to, payload);
++                persisted.assertions = Some(
++                    payload
++                        .assertions()
++                        .iter()
++                        .map(super::snapshot::to::persisted_assertion)
++                        .collect(),
++                );
++                persisted
++            })
++            .collect())
++    }
++}
++
++struct BoundedWriter {
++    bytes: usize,
++    limit: usize,
++    exceeded: bool,
++}
++
++impl Write for BoundedWriter {
++    fn write(&mut self, buffer: &[u8]) -> io::Result<usize> {
++        match self.bytes.checked_add(buffer.len()) {
++            Some(total) if total <= self.limit => {
++                self.bytes = total;
++                Ok(buffer.len())
++            },
++            _ => {
++                self.exceeded = true;
++                Err(io::Error::other("byte limit exceeded"))
++            },
++        }
++    }
++    fn flush(&mut self) -> io::Result<()> {
++        Ok(())
++    }
++}
++
++fn measure_array<I, T>(items: I, limit: usize) -> Result<(), ResourceEdgesBoundError>
++where
++    I: IntoIterator<Item = T>,
++    T: Serialize,
++{
++    let mut writer = BoundedWriter {
++        bytes: 0,
++        limit,
++        exceeded: false,
++    };
++    let result = (|| -> Result<(), serde_json::Error> {
++        writer.write_all(b"[").map_err(serde_json::Error::io)?;
++        let mut first = true;
++        for item in items {
++            if !first {
++                writer.write_all(b",").map_err(serde_json::Error::io)?;
++            }
++            first = false;
++            serde_json::to_writer(&mut writer, &item)?;
++        }
++        writer.write_all(b"]").map_err(serde_json::Error::io)?;
++        Ok(())
++    })();
++    match result {
++        Ok(()) => Ok(()),
++        Err(_) if writer.exceeded => Err(ResourceEdgesBoundError::ByteLimitExceeded),
++        Err(_) => Err(ResourceEdgesBoundError::Serialization),
++    }
++}
++
++// Borrow the live data while matching PersistedEdge's JSON shape. The parity
++// test detects any change in the canonical conversion or serialized shape.
++#[derive(Serialize)]
++pub(super) struct BorrowedEdge<'a> {
++    from_node_id: String,
++    to_node_id: String,
++    families: BTreeSet<EdgeFamily>,
++    semantic: Option<()>,
++    traversal: Option<&'a TraversalData>,
++    containment: Option<()>,
++    arrangement: Option<()>,
++    imported: Option<()>,
++    provenance: Option<()>,
++    assertions: BorrowedAssertions<'a>,
++}
++
++impl<'a> BorrowedEdge<'a> {
++    pub(super) fn new(from: Uuid, to: Uuid, payload: &'a EdgePayload) -> Self {
++        Self {
++            from_node_id: from.to_string(),
++            to_node_id: to.to_string(),
++            families: payload.families(),
++            semantic: None,
++            traversal: payload.traversal_data(),
++            containment: None,
++            arrangement: None,
++            imported: None,
++            provenance: None,
++            assertions: BorrowedAssertions(payload.assertions()),
++        }
++    }
++}
++
++struct BorrowedAssertions<'a>(&'a [SemanticStatement]);
++
++impl Serialize for BorrowedAssertions<'_> {
++    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
++        let mut seq = serializer.serialize_seq(Some(self.0.len()))?;
++        for statement in self.0 {
++            seq.serialize_element(&BorrowedStatement(statement))?;
++        }
++        seq.end()
++    }
++}
++
++struct BorrowedStatement<'a>(&'a SemanticStatement);
++
++impl Serialize for BorrowedStatement<'_> {
++    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
++        let statement = self.0;
++        let mut state = serializer.serialize_struct("PersistedSemanticStatement", 10)?;
++        state.serialize_field("statement_id", &statement.statement_id)?;
++        state.serialize_field("predicate", &statement.predicate)?;
++        if statement.recognized_sub_kind.is_some() {
++            state.serialize_field("recognized_sub_kind", &statement.recognized_sub_kind)?;
++        }
++        if statement.label.is_some() {
++            state.serialize_field("label", &statement.label)?;
++        }
++        if statement.graph_scope != GraphScope::Default {
++            state.serialize_field("graph_scope", &statement.graph_scope)?;
++        }
++        if statement.provenance_iri.is_some() {
++            state.serialize_field("provenance_iri", &statement.provenance_iri)?;
++        }
++        if statement.asserted_at_ms.is_some() {
++            state.serialize_field("asserted_at_ms", &statement.asserted_at_ms)?;
++        }
++        if statement.first_asserted_ms.is_some() || statement.asserted_at_ms.is_some() {
++            state.serialize_field("first_asserted_ms", &statement.first_asserted_ms)?;
++        }
++        if statement.withdrawn.is_some() {
++            state.serialize_field("withdrawn", &statement.withdrawn)?;
++        }
++        if !statement.basis.is_empty() || statement.label.is_some() {
++            state.serialize_field("basis", &statement.basis)?;
++        }
++        state.end()
++    }
++}
+diff --git a/crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs b/crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs
+new file mode 100644
+index 000000000..635b297b3
+--- /dev/null
++++ b/crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs
+@@ -0,0 +1,191 @@
++// Copyright 2026 Mark Alan Boykin
++// This Source Code Form is subject to the terms of the Mozilla Public
++// License, v. 2.0. If a copy of the MPL was not distributed with this
++// file, You can obtain one at https://mozilla.org/MPL/2.0/.
++// SPDX-License-Identifier: MPL-2.0
++
++use super::tests::{complete_payload, resource_snapshot_fixture};
++use crate::graph::resource::ResourceEdgesBoundError;
++use crate::graph::resource_pair_bounds::BorrowedEdge;
++use crate::graph::{EdgePayload, Graph};
++use crate::persistence::PersistedEdge;
++use crate::types::AssertionWithdrawal;
++use uuid::Uuid;
++
++fn fixture() -> (Graph, Uuid, Uuid, Vec<EdgePayload>) {
++    let (snapshot, _, from, other) = resource_snapshot_fixture();
++    let mut graph = Graph::try_from_snapshot(&snapshot).unwrap();
++    let mut payload = complete_payload();
++    for statement in &mut payload.assertions.statements {
++        statement.statement_id = format!("live-{}", statement.statement_id);
++        statement.normalize_legacy_asserter();
++    }
++    payload.assertions.statements[0].withdrawn = Some(AssertionWithdrawal {
++        at_ms: Some(99),
++        by: Some("https://withdrawer.test/".into()),
++    });
++    let mut second = EdgePayload::new();
++    second.push_persisted_semantic_statement(payload.assertions.statements[1].clone());
++    second.assertions.statements[0].statement_id = "different-handle".into();
++    let key = graph.resources.key_of(&from).unwrap();
++    graph.resources.connect(key, key, payload.clone());
++    graph.resources.connect(key, key, second.clone());
++    let raw = graph
++        .resources
++        .inner()
++        .edges_connecting(key, key)
++        .map(|edge| edge.weight().clone())
++        .collect();
++    (graph, from, other, raw)
++}
++
++#[test]
++fn live_capture_survives_pair_replacement_with_session_assertions() {
++    let (mut graph, from, _, raw) = fixture();
++    let mut captured = graph
++        .persisted_resource_edges_between_bounded(from, from, 2, usize::MAX)
++        .unwrap();
++    assert_eq!(
++        captured
++            .iter()
++            .map(|edge| edge.retained_assertions().len())
++            .sum::<usize>(),
++        raw.iter()
++            .map(|payload| payload.assertions().len())
++            .sum::<usize>()
++    );
++    let mut added = captured[0].clone();
++    added.assertions.as_mut().unwrap().truncate(1);
++    added.retained_assertions_mut()[0].statement_id = "fresh-recovery-handle".into();
++    captured.push(added);
++    assert!(graph.set_resource_edges_between(from, from, &captured));
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(from, from, 3, usize::MAX),
++        Ok(captured)
++    );
++}
++
++fn live_edges(from: Uuid, raw: &[EdgePayload]) -> Vec<PersistedEdge> {
++    raw.iter()
++        .map(|payload| {
++            let mut edge = super::persisted_edge_for_ids(from, from, payload);
++            edge.assertions = Some(
++                payload
++                    .assertions()
++                    .iter()
++                    .map(super::to::persisted_assertion)
++                    .collect(),
++            );
++            edge
++        })
++        .collect()
++}
++
++#[test]
++fn bounded_pair_preserves_all_live_assertions_and_accepts_exact_limits() {
++    let (graph, from, _, raw) = fixture();
++    let durable = graph
++        .to_snapshot()
++        .resource_edges
++        .into_iter()
++        .filter(|edge| edge.from_node_id == from.to_string() && edge.to_node_id == from.to_string())
++        .collect::<Vec<_>>();
++    let expected = live_edges(from, &raw);
++    assert!(
++        expected
++            .iter()
++            .map(|edge| edge.retained_assertions().len())
++            .sum::<usize>()
++            > durable
++                .iter()
++                .map(|edge| edge.retained_assertions().len())
++                .sum::<usize>()
++    );
++    let bytes = serde_json::to_vec(&raw)
++        .unwrap()
++        .len()
++        .max(serde_json::to_vec(&expected).unwrap().len());
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(from, from, expected.len(), bytes),
++        Ok(expected)
++    );
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(from, from, 1, bytes),
++        Err(ResourceEdgesBoundError::EdgeLimitExceeded)
++    );
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(from, from, 2, bytes - 1),
++        Err(ResourceEdgesBoundError::ByteLimitExceeded)
++    );
++}
++
++#[test]
++fn borrowed_preflight_serializes_exactly_like_live_conversion() {
++    let (_, from, _, raw) = fixture();
++    for payload in raw {
++        let borrowed = BorrowedEdge::new(from, from, &payload);
++        let converted = live_edges(from, std::slice::from_ref(&payload))
++            .pop()
++            .unwrap();
++        assert_eq!(
++            serde_json::to_vec(&borrowed).unwrap(),
++            serde_json::to_vec(&converted).unwrap()
++        );
++    }
++}
++
++#[test]
++fn persisted_bytes_can_be_larger_than_raw_bytes() {
++    let (mut graph, _, other, _) = fixture();
++    let key = graph.resources.key_of(&other).unwrap();
++    let payload = EdgePayload::new();
++    let raw_bytes = serde_json::to_vec(&[&payload]).unwrap().len();
++    let expected = vec![super::persisted_edge_for_ids(other, other, &payload)];
++    let persisted_bytes = serde_json::to_vec(&expected).unwrap().len();
++    assert!(persisted_bytes > raw_bytes);
++    graph.resources.connect(key, key, payload);
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(other, other, 1, persisted_bytes),
++        Ok(expected)
++    );
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(other, other, 1, persisted_bytes - 1),
++        Err(ResourceEdgesBoundError::ByteLimitExceeded)
++    );
++}
++
++#[test]
++fn bounded_pair_refuses_missing_endpoints_and_ignores_other_large_bucket() {
++    let (mut graph, from, other, raw) = fixture();
++    let key = graph.resources.key_of(&other).unwrap();
++    let mut huge = EdgePayload::new();
++    huge.push_persisted_semantic_statement(raw[0].assertions.statements[0].clone());
++    huge.assertions.statements[0].label = Some("x".repeat(1_000_000));
++    let source = graph.resources.key_of(&from).unwrap();
++    graph.resources.connect(source, key, huge);
++    let expected = live_edges(from, &raw);
++    let bytes = serde_json::to_vec(&raw)
++        .unwrap()
++        .len()
++        .max(serde_json::to_vec(&expected).unwrap().len());
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(from, from, 2, bytes),
++        Ok(expected)
++    );
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(from, other, 0, 1),
++        Err(ResourceEdgesBoundError::EdgeLimitExceeded)
++    );
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(from, Uuid::nil(), 0, 0),
++        Err(ResourceEdgesBoundError::MissingEndpoint)
++    );
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(other, from, 0, 2),
++        Ok(vec![])
++    );
++    assert_eq!(
++        graph.persisted_resource_edges_between_bounded(other, from, 0, 1),
++        Err(ResourceEdgesBoundError::ByteLimitExceeded)
++    );
++}
+diff --git a/crates/graph/graph-kernel/src/graph/snapshot/mod.rs b/crates/graph/graph-kernel/src/graph/snapshot/mod.rs
+index 0aa9c3713..6f0cca836 100644
+--- a/crates/graph/graph-kernel/src/graph/snapshot/mod.rs
++++ b/crates/graph/graph-kernel/src/graph/snapshot/mod.rs
+@@ -37,6 +37,8 @@ pub(crate) use to::persisted_edge_for_ids;
+ #[cfg(test)]
+ mod handle_tests;
+ #[cfg(test)]
++mod bounded_resource_tests;
++#[cfg(test)]
+ mod tests;
+ 
+ impl Graph {
+diff --git a/crates/graph/graph-kernel/src/graph/snapshot/tests.rs b/crates/graph/graph-kernel/src/graph/snapshot/tests.rs
+index 4d49f25bb..111ff0149 100644
+--- a/crates/graph/graph-kernel/src/graph/snapshot/tests.rs
++++ b/crates/graph/graph-kernel/src/graph/snapshot/tests.rs
+@@ -17,7 +17,7 @@ use crate::persistence::{
+ };
+ use crate::types::GraphScope;
+ 
+-fn complete_payload() -> EdgePayload {
++pub(super) fn complete_payload() -> EdgePayload {
+     let mut payload = EdgePayload::new();
+     for sub_kind in all_semantic_sub_kinds() {
+         for (asserter, time) in [("https://alice.test/", 11), ("https://bob.test/", 22)] {
+@@ -162,7 +162,7 @@ fn surface_restore_retains_revision_bumps_and_normalization_boundary() {
+     );
+ }
+ 
+-fn resource_snapshot_fixture() -> (GraphSnapshot, Uuid, Uuid, Uuid) {
++pub(super) fn resource_snapshot_fixture() -> (GraphSnapshot, Uuid, Uuid, Uuid) {
+     let mut graph = Graph::new();
+     let surface = graph.add_node("https://surface.test/".into(), Point2D::new(0.0, 0.0));
+     let surface_id = graph.get_node(surface).unwrap().id;
+
+commit c1035649255c934e057fe7eb0e0ebdf8881c1024
+Author:     markik <mark_ik@outlook.com>
+AuthorDate: Fri Oct 30 04:33:14 2026 -0400
+Commit:     markik <mark_ik@outlook.com>
+CommitDate: Fri Oct 30 04:33:14 2026 -0400
+
+    Preserve storage error identity through retained clip reads
+
+diff --git a/Cargo.lock b/Cargo.lock
+index 73da12c84..3fbd44e64 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -10315,6 +10315,7 @@ dependencies = [
+ name = "mere-lanes"
+ version = "0.1.0"
+ dependencies = [
++ "async-trait",
+  "bytes",
+  "document-canvas",
+  "document-session-api",
+@@ -10326,6 +10327,7 @@ dependencies = [
+  "inker",
+  "mere-fleece",
+  "mockito",
++ "muniment",
+  "nematic",
+  "netfetcher",
+  "netrender",
+diff --git a/crates/system/document-lanes/Cargo.toml b/crates/system/document-lanes/Cargo.toml
+index 6501c7293..8b9dad870 100644
+--- a/crates/system/document-lanes/Cargo.toml
++++ b/crates/system/document-lanes/Cargo.toml
+@@ -53,6 +53,8 @@ tempfile = { version = "3", optional = true }
+ # Offline mock HTTP server for the netfetch integration tests; runs without a
+ # live network.
+ mockito = "1"
++async-trait = "0.1"
++muniment.workspace = true
+ wgpu = { workspace = true }
+ pollster = "0.4"
+ tempfile = "3"
+diff --git a/crates/system/document-lanes/src/retained_clip.rs b/crates/system/document-lanes/src/retained_clip.rs
+index 59975671f..6e29fa32b 100644
+--- a/crates/system/document-lanes/src/retained_clip.rs
++++ b/crates/system/document-lanes/src/retained_clip.rs
+@@ -113,24 +113,28 @@ pub async fn read_store(
+     sealer: Option<&dyn eidetic::seal::PayloadSealer>,
+     id: ManifestId,
+     policy: ClipLimits,
+-) -> Result<ClipView, String> {
++) -> eidetic::Result<ClipView> {
+     let package =
+         fleece::portable_clip::export_selected_clip(store, sealer, id, &["body".into()], policy)
+-            .await
+-            .map_err(|e| e.to_string())?;
++            .await?;
+     if package.clip.parts.len() != 1 {
+-        return Err("This clip needs a receiving adapter for its additional parts".into());
++        return Err(eidetic::Error::new(
++            "This clip needs a receiving adapter for its additional parts",
++        ));
+     }
+     let part = &package.clip.parts[0];
+     let bytes = package
+         .payloads
+         .into_iter()
+         .find(|p| p.id == part.manifest)
+-        .ok_or("Retained clip body is missing")?
++        .ok_or_else(|| eidetic::Error::new("Retained clip body is missing"))?
+         .bytes;
+     let body = match part.media_type.as_str() {
+         "text/plain" | "text/plain;charset=utf-8" | "text/plain; charset=utf-8" => {
+-            ClipBody::Text(String::from_utf8(bytes).map_err(|_| "Clip text is not UTF-8")?)
++            ClipBody::Text(
++                String::from_utf8(bytes)
++                    .map_err(|_| eidetic::Error::new("Clip text is not UTF-8"))?,
++            )
+         },
+         "audio/wav" | "audio/x-wav"
+             if bytes.starts_with(b"RIFF") && bytes.get(8..12) == Some(b"WAVE") =>
+@@ -138,10 +142,10 @@ pub async fn read_store(
+             ClipBody::Voice(bytes)
+         },
+         _ => {
+-            return Err(format!(
++            return Err(eidetic::Error::new(format!(
+                 "This host cannot present clip media {}",
+                 part.media_type
+-            ));
++            )));
+         },
+     };
+     Ok(ClipView {
+diff --git a/crates/system/document-lanes/src/retained_clip/tests.rs b/crates/system/document-lanes/src/retained_clip/tests.rs
+index 77dc49719..5d60a5324 100644
+--- a/crates/system/document-lanes/src/retained_clip/tests.rs
++++ b/crates/system/document-lanes/src/retained_clip/tests.rs
+@@ -4,8 +4,69 @@
+ // file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ // SPDX-License-Identifier: MPL-2.0
+ use super::*;
++use async_trait::async_trait;
+ use inker::SessionEngine;
+ 
++#[test]
++fn retained_clip_read_keeps_storage_refusal_display() {
++    struct UnsupportedStore;
++    type StoreResult<T> = std::result::Result<T, muniment::error::StoreError>;
++
++    #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
++    #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
++    impl eidetic::Backend for UnsupportedStore {
++        async fn get(&self, _key: &str) -> StoreResult<Option<Vec<u8>>> {
++            Err(muniment::error::StoreError::Backend("disk failed".into()))
++        }
++        async fn put(&self, _key: &str, _bytes: &[u8]) -> StoreResult<()> {
++            unreachable!("read does not write")
++        }
++        async fn delete(&self, _key: &str) -> StoreResult<()> {
++            unreachable!("read does not delete")
++        }
++        async fn list(&self, _prefix: &str) -> StoreResult<Vec<String>> {
++            unreachable!("read does not list")
++        }
++        async fn scan(&self, _start: &str, _end: &str) -> StoreResult<Vec<String>> {
++            unreachable!("read does not scan")
++        }
++        async fn apply(&self, _ops: &[eidetic::WriteOp]) -> StoreResult<()> {
++            unreachable!("read does not apply writes")
++        }
++    }
++
++    pollster::block_on(async {
++        let mut store = UnsupportedStore;
++        let error = read_store(
++            &mut store,
++            None,
++            ManifestId::of_blob(b"retained-id"),
++            limits(),
++        )
++        .await
++        .err()
++        .expect("storage refusal");
++        assert_eq!(error.message, "backend: disk failed");
++    });
++}
++
++#[test]
++fn retained_clip_semantic_missing_error_keeps_its_message() {
++    pollster::block_on(async {
++        let mut store = eidetic::MemoryBackend::new();
++        let error = read_store(
++            &mut store,
++            None,
++            ManifestId::of_blob(b"missing-retained-id"),
++            limits(),
++        )
++        .await
++        .err()
++        .expect("missing clip");
++        assert_eq!(error.message, "retained clip missing");
++    });
++}
++
+ fn limits() -> ClipLimits {
+     ClipLimits {
+         max_parts: 16,

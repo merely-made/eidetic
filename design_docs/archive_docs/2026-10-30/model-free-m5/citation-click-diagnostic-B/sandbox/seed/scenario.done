@@ -1,0 +1,15 @@
+RESULT fail
+captured 01_authored_note
+captured 04_exact_A1
+captured 05_note_citation
+captured 06_before_citation_click
+captured 06_citation_peek
+captured 07_after_citation_click
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["pane-summoned Read", "workbench-opened mere://saved-source/sealed-v1/d55ec3dd-9bfc-480c-b82b-7751b4fa5835/6f4d952e-505e-4555-b7a2-0de94dcdc0de/83c10f62-071d-4a52-8146-e85a9201c532/e5eca47ac3dda75a92286cba8ba60dbf3f50df5633cf91025595ec030080b5dc/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57", "address-opened file:///m5/run/profile/notes/research-123a42d3-6ded-40a8-8d48-3a65f5753366.djot", "content 574ec5e1-25ca-4b1f-9f8a-641857a3389b live", "content-title 574ec5e1-25ca-4b1f-9f8a-641857a3389b M5 A", "content-title 574ec5e1-25ca-4b1f-9f8a-641857a3389b Saved: M5 A"])
+presentation frames=354 captures=6 blank=0
+capture /m5/run/seed/01_authored_note.png digest=0cb483ce2ba84cf2 blank=false
+capture /m5/run/seed/04_exact_A1.png digest=90831538cde4ca7c blank=false
+capture /m5/run/seed/05_note_citation.png digest=9b9c376820f69572 blank=false
+capture /m5/run/seed/06_before_citation_click.png digest=9b9c376820f69572 blank=false
+capture /m5/run/seed/06_citation_peek.png digest=22d4461f415fdd63 blank=false
+capture /m5/run/seed/07_after_citation_click.png digest=e06077006e1d882e blank=false

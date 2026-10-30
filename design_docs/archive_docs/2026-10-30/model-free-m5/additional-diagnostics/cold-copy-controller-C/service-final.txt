@@ -1,0 +1,10 @@
+Id=m5-cold-copy-controller-20261030-c.service
+ActiveState=active
+SubState=exited
+InvocationID=dd3a490090804a488784df11e72f1483
+MainPID=0
+Result=success
+ExecMainPID=1252754
+ExecMainCode=1
+ExecMainStatus=0
+ControlGroup=

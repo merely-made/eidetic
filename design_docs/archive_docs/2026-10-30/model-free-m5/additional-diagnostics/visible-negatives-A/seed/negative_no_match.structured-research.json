@@ -1,0 +1,226 @@
+{
+  "busy": false,
+  "content_manifest": "blake3:0f1e81aeaabbce385f1a6ac37c5250c21d689893b8d62ddbfb34084b75ba5574",
+  "context_generation": "8f1b1b8f-0cf1-4e24-9ae8-e81d61bcddeb",
+  "graph_revisions": [
+    {
+      "graph": "3cd89151-5f85-4c52-babb-724ad8e69185",
+      "revision": 36
+    }
+  ],
+  "historical": false,
+  "request_id": "ecc9d280-d9e8-4fb5-8278-2d455cf2aba2",
+  "result": {
+    "operation_version": "eidetic.structured-records/v2",
+    "query": {
+      "filters": {
+        "entity": null,
+        "property": "m5:absent",
+        "schema_revision": null,
+        "source": null,
+        "status": null,
+        "tag": null,
+        "unit": null,
+        "valid_time": null
+      },
+      "operation": "PropertyLookup"
+    },
+    "rows": [],
+    "settings": {
+      "max_input_bytes": 16777216,
+      "max_output_bytes": 16777216,
+      "max_records": 100000,
+      "max_rows": 100000,
+      "max_sources": 10000,
+      "max_validation_bytes": 16777216,
+      "max_work": 1000000
+    },
+    "snapshot": {
+      "complete": true,
+      "definitions": [
+        {
+          "cardinality": "Single",
+          "id": "m5:clock",
+          "revision": "1",
+          "statuses": [
+            "approved",
+            "guessed"
+          ],
+          "unit": null,
+          "value_type": "Timestamp"
+        }
+      ],
+      "exclusion_count": 0,
+      "exclusions": [],
+      "lifecycle": [
+        {
+          "record_id": "31ec9713-60fb-495b-a382-1dcf6a6a5b54",
+          "state": "Active"
+        },
+        {
+          "record_id": "9560d694-9493-42a6-9667-e98f39f3be58",
+          "state": "Active"
+        }
+      ],
+      "records": [
+        {
+          "context": "observation",
+          "definition_manifest": "blake3:0acafdb1fa6b80bb6524db9ecfc1f430a8d8e262a5b1b1aa6e66c21833486e96",
+          "entity": "b75063b2-357c-50e5-b5be-79ff507e4c60",
+          "evidence": {
+            "Passage": {
+              "hash": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145",
+              "selector": {
+                "end": 56,
+                "start": 0
+              },
+              "source": {
+                "kind": "fleece",
+                "node": "71a0c421-2011-40d8-a94d-1fae66662ec5",
+                "owner": "turnstone/54ffd215-6a49-42bb-bae6-5dde640c83f9/research/v1",
+                "source": "mere://saved-source/sealed-v1/54ffd215-6a49-42bb-bae6-5dde640c83f9/3cd89151-5f85-4c52-babb-724ad8e69185/71a0c421-2011-40d8-a94d-1fae66662ec5/fcbfcbe5f5fd40b8ce5e669adf2a3388581590c241067d714f2e1c753a915a79/b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+              },
+              "version": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+            }
+          },
+          "id": "31ec9713-60fb-495b-a382-1dcf6a6a5b54",
+          "property": "m5:clock",
+          "recorded_at": 1793387470,
+          "schema_revision": "1",
+          "status": "approved",
+          "valid_time": {
+            "end": 1793491200,
+            "start": 1790812800
+          },
+          "value": {
+            "Timestamp": {
+              "date": {
+                "day": 10,
+                "month": 10,
+                "year": 2026
+              },
+              "hour": 9,
+              "minute": 30,
+              "offset_minutes": 0,
+              "second": 0
+            }
+          }
+        },
+        {
+          "context": "observation",
+          "definition_manifest": "blake3:0acafdb1fa6b80bb6524db9ecfc1f430a8d8e262a5b1b1aa6e66c21833486e96",
+          "entity": "b75063b2-357c-50e5-b5be-79ff507e4c60",
+          "evidence": {
+            "Passage": {
+              "hash": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145",
+              "selector": {
+                "end": 56,
+                "start": 0
+              },
+              "source": {
+                "kind": "fleece",
+                "node": "71a0c421-2011-40d8-a94d-1fae66662ec5",
+                "owner": "turnstone/54ffd215-6a49-42bb-bae6-5dde640c83f9/research/v1",
+                "source": "mere://saved-source/sealed-v1/54ffd215-6a49-42bb-bae6-5dde640c83f9/3cd89151-5f85-4c52-babb-724ad8e69185/71a0c421-2011-40d8-a94d-1fae66662ec5/fcbfcbe5f5fd40b8ce5e669adf2a3388581590c241067d714f2e1c753a915a79/b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+              },
+              "version": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+            }
+          },
+          "id": "9560d694-9493-42a6-9667-e98f39f3be58",
+          "property": "m5:clock",
+          "recorded_at": 1793387478,
+          "schema_revision": "1",
+          "status": "approved",
+          "valid_time": {
+            "end": 1793491200,
+            "start": 1790812800
+          },
+          "value": {
+            "Timestamp": {
+              "date": {
+                "day": 10,
+                "month": 10,
+                "year": 2026
+              },
+              "hour": 9,
+              "minute": 30,
+              "offset_minutes": 0,
+              "second": 0
+            }
+          }
+        }
+      ],
+      "scope_generation": "[\"8f1b1b8f-0cf1-4e24-9ae8-e81d61bcddeb\",9,[[\"3cd89151-5f85-4c52-babb-724ad8e69185\",35]],[[\"3cd89151-5f85-4c52-babb-724ad8e69185\",\"fc6e01ed-2b37-4dc0-ba55-20efcd0c7dd4\"]],1,null]",
+      "sources": [
+        {
+          "captured_at": 1793387304,
+          "producer": "capture",
+          "source": {
+            "kind": "fleece",
+            "node": "68d4bf1a-d282-4821-b734-7f78a88c8969",
+            "owner": "turnstone/54ffd215-6a49-42bb-bae6-5dde640c83f9/research/v1",
+            "source": "mere://saved-source/sealed-v1/54ffd215-6a49-42bb-bae6-5dde640c83f9/3cd89151-5f85-4c52-babb-724ad8e69185/68d4bf1a-d282-4821-b734-7f78a88c8969/d7e7d3e5ee89ba4180cbad3214971049858eae31dc12f684e08eb237df255ad8/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+          },
+          "tags": [],
+          "version": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+        },
+        {
+          "captured_at": 1793387414,
+          "producer": "capture",
+          "source": {
+            "kind": "fleece",
+            "node": "68d4bf1a-d282-4821-b734-7f78a88c8969",
+            "owner": "turnstone/54ffd215-6a49-42bb-bae6-5dde640c83f9/research/v1",
+            "source": "mere://saved-source/sealed-v1/54ffd215-6a49-42bb-bae6-5dde640c83f9/3cd89151-5f85-4c52-babb-724ad8e69185/68d4bf1a-d282-4821-b734-7f78a88c8969/2da7f4abc2d672a1b74d02f7b73cf677dbf29436f004d7350b605000de5201dc/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+          },
+          "tags": [],
+          "version": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+        },
+        {
+          "captured_at": 1793387310,
+          "producer": "capture",
+          "source": {
+            "kind": "fleece",
+            "node": "71a0c421-2011-40d8-a94d-1fae66662ec5",
+            "owner": "turnstone/54ffd215-6a49-42bb-bae6-5dde640c83f9/research/v1",
+            "source": "mere://saved-source/sealed-v1/54ffd215-6a49-42bb-bae6-5dde640c83f9/3cd89151-5f85-4c52-babb-724ad8e69185/71a0c421-2011-40d8-a94d-1fae66662ec5/fcbfcbe5f5fd40b8ce5e669adf2a3388581590c241067d714f2e1c753a915a79/b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+          },
+          "tags": [],
+          "version": "blake3:b5ad4da75db28762fbc76a198bc364f4b57c4627324ed4351e45c35b09190145"
+        },
+        {
+          "captured_at": null,
+          "producer": "note",
+          "source": {
+            "kind": "fleece",
+            "node": "83bf1083-5672-457b-b524-0c384a664536",
+            "owner": "turnstone/54ffd215-6a49-42bb-bae6-5dde640c83f9/research/v1",
+            "source": "mere://retained-text/54ffd215-6a49-42bb-bae6-5dde640c83f9/3cd89151-5f85-4c52-babb-724ad8e69185/83bf1083-5672-457b-b524-0c384a664536/d60057048f67148418d1b1018160f4e72bd2dd456b7de21c6b4fe8d68e85153b/96fa68a3b2e4f227abed655a1328eacf348698918689eeff9c83fe4f222e7e36"
+          },
+          "tags": [],
+          "version": "blake3:96fa68a3b2e4f227abed655a1328eacf348698918689eeff9c83fe4f222e7e36"
+        },
+        {
+          "captured_at": null,
+          "producer": "selection",
+          "source": {
+            "kind": "fleece",
+            "node": "9c652800-71d0-41d3-a85d-3188dc5824fa",
+            "owner": "turnstone/54ffd215-6a49-42bb-bae6-5dde640c83f9/research/v1",
+            "source": "mere://retained-text/54ffd215-6a49-42bb-bae6-5dde640c83f9/3cd89151-5f85-4c52-babb-724ad8e69185/9c652800-71d0-41d3-a85d-3188dc5824fa/79bf8344ce24472e77afbb27bbb02b546bcde79f8cd659afd5b2b9316ec227a5/8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+          },
+          "tags": [],
+          "version": "blake3:8de60611265a489d58b79d138e4c2e63f878253d4d868b940bfc610cb428a1ac"
+        }
+      ]
+    }
+  },
+  "result_generation": "9d7e8dca-255b-439a-8eeb-fc3b8c70d09c",
+  "saved_manifest": "blake3:0f1e81aeaabbce385f1a6ac37c5250c21d689893b8d62ddbfb34084b75ba5574",
+  "schema": "turnstone.structured-observation/v1",
+  "scope_revision": 9,
+  "session": "54ffd215-6a49-42bb-bae6-5dde640c83f9",
+  "source_selection": {
+    "mode": "all"
+  }
+}

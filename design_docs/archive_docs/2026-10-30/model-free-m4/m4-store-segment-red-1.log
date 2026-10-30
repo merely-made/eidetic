@@ -1,0 +1,97 @@
+Running as unit: custody-contract-m4-store-segment-red-1.scope; invocation ID: 3e28af798a1540f68a0ec689f57dd9c4
+   Compiling lsm-tree v2.10.4 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/support/patches/lsm-tree)
+error[E0432]: unresolved import `crate::bounded_segment`
+ --> src/bounded_segment_tests.rs:6:12
+  |
+6 | use crate::bounded_segment::prepare_segment;
+  |            ^^^^^^^^^^^^^^^ could not find `bounded_segment` in the crate root
+
+warning: usage of an `unsafe` block
+  --> src/binary_search.rs:25:20
+   |
+25 |         let item = unsafe { slice.get_unchecked(mid) };
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> src/binary_search.rs:24:16
+   |
+24 |         #[warn(unsafe_code)]
+   |                ^^^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:273:43
+    |
+273 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:373:43
+    |
+373 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:574:47
+    |
+574 |             let folder = tempfile::tempdir()?.into_path();
+    |                                               ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/range.rs:678:43
+    |
+678 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:367:43
+    |
+367 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:415:43
+    |
+415 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:453:43
+    |
+453 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+warning: use of deprecated method `tempfile::TempDir::into_path`: use TempDir::keep()
+   --> src/segment/writer/mod.rs:523:43
+    |
+523 |         let folder = tempfile::tempdir()?.into_path();
+    |                                           ^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0432`.
+warning: `lsm-tree` (lib test) generated 9 warnings
+error: could not compile `lsm-tree` (lib test) due to 1 previous error; 9 warnings emitted
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --manifest-path support/patches/lsm-tree/Cargo.toml --features lz4,miniz --lib bounded_segment_tests -- --test-threads=1"
+	User time (seconds): 1.64
+	System time (seconds): 0.26
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.95
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 317072
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 60428
+	Voluntary context switches: 175
+	Involuntary context switches: 40
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 1224
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

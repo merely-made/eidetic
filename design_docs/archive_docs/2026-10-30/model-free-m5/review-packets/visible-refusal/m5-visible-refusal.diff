@@ -1,0 +1,40 @@
+diff --git a/src/app/research_record_owner.rs b/src/app/research_record_owner.rs
+index 20e37308..d8a4d97f 100644
+--- a/src/app/research_record_owner.rs
++++ b/src/app/research_record_owner.rs
+@@ -142,6 +142,13 @@ impl App {
+         controller.busy = false;
+         controller.pending = None;
+         controller.error = Some(error.to_string());
++        if self.omnibar.open
++            && self.omnibar.mode == crate::ui::OmnibarMode::SavedSources
++            && self.research_search.view == super::research_search_state::View::Structured
++        {
++            self.research_search.first_row = 0;
++            self.recompute_omnibar_suggestions();
++        }
+         vec![Effect::Redraw]
+     }
+     pub(crate) fn structured_query(
+diff --git a/src/app/research_record_owner_tests.rs b/src/app/research_record_owner_tests.rs
+index 4c77d383..b5773bc3 100644
+--- a/src/app/research_record_owner_tests.rs
++++ b/src/app/research_record_owner_tests.rs
+@@ -71,12 +71,17 @@ fn model_free_limit_refusal_binds_the_attempt_and_current_scope() {
+         manifest: Ok(None),
+     });
+     assert!(app.structured_scenario_status()["limit_refusal"].is_null());
++    app.omnibar.mode = crate::ui::OmnibarMode::SavedSources;
++    app.research_search.first_row = 3;
++    app.recompute_omnibar_suggestions();
+     app.structured_completed(JobResult::Query {
+         request,
+         result: Err("Structured record limit exceeded".into()),
+         manifest: Ok(None),
+     });
+     let status = app.structured_scenario_status();
++    assert!(status["visible_rows"][0].as_str().unwrap().contains("Unavailable: Structured record limit exceeded"), "refusal should be immediately visible: {status}");
++    assert_eq!(app.research_search.first_row, 0);
+     assert_eq!(status["error"], "Structured record limit exceeded");
+     let refusal = &status["limit_refusal"];
+     assert_eq!(refusal["stage"], "worker-refusal");

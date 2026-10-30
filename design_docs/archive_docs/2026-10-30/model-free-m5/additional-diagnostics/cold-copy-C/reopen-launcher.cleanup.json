@@ -1,0 +1,16 @@
+{
+  "scope": "m5-cold-copy-f2c44638546046769213da15bb6bbac9.scope",
+  "normal": false,
+  "ownership_observed": true,
+  "invocation": "83760f0f0e79420096c600006e645d46",
+  "cleanup": [
+    {
+      "scope_signal": "TERM",
+      "reason": "invocation changed or exited"
+    },
+    {
+      "cgroup_empty_verified": true,
+      "backstop_seconds": 603
+    }
+  ]
+}

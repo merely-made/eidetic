@@ -1,0 +1,50 @@
+{
+  "base": "675540865430958085da67155188be9ca1aa37ff",
+  "head": "229f277a252440a8e47aefe367febca3cf502bbb",
+  "files": {
+    "crates/graph/graph-kernel/src/graph/mod.rs": "c27071d57f144b39d1bcf19792a40f6af4f4521830feb0751b7dff8124ddcd6d",
+    "crates/graph/graph-kernel/src/graph/resource.rs": "7dbbbfee6d97d30081c13ce59f84552a5fd30d3ddd07d169ee812971a8464737",
+    "crates/graph/graph-kernel/src/graph/resource_pair_bounds.rs": "d1c4fde4291026e2f843af07e95ecbe77a0d9b242d1ceb364819cc351c9a14e8",
+    "crates/graph/graph-kernel/src/graph/snapshot/bounded_resource_tests.rs": "cb3a68cd5cdb7405c14074f02ae1d815397e4d6702213577b8d12df9184bbef3",
+    "crates/graph/graph-kernel/src/graph/snapshot/mod.rs": "8e39b1d87a95d5337bbda3dc51cad6b4a32cb12184c4ae836a68f7eb76d56126",
+    "crates/graph/graph-kernel/src/graph/snapshot/tests.rs": "f8ccd2c350360e22dfe312bb205942c8f8224e0cc13bdbbe60299cdc3998b357"
+  },
+  "packets": [
+    {
+      "name": "m4-mere-bounds-green-2",
+      "exit_code": 0,
+      "log_sha256": "ba1ff026ea6e25e817a9b4f20be03f25f364d04ab914f7b77b09c3e050a79db2"
+    },
+    {
+      "name": "m4-mere-bounds-green",
+      "exit_code": 101,
+      "log_sha256": "139fcf87571a6c05be4bb51253e3e0074a8c4bc99341dde5907e440957378b19"
+    },
+    {
+      "name": "m4-mere-bounds-red",
+      "exit_code": 101,
+      "log_sha256": "e4a2442b6d74f523d11b2b3c2580685f08e00440f8ae436ad52bfea2c2b2abc5"
+    },
+    {
+      "name": "m4-mere-kernel-lib",
+      "exit_code": 0,
+      "log_sha256": "b68a5d05d22123a9e7cbb6df90690221228558a58d513d1c2e10fd3ba5e7a181"
+    },
+    {
+      "name": "m4-mere-live-replacement-green",
+      "exit_code": 0,
+      "log_sha256": "95e6677c350945bf779fa57faad4dfa582b3b4932027945b7a0a11fe93ec2511"
+    },
+    {
+      "name": "m4-mere-live-replacement-red",
+      "exit_code": 101,
+      "log_sha256": "325972c5eb5b1776fb21753146fbf8f97d52cbf362aa64874513f368f5f94cf5"
+    },
+    {
+      "name": "m4-mere-rebased-kernel-lib-1",
+      "exit_code": 0,
+      "log_sha256": "c8c47a1d4b085a93a38b9d1cac96cc340a2664e30e9054caa1e2f838944297ed"
+    }
+  ],
+  "review": "No Critical/Important; minor optional-field parity coverage retained for final triage."
+}

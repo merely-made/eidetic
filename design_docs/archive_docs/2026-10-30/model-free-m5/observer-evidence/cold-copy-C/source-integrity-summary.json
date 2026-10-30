@@ -1,0 +1,15 @@
+{
+  "attempt": "C",
+  "source_integrity_receipt": {
+    "path": "/home/markik/Code/testing/m5-cold-copy-diagnostic-20261030-c/source-integrity.json",
+    "sha256": "fac94b67062e5a771a10919781a6eb27a1842a1c435966ae939e188d12f0072f",
+    "bytes": 35240,
+    "copied": false
+  },
+  "original_collection_unchanged": true,
+  "integrity_error": null,
+  "socket_ids_unchanged": true,
+  "socket_count_before": 3,
+  "socket_count_after": 3,
+  "boundary": "Derived summary omits embedded profile/store inventories and all socket payloads."
+}

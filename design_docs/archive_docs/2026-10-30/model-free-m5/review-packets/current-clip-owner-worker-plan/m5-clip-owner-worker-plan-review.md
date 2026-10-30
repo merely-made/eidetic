@@ -1,0 +1,20 @@
+# Owner worker plan review
+
+Reviewed frozen plan SHA-256 `2780a19047c306983d24e72de76e5e2eac806c2331f67082d7df29178728f738` against the production seams and M4 owner APIs. The dedicated bounded owner direction covers the identified independent opens, policy and budget separation, and the evidence limit on B. It is ready for implementation **after the export publication contract below is resolved**.
+
+## Blocking: export publication
+
+`src/retained_clip.rs:365-402` reads and validates, then writes a temporary file and persists it to the requested destination inside the operation. The plan's shell-side completion revalidation occurs after that publication and cannot prevent a stale job from writing selected plaintext to disk. A check only before work, or suppressing the stale success afterward, does not satisfy the plan's custody and destination intent. Specify a worker-side authorization check at the actual publication boundary, including custody, destination and applicable request validity, with a synchronization rule that defines what happens if retirement races that check and `persist`. Alternatively split preparation from publication under an explicitly authorized publication protocol. The implementation must not claim atomic rollback of a file already persisted. Test a barrier immediately before publication and retire custody or change destination before releasing it; assert no output file is published. Also test the defined ordering for a concurrent retirement at the commit boundary.
+
+## Completion and accounting constraints
+
+* The sole owner worker must never wait indefinitely for a full shell completion queue, since research jobs wait for it from another worker. Reserve bounded completion capacity before admission or use separately bounded response slots with cancellation/drop release; a dropped or undrained receiver must not block owner progress. No synchronous shell wait or join.
+* Include producer extraction, file inputs, active operation data, returned views/packages and completions in the byte accounting, including transient ownership copies; check arithmetic before allocation. The plan identifies the Redshank serialized-field issue. Reservation must be sufficient for the output or refuse before producing it; per-operation storage ledgers are not queue-memory accounting.
+* Keep the exact owner policy immutable while in use. On a policy/root change all capabilities bearing the previous lease must be retired before opening the new bounded owner. Existing `FjallStore` has no shared registry or policy mutator; its `call_budget` intersects the per-call limit with the owner's stored read ceiling. An unbounded owner is not equivalent.
+* Preserve separate response routing for shell and background requesters, and recheck session, generation, admission, target and custody after background waits. Handle shutdown and settings reductions without losing accepted jobs or claiming that in-flight writes rolled back.
+
+The proposed barrier regression should include the original two independent bounded opens failing while one owner is held, and then the actual migrated UI and worker routes completing after release. This demonstrates the source-level hazard; it does not identify B's lock holder. No builds, product edits or runtime tests were performed in this review.
+
+## Amendment verdict
+
+Reviewed amended plan SHA-256 `a60c967037b9842f0f1869944f9beb234c6e541b57146afdd0316a290a1778bf`. The two-stage export, one-shot claim coordinated with locally observed retirement/invalidation, and reservation of completion capacity address both blocking findings at the contract level. No further blocking gap is identified in this scoped review. The amendment governs the earlier general instruction to suppress stale export success: after a successful claim, report the actual authorized write outcome even if retirement follows. The concrete shared authority, all invalidation paths including sealer-detected retirement, reservation release and absence of locks across I/O must be verified in implementation; they are not proven by this plan. No code or runtime tests were performed.

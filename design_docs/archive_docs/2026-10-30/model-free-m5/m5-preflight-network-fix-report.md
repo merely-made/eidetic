@@ -1,0 +1,11 @@
+# Empty-startup preflight network setup fix
+
+The first preflight is retained at `/home/markik/Code/testing/m5-empty-preflight-20261030-a`. It failed before either custodian or app began: `ip link set lo up` returned `RTNETLINK answers: Operation not permitted`. Its `launcher.cleanup.json` reports the exact scope cgroup empty. No frame exists.
+
+Reproduction isolated the difference: `unshare --user --map-root-user --net` ran UID 0 with effective capabilities and could bring up loopback; the original bubblewrap namespace ran UID 1000 with CapEff zero and could not. The revised bubblewrap command maps namespace UID/GID 0 and grants only CAP_NET_ADMIN within its new private user/network namespaces. The supervisor uses it only to bring up loopback, then sets PR_SET_NO_NEW_PRIVS and drops all effective, permitted, inheritable and ambient capabilities before starting any child. The status check fails closed if that drop is not observed. Host networking is never shared.
+
+`/usr/bin/python3 m5-draft/probe_private_network.py > m5-draft/private-network-probe.json` passed. The disposable probe used the actual revised capability-drop function, verified the only interface/routes were loopback, connected through 127.0.0.1, connected the bound Wayland socket and opened the single bound DRM render device. An exec'd child reported CapPrm=0, CapEff=0 and NoNewPrivs=1. It did not launch the product or custody fixture.
+
+`/usr/bin/python3 m5-draft/test_preflight_helpers.py` passed 8 tests in 0.116s. The new capability-drop test initially failed because the function was absent; after implementation its child exec reports zero permitted/effective capabilities and no_new_privs. Python syntax checks also passed. The app, custodian, preflight and acceptance scenarios remain untested after this delta.
+
+Changed review files: `m5-draft/run_native.py` SHA-256 `0e871ddcb77188b124e59e6199268aeb24bfa38507247cc92cd5d1ce4f798a07`; `m5-draft/namespace_phase.py` SHA-256 `411b50e3e8ce9e7e12200ea2a73d902b1ebb8ce1363733920d2fb92afedc4efa`. The other four approved preflight files are unchanged. `test_preflight_helpers.py` SHA-256 `26974c15066e1339221b35c985d57a7c25bb9613f6f202f714b3625a2e166f80`; probe script and receipt hashes are recorded in the implementation handoff. Files are frozen for delta review.

@@ -1,0 +1,13 @@
+--- m5-draft/seed-before-clear-scope-filter.scn	2026-10-30 14:40:53.242074860 -0400
++++ m5-draft/seed-composed.draft.scn	2026-10-30 14:40:53.266009861 -0400
+@@ -909,6 +909,10 @@
+ # The prior result must have been invalidated; record status before fresh run.
+ record-structured-status scope_empty_before_run
+ capture scope_empty_before_run
++choose-suggestion Filters…
++choose-suggestion Property ID
++key enter
++choose-suggestion Back
+ choose-suggestion Operation:
+ choose-suggestion Source lookup
+ choose-suggestion Run in this scope

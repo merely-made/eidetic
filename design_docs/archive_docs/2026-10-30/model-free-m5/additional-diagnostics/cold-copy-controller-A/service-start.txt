@@ -1,0 +1,11 @@
+Id=m5-cold-copy-controller-20261030-a.service
+ActiveState=failed
+SubState=failed
+InvocationID=4b7aa8e39bf4444d91c4abb4f3c75c4a
+RuntimeMaxUSec=12min
+MainPID=0
+ExecMainPID=1247458
+ControlGroup=
+CPUQuotaPerSecUSec=500ms
+MemoryMax=536870912
+MemorySwapMax=0

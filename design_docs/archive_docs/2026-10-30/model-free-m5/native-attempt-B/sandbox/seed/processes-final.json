@@ -1,0 +1,50 @@
+{
+  "route_probe": {
+    "argv": [
+      "/m5/input/test-binary",
+      "inference_service::tests::model_free_fixture_refuses_inference_route",
+      "--ignored",
+      "--exact",
+      "--nocapture"
+    ],
+    "pid": 11,
+    "start_ns": 1793365539691515889,
+    "exit_ns": 1793365539723896914,
+    "exit_code": 101,
+    "pid_namespace": "pid:[4026533074]"
+  },
+  "failure": "PhaseError('custody-only route probe failed')",
+  "cleanup": [
+    {
+      "argv": [
+        "/m5/input/custodian",
+        "retained_custody_receipt_host",
+        "--ignored",
+        "--exact",
+        "--nocapture"
+      ],
+      "pid": 7,
+      "start_ns": 1793365539639959194,
+      "exit_ns": 1793365539727316478,
+      "exit_code": -15,
+      "pid_namespace": "pid:[4026533074]"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "/m5/input/fixture_server.py",
+        "--ready",
+        "/m5/run/seed/origin-ready.json",
+        "--log",
+        "/m5/run/fixture-requests.json",
+        "--source-dir",
+        "/m5/run/fixture-source"
+      ],
+      "pid": 6,
+      "start_ns": 1793365539538460162,
+      "exit_ns": 1793365539730648327,
+      "exit_code": -15,
+      "pid_namespace": "pid:[4026533074]"
+    }
+  ]
+}

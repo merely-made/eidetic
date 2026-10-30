@@ -1,0 +1,148 @@
+{
+  "address_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ],
+      [
+        4,
+        null
+      ],
+      [
+        5,
+        null
+      ],
+      [
+        6,
+        null
+      ],
+      [
+        7,
+        null
+      ],
+      [
+        8,
+        null
+      ],
+      [
+        9,
+        null
+      ],
+      [
+        10,
+        null
+      ],
+      [
+        11,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-address-events/v1",
+    "total": 11
+  },
+  "admissions": [
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:3de422305438032122cf5cfd431a317c1bcf58a99f6ef889fda1ad3e5b1fb2ac",
+        "graph": "761101ce-0107-4fba-9836-db8840704f41",
+        "node": "24e279fe-2845-4636-b6db-46b2fd07c055",
+        "session": "3fd6f523-1825-4573-b8c7-f500086867a6"
+      },
+      "occurrence": 0,
+      "title": "",
+      "url": ""
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:4237d1e5bfcc940a471659a100e3fad8c0e5be5994e483d6702e197bd19759f4",
+        "graph": "761101ce-0107-4fba-9836-db8840704f41",
+        "node": "24e279fe-2845-4636-b6db-46b2fd07c055",
+        "session": "3fd6f523-1825-4573-b8c7-f500086867a6"
+      },
+      "occurrence": 1,
+      "title": "",
+      "url": ""
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:c37f224fad000b7d283c70b2a320e35de87928034b1c5590f4ac6477d3b43ca3",
+        "graph": "761101ce-0107-4fba-9836-db8840704f41",
+        "node": "80eee481-c4c9-4003-a00c-f2e6eddaad52",
+        "session": "3fd6f523-1825-4573-b8c7-f500086867a6"
+      },
+      "occurrence": 0,
+      "title": "",
+      "url": ""
+    }
+  ],
+  "entries": [],
+  "generation": "7c548b98-d127-440a-816c-e9c27873251c",
+  "reader_open_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-reader-open-events/v1",
+    "total": 3
+  },
+  "reader_scope": {
+    "schema": "turnstone.m5-reader-scope/v1",
+    "selected": "restricted"
+  },
+  "readers": [],
+  "retained_admissions": [
+    {
+      "graph": "761101ce-0107-4fba-9836-db8840704f41",
+      "manifest": "blake3:24993b37c02102b98632f955a14ce1faa5a8e9889aa5cbff4e279d49ba858818",
+      "node": "bc539203-c51b-4f9f-83c4-8329b5532bfc",
+      "session": "3fd6f523-1825-4573-b8c7-f500086867a6"
+    },
+    {
+      "graph": "761101ce-0107-4fba-9836-db8840704f41",
+      "manifest": "blake3:50fff4bdbb97e770dc1fc8869cf64b3453d3381f2341517fbea7d4e0c451127c",
+      "node": "d514836b-9df4-49a3-8382-13ff4e7fd00c",
+      "session": "3fd6f523-1825-4573-b8c7-f500086867a6"
+    }
+  ],
+  "retained_readers": [],
+  "search": {
+    "coverage": "Complete",
+    "generation": "7c548b98-d127-440a-816c-e9c27873251c:9",
+    "hits": [],
+    "inputs": [],
+    "request": "b7c68477-859d-4f06-b55d-97fccb49d27d",
+    "schema": "turnstone.research-search-summary/v1",
+    "scope": [],
+    "selected": [],
+    "session": "3fd6f523-1825-4573-b8c7-f500086867a6",
+    "total": 0
+  },
+  "session": "3fd6f523-1825-4573-b8c7-f500086867a6",
+  "status": ""
+}

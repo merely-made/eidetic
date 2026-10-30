@@ -1,0 +1,16 @@
+{
+  "scope": "m5-acceptance-seed-3a3aa4aeb9e04609835462d65552a756.scope",
+  "normal": false,
+  "ownership_observed": true,
+  "invocation": "c7de5df68c6047e7968bd0212d5c903b",
+  "cleanup": [
+    {
+      "scope_signal": "TERM",
+      "reason": "invocation changed or exited"
+    },
+    {
+      "cgroup_empty_verified": true,
+      "backstop_seconds": 603
+    }
+  ]
+}

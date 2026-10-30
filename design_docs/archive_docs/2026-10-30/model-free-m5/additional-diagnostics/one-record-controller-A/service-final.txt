@@ -1,0 +1,10 @@
+Id=m5-one-record-controller-20261030-a.service
+ActiveState=failed
+SubState=failed
+InvocationID=ffdaaff0f99346e0b7fa90e8a82bcbd2
+MainPID=0
+Result=exit-code
+ExecMainPID=1207696
+ExecMainCode=1
+ExecMainStatus=1
+ControlGroup=

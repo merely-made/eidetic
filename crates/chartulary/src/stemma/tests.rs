@@ -382,3 +382,123 @@ fn deleting_last_owner_collects_ownerless_branch() {
     assert_eq!(memory.owner_count(), 0);
     assert_eq!(memory.visit_count(), 0);
 }
+
+fn page_entry(memory: &mut Memory) -> EntryId {
+    let key = ("page".to_string(), None);
+    memory.resolve_or_create_entry(key, entry("page", "Page"), 1, EntryPrivacy::LocalOnly)
+}
+
+#[test]
+fn deleting_a_creator_reparents_its_surviving_owners_to_the_creators_creator() {
+    let mut memory = Memory::new();
+    let page = page_entry(&mut memory);
+    let grandparent = memory.ensure_owner(owner("grandparent"), None);
+    memory
+        .visit_entry(grandparent, page, ctx("g"), TransitionKind::UrlTyped, 10)
+        .unwrap();
+    let creator = memory.ensure_owner(owner("creator"), Some(grandparent));
+    memory
+        .visit_entry(creator, page, ctx("c"), TransitionKind::TabSpawn, 20)
+        .unwrap();
+    let survivor = memory.ensure_owner(owner("survivor"), Some(creator));
+    memory
+        .visit_entry(survivor, page, ctx("s"), TransitionKind::TabSpawn, 30)
+        .unwrap();
+
+    memory.delete_owner(creator).unwrap();
+
+    assert_eq!(memory.owner(survivor).unwrap().creator, Some(grandparent));
+    let restored = Memory::from_snapshot(memory.to_snapshot());
+    let survivor = restored.owner_id_by_identity(&owner("survivor")).unwrap();
+    let grandparent = restored.owner_id_by_identity(&owner("grandparent")).unwrap();
+    assert_eq!(restored.owner(survivor).unwrap().creator, Some(grandparent));
+}
+
+#[test]
+fn deleting_a_creator_with_no_creator_clears_its_surviving_owners_creator() {
+    let mut memory = Memory::new();
+    let page = page_entry(&mut memory);
+    let creator = memory.ensure_owner(owner("creator"), None);
+    memory
+        .visit_entry(creator, page, ctx("c"), TransitionKind::UrlTyped, 10)
+        .unwrap();
+    let survivor = memory.ensure_owner(owner("survivor"), Some(creator));
+    memory
+        .visit_entry(survivor, page, ctx("s"), TransitionKind::TabSpawn, 20)
+        .unwrap();
+
+    memory.delete_owner(creator).unwrap();
+
+    assert_eq!(memory.owner(survivor).unwrap().creator, None);
+    let restored = Memory::from_snapshot(memory.to_snapshot());
+    let survivor = restored.owner_id_by_identity(&owner("survivor")).unwrap();
+    assert_eq!(restored.owner(survivor).unwrap().creator, None);
+}
+
+#[test]
+fn deleting_a_creator_leaves_no_pending_origin_on_a_collected_visit() {
+    let mut memory = Memory::new();
+    let page = page_entry(&mut memory);
+    let creator = memory.ensure_owner(owner("creator"), None);
+    memory
+        .visit_entry(creator, page, ctx("c"), TransitionKind::UrlTyped, 10)
+        .unwrap();
+    // Spawned beneath the creator's visit but not yet navigated, so it holds
+    // only a pending origin parent, which the creator's deletion collects.
+    let survivor = memory.ensure_owner(owner("survivor"), Some(creator));
+
+    memory.delete_owner(creator).unwrap();
+
+    assert_eq!(memory.owner(survivor).unwrap().pending_origin_parent, None);
+    Memory::from_snapshot(memory.to_snapshot());
+}
+
+/// Twelve owners sharing one visit and one owner holding twelve visits: enough
+/// map and set entries that two independently built hash tables almost surely
+/// iterate in different orders.
+fn crowded() -> Memory {
+    let mut memory = Memory::new();
+    let page = page_entry(&mut memory);
+    let first = memory.ensure_owner(owner("o0"), None);
+    let shared = memory
+        .visit_entry(first, page, ctx("shared"), TransitionKind::UrlTyped, 10)
+        .unwrap();
+    for n in 1..12 {
+        let other = memory.ensure_owner(owner(&format!("o{n}")), None);
+        memory.adopt_visit(other, shared, 10 + n).unwrap();
+    }
+    for n in 0..12 {
+        memory
+            .visit_entry(first, page, ctx(&format!("v{n}")), TransitionKind::LinkClick, 100 + n)
+            .unwrap();
+    }
+    memory
+}
+
+#[test]
+fn snapshots_of_equal_navigation_state_are_equal_whatever_the_hash_order() {
+    assert_eq!(crowded().to_snapshot(), crowded().to_snapshot());
+}
+
+#[test]
+fn hydrating_and_rewriting_a_snapshot_leaves_it_unchanged() {
+    let snapshot = crowded().to_snapshot();
+    let mut rewritten = snapshot.clone();
+    for _ in 0..4 {
+        rewritten = Memory::from_snapshot(rewritten).to_snapshot();
+        assert_eq!(rewritten, snapshot);
+    }
+}
+
+#[test]
+fn snapshot_lists_bindings_and_owned_visits_in_ascending_index_order() {
+    let snapshot = crowded().to_snapshot();
+    assert!(snapshot.visits.iter().any(|visit| visit.bindings.len() == 12));
+    for visit in &snapshot.visits {
+        assert!(visit.bindings.is_sorted_by_key(|binding| binding.owner));
+    }
+    assert!(snapshot.owners.iter().any(|owner| owner.owned_visits.len() == 13));
+    for owner in &snapshot.owners {
+        assert!(owner.owned_visits.is_sorted());
+    }
+}

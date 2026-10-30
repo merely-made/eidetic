@@ -1,0 +1,411 @@
+Running as unit: custody-contract-m4-core-error-identity-2.scope; invocation ID: d74898bdc8b94881a81a2192627cedc6
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: usage of an `unsafe` block
+  --> support/patches/lsm-tree/src/binary_search.rs:25:20
+   |
+25 |         let item = unsafe { slice.get_unchecked(mid) };
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> support/patches/lsm-tree/src/binary_search.rs:24:16
+   |
+24 |         #[warn(unsafe_code)]
+   |                ^^^^^^^^^^^
+
+warning: struct `BlockLimits` is never constructed
+  --> support/patches/lsm-tree/src/bounded_block.rs:12:19
+   |
+12 | pub(crate) struct BlockLimits {
+   |                   ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: enum `BlockReadError` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:22:17
+   |
+22 | pub(crate) enum BlockReadError {
+   |                 ^^^^^^^^^^^^^^
+
+warning: function `allocate_zeroed` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:34:4
+   |
+34 | fn allocate_zeroed(len: usize) -> Result<Vec<u8>, BlockReadError> {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `read_data_block` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:41:15
+   |
+41 | pub(crate) fn read_data_block<R: Read>(reader: &mut R, limits: &BlockLimits) -> Result<ValueBlock, BlockReadError> {
+   |               ^^^^^^^^^^^^^^^
+
+warning: enum `ValidationError` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:11:17
+   |
+11 | pub(crate) enum ValidationError {
+   |                 ^^^^^^^^^^^^^^^
+
+warning: struct `ValidationSummary` is never constructed
+  --> support/patches/lsm-tree/src/bounded_validation.rs:19:19
+   |
+19 | pub(crate) struct ValidationSummary {
+   |                   ^^^^^^^^^^^^^^^^^
+
+warning: function `skip` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:25:4
+   |
+25 | fn skip(cursor: &mut Cursor<&[u8]>, len: usize) -> Result<(), ValidationError> {
+   |    ^^^^
+
+warning: function `validate_data_entries` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:35:15
+   |
+35 | pub(crate) fn validate_data_entries(
+   |               ^^^^^^^^^^^^^^^^^^^^^
+
+warning: `lsm-tree` (lib) generated 9 warnings
+warning: field `journal_recovery_mode` is never read
+  --> support/patches/fjall/src/config.rs:49:16
+   |
+14 | pub struct Config {
+   |            ------ field in this struct
+...
+49 |     pub(crate) journal_recovery_mode: RecoveryMode,
+   |                ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `Config` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `outstanding_flushes` is never used
+  --> support/patches/fjall/src/stats.rs:26:12
+   |
+25 | impl Stats {
+   | ---------- method in this implementation
+26 |     pub fn outstanding_flushes(&self) -> usize {
+   |            ^^^^^^^^^^^^^^^^^^^
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> support/patches/fjall/src/tx/keyspace.rs:42:21
+   |
+42 |     pub fn write_tx(&self) -> WriteTransaction {
+   |                     ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                     |
+   |                     the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default
+help: use `'_` for type paths
+   |
+42 |     pub fn write_tx(&self) -> WriteTransaction<'_> {
+   |                                               ++++
+
+warning: `fjall` (lib) generated 3 warnings (run `cargo fix --lib -p fjall` to apply 1 suggestion)
+warning: multiple fields are never read
+  --> crates/muniment/src/fjall_limits.rs:77:16
+   |
+76 | pub struct FjallReadBudget {
+   |            --------------- fields in this struct
+77 |     pub(crate) limits: FjallReadLimits,
+   |                ^^^^^^
+78 |     pub(crate) input_bytes: u64,
+   |                ^^^^^^^^^^^
+79 |     pub(crate) decode_bytes: u64,
+   |                ^^^^^^^^^^^^
+80 |     pub(crate) metadata_bytes: u64,
+   |                ^^^^^^^^^^^^^^
+81 |     pub(crate) alloc_bytes: u64,
+   |                ^^^^^^^^^^^
+82 |     pub(crate) visited_items: u64,
+   |                ^^^^^^^^^^^^^
+83 |     pub(crate) output_items: u64,
+   |                ^^^^^^^^^^^^
+84 |     pub(crate) output_key_bytes: u64,
+   |                ^^^^^^^^^^^^^^^^
+   |
+   = note: `FjallReadBudget` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated items `counter`, `counter_mut`, and `charge_both` are never used
+   --> crates/muniment/src/fjall_limits.rs:102:8
+    |
+ 87 | impl FjallReadBudget {
+    | -------------------- associated items in this implementation
+...
+102 |     fn counter(&self, kind: FjallLimitKind) -> Option<(u64, u64)> {
+    |        ^^^^^^^
+...
+115 |     fn counter_mut(&mut self, kind: FjallLimitKind) -> Option<&mut u64> {
+    |        ^^^^^^^^^^^
+...
+128 |     pub(crate) fn charge_both(
+    |                   ^^^^^^^^^^^
+
+warning: `muniment` (lib) generated 2 warnings
+   Compiling eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+warning: unused import: `async_trait::async_trait`
+ --> crates/eidetic-core/src/browsing/tests.rs:9:5
+  |
+9 | use async_trait::async_trait;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::collections::HashMap`
+  --> crates/eidetic-core/src/browsing/tests.rs:10:5
+   |
+10 | use std::collections::HashMap;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `async_trait::async_trait`
+   --> crates/eidetic-core/src/bundle.rs:189:9
+    |
+189 |     use async_trait::async_trait;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+   --> crates/eidetic-core/src/bundle.rs:190:9
+    |
+190 |     use std::collections::HashMap;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `async_trait::async_trait`
+   --> crates/eidetic-core/src/deleted.rs:149:9
+    |
+149 |     use async_trait::async_trait;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+   --> crates/eidetic-core/src/deleted.rs:150:9
+    |
+150 |     use std::collections::HashMap;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `async_trait::async_trait`
+  --> crates/eidetic-core/src/schema_def/tests.rs:10:5
+   |
+10 | use async_trait::async_trait;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+  --> crates/eidetic-core/src/schema_def/tests.rs:11:5
+   |
+11 | use std::collections::HashMap;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `async_trait::async_trait`
+   --> crates/eidetic-core/src/typed.rs:213:9
+    |
+213 |     use async_trait::async_trait;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+   --> crates/eidetic-core/src/typed.rs:215:9
+    |
+215 |     use std::collections::HashMap;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `eidetic` (lib test) generated 10 warnings (run `cargo fix --lib -p eidetic --tests` to apply 10 suggestions)
+    Finished `test` profile [unoptimized] target(s) in 14.68s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/eidetic-2122682106efbdb5)
+
+running 147 tests
+test browsing::captures::tests::aliases_share_versions_and_reopen_keeps_earlier_resources ... ok
+test browsing::captures::tests::text_is_distinct_evidence_and_damaged_reference_is_refused ... ok
+test browsing::frecency::tests::dwell_past_the_threshold_promotes ... ok
+test browsing::frecency::tests::recency_decays_on_the_half_life ... ok
+test browsing::frecency::tests::redirects_and_reloads_contribute_near_zero ... ok
+test browsing::frecency::tests::transition_weights_order_the_kinds ... ok
+test browsing::page::tests::frecency_by_fingerprint_sums_the_collapsed_urls ... ok
+test browsing::page::tests::identical_text_under_different_urls_collapses ... ok
+test browsing::page::tests::near_duplicate_text_collapses_at_the_default_threshold ... ok
+test browsing::page::tests::tracking_params_and_fragment_collapse_to_one_record ... ok
+test browsing::page::tests::unrelated_text_stays_apart ... ok
+test browsing::page::tests::url_fallback_source_is_visible ... ok
+test browsing::tests::a_trace_round_trips_as_a_localonly_typed_payload ... ok
+test browsing::tests::adopted_traces_join_reads_but_not_quota ... ok
+test browsing::tests::bootstrap_is_idempotent ... ok
+test browsing::tests::forget_url_removes_every_trace_mentioning_it ... ok
+test browsing::tests::load_reconstructs_memory_from_the_store ... ok
+test browsing::tests::per_owner_segments_flush_into_per_owner_traces ... ok
+test browsing::tests::quota_ages_out_the_oldest_stored_traces ... ok
+test browsing::tests::reads_answer_over_flushed_and_open_segments_together ... ok
+test browsing::text::tests::a_second_page_leaves_the_first_slot_alone ... ok
+test browsing::text::tests::put_then_text_for_round_trips_through_the_canonical_key ... ok
+test browsing::text::tests::the_body_is_stored_once_however_many_addresses_reach_it ... ok
+test browsing::text::tests::the_snapshot_supplies_page_tables_text ... ok
+test bundle::tests::member_lookup_finds_kind ... ok
+test bundle::tests::save_then_load_bundle_round_trips ... ok
+test bundle::tests::schema_ref_is_stable ... ok
+test bundle::tests::verify_required_members_errors_listing_missing ... ok
+test bundle::tests::verify_required_members_passes_when_all_present ... ok
+test codicil::tests::codicil_id_equals_manifest_id_of_payload ... ok
+test codicil::tests::codicil_round_trips_through_serde_and_keeps_integrity ... ok
+test codicil::tests::invalid_time_bounds_are_rejected ... ok
+test codicil::tests::legacy_engram_loads_with_default_version_when_field_missing ... ok
+test codicil::tests::new_codicil_passes_integrity_check ... ok
+test codicil::tests::tampered_payload_fails_integrity_check ... ok
+test content_store::tests::absent_url_loads_to_none ... ok
+test content_store::tests::body_only_round_trips_with_no_content_type ... ok
+test content_store::tests::evict_drops_cached_content ... ok
+test content_store::tests::round_trips_body_and_content_type ... ok
+test deleted::tests::list_deleted_is_empty_on_a_fresh_store ... ok
+test deleted::tests::purge_forgets_one_node_and_clear_empties_the_bin ... ok
+test deleted::tests::recorded_tombstones_list_newest_first ... ok
+test image_content::tests::existing_image_namespace_and_content_identity_are_preserved ... ok
+test import::encounters::tests::late_parent_branches_replay_and_profile_collisions_survive_serialization ... ok
+test import::encounters::tests::missing_parent_cycle_and_conflict_are_retained_or_refused ... ok
+test import::history::tests::segments_chunk_the_way_a_captured_corpus_does ... ok
+test import::history::tests::transitions_map_onto_the_frecency_weights_they_were_chosen_for ... ok
+test import::history::tests::visits_become_ordered_events_with_referrers_and_dwell ... ok
+test import::tests::detects_chrome_json_bookmark_file ... ok
+test import::tests::intake_keeps_source_bytes_and_reports_projection_losses ... ok
+test import::tests::legacy_history_payload_without_dwell_deserializes_unchanged ... ok
+test import::tests::netscape_intake_reports_a_skipped_anchor_and_preserves_its_source ... ok
+test import::tests::parses_chrome_json_bookmarks_into_folder_paths ... ok
+test import::tests::parses_netscape_bookmarks_into_nested_folder_paths ... ok
+test manifest::tests::load_manifest_returns_none_for_unknown_id ... ok
+test manifest::tests::local_only_ref_is_not_transferable ... ok
+test manifest::tests::local_only_ref_round_trips_through_serde_for_local_storage ... ok
+test manifest::tests::manifest_loads_with_default_version_when_field_missing ... ok
+test manifest::tests::resolve_errors_when_all_sources_yield_none ... ok
+test manifest::tests::resolve_falls_through_local_then_iroh_then_https ... ok
+test manifest::tests::resolve_propagates_fetcher_error_when_no_source_succeeds ... ok
+test manifest::tests::resolve_rejects_hash_mismatch ... ok
+test manifest::tests::resolve_returns_bytes_from_local_source ... ok
+test manifest::tests::resolve_returns_embedded_bytes_directly ... ok
+test manifest::tests::save_and_load_manifest_round_trip ... ok
+test manifest::tests::to_transferable_errors_when_only_local_only_refs_present ... ok
+test models::adapter::tests::rejects_ambiguous_or_non_finite_envelopes ... ok
+test models::adapter::tests::typed_round_trip_preserves_compatibility_envelope ... ok
+test models::answer::tests::candidate_review_binds_all_decisions_to_status_and_links_without_claiming_truth ... ok
+test models::answer::tests::chunk_quotes_preserve_the_full_source_hash_and_absolute_range ... ok
+test models::answer::tests::conflict_requires_distinct_sources_and_keeps_both_versions ... ok
+test models::answer::tests::corrupt_passage_ranges_and_repeated_claims_are_reported ... ok
+test models::answer::tests::exact_links_use_unicode_offsets_and_do_not_certify_entailment ... ok
+test models::answer::tests::insufficient_is_a_retained_model_judgment_not_an_absence_proof ... ok
+test models::answer::tests::malformed_unknown_and_invented_support_fail_closed ... ok
+test models::answer::tests::quoted_candidate_decisions_preserve_exact_text_and_refuse_a_foreign_quote ... ok
+test models::answer::tests::requested_facts_refuse_missing_extra_and_reordered_claims ... ok
+test models::embedding::tests::every_output_or_corpus_setting_is_part_of_compatibility ... ok
+test models::embedding::tests::unknown_versions_and_ambiguous_corpus_identities_are_refused ... ok
+test models::requested::tests::ambiguous_requests_require_explicit_ranges_and_never_read_evidence ... ok
+test models::requested::tests::explicit_list_is_ordered_unicode_question_identity ... ok
+test models::training::tests::rejects_ambiguous_corpora_and_incomparable_reports ... ok
+test models::training::tests::schema_refs_are_stable ... ok
+test models::training::tests::typed_round_trips_preserve_immutable_training_artifacts ... ok
+test models::training::tests::v1_training_corpus_schema_and_fields_remain_readable ... ok
+test models::training::tests::validates_adapter_provenance_without_reading_mesh_facts ... ok
+test retention::tests::a_nontransactional_backend_refuses_custody_without_fallback_writes ... ok
+test retention::tests::competing_copies_share_one_atomic_owner_quota ... ok
+test retention::tests::exact_copy_is_atomic_idempotent_and_owner_scoped ... ok
+test retention::tests::integrity_quota_and_keyless_private_refusals_write_nothing ... ok
+test retention::tests::private_copy_uses_actual_aead_and_refuses_missing_or_wrong_wallet_keys ... ok
+test retention::tests::verified_copy_reopens_on_a_real_disk_backend ... ok
+test schema::tests::hash_from_chunks_matches_full_slice ... ok
+test schema::tests::hash_from_reader_matches_full_slice ... ok
+test schema::tests::hash_multihash_bytes_round_trip ... ok
+test schema::tests::hash_of_known_input_matches_blake3_reference ... ok
+test schema::tests::hash_parse_accepts_tagged_and_legacy_bare_hex ... ok
+test schema::tests::hash_serializes_as_self_describing_string ... ok
+test schema::tests::manifest_id_store_key_is_prefix_plus_hex ... ok
+test schema::tests::privacy_class_defaults_to_local_only ... ok
+test schema::tests::provenance_self_imported_records_source ... ok
+test schema::tests::trust_envelope_self_asserted_starts_unreviewed ... ok
+test schema_def::tests::bootstrap_enables_strict_schema_resolution ... ok
+test schema_def::tests::bootstrap_meta_schema_seeds_codicil_idempotently ... ok
+test schema_def::tests::find_schema_by_id_locates_matching_codicil ... ok
+test schema_def::tests::json_ld_accepts_array_schema_with_multi_type_payload ... ok
+test schema_def::tests::json_ld_accepts_array_type_subsumption ... ok
+test schema_def::tests::json_ld_rejects_payload_without_context_or_type ... ok
+test schema_def::tests::json_ld_rejects_type_mismatch ... ok
+test schema_def::tests::json_ld_required_props_rejects_missing_property ... ok
+test schema_def::tests::json_ld_validates_payload_with_context_and_type ... ok
+test schema_def::tests::json_schema_reports_unavailable_without_the_validator_feature ... ok
+test schema_def::tests::mere_native_builder_produces_validating_schema ... ok
+test schema_def::tests::mere_native_enum_field_validates_against_values ... ok
+test schema_def::tests::mere_native_rejects_missing_required_field ... ok
+test schema_def::tests::mere_native_rejects_wrong_field_type ... ok
+test schema_def::tests::mere_native_validates_required_field_present ... ok
+test schema_def::tests::meta_schema_codicil_id_is_stable_and_self_describing ... ok
+test schema_def::tests::meta_schema_payload_validates_a_well_formed_schema_definition ... ok
+test schema_def::tests::schema_codicil_round_trips_through_save_and_load ... ok
+test schema_def::tests::validate_against_schema_resolves_codicil_and_runs_validator ... ok
+test schema_def::tests::validate_against_unknown_schema_is_tolerant ... ok
+test schema_facets::tests::a_preloaded_schema_accepts_valid_and_rejects_invalid_payloads ... ok
+test schema_facets::tests::an_unknown_facet_remains_forward_compatible ... ok
+test schema_facets::tests::registered_schemas_and_content_classes_round_trip_as_codicils ... ok
+test seal::tests::marker_survives_manifest_json_round_trip_and_keeps_metadata ... ok
+test seal::tests::no_sealer_leaves_private_payload_cleartext ... ok
+test seal::tests::plain_resolve_blob_rejects_a_sealed_manifest ... ok
+test seal::tests::public_lane_stays_cleartext ... ok
+test seal::tests::reads_a_pre_rotation_epoch_from_history ... ok
+test seal::tests::sealed_manifest_without_a_sealer_is_a_hard_error ... ok
+test seal::tests::seals_private_lane_and_round_trips_to_cleartext ... ok
+test seal::tests::tampered_sealed_bytes_are_rejected ... ok
+test seal::tests::unmarked_manifest_reads_as_cleartext ... ok
+test seal::tests::wrong_epoch_key_fails_to_unseal ... ok
+test tests::dispatch_load_returns_none_for_unknown_key ... ok
+test tests::dispatch_propagates_store_errors ... ok
+test tests::dispatch_round_trips_save_then_load ... ok
+test tests::storage_error_conversion_preserves_the_exact_cause_without_changing_display ... ok
+test tests::typed_loads_preserve_a_storage_refusal_from_manifest_lookup ... ok
+test typed::tests::list_typed_returns_only_matching_schema_manifests ... ok
+test typed::tests::load_typed_rejects_blob_whose_hash_no_longer_matches_manifest ... ok
+test typed::tests::load_typed_returns_none_for_unknown_id ... ok
+test typed::tests::multiple_schemas_coexist_in_one_store ... ok
+test typed::tests::save_then_load_round_trips_value ... ok
+test typed::tests::schema_mismatch_load_returns_error ... ok
+test typed::tests::sealed_typed_round_trips_and_stores_non_cleartext ... ok
+
+test result: ok. 147 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.54s
+
+     Running tests/fjall_store.rs (/home/markik/Code/target/debug/deps/fjall_store-33be28f6867b634a)
+
+running 1 test
+test manifest_round_trips_through_fjall_store ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+
+     Running tests/model_free_records.rs (/home/markik/Code/target/debug/deps/model_free_records-526aca4a2b02a320)
+
+running 2 tests
+test model_free_schema_bootstrap_provides_resolvable_real_definitions ... ok
+test model_free_sealed_payloads_retain_inputs_settings_and_results ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests eidetic
+
+running 2 tests
+test crates/eidetic-core/src/schema.rs - schema::Hash::from_chunks (line 121) ... ignored
+test crates/eidetic-core/src/schema_def.rs - schema_def::MereNativeSchemaBuilder (line 283) ... ignored
+
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+all doctests ran in 0.30s; merged doctests compilation took 0.29s
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic --no-default-features"
+	User time (seconds): 13.62
+	System time (seconds): 2.45
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:16.79
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 629052
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 45
+	Minor (reclaiming a frame) page faults: 484718
+	Voluntary context switches: 8017
+	Involuntary context switches: 524
+	Swaps: 0
+	File system inputs: 62808
+	File system outputs: 175448
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

@@ -1,0 +1,22 @@
+{
+  "mere": {
+    "base": "f482539a50ca72566184dbf3b7171ecc264dedb3",
+    "only_eidetic_and_mere_source_revisions_changed": true,
+    "singletons": {
+      "eidetic": 1,
+      "eidetic-search": 1,
+      "chartulary": 1,
+      "muniment": 1
+    }
+  },
+  "turnstone": {
+    "base": "571c2f3c83d4ec93710dc60b65cef75254e46487",
+    "only_eidetic_and_mere_source_revisions_changed": true,
+    "singletons": {
+      "eidetic": 1,
+      "eidetic-search": 1,
+      "chartulary": 1,
+      "muniment": 1
+    }
+  }
+}

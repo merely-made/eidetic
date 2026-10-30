@@ -1,0 +1,79 @@
+Running as unit: custody-contract-eidetic-m4-group-count-red.scope; invocation ID: b1176c99829a442d9e7a9e4e5b6ef983
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `test` profile [unoptimized] target(s) in 8.37s
+     Running tests/model_free_records.rs (/home/markik/Code/target/debug/deps/model_free_records-d8611c15e43f75b0)
+
+running 10 tests
+test model_free_checked_sum_refuses_overflow_and_conflicting_duplicate ... ok
+test model_free_comparison_keeps_former_guessed_unknown_and_distinct_entities ... ok
+test model_free_counts_timelines_and_tags_keep_exact_sources ... ok
+test model_free_filters_joins_and_work_limits_use_explicit_identity ... ok
+test model_free_grouping_preserves_identity_status_context_and_valid_time ... FAILED
+test model_free_groups_distinct_assertions_and_deduplicates_projection ... ok
+test model_free_incomplete_inputs_refuse_count_and_absence ... ok
+test model_free_rejects_unit_mismatch_and_invalid_civil_time ... ok
+test model_free_source_count_counts_admitted_sources_not_assertions ... FAILED
+test model_free_source_queries_refuse_inapplicable_record_filters ... FAILED
+
+failures:
+
+---- model_free_grouping_preserves_identity_status_context_and_valid_time stdout ----
+
+thread 'model_free_grouping_preserves_identity_status_context_and_valid_time' (768010) panicked at crates/eidetic-search/tests/model_free_records.rs:112:5:
+assertion `left == right` failed
+  left: 1
+ right: 4
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- model_free_source_count_counts_admitted_sources_not_assertions stdout ----
+
+thread 'model_free_source_count_counts_admitted_sources_not_assertions' (768014) panicked at crates/eidetic-search/tests/model_free_records.rs:119:5:
+assertion `left == right` failed
+  left: Some(3)
+ right: Some(1)
+
+---- model_free_source_queries_refuse_inapplicable_record_filters stdout ----
+
+thread 'model_free_source_queries_refuse_inapplicable_record_filters' (768015) panicked at crates/eidetic-search/tests/model_free_records.rs:103:5:
+assertion failed: matches!(evaluate(&snapshot(), &q, &RecordSettings::default()),
+    Err(ResearchError::Unsupported(_)))
+
+
+failures:
+    model_free_grouping_preserves_identity_status_context_and_valid_time
+    model_free_source_count_counts_admitted_sources_not_assertions
+    model_free_source_queries_refuse_inapplicable_record_filters
+
+test result: FAILED. 7 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p eidetic-search --test model_free_records`
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic-search --no-default-features --test model_free_records"
+	User time (seconds): 6.44
+	System time (seconds): 1.61
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.45
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 462552
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 338
+	Minor (reclaiming a frame) page faults: 227055
+	Voluntary context switches: 1708
+	Involuntary context switches: 272
+	Swaps: 0
+	File system inputs: 368336
+	File system outputs: 105968
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

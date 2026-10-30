@@ -1,0 +1,31 @@
+Running as unit: custody-contract-m4-store-block-red-1.scope; invocation ID: 321a0316e526449abebd62050283d403
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+error: package `lsm-tree` cannot be tested because it requires dev-dependencies and is not a member of the workspace
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p lsm-tree --lib bounded_validation_tests -- --test-threads=1"
+	User time (seconds): 0.28
+	System time (seconds): 0.34
+	Percent of CPU this job got: 96%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.65
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 139892
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 37237
+	Voluntary context switches: 519
+	Involuntary context switches: 10
+	Swaps: 0
+	File system inputs: 192
+	File system outputs: 1296
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

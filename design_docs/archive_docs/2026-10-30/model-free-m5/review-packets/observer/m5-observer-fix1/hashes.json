@@ -1,0 +1,31 @@
+{
+  "files": {
+    "src/app/mod.rs": "281fc202f30b2ab976e38d1ddc0a44d868e4cf8e0988d71823bd87b5719cc8b9",
+    "src/app/research_compare_arms.rs": "2a4145e45b82cec617d324602593585dcbb7fc30df5fe6ac48b5751677314155",
+    "src/app/research_record_owner.rs": "5e543d5ec22a44c2ba9fc6e779cfae6b26be40418d8b2a5ab120dc986eac1548",
+    "src/app/research_record_owner_tests.rs": "deae250fda4547e4018dab55749e5170c0643511d51c32718e5ae65fcd40054c",
+    "src/app/research_record_scenario_tests.rs": "7d6ed3b87df42f5e693c3ab3531cc6572d5bb7c9a2c6c01da22027368fe7da45",
+    "src/app/research_record_scope.rs": "70fd0b7531ff894f15de323786e08f09520aa56926ae2ecacae8a15e6fa84b52",
+    "src/app/research_search_scenario.rs": "415245b15063f3cbd6190d05048f01e5a3ec609858032ccffb080e583c2e3770",
+    "src/app/research_search_tests.rs": "f0942d22e0b36cf888b48191fa892d73e7943f0281c8ff4c0287ab4094e52785",
+    "src/inference_activity.rs": "33b10c6b8d7f967e201178b217993493602068570d0f8a5ff800025a9aea72fd",
+    "src/inference_service/intent.rs": "7a500e4c03735a9074e6b1dabd7d0748af5f9dc3c7dedbe640d5dd57e631a4e4",
+    "src/inference_service/tests.rs": "cdd517f9b7fe427dab11a5f1698a2e73fc00eba10fd58a872d203939a2542db4",
+    "src/inference_service/worker.rs": "c6f2f2dcdcc0099128b775892af682195ca1c3e2b09d232441c28cfbbc468333",
+    "src/lib.rs": "856b051e5869582709f789e6c171b0f10fee581d3afaccb46bb61898db1451ff",
+    "src/research_records.rs": "077ed29de958b063619af7c5961e554ca44abb55255aa921f19b820b4b375ec9",
+    "src/scenario.rs": "792fb69f0defdf78f9a5cb801824b0a0f1cc2c586f764de023dfbeb17caa1e87",
+    "src/scenario/parse.rs": "ab8c50f1871247a89f6eb268bf0ff36672c355d8ed716cce94efce9308c8fe80",
+    "src/scenario/tests.rs": "4e5d4289807d99130e143b1e461a5f460c755d77a0f468ab5eff157a2264771b",
+    "src/shell/drive.rs": "91fe6f6695e3b978e2b2c66dfb05c98ef03769455522145a0b6f2eafeea0e65a",
+    "src/shell/drive/shell_run_scenario_step.rs": "dbb1489ae654a9a95dce72bd3dfe79439f5160fc2c3614c20915355c8311f95c",
+    "src/shell/drive/shell_scenario_assert_no_surface.rs": "465374af2a818e22fb0aa87852cd0029de0da383a1ca2d60bff563a1914233c9",
+    "src/shell/drive/shell_scenario_click_note_member.rs": "0442d19330370208f31b32c4fa43be5acde296e916fdc8173d782896ca0850ee",
+    "src/trail_memory.rs": "a30af97e0896fe248cec3313f9ede851716fa0b53e5accad7ef1e7b0d2558581",
+    "src/trail_memory/m5_inspection.rs": "f35b658b9f272658412ba15a9a2707a92441cb34e3b3ace5b9a99bd37856234c",
+    "src/trail_memory/m5_inventory.rs": "8ff984dd7112aadb1f430e4c9d4dbaf7b6ecdfd675b55ce97b10a94e695339f5",
+    "src/trail_memory/m5_store_integrity_tests.rs": "43bcf73c07b542719ddfc5e4f1b4c58ab7ab663af076dbed58f05404f1128e10",
+    "src/trail_memory/research_owner_tests.rs": "44eeb777eade9aa0dae9a42ca260d6b4b568577efe8020c125f2afc2d965027a"
+  },
+  "head": "293eb1038a343b9068a9a73746b096b22c053bf0"
+}

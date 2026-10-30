@@ -1,0 +1,389 @@
+Running as unit: custody-contract-m4-recovery-muniment-suite-1.scope; invocation ID: 8444177d99834423b000ef1579b342f6
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling lsm-tree v2.10.4 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/support/patches/lsm-tree)
+warning: usage of an `unsafe` block
+  --> support/patches/lsm-tree/src/binary_search.rs:25:20
+   |
+25 |         let item = unsafe { slice.get_unchecked(mid) };
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> support/patches/lsm-tree/src/binary_search.rs:24:16
+   |
+24 |         #[warn(unsafe_code)]
+   |                ^^^^^^^^^^^
+
+warning: struct `BlockLimits` is never constructed
+  --> support/patches/lsm-tree/src/bounded_block.rs:13:19
+   |
+13 | pub(crate) struct BlockLimits {
+   |                   ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: enum `BlockReadError` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:23:17
+   |
+23 | pub(crate) enum BlockReadError {
+   |                 ^^^^^^^^^^^^^^
+
+warning: function `allocate_zeroed` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:36:4
+   |
+36 | fn allocate_zeroed(len: usize) -> Result<Vec<u8>, BlockReadError> {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `read_data_block_budgeted` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:48:15
+   |
+48 | pub(crate) fn read_data_block_budgeted<R: Read>(
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `read_data_block_inner` is never used
+  --> support/patches/lsm-tree/src/bounded_block.rs:67:4
+   |
+67 | fn read_data_block_inner<R: Read>(
+   |    ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `corrupt` is never used
+  --> support/patches/lsm-tree/src/bounded_bloom.rs:10:4
+   |
+10 | fn corrupt() -> PrepareError {
+   |    ^^^^^^^
+
+warning: function `parse_bloom` is never used
+  --> support/patches/lsm-tree/src/bounded_bloom.rs:14:15
+   |
+14 | pub(crate) fn parse_bloom(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<BloomFilter, PrepareError> {
+   |               ^^^^^^^^^^^
+
+warning: function `corrupt` is never used
+  --> support/patches/lsm-tree/src/bounded_manifest.rs:10:4
+   |
+10 | fn corrupt() -> PrepareError {
+   |    ^^^^^^^
+
+warning: function `reserve` is never used
+  --> support/patches/lsm-tree/src/bounded_manifest.rs:14:4
+   |
+14 | fn reserve<T>(vec: &mut Vec<T>, count: usize, budget: &mut dyn RecoveryBudget) -> Result<(), PrepareError> {
+   |    ^^^^^^^
+
+warning: function `parse_levels` is never used
+  --> support/patches/lsm-tree/src/bounded_manifest.rs:21:15
+   |
+21 | pub(crate) fn parse_levels(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<Vec<Vec<u64>>, PrepareError> {
+   |               ^^^^^^^^^^^^
+
+warning: enum `ValidationError` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:11:17
+   |
+11 | pub(crate) enum ValidationError {
+   |                 ^^^^^^^^^^^^^^^
+
+warning: struct `ValidationSummary` is never constructed
+  --> support/patches/lsm-tree/src/bounded_validation.rs:19:19
+   |
+19 | pub(crate) struct ValidationSummary {
+   |                   ^^^^^^^^^^^^^^^^^
+
+warning: function `skip` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:25:4
+   |
+25 | fn skip(cursor: &mut Cursor<&[u8]>, len: usize) -> Result<(), ValidationError> {
+   |    ^^^^
+
+warning: function `validate_data_entries` is never used
+  --> support/patches/lsm-tree/src/bounded_validation.rs:35:15
+   |
+35 | pub(crate) fn validate_data_entries(
+   |               ^^^^^^^^^^^^^^^^^^^^^
+
+warning: `lsm-tree` (lib) generated 15 warnings
+   Compiling fjall v2.11.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/support/patches/fjall)
+warning: struct `PartitionRecoveryBudget` is never constructed
+   --> support/patches/fjall/src/bounded_recovery.rs:142:19
+    |
+142 | pub(crate) struct PartitionRecoveryBudget<'a> {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `journal_recovery_mode` is never read
+  --> support/patches/fjall/src/config.rs:51:16
+   |
+14 | pub struct Config {
+   |            ------ field in this struct
+...
+51 |     pub(crate) journal_recovery_mode: RecoveryMode,
+   |                ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `Config` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+
+warning: fields `partition`, `key`, `value`, and `value_type` are never read
+  --> support/patches/fjall/src/journal/bounded.rs:17:16
+   |
+16 | pub(crate) struct PreparedItem {
+   |                   ------------ fields in this struct
+17 |     pub(crate) partition: String,
+   |                ^^^^^^^^^
+18 |     pub(crate) key: Vec<u8>,
+   |                ^^^
+19 |     pub(crate) value: Vec<u8>,
+   |                ^^^^^
+20 |     pub(crate) value_type: lsm_tree::ValueType,
+   |                ^^^^^^^^^^
+
+warning: field `seqno` is never read
+  --> support/patches/fjall/src/journal/bounded.rs:24:16
+   |
+23 | pub(crate) struct PreparedBatch {
+   |                   ------------- field in this struct
+24 |     pub(crate) seqno: u64,
+   |                ^^^^^
+
+warning: method `outstanding_flushes` is never used
+  --> support/patches/fjall/src/stats.rs:26:12
+   |
+25 | impl Stats {
+   | ---------- method in this implementation
+26 |     pub fn outstanding_flushes(&self) -> usize {
+   |            ^^^^^^^^^^^^^^^^^^^
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> support/patches/fjall/src/tx/keyspace.rs:42:21
+   |
+42 |     pub fn write_tx(&self) -> WriteTransaction {
+   |                     ^^^^^     ^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                     |
+   |                     the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default
+help: use `'_` for type paths
+   |
+42 |     pub fn write_tx(&self) -> WriteTransaction<'_> {
+   |                                               ++++
+
+warning: `fjall` (lib) generated 6 warnings (run `cargo fix --lib -p fjall` to apply 1 suggestion)
+   Compiling muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+warning: multiple fields are never read
+  --> crates/muniment/src/fjall_limits.rs:77:16
+   |
+76 | pub struct FjallReadBudget {
+   |            --------------- fields in this struct
+77 |     pub(crate) limits: FjallReadLimits,
+   |                ^^^^^^
+78 |     pub(crate) input_bytes: u64,
+   |                ^^^^^^^^^^^
+79 |     pub(crate) decode_bytes: u64,
+   |                ^^^^^^^^^^^^
+80 |     pub(crate) metadata_bytes: u64,
+   |                ^^^^^^^^^^^^^^
+81 |     pub(crate) alloc_bytes: u64,
+   |                ^^^^^^^^^^^
+82 |     pub(crate) visited_items: u64,
+   |                ^^^^^^^^^^^^^
+83 |     pub(crate) output_items: u64,
+   |                ^^^^^^^^^^^^
+84 |     pub(crate) output_key_bytes: u64,
+   |                ^^^^^^^^^^^^^^^^
+   |
+   = note: `FjallReadBudget` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated items `counter`, `counter_mut`, and `charge_both` are never used
+   --> crates/muniment/src/fjall_limits.rs:102:8
+    |
+ 87 | impl FjallReadBudget {
+    | -------------------- associated items in this implementation
+...
+102 |     fn counter(&self, kind: FjallLimitKind) -> Option<(u64, u64)> {
+    |        ^^^^^^^
+...
+115 |     fn counter_mut(&mut self, kind: FjallLimitKind) -> Option<&mut u64> {
+    |        ^^^^^^^^^^^
+...
+128 |     pub(crate) fn charge_both(
+    |                   ^^^^^^^^^^^
+
+warning: `muniment` (lib) generated 2 warnings
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:302:18
+    |
+302 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:312:18
+    |
+312 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:321:18
+    |
+321 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:334:21
+    |
+334 |                 let mut store = FjallStore::open(dir.path()).expect("open 1");
+    |                     ----^^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:338:21
+    |
+338 |                 let mut store = FjallStore::open(dir.path()).expect("open 2");
+    |                     ----^^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> crates/muniment/src/fjall_backend.rs:393:18
+    |
+393 |             let (mut store, _dir) = open_store();
+    |                  ----^^^^^
+    |                  |
+    |                  help: remove this `mut`
+
+warning: `muniment` (lib test) generated 6 warnings (run `cargo fix --lib -p muniment --tests` to apply 6 suggestions)
+    Finished `test` profile [unoptimized] target(s) in 6.27s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/muniment-b2f72426a37768bb)
+
+running 82 tests
+test backend::tests::a_backend_chosen_at_runtime_is_still_a_backend ... ok
+test backend::tests::a_borrowed_backend_shares_the_keyspace ... ok
+test backend::tests::apply_lands_the_whole_batch ... ok
+test backend::tests::apply_takes_the_whole_batch_in_one_call ... ok
+test backend::tests::backend_futures_are_send_on_native ... ok
+test backend::tests::scan_returns_the_range_in_ascending_order ... ok
+test blob::tests::hash_is_content_stable ... ok
+test blob::tests::hex_round_trips ... ok
+test blob::tests::identical_content_dedupes_to_one_key ... ok
+test blob::tests::missing_blob_is_none ... ok
+test blob::tests::put_returns_content_hash_and_get_round_trips ... ok
+test custody_transact_tests::default_refusal_is_typed ... ok
+test custody_transact_tests::memory_backend::claim_after_commit_sees_the_blob_gone_with_no_dangling_reference ... ok
+test custody_transact_tests::memory_backend::collection_refuses_a_claim_that_landed_before_the_transaction ... ok
+test custody_transact_tests::memory_backend::negative_control_apply_alone_does_not_recheck_a_new_owner ... ok
+test error::tests::limit_error_retains_its_kind_and_limit ... ok
+test fjall_backend::recovery_tests::journal_accepts_exact_key_value_boundaries_and_large_batch ... ok
+test fjall_backend::recovery_tests::journal_allocation_limit_includes_checksum_scratch ... ok
+test fjall_backend::recovery_tests::journal_incomplete_tail_is_not_truncated_by_prepare ... ok
+test fjall_backend::recovery_tests::journal_rejects_input_limit_before_requesting_value_buffer ... ok
+test fjall_backend::recovery_tests::journal_replay_budget_is_shared_between_files ... ok
+test fjall_backend::recovery_tests::journal_replay_item_limit_accepts_exact_batch_boundary ... ok
+test fjall_backend::recovery_tests::journal_reports_checksum_mismatch_without_mutation ... ok
+test fjall_backend::recovery_tests::journal_reports_count_mismatch_without_mutation ... ok
+test fjall_backend::recovery_tests::truncated_large_value_does_not_request_declared_buffer ... ok
+test fjall_backend::tests::concurrent_keyspace_open_refuses_until_owner_drops ... ok
+test fjall_backend::tests::data_persists_across_store_reopen ... ok
+test fjall_backend::tests::default_partition_preserves_existing_eidetic_keys ... ok
+test fjall_backend::tests::iter_keys_returns_prefix_matches ... ok
+test fjall_backend::tests::iterator_retains_keyspace_lease_after_partition_drops ... ok
+test fjall_backend::tests::journal_preparation_refuses_oversize_without_changing_file ... ok
+test fjall_backend::tests::load_missing_returns_none ... ok
+test fjall_backend::tests::owner_lock_refuses_second_process_until_drop ... 
+running 1 test
+test fjall_backend::tests::owner_lock_refuses_second_process_until_drop ... 
+running 1 test
+test fjall_backend::tests::owner_lock_refuses_second_process_until_drop ... ok
+test fjall_backend::tests::save_overwrites_existing ... ok
+test fjall_backend::tests::save_then_load_returns_same_bytes ... ok
+test fjall_backend::tests::separate_partitions_isolate_keys ... ok
+test fjall_backend::tests::snapshot_iterator_retains_lease_after_snapshot_drops ... ok
+test fjall_backend::tests::snapshot_retains_keyspace_lease_after_partition_drops ... ok
+test fjall_backend::tests::sync_all_preserves_written_bytes_after_process_exit ... 
+running 1 test
+test fjall_backend::tests::sync_all_preserves_written_bytes_after_process_exit ... ok
+test fjall_backend::tests::transaction_iterator_retains_lease_after_owner_drops ... ok
+test fjall_limits::tests::bound_error_converts_to_portable_limit_without_losing_fields ... ok
+test fjall_limits::tests::dual_charge_checks_both_before_debit_and_keeps_prior_work ... ok
+test fjall_limits::tests::dual_charge_rejects_integer_overflow_without_debiting_either ... ok
+test journal::causal::compatibility::a_causeless_log_survives_a_positional_codec ... ok
+test journal::causal::compatibility::a_log_that_claims_no_causes_stays_small ... ok
+test journal::causal::compatibility::a_log_written_before_causality_still_loads ... ok
+test journal::causal::compatibility::causality_survives_a_round_trip ... ok
+test journal::causal::tests::an_entry_cannot_cite_itself ... ok
+test journal::causal::tests::an_entry_cannot_cite_the_future ... ok
+test journal::causal::tests::an_entry_may_have_several_causes ... ok
+test journal::causal::tests::an_ordinary_append_claims_no_cause ... ok
+test journal::causal::tests::causes_walk_backwards_and_effects_walk_forwards ... ok
+test journal::causal::tests::independent_entries_are_concurrent ... ok
+test journal::causal::tests::repeated_causes_collapse ... ok
+test journal::causal::tests::replaying_in_sequence_order_never_precedes_a_cause ... ok
+test journal::causal::tests::the_sequence_is_always_a_topological_order ... ok
+test journal::digest::tests::a_prefix_keeps_its_digest_as_the_log_grows ... ok
+test journal::digest::tests::a_prefix_longer_than_the_log_has_no_digest_and_an_empty_one_has ... ok
+test journal::digest::tests::enums_options_and_nested_collections_encode_distinctly ... ok
+test journal::digest::tests::equal_entries_digest_alike_whatever_order_their_maps_iterate_in ... ok
+test journal::digest::tests::the_digest_binds_entries_only ... ok
+test journal::digest::tests::the_digest_follows_each_entry_whole_and_their_order ... ok
+test journal::digest::tests::the_digest_survives_a_save_and_a_load ... ok
+test journal::entries::tests::a_missing_entry_fails_the_load ... ok
+test journal::entries::tests::appending_from_a_cursor_writes_only_the_new_entries ... ok
+test journal::entries::tests::entries_round_trip_with_causes_and_identity ... ok
+test journal::entries::tests::keys_sort_in_log_order ... ok
+test journal::entries::tests::neighbouring_prefixes_stay_apart ... ok
+test journal::log::tests::append_stamps_monotonic_sequences ... ok
+test journal::log::tests::fork_copies_history_and_records_provenance ... ok
+test journal::log::tests::from_returns_only_newer_entries ... ok
+test journal::log::tests::get_addresses_stable_entries ... ok
+test journal::log::tests::replay_folds_entries_into_state ... ok
+test journal::log::tests::replay_from_advances_an_existing_state ... ok
+test journal::persist::tests::absent_slot_loads_an_empty_log ... ok
+test journal::persist::tests::log_round_trips_through_a_muniment_slot ... ok
+test journal::persist::tests::reload_then_append_continues_the_sequence ... ok
+test slot::tests::delete_clears ... ok
+test slot::tests::keys_lists_by_prefix ... ok
+test slot::tests::missing_slot_is_none ... ok
+test slot::tests::save_overwrites ... ok
+test slot::tests::save_then_load_round_trips ... ok
+
+test result: ok. 82 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.70s
+
+   Doc-tests muniment
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p muniment --no-default-features --features fjall,json"
+	User time (seconds): 5.36
+	System time (seconds): 1.79
+	Percent of CPU this job got: 54%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:13.20
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 285632
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 14
+	Minor (reclaiming a frame) page faults: 334754
+	Voluntary context switches: 39990
+	Involuntary context switches: 138
+	Swaps: 0
+	File system inputs: 13256
+	File system outputs: 89128
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

@@ -1,0 +1,8 @@
+RESULT fail
+captured scope_selector
+captured scope_result
+FAIL: wait-research-search after 600 frames: no current admitted result
+FAIL: no successful window presentation for ten seconds
+presentation frames=103 captures=2 blank=0
+capture /m5/run/seed/scope_selector.png digest=b3c671afc723bdc3 blank=false
+capture /m5/run/seed/scope_result.png digest=238ed8809aab72ba blank=false

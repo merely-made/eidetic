@@ -1,0 +1,13 @@
+Id=m5-intact-controller-20261030-o.service
+ActiveState=active
+SubState=running
+InvocationID=b9fb714bb1aa4cba9c1f0a2014176f24
+RuntimeMaxUSec=22min
+MainPID=1199532
+ExecMainPID=1199532
+ExecMainCode=0
+ExecMainStatus=0
+ControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/m5-intact-controller-20261030-o.service
+CPUQuotaPerSecUSec=500ms
+MemoryMax=536870912
+MemorySwapMax=0

@@ -1,0 +1,841 @@
+Running as unit: custody-contract-m5-mere-graphshell-2.scope; invocation ID: 53f3a8c33e0d42ca8822e2636c51cc37
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=721e17d41a8f258073f440adbbb39ad145250868#721e17d4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=721e17d41a8f258073f440adbbb39ad145250868#721e17d4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=721e17d41a8f258073f440adbbb39ad145250868#721e17d4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+    Checking tokio v1.53.2
+    Checking idna v1.1.0
+    Checking url v2.5.8
+    Checking tokio-util v0.7.19
+    Checking h2 v0.4.19
+    Checking hyper v1.11.1
+    Checking n0-future v0.3.2
+    Checking hyper-util v0.1.20
+    Checking layout-dom-api v0.1.1 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking tokio-rustls v0.26.6
+    Checking tower v0.5.3
+    Checking tower-http v0.6.11
+    Checking hyper-rustls v0.27.9
+    Checking document-session-api v0.1.1 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking tokio-stream v0.1.19
+    Checking genet-static-dom v0.1.1 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking reqwest v0.13.5
+    Checking iroh-base v1.4.1
+    Checking netlink-sys v0.8.8
+    Checking genet-fontique v0.10.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking n0-dns-resolver v0.1.0
+    Checking genet-paint-types v0.2.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking netlink-proto v0.12.2
+    Checking noq v1.4.0
+    Checking n0-watcher v1.0.0
+    Checking attohttpc v0.30.1
+    Checking genet-parley v0.10.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking iroh-dns v1.4.1
+    Checking igd-next v0.17.1
+    Checking netwatch v0.19.3
+    Checking engine-observables-api v0.2.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking genet-text v0.1.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking tokio-websockets v0.13.3
+    Checking eidetic v0.0.2 (https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)
+    Checking regress v0.11.1 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking genet-scripted-dom v0.1.2 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking iroh-relay v1.4.1
+   Compiling livery v0.0.5 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking portmapper v0.19.3
+    Checking webcue v0.1.2
+    Checking backon v1.6.0
+    Checking genet-host-api v0.2.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking genet-flow v0.1.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking iroh v1.4.1
+    Checking cadency v0.0.1 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking buckram v0.0.3 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking mere-kernel v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/graph/graph-kernel)
+warning: unused imports: `astar`, `dijkstra`, `has_path_connecting`, and `kosaraju_scc`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:21:22
+   |
+21 | use petgraph::algo::{astar, dijkstra, has_path_connecting, kosaraju_scc};
+   |                      ^^^^^  ^^^^^^^^  ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `Archived`, `Place`, and `Resolver`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:25:21
+   |
+25 | use rkyv::{Archive, Archived, Deserialize, Place, Resolver, Serialize, rancor::Fallible};
+   |                     ^^^^^^^^               ^^^^^  ^^^^^^^^
+
+warning: unused import: `HashSet`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:26:43
+   |
+26 | use std::collections::{BTreeMap, HashMap, HashSet};
+   |                                           ^^^^^^^
+
+warning: unused import: `AddressKind`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:33:31
+   |
+33 | use crate::address::{Address, AddressKind, address_from_url, cached_host_from_url, detect_mime};
+   |                               ^^^^^^^^^^^
+
+warning: unused imports: `GraphSnapshot`, `PersistedAddress`, `PersistedArrangementEdgeData`, `PersistedArrangementSubKind`, `PersistedContainmentEdgeData`, `PersistedContainmentSubKind`, `PersistedEdgeFamily`, `PersistedEdge`, `PersistedImportedEdgeData`, `PersistedImportedSubKind`, `PersistedNavigationTrigger`, `PersistedNodeSessionState`, `PersistedNode`, `PersistedProvenanceEdgeData`, `PersistedProvenanceSubKind`, `PersistedSemanticEdgeData`, `PersistedSemanticSubKind`, `PersistedTraversalEdgeData`, `PersistedTraversalMetrics`, and `PersistedTraversalRecord`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:35:5
+   |
+35 |     GraphSnapshot, PersistedAddress, PersistedArrangementEdgeData, PersistedArrangementSubKind,
+   |     ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+36 |     PersistedContainmentEdgeData, PersistedContainmentSubKind, PersistedEdge, PersistedEdgeFamily,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^
+37 |     PersistedImportedEdgeData, PersistedImportedSubKind, PersistedNavigationTrigger, PersistedNode,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^
+38 |     PersistedNodeSessionState, PersistedProvenanceEdgeData, PersistedProvenanceSubKind,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+39 |     PersistedSemanticEdgeData, PersistedSemanticSubKind, PersistedTraversalEdgeData,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+40 |     PersistedTraversalMetrics, PersistedTraversalRecord,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `PersistedContainmentEdgeData`, `PersistedImportedEdgeData`, and `PersistedProvenanceEdgeData`
+  --> crates/graph/graph-kernel/src/graph/legacy_resource_migration.rs:35:20
+   |
+35 |     GraphSnapshot, PersistedContainmentEdgeData, PersistedEdge, PersistedImportedEdgeData,
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+36 |     PersistedProvenanceEdgeData, PersistedResourceFacet, PersistedResourceRecord,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `NodeTagPresentationState`
+  --> crates/graph/graph-kernel/src/graph/node_facets.rs:18:54
+   |
+18 | use crate::types::{NodeClassification, NodeProperty, NodeTagPresentationState};
+   |                                                      ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `RelationSelector`
+  --> crates/graph/graph-kernel/src/graph/query.rs:26:63
+   |
+26 | use super::edge_taxonomy::{ContainmentSubKind, EdgeAssertion, RelationSelector};
+   |                                                               ^^^^^^^^^^^^^^^^
+
+warning: unused imports: `address_from_url` and `detect_mime`
+  --> crates/graph/graph-kernel/src/graph/snapshot/from.rs:19:22
+   |
+19 | use crate::address::{address_from_url, detect_mime};
+   |                      ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/graph/graph-kernel/src/graph/input_key.rs:17:10
+   |
+17 |     NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+17 -     NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+17 +     NEXT.try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/graph/graph-kernel/src/graph/membership.rs:21:18
+   |
+21 |             NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |                  ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+21 -             NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+21 +             NEXT.try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+   |
+
+warning: unused import: `EdgeRef`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:24:23
+   |
+24 | use petgraph::visit::{EdgeRef, IntoEdgeReferences};
+   |                       ^^^^^^^
+
+warning: unused import: `rancor::Fallible`
+  --> crates/graph/graph-kernel/src/graph/mod.rs:25:72
+   |
+25 | use rkyv::{Archive, Archived, Deserialize, Place, Resolver, Serialize, rancor::Fallible};
+   |                                                                        ^^^^^^^^^^^^^^^^
+
+warning: unused variable: `key`
+   --> crates/graph/graph-kernel/src/graph/assertion_write.rs:996:19
+    |
+996 |         let Some((key, current)) = self.find_semantic_statement(statement_id) else {
+    |                   ^^^ help: if this is intentional, prefix it with an underscore: `_key`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `upsert_persisted_statement` and `remove_statements_with_sub_kind` are never used
+   --> crates/graph/graph-kernel/src/graph/edge_data.rs:495:19
+    |
+350 | impl SemanticData {
+    | ----------------- methods in this implementation
+...
+495 |     pub(crate) fn upsert_persisted_statement(&mut self, mut statement: SemanticStatement) -> bool {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+549 |     pub(crate) fn remove_statements_with_sub_kind(&mut self, sub_kind: SemanticSubKind) -> bool {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `insert`, `remove`, `contains`, and `is_empty` are never used
+   --> crates/graph/graph-kernel/src/graph/edge_data.rs:793:19
+    |
+792 | impl ContainmentData {
+    | -------------------- methods in this implementation
+793 |     pub(crate) fn insert(&mut self, sub_kind: ContainmentSubKind) -> bool {
+    |                   ^^^^^^
+...
+797 |     pub(crate) fn remove(&mut self, sub_kind: ContainmentSubKind) -> bool {
+    |                   ^^^^^^
+...
+801 |     pub(crate) fn contains(&self, sub_kind: ContainmentSubKind) -> bool {
+    |                   ^^^^^^^^
+...
+805 |     pub(crate) fn is_empty(&self) -> bool {
+    |                   ^^^^^^^^
+
+warning: methods `insert`, `remove`, `contains`, and `is_empty` are never used
+   --> crates/graph/graph-kernel/src/graph/edge_data.rs:811:19
+    |
+810 | impl ArrangementData {
+    | -------------------- methods in this implementation
+811 |     pub(crate) fn insert(&mut self, sub_kind: ArrangementSubKind) -> bool {
+    |                   ^^^^^^
+...
+815 |     pub(crate) fn remove(&mut self, sub_kind: ArrangementSubKind) -> bool {
+    |                   ^^^^^^
+...
+819 |     pub(crate) fn contains(&self, sub_kind: ArrangementSubKind) -> bool {
+    |                   ^^^^^^^^
+...
+823 |     pub(crate) fn is_empty(&self) -> bool {
+    |                   ^^^^^^^^
+
+warning: methods `assert_semantic_predicate`, `assert_semantic_relation_in_scope`, `assert_semantic_predicate_in_scope`, `withdraw_semantic_statement`, and `upsert_persisted_semantic_statement` are never used
+   --> crates/graph/graph-kernel/src/graph/edge_payload.rs:183:19
+    |
+ 67 | impl EdgePayload {
+    | ---------------- methods in this implementation
+...
+183 |     pub(crate) fn assert_semantic_predicate(&mut self, predicate: String) -> bool {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+186 |     pub(crate) fn assert_semantic_relation_in_scope(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+201 |     pub(crate) fn assert_semantic_predicate_in_scope(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+215 |     pub(crate) fn withdraw_semantic_statement(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+225 |     pub(crate) fn upsert_persisted_semantic_statement(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `LogIdAsString` is never constructed
+   --> crates/graph/graph-kernel/src/graph/identity.rs:160:19
+    |
+160 | pub(crate) struct LogIdAsString;
+    |                   ^^^^^^^^^^^^^
+
+warning: method `facets_mut` is never used
+  --> crates/graph/graph-kernel/src/graph/node_facets.rs:56:19
+   |
+41 | impl Graph {
+   | ---------- method in this implementation
+...
+56 |     pub(crate) fn facets_mut(&mut self) -> &mut NodeFacetStore {
+   |                   ^^^^^^^^^^
+
+warning: multiple methods are never used
+   --> crates/graph/graph-kernel/src/graph/resource_content.rs:113:19
+    |
+112 | impl Graph {
+    | ---------- methods in this implementation
+113 |     pub(crate) fn insert_node_tag(&mut self, key: NodeKey, tag: String) -> bool {
+    |                   ^^^^^^^^^^^^^^^
+...
+116 |     pub(crate) fn remove_node_tag(&mut self, key: NodeKey, tag: &str) -> bool {
+    |                   ^^^^^^^^^^^^^^^
+...
+119 |     pub(crate) fn append_node_property(&mut self, key: NodeKey, property: NodeProperty) -> bool {
+    |                   ^^^^^^^^^^^^^^^^^^^^
+...
+122 |     pub(crate) fn add_node_classification(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^
+...
+129 |     pub(crate) fn remove_node_classification(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+143 |     pub(crate) fn set_node_classification_status(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+158 |     pub(crate) fn set_node_primary_classification(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: multiple methods are never used
+    --> crates/graph/graph-kernel/src/graph/edge_ops.rs:358:19
+     |
+  41 | impl Graph {
+     | ---------- methods in this implementation
+...
+ 358 |     pub(crate) fn assert_semantic_predicate(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 427 |     pub(crate) fn replay_assert_relation_by_ids(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 443 |     pub(crate) fn replay_set_edge_semantic_predicate_by_ids(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 512 |     pub(crate) fn dissolve_remove_node_collect_traversals(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 734 |     pub(crate) fn assert_surface_persisted_semantic_statement(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 859 |     pub(crate) fn replay_retract_relations(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1019 |     pub(crate) fn set_edge_semantic_predicate(
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: method `get_node_mut` is never used
+   --> crates/graph/graph-kernel/src/graph/query.rs:194:19
+    |
+187 | impl Graph {
+    | ---------- method in this implementation
+...
+194 |     pub(crate) fn get_node_mut(&mut self, key: NodeKey) -> Option<&mut Node> {
+    |                   ^^^^^^^^^^^^
+
+warning: `mere-kernel` (lib) generated 23 warnings (run `cargo fix --lib -p mere-kernel` to apply 12 suggestions)
+    Checking genet-document-resources v0.2.1 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking acto v0.8.2
+    Checking genet-livery v0.0.4 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+warning: unused variable: `time_range`
+   --> crates/cambium/scenes/scenomise/src/opened_link.rs:599:9
+    |
+599 |     let time_range = timeline_range(pending);
+    |         ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_time_range`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `scenomise` (lib) generated 1 warning (run `cargo fix --lib -p scenomise` to apply 1 suggestion)
+    Checking irpc v0.17.0
+    Checking inker v0.1.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/inker/inker)
+    Checking notochord v0.1.1 (https://github.com/merely-made/dramatis.git?branch=main#6aa0daa4)
+    Checking hickory-proto v0.26.3
+    Checking swarm-discovery v0.6.4
+    Checking mere-alembic v0.0.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/distillery/alembic)
+    Checking fleece v0.5.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking pandect v0.1.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/system/pandect)
+warning: unused import: `std::io`
+  --> crates/system/pandect/src/wallet_grant/pairing.rs:10:5
+   |
+10 | use std::io;
+   |     ^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::io`
+  --> crates/system/pandect/src/wallet_grant/records.rs:10:5
+   |
+10 | use std::io;
+   |     ^^^^^^^
+
+warning: unused import: `std::path::Path`
+  --> crates/system/pandect/src/wallet_grant/records.rs:11:5
+   |
+11 | use std::path::Path;
+   |     ^^^^^^^^^^^^^^^
+
+warning: unused imports: `Ed25519Keypair`, `IdentityProvider`, `InMemoryProvider`, and `PersonaId`
+  --> crates/system/pandect/src/wallet_grant/records.rs:13:16
+   |
+13 | use identity::{Ed25519Keypair, IdentityProvider, InMemoryProvider, PersonaId};
+   |                ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^
+
+warning: unused import: `Ed25519Signature`
+  --> crates/system/pandect/src/wallet_grant/types.rs:13:16
+   |
+13 | use identity::{Ed25519Signature, PersonaId};
+   |                ^^^^^^^^^^^^^^^^
+
+warning: unused imports: `DEVICE_GRANT_SCHEMA_VERSION` and `DeviceGrantError`
+  --> crates/system/pandect/src/wallet_grant/types.rs:18:5
+   |
+18 |     DEVICE_GRANT_SCHEMA_VERSION, DeviceExposure, DeviceGrantError, DeviceId, DevicePublicKey,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^                  ^^^^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+   --> crates/system/pandect/src/graph_session_merge.rs:663:13
+    |
+663 |         let mut add = |scratch: &mut Graph, more: Vec<CapturedDelta>, edits: &mut Vec<_>| {
+    |             ----^^^
+    |             |
+    |             help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `into_graph` is never used
+   --> crates/system/pandect/src/graph_codicil.rs:194:19
+    |
+193 | impl GraphCodicil {
+    | ----------------- method in this implementation
+194 |     pub(crate) fn into_graph(self) -> Result<Graph> {
+    |                   ^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `pandect` (lib) generated 8 warnings (run `cargo fix --lib -p pandect` to apply 7 suggestions)
+    Checking iroh-gossip v0.101.0
+    Checking ractor v0.16.5
+    Checking iroh-mdns-address-lookup v0.6.0
+    Checking p2panda-discovery v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+    Checking p2panda-sync v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+    Checking iroh-io v0.6.2
+    Checking bao-tree v0.16.1
+    Checking mere-p2panda-net v0.7.5 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+    Checking document-canvas v0.1.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/inker/document-canvas)
+    Checking genet-render v0.2.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking iroh-util v0.6.0
+    Checking genet-events v0.0.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking iroh-tickets v1.0.0
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> crates/cambium/sprigging/src/lib.rs:462:18
+    |
+462 |                 .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |epoch| {
+    |                  ^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+    |
+462 -                 .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |epoch| {
+462 +                 .try_update(Ordering::Relaxed, Ordering::Relaxed, |epoch| {
+    |
+
+warning: `sprigging` (lib) generated 1 warning (run `cargo fix --lib -p sprigging` to apply 1 suggestion)
+    Checking chatelaine v0.0.3 (https://github.com/merely-made/dramatis.git?branch=main#6aa0daa4)
+    Checking luggage v0.1.0 (https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)
+    Checking djinn v0.0.3 (https://github.com/merely-made/armillary.git?rev=721e17d41a8f258073f440adbbb39ad145250868#721e17d4)
+    Checking iroh-blobs v0.103.1
+    Checking stickleback v0.1.1 (https://www.github.com/merely-made/eidetic.git?rev=01ee97b0b95d679430986dffd54c64ce9b3b5ea3#01ee97b0)
+    Checking cambium v0.6.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/cambium/cambium)
+warning: unused import: `ScopeCamera`
+ --> crates/cambium/cambium/src/scope_navigation/history.rs:6:13
+  |
+6 | use super::{ScopeCamera, ScopeVisit};
+  |             ^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `cambium` (lib) generated 1 warning (run `cargo fix --lib -p cambium` to apply 1 suggestion)
+    Checking wgpu-cue v0.1.3
+    Checking mere-fleece v0.0.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/fleece)
+    Checking uxtree v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/forme/uxtree)
+    Checking mere-cartography v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/canvas/cartography)
+    Checking genet-browsing v0.1.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking pictograph v0.2.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/canvas/pictograph)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/canvas/pictograph/src/canvas/reader.rs:51:14
+   |
+51 |             .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |key| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+51 -             .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |key| {
+51 +             .try_update(Ordering::Relaxed, Ordering::Relaxed, |key| {
+   |
+
+warning: function `build_affinity_spring` is never used
+  --> crates/canvas/pictograph/src/canvas.rs:68:4
+   |
+68 | fn build_affinity_spring(scores: &crate::signals::AffinityScores) -> AffinitySpring {
+   |    ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `len` is never used
+   --> crates/canvas/pictograph/src/canvas/seiche_bridge.rs:104:19
+    |
+ 93 | impl VisibleRelationTopology {
+    | ---------------------------- method in this implementation
+...
+104 |     pub(crate) fn len(&self) -> usize {
+    |                   ^^^
+
+warning: function `visible_link_appearances` is never used
+  --> crates/canvas/pictograph/src/canvas/edge_cells.rs:31:15
+   |
+31 | pub(crate) fn visible_link_appearances(
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `link_hit_test` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:550:15
+    |
+550 | pub(crate) fn link_hit_test(
+    |               ^^^^^^^^^^^^^
+
+warning: function `link_hit_test_with_assertion_hides` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:573:15
+    |
+573 | pub(crate) fn link_hit_test_with_assertion_hides(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `self_link_hit_test` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:598:15
+    |
+598 | pub(crate) fn self_link_hit_test(
+    |               ^^^^^^^^^^^^^^^^^^
+
+warning: function `self_link_hit_test_with_assertion_hides` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:621:15
+    |
+621 | pub(crate) fn self_link_hit_test_with_assertion_hides(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `link_hit_test_where` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:646:4
+    |
+646 | fn link_hit_test_where(
+    |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `link_hit_test_segments` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:674:15
+    |
+674 | pub(crate) fn link_hit_test_segments(
+    |               ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `links_in_rect` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:711:15
+    |
+711 | pub(crate) fn links_in_rect(
+    |               ^^^^^^^^^^^^^
+
+warning: function `links_in_rect_with_assertion_hides` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:732:15
+    |
+732 | pub(crate) fn links_in_rect_with_assertion_hides(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `links_in_rect_segments` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:756:15
+    |
+756 | pub(crate) fn links_in_rect_segments(
+    |               ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `link_overlay` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:790:15
+    |
+790 | pub(crate) fn link_overlay(
+    |               ^^^^^^^^^^^^
+
+warning: function `link_overlay_with_assertion_hides` is never used
+   --> crates/canvas/pictograph/src/canvas/edge_cells.rs:812:15
+    |
+812 | pub(crate) fn link_overlay_with_assertion_hides(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `pictograph` (lib) generated 15 warnings (run `cargo fix --lib -p pictograph` to apply 1 suggestion)
+    Checking genet-documents v0.1.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking mere-lanes v0.1.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/system/document-lanes)
+    Checking cue-netrender v0.1.2 (https://github.com/merely-made/wgpu-cue.git?rev=b5b70c2c9c40748abedc0c18d2b6ec5373e48958#b5b70c2c)
+    Checking cambium-winit v0.3.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/cambium/cambium-winit)
+    Checking mere-transport v0.0.2 (https://github.com/merely-made/murm.git?branch=main#75eb9108)
+    Checking graphshell-endpoint v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/graphshell/graphshell-endpoint)
+    Checking murm-webrtc v0.0.1 (https://github.com/merely-made/murm.git?branch=main#75eb9108)
+    Checking graphshell-client v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/graphshell/graphshell-client)
+    Checking genet-presenter v0.2.0 (https://github.com/merely-made/genet.git?branch=main#c0144fe5)
+    Checking ssh-agent-lib v0.6.0
+    Checking pelt-core v0.2.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/ports/pelt/core)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> ports/pelt/core/src/pool_a11y.rs:65:18
+   |
+65 |                 .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
+   |                  ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+65 -                 .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
+65 +                 .try_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> ports/pelt/core/src/lib.rs:208:10
+    |
+208 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
+    |          ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+208 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
+208 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
+    |
+
+warning: `pelt-core` (lib) generated 2 warnings (run `cargo fix --lib -p pelt-core` to apply 2 suggestions)
+    Checking cambium-rootstock v0.1.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/cambium/cambium-rootstock)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/cambium/cambium-rootstock/src/producer/registry.rs:47:10
+   |
+47 |     next.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |key| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+47 -     next.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |key| {
+47 +     next.try_update(Ordering::Relaxed, Ordering::Relaxed, |key| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> crates/cambium/cambium-rootstock/src/scene_producer.rs:25:10
+   |
+25 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+25 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |value| {
+25 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> crates/cambium/cambium-rootstock/src/host.rs:117:10
+    |
+117 |     NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+    |          ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+117 -     NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+117 +     NEXT.try_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+    |
+
+warning: calls to `std::mem::drop` with a reference instead of an owned value does nothing
+   --> crates/cambium/cambium-rootstock/src/producer/registry.rs:707:13
+    |
+707 |             drop(renderer);
+    |             ^^^^^--------^
+    |                  |
+    |                  argument has type `&Renderer`
+    |
+    = note: `#[warn(dropping_references)]` on by default
+help: use `let _ = ...` to ignore the expression or result
+    |
+707 -             drop(renderer);
+707 +             let _ = renderer;
+    |
+
+warning: `cambium-rootstock` (lib) generated 4 warnings (run `cargo fix --lib -p cambium-rootstock` to apply 3 suggestions)
+    Checking graphshell-host v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/graphshell/graphshell-host)
+    Checking mere v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/mere)
+    Checking platen v0.0.1 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/platen/platen)
+    Checking mere-overmap v0.1.0 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/crates/cambium/mere-overmap)
+    Checking graphshell v0.0.2 (/home/markik/Code/worktrees/mere-model-free-m1-20261029/ports/graphshell)
+warning: unused import: `ThemePresentation`
+  --> ports/graphshell/src/appearance.rs:17:42
+   |
+17 | use tabard::{ResolvedThemeChoice, Theme, ThemePresentation, resolve_theme_choice};
+   |                                          ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `CartographyGeometry`, `DEFAULT_ARRANGEMENT`, `SAVED_SCENE_FACET_V2`, `SAVED_SCENE_FACET_V3`, `SavedDynamics`, `SavedRolesV1`, and `SavedSceneV2`
+  --> ports/graphshell/src/product.rs:29:5
+   |
+29 |     CartographyGeometry, DEFAULT_ARRANGEMENT, SAVED_SCENE_FACET, SAVED_SCENE_FACET_V2,
+   |     ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^                     ^^^^^^^^^^^^^^^^^^^^
+30 |     SAVED_SCENE_FACET_V3, SavedDynamics, SavedRolesV1, SavedSceneV2, SavedSceneV3, StoredScene,
+   |     ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused imports: `SAVED_SCENE_FACET_V2`, `SAVED_SCENE_FACET_V3`, `SAVED_SCENE_FACET`, `SavedDynamics`, `SavedRolesV1`, `SavedSceneV2`, and `SavedSceneV3`
+  --> ports/graphshell/src/transfer.rs:50:5
+   |
+50 |     SAVED_SCENE_FACET, SAVED_SCENE_FACET_V2, SAVED_SCENE_FACET_V3, SavedDynamics, SavedRolesV1,
+   |     ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^
+51 |     SavedSceneV2, SavedSceneV3,
+   |     ^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> ports/graphshell/src/retained_content/producer.rs:34:14
+   |
+34 |         NEXT.fetch_update(
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+34 -         NEXT.fetch_update(
+34 +         NEXT.try_update(
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> ports/graphshell/src/retained_content.rs:446:26
+    |
+446 |                         .fetch_update(
+    |                          ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+446 -                         .fetch_update(
+446 +                         .try_update(
+    |
+
+warning: method `begin_session` is never used
+   --> ports/graphshell/src/mere_host.rs:448:19
+    |
+283 | impl<B: Backend + Clone> MereHost<B> {
+    | ------------------------------------ method in this implementation
+...
+448 |     pub(crate) fn begin_session(&mut self, graph: Graph) {
+    |                   ^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `relation_kind_label` is never used
+    --> ports/graphshell/src/mere_host.rs:1547:4
+     |
+1547 | fn relation_kind_label(kind: RelationKind) -> &'static str {
+     |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `codicil_graph` is never used
+   --> ports/graphshell/src/product.rs:716:4
+    |
+716 | fn codicil_graph(snapshot: GraphSnapshot, facets: NodeFacetStore) -> Result<Graph, ProductError> {
+    |    ^^^^^^^^^^^^^
+
+warning: function `decode_codicil` is never used
+    --> ports/graphshell/src/product.rs:1067:15
+     |
+1067 | pub(crate) fn decode_codicil(bytes: &[u8]) -> Result<ProductCodicilV3, ProductError> {
+     |               ^^^^^^^^^^^^^^
+
+warning: `graphshell` (lib) generated 9 warnings (run `cargo fix --lib -p graphshell` to apply 5 suggestions)
+    Finished `dev` profile [unoptimized] target(s) in 1m 38s
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo check -p graphshell --lib --locked --offline"
+	User time (seconds): 74.91
+	System time (seconds): 18.77
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:38.53
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 697636
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1367
+	Minor (reclaiming a frame) page faults: 2968673
+	Voluntary context switches: 12158
+	Involuntary context switches: 2552
+	Swaps: 0
+	File system inputs: 1801400
+	File system outputs: 254592
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

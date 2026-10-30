@@ -1,0 +1,103 @@
+{
+  "kind": "model-free-acceptance-collection",
+  "files": {
+    "turnstone": "f336378c741d9060e32bbb9d9973b304a1cf06aaa25f631ca56257fa5e3742cd",
+    "custodian": "2b18444702cc0f198962125af8ac29a623257ff17f91f7190734c39dabaacf5e",
+    "test-binary": "7cd7c5b75318cd6eea0f576423c978aecc70e052885f6ddc9f0fa5bf33baa407",
+    "seed.scn": "ba67c34ee11191af832627ce6c035c653e5a4c4425adb37b58aeff8d94756a94",
+    "reopen.scn": "ef5da720859c649525f54be0a5c3eac8eb0155d27d4b23c4bc1911f6494ebf9f",
+    "run_native.py": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f",
+    "namespace_phase.py": "fcac9ef1b535a3732db61ef8230415bc7f2cc26bef64c67abb988905ece87e26",
+    "fixture_server.py": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57",
+    "acceptance_phase.py": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db",
+    "run_acceptance.py": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db"
+  },
+  "fixtures": {
+    "a1.html": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+    "a2.html": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+    "b.html": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+    "episode.mp3": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6",
+    "foreign.html": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+    "selection.html": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079"
+  },
+  "devices": {
+    "wayland": {
+      "path": "/run/user/1000/wayland-0",
+      "device": 111,
+      "inode": 134
+    },
+    "render": {
+      "path": "/dev/dri/renderD128",
+      "device": 7,
+      "inode": 555,
+      "rdev": 57984
+    },
+    "sysfs": {
+      "root": "/sys/devices/pci0000:00/0000:00:08.1/0000:06:00.0",
+      "target": "/sys/devices/pci0000:00/0000:00:08.1/0000:06:00.0/drm/renderD128",
+      "devnum": "226:128",
+      "device": 26,
+      "inode": 7363,
+      "target_device": 26,
+      "target_inode": 43840
+    }
+  },
+  "builds": {
+    "turnstone": {
+      "source_inventory": "frozen/turnstone-source-inventory.json",
+      "receipt_sha256": "31e8dc99db12845ebc1f3c74eddecf02fea976ef8b0e876134b3bf3c52f991da",
+      "binary_sha256": "f336378c741d9060e32bbb9d9973b304a1cf06aaa25f631ca56257fa5e3742cd",
+      "source_hash": "2f9283759e5a5dec81b559dc643ca97a40a9dc5542f1407af80d6bbb583801ba",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "-p",
+        "turnstone",
+        "--features",
+        "authoring,inference",
+        "--bin",
+        "turnstone"
+      ]
+    },
+    "test-binary": {
+      "source_inventory": "frozen/test-binary-source-inventory.json",
+      "receipt_sha256": "19b0bbc91e8a7b6047f940d441e6d3d7ae650f29f90ea43b8b0f03fccd300829",
+      "binary_sha256": "7cd7c5b75318cd6eea0f576423c978aecc70e052885f6ddc9f0fa5bf33baa407",
+      "source_hash": "2f9283759e5a5dec81b559dc643ca97a40a9dc5542f1407af80d6bbb583801ba",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "turnstone",
+        "--features",
+        "authoring,inference",
+        "--lib",
+        "--no-run"
+      ]
+    },
+    "custodian": {
+      "source_inventory": "frozen/custodian-source-inventory.json",
+      "receipt_sha256": "5488c88692d1aa9fef3555dbdbd9f0dff0d692885ad8d8771e276595597cfd3e",
+      "binary_sha256": "2b18444702cc0f198962125af8ac29a623257ff17f91f7190734c39dabaacf5e",
+      "source_hash": "5f6a72bf42507329fac639043d9ac6e9771d99da40c46bc3621276c3ee261fff",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "mere-resident",
+        "--features",
+        "custody-receipt-host",
+        "--test",
+        "custody_payload",
+        "--no-run"
+      ]
+    }
+  },
+  "provenance_sha256": "d4c38948356340b303f9b3eef84e5812b79279169a622bc866ae04b45cbffe0b"
+}

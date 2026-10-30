@@ -1,0 +1,47 @@
+{
+  "checkpoint": "563fe91bbb8c3273259dee82f22a151bbf9ecd5f",
+  "packets": [
+    {
+      "name": "m4-host-combined-freeze-1",
+      "exit_code": 101,
+      "log_sha256": "20747ad130dbd86092648ffc38bb77d468eea57acb2a51959eee639b5d5c55c4"
+    },
+    {
+      "name": "m4-host-combined-freeze-2",
+      "exit_code": 0,
+      "log_sha256": "6b033972b306d43d44918111611dc194ac5ab2b13137a2ff1a89196b749ad5dc"
+    },
+    {
+      "name": "m4-host-definition-red-1",
+      "exit_code": 101,
+      "log_sha256": "4934e0dd6dee4bfd8a2e1c8948bd67d764f0e7e177772da41bbe6fbec22f8d18"
+    },
+    {
+      "name": "m4-host-integration-compile-1",
+      "exit_code": 101,
+      "log_sha256": "87f2a0d7d22090d143836bdb1ab49f991dad97c32a35ce4275757d5abd3332d5"
+    },
+    {
+      "name": "m4-host-integration-compile-2",
+      "exit_code": 101,
+      "log_sha256": "08f4ab6b292490121cdce0a8f47883a07aaeea23f21fbb1a44523419db7a400e"
+    },
+    {
+      "name": "m4-host-integration-compile-3",
+      "exit_code": 0,
+      "log_sha256": "323f29c97e17678fc765ffa3c36e46ca0c6344041799f453417c01c924fdaa0c"
+    },
+    {
+      "name": "m4-host-integration-compile-4",
+      "exit_code": 0,
+      "log_sha256": "55e957df332dec2da214d01c18bc20788265678dd8f409eaa70e870282864f97"
+    }
+  ],
+  "orphaned_wrapper_run": {
+    "log": "m4-host-definition-green-1.log",
+    "sha256": "8dc52a17782c869763466c244f4595930e0e64178ada5293d2269eed61104570",
+    "observed_log_result": "one test passed; process exit0;65.05s;2622248KiB maximum RSS;zero swaps",
+    "qualification": "Wrapper cancellation did not stop child. No completion JSON or source-hash checkpoint. Interim raw evidence only."
+  },
+  "limits": "All packets interim until review fixes and final regression gates. compile-4 source changed after launch; no final-source claim."
+}

@@ -1,0 +1,13 @@
+--- m5-draft/seed-before-knot-wheel.scn	2026-10-30 14:08:50.150470549 -0400
++++ m5-draft/seed-composed.draft.scn	2026-10-30 14:08:50.173120485 -0400
+@@ -137,6 +137,10 @@
+ key shift+left
+ settle 8
+ assert snap actions ~ Retain selected Knot text
++scroll 200 300 300
++settle 8
++scroll 200 300 300
++settle 8
+ capture 07_selected_knot
+ act Retain selected Knot text
+ settle 60

@@ -1,0 +1,3863 @@
+Current patch versus upstream lsm-tree 2.10.4. Unchanged vendor files omitted.
+--- upstream/lsm-tree-2.10.4/src/bounded_block.rs
++++ support/patches/lsm-tree/src/bounded_block.rs
+@@ -0,0 +1,313 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Explicitly bounded v2 data-block decoding.
++
++use crate::InternalValue;
++use crate::bounded_budget::{Budget, BudgetError, BudgetKind};
++use crate::bounded_validation::{ValidationError, validate_data_entries};
++use crate::coding::Decode;
++use crate::segment::{block::header::Header, meta::CompressionType, value_block::ValueBlock};
++use std::io::{Cursor, Read, Seek, SeekFrom};
++
++pub(crate) struct BlockLimits {
++    pub(crate) max_encoded: usize,
++    pub(crate) max_decoded: usize,
++    pub(crate) max_value: usize,
++    pub(crate) max_key: usize,
++    pub(crate) max_items: u32,
++    pub(crate) max_allocation: usize,
++}
++
++#[derive(Debug)]
++pub(crate) enum BlockReadError {
++    Io(std::io::Error),
++    Corrupt,
++    UnsupportedCodec,
++    EncodedLimit,
++    DecodedLimit,
++    ValueLimit,
++    KeyLimit,
++    ItemLimit,
++    AllocationLimit,
++    Budget(BudgetError),
++}
++
++fn allocate_zeroed(len: usize) -> Result<Vec<u8>, BlockReadError> {
++    let mut bytes = Vec::new();
++    bytes
++        .try_reserve_exact(len)
++        .map_err(|_| BlockReadError::AllocationLimit)?;
++    bytes.resize(len, 0);
++    Ok(bytes)
++}
++
++#[cfg(test)]
++pub(crate) fn read_data_block<R: Read + Seek>(
++    reader: &mut R,
++    limits: &BlockLimits,
++) -> Result<ValueBlock, BlockReadError> {
++    let mut owner = Budget::new(crate::bounded_budget::ReadLimits::unlimited());
++    let mut operation = Budget::new(crate::bounded_budget::ReadLimits::unlimited());
++    read_data_block_budgeted_until(reader, limits, &mut owner, &mut operation, None)
++}
++
++#[cfg(test)]
++pub(crate) fn read_data_block_budgeted<R: Read + Seek>(
++    reader: &mut R,
++    limits: &BlockLimits,
++    owner: &mut Budget,
++    operation: &mut Budget,
++) -> Result<ValueBlock, BlockReadError> {
++    read_data_block_budgeted_until(reader, limits, owner, operation, None)
++}
++
++pub(crate) fn read_data_block_budgeted_until<R: Read + Seek>(
++    reader: &mut R,
++    limits: &BlockLimits,
++    owner: &mut Budget,
++    operation: &mut Budget,
++    end: Option<u64>,
++) -> Result<ValueBlock, BlockReadError> {
++    let effective = BlockLimits {
++        max_encoded: limits
++            .max_encoded
++            .min(owner.limits.max_block_encoded_bytes)
++            .min(operation.limits.max_block_encoded_bytes),
++        max_decoded: limits
++            .max_decoded
++            .min(owner.limits.max_block_decoded_bytes)
++            .min(operation.limits.max_block_decoded_bytes),
++        max_value: limits
++            .max_value
++            .min(owner.limits.max_value_bytes)
++            .min(operation.limits.max_value_bytes),
++        max_key: limits
++            .max_key
++            .min(owner.limits.max_key_bytes)
++            .min(operation.limits.max_key_bytes),
++        max_items: limits.max_items,
++        max_allocation: limits.max_allocation,
++    };
++    read_data_block_inner(reader, &effective, end, owner, operation)
++}
++
++fn charge(
++    owner: &mut Budget,
++    operation: &mut Budget,
++    kind: BudgetKind,
++    amount: u64,
++) -> Result<(), BlockReadError> {
++    Budget::charge_both(owner, operation, kind, amount).map_err(BlockReadError::Budget)
++}
++
++fn read_data_block_inner<R: Read + Seek>(
++    reader: &mut R,
++    limits: &BlockLimits,
++    extent_end: Option<u64>,
++    owner: &mut Budget,
++    operation: &mut Budget,
++) -> Result<ValueBlock, BlockReadError> {
++    let mut header_bytes = [0_u8; Header::serialized_len()];
++    charge(
++        owner,
++        operation,
++        BudgetKind::InputBytes,
++        header_bytes.len() as u64,
++    )?;
++    reader
++        .read_exact(&mut header_bytes)
++        .map_err(BlockReadError::Io)?;
++    if header_bytes.get(..4) != Some(crate::file::MAGIC_BYTES.as_slice()) {
++        return Err(BlockReadError::Corrupt);
++    }
++    match (header_bytes[4], header_bytes[5]) {
++        (0, 0) => {}
++        #[cfg(feature = "lz4")]
++        (1, 0) => {}
++        #[cfg(feature = "miniz")]
++        (2, level) if level <= 10 => {}
++        (1, _) | (2, _) => return Err(BlockReadError::UnsupportedCodec),
++        _ => return Err(BlockReadError::Corrupt),
++    }
++    let header =
++        Header::decode_from(&mut Cursor::new(header_bytes)).map_err(|_| BlockReadError::Corrupt)?;
++    let encoded_len = header.data_length as usize;
++    let payload_at = reader.stream_position().map_err(BlockReadError::Io)?;
++    let file_end = reader.seek(SeekFrom::End(0)).map_err(BlockReadError::Io)?;
++    reader
++        .seek(SeekFrom::Start(payload_at))
++        .map_err(BlockReadError::Io)?;
++    let end = extent_end.map_or(file_end, |e| e.min(file_end));
++    if payload_at > end || encoded_len as u64 > end - payload_at {
++        return Err(BlockReadError::Corrupt);
++    }
++    if encoded_len > limits.max_encoded {
++        return Err(BlockReadError::EncodedLimit);
++    }
++    if header.compression == CompressionType::None && encoded_len > limits.max_decoded {
++        return Err(BlockReadError::DecodedLimit);
++    }
++    if encoded_len > limits.max_allocation {
++        return Err(BlockReadError::AllocationLimit);
++    }
++    charge(
++        owner,
++        operation,
++        BudgetKind::AllocationBytes,
++        encoded_len as u64,
++    )?;
++    charge(owner, operation, BudgetKind::InputBytes, encoded_len as u64)?;
++    if header.compression == CompressionType::None {
++        charge(
++            owner,
++            operation,
++            BudgetKind::DecodeBytes,
++            encoded_len as u64,
++        )?;
++    }
++    let mut encoded = allocate_zeroed(encoded_len)?;
++    reader
++        .read_exact(&mut encoded)
++        .map_err(BlockReadError::Io)?;
++    if crate::segment::block::checksum::Checksum::from_bytes(&encoded) != header.checksum {
++        return Err(BlockReadError::Corrupt);
++    }
++    let (decoded, mut charged) = match header.compression {
++        CompressionType::None => (encoded, encoded_len),
++        #[cfg(feature = "lz4")]
++        CompressionType::Lz4 => {
++            let len_bytes: [u8; 4] = encoded
++                .get(..4)
++                .ok_or(BlockReadError::Corrupt)?
++                .try_into()
++                .map_err(|_| BlockReadError::Corrupt)?;
++            let decoded_len = u32::from_le_bytes(len_bytes) as usize;
++            if decoded_len > limits.max_decoded {
++                return Err(BlockReadError::DecodedLimit);
++            }
++            let charged = encoded_len
++                .checked_add(decoded_len)
++                .ok_or(BlockReadError::AllocationLimit)?;
++            if charged > limits.max_allocation {
++                return Err(BlockReadError::AllocationLimit);
++            }
++            charge(
++                owner,
++                operation,
++                BudgetKind::AllocationBytes,
++                decoded_len as u64,
++            )?;
++            charge(
++                owner,
++                operation,
++                BudgetKind::DecodeBytes,
++                decoded_len as u64,
++            )?;
++            let mut decoded = allocate_zeroed(decoded_len)?;
++            let written = lz4_flex::block::decompress_into(&encoded[4..], &mut decoded)
++                .map_err(|_| BlockReadError::Corrupt)?;
++            if written != decoded_len {
++                return Err(BlockReadError::Corrupt);
++            }
++            (decoded, charged)
++        }
++        #[cfg(feature = "miniz")]
++        CompressionType::Miniz(_) => {
++            use crate::bounded_inflate::{InflateError, inflate};
++            let remaining_alloc = limits
++                .max_allocation
++                .checked_sub(encoded_len)
++                .ok_or(BlockReadError::AllocationLimit)?;
++            let (decoded, requested) = inflate(
++                &encoded,
++                limits.max_decoded,
++                remaining_alloc,
++                false,
++                owner,
++                operation,
++            )
++            .map_err(|error| match error {
++                InflateError::Budget(e) => BlockReadError::Budget(e),
++                InflateError::DecodedLimit => BlockReadError::DecodedLimit,
++                InflateError::Corrupt => BlockReadError::Corrupt,
++                InflateError::Allocation => BlockReadError::AllocationLimit,
++            })?;
++            let charged = encoded_len
++                .checked_add(requested)
++                .ok_or(BlockReadError::AllocationLimit)?;
++            (decoded, charged)
++        }
++    };
++    let count_bytes: [u8; 4] = decoded
++        .get(..4)
++        .ok_or(BlockReadError::Corrupt)?
++        .try_into()
++        .map_err(|_| BlockReadError::Corrupt)?;
++    let count = u32::from_be_bytes(count_bytes);
++    if count > limits.max_items {
++        return Err(BlockReadError::ItemLimit);
++    }
++    charge(owner, operation, BudgetKind::VisitedItems, u64::from(count))?;
++    let summary =
++        validate_data_entries(&decoded, limits.max_key, limits.max_value, limits.max_items)
++            .map_err(|error| match error {
++                ValidationError::Corrupt => BlockReadError::Corrupt,
++                ValidationError::KeyLimit => BlockReadError::KeyLimit,
++                ValidationError::ValueLimit => BlockReadError::ValueLimit,
++                ValidationError::ItemLimit => BlockReadError::ItemLimit,
++            })?;
++    let decoded_entries = summary
++        .key_bytes
++        .checked_add(summary.value_bytes)
++        .ok_or(BlockReadError::AllocationLimit)?;
++    charge(owner, operation, BudgetKind::DecodeBytes, decoded_entries)?;
++    let item_capacity = (summary.items as usize)
++        .checked_mul(std::mem::size_of::<InternalValue>())
++        .ok_or(BlockReadError::AllocationLimit)?;
++    // Each byteview copy may request an AtomicU64 header; charge both key and
++    // value headers conservatively, even for inline values or tombstones.
++    let headers = (summary.items as usize)
++        .checked_mul(2 * std::mem::size_of::<std::sync::atomic::AtomicU64>())
++        .ok_or(BlockReadError::AllocationLimit)?;
++    // into_boxed_slice may allocate again if the vector has excess capacity.
++    for amount in [
++        item_capacity,
++        item_capacity,
++        headers,
++        summary.key_bytes as usize,
++        summary.value_bytes as usize,
++    ] {
++        charged = charged
++            .checked_add(amount)
++            .ok_or(BlockReadError::AllocationLimit)?;
++    }
++    if charged > limits.max_allocation {
++        return Err(BlockReadError::AllocationLimit);
++    }
++    let entry_alloc = item_capacity
++        .checked_mul(2)
++        .and_then(|x| x.checked_add(headers))
++        .and_then(|x| x.checked_add(summary.key_bytes as usize))
++        .and_then(|x| x.checked_add(summary.value_bytes as usize))
++        .ok_or(BlockReadError::AllocationLimit)?;
++    charge(
++        owner,
++        operation,
++        BudgetKind::AllocationBytes,
++        entry_alloc as u64,
++    )?;
++    let mut items = Vec::new();
++    items
++        .try_reserve_exact(summary.items as usize)
++        .map_err(|_| BlockReadError::AllocationLimit)?;
++    let mut cursor = Cursor::new(decoded.as_slice());
++    cursor.set_position(4);
++    for _ in 0..summary.items {
++        items.push(InternalValue::decode_from(&mut cursor).map_err(|_| BlockReadError::Corrupt)?);
++    }
++    Ok(ValueBlock {
++        header,
++        items: items.into_boxed_slice(),
++    })
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_block_tests.rs
++++ support/patches/lsm-tree/src/bounded_block_tests.rs
+@@ -0,0 +1,205 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::{coding::Encode, InternalValue, ValueType};
++use crate::bounded_block::{read_data_block, read_data_block_budgeted, BlockLimits, BlockReadError};
++use crate::segment::{block::offset::BlockOffset, meta::CompressionType, value_block::ValueBlock};
++use std::io::{Cursor, Read};
++
++fn block(compression: CompressionType) -> Vec<u8> {
++    let values = [InternalValue::from_components("k", "value", 1, ValueType::Value)];
++    let (header, packed) = ValueBlock::to_bytes_compressed(&values, BlockOffset(0), compression).unwrap();
++    let mut result = Vec::new();
++    header.encode_into(&mut result).unwrap();
++    result.extend_from_slice(&packed);
++    result
++}
++
++fn limits() -> BlockLimits {
++    BlockLimits { max_encoded: 1024, max_decoded: 1024, max_value: 5, max_key: 8, max_items: 8, max_allocation: 8192 }
++}
++
++struct TrackingReader<'a> { inner: Cursor<&'a [u8]>, bytes_read: usize }
++impl std::io::Seek for TrackingReader<'_> {
++    fn seek(&mut self, position: std::io::SeekFrom) -> std::io::Result<u64> { self.inner.seek(position) }
++}
++impl Read for TrackingReader<'_> {
++    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
++        let n = self.inner.read(buf)?;
++        self.bytes_read += n;
++        Ok(n)
++    }
++}
++
++#[test]
++fn encoded_limit_refuses_before_reading_payload() {
++    let bytes = block(CompressionType::None);
++    let mut reader = TrackingReader { inner: Cursor::new(&bytes), bytes_read: 0 };
++    let mut limit = limits();
++    limit.max_encoded = 0;
++    assert!(matches!(read_data_block(&mut reader, &limit), Err(BlockReadError::EncodedLimit)));
++    assert_eq!(reader.bytes_read, crate::segment::block::header::Header::serialized_len());
++}
++
++#[test]
++fn uncompressed_decoded_limit_refuses_before_reading_payload() {
++    let bytes = block(CompressionType::None);
++    let mut reader = TrackingReader { inner: Cursor::new(&bytes), bytes_read: 0 };
++    let mut limit = limits();
++    limit.max_decoded = 0;
++    assert!(matches!(read_data_block(&mut reader, &limit), Err(BlockReadError::DecodedLimit)));
++    assert_eq!(reader.bytes_read, crate::segment::block::header::Header::serialized_len());
++}
++
++#[test]
++fn value_and_allocation_limits_refuse_before_materializing_entries() {
++    let bytes = block(CompressionType::None);
++    let mut limit = limits();
++    limit.max_value = 4;
++    assert!(matches!(read_data_block(&mut Cursor::new(&bytes), &limit), Err(BlockReadError::ValueLimit)));
++    limit.max_value = 5;
++    limit.max_allocation = 0;
++    assert!(matches!(read_data_block(&mut Cursor::new(&bytes), &limit), Err(BlockReadError::AllocationLimit)));
++    assert_eq!(read_data_block(&mut Cursor::new(&bytes), &limits()).unwrap().items[0].value.as_ref(), b"value");
++}
++
++#[test]
++fn two_reads_share_cumulative_allocation_budget() {
++    use crate::bounded_budget::{Budget, BudgetKind, ReadLimits};
++
++    let bytes = block(CompressionType::None);
++    let one_block_cost = bytes.len() - crate::segment::block::header::Header::serialized_len()
++        + 2 * std::mem::size_of::<InternalValue>() + 2 * std::mem::size_of::<std::sync::atomic::AtomicU64>() + 1 + 5;
++    let config = ReadLimits { max_value_bytes: 8, max_key_bytes: 8, max_block_encoded_bytes: 1024,
++        max_block_decoded_bytes: 1024, max_input_bytes: 4096, max_decode_bytes: 4096,
++        max_alloc_bytes: one_block_cost as u64, max_metadata_bytes: 4096, max_visited_items: 32,
++        max_output_items: 32, max_output_key_bytes: 1024 };
++    let mut owner = Budget::new(config.clone());
++    let mut budget = Budget::new(config);
++    read_data_block_budgeted(&mut Cursor::new(&bytes), &limits(), &mut owner, &mut budget).unwrap();
++    let first = budget.used(BudgetKind::AllocationBytes);
++    assert!(first > 0);
++    assert!(read_data_block_budgeted(&mut Cursor::new(&bytes), &limits(), &mut owner, &mut budget).is_err());
++    assert_eq!(budget.used(BudgetKind::AllocationBytes), first);
++}
++
++#[test]
++fn owner_value_ceiling_cannot_be_relaxed_by_operation_budget() {
++    use crate::bounded_budget::{Budget, ReadLimits};
++    let bytes = block(CompressionType::None);
++    let config = ReadLimits { max_value_bytes: 5, max_key_bytes: 8, max_block_encoded_bytes: 1024,
++        max_block_decoded_bytes: 1024, max_input_bytes: 4096, max_decode_bytes: 4096,
++        max_alloc_bytes: 8192, max_metadata_bytes: 4096, max_visited_items: 32,
++        max_output_items: 32, max_output_key_bytes: 1024 };
++    let mut owner = Budget::new(ReadLimits { max_value_bytes: 4, ..config.clone() });
++    let mut operation = Budget::new(config);
++    assert!(matches!(read_data_block_budgeted(&mut Cursor::new(bytes), &limits(), &mut owner, &mut operation), Err(BlockReadError::ValueLimit)));
++}
++
++#[cfg(feature = "lz4")]
++#[test]
++fn compressed_block_refuses_decoded_limit() {
++    let bytes = block(CompressionType::Lz4);
++    let mut limit = limits();
++    limit.max_decoded = 4;
++    assert!(matches!(read_data_block(&mut Cursor::new(&bytes), &limit), Err(BlockReadError::DecodedLimit)));
++    assert_eq!(read_data_block(&mut Cursor::new(&bytes), &limits()).unwrap().items[0].value.as_ref(), b"value");
++}
++
++#[cfg(feature = "miniz")]
++#[test]
++fn miniz_block_obeys_decoded_and_allocation_limits() {
++    let bytes = block(CompressionType::Miniz(6));
++    let mut limit = limits();
++    limit.max_decoded = 4;
++    assert!(matches!(read_data_block(&mut Cursor::new(&bytes), &limit), Err(BlockReadError::DecodedLimit)));
++    assert_eq!(read_data_block(&mut Cursor::new(&bytes), &limits()).unwrap().items[0].value.as_ref(), b"value");
++}
++
++#[test]
++fn long_entry_heap_headers_are_counted_before_materialization() {
++    let values = [InternalValue::from_components(vec![b'k'; 24], vec![b'v'; 24], 1, ValueType::Value)];
++    let (header, packed) = ValueBlock::to_bytes_compressed(&values, BlockOffset(0), CompressionType::None).unwrap();
++    let mut bytes = Vec::new();
++    header.encode_into(&mut bytes).unwrap();
++    bytes.extend_from_slice(&packed);
++    let mut limit = limits();
++    limit.max_key = 24;
++    limit.max_value = 24;
++    limit.max_allocation = packed.len() + 2 * std::mem::size_of::<InternalValue>() + 48;
++    assert!(matches!(read_data_block(&mut Cursor::new(bytes), &limit), Err(BlockReadError::AllocationLimit)));
++}
++
++#[test]
++fn malformed_entry_order_is_reported_as_corruption() {
++    let values = [InternalValue::from_components("z", "one", 1, ValueType::Value), InternalValue::from_components("a", "two", 2, ValueType::Value)];
++    let (header, packed) = ValueBlock::to_bytes_compressed(&values, BlockOffset(0), CompressionType::None).unwrap();
++    let mut bytes = Vec::new();
++    header.encode_into(&mut bytes).unwrap();
++    bytes.extend_from_slice(&packed);
++    assert!(matches!(read_data_block(&mut Cursor::new(bytes), &limits()), Err(BlockReadError::Corrupt)));
++}
++
++#[test]
++fn truncated_encoded_block_refuses_before_payload_allocation() {
++    use crate::bounded_budget::{Budget, BudgetKind, ReadLimits};
++    use crate::coding::Decode;
++    let bytes = block(CompressionType::None);
++    let mut header = crate::segment::block::header::Header::decode_from(&mut Cursor::new(bytes)).unwrap();
++    header.data_length = 100;
++    let mut truncated = Vec::new();
++    header.encode_into(&mut truncated).unwrap();
++    let mut config = ReadLimits::unlimited();
++    config.max_block_encoded_bytes = 1024;
++    config.max_block_decoded_bytes = 1024;
++    let mut call = Budget::new(config.clone());
++    let mut operation = Budget::new(config);
++    assert!(matches!(read_data_block_budgeted(&mut Cursor::new(truncated), &limits(), &mut call, &mut operation), Err(BlockReadError::Corrupt)));
++    assert_eq!(operation.used(BudgetKind::AllocationBytes), 0);
++}
++
++#[cfg(feature = "miniz")]
++#[test]
++fn miniz_data_uses_actual_cumulative_decoded_work() {
++    use crate::bounded_budget::{Budget, BudgetKind, ReadLimits};
++    let bytes = block(CompressionType::Miniz(6));
++    let header_size = crate::segment::block::header::Header::serialized_len();
++    let decoded = miniz_oxide::inflate::decompress_to_vec(&bytes[header_size..]).unwrap();
++    let exact = decoded.len() as u64 + 1 + 5;
++    let mut cap = ReadLimits::unlimited();
++    cap.max_value_bytes = 5; cap.max_key_bytes = 8; cap.max_block_encoded_bytes = 1024;
++    cap.max_block_decoded_bytes = 1_048_576; cap.max_alloc_bytes = 4_194_304;
++    cap.max_decode_bytes = exact * 2;
++    let mut operation = Budget::new(cap.clone());
++    let mut one_call = Budget::new(cap.clone());
++    let mut block_limits = limits();
++    block_limits.max_decoded = 1_048_576; block_limits.max_allocation = 4_194_304;
++    read_data_block_budgeted(&mut Cursor::new(&bytes), &block_limits, &mut one_call, &mut operation).unwrap();
++    assert_eq!(operation.used(BudgetKind::DecodeBytes), exact);
++    read_data_block_budgeted(&mut Cursor::new(&bytes), &block_limits, &mut Budget::new(cap.clone()), &mut operation).unwrap();
++    assert_eq!(operation.used(BudgetKind::DecodeBytes), exact * 2);
++    assert!(read_data_block_budgeted(&mut Cursor::new(&bytes), &block_limits, &mut Budget::new(cap.clone()), &mut operation).is_err());
++    cap.max_decode_bytes = decoded.len() as u64 - 1;
++    let mut short = Budget::new(cap.clone());
++    assert!(read_data_block_budgeted(&mut Cursor::new(bytes), &block_limits, &mut Budget::new(cap), &mut short).is_err());
++    assert_eq!(short.used(BudgetKind::DecodeBytes), decoded.len() as u64 - 1);
++}
++
++#[cfg(feature = "miniz")]
++#[test]
++fn miniz_data_crosses_multiple_bounded_output_steps() {
++    use crate::bounded_budget::{Budget, BudgetKind, ReadLimits};
++    let values = [InternalValue::from_components("key", vec![b'v'; 10_000], 1, ValueType::Value)];
++    let (header, packed) = ValueBlock::to_bytes_compressed(&values, BlockOffset(0), CompressionType::Miniz(6)).unwrap();
++    let expected = miniz_oxide::inflate::decompress_to_vec(&packed).unwrap().len() as u64 + 10_003;
++    let mut bytes = Vec::new(); header.encode_into(&mut bytes).unwrap(); bytes.extend_from_slice(&packed);
++    let mut cap = ReadLimits::unlimited(); cap.max_value_bytes = 10_000; cap.max_key_bytes = 3;
++    cap.max_block_encoded_bytes = 100_000; cap.max_block_decoded_bytes = 20_000;
++    cap.max_decode_bytes = expected; cap.max_alloc_bytes = 100_000;
++    let mut local = limits(); local.max_value = 10_000; local.max_decoded = 20_000; local.max_allocation = 100_000;
++    let mut shared = Budget::new(cap.clone());
++    let result = read_data_block_budgeted(&mut Cursor::new(bytes), &local, &mut Budget::new(cap), &mut shared).unwrap();
++    assert_eq!(result.items[0].value.len(), 10_000);
++    assert_eq!(shared.used(BudgetKind::DecodeBytes), expected);
++    assert!(shared.used(BudgetKind::AllocationBytes) > 10_000);
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_bloom.rs
++++ support/patches/lsm-tree/src/bounded_bloom.rs
+@@ -0,0 +1,31 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Bounded decoding of the v2 Bloom filter encoding. Not yet used by recovery.
++
++use crate::{bloom::BloomFilter, bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource}, coding::Decode};
++use byteorder::{BigEndian, ReadBytesExt};
++use std::io::Cursor;
++
++fn corrupt() -> PrepareError {
++    PrepareError::Corruption("invalid bloom filter".into())
++}
++
++pub(crate) fn parse_bloom(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<BloomFilter, PrepareError> {
++    if bytes.get(..4) != Some(crate::file::MAGIC_BYTES.as_slice()) || bytes.get(4..6) != Some([0, 0].as_slice()) {
++        return Err(corrupt());
++    }
++    let mut cursor = Cursor::new(bytes);
++    cursor.set_position(6);
++    let bits = cursor.read_u64::<BigEndian>().map_err(|_| corrupt())?;
++    let hashes = cursor.read_u64::<BigEndian>().map_err(|_| corrupt())?;
++    let byte_len = usize::try_from(bits / 8).map_err(|_| corrupt())?;
++    usize::try_from(hashes).map_err(|_| corrupt())?;
++    let end = usize::try_from(cursor.position()).map_err(|_| corrupt())?.checked_add(byte_len).ok_or_else(corrupt)?;
++    if end > bytes.len() {
++        return Err(corrupt());
++    }
++    budget.charge(RecoveryResource::MetadataBytes, byte_len as u64)?;
++    budget.charge(RecoveryResource::AllocationBytes, byte_len as u64)?;
++    BloomFilter::decode_from(&mut Cursor::new(bytes)).map_err(|_| corrupt())
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_bloom_tests.rs
++++ support/patches/lsm-tree/src/bounded_bloom_tests.rs
+@@ -0,0 +1,35 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::bounded_bloom::parse_bloom;
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++use crate::coding::Encode;
++
++struct Ledger { remaining: u64 }
++impl RecoveryBudget for Ledger {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        self.remaining = self.remaining.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.remaining })?;
++        Ok(())
++    }
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError> {
++        self.charge(RecoveryResource::KeyBytes, amount)
++    }
++}
++
++#[test]
++fn accepts_existing_filter_bytes() {
++    let filter = crate::bloom::BloomFilter::with_bpk(10, 10);
++    let bytes = filter.encode_into_vec();
++    assert_eq!(parse_bloom(&bytes, &mut Ledger { remaining: 4096 }).unwrap(), filter);
++}
++
++#[test]
++fn rejects_declared_huge_filter_before_allocating() {
++    let mut bytes = crate::file::MAGIC_BYTES.to_vec();
++    bytes.extend_from_slice(&[0, 0]);
++    bytes.extend_from_slice(&u64::MAX.to_be_bytes());
++    bytes.extend_from_slice(&1_u64.to_be_bytes());
++    let mut ledger = Ledger { remaining: 4096 };
++    assert!(matches!(parse_bloom(&bytes, &mut ledger), Err(PrepareError::Corruption(_))));
++    assert_eq!(ledger.remaining, 4096);
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_budget.rs
++++ support/patches/lsm-tree/src/bounded_budget.rs
+@@ -0,0 +1,174 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Cumulative resource ledgers for bounded storage operations.
++
++/// Limits for one bounded read operation.
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub struct ReadLimits {
++    /// Largest separately materialized value.
++    pub max_value_bytes: usize,
++    /// Largest key.
++    pub max_key_bytes: usize,
++    /// Largest encoded block.
++    pub max_block_encoded_bytes: usize,
++    /// Largest decoded block.
++    pub max_block_decoded_bytes: usize,
++    /// Cumulative encoded input accessed.
++    pub max_input_bytes: u64,
++    /// Cumulative decoded bytes processed.
++    pub max_decode_bytes: u64,
++    /// Cumulative requested allocation capacity.
++    pub max_alloc_bytes: u64,
++    /// Cumulative metadata capacity, also counted as allocation.
++    pub max_metadata_bytes: u64,
++    /// Physical entries visited.
++    pub max_visited_items: u64,
++    /// Output key count.
++    pub max_output_items: usize,
++    /// Aggregate output key bytes.
++    pub max_output_key_bytes: usize,
++}
++
++impl ReadLimits {
++    /// Combine two ceilings, retaining the stricter value for each resource.
++    #[must_use]
++    pub fn intersect(&self, other: &Self) -> Self {
++        Self {
++            max_value_bytes: self.max_value_bytes.min(other.max_value_bytes),
++            max_key_bytes: self.max_key_bytes.min(other.max_key_bytes),
++            max_block_encoded_bytes: self.max_block_encoded_bytes.min(other.max_block_encoded_bytes),
++            max_block_decoded_bytes: self.max_block_decoded_bytes.min(other.max_block_decoded_bytes),
++            max_input_bytes: self.max_input_bytes.min(other.max_input_bytes),
++            max_decode_bytes: self.max_decode_bytes.min(other.max_decode_bytes),
++            max_alloc_bytes: self.max_alloc_bytes.min(other.max_alloc_bytes),
++            max_metadata_bytes: self.max_metadata_bytes.min(other.max_metadata_bytes),
++            max_visited_items: self.max_visited_items.min(other.max_visited_items),
++            max_output_items: self.max_output_items.min(other.max_output_items),
++            max_output_key_bytes: self.max_output_key_bytes.min(other.max_output_key_bytes),
++        }
++    }
++
++    /// A per-call ceiling that leaves the owner's and operation's limits in force.
++    #[must_use]
++    pub const fn unlimited() -> Self {
++        Self { max_value_bytes: usize::MAX, max_key_bytes: usize::MAX,
++            max_block_encoded_bytes: usize::MAX, max_block_decoded_bytes: usize::MAX,
++            max_input_bytes: u64::MAX, max_decode_bytes: u64::MAX,
++            max_alloc_bytes: u64::MAX, max_metadata_bytes: u64::MAX,
++            max_visited_items: u64::MAX, max_output_items: usize::MAX,
++            max_output_key_bytes: usize::MAX }
++    }
++}
++
++/// A cumulative ledger counter.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum BudgetKind {
++    /// Encoded input bytes.
++    InputBytes,
++    /// Decoded bytes.
++    DecodeBytes,
++    /// Requested allocation capacity.
++    AllocationBytes,
++    /// Metadata capacity.
++    MetadataBytes,
++    /// Physical entries visited.
++    VisitedItems,
++    /// Output key count.
++    OutputItems,
++    /// Aggregate output key bytes.
++    OutputKeyBytes,
++}
++
++/// A resource request rejected by one of the two ledgers.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub struct BudgetError {
++    /// The refused resource.
++    pub kind: BudgetKind,
++    /// The configured ceiling on the refusing ledger.
++    pub limit: u64,
++}
++
++/// Mutable cumulative operation ledger.
++#[derive(Debug)]
++pub struct Budget {
++    /// Per-operation ceilings.
++    pub(crate) limits: ReadLimits,
++    input: u64,
++    decode: u64,
++    allocation: u64,
++    metadata: u64,
++    visited: u64,
++    output: u64,
++    output_key: u64,
++}
++
++impl Budget {
++    /// Starts a ledger with no work charged.
++    #[must_use]
++    pub fn new(limits: ReadLimits) -> Self {
++        Self { limits, input: 0, decode: 0, allocation: 0, metadata: 0, visited: 0, output: 0, output_key: 0 }
++    }
++
++    /// The immutable configured ceilings for this ledger.
++    #[must_use]
++    pub fn limits(&self) -> &ReadLimits { &self.limits }
++
++    /// Cumulative units already charged.
++    #[must_use]
++    pub fn used(&self, kind: BudgetKind) -> u64 {
++        match kind {
++            BudgetKind::InputBytes => self.input,
++            BudgetKind::DecodeBytes => self.decode,
++            BudgetKind::AllocationBytes => self.allocation,
++            BudgetKind::MetadataBytes => self.metadata,
++            BudgetKind::VisitedItems => self.visited,
++            BudgetKind::OutputItems => self.output,
++            BudgetKind::OutputKeyBytes => self.output_key,
++        }
++    }
++
++    /// Remaining cumulative work for a resource.
++    #[must_use]
++    pub fn remaining(&self, kind: BudgetKind) -> u64 { self.limit(kind).saturating_sub(self.used(kind)) }
++
++    fn limit(&self, kind: BudgetKind) -> u64 {
++        match kind {
++            BudgetKind::InputBytes => self.limits.max_input_bytes,
++            BudgetKind::DecodeBytes => self.limits.max_decode_bytes,
++            BudgetKind::AllocationBytes => self.limits.max_alloc_bytes,
++            BudgetKind::MetadataBytes => self.limits.max_metadata_bytes,
++            BudgetKind::VisitedItems => self.limits.max_visited_items,
++            BudgetKind::OutputItems => self.limits.max_output_items as u64,
++            BudgetKind::OutputKeyBytes => self.limits.max_output_key_bytes as u64,
++        }
++    }
++
++    fn used_mut(&mut self, kind: BudgetKind) -> &mut u64 {
++        match kind {
++            BudgetKind::InputBytes => &mut self.input,
++            BudgetKind::DecodeBytes => &mut self.decode,
++            BudgetKind::AllocationBytes => &mut self.allocation,
++            BudgetKind::MetadataBytes => &mut self.metadata,
++            BudgetKind::VisitedItems => &mut self.visited,
++            BudgetKind::OutputItems => &mut self.output,
++            BudgetKind::OutputKeyBytes => &mut self.output_key,
++        }
++    }
++
++    /// Checks both ceilings before charging either ledger; prior charges remain.
++    ///
++    /// # Errors
++    /// Returns the first limit that would be exceeded, including arithmetic overflow.
++    pub fn charge_both(owner: &mut Self, operation: &mut Self, kind: BudgetKind, amount: u64) -> Result<(), BudgetError> {
++        for ledger in [&*owner, &*operation] {
++            let limit = ledger.limit(kind);
++            if ledger.used(kind).checked_add(amount).map_or(true, |value| value > limit) {
++                return Err(BudgetError { kind, limit });
++            }
++        }
++        *owner.used_mut(kind) += amount;
++        *operation.used_mut(kind) += amount;
++        Ok(())
++    }
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_index.rs
++++ support/patches/lsm-tree/src/bounded_index.rs
+@@ -0,0 +1,87 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Bounded v2 index entry parsing for recovery and reads.
++
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++use crate::segment::{block::offset::BlockOffset, block_index::block_handle::KeyedBlockHandle};
++use byteorder::{BigEndian, ReadBytesExt};
++use std::io::Cursor;
++use varint_rs::VarintReader;
++
++fn corrupt() -> PrepareError {
++    PrepareError::Corruption("invalid index block".into())
++}
++
++fn field(
++    cursor: &mut Cursor<&[u8]>,
++    budget: &mut dyn RecoveryBudget,
++) -> Result<(u64, usize, usize), PrepareError> {
++    let offset = cursor.read_u64_varint().map_err(|_| corrupt())?;
++    let len = usize::from(cursor.read_u16_varint().map_err(|_| corrupt())?);
++    budget.check_key_bytes(len as u64)?;
++    let start = usize::try_from(cursor.position()).map_err(|_| corrupt())?;
++    let end = start.checked_add(len).ok_or_else(corrupt)?;
++    if end > cursor.get_ref().len() {
++        return Err(corrupt());
++    }
++    cursor.set_position(end as u64);
++    Ok((offset, start, end))
++}
++
++pub(crate) fn parse_index_entries(
++    bytes: &[u8],
++    budget: &mut dyn RecoveryBudget,
++) -> Result<Vec<KeyedBlockHandle>, PrepareError> {
++    let mut cursor = Cursor::new(bytes);
++    let count = cursor.read_u32::<BigEndian>().map_err(|_| corrupt())?;
++    // Each entry needs at least two varints; validate the full encoding before allocating.
++    if u64::from(count).saturating_mul(2) > bytes.len().saturating_sub(4) as u64 {
++        return Err(corrupt());
++    }
++    budget.charge(RecoveryResource::VisitedItems, u64::from(count))?;
++    let mut key_bytes = 0_u64;
++    let mut previous: Option<(&[u8], u64)> = None;
++    for _ in 0..count {
++        let (offset, start, end) = field(&mut cursor, budget)?;
++        let key = &bytes[start..end];
++        if previous.is_some_and(|(prior, prior_offset)| prior > key || prior_offset >= offset) {
++            return Err(corrupt());
++        }
++        previous = Some((key, offset));
++        key_bytes = key_bytes
++            .checked_add((end - start) as u64)
++            .ok_or_else(corrupt)?;
++    }
++    if cursor.position() != bytes.len() as u64 {
++        return Err(corrupt());
++    }
++    let vector_bytes = usize::try_from(count)
++        .map_err(|_| corrupt())?
++        .checked_mul(std::mem::size_of::<KeyedBlockHandle>())
++        .ok_or_else(corrupt)? as u64;
++    // byteview 0.6.1 copies long keys into a header plus payload allocation.
++    // Charge a header for every key, including inline keys, conservatively.
++    let headers = u64::from(count)
++        .checked_mul(std::mem::size_of::<std::sync::atomic::AtomicU64>() as u64)
++        .ok_or_else(corrupt)?;
++    let allocation = vector_bytes
++        .checked_add(key_bytes)
++        .and_then(|n| n.checked_add(headers))
++        .ok_or_else(corrupt)?;
++    budget.charge(RecoveryResource::MetadataBytes, allocation)?;
++    budget.charge(RecoveryResource::AllocationBytes, allocation)?;
++    let mut entries = Vec::new();
++    entries
++        .try_reserve_exact(count as usize)
++        .map_err(|_| PrepareError::Io(std::io::Error::other("index allocation failed")))?;
++    cursor.set_position(4);
++    for _ in 0..count {
++        let (offset, start, end) = field(&mut cursor, budget)?;
++        entries.push(KeyedBlockHandle::new(
++            &bytes[start..end],
++            BlockOffset(offset),
++        ));
++    }
++    Ok(entries)
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_index_block.rs
++++ support/patches/lsm-tree/src/bounded_index_block.rs
+@@ -0,0 +1,157 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Read an index block under recovery metadata and allocation budgets.
++//! Used while preparing a segment for bounded recovery.
++
++use crate::{
++    bounded_index::parse_index_entries,
++    bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource},
++    coding::Decode,
++    segment::{
++        block::header::Header, block_index::block_handle::KeyedBlockHandle, meta::CompressionType,
++    },
++};
++use std::io::{Cursor, Read, Seek, SeekFrom};
++
++fn corrupt() -> PrepareError {
++    PrepareError::Corruption("invalid index block".into())
++}
++fn allocation(budget: &mut dyn RecoveryBudget, len: usize) -> Result<(), PrepareError> {
++    budget.charge(RecoveryResource::MetadataBytes, len as u64)?;
++    budget.charge(RecoveryResource::AllocationBytes, len as u64)
++}
++fn buffer(len: usize) -> Result<Vec<u8>, PrepareError> {
++    let mut bytes = Vec::new();
++    bytes
++        .try_reserve_exact(len)
++        .map_err(|_| PrepareError::Io(std::io::Error::other("index allocation failed")))?;
++    bytes.resize(len, 0);
++    Ok(bytes)
++}
++
++#[cfg(test)]
++pub(crate) fn read_index_block<R: Read + Seek>(
++    reader: &mut R,
++    budget: &mut dyn RecoveryBudget,
++) -> Result<Vec<KeyedBlockHandle>, PrepareError> {
++    read_index_block_until(reader, budget, None)
++}
++pub(crate) fn read_index_block_until<R: Read + Seek>(
++    reader: &mut R,
++    budget: &mut dyn RecoveryBudget,
++    extent_end: Option<u64>,
++) -> Result<Vec<KeyedBlockHandle>, PrepareError> {
++    let header_at = reader.stream_position().map_err(PrepareError::Io)?;
++    let file_end = reader.seek(SeekFrom::End(0)).map_err(PrepareError::Io)?;
++    reader
++        .seek(SeekFrom::Start(header_at))
++        .map_err(PrepareError::Io)?;
++    let end = extent_end.map_or(file_end, |extent| extent.min(file_end));
++    if header_at
++        .checked_add(Header::serialized_len() as u64)
++        .is_none_or(|header_end| header_end > end)
++    {
++        return Err(corrupt());
++    }
++    let mut header_bytes = [0_u8; Header::serialized_len()];
++    budget.charge(RecoveryResource::InputBytes, header_bytes.len() as u64)?;
++    reader
++        .read_exact(&mut header_bytes)
++        .map_err(PrepareError::Io)?;
++    if header_bytes.get(..4) != Some(crate::file::MAGIC_BYTES.as_slice()) {
++        return Err(corrupt());
++    }
++    match (header_bytes[4], header_bytes[5]) {
++        (0, 0) => {}
++        #[cfg(feature = "lz4")]
++        (1, 0) => {}
++        #[cfg(feature = "miniz")]
++        (2, level) if level <= 10 => {}
++        (1, _) | (2, _) => return Err(PrepareError::Unsupported("index compression")),
++        _ => return Err(corrupt()),
++    }
++    let header = Header::decode_from(&mut Cursor::new(header_bytes)).map_err(|_| corrupt())?;
++    let encoded_len = header.data_length as usize;
++    let start = reader.stream_position().map_err(PrepareError::Io)?;
++    let end = reader.seek(SeekFrom::End(0)).map_err(PrepareError::Io)?;
++    reader
++        .seek(SeekFrom::Start(start))
++        .map_err(PrepareError::Io)?;
++    let end = extent_end.map_or(end, |extent| extent.min(end));
++    if start > end || (encoded_len as u64) > end - start {
++        return Err(corrupt());
++    }
++    budget.charge(RecoveryResource::InputBytes, encoded_len as u64)?;
++    allocation(budget, encoded_len)?;
++    let mut encoded = buffer(encoded_len)?;
++    reader.read_exact(&mut encoded).map_err(PrepareError::Io)?;
++    if crate::segment::block::checksum::Checksum::from_bytes(&encoded) != header.checksum {
++        return Err(corrupt());
++    }
++    let decoded = match header.compression {
++        CompressionType::None => encoded,
++        #[cfg(feature = "lz4")]
++        CompressionType::Lz4 => {
++            let len: [u8; 4] = encoded
++                .get(..4)
++                .ok_or_else(corrupt)?
++                .try_into()
++                .map_err(|_| corrupt())?;
++            let len = u32::from_le_bytes(len) as usize;
++            allocation(budget, len)?;
++            let mut output = buffer(len)?;
++            let written = lz4_flex::block::decompress_into(&encoded[4..], &mut output)
++                .map_err(|_| corrupt())?;
++            if written != len {
++                return Err(corrupt());
++            }
++            output
++        }
++        #[cfg(feature = "miniz")]
++        CompressionType::Miniz(_) => decompress_miniz(&encoded, budget)?,
++    };
++    parse_index_entries(&decoded, budget)
++}
++
++#[cfg(feature = "miniz")]
++fn decompress_miniz(
++    encoded: &[u8],
++    budget: &mut dyn RecoveryBudget,
++) -> Result<Vec<u8>, PrepareError> {
++    use miniz_oxide::inflate::{
++        TINFLStatus,
++        core::{
++            DecompressorOxide, decompress, inflate_flags::TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF,
++        },
++    };
++    let mut output = Vec::new();
++    let mut state = DecompressorOxide::new();
++    let mut consumed = 0_usize;
++    let mut written = 0_usize;
++    let mut target = encoded.len().saturating_mul(2).clamp(1, 4096);
++    loop {
++        allocation(budget, target)?;
++        output
++            .try_reserve_exact(target.saturating_sub(output.len()))
++            .map_err(|_| PrepareError::Io(std::io::Error::other("index allocation failed")))?;
++        output.resize(target, 0);
++        let (status, input, output_bytes) = decompress(
++            &mut state,
++            &encoded[consumed..],
++            &mut output,
++            written,
++            TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF,
++        );
++        consumed = consumed.checked_add(input).ok_or_else(corrupt)?;
++        written = written.checked_add(output_bytes).ok_or_else(corrupt)?;
++        match status {
++            TINFLStatus::Done => {
++                output.truncate(written);
++                return Ok(output);
++            }
++            TINFLStatus::HasMoreOutput => target = target.checked_mul(2).ok_or_else(corrupt)?,
++            _ => return Err(corrupt()),
++        }
++    }
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_index_block_tests.rs
++++ support/patches/lsm-tree/src/bounded_index_block_tests.rs
+@@ -0,0 +1,160 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::bounded_index_block::read_index_block;
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++use crate::coding::Encode;
++use crate::segment::{block::offset::BlockOffset, block_index::{block_handle::KeyedBlockHandle, IndexBlock}, meta::CompressionType};
++use std::io::{Cursor, Read};
++
++struct Ledger { remaining: u64, max_key: u64 }
++impl RecoveryBudget for Ledger {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        self.remaining = self.remaining.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.remaining })?;
++        Ok(())
++    }
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError> {
++        if amount > self.max_key { return Err(PrepareError::Limit { resource: RecoveryResource::KeyBytes, limit: self.max_key }); }
++        Ok(())
++    }
++}
++fn block(compression: CompressionType) -> Vec<u8> {
++    let entries = [KeyedBlockHandle::new("key", BlockOffset(5))];
++    let (header, packed) = IndexBlock::to_bytes_compressed(&entries, BlockOffset(0), compression).unwrap();
++    let mut bytes = Vec::new();
++    header.encode_into(&mut bytes).unwrap();
++    bytes.extend_from_slice(&packed);
++    bytes
++}
++struct TrackingReader<'a> { inner: Cursor<&'a [u8]>, bytes_read: usize }
++impl Read for TrackingReader<'_> {
++    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
++        let n = self.inner.read(buf)?;
++        self.bytes_read += n;
++        Ok(n)
++    }
++}
++impl std::io::Seek for TrackingReader<'_> {
++    fn seek(&mut self, pos: std::io::SeekFrom) -> std::io::Result<u64> { self.inner.seek(pos) }
++}
++
++#[test]
++fn index_block_checks_encoded_budget_before_payload_read() {
++    let bytes = block(CompressionType::None);
++    let mut reader = TrackingReader { inner: Cursor::new(&bytes), bytes_read: 0 };
++    let mut budget = Ledger { remaining: crate::segment::block::header::Header::serialized_len() as u64, max_key: 8 };
++    assert!(matches!(read_index_block(&mut reader, &mut budget), Err(PrepareError::Limit { .. })));
++    assert_eq!(reader.bytes_read, crate::segment::block::header::Header::serialized_len());
++}
++
++#[test]
++fn index_block_decodes_existing_uncompressed_data() {
++    let bytes = block(CompressionType::None);
++    let result = read_index_block(&mut Cursor::new(bytes), &mut Ledger { remaining: 4096, max_key: 3 }).unwrap();
++    assert_eq!(result.len(), 1);
++    assert_eq!(result[0].end_key.as_ref(), b"key");
++}
++
++#[cfg(feature = "lz4")]
++#[test]
++fn index_block_decodes_existing_lz4_data() {
++    let bytes = block(CompressionType::Lz4);
++    let result = read_index_block(&mut Cursor::new(bytes), &mut Ledger { remaining: 4096, max_key: 3 }).unwrap();
++    assert_eq!(result.len(), 1);
++}
++
++#[cfg(feature = "miniz")]
++#[test]
++fn index_block_decodes_existing_miniz_data() {
++    let bytes = block(CompressionType::Miniz(6));
++    let result = read_index_block(&mut Cursor::new(bytes), &mut Ledger { remaining: 4096, max_key: 3 }).unwrap();
++    assert_eq!(result.len(), 1);
++}
++
++#[test]
++fn read_index_checks_physical_length_before_allocating_payload() {
++    use crate::bounded_budget::{Budget, BudgetKind, ReadLimits};
++    use crate::bounded_read::ReadError;
++    use crate::coding::Decode;
++    let bytes = block(CompressionType::None);
++    let mut header = crate::segment::block::header::Header::decode_from(&mut Cursor::new(bytes)).unwrap();
++    header.data_length = 100;
++    let mut truncated = Vec::new();
++    header.encode_into(&mut truncated).unwrap();
++    let mut config = ReadLimits::unlimited();
++    config.max_block_encoded_bytes = 1024;
++    config.max_block_decoded_bytes = 1024;
++    let mut call = Budget::new(config.clone());
++    let mut operation = Budget::new(config);
++    assert!(matches!(crate::bounded_read_index::read_index(&mut Cursor::new(truncated), &mut call, &mut operation), Err(ReadError::Corruption)));
++    assert_eq!(operation.used(BudgetKind::AllocationBytes), 0);
++}
++
++#[test]
++fn read_index_rejects_length_past_its_metadata_boundary_before_allocation() {
++    use crate::bounded_budget::{Budget, BudgetKind, ReadLimits};
++    use crate::bounded_read::ReadError;
++    let bytes = block(CompressionType::None);
++    let boundary = crate::segment::block::header::Header::serialized_len() as u64;
++    let mut call = Budget::new(ReadLimits::unlimited());
++    let mut operation = Budget::new(ReadLimits::unlimited());
++    assert!(matches!(crate::bounded_read_index::read_index_until(&mut Cursor::new(bytes), &mut call, &mut operation, Some(boundary)), Err(ReadError::Corruption)));
++    assert_eq!(operation.used(BudgetKind::AllocationBytes), 0);
++}
++
++#[test]
++fn recovery_index_extent_is_checked_before_payload_allocation() {
++    let bytes = block(CompressionType::None);
++    let boundary = crate::segment::block::header::Header::serialized_len() as u64;
++    let mut ledger = Ledger { remaining: 4096, max_key: 8 };
++    assert!(matches!(crate::bounded_index_block::read_index_block_until(&mut Cursor::new(bytes), &mut ledger, Some(boundary)), Err(PrepareError::Corruption(_))));
++    assert_eq!(ledger.remaining, 4096 - boundary);
++}
++
++#[cfg(feature = "miniz")]
++#[test]
++fn miniz_index_uses_actual_cumulative_decoded_work() {
++    use crate::bounded_budget::{Budget, BudgetKind, ReadLimits};
++    let bytes = block(CompressionType::Miniz(6));
++    let header_size = crate::segment::block::header::Header::serialized_len();
++    let decoded = miniz_oxide::inflate::decompress_to_vec(&bytes[header_size..]).unwrap();
++    let exact = decoded.len() as u64 * 3;
++    let mut cap = ReadLimits::unlimited();
++    cap.max_block_encoded_bytes = 1024; cap.max_block_decoded_bytes = 1_048_576;
++    cap.max_alloc_bytes = 4_194_304; cap.max_metadata_bytes = 4_194_304; cap.max_decode_bytes = exact * 2;
++    let mut operation = Budget::new(cap.clone());
++    crate::bounded_read_index::read_index(&mut Cursor::new(&bytes), &mut Budget::new(cap.clone()), &mut operation).unwrap();
++    assert_eq!(operation.used(BudgetKind::DecodeBytes), exact);
++    crate::bounded_read_index::read_index(&mut Cursor::new(&bytes), &mut Budget::new(cap.clone()), &mut operation).unwrap();
++    assert_eq!(operation.used(BudgetKind::DecodeBytes), exact * 2);
++    assert!(crate::bounded_read_index::read_index(&mut Cursor::new(&bytes), &mut Budget::new(cap.clone()), &mut operation).is_err());
++    cap.max_decode_bytes = decoded.len() as u64 - 1;
++    let mut short = Budget::new(cap.clone());
++    assert!(crate::bounded_read_index::read_index(&mut Cursor::new(bytes), &mut Budget::new(cap), &mut short).is_err());
++    assert_eq!(short.used(BudgetKind::DecodeBytes), decoded.len() as u64 - 1);
++}
++
++#[test]
++fn recovery_index_header_cannot_cross_metadata_boundary() {
++    let bytes = block(CompressionType::None);
++    let mut reader = TrackingReader { inner: Cursor::new(&bytes), bytes_read: 0 };
++    let mut ledger = Ledger { remaining: 4096, max_key: 8 };
++    let boundary = crate::segment::block::header::Header::serialized_len() as u64 - 1;
++    assert!(matches!(crate::bounded_index_block::read_index_block_until(&mut reader, &mut ledger, Some(boundary)), Err(PrepareError::Corruption(_))));
++    assert_eq!(reader.bytes_read, 0);
++}
++
++#[test]
++fn malformed_index_failure_consumes_shared_visit_budget() {
++    use crate::bounded_budget::{Budget, BudgetKind, ReadLimits};
++    use crate::bounded_read::ReadError;
++    let entries = [KeyedBlockHandle::new("z", BlockOffset(5)), KeyedBlockHandle::new("a", BlockOffset(15))];
++    let (header, packed) = IndexBlock::to_bytes_compressed(&entries, BlockOffset(0), CompressionType::None).unwrap();
++    let mut bytes = Vec::new(); header.encode_into(&mut bytes).unwrap(); bytes.extend_from_slice(&packed);
++    let mut cap = ReadLimits::unlimited(); cap.max_visited_items = 2;
++    let mut shared = Budget::new(cap.clone());
++    assert!(matches!(crate::bounded_read_index::read_index(&mut Cursor::new(&bytes), &mut Budget::new(cap.clone()), &mut shared), Err(ReadError::Corruption)));
++    assert_eq!(shared.used(BudgetKind::VisitedItems), 2);
++    assert!(matches!(crate::bounded_read_index::read_index(&mut Cursor::new(bytes), &mut Budget::new(cap), &mut shared), Err(ReadError::Budget(e)) if e.kind == BudgetKind::VisitedItems));
++    assert_eq!(shared.used(BudgetKind::VisitedItems), 2);
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_index_tests.rs
++++ support/patches/lsm-tree/src/bounded_index_tests.rs
+@@ -0,0 +1,100 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::bounded_index::parse_index_entries;
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++use crate::coding::Encode;
++use crate::segment::{block::offset::BlockOffset, block_index::block_handle::KeyedBlockHandle};
++
++struct Ledger { remaining: u64, max_key: u64 }
++impl RecoveryBudget for Ledger {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        self.remaining = self.remaining.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.remaining })?;
++        Ok(())
++    }
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError> {
++        if amount > self.max_key {
++            return Err(PrepareError::Limit { resource: RecoveryResource::KeyBytes, limit: self.max_key });
++        }
++        Ok(())
++    }
++}
++
++fn encoded() -> Vec<u8> {
++    let mut bytes = 2_u32.to_be_bytes().to_vec();
++    KeyedBlockHandle::new("abc", BlockOffset(7)).encode_into(&mut bytes).unwrap();
++    KeyedBlockHandle::new("defg", BlockOffset(42)).encode_into(&mut bytes).unwrap();
++    bytes
++}
++
++#[test]
++fn decodes_existing_index_entries_at_key_boundary() {
++    let items = parse_index_entries(&encoded(), &mut Ledger { remaining: 4096, max_key: 4 }).unwrap();
++    assert_eq!(items.len(), 2);
++    assert_eq!(items[0].end_key.as_ref(), b"abc");
++    assert_eq!(*items[1].offset, 42);
++}
++
++#[test]
++fn rejects_untrusted_key_before_entry_allocation() {
++    let mut ledger = Ledger { remaining: 4096, max_key: 3 };
++    assert!(matches!(parse_index_entries(&encoded(), &mut ledger), Err(PrepareError::Limit { resource: RecoveryResource::KeyBytes, .. })));
++    assert_eq!(ledger.remaining, 4094);
++    let mut truncated = encoded();
++    truncated.pop();
++    assert!(matches!(parse_index_entries(&truncated, &mut Ledger { remaining: 4096, max_key: 4 }), Err(PrepareError::Corruption(_))));
++}
++
++#[test]
++fn long_key_heap_header_is_in_allocation_admission() {
++    let mut bytes = 1_u32.to_be_bytes().to_vec();
++    KeyedBlockHandle::new(vec![b'a'; 24], BlockOffset(7)).encode_into(&mut bytes).unwrap();
++    struct AllocationCap(u64);
++    impl RecoveryBudget for AllocationCap {
++        fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++            if resource == RecoveryResource::AllocationBytes {
++                self.0 = self.0.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.0 })?;
++            }
++            Ok(())
++        }
++        fn check_key_bytes(&mut self, _: u64) -> Result<(), PrepareError> { Ok(()) }
++    }
++    let cap = (std::mem::size_of::<KeyedBlockHandle>() + 24) as u64;
++    assert!(matches!(parse_index_entries(&bytes, &mut AllocationCap(cap)), Err(PrepareError::Limit { resource: RecoveryResource::AllocationBytes, .. })));
++}
++
++#[test]
++fn malformed_index_order_is_rejected_before_entry_allocation() {
++    let mut bytes = 2_u32.to_be_bytes().to_vec();
++    KeyedBlockHandle::new("z", BlockOffset(7)).encode_into(&mut bytes).unwrap();
++    KeyedBlockHandle::new("a", BlockOffset(42)).encode_into(&mut bytes).unwrap();
++    let mut ledger = Ledger { remaining: 4096, max_key: 8 };
++    assert!(matches!(parse_index_entries(&bytes, &mut ledger), Err(PrepareError::Corruption(_))));
++    assert_eq!(ledger.remaining, 4094);
++}
++
++#[test]
++fn visits_are_charged_before_failed_index_validation() {
++    struct Visits { remaining: u64, used: u64 }
++    impl RecoveryBudget for Visits {
++        fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++            if resource == RecoveryResource::VisitedItems {
++                if amount > self.remaining { return Err(PrepareError::Limit { resource, limit: self.remaining }); }
++                self.remaining -= amount;
++                self.used += amount;
++            }
++            Ok(())
++        }
++        fn check_key_bytes(&mut self, _: u64) -> Result<(), PrepareError> { Ok(()) }
++    }
++    let mut bytes = 2_u32.to_be_bytes().to_vec();
++    KeyedBlockHandle::new("z", BlockOffset(7)).encode_into(&mut bytes).unwrap();
++    KeyedBlockHandle::new("a", BlockOffset(42)).encode_into(&mut bytes).unwrap();
++    let mut zero = Visits { remaining: 0, used: 0 };
++    assert!(matches!(parse_index_entries(&bytes, &mut zero), Err(PrepareError::Limit { resource: RecoveryResource::VisitedItems, .. })));
++    let mut repeated = Visits { remaining: 2, used: 0 };
++    assert!(matches!(parse_index_entries(&bytes, &mut repeated), Err(PrepareError::Corruption(_))));
++    assert_eq!(repeated.used, 2);
++    assert!(matches!(parse_index_entries(&bytes, &mut repeated), Err(PrepareError::Limit { resource: RecoveryResource::VisitedItems, .. })));
++    assert_eq!(repeated.used, 2);
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_inflate.rs
++++ support/patches/lsm-tree/src/bounded_inflate.rs
+@@ -0,0 +1,91 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Incremental Miniz output under independent work and allocation ledgers.
++
++use crate::bounded_budget::{Budget, BudgetError, BudgetKind};
++use miniz_oxide::inflate::{
++    TINFLStatus,
++    core::{
++        DecompressorOxide, decompress, inflate_flags::TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF,
++    },
++};
++
++pub(crate) enum InflateError {
++    Budget(BudgetError),
++    DecodedLimit,
++    Corrupt,
++    Allocation,
++}
++
++pub(crate) fn inflate(
++    encoded: &[u8],
++    limit: usize,
++    allocation_limit: usize,
++    metadata: bool,
++    call: &mut Budget,
++    operation: &mut Budget,
++) -> Result<(Vec<u8>, usize), InflateError> {
++    let mut output = Vec::new();
++    let mut decoder = DecompressorOxide::new();
++    let mut consumed = 0usize;
++    let mut written = 0usize;
++    let mut requested = 0usize;
++    loop {
++        if written >= limit {
++            return Err(InflateError::DecodedLimit);
++        }
++        let available = call
++            .remaining(BudgetKind::DecodeBytes)
++            .min(operation.remaining(BudgetKind::DecodeBytes));
++        if available == 0 {
++            let error = Budget::charge_both(call, operation, BudgetKind::DecodeBytes, 1)
++                .expect_err("zero remaining budget");
++            return Err(InflateError::Budget(error));
++        }
++        // No step can produce more than the prechecked remaining work; actual
++        // output is debited immediately after it is produced, before another step.
++        let step = usize::try_from(available)
++            .unwrap_or(usize::MAX)
++            .min(4096)
++            .min(limit - written);
++        let target = written.checked_add(step).ok_or(InflateError::Allocation)?;
++        if target > output.capacity() {
++            requested = requested
++                .checked_add(target)
++                .ok_or(InflateError::Allocation)?;
++            if requested > allocation_limit {
++                return Err(InflateError::Allocation);
++            }
++            if metadata {
++                Budget::charge_both(call, operation, BudgetKind::MetadataBytes, target as u64)
++                    .map_err(InflateError::Budget)?;
++            }
++            Budget::charge_both(call, operation, BudgetKind::AllocationBytes, target as u64)
++                .map_err(InflateError::Budget)?;
++            output
++                .try_reserve_exact(target - output.len())
++                .map_err(|_| InflateError::Allocation)?;
++        }
++        output.resize(target, 0);
++        let (status, input, produced) = decompress(
++            &mut decoder,
++            &encoded[consumed..],
++            &mut output,
++            written,
++            TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF,
++        );
++        Budget::charge_both(call, operation, BudgetKind::DecodeBytes, produced as u64)
++            .map_err(InflateError::Budget)?;
++        consumed = consumed.checked_add(input).ok_or(InflateError::Corrupt)?;
++        written = written.checked_add(produced).ok_or(InflateError::Corrupt)?;
++        match status {
++            TINFLStatus::Done => {
++                output.truncate(written);
++                return Ok((output, requested));
++            }
++            TINFLStatus::HasMoreOutput => {}
++            _ => return Err(InflateError::Corrupt),
++        }
++    }
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_manifest.rs
++++ support/patches/lsm-tree/src/bounded_manifest.rs
+@@ -0,0 +1,59 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Bounded decoding of the v2 level manifest.
++
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++use byteorder::{BigEndian, ReadBytesExt};
++use std::io::Cursor;
++
++fn corrupt() -> PrepareError {
++    PrepareError::Corruption("invalid level manifest".into())
++}
++
++fn reserve<T>(vec: &mut Vec<T>, count: usize, budget: &mut dyn RecoveryBudget) -> Result<(), PrepareError> {
++    let bytes = count.checked_mul(std::mem::size_of::<T>()).ok_or_else(corrupt)?;
++    budget.charge(RecoveryResource::MetadataBytes, bytes as u64)?;
++    budget.charge(RecoveryResource::AllocationBytes, bytes as u64)?;
++    vec.try_reserve_exact(count).map_err(|_| PrepareError::Io(std::io::Error::other("level manifest allocation failed")))
++}
++
++pub(crate) fn parse_levels(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<Vec<Vec<u64>>, PrepareError> {
++    if bytes.get(..4) != Some(crate::file::MAGIC_BYTES.as_slice()) {
++        return Err(corrupt());
++    }
++    let mut cursor = Cursor::new(bytes);
++    cursor.set_position(4);
++    let level_count = cursor.read_u8().map_err(|_| corrupt())? as usize;
++    if level_count == 0 {
++        return Err(corrupt());
++    }
++
++    // First validate all declared lengths before reserving any vectors.
++    for _ in 0..level_count {
++        let count = cursor.read_u32::<BigEndian>().map_err(|_| corrupt())?;
++        let segment_bytes = usize::try_from(count).map_err(|_| corrupt())?
++            .checked_mul(std::mem::size_of::<u64>()).ok_or_else(corrupt)?;
++        let position = usize::try_from(cursor.position()).map_err(|_| corrupt())?;
++        let end = position.checked_add(segment_bytes).ok_or_else(corrupt)?;
++        if end > bytes.len() {
++            return Err(corrupt());
++        }
++        cursor.set_position(end as u64);
++    }
++
++    let mut levels = Vec::new();
++    reserve(&mut levels, level_count, budget)?;
++    cursor.set_position(5);
++    for _ in 0..level_count {
++        let count = cursor.read_u32::<BigEndian>().map_err(|_| corrupt())? as usize;
++        budget.charge(RecoveryResource::VisitedItems, count as u64)?;
++        let mut level = Vec::new();
++        reserve(&mut level, count, budget)?;
++        for _ in 0..count {
++            level.push(cursor.read_u64::<BigEndian>().map_err(|_| corrupt())?);
++        }
++        levels.push(level);
++    }
++    Ok(levels)
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_manifest_tests.rs
++++ support/patches/lsm-tree/src/bounded_manifest_tests.rs
+@@ -0,0 +1,37 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::bounded_manifest::parse_levels;
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++
++struct Ledger { remaining: u64 }
++impl RecoveryBudget for Ledger {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        self.remaining = self.remaining.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.remaining })?;
++        Ok(())
++    }
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError> {
++        self.charge(RecoveryResource::KeyBytes, amount)
++    }
++}
++
++#[test]
++fn reads_existing_level_manifest() {
++    let mut bytes = crate::file::MAGIC_BYTES.to_vec();
++    bytes.push(2);
++    bytes.extend_from_slice(&1_u32.to_be_bytes());
++    bytes.extend_from_slice(&7_u64.to_be_bytes());
++    bytes.extend_from_slice(&0_u32.to_be_bytes());
++    let levels = parse_levels(&bytes, &mut Ledger { remaining: 1024 }).unwrap();
++    assert_eq!(levels, vec![vec![7], vec![]]);
++}
++
++#[test]
++fn rejects_untrusted_count_without_allocating_it() {
++    let mut bytes = crate::file::MAGIC_BYTES.to_vec();
++    bytes.push(1);
++    bytes.extend_from_slice(&u32::MAX.to_be_bytes());
++    let mut ledger = Ledger { remaining: 1024 };
++    assert!(matches!(parse_levels(&bytes, &mut ledger), Err(PrepareError::Corruption(_))));
++    assert!(ledger.remaining > 900);
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_metadata.rs
++++ support/patches/lsm-tree/src/bounded_metadata.rs
+@@ -0,0 +1,52 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Bounded v2 segment metadata decoding.
++
++use crate::{bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource}, coding::Decode, segment::meta::Metadata};
++use byteorder::{BigEndian, ReadBytesExt};
++use std::io::Cursor;
++
++fn corrupt() -> PrepareError { PrepareError::Corruption("invalid segment metadata".into()) }
++
++fn key(cursor: &mut Cursor<&[u8]>, budget: &mut dyn RecoveryBudget) -> Result<u64, PrepareError> {
++    let len = cursor.read_u16::<BigEndian>().map_err(|_| corrupt())? as usize;
++    budget.check_key_bytes(len as u64)?;
++    let start = usize::try_from(cursor.position()).map_err(|_| corrupt())?;
++    let end = start.checked_add(len).ok_or_else(corrupt)?;
++    if end > cursor.get_ref().len() { return Err(corrupt()); }
++    cursor.set_position(end as u64);
++    Ok(len as u64)
++}
++
++pub(crate) fn parse_metadata(bytes: &[u8], budget: &mut dyn RecoveryBudget) -> Result<Metadata, PrepareError> {
++    if bytes.get(..4) != Some(crate::file::MAGIC_BYTES.as_slice()) { return Err(corrupt()); }
++    let mut cursor = Cursor::new(bytes);
++    cursor.set_position(4);
++    cursor.read_u64::<BigEndian>().map_err(|_| corrupt())?;
++    cursor.read_u128::<BigEndian>().map_err(|_| corrupt())?;
++    for _ in 0..6 { cursor.read_u64::<BigEndian>().map_err(|_| corrupt())?; }
++    for _ in 0..4 { cursor.read_u32::<BigEndian>().map_err(|_| corrupt())?; }
++    let tag = cursor.read_u8().map_err(|_| corrupt())?;
++    let parameter = cursor.read_u8().map_err(|_| corrupt())?;
++    match (tag, parameter) {
++        (0, 0) => {},
++        #[cfg(feature = "lz4")]
++        (1, 0) => {},
++        #[cfg(feature = "miniz")]
++        (2, level) if level <= 10 => {},
++        (1, _) | (2, _) => return Err(PrepareError::Unsupported("segment compression")),
++        _ => return Err(corrupt()),
++    }
++    if cursor.read_u8().map_err(|_| corrupt())? != 0 { return Err(corrupt()); }
++    cursor.read_u64::<BigEndian>().map_err(|_| corrupt())?;
++    cursor.read_u64::<BigEndian>().map_err(|_| corrupt())?;
++    let min = key(&mut cursor, budget)?;
++    let max = key(&mut cursor, budget)?;
++    // byteview 0.6.1 may allocate an AtomicU64 header for each copied key.
++    // Conservatively charge the header even for inline keys.
++    let total = min.checked_add(max).and_then(|n| n.checked_add(2 * std::mem::size_of::<std::sync::atomic::AtomicU64>() as u64)).ok_or_else(corrupt)?;
++    budget.charge(RecoveryResource::MetadataBytes, total)?;
++    budget.charge(RecoveryResource::AllocationBytes, total)?;
++    Metadata::decode_from(&mut Cursor::new(bytes)).map_err(|_| corrupt())
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_metadata_tests.rs
++++ support/patches/lsm-tree/src/bounded_metadata_tests.rs
+@@ -0,0 +1,64 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::bounded_metadata::parse_metadata;
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++use crate::coding::Encode;
++use crate::segment::meta::{CompressionType, Metadata, TableType};
++use crate::KeyRange;
++
++struct Ledger { remaining: u64, max_key: u64 }
++impl RecoveryBudget for Ledger {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        self.remaining = self.remaining.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.remaining })?;
++        Ok(())
++    }
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError> {
++        if amount > self.max_key {
++            return Err(PrepareError::Limit { resource: RecoveryResource::KeyBytes, limit: self.max_key });
++        }
++        Ok(())
++    }
++}
++
++fn encoded() -> Vec<u8> {
++    Metadata { id: 7, created_at: 5, item_count: 1, key_count: 1, tombstone_count: 0,
++        range_tombstone_count: 0, file_size: 42, uncompressed_size: 42,
++        data_block_size: 4096, index_block_size: 4096, data_block_count: 1,
++        index_block_count: 1, compression: CompressionType::None, table_type: TableType::Block,
++        seqnos: (1, 1), key_range: KeyRange::new(("abc".into(), "defg".into())) }.encode_into_vec()
++}
++
++#[test]
++fn parses_existing_metadata_at_key_boundary() {
++    let metadata = parse_metadata(&encoded(), &mut Ledger { remaining: 4096, max_key: 4 }).unwrap();
++    assert_eq!(metadata.id, 7);
++    assert_eq!(metadata.key_range.max().as_ref(), b"defg");
++}
++
++#[test]
++fn rejects_key_and_truncated_metadata_before_copy() {
++    let mut ledger = Ledger { remaining: 4096, max_key: 3 };
++    assert!(matches!(parse_metadata(&encoded(), &mut ledger), Err(PrepareError::Limit { resource: RecoveryResource::KeyBytes, .. })));
++    assert_eq!(ledger.remaining, 4096);
++    let mut bytes = encoded();
++    bytes.pop();
++    assert!(matches!(parse_metadata(&bytes, &mut Ledger { remaining: 4096, max_key: 4 }), Err(PrepareError::Corruption(_))));
++}
++
++#[test]
++fn long_key_heap_headers_are_in_allocation_admission() {
++    let mut metadata = parse_metadata(&encoded(), &mut Ledger { remaining: 4096, max_key: 100 }).unwrap();
++    metadata.key_range = KeyRange::new((vec![b'a'; 24].into(), vec![b'z'; 24].into()));
++    struct AllocationCap(u64);
++    impl RecoveryBudget for AllocationCap {
++        fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++            if resource == RecoveryResource::AllocationBytes {
++                self.0 = self.0.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.0 })?;
++            }
++            Ok(())
++        }
++        fn check_key_bytes(&mut self, _: u64) -> Result<(), PrepareError> { Ok(()) }
++    }
++    assert!(matches!(parse_metadata(&metadata.encode_into_vec(), &mut AllocationCap(48)), Err(PrepareError::Limit { resource: RecoveryResource::AllocationBytes, .. })));
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_prepare.rs
++++ support/patches/lsm-tree/src/bounded_prepare.rs
+@@ -0,0 +1,66 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Shared recovery-preparation accounting types and admitted tree preparation.
++
++/// A cumulative resource charged while preparing an existing tree.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum RecoveryResource {
++    /// Bytes read from stored files.
++    InputBytes,
++    /// Requested allocation capacity.
++    AllocationBytes,
++    /// Metadata allocation capacity, also charged as allocation.
++    MetadataBytes,
++    /// Physical entries and filesystem items inspected.
++    VisitedItems,
++    /// Individual LSM user-key bytes; enclosing owners add their partition prefix.
++    KeyBytes,
++}
++
++/// A preparation refusal or underlying storage error.
++#[derive(Debug)]
++pub enum PrepareError {
++    /// A configured limit refused a resource request.
++    Limit {
++        /// Refused resource.
++        resource: RecoveryResource,
++        /// Configured ceiling.
++        limit: u64,
++    },
++    /// A stored format is not supported by bounded preparation.
++    Unsupported(&'static str),
++    /// Stored bytes are corrupt.
++    Corruption(String),
++    /// An underlying file operation failed.
++    Io(std::io::Error),
++}
++
++/// A recovery-wide ledger provided by the enclosing storage owner.
++pub trait RecoveryBudget {
++    /// Charge work or allocation capacity before it is performed.
++    ///
++    /// # Errors
++    /// Returns a typed limit refusal or another preparation error.
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError>;
++
++    /// Check one LSM user-key length against the enclosing owner's per-key cap.
++    ///
++    /// # Errors
++    /// Returns a typed limit refusal when the individual key is too long.
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError>;
++}
++
++/// An admitted in-memory tree and deferred cleanup.
++pub use crate::bounded_tree::PreparedTree;
++
++/// Admit a standard tree without mutating its files.
++///
++/// # Errors
++/// Returns a typed limit, unsupported-format, corruption, or I/O error.
++pub fn prepare(
++    config: crate::Config,
++    budget: &mut dyn RecoveryBudget,
++) -> Result<PreparedTree, PrepareError> {
++    crate::bounded_tree::prepare(config, budget)
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_prepare_tests.rs
++++ support/patches/lsm-tree/src/bounded_prepare_tests.rs
+@@ -0,0 +1,178 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::bounded_prepare::{prepare, PrepareError, RecoveryBudget, RecoveryResource};
++use crate::{AbstractTree, Config};
++
++struct Ledger { remaining: u64 }
++impl RecoveryBudget for Ledger {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        self.remaining = self.remaining.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.remaining })?;
++        Ok(())
++    }
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError> {
++        self.charge(RecoveryResource::KeyBytes, amount)
++    }
++}
++
++#[test]
++fn admitted_existing_empty_tree_reads_after_commit() {
++    let dir = tempfile::tempdir().unwrap();
++    drop(Config::new(dir.path()).open().unwrap());
++    let mut budget = Ledger { remaining: 1_000_000 };
++    let prepared = prepare(Config::new(dir.path()), &mut budget).unwrap();
++    let tree = prepared.commit().unwrap();
++    assert_eq!(tree.get("missing", None).unwrap(), None);
++}
++
++#[test]
++fn recovery_budget_refusal_preserves_existing_manifest() {
++    let dir = tempfile::tempdir().unwrap();
++    drop(Config::new(dir.path()).open().unwrap());
++    let manifest = dir.path().join(crate::file::MANIFEST_FILE);
++    let before = std::fs::read(&manifest).unwrap();
++    let mut budget = Ledger { remaining: 0 };
++    assert!(matches!(prepare(Config::new(dir.path()), &mut budget), Err(PrepareError::Limit { .. })));
++    assert_eq!(std::fs::read(manifest).unwrap(), before);
++}
++
++#[test]
++fn populated_tree_is_retained_and_orphan_cleanup_is_deferred() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("alpha", "value", 0);
++    tree.flush_active_memtable(0).unwrap().unwrap();
++    drop(tree);
++    let orphan = dir.path().join(crate::file::SEGMENTS_FOLDER).join("999999");
++    std::fs::write(&orphan, b"orphan").unwrap();
++    let mut budget = Ledger { remaining: 2_000_000 };
++    let prepared = prepare(Config::new(dir.path()), &mut budget).unwrap();
++    assert!(orphan.exists());
++    let tree = prepared.commit().unwrap();
++    assert!(!orphan.exists());
++    assert_eq!(tree.get("alpha", None).unwrap().unwrap().as_ref(), b"value");
++}
++
++#[test]
++fn cloned_prepared_tree_keeps_descriptors_after_plan_drop() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("alpha", "value", 0);
++    tree.flush_active_memtable(0).unwrap().unwrap();
++    drop(tree);
++    let prepared = prepare(Config::new(dir.path()), &mut Ledger { remaining: 2_000_000 }).unwrap();
++    let retained = prepared.tree().clone();
++    drop(prepared);
++    assert_eq!(retained.get("alpha", None).unwrap().unwrap().as_ref(), b"value");
++}
++
++#[test]
++fn missing_empty_segment_directory_is_created_only_at_commit() {
++    let dir = tempfile::tempdir().unwrap();
++    drop(Config::new(dir.path()).open().unwrap());
++    let segments = dir.path().join(crate::file::SEGMENTS_FOLDER);
++    std::fs::remove_dir(&segments).unwrap();
++    let prepared = prepare(Config::new(dir.path()), &mut Ledger { remaining: 1_000_000 }).unwrap();
++    assert!(!segments.exists());
++    let tree = prepared.commit().unwrap();
++    assert!(segments.is_dir());
++    assert_eq!(tree.get("missing", None).unwrap(), None);
++}
++
++#[test]
++fn disjoint_comparison_work_is_charged_before_recovery() {
++    struct Visits(Vec<u64>);
++    impl RecoveryBudget for Visits {
++        fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++            if resource == RecoveryResource::VisitedItems { self.0.push(amount); }
++            Ok(())
++        }
++        fn check_key_bytes(&mut self, _: u64) -> Result<(), PrepareError> { Ok(()) }
++    }
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    for i in 0..4 {
++        tree.insert(format!("key-{i}"), "value", i);
++        tree.flush_active_memtable(0).unwrap().unwrap();
++    }
++    drop(tree);
++    let mut visits = Visits(Vec::new());
++    let plan = prepare(Config::new(dir.path()), &mut visits).unwrap();
++    assert!(visits.0.iter().any(|&amount| amount >= 16));
++    drop(plan);
++}
++
++#[test]
++fn replay_install_retains_active_and_sealed_before_commit() {
++    use crate::{InternalValue, Memtable, ValueType};
++    let dir = tempfile::tempdir().unwrap();
++    drop(Config::new(dir.path()).open().unwrap());
++    let mut prepared = prepare(Config::new(dir.path()), &mut Ledger { remaining: 1_000_000 }).unwrap();
++    let sealed = Memtable::default();
++    sealed.insert(InternalValue::from_components("sealed", "earlier", 1, ValueType::Value));
++    let active = Memtable::default();
++    active.insert(InternalValue::from_components("active", "later", 2, ValueType::Value));
++    let retained = prepared.install_replay(Some(active), vec![sealed], &mut Ledger { remaining: 1_000_000 }).unwrap();
++    assert_eq!(retained.len(), 1);
++    assert_eq!(prepared.tree().get("sealed", None).unwrap().unwrap().as_ref(), b"earlier");
++    assert_eq!(prepared.tree().get("active", None).unwrap().unwrap().as_ref(), b"later");
++    let tree = prepared.commit().unwrap();
++    assert_eq!(tree.get("sealed", None).unwrap().unwrap().as_ref(), b"earlier");
++}
++
++#[test]
++fn refused_replay_install_leaves_tree_unchanged() {
++    use crate::{InternalValue, Memtable, ValueType};
++    let dir = tempfile::tempdir().unwrap();
++    drop(Config::new(dir.path()).open().unwrap());
++    let mut prepared = prepare(Config::new(dir.path()), &mut Ledger { remaining: 1_000_000 }).unwrap();
++    let active = Memtable::default();
++    active.insert(InternalValue::from_components("active", "later", 2, ValueType::Value));
++    assert!(matches!(prepared.install_replay(Some(active), vec![], &mut Ledger { remaining: 0 }), Err(PrepareError::Limit { .. })));
++    assert_eq!(prepared.tree().get("active", None).unwrap(), None);
++}
++
++#[cfg(any(target_os = "linux", target_os = "macos"))]
++#[test]
++fn deferred_cleanup_paths_are_precharged() {
++    struct Allocation(u64);
++    impl RecoveryBudget for Allocation {
++        fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++            if resource == RecoveryResource::AllocationBytes { self.0 += amount; }
++            Ok(())
++        }
++        fn check_key_bytes(&mut self, _: u64) -> Result<(), PrepareError> { Ok(()) }
++    }
++    let long = std::path::PathBuf::from(format!("/{}", "x".repeat(400)));
++    let mut budget = Allocation(0);
++    crate::bounded_tree::precharge_commit_paths(Some(&long), &[long.clone()], &mut budget).unwrap();
++    assert_eq!(budget.0, 3 * (long.as_os_str().as_encoded_bytes().len() as u64 + 1));
++}
++
++#[test]
++fn prepared_tree_iterator_keeps_descriptors_after_tree_drop() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("alpha", "value", 0);
++    tree.flush_active_memtable(0).unwrap().unwrap();
++    drop(tree);
++    let prepared = prepare(Config::new(dir.path()), &mut Ledger { remaining: 1_000_000 }).unwrap();
++    let tree = prepared.tree().clone();
++    let mut iter = tree.iter(None, None);
++    drop(prepared);
++    drop(tree);
++    let (key, value) = iter.next().unwrap().unwrap();
++    assert_eq!(key.as_ref(), b"alpha");
++    assert_eq!(value.as_ref(), b"value");
++}
++
++#[cfg(feature = "bytes")]
++#[test]
++fn bytes_backed_prepare_refuses_before_mutation() {
++    let dir = tempfile::tempdir().unwrap();
++    drop(Config::new(dir.path()).open().unwrap());
++    let manifest = dir.path().join(crate::file::MANIFEST_FILE);
++    let before = std::fs::read(&manifest).unwrap();
++    assert!(matches!(prepare(Config::new(dir.path()), &mut Ledger { remaining: 1_000_000 }), Err(PrepareError::Unsupported(_))));
++    assert_eq!(std::fs::read(manifest).unwrap(), before);
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_read.rs
++++ support/patches/lsm-tree/src/bounded_read.rs
+@@ -0,0 +1,469 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Synchronous bounded reads. Do not expose lazy iterators across a budget scope.
++
++use crate::{
++    InternalValue, SeqNo, Slice,
++    bounded_block::{BlockLimits, BlockReadError, read_data_block_budgeted_until},
++    bounded_budget::{Budget, BudgetError, BudgetKind},
++    tree::Tree,
++};
++use std::{
++    cmp::Ordering,
++    fs::File,
++    io::{Seek, SeekFrom},
++};
++
++/// A bounded read refusal or underlying storage error.
++#[derive(Debug)]
++pub enum ReadError {
++    /// One cumulative budget was exhausted.
++    Budget(BudgetError),
++    /// A stored value exceeded the per-value ceiling.
++    ValueLimit {
++        /// Configured per-item ceiling.
++        limit: usize,
++    },
++    /// A stored key exceeded the per-key ceiling.
++    KeyLimit {
++        /// Configured per-item ceiling.
++        limit: usize,
++    },
++    /// A compressed block exceeded its ceiling.
++    EncodedLimit {
++        /// Configured per-item ceiling.
++        limit: usize,
++    },
++    /// A decoded block exceeded its ceiling.
++    DecodedLimit {
++        /// Configured per-item ceiling.
++        limit: usize,
++    },
++    /// The stored data was invalid.
++    Corruption,
++    /// This tree uses an unsupported representation.
++    Unsupported(&'static str),
++    /// Underlying I/O failed.
++    Io(std::io::Error),
++}
++impl From<BudgetError> for ReadError {
++    fn from(e: BudgetError) -> Self {
++        Self::Budget(e)
++    }
++}
++
++fn charge(
++    call: &mut Budget,
++    operation: &mut Budget,
++    kind: BudgetKind,
++    amount: u64,
++) -> Result<(), ReadError> {
++    Budget::charge_both(call, operation, kind, amount).map_err(Into::into)
++}
++fn append(
++    items: &mut Vec<InternalValue>,
++    item: InternalValue,
++    call: &mut Budget,
++    operation: &mut Budget,
++) -> Result<(), ReadError> {
++    if items.len() == items.capacity() {
++        let next = items
++            .capacity()
++            .max(2)
++            .checked_mul(2)
++            .ok_or(ReadError::Corruption)?;
++        let bytes = next
++            .checked_mul(std::mem::size_of::<InternalValue>())
++            .ok_or(ReadError::Corruption)? as u64;
++        charge(call, operation, BudgetKind::MetadataBytes, bytes)?;
++        charge(call, operation, BudgetKind::AllocationBytes, bytes)?;
++        items
++            .try_reserve_exact(next - items.len())
++            .map_err(|_| ReadError::Unsupported("read allocation failed"))?;
++    }
++    items.push(item);
++    Ok(())
++}
++fn block_error(error: BlockReadError, call: &Budget, operation: &Budget) -> ReadError {
++    match error {
++        BlockReadError::Io(e) => ReadError::Io(e),
++        BlockReadError::Corrupt => ReadError::Corruption,
++        BlockReadError::UnsupportedCodec => ReadError::Unsupported("block compression"),
++        BlockReadError::EncodedLimit => ReadError::EncodedLimit {
++            limit: call
++                .limits
++                .max_block_encoded_bytes
++                .min(operation.limits.max_block_encoded_bytes),
++        },
++        BlockReadError::DecodedLimit => ReadError::DecodedLimit {
++            limit: call
++                .limits
++                .max_block_decoded_bytes
++                .min(operation.limits.max_block_decoded_bytes),
++        },
++        BlockReadError::ValueLimit => ReadError::ValueLimit {
++            limit: call
++                .limits
++                .max_value_bytes
++                .min(operation.limits.max_value_bytes),
++        },
++        BlockReadError::KeyLimit => ReadError::KeyLimit {
++            limit: call
++                .limits
++                .max_key_bytes
++                .min(operation.limits.max_key_bytes),
++        },
++        BlockReadError::ItemLimit | BlockReadError::AllocationLimit => {
++            ReadError::Unsupported("block allocation or item limit")
++        }
++        BlockReadError::Budget(e) => ReadError::Budget(e),
++    }
++}
++fn collect(
++    tree: &Tree,
++    lower: &[u8],
++    upper: Option<&[u8]>,
++    point: bool,
++    seqno: Option<SeqNo>,
++    call: &mut Budget,
++    operation: &mut Budget,
++) -> Result<Vec<InternalValue>, ReadError> {
++    #[cfg(feature = "bytes")]
++    return Err(ReadError::Unsupported("bytes-backed bounded reads"));
++    let key_limit = call
++        .limits
++        .max_key_bytes
++        .min(operation.limits.max_key_bytes);
++    let value_limit = call
++        .limits
++        .max_value_bytes
++        .min(operation.limits.max_value_bytes);
++    if lower.len() > key_limit {
++        return Err(ReadError::KeyLimit { limit: key_limit });
++    }
++    let in_range = |key: &[u8]| {
++        if point {
++            key == lower
++        } else {
++            key >= lower && upper.is_none_or(|end| key < end)
++        }
++    };
++    let visible = |item: &InternalValue| seqno.is_none_or(|s| item.key.seqno < s);
++    let mut items = Vec::new();
++    // Upstream's lock order is levels, active memtable, sealed memtables.
++    let levels = tree.levels.read().expect("lock is poisoned");
++    let active = tree.active_memtable.read().expect("lock is poisoned");
++    let sealed = tree.sealed_memtables.read().expect("lock is poisoned");
++    for table in std::iter::once(&**active).chain(sealed.iter().rev().map(|(_, table)| &**table)) {
++        for entry in table.items.iter() {
++            charge(call, operation, BudgetKind::VisitedItems, 1)?;
++            let key = entry.key();
++            let value = entry.value();
++            let work = key
++                .user_key
++                .len()
++                .checked_add(value.len())
++                .ok_or(ReadError::Corruption)?;
++            charge(call, operation, BudgetKind::DecodeBytes, work as u64)?;
++            if !in_range(&key.user_key) || seqno.is_some_and(|s| key.seqno >= s) {
++                continue;
++            }
++            if key.user_key.len() > key_limit {
++                return Err(ReadError::KeyLimit { limit: key_limit });
++            }
++            if value.len() > value_limit {
++                return Err(ReadError::ValueLimit { limit: value_limit });
++            }
++            append(
++                &mut items,
++                InternalValue {
++                    key: key.clone(),
++                    value: value.clone(),
++                },
++                call,
++                operation,
++            )?;
++        }
++    }
++    let block_limits = BlockLimits {
++        max_encoded: usize::MAX,
++        max_decoded: usize::MAX,
++        max_value: usize::MAX,
++        max_key: usize::MAX,
++        max_items: u32::MAX,
++        max_allocation: usize::MAX,
++    };
++    for level in &levels.levels {
++        for segment in &level.segments {
++            charge(call, operation, BudgetKind::VisitedItems, 1)?;
++            if segment.metadata.key_range.max().as_ref() < lower
++                || if point {
++                    segment.metadata.key_range.min().as_ref() > lower
++                } else {
++                    upper.is_some_and(|end| segment.metadata.key_range.min().as_ref() >= end)
++                }
++            {
++                continue;
++            }
++            let path_capacity = crate::bounded_tree::os_path_capacity(&segment.path).map_err(
++                |error| match error {
++                    crate::bounded_prepare::PrepareError::Unsupported(s) => {
++                        ReadError::Unsupported(s)
++                    }
++                    _ => ReadError::Corruption,
++                },
++            )? as u64;
++            charge(call, operation, BudgetKind::MetadataBytes, path_capacity)?;
++            charge(call, operation, BudgetKind::AllocationBytes, path_capacity)?;
++            let mut file = File::open(&segment.path).map_err(ReadError::Io)?;
++            let index_start = *segment.offsets.index_block_ptr;
++            file.seek(SeekFrom::Start(index_start))
++                .map_err(ReadError::Io)?;
++            let mut previous: Option<Slice> = None;
++            let mut previous_offset: Option<u64> = None;
++            let mut finished = false;
++            for _ in 0..segment.metadata.index_block_count {
++                charge(call, operation, BudgetKind::VisitedItems, 1)?;
++                let index = crate::bounded_read_index::read_index_until(
++                    &mut file,
++                    call,
++                    operation,
++                    Some(*segment.offsets.metadata_ptr),
++                )?;
++                let next_index = file.stream_position().map_err(ReadError::Io)?;
++                if next_index > *segment.offsets.metadata_ptr || index.is_empty() {
++                    return Err(ReadError::Corruption);
++                }
++                for handle in index {
++                    charge(call, operation, BudgetKind::VisitedItems, 1)?;
++                    if previous.as_ref().is_some_and(|key| key > &handle.end_key)
++                        || previous_offset.is_some_and(|offset| offset >= *handle.offset)
++                        || *handle.offset >= index_start
++                    {
++                        return Err(ReadError::Corruption);
++                    }
++                    let beyond = previous.as_ref().is_some_and(|key| {
++                        if point {
++                            key.as_ref() > lower
++                        } else {
++                            upper.is_some_and(|end| key.as_ref() >= end)
++                        }
++                    });
++                    if beyond {
++                        finished = true;
++                        break;
++                    }
++                    let selected = handle.end_key.as_ref() >= lower;
++                    previous_offset = Some(*handle.offset);
++                    previous = Some(handle.end_key);
++                    if !selected {
++                        continue;
++                    }
++                    if handle
++                        .offset
++                        .checked_add(crate::segment::block::header::Header::serialized_len() as u64)
++                        .is_none_or(|end| end > index_start)
++                    {
++                        return Err(ReadError::Corruption);
++                    }
++                    file.seek(SeekFrom::Start(*handle.offset))
++                        .map_err(ReadError::Io)?;
++                    let block = read_data_block_budgeted_until(
++                        &mut file,
++                        &block_limits,
++                        call,
++                        operation,
++                        Some(index_start),
++                    )
++                    .map_err(|e| block_error(e, call, operation))?;
++                    if file.stream_position().map_err(ReadError::Io)? > index_start {
++                        return Err(ReadError::Corruption);
++                    }
++                    for entry in block.items.into_vec() {
++                        if in_range(&entry.key.user_key) && visible(&entry) {
++                            append(&mut items, entry, call, operation)?;
++                        }
++                    }
++                }
++                if finished {
++                    break;
++                }
++                file.seek(SeekFrom::Start(next_index))
++                    .map_err(ReadError::Io)?;
++            }
++        }
++    }
++    // Stable bottom-up merge sort; the scratch vector and the worst-case
++    // number of comparisons are charged before any sorting or cloning.
++    let n = items.len();
++    if n > 1 {
++        let passes = (usize::BITS - (n - 1).leading_zeros()) as usize;
++        let comparisons = n.checked_mul(passes).ok_or(ReadError::Corruption)?;
++        charge(
++            call,
++            operation,
++            BudgetKind::VisitedItems,
++            comparisons as u64,
++        )?;
++        let actual_max_key = items
++            .iter()
++            .map(|item| item.key.user_key.len())
++            .max()
++            .unwrap_or(0);
++        let work = comparisons
++            .checked_mul(actual_max_key.saturating_mul(2))
++            .ok_or(ReadError::Corruption)?;
++        charge(call, operation, BudgetKind::DecodeBytes, work as u64)?;
++        let capacity = n
++            .checked_mul(std::mem::size_of::<InternalValue>())
++            .ok_or(ReadError::Corruption)?;
++        charge(call, operation, BudgetKind::MetadataBytes, capacity as u64)?;
++        charge(
++            call,
++            operation,
++            BudgetKind::AllocationBytes,
++            capacity as u64,
++        )?;
++        let mut scratch = Vec::new();
++        scratch
++            .try_reserve_exact(n)
++            .map_err(|_| ReadError::Unsupported("sort allocation failed"))?;
++        let mut width = 1usize;
++        while width < n {
++            let mut start = 0usize;
++            while start < n {
++                let mid = start.saturating_add(width).min(n);
++                let end = mid.saturating_add(width).min(n);
++                let (mut left, mut right) = (start, mid);
++                while left < mid || right < end {
++                    let take_left = if right == end {
++                        true
++                    } else if left == mid {
++                        false
++                    } else {
++                        let a = &items[left];
++                        let b = &items[right];
++                        a.key
++                            .user_key
++                            .cmp(&b.key.user_key)
++                            .then_with(|| b.key.seqno.cmp(&a.key.seqno))
++                            != Ordering::Greater
++                    };
++                    if take_left {
++                        scratch.push(items[left].clone());
++                        left += 1;
++                    } else {
++                        scratch.push(items[right].clone());
++                        right += 1;
++                    }
++                }
++                start = end;
++            }
++            std::mem::swap(&mut items, &mut scratch);
++            scratch.clear();
++            width = width.checked_mul(2).ok_or(ReadError::Corruption)?;
++        }
++    }
++    Ok(items)
++}
++/// Read one value under a per-call and shared-operation ledger.
++#[doc(hidden)]
++pub fn get(
++    tree: &Tree,
++    key: &[u8],
++    seqno: Option<SeqNo>,
++    call: &mut Budget,
++    operation: &mut Budget,
++) -> Result<Option<Slice>, ReadError> {
++    let items = collect(tree, key, None, true, seqno, call, operation)?;
++    Ok(items
++        .into_iter()
++        .find(|item| item.key.user_key.as_ref() == key)
++        .and_then(|item| {
++            if item.is_tombstone() {
++                None
++            } else {
++                Some(item.value)
++            }
++        }))
++}
++/// Return all visible keys in a half-open interval, or an explicit refusal.
++#[doc(hidden)]
++pub fn scan(
++    tree: &Tree,
++    lower: &[u8],
++    upper: Option<&[u8]>,
++    seqno: Option<SeqNo>,
++    call: &mut Budget,
++    operation: &mut Budget,
++) -> Result<Vec<Slice>, ReadError> {
++    let items = collect(tree, lower, upper, false, seqno, call, operation)?;
++    let mut keys = Vec::new();
++    let mut previous: Option<Slice> = None;
++    for item in items {
++        if previous
++            .as_ref()
++            .is_some_and(|key| key == &item.key.user_key)
++        {
++            continue;
++        }
++        previous = Some(item.key.user_key.clone());
++        if item.is_tombstone() {
++            continue;
++        }
++        charge(call, operation, BudgetKind::OutputItems, 1)?;
++        charge(
++            call,
++            operation,
++            BudgetKind::OutputKeyBytes,
++            item.key.user_key.len() as u64,
++        )?;
++        if keys.len() == keys.capacity() {
++            let next = keys
++                .capacity()
++                .max(2usize)
++                .checked_mul(2)
++                .ok_or(ReadError::Corruption)?;
++            let bytes = next
++                .checked_mul(std::mem::size_of::<Slice>())
++                .ok_or(ReadError::Corruption)? as u64;
++            charge(call, operation, BudgetKind::MetadataBytes, bytes)?;
++            charge(call, operation, BudgetKind::AllocationBytes, bytes)?;
++            keys.try_reserve_exact(next - keys.len())
++                .map_err(|_| ReadError::Unsupported("output allocation failed"))?;
++        }
++        keys.push(item.key.user_key);
++    }
++    Ok(keys)
++}
++
++/// Test whether a half-open key interval contains a visible entry.
++///
++/// # Errors
++/// Returns a typed budget, format, or I/O refusal.
++#[doc(hidden)]
++pub fn exists(
++    tree: &Tree,
++    lower: &[u8],
++    upper: Option<&[u8]>,
++    seqno: Option<SeqNo>,
++    call: &mut Budget,
++    operation: &mut Budget,
++) -> Result<bool, ReadError> {
++    let items = collect(tree, lower, upper, false, seqno, call, operation)?;
++    let mut previous: Option<Slice> = None;
++    for item in items {
++        if previous
++            .as_ref()
++            .is_some_and(|key| key == &item.key.user_key)
++        {
++            continue;
++        }
++        previous = Some(item.key.user_key.clone());
++        if !item.is_tombstone() {
++            return Ok(true);
++        }
++    }
++    Ok(false)
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_read_index.rs
++++ support/patches/lsm-tree/src/bounded_read_index.rs
+@@ -0,0 +1,226 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Read index blocks without trusting cached index metadata.
++
++use crate::{
++    bounded_budget::{Budget, BudgetError, BudgetKind},
++    bounded_index::parse_index_entries,
++    bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource},
++    bounded_read::ReadError,
++    coding::Decode,
++    segment::{
++        block::{checksum::Checksum, header::Header},
++        block_index::block_handle::KeyedBlockHandle,
++        meta::CompressionType,
++    },
++};
++use std::io::{Cursor, Read, Seek, SeekFrom};
++
++struct Adapter<'a> {
++    call: &'a mut Budget,
++    operation: &'a mut Budget,
++}
++impl RecoveryBudget for Adapter<'_> {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        let kind = match resource {
++            RecoveryResource::InputBytes => BudgetKind::InputBytes,
++            RecoveryResource::AllocationBytes => BudgetKind::AllocationBytes,
++            RecoveryResource::MetadataBytes => BudgetKind::MetadataBytes,
++            RecoveryResource::VisitedItems => BudgetKind::VisitedItems,
++            RecoveryResource::KeyBytes => {
++                return Err(PrepareError::Unsupported("invalid cumulative key charge"));
++            }
++        };
++        Budget::charge_both(self.call, self.operation, kind, amount).map_err(|error| {
++            PrepareError::Limit {
++                resource,
++                limit: error.limit,
++            }
++        })
++    }
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError> {
++        let limit = self
++            .call
++            .limits()
++            .max_key_bytes
++            .min(self.operation.limits().max_key_bytes) as u64;
++        if amount > limit {
++            Err(PrepareError::Limit {
++                resource: RecoveryResource::KeyBytes,
++                limit,
++            })
++        } else {
++            Ok(())
++        }
++    }
++}
++fn map_prepare(error: PrepareError) -> ReadError {
++    match error {
++        PrepareError::Limit {
++            resource: RecoveryResource::KeyBytes,
++            limit,
++        } => ReadError::KeyLimit {
++            limit: limit as usize,
++        },
++        PrepareError::Limit { resource, limit } => ReadError::Budget(BudgetError {
++            kind: match resource {
++                RecoveryResource::InputBytes => BudgetKind::InputBytes,
++                RecoveryResource::AllocationBytes => BudgetKind::AllocationBytes,
++                RecoveryResource::MetadataBytes => BudgetKind::MetadataBytes,
++                RecoveryResource::VisitedItems => BudgetKind::VisitedItems,
++                RecoveryResource::KeyBytes => unreachable!(),
++            },
++            limit,
++        }),
++        PrepareError::Corruption(_) => ReadError::Corruption,
++        PrepareError::Unsupported(s) => ReadError::Unsupported(s),
++        PrepareError::Io(e) => ReadError::Io(e),
++    }
++}
++fn debit(
++    call: &mut Budget,
++    operation: &mut Budget,
++    kind: BudgetKind,
++    amount: usize,
++) -> Result<(), ReadError> {
++    Budget::charge_both(
++        call,
++        operation,
++        kind,
++        u64::try_from(amount).map_err(|_| ReadError::Corruption)?,
++    )
++    .map_err(ReadError::Budget)
++}
++fn allocation(call: &mut Budget, operation: &mut Budget, len: usize) -> Result<Vec<u8>, ReadError> {
++    debit(call, operation, BudgetKind::MetadataBytes, len)?;
++    debit(call, operation, BudgetKind::AllocationBytes, len)?;
++    let mut result = Vec::new();
++    result
++        .try_reserve_exact(len)
++        .map_err(|_| ReadError::Unsupported("index allocation failed"))?;
++    result.resize(len, 0);
++    Ok(result)
++}
++#[cfg(test)]
++pub(crate) fn read_index<R: Read + Seek>(
++    reader: &mut R,
++    call: &mut Budget,
++    operation: &mut Budget,
++) -> Result<Vec<KeyedBlockHandle>, ReadError> {
++    read_index_until(reader, call, operation, None)
++}
++
++pub(crate) fn read_index_until<R: Read + Seek>(
++    reader: &mut R,
++    call: &mut Budget,
++    operation: &mut Budget,
++    extent_end: Option<u64>,
++) -> Result<Vec<KeyedBlockHandle>, ReadError> {
++    let header_at = reader.stream_position().map_err(ReadError::Io)?;
++    let file_end = reader.seek(SeekFrom::End(0)).map_err(ReadError::Io)?;
++    reader
++        .seek(SeekFrom::Start(header_at))
++        .map_err(ReadError::Io)?;
++    let end = extent_end.map_or(file_end, |extent| extent.min(file_end));
++    if header_at
++        .checked_add(Header::serialized_len() as u64)
++        .is_none_or(|header_end| header_end > end)
++    {
++        return Err(ReadError::Corruption);
++    }
++    let mut raw = [0; Header::serialized_len()];
++    debit(call, operation, BudgetKind::InputBytes, raw.len())?;
++    reader.read_exact(&mut raw).map_err(ReadError::Io)?;
++    if raw.get(..4) != Some(crate::file::MAGIC_BYTES.as_slice()) {
++        return Err(ReadError::Corruption);
++    }
++    match (raw[4], raw[5]) {
++        (0, 0) => {}
++        #[cfg(feature = "lz4")]
++        (1, 0) => {}
++        #[cfg(feature = "miniz")]
++        (2, level) if level <= 10 => {}
++        (1, _) | (2, _) => return Err(ReadError::Unsupported("index compression")),
++        _ => return Err(ReadError::Corruption),
++    }
++    let header = Header::decode_from(&mut Cursor::new(raw)).map_err(|_| ReadError::Corruption)?;
++    let encoded_len = header.data_length as usize;
++    let encoded_limit = call
++        .limits()
++        .max_block_encoded_bytes
++        .min(operation.limits().max_block_encoded_bytes);
++    let decoded_limit = call
++        .limits()
++        .max_block_decoded_bytes
++        .min(operation.limits().max_block_decoded_bytes);
++    if encoded_len > encoded_limit {
++        return Err(ReadError::EncodedLimit {
++            limit: encoded_limit,
++        });
++    }
++    if header.compression == CompressionType::None && encoded_len > decoded_limit {
++        return Err(ReadError::DecodedLimit {
++            limit: decoded_limit,
++        });
++    }
++    let start = reader.stream_position().map_err(ReadError::Io)?;
++    let end = reader.seek(SeekFrom::End(0)).map_err(ReadError::Io)?;
++    reader.seek(SeekFrom::Start(start)).map_err(ReadError::Io)?;
++    let end = extent_end.map_or(end, |extent| extent.min(end));
++    if start > end || encoded_len as u64 > end - start {
++        return Err(ReadError::Corruption);
++    }
++    debit(call, operation, BudgetKind::InputBytes, encoded_len)?;
++    let mut encoded = allocation(call, operation, encoded_len)?;
++    reader.read_exact(&mut encoded).map_err(ReadError::Io)?;
++    if Checksum::from_bytes(&encoded) != header.checksum {
++        return Err(ReadError::Corruption);
++    }
++    let decoded = match header.compression {
++        CompressionType::None => {
++            debit(call, operation, BudgetKind::DecodeBytes, encoded_len)?;
++            encoded
++        }
++        #[cfg(feature = "lz4")]
++        CompressionType::Lz4 => {
++            let len = u32::from_le_bytes(
++                encoded
++                    .get(..4)
++                    .ok_or(ReadError::Corruption)?
++                    .try_into()
++                    .map_err(|_| ReadError::Corruption)?,
++            ) as usize;
++            if len > decoded_limit {
++                return Err(ReadError::DecodedLimit {
++                    limit: decoded_limit,
++                });
++            }
++            debit(call, operation, BudgetKind::DecodeBytes, len)?;
++            let mut decoded = allocation(call, operation, len)?;
++            let written = lz4_flex::block::decompress_into(&encoded[4..], &mut decoded)
++                .map_err(|_| ReadError::Corruption)?;
++            if written != len {
++                return Err(ReadError::Corruption);
++            }
++            decoded
++        }
++        #[cfg(feature = "miniz")]
++        CompressionType::Miniz(_) => {
++            use crate::bounded_inflate::{InflateError, inflate};
++            let (decoded, _) = inflate(&encoded, decoded_limit, usize::MAX, true, call, operation)
++                .map_err(|error| match error {
++                    InflateError::Budget(e) => ReadError::Budget(e),
++                    InflateError::DecodedLimit => ReadError::DecodedLimit {
++                        limit: decoded_limit,
++                    },
++                    InflateError::Corrupt => ReadError::Corruption,
++                    InflateError::Allocation => ReadError::Unsupported("index allocation failed"),
++                })?;
++            decoded
++        }
++    };
++    let work = decoded.len().checked_mul(2).ok_or(ReadError::Corruption)?;
++    debit(call, operation, BudgetKind::DecodeBytes, work)?;
++    parse_index_entries(&decoded, &mut Adapter { call, operation }).map_err(map_prepare)
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_read_tests.rs
++++ support/patches/lsm-tree/src/bounded_read_tests.rs
+@@ -0,0 +1,222 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::{AbstractTree, Config};
++use crate::bounded_budget::{Budget, ReadLimits};
++use crate::bounded_read::{get, scan, ReadError};
++
++fn limits(value: usize) -> ReadLimits {
++    ReadLimits { max_value_bytes: value, max_key_bytes: 1024, max_block_encoded_bytes: 65536,
++        max_block_decoded_bytes: 65536, max_input_bytes: 1_000_000, max_decode_bytes: 1_000_000,
++        max_alloc_bytes: 1_000_000, max_metadata_bytes: 1_000_000, max_visited_items: 10000,
++        max_output_items: 100, max_output_key_bytes: 10000 }
++}
++
++#[test]
++fn bounded_get_checks_memory_and_cold_segment_values() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("key", "12345", 1);
++    let mut call = Budget::new(limits(4));
++    let mut operation = Budget::new(limits(4));
++    assert!(matches!(get(&tree, b"key", None, &mut call, &mut operation), Err(ReadError::ValueLimit { limit: 4 })));
++    tree.flush_active_memtable(0).unwrap().unwrap();
++    let mut call = Budget::new(limits(4));
++    let mut operation = Budget::new(limits(4));
++    assert!(matches!(get(&tree, b"key", None, &mut call, &mut operation), Err(ReadError::ValueLimit { limit: 4 })));
++    let mut call = Budget::new(limits(5));
++    let mut operation = Budget::new(limits(5));
++    assert_eq!(get(&tree, b"key", None, &mut call, &mut operation).unwrap().unwrap().as_ref(), b"12345");
++}
++
++#[test]
++fn bounded_scan_refuses_truncation_and_respects_deletes() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("prefix-a", "a", 1);
++    tree.insert("prefix-b", "b", 2);
++    tree.insert("prefix-c", "c", 3);
++    tree.remove("prefix-b", 4);
++    tree.flush_active_memtable(0).unwrap().unwrap();
++    let mut one = limits(5);
++    one.max_output_items = 1;
++    assert!(scan(&tree, b"prefix-", Some(b"prefix."), None, &mut Budget::new(one.clone()), &mut Budget::new(one)).is_err());
++    let good = limits(5);
++    let keys = scan(&tree, b"prefix-", Some(b"prefix."), None, &mut Budget::new(good.clone()), &mut Budget::new(good)).unwrap();
++    assert_eq!(keys.iter().map(AsRef::as_ref).collect::<Vec<&[u8]>>(), vec![b"prefix-a", b"prefix-c"]);
++}
++
++#[test]
++fn bounded_get_ignores_unrelated_larger_memory_value() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("a", "ok", 1);
++    tree.insert("z", "oversized", 2);
++    let mut call = Budget::new(limits(2));
++    let mut operation = Budget::new(limits(2));
++    assert_eq!(get(&tree, b"a", None, &mut call, &mut operation).unwrap().unwrap().as_ref(), b"ok");
++}
++
++#[test]
++fn unconstrained_call_limits_never_relax_operation_limits() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("key", "12345", 1);
++    let mut call = Budget::new(ReadLimits::unlimited());
++    let mut operation = Budget::new(limits(4));
++    assert!(matches!(get(&tree, b"key", None, &mut call, &mut operation), Err(ReadError::ValueLimit { limit: 4 })));
++}
++
++#[test]
++fn cold_cached_blocks_and_snapshot_versions_obey_limits() {
++    let dir = tempfile::tempdir().unwrap();
++    {
++        let tree = Config::new(dir.path()).open().unwrap();
++        tree.insert("key", "old", 1);
++        tree.flush_active_memtable(0).unwrap().unwrap();
++    }
++    let tree = Config::new(dir.path()).open().unwrap();
++    assert_eq!(tree.get("key", None).unwrap().unwrap().as_ref(), b"old");
++    let mut small = limits(2);
++    assert!(matches!(get(&tree, b"key", None, &mut Budget::new(small.clone()), &mut Budget::new(small.clone())), Err(ReadError::ValueLimit { limit: 2 })));
++    tree.insert("key", "new", 3);
++    small.max_value_bytes = 3;
++    assert_eq!(get(&tree, b"key", Some(3), &mut Budget::new(small.clone()), &mut Budget::new(small)).unwrap().unwrap().as_ref(), b"old");
++}
++
++#[test]
++fn repeated_calls_cannot_reset_the_shared_item_budget() {
++    use crate::bounded_budget::BudgetKind;
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("key", "ok", 1);
++    let mut constrained = limits(2);
++    constrained.max_visited_items = 1;
++    let mut operation = Budget::new(constrained.clone());
++    get(&tree, b"key", None, &mut Budget::new(constrained.clone()), &mut operation).unwrap();
++    let used = operation.used(BudgetKind::VisitedItems);
++    assert_eq!(used, 1);
++    assert!(matches!(get(&tree, b"key", None, &mut Budget::new(constrained), &mut operation), Err(ReadError::Budget(_))));
++    assert_eq!(operation.used(BudgetKind::VisitedItems), used);
++}
++
++#[test]
++fn prefix_presence_does_not_require_output_list_capacity() {
++    use crate::bounded_read::exists;
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("prefix-1", "ok", 1);
++    let mut constrained = limits(2);
++    constrained.max_output_items = 0;
++    constrained.max_output_key_bytes = 0;
++    assert!(exists(&tree, b"prefix-", Some(b"prefix."), None, &mut Budget::new(constrained.clone()), &mut Budget::new(constrained)).unwrap());
++}
++
++#[test]
++fn bounded_reads_fetch_nonresident_index_under_the_same_ledger() {
++    let dir = tempfile::tempdir().unwrap();
++    {
++        let tree = Config::new(dir.path()).open().unwrap();
++        tree.insert("key", "value", 1);
++        let segment = tree.flush_active_memtable(0).unwrap().unwrap();
++        tree.levels.write().unwrap().atomic_swap(|levels| {
++            let moved = levels[0].remove(segment.id()).unwrap();
++            levels[2].insert(moved);
++        }).unwrap();
++    }
++    let tree = Config::new(dir.path()).open().unwrap();
++    let good = limits(5);
++    assert_eq!(get(&tree, b"key", None, &mut Budget::new(good.clone()), &mut Budget::new(good.clone())).unwrap().unwrap().as_ref(), b"value");
++    let mut small = good;
++    small.max_block_encoded_bytes = 0;
++    assert!(matches!(get(&tree, b"key", None, &mut Budget::new(small.clone()), &mut Budget::new(small)), Err(ReadError::EncodedLimit { limit: 0 })));
++}
++
++#[test]
++fn corrupt_data_block_checksum_is_not_returned_as_a_value() {
++    use std::io::{Read, Seek, SeekFrom, Write};
++    use crate::coding::Decode;
++    use crate::segment::block::header::Header;
++    let dir = tempfile::tempdir().unwrap();
++    let path;
++    {
++        let tree = Config::new(dir.path()).open().unwrap();
++        tree.insert("key", "value", 1);
++        path = tree.flush_active_memtable(0).unwrap().unwrap().path.clone();
++    }
++    {
++        let mut file = std::fs::OpenOptions::new().read(true).write(true).open(path).unwrap();
++        let header = Header::decode_from(&mut file).unwrap();
++        let position = Header::serialized_len() as u64 + u64::from(header.data_length) - 1;
++        file.seek(SeekFrom::Start(position)).unwrap();
++        let mut byte = [0];
++        file.read_exact(&mut byte).unwrap();
++        file.seek(SeekFrom::Start(position)).unwrap();
++        file.write_all(&[byte[0] ^ 1]).unwrap();
++    }
++    let tree = Config::new(dir.path()).open().unwrap();
++    let limits = limits(5);
++    assert!(matches!(get(&tree, b"key", None, &mut Budget::new(limits.clone()), &mut Budget::new(limits)), Err(ReadError::Corruption)));
++}
++
++#[test]
++fn moderate_scan_uses_bounded_n_log_n_merge_work() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    for n in 0..1100 { tree.insert(format!("k-{n:04}"), "v", n); }
++    let mut cap = limits(1);
++    cap.max_visited_items = 50_000;
++    cap.max_output_items = 1200;
++    cap.max_decode_bytes = 5_000_000;
++    cap.max_alloc_bytes = 5_000_000;
++    cap.max_metadata_bytes = 5_000_000;
++    let keys = scan(&tree, b"k-", Some(b"k."), None, &mut Budget::new(cap.clone()), &mut Budget::new(cap)).unwrap();
++    assert_eq!(keys.len(), 1100);
++    assert_eq!(keys[0].as_ref(), b"k-0000");
++    assert_eq!(keys[1099].as_ref(), b"k-1099");
++}
++
++#[cfg(feature = "bytes")]
++#[test]
++fn bytes_backed_read_is_explicitly_unsupported() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("key", "value", 0);
++    let cap = limits(5);
++    assert!(matches!(get(&tree, b"key", None, &mut Budget::new(cap.clone()), &mut Budget::new(cap)), Err(ReadError::Unsupported(_))));
++}
++
++#[test]
++fn resident_work_charges_every_entry_before_its_bytes_are_read() {
++    use crate::bounded_budget::BudgetKind;
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("a", "old", 1);
++    tree.insert("a", "new", 2);
++    tree.insert("z", "extra", 3);
++    let mut cap = limits(8);
++    cap.max_decode_bytes = 0;
++    let mut budget = Budget::new(cap.clone());
++    assert!(matches!(get(&tree, b"a", None, &mut Budget::new(cap.clone()), &mut budget), Err(ReadError::Budget(e)) if e.kind == BudgetKind::DecodeBytes));
++    assert_eq!(budget.used(BudgetKind::DecodeBytes), 0);
++    // All three physical entries cost 1+3, 1+3, and 1+5 bytes, including
++    // the shadowed and nonmatching records. Sorting two matches costs four.
++    cap.max_decode_bytes = 18;
++    let mut budget = Budget::new(cap.clone());
++    assert_eq!(get(&tree, b"a", None, &mut Budget::new(cap.clone()), &mut budget).unwrap().unwrap().as_ref(), b"new");
++    assert_eq!(budget.used(BudgetKind::DecodeBytes), 18);
++    assert!(matches!(get(&tree, b"missing", None, &mut Budget::new(cap), &mut budget), Err(ReadError::Budget(e)) if e.kind == BudgetKind::DecodeBytes));
++    assert_eq!(budget.used(BudgetKind::DecodeBytes), 18);
++}
++
++#[test]
++fn prefix_presence_refuses_if_later_range_work_exceeds_the_budget() {
++    use crate::bounded_budget::BudgetKind;
++    use crate::bounded_read::exists;
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("p-a", "v", 1);
++    tree.insert("p-b", "v", 2);
++    let mut cap = limits(1); cap.max_visited_items = 1;
++    assert!(matches!(exists(&tree, b"p-", Some(b"p."), None, &mut Budget::new(cap.clone()), &mut Budget::new(cap)), Err(ReadError::Budget(e)) if e.kind == BudgetKind::VisitedItems));
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_segment.rs
++++ support/patches/lsm-tree/src/bounded_segment.rs
+@@ -0,0 +1,127 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Build an admitted standard segment without changing its file or descriptor table.
++
++use crate::{
++    bounded_index_block::read_index_block_until,
++    bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource},
++    bounded_trailer::read_segment_metadata,
++    cache::Cache,
++    descriptor_table::FileDescriptorTable,
++    segment::{
++        Segment,
++        block_index::{BlockIndexImpl, block_handle::KeyedBlockHandle, full_index::FullBlockIndex},
++        inner::Inner,
++    },
++    tree::inner::TreeId,
++};
++use std::{
++    fs::File,
++    io::{Seek, SeekFrom},
++    path::Path,
++    sync::{Arc, atomic::AtomicBool},
++};
++
++fn corrupt() -> PrepareError {
++    PrepareError::Corruption("invalid segment index".into())
++}
++fn charge_capacity(budget: &mut dyn RecoveryBudget, bytes: usize) -> Result<(), PrepareError> {
++    let bytes = u64::try_from(bytes).map_err(|_| corrupt())?;
++    budget.charge(RecoveryResource::MetadataBytes, bytes)?;
++    budget.charge(RecoveryResource::AllocationBytes, bytes)
++}
++
++pub(crate) fn prepare_segment(
++    path: &Path,
++    tree_id: TreeId,
++    cache: Arc<Cache>,
++    descriptor_table: Arc<FileDescriptorTable>,
++    budget: &mut dyn RecoveryBudget,
++) -> Result<Segment, PrepareError> {
++    #[cfg(feature = "bytes")]
++    return Err(PrepareError::Unsupported("bytes-backed bounded recovery"));
++    #[cfg(not(feature = "bytes"))]
++    {
++        charge_capacity(budget, crate::bounded_tree::os_path_capacity(path)?)?;
++        let mut file = File::open(path).map_err(PrepareError::Io)?;
++        let (metadata, offsets) = read_segment_metadata(&mut file, budget)?;
++        if metadata.index_block_count == 0 || *offsets.index_block_ptr >= *offsets.metadata_ptr {
++            return Err(corrupt());
++        }
++        budget.charge(
++            RecoveryResource::VisitedItems,
++            u64::from(metadata.index_block_count),
++        )?;
++        file.seek(SeekFrom::Start(*offsets.index_block_ptr))
++            .map_err(PrepareError::Io)?;
++        let mut entries = Vec::<KeyedBlockHandle>::new();
++        for _ in 0..metadata.index_block_count {
++            let block = read_index_block_until(&mut file, budget, Some(*offsets.metadata_ptr))?;
++            for handle in &block {
++                if handle
++                    .offset
++                    .checked_add(crate::segment::block::header::Header::serialized_len() as u64)
++                    .is_none_or(|end| end > *offsets.index_block_ptr)
++                {
++                    return Err(corrupt());
++                }
++            }
++            let new_len = entries.len().checked_add(block.len()).ok_or_else(corrupt)?;
++            if new_len > entries.capacity() {
++                let capacity = entries
++                    .capacity()
++                    .max(2)
++                    .checked_mul(2)
++                    .ok_or_else(corrupt)?
++                    .max(new_len);
++                charge_capacity(
++                    budget,
++                    capacity
++                        .checked_mul(std::mem::size_of::<KeyedBlockHandle>())
++                        .ok_or_else(corrupt)?,
++                )?;
++                entries
++                    .try_reserve_exact(capacity - entries.len())
++                    .map_err(|_| {
++                        PrepareError::Io(std::io::Error::other("segment index allocation failed"))
++                    })?;
++            }
++            entries.extend(block);
++        }
++        if entries.is_empty()
++            || entries
++                .windows(2)
++                .any(|pair| pair[0].end_key > pair[1].end_key || *pair[0].offset >= *pair[1].offset)
++        {
++            return Err(corrupt());
++        }
++        // Conversion to a boxed slice can request a new allocation when spare capacity exists.
++        charge_capacity(
++            budget,
++            entries
++                .len()
++                .checked_mul(std::mem::size_of::<KeyedBlockHandle>())
++                .ok_or_else(corrupt)?,
++        )?;
++        let index = FullBlockIndex::from_items(entries);
++        let arcs = std::mem::size_of::<Inner>()
++            .checked_add(std::mem::size_of::<BlockIndexImpl>())
++            .and_then(|n| n.checked_add(4 * std::mem::size_of::<usize>()))
++            .and_then(|n| n.checked_add(path.as_os_str().as_encoded_bytes().len()))
++            .ok_or_else(corrupt)?;
++        charge_capacity(budget, arcs)?;
++        Ok(Segment::from(Inner {
++            path: path.into(),
++            tree_id,
++            descriptor_table,
++            metadata,
++            offsets,
++            block_index: Arc::new(BlockIndexImpl::Full(index)),
++            cache,
++            // Bounded recovery can omit the optional filter without changing lookup results.
++            bloom_filter: None,
++            is_deleted: AtomicBool::default(),
++        }))
++    }
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_segment_tests.rs
++++ support/patches/lsm-tree/src/bounded_segment_tests.rs
+@@ -0,0 +1,75 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::{AbstractTree, Config};
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++use crate::bounded_segment::prepare_segment;
++
++struct Ledger { remaining: u64 }
++impl RecoveryBudget for Ledger {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        self.remaining = self.remaining.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.remaining })?;
++        Ok(())
++    }
++    fn check_key_bytes(&mut self, _: u64) -> Result<(), PrepareError> { Ok(()) }
++}
++
++#[test]
++fn prepares_real_segment_without_mutating_it() {
++    let dir = tempfile::tempdir().unwrap();
++    let config = Config::new(dir.path());
++    let tree = config.clone().open().unwrap();
++    tree.insert("alpha", "value", 0);
++    let original = tree.flush_active_memtable(0).unwrap().unwrap();
++    let before = std::fs::read(&original.path).unwrap();
++    let segment = prepare_segment(&original.path, 91, config.cache.clone(), config.descriptor_table.clone(), &mut Ledger { remaining: 1_000_000 }).unwrap();
++    assert_eq!(segment.id(), original.id());
++    assert_eq!(segment.metadata.key_range.min().as_ref(), b"alpha");
++    drop(segment);
++    assert_eq!(std::fs::read(&original.path).unwrap(), before);
++}
++
++#[test]
++fn segment_limit_refusal_does_not_mutate_segment() {
++    let dir = tempfile::tempdir().unwrap();
++    let config = Config::new(dir.path());
++    let tree = config.clone().open().unwrap();
++    tree.insert("alpha", "value", 0);
++    let original = tree.flush_active_memtable(0).unwrap().unwrap();
++    let before = std::fs::read(&original.path).unwrap();
++    assert!(matches!(prepare_segment(&original.path, 91, config.cache.clone(), config.descriptor_table.clone(), &mut Ledger { remaining: 0 }), Err(PrepareError::Limit { .. })));
++    assert_eq!(std::fs::read(&original.path).unwrap(), before);
++}
++
++fn invalid_index_pointer_is_refused(items: usize) {
++    use crate::{coding::{Decode, Encode}, segment::{block::offset::BlockOffset, block_index::IndexBlock}};
++    use std::io::{Seek, SeekFrom, Write};
++    let dir = tempfile::tempdir().unwrap();
++    let config = Config::new(dir.path()).data_block_size(1024);
++    let tree = config.clone().open().unwrap();
++    for n in 0..items { tree.insert(format!("key-{n:04}"), vec![b'v'; if items == 1 { 5 } else { 700 }], n as u64); }
++    let original = tree.flush_active_memtable(0).unwrap().unwrap();
++    let path = original.path.clone();
++    let index_start = *original.offsets.index_block_ptr;
++    let mut file = std::fs::OpenOptions::new().read(true).write(true).open(&path).unwrap();
++    file.seek(SeekFrom::Start(index_start)).unwrap();
++    let block = IndexBlock::from_reader(&mut file).unwrap();
++    let mut entries = block.items.into_vec();
++    let last = entries.last_mut().unwrap();
++    last.offset = BlockOffset(index_start);
++    let (header, packed) = IndexBlock::to_bytes_compressed(&entries, block.header.previous_block_offset, block.header.compression).unwrap();
++    assert_eq!(header.data_length, block.header.data_length);
++    file.seek(SeekFrom::Start(index_start)).unwrap();
++    header.encode_into(&mut file).unwrap();
++    file.write_all(&packed).unwrap();
++    drop(file);
++    let before = std::fs::read(&path).unwrap();
++    assert!(matches!(prepare_segment(&path, 91, config.cache.clone(), config.descriptor_table.clone(), &mut Ledger { remaining: 1_000_000 }), Err(PrepareError::Corruption(_))));
++    assert_eq!(std::fs::read(path).unwrap(), before);
++}
++
++#[test]
++fn single_and_last_index_pointers_are_validated_during_prepare() {
++    invalid_index_pointer_is_refused(1);
++    invalid_index_pointer_is_refused(4);
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_trailer.rs
++++ support/patches/lsm-tree/src/bounded_trailer.rs
+@@ -0,0 +1,98 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Bounded segment trailer and metadata admission.
++
++use crate::{
++    bounded_metadata::parse_metadata,
++    bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource},
++    coding::Decode,
++    segment::{file_offsets::FileOffsets, meta::Metadata, trailer::TRAILER_SIZE},
++};
++use std::io::{Cursor, Read, Seek, SeekFrom};
++
++fn corrupt() -> PrepareError {
++    PrepareError::Corruption("invalid segment trailer or metadata extent".into())
++}
++
++fn read_key_len<R: Read + Seek>(
++    reader: &mut R,
++    position: u64,
++    end: u64,
++    budget: &mut dyn RecoveryBudget,
++) -> Result<u64, PrepareError> {
++    if position.checked_add(2).filter(|p| *p <= end).is_none() {
++        return Err(corrupt());
++    }
++    budget.charge(RecoveryResource::InputBytes, 2)?;
++    reader
++        .seek(SeekFrom::Start(position))
++        .map_err(PrepareError::Io)?;
++    let mut bytes = [0; 2];
++    reader.read_exact(&mut bytes).map_err(PrepareError::Io)?;
++    let len = u16::from_be_bytes(bytes) as u64;
++    budget.check_key_bytes(len)?;
++    if position
++        .checked_add(2)
++        .and_then(|p| p.checked_add(len))
++        .filter(|p| *p <= end)
++        .is_none()
++    {
++        return Err(corrupt());
++    }
++    Ok(len)
++}
++
++pub(crate) fn read_segment_metadata<R: Read + Seek>(
++    reader: &mut R,
++    budget: &mut dyn RecoveryBudget,
++) -> Result<(Metadata, FileOffsets), PrepareError> {
++    let file_len = reader.seek(SeekFrom::End(0)).map_err(PrepareError::Io)?;
++    let trailer_at = file_len
++        .checked_sub(TRAILER_SIZE as u64)
++        .ok_or_else(corrupt)?;
++    budget.charge(RecoveryResource::InputBytes, TRAILER_SIZE as u64)?;
++    reader
++        .seek(SeekFrom::Start(trailer_at))
++        .map_err(PrepareError::Io)?;
++    let mut trailer = [0; TRAILER_SIZE];
++    reader.read_exact(&mut trailer).map_err(PrepareError::Io)?;
++    if trailer[TRAILER_SIZE - crate::file::MAGIC_BYTES.len()..] != crate::file::MAGIC_BYTES {
++        return Err(corrupt());
++    }
++    let offsets = FileOffsets::decode_from(&mut Cursor::new(&trailer)).map_err(|_| corrupt())?;
++    if *offsets.range_tombstones_ptr != 0 {
++        return Err(PrepareError::Unsupported("range tombstones"));
++    }
++    let metadata_at = *offsets.metadata_ptr;
++    const FIXED_METADATA_BYTES: u64 = 111;
++    let min_at = metadata_at
++        .checked_add(FIXED_METADATA_BYTES)
++        .ok_or_else(corrupt)?;
++    let min = read_key_len(reader, min_at, trailer_at, budget)?;
++    let max_at = min_at
++        .checked_add(2)
++        .and_then(|p| p.checked_add(min))
++        .ok_or_else(corrupt)?;
++    let max = read_key_len(reader, max_at, trailer_at, budget)?;
++    let metadata_end = max_at
++        .checked_add(2)
++        .and_then(|p| p.checked_add(max))
++        .ok_or_else(corrupt)?;
++    let metadata_len = metadata_end.checked_sub(metadata_at).ok_or_else(corrupt)?;
++    budget.charge(RecoveryResource::InputBytes, metadata_len)?;
++    budget.charge(RecoveryResource::MetadataBytes, metadata_len)?;
++    budget.charge(RecoveryResource::AllocationBytes, metadata_len)?;
++    let len = usize::try_from(metadata_len).map_err(|_| corrupt())?;
++    let mut bytes = Vec::new();
++    bytes
++        .try_reserve_exact(len)
++        .map_err(|_| PrepareError::Unsupported("metadata allocation failed"))?;
++    bytes.resize(len, 0);
++    reader
++        .seek(SeekFrom::Start(metadata_at))
++        .map_err(PrepareError::Io)?;
++    reader.read_exact(&mut bytes).map_err(PrepareError::Io)?;
++    let metadata = parse_metadata(&bytes, budget)?;
++    Ok((metadata, offsets))
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_trailer_tests.rs
++++ support/patches/lsm-tree/src/bounded_trailer_tests.rs
+@@ -0,0 +1,40 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource};
++use crate::bounded_trailer::read_segment_metadata;
++use crate::{AbstractTree, Config};
++
++struct Ledger { remaining: u64, max_key: u64 }
++impl RecoveryBudget for Ledger {
++    fn charge(&mut self, resource: RecoveryResource, amount: u64) -> Result<(), PrepareError> {
++        self.remaining = self.remaining.checked_sub(amount).ok_or(PrepareError::Limit { resource, limit: self.remaining })?;
++        Ok(())
++    }
++    fn check_key_bytes(&mut self, amount: u64) -> Result<(), PrepareError> {
++        if amount > self.max_key { return Err(PrepareError::Limit { resource: RecoveryResource::KeyBytes, limit: self.max_key }); }
++        Ok(())
++    }
++}
++
++#[test]
++fn reads_real_segment_metadata_without_tree_recovery() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("alpha", "value", 0);
++    let segment = tree.flush_active_memtable(0).unwrap().unwrap();
++    let mut file = std::fs::File::open(&segment.path).unwrap();
++    let (meta, _) = read_segment_metadata(&mut file, &mut Ledger { remaining: 4096, max_key: 5 }).unwrap();
++    assert_eq!(meta.key_range.min().as_ref(), b"alpha");
++    assert_eq!(meta.id, segment.id());
++}
++
++#[test]
++fn refuses_segment_metadata_key_over_limit() {
++    let dir = tempfile::tempdir().unwrap();
++    let tree = Config::new(dir.path()).open().unwrap();
++    tree.insert("alpha", "value", 0);
++    let segment = tree.flush_active_memtable(0).unwrap().unwrap();
++    let mut file = std::fs::File::open(&segment.path).unwrap();
++    assert!(matches!(read_segment_metadata(&mut file, &mut Ledger { remaining: 4096, max_key: 4 }), Err(PrepareError::Limit { resource: RecoveryResource::KeyBytes, .. })));
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_tree.rs
++++ support/patches/lsm-tree/src/bounded_tree.rs
+@@ -0,0 +1,437 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Read-only construction of a standard v2 tree and deferred orphan cleanup.
++
++use crate::{
++    Config, TreeType, Version,
++    bounded_manifest::parse_levels,
++    bounded_prepare::{PrepareError, RecoveryBudget, RecoveryResource},
++    bounded_segment::prepare_segment,
++    coding::Decode,
++    file::{LEVELS_MANIFEST_FILE, MANIFEST_FILE, SEGMENTS_FOLDER},
++    level_manifest::LevelManifest,
++    manifest::Manifest,
++    segment::Segment,
++    stop_signal::StopSignal,
++    tree::{
++        Tree,
++        inner::{TreeInner, get_next_tree_id},
++    },
++};
++use std::{
++    io::{Cursor, Read},
++    path::{Path, PathBuf},
++    sync::{Arc, RwLock, atomic::AtomicU64},
++};
++
++fn corrupt() -> PrepareError {
++    PrepareError::Corruption("invalid tree metadata".into())
++}
++fn charge(b: &mut dyn RecoveryBudget, n: usize) -> Result<(), PrepareError> {
++    let n = u64::try_from(n).map_err(|_| corrupt())?;
++    b.charge(RecoveryResource::MetadataBytes, n)?;
++    b.charge(RecoveryResource::AllocationBytes, n)
++}
++fn arc_request<T>() -> Result<usize, PrepareError> {
++    let header = std::alloc::Layout::new::<(
++        std::sync::atomic::AtomicUsize,
++        std::sync::atomic::AtomicUsize,
++    )>();
++    Ok(header
++        .extend(std::alloc::Layout::new::<T>())
++        .map_err(|_| corrupt())?
++        .0
++        .pad_to_align()
++        .size())
++}
++fn tree_shell_request() -> Result<usize, PrepareError> {
++    use crate::{memtable::Memtable, tree::inner::SealedMemtables};
++    let requests = [
++        arc_request::<TreeInner>()?,
++        arc_request::<AtomicU64>()?,
++        arc_request::<RwLock<Arc<Memtable>>>()?,
++        arc_request::<Memtable>()?,
++        arc_request::<RwLock<SealedMemtables>>()?,
++        arc_request::<RwLock<LevelManifest>>()?,
++        arc_request::<std::sync::atomic::AtomicBool>()?,
++    ];
++    requests
++        .into_iter()
++        .try_fold(0usize, |sum, n| sum.checked_add(n))
++        .ok_or_else(corrupt)
++}
++pub(crate) fn os_path_capacity(path: &Path) -> Result<usize, PrepareError> {
++    let bytes = path.as_os_str().as_encoded_bytes();
++    #[cfg(any(target_os = "linux", target_os = "macos"))]
++    {
++        return bytes.len().checked_add(1).ok_or_else(corrupt);
++    }
++    #[cfg(target_os = "windows")]
++    {
++        // std's short absolute-path branch only allocates the UTF-16 conversion.
++        // Longer or non-absolute paths enter OS-dependent normalization.
++        let absolute =
++            bytes.len() >= 3 && bytes[1] == b':' && (bytes[2] == b'\\' || bytes[2] == b'/')
++                || bytes.starts_with(b"\\\\")
++                || bytes.starts_with(b"//");
++        if bytes.len() >= 247 || !absolute {
++            return Err(PrepareError::Unsupported("Windows long path accounting"));
++        }
++        return bytes
++            .len()
++            .checked_add(1)
++            .and_then(|n| n.checked_mul(2))
++            .ok_or_else(corrupt);
++    }
++    #[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
++    {
++        let _ = bytes;
++        Err(PrepareError::Unsupported(
++            "path accounting not audited for this platform",
++        ))
++    }
++}
++fn charge_os_path(path: &Path, b: &mut dyn RecoveryBudget) -> Result<(), PrepareError> {
++    charge(b, os_path_capacity(path)?)
++}
++pub(crate) fn precharge_commit_paths(
++    missing: Option<&Path>,
++    orphans: &[PathBuf],
++    b: &mut dyn RecoveryBudget,
++) -> Result<(), PrepareError> {
++    if let Some(path) = missing {
++        charge_os_path(path, b)?;
++        charge_os_path(path, b)?;
++    }
++    for path in orphans {
++        charge_os_path(path, b)?;
++    }
++    Ok(())
++}
++fn join(path: &Path, name: &str, b: &mut dyn RecoveryBudget) -> Result<PathBuf, PrepareError> {
++    let n = path
++        .as_os_str()
++        .as_encoded_bytes()
++        .len()
++        .checked_add(name.len())
++        .and_then(|n| n.checked_add(1))
++        .and_then(|n| n.checked_mul(2))
++        .ok_or_else(corrupt)?;
++    charge(b, n)?;
++    Ok(path.join(name))
++}
++fn read_file(path: &Path, b: &mut dyn RecoveryBudget) -> Result<Vec<u8>, PrepareError> {
++    charge_os_path(path, b)?;
++    let mut file = std::fs::File::open(path).map_err(PrepareError::Io)?;
++    let len = file.metadata().map_err(PrepareError::Io)?.len();
++    b.charge(RecoveryResource::InputBytes, len)?;
++    let n = usize::try_from(len).map_err(|_| corrupt())?;
++    charge(b, n)?;
++    let mut result = Vec::new();
++    result
++        .try_reserve_exact(n)
++        .map_err(|_| PrepareError::Io(std::io::Error::other("manifest allocation failed")))?;
++    result.resize(n, 0);
++    file.read_exact(&mut result).map_err(PrepareError::Io)?;
++    Ok(result)
++}
++#[cfg(any(target_os = "linux", target_os = "macos"))]
++const NAME_RESERVE: usize = 3 * 65_536;
++#[cfg(target_os = "windows")]
++const NAME_RESERVE: usize = 2 * (260 + 520 + 1040) + 780;
++#[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
++const NAME_RESERVE: usize = 0;
++
++/// A tree whose stored metadata and deferred cleanup have been admitted.
++#[doc(hidden)]
++pub struct PreparedTree {
++    tree: Option<Tree>,
++    orphans: Vec<PathBuf>,
++    missing_segment_directory: Option<PathBuf>,
++}
++impl PreparedTree {
++    /// The admitted in-memory tree, available for constructing replay state.
++    #[must_use]
++    pub fn tree(&self) -> &Tree {
++        self.tree.as_ref().expect("prepared tree already consumed")
++    }
++    /// Install already admitted replay tables before any filesystem cleanup.
++    /// Returns handles for the sealed tables in oldest-to-newest order.
++    ///
++    /// # Errors
++    /// Returns a typed limit or allocation refusal without changing the tree.
++    pub fn install_replay(
++        &mut self,
++        active: Option<crate::Memtable>,
++        sealed: Vec<crate::Memtable>,
++        budget: &mut dyn RecoveryBudget,
++    ) -> Result<Vec<(crate::tree::inner::MemtableId, Arc<crate::Memtable>)>, PrepareError> {
++        let tree = self.tree();
++        let mut active_lock = tree.active_memtable.write().expect("lock is poisoned");
++        let mut sealed_lock = tree.sealed_memtables.write().expect("lock is poisoned");
++        if !active_lock.is_empty() || sealed_lock.len() != 0 {
++            return Err(PrepareError::Unsupported("replay already installed"));
++        }
++        let count = sealed.len();
++        budget.charge(
++            RecoveryResource::VisitedItems,
++            u64::try_from(count).map_err(|_| corrupt())?,
++        )?;
++        let arc_count = count
++            .checked_add(usize::from(active.is_some()))
++            .ok_or_else(corrupt)?;
++        let capacity = count
++            .checked_mul(2)
++            .and_then(|n| {
++                n.checked_mul(std::mem::size_of::<(
++                    crate::tree::inner::MemtableId,
++                    Arc<crate::Memtable>,
++                )>())
++            })
++            .and_then(|n| {
++                n.checked_add(arc_count.checked_mul(arc_request::<crate::Memtable>().ok()?)?)
++            })
++            .ok_or_else(corrupt)?;
++        charge(budget, capacity)?;
++        let mut installed = Vec::new();
++        let mut retained = Vec::new();
++        installed
++            .try_reserve_exact(count)
++            .map_err(|_| PrepareError::Io(std::io::Error::other("replay allocation failed")))?;
++        retained
++            .try_reserve_exact(count)
++            .map_err(|_| PrepareError::Io(std::io::Error::other("replay allocation failed")))?;
++        let first = tree
++            .segment_id_counter
++            .load(std::sync::atomic::Ordering::Relaxed);
++        let next = first
++            .checked_add(u64::try_from(count).map_err(|_| corrupt())?)
++            .ok_or_else(corrupt)?;
++        for (offset, memtable) in sealed.into_iter().enumerate() {
++            let id = first + offset as u64;
++            let table = Arc::new(memtable);
++            retained.push((id, table.clone()));
++            installed.push((id, table));
++        }
++        let new_active = active.map(Arc::new);
++        tree.segment_id_counter
++            .store(next, std::sync::atomic::Ordering::Relaxed);
++        *sealed_lock = crate::tree::inner::SealedMemtables::from_replay(installed);
++        if let Some(active) = new_active {
++            *active_lock = active;
++        }
++        Ok(retained)
++    }
++
++    /// Apply deferred cleanup and return the retained tree without further limit-bearing reads.
++    /// # Errors
++    /// Returns an I/O error if cleanup fails.
++    pub fn commit(mut self) -> Result<Tree, PrepareError> {
++        if let Some(path) = &self.missing_segment_directory {
++            std::fs::create_dir(path).map_err(PrepareError::Io)?;
++            crate::file::fsync_directory(path).map_err(PrepareError::Io)?;
++        }
++        for path in &self.orphans {
++            std::fs::remove_file(path).map_err(PrepareError::Io)?;
++        }
++        Ok(self.tree.take().expect("prepared tree already consumed"))
++    }
++}
++
++pub(crate) fn prepare(
++    mut config: Config,
++    budget: &mut dyn RecoveryBudget,
++) -> Result<PreparedTree, PrepareError> {
++    #[cfg(feature = "bytes")]
++    return Err(PrepareError::Unsupported("bytes-backed bounded recovery"));
++    #[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
++    return Err(PrepareError::Unsupported(
++        "directory accounting not audited for this platform",
++    ));
++    let manifest_path = join(&config.path, MANIFEST_FILE, budget)?;
++    let bytes = read_file(&manifest_path, budget)?;
++    if bytes.len() != 7 {
++        return Err(corrupt());
++    }
++    let manifest = Manifest::decode_from(&mut Cursor::new(bytes)).map_err(|_| corrupt())?;
++    if manifest.version != Version::V2 || manifest.level_count == 0 {
++        return Err(corrupt());
++    }
++    if manifest.tree_type != TreeType::Standard {
++        return Err(PrepareError::Unsupported("blob tree"));
++    }
++    config.level_count = manifest.level_count;
++    config.tree_type = manifest.tree_type;
++    config.table_type = manifest.table_type;
++    let levels_path = join(&config.path, LEVELS_MANIFEST_FILE, budget)?;
++    let levels = parse_levels(&read_file(&levels_path, budget)?, budget)?;
++    if levels.len() != config.level_count as usize {
++        return Err(corrupt());
++    }
++    let count = levels
++        .iter()
++        .try_fold(0usize, |n, group| n.checked_add(group.len()))
++        .ok_or_else(corrupt)?;
++    charge(
++        budget,
++        count
++            .checked_mul(std::mem::size_of::<(u64, usize)>())
++            .ok_or_else(corrupt)?,
++    )?;
++    let mut ids = Vec::new();
++    ids.try_reserve_exact(count)
++        .map_err(|_| PrepareError::Io(std::io::Error::other("segment list allocation failed")))?;
++    for (level, group) in levels.iter().enumerate() {
++        ids.extend(group.iter().map(|id| (*id, level)));
++    }
++    ids.sort_unstable();
++    if ids.windows(2).any(|p| p[0].0 == p[1].0) {
++        return Err(corrupt());
++    }
++    let segment_dir = join(&config.path, SEGMENTS_FOLDER, budget)?;
++    charge_os_path(&segment_dir, budget)?;
++    let (mut dir, missing_segment_directory) = match std::fs::read_dir(&segment_dir) {
++        Ok(dir) => (Some(dir), None),
++        Err(e) if e.kind() == std::io::ErrorKind::NotFound && count == 0 => {
++            charge(budget, segment_dir.as_os_str().as_encoded_bytes().len())?;
++            (None, Some(segment_dir.clone()))
++        }
++        Err(e) => return Err(PrepareError::Io(e)),
++    };
++    let mut present = Vec::<(u64, PathBuf)>::new();
++    let mut orphans = Vec::<PathBuf>::new();
++    while let Some(entries) = dir.as_mut() {
++        let reserve = segment_dir
++            .as_os_str()
++            .as_encoded_bytes()
++            .len()
++            .checked_mul(3)
++            .and_then(|n| n.checked_add(NAME_RESERVE + 16))
++            .ok_or_else(corrupt)?;
++        charge(budget, reserve)?;
++        let Some(entry) = entries.next() else { break };
++        let entry = entry.map_err(PrepareError::Io)?;
++        budget.charge(RecoveryResource::VisitedItems, 1)?;
++        let name = entry.file_name();
++        let name = name
++            .to_str()
++            .ok_or(PrepareError::Unsupported("non-UTF-8 segment name"))?;
++        if name == ".DS_Store" || name.starts_with("._") {
++            continue;
++        }
++        let id = name.parse::<u64>().map_err(|_| corrupt())?;
++        let path = entry.path();
++        // DirEntry::file_type can secretly allocate another path when d_type is
++        // unknown. An explicitly admitted path and lstat avoid that fallback.
++        charge_os_path(&path, budget)?;
++        if !std::fs::symlink_metadata(&path)
++            .map_err(PrepareError::Io)?
++            .file_type()
++            .is_file()
++        {
++            return Err(corrupt());
++        }
++        if ids.binary_search_by_key(&id, |x| x.0).is_ok() {
++            reserve_one(&mut present, budget)?;
++            present.push((id, path));
++        } else {
++            reserve_one(&mut orphans, budget)?;
++            orphans.push(path);
++        }
++    }
++    present.sort_unstable_by_key(|v| v.0);
++    if present.len() != ids.len() || present.iter().zip(&ids).any(|(p, i)| p.0 != i.0) {
++        return Err(corrupt());
++    }
++    // Level::update_metadata forms one pointer per segment and sorts the
++    // segment slice. LevelManifest::set_disjoint_flag also builds key-range
++    // and pointer vectors for nonempty levels. Charge the requested capacities
++    // before invoking those upstream helpers.
++    let per_level = std::mem::size_of::<Vec<Segment>>()
++        .checked_add(std::mem::size_of::<Arc<crate::level_manifest::level::Level>>())
++        .and_then(|n| n.checked_add(arc_request::<crate::level_manifest::level::Level>().ok()?))
++        .and_then(|n| n.checked_add(std::mem::size_of::<crate::KeyRange>()))
++        .and_then(|n| n.checked_add(std::mem::size_of::<&crate::KeyRange>()))
++        .ok_or_else(corrupt)?;
++    let group_bytes = levels
++        .len()
++        .checked_mul(per_level)
++        .and_then(|n| {
++            n.checked_add(count.checked_mul(
++                2 * std::mem::size_of::<Segment>() + std::mem::size_of::<&crate::KeyRange>(),
++            )?)
++        })
++        .ok_or_else(corrupt)?;
++    // The pinned KeyRange::is_disjoint compares each pair. Conservatively
++    // charge a square number of visits before the potentially quadratic work.
++    let visits = levels.iter().try_fold(
++        levels.len().checked_mul(levels.len()).ok_or_else(corrupt)?,
++        |sum, level| {
++            sum.checked_add(level.len().checked_mul(level.len()).ok_or_else(corrupt)?)
++                .ok_or_else(corrupt)
++        },
++    )?;
++    budget.charge(
++        RecoveryResource::VisitedItems,
++        u64::try_from(visits).map_err(|_| corrupt())?,
++    )?;
++    charge(budget, group_bytes)?;
++    let mut groups: Vec<Vec<Segment>> = Vec::with_capacity(levels.len());
++    for level in &levels {
++        groups.push(Vec::with_capacity(level.len()));
++    }
++    let tree_id = get_next_tree_id();
++    for ((id, path), (_, level)) in present.into_iter().zip(ids) {
++        let segment = prepare_segment(
++            &path,
++            tree_id,
++            config.cache.clone(),
++            config.descriptor_table.clone(),
++            budget,
++        )?;
++        if segment.id() != id {
++            return Err(corrupt());
++        }
++        groups[level].push(segment);
++    }
++    precharge_commit_paths(missing_segment_directory.as_deref(), &orphans, budget)?;
++    let levels = LevelManifest::from_prepared(levels_path, groups);
++    let highest = levels.iter().map(Segment::id).max().unwrap_or_default();
++    let next = highest.checked_add(1).ok_or_else(corrupt)?;
++    // Fixed tree shell and retained lock/memtable handles are charged before construction.
++    charge(budget, tree_shell_request()?)?;
++    config
++        .descriptor_table
++        .insert_bounded_recovery(&levels, budget)?;
++    let inner = TreeInner {
++        id: tree_id,
++        segment_id_counter: Arc::new(AtomicU64::new(next)),
++        active_memtable: Arc::default(),
++        sealed_memtables: Arc::default(),
++        levels: Arc::new(RwLock::new(levels)),
++        stop_signal: StopSignal::default(),
++        config,
++        major_compaction_lock: RwLock::default(),
++    };
++    Ok(PreparedTree {
++        tree: Some(Tree(Arc::new(inner))),
++        orphans,
++        missing_segment_directory,
++    })
++}
++fn reserve_one<T>(v: &mut Vec<T>, b: &mut dyn RecoveryBudget) -> Result<(), PrepareError> {
++    if v.len() == v.capacity() {
++        let capacity = v.capacity().max(2).checked_mul(2).ok_or_else(corrupt)?;
++        charge(
++            b,
++            capacity
++                .checked_mul(std::mem::size_of::<T>())
++                .ok_or_else(corrupt)?,
++        )?;
++        v.try_reserve_exact(capacity - v.len()).map_err(|_| {
++            PrepareError::Io(std::io::Error::other("directory list allocation failed"))
++        })?;
++    }
++    Ok(())
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_validation.rs
++++ support/patches/lsm-tree/src/bounded_validation.rs
+@@ -0,0 +1,84 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++//! Allocation-free preflight of the existing v2 data-block entry encoding.
++
++use byteorder::{BigEndian, ReadBytesExt};
++use std::io::Cursor;
++use varint_rs::VarintReader;
++
++#[derive(Debug, PartialEq, Eq)]
++pub(crate) enum ValidationError {
++    Corrupt,
++    KeyLimit,
++    ValueLimit,
++    ItemLimit,
++}
++
++#[derive(Debug, PartialEq, Eq)]
++pub(crate) struct ValidationSummary {
++    pub(crate) items: u32,
++    pub(crate) key_bytes: u64,
++    pub(crate) value_bytes: u64,
++}
++
++fn skip(cursor: &mut Cursor<&[u8]>, len: usize) -> Result<(), ValidationError> {
++    let pos = usize::try_from(cursor.position()).map_err(|_| ValidationError::Corrupt)?;
++    let end = pos.checked_add(len).ok_or(ValidationError::Corrupt)?;
++    if end > cursor.get_ref().len() {
++        return Err(ValidationError::Corrupt);
++    }
++    cursor.set_position(end as u64);
++    Ok(())
++}
++
++pub(crate) fn validate_data_entries(
++    bytes: &[u8],
++    max_key: usize,
++    max_value: usize,
++    max_items: u32,
++) -> Result<ValidationSummary, ValidationError> {
++    let mut cursor = Cursor::new(bytes);
++    let count = cursor.read_u32::<BigEndian>().map_err(|_| ValidationError::Corrupt)?;
++    if count > max_items {
++        return Err(ValidationError::ItemLimit);
++    }
++    let mut key_bytes = 0_u64;
++    let mut value_bytes = 0_u64;
++    let mut previous: Option<(&[u8], u64)> = None;
++    for _ in 0..count {
++        let seqno = cursor.read_u64_varint().map_err(|_| ValidationError::Corrupt)?;
++        let tag = cursor.read_u8().map_err(|_| ValidationError::Corrupt)?;
++        if tag > 2 {
++            return Err(ValidationError::Corrupt);
++        }
++        let key_len = usize::from(cursor.read_u16_varint().map_err(|_| ValidationError::Corrupt)?);
++        if key_len == 0 {
++            return Err(ValidationError::Corrupt);
++        }
++        if key_len > max_key {
++            return Err(ValidationError::KeyLimit);
++        }
++        let start = usize::try_from(cursor.position()).map_err(|_| ValidationError::Corrupt)?;
++        skip(&mut cursor, key_len)?;
++        let end = usize::try_from(cursor.position()).map_err(|_| ValidationError::Corrupt)?;
++        let key = &bytes[start..end];
++        if previous.is_some_and(|(prior, prior_seqno)| prior > key || (prior == key && prior_seqno < seqno)) {
++            return Err(ValidationError::Corrupt);
++        }
++        previous = Some((key, seqno));
++        key_bytes = key_bytes.checked_add(key_len as u64).ok_or(ValidationError::Corrupt)?;
++        if tag == 0 {
++            let value_len = cursor.read_u32_varint().map_err(|_| ValidationError::Corrupt)? as usize;
++            if value_len > max_value {
++                return Err(ValidationError::ValueLimit);
++            }
++            skip(&mut cursor, value_len)?;
++            value_bytes = value_bytes.checked_add(value_len as u64).ok_or(ValidationError::Corrupt)?;
++        }
++    }
++    if cursor.position() != bytes.len() as u64 {
++        return Err(ValidationError::Corrupt);
++    }
++    Ok(ValidationSummary { items: count, key_bytes, value_bytes })
++}
+--- upstream/lsm-tree-2.10.4/src/bounded_validation_tests.rs
++++ support/patches/lsm-tree/src/bounded_validation_tests.rs
+@@ -0,0 +1,31 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MIT OR Apache-2.0
++
++use crate::bounded_validation::{validate_data_entries, ValidationError};
++use crate::{coding::Encode, InternalValue, ValueType};
++
++fn encoded_block() -> Vec<u8> {
++    let mut bytes = 2_u32.to_be_bytes().to_vec();
++    InternalValue::from_components("a", "one", 2, ValueType::Value)
++        .encode_into(&mut bytes)
++        .unwrap();
++    InternalValue::from_components("b", "longer", 1, ValueType::Value)
++        .encode_into(&mut bytes)
++        .unwrap();
++    bytes
++}
++
++#[test]
++fn checks_all_entries_before_any_value_copy() {
++    let bytes = encoded_block();
++    assert!(matches!(validate_data_entries(&bytes, 8, 5, 2), Err(ValidationError::ValueLimit)));
++    assert!(validate_data_entries(&bytes, 8, 6, 2).is_ok());
++}
++
++#[test]
++fn rejects_truncated_values_and_excessive_item_count() {
++    let mut bytes = encoded_block();
++    bytes.pop();
++    assert!(matches!(validate_data_entries(&bytes, 8, 6, 2), Err(ValidationError::Corrupt)));
++    assert!(matches!(validate_data_entries(&[255, 255, 255, 255], 8, 8, 2), Err(ValidationError::ItemLimit)));
++}
+--- upstream/lsm-tree-2.10.4/src/descriptor_table/lru.rs
++++ support/patches/lsm-tree/src/descriptor_table/lru.rs
+@@ -12,6 +12,10 @@
+     #[must_use]
+     pub fn with_capacity(n: usize) -> Self {
+         Self(VecDeque::with_capacity(n))
++    }
++
++    pub(crate) fn try_reserve(&mut self, additional: usize) -> Result<(), std::collections::TryReserveError> {
++        self.0.try_reserve(additional)
+     }
+ 
+     pub fn remove_by(&mut self, f: impl FnMut(&T) -> bool) {
+--- upstream/lsm-tree-2.10.4/src/descriptor_table/mod.rs
++++ support/patches/lsm-tree/src/descriptor_table/mod.rs
+@@ -203,6 +203,37 @@
+         lock.lru.lock().expect("lock is poisoned").refresh(id);
+     }
+ 
++    pub(crate) fn insert_bounded_recovery(
++        &self,
++        levels: &crate::level_manifest::LevelManifest,
++        budget: &mut dyn crate::bounded_prepare::RecoveryBudget,
++    ) -> Result<(), crate::bounded_prepare::PrepareError> {
++        use crate::bounded_prepare::{PrepareError, RecoveryResource};
++        let mut lock = self.inner.write().expect("lock is poisoned");
++        let count = levels.iter().count();
++        let desired = lock.table.len().checked_add(count).ok_or_else(|| PrepareError::Corruption("descriptor count overflow".into()))?;
++        // Conservative bound for hashbrown buckets/control bytes and VecDeque growth.
++        let bytes = desired.checked_add(1).and_then(|n| n.checked_mul(4))
++            .and_then(|n| n.checked_mul(std::mem::size_of::<(GlobalSegmentId, FileHandle)>() + 1))
++            .and_then(|n| n.checked_add(desired.checked_add(1)?.checked_mul(4)?.checked_mul(std::mem::size_of::<GlobalSegmentId>())?))
++            .and_then(|n| n.checked_add(128)).ok_or_else(|| PrepareError::Corruption("descriptor capacity overflow".into()))?;
++        let path_bytes = levels.iter().try_fold(0usize, |n, segment| n.checked_add(segment.path.as_os_str().as_encoded_bytes().len()))
++            .ok_or_else(|| PrepareError::Corruption("descriptor path overflow".into()))?;
++        let capacity = bytes.checked_add(path_bytes).ok_or_else(|| PrepareError::Corruption("descriptor capacity overflow".into()))? as u64;
++        budget.charge(RecoveryResource::MetadataBytes, capacity)?;
++        budget.charge(RecoveryResource::AllocationBytes, capacity)?;
++        lock.table.try_reserve(count).map_err(|_| PrepareError::Io(std::io::Error::other("descriptor table allocation failed")))?;
++        let inner = &mut *lock;
++        let mut lru = inner.lru.lock().expect("lock is poisoned");
++        lru.try_reserve(count).map_err(|_| PrepareError::Io(std::io::Error::other("descriptor LRU allocation failed")))?;
++        for segment in levels.iter() {
++            let id = segment.global_id();
++            inner.table.insert(id, FileHandle { descriptors: RwLock::new(Vec::new()), path: segment.path.clone() });
++            lru.refresh(id);
++        }
++        Ok(())
++    }
++
+     pub fn insert<P: Into<PathBuf>>(&self, path: P, id: GlobalSegmentId) {
+         let lock = self.inner.write().expect("lock is poisoned");
+         Self::inner_insert(lock, path.into(), id);
+--- upstream/lsm-tree-2.10.4/src/level_manifest/mod.rs
++++ support/patches/lsm-tree/src/level_manifest/mod.rs
+@@ -110,6 +110,17 @@
+ }
+ 
+ impl LevelManifest {
++    pub(crate) fn from_prepared(path: PathBuf, groups: Vec<Vec<Segment>>) -> Self {
++        let levels = groups.into_iter().map(|segments| {
++            let mut level = Level { segments, is_disjoint: true };
++            level.update_metadata();
++            Arc::new(level)
++        }).collect();
++        let mut manifest = Self { path, levels, hidden_set: HiddenSet::default(), is_disjoint: false };
++        manifest.set_disjoint_flag();
++        manifest
++    }
++
+     pub(crate) fn is_compacting(&self) -> bool {
+         !self.hidden_set.is_empty()
+     }
+--- upstream/lsm-tree-2.10.4/src/lib.rs
++++ support/patches/lsm-tree/src/lib.rs
+@@ -123,6 +123,49 @@
+ }
+ 
+ mod any_tree;
++/// Resource accounting for explicit bounded reads.
++pub mod bounded_budget;
++/// Resource accounting for read-only recovery preparation.
++pub mod bounded_prepare;
++/// Budgeted, synchronous tree read primitives.
++pub mod bounded_read;
++mod bounded_read_index;
++mod bounded_block;
++#[cfg(test)]
++mod bounded_bloom;
++mod bounded_index;
++mod bounded_index_block;
++#[cfg(feature = "miniz")]
++mod bounded_inflate;
++mod bounded_manifest;
++mod bounded_metadata;
++mod bounded_segment;
++mod bounded_tree;
++mod bounded_trailer;
++mod bounded_validation;
++
++#[cfg(test)]
++mod bounded_validation_tests;
++#[cfg(test)]
++mod bounded_block_tests;
++#[cfg(test)]
++mod bounded_manifest_tests;
++#[cfg(test)]
++mod bounded_bloom_tests;
++#[cfg(test)]
++mod bounded_index_tests;
++#[cfg(test)]
++mod bounded_index_block_tests;
++#[cfg(test)]
++mod bounded_metadata_tests;
++#[cfg(test)]
++mod bounded_trailer_tests;
++#[cfg(test)]
++mod bounded_segment_tests;
++#[cfg(test)]
++mod bounded_prepare_tests;
++#[cfg(test)]
++mod bounded_read_tests;
+ 
+ mod r#abstract;
+ 
+--- upstream/lsm-tree-2.10.4/src/segment/block_index/full_index.rs
++++ support/patches/lsm-tree/src/segment/block_index/full_index.rs
+@@ -20,6 +20,10 @@
+ }
+ 
+ impl FullBlockIndex {
++    pub(crate) fn from_items(items: Vec<KeyedBlockHandle>) -> Self {
++        Self(items.into_boxed_slice())
++    }
++
+     pub fn from_file(
+         path: &Path,
+         metadata: &crate::segment::meta::Metadata,
+--- upstream/lsm-tree-2.10.4/src/tree/inner.rs
++++ support/patches/lsm-tree/src/tree/inner.rs
+@@ -26,6 +26,10 @@
+ pub struct SealedMemtables(Vec<(MemtableId, Arc<Memtable>)>);
+ 
+ impl SealedMemtables {
++    pub(crate) fn from_replay(tables: Vec<(MemtableId, Arc<Memtable>)>) -> Self {
++        Self(tables)
++    }
++
+     pub fn add(&mut self, id: MemtableId, memtable: Arc<Memtable>) {
+         self.0.push((id, memtable));
+     }
+@@ -76,6 +80,7 @@
+     pub(crate) stop_signal: StopSignal,
+ 
+     pub(crate) major_compaction_lock: RwLock<()>,
++
+ }
+ 
+ impl TreeInner {
+@@ -107,5 +112,6 @@
+ 
+         log::trace!("Sending stop signal to compactors");
+         self.stop_signal.send();
++
+     }
+ }

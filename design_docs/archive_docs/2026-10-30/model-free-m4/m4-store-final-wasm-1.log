@@ -1,0 +1,34 @@
+Running as unit: custody-contract-m4-store-final-wasm-1.scope; invocation ID: c40e9db5ab2f413a96ce380860b9569c
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+    Checking muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+    Checking chartulary v0.2.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/chartulary)
+    Checking eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+    Checking eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `dev` profile [unoptimized] target(s) in 6.75s
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo check --locked --offline -p eidetic -p eidetic-search --no-default-features --target wasm32-unknown-unknown"
+	User time (seconds): 4.86
+	System time (seconds): 1.39
+	Percent of CPU this job got: 91%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.85
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 390392
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 151
+	Minor (reclaiming a frame) page faults: 192715
+	Voluntary context switches: 2839
+	Involuntary context switches: 77
+	Swaps: 0
+	File system inputs: 212096
+	File system outputs: 13624
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

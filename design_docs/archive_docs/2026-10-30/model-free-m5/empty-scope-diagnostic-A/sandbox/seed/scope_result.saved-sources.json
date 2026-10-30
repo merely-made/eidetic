@@ -1,0 +1,29 @@
+{
+  "address_events": {
+    "dropped": 0,
+    "events": [],
+    "overflow": false,
+    "schema": "turnstone.m5-address-events/v1",
+    "total": 0
+  },
+  "admissions": [],
+  "entries": [],
+  "generation": "cbc0b6fd-7d3c-4cac-bd79-09aa32a14b41",
+  "reader_open_events": {
+    "dropped": 0,
+    "events": [],
+    "overflow": false,
+    "schema": "turnstone.m5-reader-open-events/v1",
+    "total": 0
+  },
+  "reader_scope": {
+    "schema": "turnstone.m5-reader-scope/v1",
+    "selected": "restricted"
+  },
+  "readers": [],
+  "retained_admissions": [],
+  "retained_readers": [],
+  "search": null,
+  "session": "2fbf1c7e-1c56-4c9e-b458-1c60269d125d",
+  "status": ""
+}

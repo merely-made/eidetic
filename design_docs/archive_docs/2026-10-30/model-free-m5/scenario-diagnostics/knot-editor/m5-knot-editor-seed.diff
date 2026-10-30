@@ -1,0 +1,13 @@
+--- collection-j/seed.scn
++++ proposed/seed.scn
+@@ -78,8 +78,9 @@
+ assert snap saved-reader-quote == M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.
+ record-saved-sources 06_note_citation
+ act Open research note
++act Read document
+ settle 20
+-click surface:knot role:textbox
++click-at 200 220
+ key end
+ key enter
+ insert M5 private preface zebra only this linked finding M5 private suffix otter

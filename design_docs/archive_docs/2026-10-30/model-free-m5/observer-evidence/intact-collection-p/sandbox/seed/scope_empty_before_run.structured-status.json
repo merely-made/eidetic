@@ -1,0 +1,26 @@
+{
+  "author_save_ready": false,
+  "busy": false,
+  "error": null,
+  "held_result": false,
+  "limit_refusal": null,
+  "result_generation": null,
+  "result_scope_current": false,
+  "schema": "turnstone.structured-status/v1",
+  "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+  "structured_idle_ready": true,
+  "view": "Home",
+  "visible": true,
+  "visible_rows": [
+    "› Operation: Property lookup",
+    "› Scope: No sources chosen",
+    "› Filters…",
+    "› Run in this scope",
+    "› Enter a sourced property…",
+    "› Saved results and replay…",
+    "› Withdrawn record history…",
+    "› Pending saves…",
+    "› Operation limits…",
+    "› Back to search"
+  ]
+}

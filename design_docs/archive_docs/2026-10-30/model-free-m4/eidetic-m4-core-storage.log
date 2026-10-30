@@ -1,0 +1,151 @@
+Running as unit: custody-contract-eidetic-m4-core-storage.scope; invocation ID: 97adbe8c35ad4538a30fb305d8935668
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling smallvec v1.16.1
+   Compiling parking_lot_core v0.9.12
+   Compiling parking_lot v0.12.5
+   Compiling tokio v1.53.2
+   Compiling tracing-core v0.1.36
+   Compiling tracing v0.1.44
+   Compiling tokio-util v0.7.19
+   Compiling digest v0.11.3
+   Compiling icu_normalizer v2.3.0
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling url v2.5.8
+   Compiling curve25519-dalek v5.0.0
+   Compiling sha2 v0.11.0
+   Compiling rustls v0.23.46
+   Compiling ed25519-dalek v3.0.0
+   Compiling h2 v0.4.19
+   Compiling hyper v1.11.1
+   Compiling hyper-util v0.1.20
+   Compiling n0-future v0.3.2
+   Compiling rustls-platform-verifier v0.7.0
+   Compiling simdutf8 v0.1.5
+   Compiling tokio-rustls v0.26.6
+   Compiling time v0.3.55
+   Compiling noq-udp v1.4.0
+   Compiling tower v0.5.3
+   Compiling siphasher v1.0.3
+   Compiling fastbloom v0.17.0
+   Compiling tower-http v0.6.11
+   Compiling hyper-rustls v0.27.9
+   Compiling tokio-stream v0.1.19
+   Compiling noq-proto v1.4.0
+   Compiling reqwest v0.13.5
+   Compiling iroh-base v1.4.1
+   Compiling netlink-sys v0.8.8
+   Compiling netlink-proto v0.12.2
+   Compiling n0-dns-resolver v0.1.0
+   Compiling iroh-metrics v1.0.2
+   Compiling noq v1.4.0
+   Compiling n0-watcher v1.0.0
+   Compiling attohttpc v0.30.1
+   Compiling igd-next v0.17.1
+   Compiling netwatch v0.19.3
+   Compiling iroh-dns v1.4.1
+   Compiling tokio-websockets v0.13.3
+   Compiling dashmap v6.2.1
+   Compiling iroh-relay v1.4.1
+   Compiling portmapper v0.19.3
+   Compiling backon v1.6.0
+   Compiling value-log v1.9.0
+   Compiling p2panda-core v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+   Compiling iroh v1.4.1
+   Compiling yasna v0.6.0
+   Compiling lsm-tree v2.10.4
+   Compiling rcgen v0.14.10
+   Compiling fjall v2.11.2
+   Compiling acto v0.8.2
+   Compiling num-traits v0.2.19
+   Compiling irpc v0.17.0
+   Compiling p2panda-store v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+   Compiling hickory-proto v0.26.3
+   Compiling hmac v0.13.0
+   Compiling bytecheck v0.8.3
+   Compiling muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+   Compiling hkdf v0.13.0
+   Compiling swarm-discovery v0.6.4
+   Compiling futures-concurrency v7.7.1
+   Compiling inplace-vec-builder v0.1.1
+   Compiling range-collections v0.4.6
+   Compiling hpke-rs-rust-crypto v0.7.0
+   Compiling iroh-gossip v0.101.0
+   Compiling ractor v0.16.5
+   Compiling iroh-mdns-address-lookup v0.6.0
+   Compiling rend v0.5.4
+   Compiling p2panda-discovery v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+   Compiling p2panda-sync v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+   Compiling insigne v0.0.2 (https://github.com/merely-made/dramatis.git?branch=main#6325ee8f)
+   Compiling iroh-io v0.6.2
+   Compiling x25519-dalek v3.0.0
+   Compiling chrono v0.4.45
+   Compiling rkyv v0.8.18
+   Compiling bao-tree v0.16.1
+   Compiling p2panda-encryption v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+   Compiling personae v0.3.0 (https://github.com/merely-made/dramatis.git?branch=main#6325ee8f)
+   Compiling mere-p2panda-net v0.7.5 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)
+   Compiling mere-proofs v0.1.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/proofs)
+   Compiling iroh-util v0.6.0
+   Compiling iroh-tickets v1.0.0
+   Compiling iroh-blobs v0.103.1
+   Compiling stickleback v0.1.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/stickleback)
+   Compiling chartulary v0.2.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/chartulary)
+   Compiling rand v0.9.5
+   Compiling mockito v1.7.2
+   Compiling eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+   Compiling mere-transport v0.0.2 (https://github.com/merely-made/murm.git?branch=main#aecc4e60)
+error[E0425]: cannot find function `validate_required_schema` in module `eidetic::records`
+  --> crates/eidetic-core/tests/model_free_records.rs:36:35
+   |
+36 |         assert!(eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &definition()).await.is_err());
+   |                                   ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `eidetic::records`
+
+error[E0425]: cannot find function `bootstrap_record_schemas` in module `eidetic::records`
+  --> crates/eidetic-core/tests/model_free_records.rs:37:27
+   |
+37 |         eidetic::records::bootstrap_record_schemas(&mut store).await.unwrap();
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `eidetic::records`
+
+error[E0425]: cannot find function `validate_required_schema` in module `eidetic::records`
+  --> crates/eidetic-core/tests/model_free_records.rs:38:27
+   |
+38 |         eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &definition()).await.unwrap();
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `eidetic::records`
+
+error[E0425]: cannot find function `validate_required_schema` in module `eidetic::records`
+  --> crates/eidetic-core/tests/model_free_records.rs:39:27
+   |
+39 |         eidetic::records::validate_required_schema(&mut store, &mut NoFetcher, &record()).await.unwrap();
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `eidetic::records`
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `eidetic` (test "model_free_records") due to 4 previous errors
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic --no-default-features --test model_free_records"
+	User time (seconds): 101.90
+	System time (seconds): 19.96
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:05.63
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 883204
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1323
+	Minor (reclaiming a frame) page faults: 3783692
+	Voluntary context switches: 10410
+	Involuntary context switches: 3145
+	Swaps: 0
+	File system inputs: 1487088
+	File system outputs: 1808304
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

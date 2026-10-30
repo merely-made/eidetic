@@ -1,0 +1,17 @@
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)
+[2m2026-10-30T13:14:24.561266Z[0m [33m WARN[0m [2mturnstone::shell::shell_new[0m[2m:[0m device receipts reader is unavailable [3merror[0m[2m=[0mDevice receipts require a build with the diagnostics feature
+[2m2026-10-30T13:14:24.561378Z[0m [33m WARN[0m [2mturnstone::shell::shell_new[0m[2m:[0m the system clipboard is unavailable [3merror[0m[2m=[0mclipboard unavailable: Unknown error while interacting with the clipboard: X11 server connection timed out because it was unreachable
+[2m2026-10-30T13:14:24.582046Z[0m [31mERROR[0m [2msctk_adwaita::config[0m[2m:[0m XDG Settings Portal did not return response in time: timeout: 100ms, key: color-scheme
+[2m2026-10-30T13:14:24.894479Z[0m [33m WARN[0m [2mwgpu_hal::vulkan::instance[0m[2m:[0m GENERAL [Loader Message (0x0)]
+	terminator_CreateInstance: Received return code -9 from call to vkCreateInstance in ICD /usr/lib64/libvulkan_dzn.so. Skipping this driver.
+[2m2026-10-30T13:14:24.894553Z[0m [33m WARN[0m [2mwgpu_hal::vulkan::instance[0m[2m:[0m 	objects: (type: INSTANCE, hndl: 0x5620f8c5e3a0, name: ?)
+[2m2026-10-30T13:14:24.950614Z[0m [31mERROR[0m [2mwgpu_hal::gles::egl[0m[2m:[0m EGL 'eglInitialize' code 0x3001: DRI2: failed to load driver
+[2m2026-10-30T13:14:24.950670Z[0m [31mERROR[0m [2mwgpu_hal::gles::egl[0m[2m:[0m EGL 'eglInitialize' code 0x3001: DRI2: failed to load driver
+Fontconfig error: Cannot load default config file: No such file: (null)
+Fontconfig error: Cannot load default config file: No such file: (null)

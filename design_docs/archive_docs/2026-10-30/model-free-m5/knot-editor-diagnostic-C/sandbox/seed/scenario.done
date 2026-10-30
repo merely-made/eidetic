@@ -1,0 +1,13 @@
+RESULT fail
+captured 01_authored_note
+captured 04_exact_A1
+captured 05_note_citation
+captured 09_before_editor_click
+captured 10_after_editor_insert
+FAIL: assert event 'm5-intentional-diagnostic-stop': not in the stream (last: ["workbench-opened file:///m5/run/profile/notes/research-b317cd4d-f808-4c6b-a2ad-da4cbf5baa97.djot", "address-opened file:///m5/run/profile/notes/research-b317cd4d-f808-4c6b-a2ad-da4cbf5baa97.djot", "pane-summoned Read", "workbench-opened mere://saved-source/sealed-v1/b88e907b-9283-4599-9c83-340aa4989a1a/3d6f743e-8abf-4853-9ff2-fee962c4754b/2885cd31-8dea-4c10-948c-b5ae4f41be84/c54f6874cab8c977e14f33c8785642e27a11b79fbf16c8fbc7d5aa2bb8d78997/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57", "address-opened file:///m5/run/profile/notes/research-b317cd4d-f808-4c6b-a2ad-da4cbf5baa97.djot", "content de1cdc50-5812-4f34-a81e-955ea2ce162a live"])
+presentation frames=384 captures=5 blank=0
+capture /m5/run/seed/01_authored_note.png digest=e356d84ba99e7ab8 blank=false
+capture /m5/run/seed/04_exact_A1.png digest=962ab6ca81c4c190 blank=false
+capture /m5/run/seed/05_note_citation.png digest=5b8490a515e22bce blank=false
+capture /m5/run/seed/09_before_editor_click.png digest=aa8b80d6bac83660 blank=false
+capture /m5/run/seed/10_after_editor_insert.png digest=48400d5f9dc2a2ac blank=false

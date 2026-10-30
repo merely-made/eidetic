@@ -1,0 +1,31 @@
+Running as unit: custody-contract-m4-recovery-review-path-charge-2.scope; invocation ID: 439c76135cab48458476ab4acfc1c3e8
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+error: package `fjall` cannot be tested because it requires dev-dependencies and is not a member of the workspace
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p fjall --lib bounded_recovery::store::commit::tests::handle_path_charge_exact_boundary_and_refusal_preserves_many_partition_store -- --exact --nocapture"
+	User time (seconds): 0.28
+	System time (seconds): 0.40
+	Percent of CPU this job got: 91%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.76
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 139512
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 37362
+	Voluntary context switches: 773
+	Involuntary context switches: 27
+	Swaps: 0
+	File system inputs: 9032
+	File system outputs: 1584
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

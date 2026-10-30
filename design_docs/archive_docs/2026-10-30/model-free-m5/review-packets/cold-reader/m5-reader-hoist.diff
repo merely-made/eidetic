@@ -1,0 +1,15 @@
+--- reviewed/shell_scenario_retained_readers.rs
++++ current/shell_scenario_retained_readers.rs
+@@ -21,11 +21,11 @@
+             })
+             .collect();
+         members.sort();
++        let admissions = self.app.research_clip_admissions();
+         for node in members {
+             let Some(reader) = self.app.research_clip_readers.get(&node) else {
+                 continue;
+             };
+-            let admissions = self.app.research_clip_admissions();
+             let source_current = self
+                 .app
+                 .graph_runtimes

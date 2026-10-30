@@ -1,12 +1,14 @@
 # Eidetic documentation
 
-Preserve host-owned authority, existing formats and independent crate feature boundaries. Read [documentation policy](DOC_POLICY.md) before editing.
+Preserve host-owned authority, existing formats and independent crate feature boundaries. Read [documentation policy](DOC_POLICY.md) before editing. The maintainer-owned `PROJECT_DESCRIPTION.md` is absent from this checkout.
+
+Supplier receiving audits compare complete locked dependency edges as well as package identities; preserve unrelated selections when updating a source revision.
 
 Canonical migration and current receipts: `mere/design_docs/mere_docs/implementation_strategy/2026-10-19_family_promotion_plan.md`.
 
 ## Family documents
 
-- [2026-10-11_eidetic_development_plan](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md) — active; post-extraction ownership/source-cohort review, independent CI, native Knot drag and Redshank text-note continuation receipts, embedding compatibility envelope and resident cold/fused recall slice qualified; attributed tags/edits, personal custody and browser/collection gates distinguished; refreshed 2026-10-20.
+- [2026-10-11_eidetic_development_plan](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md) — active; next milestone is [P4a model-free retained research](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#p4a-next-milestone-model-free-retained-research): shared lexical retrieval, exact evidence, version comparison, bounded structured queries and offline Turnstone restart qualification. Upstream refreshed 2026-10-30; M1–M4 landed; M5 remains open. Shared and rebased Turnstone software checks pass; M5 native, headed product and offline restart qualification remain open. Earlier producer, embedding and inference receipts retain their separate limits.
 - [2026-10-23_responsa_plan](eidetic_docs/implementation_strategy/2026-10-23_responsa_plan.md) — active; fading of doctrine statements and the answer-key rerun on toolchain bumps, both owed by isocosm's decision-links plan; nothing built.
 - [2026-10-30_line_ceiling_plan](eidetic_docs/implementation_strategy/2026-10-30_line_ceiling_plan.md) — plan; the shared 600-line check as an eidetic binary, eidetic as a prek hook repository for it and `responsa check`, isocosm first to adopt; E1 (the binary) landed 2026-10-30.
 - [2026-05-09_eidetic_design_pass](eidetic_docs/research/2026-05-09_eidetic_design_pass.md)
@@ -18,3 +20,7 @@ Canonical migration and current receipts: `mere/design_docs/mere_docs/implementa
 - [2026-07-08_chartulary_g0](eidetic_docs/technical_architecture/2026-07-08_chartulary_g0.md)
 - [2026-07-08_chartulary_g1](eidetic_docs/technical_architecture/2026-07-08_chartulary_g1.md)
 - [2026-07-08_chartulary_g2](eidetic_docs/technical_architecture/2026-07-08_chartulary_g2.md)
+
+## Evidence archive
+
+- [Eidetic development plan receipts](archive_docs/receipts/2026-10-11_eidetic_development_plan_receipts.md) — consolidated M1–M4 receipts and current M5 source, supplier and helper evidence, including failed attempts; M5 native, headed product and offline restart qualification remain open.

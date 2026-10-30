@@ -1,0 +1,9 @@
+# M5 receipt integration fix2 review
+
+**Gate: approved for the two scoped residual fixes.** No remaining finding was identified in the citation passage or cold retained-reader checks. The four packet hashes match: `assemble.py` `fa7fb5e86c14d9e48d2f55cb7a2733285f346722c448d23915c75d8f736d3f4b`, `verify.py` `d40f0bf2ce2f3ed94a0d2cefc231e20ce8dff9add7e94fc2c6d7a58229073e03`, `test_receipt.py` `27b39aec4fccc75c680d0f7cf61df890db2eb75785de6fdd1d4b88a772569329`, and `README.md` `3b8aca4cc69734cbfb35b6bc757e055b21a5c404f68b4aa2343c82026b66ad9a`.
+
+The citation check now uses the agreed full 57-scalar A1 passage and compares it to the opened target's exact source slice and provenance position/quote (`verify.py:10, 455-491, 794-796`). The focused fixture checks the full passage and rejects a truncated quote and changed selector (`test_receipt.py:460-478`).
+
+The reopen scenario now selects both ordinary retained search rows, checks live content and records separate reader observations and frames (`m5-draft/reopen.scn:28-51`). The integration verifier requires those artifacts and human frame outcomes; it binds each reader to the inspected admission, source version, search passage selector, retained-clip engine, address and expected rendered body (`verify.py:533-557, 577-579, 802-804`). The new focused cases reject missing readers, changed version/body/selector and missing search selector. The pending product observer implementation, its source review and a matching native run remain independent prerequisites; the synthetic fixtures do not prove that real product output meets this schema.
+
+No tests, builds or scenarios were run by this reviewer. The implementer reports 42 focused tests and Python compilation passed. The final receipt verifier remains guarded as draft, and no native acceptance is claimed.

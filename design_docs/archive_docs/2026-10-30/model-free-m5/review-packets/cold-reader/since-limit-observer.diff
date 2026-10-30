@@ -1,0 +1,345 @@
+--- a/src/app/research_record_owner.rs
++++ b/src/app/research_record_owner.rs
+@@ -418,6 +418,7 @@
+     pub(crate) fn invalidate_structured(&mut self) -> Vec<Effect> {
+         let controller = &self.research_search.structured.controller;
+         if controller.pending.is_none()
++            && controller.limit_refusal.is_none()
+             && controller.view_scope.is_none()
+             && controller.recovery_scope.is_none()
+             && controller.discovery_scope.is_none()
+--- a/src/app/research_record_owner_tests.rs
++++ b/src/app/research_record_owner_tests.rs
+@@ -92,6 +92,26 @@
+         serde_json::json!(graph.as_uuid())
+     );
+     assert_eq!(refusal["error"], "Structured record limit exceeded");
++    app.research_search.selected = Some(vec![]);
++    app.invalidate_structured();
++    app.research_search.selected = None;
++    assert!(
++        app.structured_scenario_status()["limit_refusal"].is_null(),
++        "refusal resurrected after selection roundtrip"
++    );
++    let effects = app.structured_query(query.clone(), settings.clone());
++    let request = effects
++        .into_iter()
++        .find_map(|effect| match effect {
++            Effect::ResearchRecords(Job::Query(request)) => Some(request),
++            _ => None,
++        })
++        .unwrap();
++    app.structured_completed(JobResult::Query {
++        request,
++        result: Err("Structured record limit exceeded".into()),
++        manifest: Ok(None),
++    });
+     app.graph_runtimes.visit("https://fixture.test/other");
+     assert!(app.structured_scenario_status()["limit_refusal"].is_null());
+     let effects = app.structured_query(query.clone(), settings.clone());
+--- a/src/app/research_search_scenario.rs
++++ b/src/app/research_search_scenario.rs
+@@ -38,7 +38,10 @@
+             "total": result.total,
+             "inputs": result.inputs,
+             "hits": result.hits.iter().map(|hit| serde_json::json!({
+-                "source": hit.source, "version": hit.version, "producer": hit.producer
++                "source": hit.source, "version": hit.version, "producer": hit.producer,
++                "selector": hit.passage.as_ref().map(|passage| serde_json::json!({
++                    "start": passage.selector.start, "end": passage.selector.end
++                }))
+             })).collect::<Vec<_>>(),
+         }))
+     }
+--- a/src/app/research_search_tests.rs
++++ b/src/app/research_search_tests.rs
+@@ -228,12 +228,50 @@
+         sources: vec![],
+         coverage: eidetic_search::query::Coverage::Complete,
+     };
+-    let result = eidetic_search::query::search(&snapshot, &pending.query, &pending.settings).unwrap();
++    let mut result =
++        eidetic_search::query::search(&snapshot, &pending.query, &pending.settings).unwrap();
++    let source = eidetic::models::recall::RecallSourceId {
++        kind: eidetic::models::recall::RecallSourceKind::Clip,
++        owner: None,
++        source: "fixture".into(),
++        node: None,
++    };
++    let passage = eidetic::models::recall::InferencePassage {
++        source: source.clone(),
++        version: "v1".into(),
++        text_hash: eidetic::Hash::of(b"private search canary"),
++        selector: eidetic::models::recall::PassageSelector { start: 2, end: 5 },
++        chunker: "fixture".into(),
++        text: "private search canary".into(),
++    };
++    result.hits.push(eidetic_search::query::SearchHit {
++        source,
++        version: "v1".into(),
++        producer: eidetic_search::query::ProducerKind::Selection,
++        title: None,
++        address: None,
++        date: None,
++        tags: vec![],
++        score: 1.0,
++        matches: vec![],
++        passage: Some(passage),
++    });
++    result.total = 1;
+     app.research_search_finished(pending, Ok(result));
+-    let observed = app.scenario_research_search_summary().expect("accepted search");
++    let observed = app
++        .scenario_research_search_summary()
++        .expect("accepted search");
+     assert_eq!(observed["coverage"], "Complete");
+-    assert_eq!(observed["total"], 0);
++    assert_eq!(observed["total"], 1);
++    assert_eq!(
++        observed["hits"][0]["selector"],
++        serde_json::json!({"start": 2, "end": 5})
++    );
++    assert!(!observed.to_string().contains("private search canary"));
+     assert!(observed["scope"].as_array().unwrap().is_empty());
+     app.research_search.selected = Some(vec![]);
+-    assert!(app.scenario_research_search_summary().is_none(), "selection changed after acceptance");
+-}
++    assert!(
++        app.scenario_research_search_summary().is_none(),
++        "selection changed after acceptance"
++    );
++}
+--- a/src/research_scenario_privacy.rs
++++ b/src/research_scenario_privacy.rs
+@@ -13,6 +13,36 @@
+ /// With an explicit subset, omit these bodies rather than guess their owner.
+ pub(crate) fn clip_node_selected(selected: &Option<Vec<Member>>, _node: uuid::Uuid) -> bool {
+     selected.is_none()
++}
++
++pub(crate) struct ClipReaderScope<'a> {
++    pub selected: &'a Option<Vec<Member>>,
++    pub session: crate::panes::SessionId,
++    pub generation: uuid::Uuid,
++    pub identity: Option<&'a std::sync::Arc<crate::identity::RootIdentity>>,
++    pub custody_epoch: Option<u64>,
++    pub admissions: &'a [crate::research::ClipAdmission],
++    pub source_current: bool,
++}
++
++/// Project only the identity already bound to a current, admitted live reader.
++pub(crate) fn clip_reader_target<'a>(
++    node: uuid::Uuid,
++    reader: &'a crate::research::ClipReader,
++    scope: &ClipReaderScope<'_>,
++) -> Option<&'a crate::research::ClipTarget> {
++    let target = &reader.target;
++    (clip_node_selected(scope.selected, node)
++        && target.clip.node == node
++        && target.clip.session == scope.session
++        && reader.generation == scope.generation
++        && scope
++            .identity
++            .is_some_and(|id| std::sync::Arc::ptr_eq(id, &reader.identity))
++        && scope.custody_epoch == Some(reader.custody_epoch)
++        && scope.admissions.contains(&target.clip)
++        && scope.source_current)
++        .then_some(target)
+ }
+ pub(crate) fn admissions(selected: &Option<Vec<Member>>, input: Vec<Admission>) -> Vec<Admission> {
+     input
+@@ -37,6 +67,68 @@
+ #[cfg(test)]
+ mod tests {
+     use super::*;
++    #[test]
++    fn model_free_retained_reader_target_requires_current_admitted_scope() {
++        let identity = std::sync::Arc::new(crate::identity::RootIdentity::from_seed([7; 32]));
++        let other_identity = std::sync::Arc::new(crate::identity::RootIdentity::from_seed([8; 32]));
++        let session = crate::panes::SessionId::new();
++        let node = uuid::Uuid::new_v4();
++        let generation = uuid::Uuid::new_v4();
++        let clip = crate::research::ClipAdmission {
++            session,
++            graph: crate::panes::GraphId::new(),
++            node,
++            manifest: eidetic::ManifestId::of_blob(b"private target canary"),
++        };
++        let reader = crate::research::ClipReader {
++            target: crate::research::ClipTarget {
++                clip: clip.clone(),
++                text_hash: "hash".into(),
++                selector: Some(crate::saved_sources::Selector { start: 1, end: 4 }),
++            },
++            generation,
++            identity: identity.clone(),
++            custody_epoch: 5,
++        };
++        let all = None;
++        let chosen = Some(vec![Member::Clip(clip.clone())]);
++        let admitted = vec![clip];
++        let mut scope = ClipReaderScope {
++            selected: &all,
++            session,
++            generation,
++            identity: Some(&identity),
++            custody_epoch: Some(5),
++            admissions: &admitted,
++            source_current: true,
++        };
++        assert_eq!(
++            clip_reader_target(node, &reader, &scope),
++            Some(&reader.target)
++        );
++        scope.selected = &chosen;
++        assert!(clip_reader_target(node, &reader, &scope).is_none());
++        scope.selected = &all;
++        scope.session = crate::panes::SessionId::new();
++        assert!(clip_reader_target(node, &reader, &scope).is_none());
++        scope.session = session;
++        scope.generation = uuid::Uuid::new_v4();
++        assert!(clip_reader_target(node, &reader, &scope).is_none());
++        scope.generation = generation;
++        scope.identity = Some(&other_identity);
++        assert!(clip_reader_target(node, &reader, &scope).is_none());
++        scope.identity = Some(&identity);
++        scope.custody_epoch = Some(6);
++        assert!(clip_reader_target(node, &reader, &scope).is_none());
++        scope.custody_epoch = Some(5);
++        scope.admissions = &[];
++        assert!(clip_reader_target(node, &reader, &scope).is_none());
++        scope.admissions = &admitted;
++        scope.source_current = false;
++        assert!(clip_reader_target(node, &reader, &scope).is_none());
++        scope.source_current = true;
++        assert!(clip_reader_target(uuid::Uuid::new_v4(), &reader, &scope).is_none());
++    }
+     #[test]
+     fn model_free_saved_source_projection_hides_unselected_canaries() {
+         let make = |label: &str| {
+--- a/src/shell/drive.rs
++++ b/src/shell/drive.rs
+@@ -88,6 +88,8 @@
+ mod shell_scenario_click_note_member;
+ #[path = "drive/shell_scenario_assert_focused.rs"]
+ mod shell_scenario_assert_focused;
++#[path = "drive/shell_scenario_retained_readers.rs"]
++mod shell_scenario_retained_readers;
+ #[path = "drive/shell_scenario_assert_no_surface.rs"]
+ mod shell_scenario_assert_no_surface;
+ use cmp_usize::cmp_usize;
+--- a/src/shell/drive/shell_scenario_assert_no_surface.rs
++++ b/src/shell/drive/shell_scenario_assert_no_surface.rs
+@@ -401,35 +401,7 @@
+                         "rendered_document": rendered_document,
+                     }));
+                 }
+-                let mut retained_readers = Vec::new();
+-                let mut members: Vec<_> = self
+-                    .app
+-                    .content
+-                    .live_nodes()
+-                    .filter(|node| {
+-                        self.app
+-                            .content
+-                            .facts(*node)
+-                            .is_some_and(|f| f.engine == crate::retained_clip::ENGINE_ID)
+-                    })
+-                    .collect();
+-                members.sort();
+-                for node in members {
+-                    if !crate::research_scenario_privacy::clip_node_selected(&selected, node) {
+-                        continue;
+-                    }
+-                    if let Some(session) =
+-                        self.content_sessions
+-                            .session_mut(&node)
+-                            .and_then(|session| {
+-                                session
+-                                    .as_any()
+-                                    .downcast_mut::<mere_document_lanes::SmolwebDocumentSession>()
+-                            })
+-                    {
+-                        retained_readers.push(serde_json::json!({ "node": node, "engine": crate::retained_clip::ENGINE_ID, "rendered_document": session.document_mut().document().clone() }));
+-                    }
+-                }
++                let retained_readers = self.scenario_retained_readers(&selected);
+                 let value = serde_json::json!({
+                     "session": self.app.session_id,
+                     "generation": self.app.source_capture_generation,
+--- a/src/shell/drive/shell_scenario_retained_readers.rs
++++ b/src/shell/drive/shell_scenario_retained_readers.rs
+@@ -0,0 +1,73 @@
++// Copyright 2026 Mark Alan Boykin
++// SPDX-License-Identifier: MPL-2.0
++
++use super::*;
++
++impl Shell {
++    pub(super) fn scenario_retained_readers(
++        &mut self,
++        selected: &Option<Vec<crate::research_search::Member>>,
++    ) -> Vec<serde_json::Value> {
++        let mut retained_readers = Vec::new();
++        let mut members: Vec<_> = self
++            .app
++            .content
++            .live_nodes()
++            .filter(|node| {
++                self.app
++                    .content
++                    .facts(*node)
++                    .is_some_and(|f| f.engine == crate::retained_clip::ENGINE_ID)
++            })
++            .collect();
++        members.sort();
++        for node in members {
++            let Some(reader) = self.app.research_clip_readers.get(&node) else {
++                continue;
++            };
++            let admissions = self.app.research_clip_admissions();
++            let source_current = self
++                .app
++                .graph_runtimes
++                .get(reader.target.clip.graph)
++                .is_some_and(|runtime| {
++                    crate::browse::still_current(
++                        &runtime.canvas,
++                        node,
++                        &crate::retained_clip::address(reader.target.clip.manifest),
++                    )
++                });
++            let scope = crate::research_scenario_privacy::ClipReaderScope {
++                selected,
++                session: self.app.session_id,
++                generation: self.app.source_capture_generation,
++                identity: self.app.identity.as_ref(),
++                custody_epoch: self
++                    .app
++                    .research
++                    .clip_access()
++                    .ok()
++                    .and_then(|access| (access.epoch)()),
++                admissions: &admissions,
++                source_current,
++            };
++            let Some(target) =
++                crate::research_scenario_privacy::clip_reader_target(node, reader, &scope)
++            else {
++                continue;
++            };
++            if let Some(session) = self
++                .content_sessions
++                .session_mut(&node)
++                .and_then(|session| {
++                    session
++                        .as_any()
++                        .downcast_mut::<mere_document_lanes::SmolwebDocumentSession>()
++                })
++            {
++                retained_readers.push(serde_json::json!({ "node": node, "engine": crate::retained_clip::ENGINE_ID, "target": target, "rendered_document": session.document_mut().document().clone() }));
++            }
++        }
++        retained_readers
++    }
++}

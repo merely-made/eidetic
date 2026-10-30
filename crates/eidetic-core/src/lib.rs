@@ -76,6 +76,7 @@ pub mod engram {
 }
 pub mod manifest;
 pub mod retention;
+pub mod records;
 pub mod models;
 pub mod pack;
 pub mod schema;
@@ -161,13 +162,21 @@ pub enum Response {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Error {
     pub message: String,
+    storage_error: Option<muniment::error::StoreError>,
 }
 
 impl Error {
     pub fn new(message: impl Into<String>) -> Self {
         Self {
             message: message.into(),
+            storage_error: None,
         }
+    }
+
+    /// Return the original Muniment error when this error came from storage.
+    /// Semantic errors created with [`Error::new`] have no storage cause.
+    pub fn storage_error(&self) -> Option<&muniment::error::StoreError> {
+        self.storage_error.as_ref()
     }
 }
 
@@ -177,7 +186,13 @@ impl std::fmt::Display for Error {
     }
 }
 
-impl std::error::Error for Error {}
+impl std::error::Error for Error {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        self.storage_error
+            .as_ref()
+            .map(|cause| cause as &(dyn std::error::Error + 'static))
+    }
+}
 
 /// Crate-level result alias.
 pub type Result<T> = std::result::Result<T, Error>;
@@ -202,7 +217,10 @@ pub use muniment::{Backend, Backend as Store, MemoryBackend, WriteOp};
 /// layers above keep returning [`Result`] and `?` still works at every call.
 impl From<muniment::error::StoreError> for Error {
     fn from(err: muniment::error::StoreError) -> Self {
-        Error::new(err.to_string())
+        Self {
+            message: err.to_string(),
+            storage_error: Some(err),
+        }
     }
 }
 
@@ -235,7 +253,7 @@ pub async fn dispatch(store: &mut dyn Store, request: &Request) -> Result<Respon
 mod tests {
     use super::*;
     use async_trait::async_trait;
-    use muniment::error::StoreError;
+    use muniment::error::{StoreError, StoreLimitKind};
 
     // The in-memory test store is muniment's (2026-07-12): eidetic's
     // hand-rolled one was the same map behind the same seam.
@@ -332,6 +350,98 @@ mod tests {
             // and eidetic's From carries that through — the error vocabulary is
             // now the seam's, which is the point of the swap.
             assert_eq!(err.message, "backend: disk on fire");
+            assert_eq!(
+                err.storage_error(),
+                Some(&StoreError::Backend("disk on fire".into()))
+            );
+        });
+    }
+
+    #[test]
+    fn storage_error_conversion_preserves_the_exact_cause_without_changing_display() {
+        let cause = StoreError::LimitExceeded {
+            kind: StoreLimitKind::BlockDecodedBytes,
+            limit: 4096,
+        };
+        let error = Error::from(cause.clone());
+
+        assert_eq!(error.message, cause.to_string());
+        assert_eq!(error.to_string(), cause.to_string());
+        assert_eq!(error.storage_error(), Some(&cause));
+        assert!(Error::new("missing material").storage_error().is_none());
+    }
+
+    #[test]
+    fn typed_loads_preserve_a_storage_refusal_from_manifest_lookup() {
+        #[derive(Debug, serde::Serialize, serde::Deserialize)]
+        struct Payload;
+
+        impl typed::TypedPayload for Payload {
+            fn schema_ref() -> schema::SchemaRef {
+                schema::SchemaRef::from_id(schema::ManifestId::of_blob(b"payload-schema"))
+            }
+        }
+
+        struct LimitStore;
+        type StoreResult<T> = std::result::Result<T, StoreError>;
+
+        #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+        #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
+        impl Backend for LimitStore {
+            async fn get(&self, _key: &str) -> StoreResult<Option<Vec<u8>>> {
+                Err(StoreError::LimitExceeded {
+                    kind: StoreLimitKind::MetadataBytes,
+                    limit: 8192,
+                })
+            }
+            async fn put(&self, _key: &str, _bytes: &[u8]) -> StoreResult<()> {
+                unreachable!("load does not write")
+            }
+            async fn delete(&self, _key: &str) -> StoreResult<()> {
+                unreachable!("load does not delete")
+            }
+            async fn list(&self, _prefix: &str) -> StoreResult<Vec<String>> {
+                unreachable!("load does not list")
+            }
+            async fn scan(&self, _start: &str, _end: &str) -> StoreResult<Vec<String>> {
+                unreachable!("load does not scan")
+            }
+            async fn apply(&self, _ops: &[WriteOp]) -> StoreResult<()> {
+                unreachable!("load does not apply writes")
+            }
+        }
+
+        pollster::block_on(async {
+            let id = schema::ManifestId::of_blob(b"manifest-id");
+            let mut fetcher = manifest::NoFetcher;
+            let mut store = LimitStore;
+
+            let err = typed::load_typed::<Payload>(&mut store, &mut fetcher, id)
+                .await
+                .unwrap_err();
+            assert!(matches!(
+                err.storage_error(),
+                Some(StoreError::LimitExceeded {
+                    kind: StoreLimitKind::MetadataBytes,
+                    limit: 8192,
+                })
+            ));
+
+            let err = typed::load_typed_sealed::<Payload>(
+                &mut store,
+                &mut fetcher,
+                None,
+                id,
+            )
+            .await
+            .unwrap_err();
+            assert!(matches!(
+                err.storage_error(),
+                Some(StoreError::LimitExceeded {
+                    kind: StoreLimitKind::MetadataBytes,
+                    limit: 8192,
+                })
+            ));
         });
     }
 }

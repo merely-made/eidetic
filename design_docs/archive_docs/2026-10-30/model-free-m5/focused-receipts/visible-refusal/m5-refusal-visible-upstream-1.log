@@ -1,0 +1,32 @@
+Running as unit: custody-contract-m5-refusal-visible-upstream-1.scope; invocation ID: d09960d3f0a24e4ba991c879ceef2f94
+error: failed to load source for dependency `document-session-api`
+
+Caused by:
+  unable to update https://github.com/merely-made/genet.git?branch=main#5fdee500
+
+Caused by:
+  can't checkout from 'https://github.com/merely-made/genet.git': you are in the offline mode (--offline)
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p turnstone --features authoring,inference --lib model_free_limit_refusal_binds_the_attempt_and_current_scope -- --nocapture"
+	User time (seconds): 0.08
+	System time (seconds): 0.17
+	Percent of CPU this job got: 79%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.32
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 46884
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 86
+	Minor (reclaiming a frame) page faults: 9595
+	Voluntary context switches: 232
+	Involuntary context switches: 8
+	Swaps: 0
+	File system inputs: 110600
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

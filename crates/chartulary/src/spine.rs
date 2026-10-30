@@ -26,7 +26,13 @@
 //!
 //! A snapshot is a compacted materialization (the nodes and edges as they
 //! stand, plus the edge-id bookkeeping and the log length it reflects), stored
-//! in a muniment slot. It is an optimization; the log is the authority.
+//! in a muniment slot. It is an optimization; the log is the authority, so a
+//! snapshot names the log prefix it summarizes by the muniment digest of that
+//! prefix ([`Journal::prefix_digest`]). A checkpointed load trusts a snapshot
+//! only when the journal beside it still begins with that prefix. A snapshot
+//! that cannot be shown to (it names no prefix, names another journal's, or runs
+//! past the end of this one) is a cache the journal outranks: the log is
+//! replayed in full and the next snapshot names its prefix.
 
 use std::collections::{BTreeMap, HashMap};
 
@@ -85,6 +91,11 @@ struct Snapshot<N: Identified, E> {
     /// existing snapshot field order remains stable for self-describing stores.
     #[serde(default)]
     assertions: Option<Vec<AssertionRecord<N::Id, E>>>,
+    /// The hex muniment digest of the first `at_seq` log entries. Absent in
+    /// snapshots written before it existed, which name no journal and so are not
+    /// trusted to summarize this one.
+    #[serde(default)]
+    journal_digest: Option<String>,
 }
 
 impl<N: Identified, E> Default for GraphLog<N, E> {
@@ -539,6 +550,7 @@ impl<N: Identified + Clone, E: Clone> GraphLog<N, E> {
             next_edge,
             at_seq,
             assertions,
+            journal_digest: _,
         } = snapshot;
         let assertions = assertions.ok_or_else(|| {
             StoreError::Codec(
@@ -701,6 +713,10 @@ where
             next_edge: self.next_edge,
             assertions: Some(self.assertions.values().cloned().collect()),
             at_seq: self.log.len() as u64,
+            journal_digest: self
+                .log
+                .prefix_digest(self.log.len())?
+                .map(|digest| digest.to_hex()),
         };
         slots.save(key, &snapshot).await
     }
@@ -727,8 +743,26 @@ where
         Ok(Self::replay_for_writer(log, writer))
     }
 
+    /// Whether `snapshot` is a checkpoint of this journal: it names the digest of
+    /// the first `at_seq` entries, and `log` still begins with them.
+    fn summarizes_prefix_of(
+        snapshot: &Snapshot<N, E>,
+        log: &Journal<Batch<N, E>>,
+    ) -> Result<bool, StoreError> {
+        let Some(stored) = snapshot.journal_digest.as_deref() else {
+            return Ok(false);
+        };
+        let prefix = usize::try_from(snapshot.at_seq)
+            .ok()
+            .and_then(|at| log.prefix_digest(at).transpose())
+            .transpose()?;
+        Ok(prefix.is_some_and(|prefix| prefix.to_hex() == stored))
+    }
+
     /// Load from a snapshot at `snap_key` plus the tail of the log at `log_key`. If
-    /// no snapshot is present, this is a full replay.
+    /// no snapshot is present, this is a full replay. A snapshot is used only if it
+    /// names this journal's first `at_seq` entries by digest; one that names none,
+    /// names another journal's, or runs past this one is skipped for a full replay.
     pub async fn load_checkpointed<B: Backend, C: Codec>(
         slots: &SlotStore<B, C>,
         log_key: &str,
@@ -748,6 +782,12 @@ where
                         log.len()
                     )));
                 }
+                return Ok(Self::replay_for_writer(log, snapshot.writer));
+            },
+            Some(snapshot) if !Self::summarizes_prefix_of(&snapshot, &log)? => {
+                // A snapshot that cannot be shown to summarize this journal's
+                // prefix is a cache the journal outranks, so the log is replayed
+                // in full; the next snapshot names its prefix.
                 return Ok(Self::replay_for_writer(log, snapshot.writer));
             },
             Some(snapshot) => Self::from_snapshot(snapshot)?,
@@ -934,6 +974,7 @@ mod tests {
                 next_edge: 1,
                 assertions: None,
                 at_seq: live.log().len() as u64,
+                journal_digest: None,
             };
             let mut value = serde_json::to_value(legacy).unwrap();
             value.as_object_mut().unwrap().remove("assertions");
@@ -1099,6 +1140,161 @@ mod tests {
                 .err()
                 .expect("withdrawn IDs stay reserved by their writer");
             assert!(matches!(error, StoreError::Codec(_)), "{error:?}");
+        });
+    }
+
+    fn names(graph: &GraphLog<Container, Relation>) -> Vec<String> {
+        let mut names: Vec<String> = graph.graph().nodes().map(|(_, n)| n.id.clone()).collect();
+        names.sort();
+        names
+    }
+
+    #[test]
+    fn a_snapshot_of_another_graph_is_replayed_past_in_favour_of_the_durable_journal() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut durable = GraphLog::<Container, Relation>::new();
+            durable.insert_node(&me(), Container::new("durable"));
+            durable.save_log(&slots, "log").await.unwrap();
+            // The same length as the durable log, from a different history.
+            let mut foreign = GraphLog::<Container, Relation>::new();
+            foreign.insert_node(&me(), Container::new("foreign"));
+            foreign.snapshot(&slots, "snap").await.unwrap();
+
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .expect("a snapshot of another journal's prefix is skipped, not trusted");
+            assert_eq!(names(&loaded), ["durable"]);
+            assert_eq!(loaded.revision(), 1);
+        });
+    }
+
+    #[test]
+    fn a_snapshot_of_a_rewritten_journal_prefix_is_replayed_past_and_the_next_one_names_the_new_prefix()
+    {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut before = GraphLog::<Container, Relation>::new();
+            before.insert_node(&me(), Container::new("a"));
+            before.insert_node(&me(), Container::new("b"));
+            before.snapshot(&slots, "snap").await.unwrap();
+            // The journal is later replaced by one of the same length whose
+            // second entry differs.
+            let mut after = GraphLog::<Container, Relation>::new();
+            after.insert_node(&me(), Container::new("a"));
+            after.insert_node(&me(), Container::new("c"));
+            after.save_log(&slots, "log").await.unwrap();
+
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .unwrap();
+            assert_eq!(names(&loaded), ["a", "c"]);
+            loaded.snapshot(&slots, "snap").await.unwrap();
+            let again = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .unwrap();
+            assert_eq!(names(&again), ["a", "c"]);
+            let stored: Snapshot<Container, Relation> = slots.load("snap").await.unwrap().unwrap();
+            assert_eq!(
+                stored.journal_digest,
+                Some(after.log().prefix_digest(2).unwrap().unwrap().to_hex())
+            );
+        });
+    }
+
+    #[test]
+    fn a_snapshot_past_the_end_of_the_journal_is_replayed_past() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut long = GraphLog::<Container, Relation>::new();
+            long.insert_node(&me(), Container::new("a"));
+            long.insert_node(&me(), Container::new("b"));
+            long.snapshot(&slots, "snap").await.unwrap();
+            // Only the first entry is durable.
+            let mut short = GraphLog::<Container, Relation>::new();
+            short.insert_node(&me(), Container::new("a"));
+            short.save_log(&slots, "log").await.unwrap();
+
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .expect("a snapshot the journal has not reached is skipped");
+            assert_eq!(names(&loaded), ["a"]);
+        });
+    }
+
+    #[test]
+    fn a_snapshot_names_the_journal_prefix_it_reflects_and_still_loads_beside_a_longer_one() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut live = GraphLog::<Container, Relation>::new();
+            live.insert_node(&me(), Container::new("a"));
+            live.insert_node(&me(), Container::new("b"));
+            live.save_log(&slots, "log").await.unwrap();
+            live.snapshot(&slots, "snap").await.unwrap();
+
+            let stored: Snapshot<Container, Relation> = slots.load("snap").await.unwrap().unwrap();
+            let prefix = live.log().prefix_digest(2).unwrap().unwrap();
+            assert_eq!(stored.journal_digest, Some(prefix.to_hex()));
+
+            live.insert_node(&me(), Container::new("c"));
+            live.save_log(&slots, "log").await.unwrap();
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .unwrap();
+            assert_eq!(names(&loaded), ["a", "b", "c"]);
+            assert_eq!(loaded.revision(), 3);
+        });
+    }
+
+    #[test]
+    fn a_snapshot_without_a_journal_digest_is_replayed_in_full_and_the_next_one_names_its_prefix() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut durable = GraphLog::<Container, Relation>::new();
+            durable.insert_node(&me(), Container::new("durable"));
+            durable.save_log(&slots, "log").await.unwrap();
+            // A foreign snapshot with its digest taken off: it names no journal,
+            // so nothing about it is trusted.
+            let mut foreign = GraphLog::<Container, Relation>::new();
+            foreign.insert_node(&me(), Container::new("foreign"));
+            foreign.snapshot(&slots, "snap").await.unwrap();
+            let mut raw: serde_json::Value = slots.load("snap").await.unwrap().unwrap();
+            raw.as_object_mut().unwrap().remove("journal_digest");
+            slots.save("snap", &raw).await.unwrap();
+
+            let loaded = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .expect("a digest-less snapshot is skipped, not refused");
+            assert_eq!(names(&loaded), ["durable"]);
+
+            loaded.snapshot(&slots, "snap").await.unwrap();
+            let stored: Snapshot<Container, Relation> = slots.load("snap").await.unwrap().unwrap();
+            assert!(stored.journal_digest.is_some(), "the new checkpoint names its prefix");
+            let again = GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                .await
+                .unwrap();
+            assert_eq!(names(&again), ["durable"]);
+        });
+    }
+
+    #[test]
+    fn a_checkpoint_of_nodes_with_many_tags_never_mismatches_after_a_reload() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let mut live = GraphLog::<Container, Relation>::new();
+            let mut node = Container::new("tagged");
+            node.tags = (0..64).map(|n| format!("tag-{n:02}")).collect();
+            live.insert_node(&me(), node);
+            live.save_log(&slots, "log").await.unwrap();
+            live.snapshot(&slots, "snap").await.unwrap();
+            // Each load builds the tag set again, in its own hash order.
+            for _ in 0..8 {
+                let loaded =
+                    GraphLog::<Container, Relation>::load_checkpointed(&slots, "log", "snap")
+                        .await
+                        .expect("hash order is not part of the journal's content");
+                assert_eq!(names(&loaded), ["tagged"]);
+            }
         });
     }
 

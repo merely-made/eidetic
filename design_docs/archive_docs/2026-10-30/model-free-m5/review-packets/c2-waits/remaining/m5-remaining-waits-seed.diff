@@ -1,0 +1,54 @@
+--- m5-draft/seed-before-remaining-waits.scn	2026-10-30 13:38:56.037650625 -0400
++++ m5-draft/seed-composed.draft.scn	2026-10-30 13:38:56.062296710 -0400
+@@ -230,7 +230,6 @@
+ choose-suggestion Right:
+ choose-captured-source 09_A2 3
+ choose-suggestion Compare selected sources
+-settle 300
+ record-comparison exact_pair
+ capture exact_pair
+ # Draft: ordinary property form actions using actual B passage and graph entities.
+@@ -848,7 +847,7 @@
+ capture withdraw_before
+ choose-suggestion Inspect record
+ choose-suggestion Inspect current assertion
+-settle 300
++wait-structured-idle 600
+ # Home is reset to the first row. The inspected record is penultimate,
+ # immediately before Back to search; result row has the same label.
+ key up
+@@ -861,13 +860,13 @@
+ assert snap suggestions ~ Current assertion: active
+ capture withdraw_inspected_active
+ choose-suggestion Withdraw this assertion
+-settle 300
++wait-structured-idle 600
+ # Withdrawal clears the current structured projection. History opens the
+ # current owner binding, which must visibly report withdrawn.
+ choose-suggestion Withdrawn record history…
+-settle 300
++wait-structured-idle 600
+ choose-suggestion Inspect withdrawn assertion
+-settle 300
++wait-structured-idle 600
+ choose-suggestion Inspect record
+ key up
+ key up
+@@ -880,7 +879,7 @@
+ record-structured-research withdraw_fresh
+ capture withdraw_fresh
+ choose-suggestion Saved results and replay…
+-settle 300
++wait-structured-idle 600
+ choose-saved-result withdraw_before
+ wait-structured-result 600
+ assert snap suggestions ~ frozen historical input
+@@ -943,7 +942,7 @@
+ key enter
+ choose-suggestion Back
+ choose-suggestion Run in this scope
+-settle 300
++wait-structured-limit-refusal 600
+ record-structured-status negative_over_limit
+ capture negative_over_limit
+ # Restore the previous Records value using the reviewed default or an observed

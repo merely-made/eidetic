@@ -1,0 +1,12 @@
+--- collection-i/seed.scn
++++ proposed/seed.scn
+@@ -71,6 +71,9 @@
+ assert text Read saved passage 1:
+ capture 05_note_citation
+ click .knot-saved-citation Read saved passage 1:
++settle 5
++assert snap focus-card-peek ~ mere://saved-source/sealed-v1/
++click surface:chrome role:button Read
+ wait-saved-reader 600
+ assert snap saved-reader-quote == M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.
+ record-saved-sources 06_note_citation

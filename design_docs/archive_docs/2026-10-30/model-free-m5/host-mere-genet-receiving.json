@@ -1,0 +1,13 @@
+{
+  "sources": {
+    "c1035649255c934e057fe7eb0e0ebdf8881c1024": "a4cbd4baf3411b597bdcfc13653de0444b5d480d",
+    "23e795a75cfd04740727cbba714feea6bd35d904": "c0144fe59dea449519cede190bed8662f661fc22"
+  },
+  "replacement_counts": {
+    "c1035649255c934e057fe7eb0e0ebdf8881c1024": 62,
+    "23e795a75cfd04740727cbba714feea6bd35d904": 33
+  },
+  "before_sha256": "4a5aebe4aeb3a8e29ce2743c454691326ebe4cfa320312aeaeaf4ae19f03eaaf",
+  "after_sha256": "cdaadf983270941b43064ca568ce7bdef7a1512cd8f9ebf3ecbca172dcbd9cad",
+  "normalized_lock_identical": true
+}

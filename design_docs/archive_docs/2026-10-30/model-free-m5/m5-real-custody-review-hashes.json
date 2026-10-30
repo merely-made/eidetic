@@ -1,0 +1,5 @@
+{
+  "ports/djinn/custodian/src/fixture.rs": "326677d8aa2792db74f0da01e757203a7d3504fa77601cd6d68b6c55e92cb62c",
+  "ports/djinn/tests/custody_payload.rs": "c6ee9d37aab9b37a637281ba76bb67f60ffac6fa49c4ad7a9171ca24f1c83eaf",
+  "ports/djinn/tests/custody_receipt_tests/mod.rs": "b23b1730a7782330111ef81e315766a274dba543d579ef845032e12c758671f7"
+}

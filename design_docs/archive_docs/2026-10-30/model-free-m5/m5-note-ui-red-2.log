@@ -1,0 +1,272 @@
+Running as unit: custody-contract-m5-note-ui-red-2.scope; invocation ID: 7ed7ce684eb34697896367e990947ab5
+warning: patch `armillary v0.1.1 (https://www.github.com/merely-made/armillary.git?rev=864f107d44bf759111ad2ea3c9036b2cfbf03f4c#864f107d)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling syn v3.0.4
+   Compiling serde_derive v1.0.229
+   Compiling syn v2.0.119
+   Compiling serde v1.0.229
+   Compiling smallvec v1.16.0
+   Compiling bitflags v2.13.1
+   Compiling find-msvc-tools v0.1.12
+   Compiling cc v1.4.5
+   Compiling indexmap v2.14.1
+   Compiling bytemuck_derive v1.12.0
+   Compiling bytemuck v1.25.2
+   Compiling rustix v1.1.4
+   Compiling parking_lot_core v0.9.12
+   Compiling synstructure v0.13.2
+   Compiling thiserror-impl v2.0.20
+   Compiling thiserror v2.0.20
+   Compiling parking_lot v0.12.5
+   Compiling zerocopy v0.8.56
+   Compiling wayland-sys v0.31.11
+   Compiling zerofrom-derive v0.1.7
+   Compiling zerocopy-derive v0.8.56
+   Compiling zerofrom v0.1.8
+   Compiling yoke-derive v0.8.2
+   Compiling yoke v0.8.3
+   Compiling crossbeam-utils v0.8.22
+   Compiling zerovec-derive v0.11.6
+   Compiling zerovec v0.11.8
+   Compiling displaydoc v0.2.7
+   Compiling phf_macros v0.14.0
+   Compiling phf v0.14.0
+   Compiling tinystr v0.8.4
+   Compiling toml_edit v0.25.13+spec-1.1.0
+   Compiling euclid v0.22.14
+   Compiling font-types v0.12.4
+   Compiling enumflags2_derive v0.7.12
+   Compiling icu_locale_core v2.3.0
+   Compiling read-fonts v0.41.0
+   Compiling proc-macro-crate v3.5.0
+   Compiling potential_utf v0.1.6
+   Compiling naga-types v30.0.1
+   Compiling zerotrie v0.2.5
+   Compiling zvariant_utils v4.2.0
+   Compiling uuid v1.26.0
+   Compiling linebender_resource_handle v0.1.1
+   Compiling zvariant_derive v5.15.0
+   Compiling icu_provider v2.3.1
+   Compiling half v2.7.1
+   Compiling polling v3.11.0
+   Compiling spirv v0.4.0+sdk-1.4.341.0
+   Compiling tracing-attributes v0.1.31
+   Compiling crc32fast v1.5.1
+   Compiling icu_collections v2.3.0
+   Compiling tracing v0.1.44
+   Compiling naga v30.0.1
+   Compiling wgpu-types v30.0.1
+   Compiling string_cache_codegen v0.11.2
+   Compiling gpu-allocator v0.28.0
+   Compiling web_atoms v0.3.0
+   Compiling wgpu-naga-bridge v30.0.1
+   Compiling khronos-egl v6.0.0
+   Compiling skrifa v0.44.0
+   Compiling wayland-backend v0.3.17
+   Compiling wgpu-hal v30.0.1
+   Compiling string_cache v0.11.0
+   Compiling flate2 v1.1.10
+   Compiling kurbo v0.13.1
+   Compiling png v0.18.1
+   Compiling icu_properties v2.3.0
+   Compiling wgpu-core-deps-windows-linux-android v30.0.1
+   Compiling enumflags2 v0.7.12
+   Compiling concurrent-queue v2.5.0
+   Compiling zcheapstr v1.1.0
+   Compiling color v0.3.3
+   Compiling guillotiere v0.7.0
+   Compiling peniko v0.6.1
+   Compiling wayland-scanner v0.31.11
+   Compiling zvariant v5.15.0
+   Compiling markup5ever v0.40.0
+   Compiling icu_normalizer v2.3.0
+   Compiling wgpu-core v30.0.1
+   Compiling vello_shaders v0.11.0 (https://github.com/mark-ik/vello.git?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+   Compiling enumn v0.1.14
+   Compiling async-trait v0.1.92
+   Compiling accesskit v0.25.1 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling wgpu v30.0.1
+   Compiling zbus_names v4.3.4
+   Compiling wayland-client v0.31.15
+   Compiling vello_encoding v0.11.0 (https://github.com/mark-ik/vello.git?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+   Compiling futures-intrusive v0.5.0
+   Compiling netrender-vello v0.11.0 (https://github.com/mark-ik/vello.git?rev=276b46648c08f3d2062e70559afa999842e1873c#276b4664)
+   Compiling async-io v2.6.0
+   Compiling idna_adapter v1.2.2
+   Compiling layout-dom-api v0.1.1 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling async-channel v2.5.0
+   Compiling thiserror-impl v1.0.69
+   Compiling ptr_meta_derive v0.3.2
+   Compiling libz-sys v1.1.29
+   Compiling rustix v0.38.44
+   Compiling ptr_meta v0.3.2
+   Compiling thiserror v1.0.69
+   Compiling idna v1.1.0
+   Compiling async-signal v0.2.14
+   Compiling psm v0.1.32
+   Compiling crossbeam-epoch v0.9.20
+   Compiling wayland-protocols v0.32.13
+   Compiling zbus_xml v5.2.1
+   Compiling paint_list_api v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+   Compiling app_units v0.7.8
+   Compiling toml v1.1.5+spec-1.1.0
+   Compiling genet-paint-types v0.2.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling heapless v0.7.17
+   Compiling async-process v2.5.0
+   Compiling zbus-lockstep v0.5.2
+   Compiling url v2.5.8
+   Compiling crossbeam-deque v0.8.7
+   Compiling calloop v0.13.0
+   Compiling rancor v0.1.3
+   Compiling blocking v1.7.0
+   Compiling async-executor v1.14.0
+   Compiling zbus_macros v5.19.0
+   Compiling xml5ever v0.40.0
+   Compiling html5ever v0.40.1
+   Compiling cobs v0.3.0
+   Compiling blake3 v1.8.7
+   Compiling stacker v0.1.25
+   Compiling cssparser-macros v0.7.0
+   Compiling async-recursion v1.1.1
+   Compiling serde_repr v0.1.21
+   Compiling bytecheck_derive v0.8.3
+   Compiling tiny-skia-path v0.11.4
+   Compiling netrender_device v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+   Compiling wayland-csd-frame v0.3.0
+   Compiling fontsan v0.7.0
+   Compiling genet-text v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling zbus v5.19.0
+   Compiling bytecheck v0.8.3
+   Compiling wayland-cursor v0.31.14
+   Compiling cssparser v0.38.0
+   Compiling postcard v1.1.3
+   Compiling genet-static-dom v0.1.1 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling icu_locale_fallback v2.3.0
+   Compiling calloop-wayland-source v0.3.0
+   Compiling rayon-core v1.13.0
+   Compiling zbus-lockstep-macros v0.5.2
+   Compiling engine-observables-api v0.2.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling yeslogic-fontconfig-sys v6.0.1
+   Compiling livery v0.0.5 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling getrandom v0.3.4
+   Compiling wayland-protocols-wlr v0.3.12
+   Compiling regress v0.11.1 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling encoding_rs v0.8.35
+   Compiling munge_macro v0.4.7
+   Compiling genet-flow v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling rayon v1.12.0
+   Compiling genet-fontique v0.10.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling munge v0.4.7
+   Compiling genet-scripted-dom v0.1.2 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling smithay-client-toolkit v0.19.2
+   Compiling icu_segmenter v2.3.0
+   Compiling atspi-common v0.13.0
+   Compiling netrender v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+   Compiling cadency v0.0.1 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling rend v0.5.4
+   Compiling tiny-skia v0.11.4
+   Compiling parley_data v0.10.0
+   Compiling sceno v0.0.6 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling harfrust v0.12.0
+   Compiling gethostname v1.1.0
+   Compiling genet-taffy v0.14.0
+   Compiling genet-host-api v0.2.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling mere-curation v0.1.1 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling rkyv_derive v0.8.18
+   Compiling petgraph v0.8.3
+   Compiling x11rb v0.13.2
+   Compiling rkyv v0.8.18
+   Compiling scenograph v0.0.5 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling genet-document-resources v0.2.1 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling buckram v0.0.3 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling genet-parley v0.10.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling sctk-adwaita v0.10.1
+   Compiling slotmap v1.1.1
+   Compiling ahash v0.8.12
+   Compiling x11-dl v2.21.0
+   Compiling image v0.25.10
+   Compiling muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=f599ffe93298025bf6d65ae310a7cb4270ea52e3#f599ffe9)
+   Compiling xkbcommon-dl v0.4.2
+   Compiling wayland-protocols-plasma v0.3.12
+   Compiling workbench v0.1.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling winit v0.30.13
+   Compiling mere-surface-api v0.1.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling meristem v0.2.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling genet-livery v0.0.4 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=f599ffe93298025bf6d65ae310a7cb4270ea52e3#f599ffe9)
+   Compiling scenomise v0.0.6 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling atspi-proxies v0.13.0
+   Compiling sprigging v0.3.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling accesskit_consumer v0.39.1
+   Compiling document-session-api v0.1.1 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling hest v0.2.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling futures-macro v0.3.34
+   Compiling backstep v0.1.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling futures-util v0.3.34
+   Compiling cambium v0.6.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling accesskit_atspi_common v0.21.0
+   Compiling atspi v0.29.0
+   Compiling paint_list_render v0.1.2 (https://github.com/merely-made/netrender.git?branch=main#66b2f72e)
+   Compiling genet-presenter v0.2.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling cambium-winit v0.3.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling genet-render v0.2.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling accesskit_unix v0.24.0
+   Compiling genet-winit v0.2.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling cambium-rootstock v0.1.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling time-macros v0.2.32
+   Compiling cambium-a11y v0.3.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling taproot v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+   Compiling time v0.3.55
+   Compiling cambium-desktop v0.1.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling tempfile v3.27.0
+   Compiling redshank-model v0.0.0 (/home/markik/Code/worktrees/woodshed-model-free-notes-20261030/ports/redshank/model)
+   Compiling tinct v0.2.0 (https://github.com/merely-made/mere.git?branch=main#b232631f)
+   Compiling timed-text v0.1.0 (/home/markik/Code/worktrees/woodshed-model-free-notes-20261030/crates/timed-text)
+   Compiling redshank-surfaces v0.0.0 (/home/markik/Code/worktrees/woodshed-model-free-notes-20261030/ports/redshank/surfaces)
+    Finished `test` profile [unoptimized] target(s) in 4m 38s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/redshank_surfaces-c7013f9ba749ecb6)
+
+running 1 test
+test tabs::listen::tests::privacy_only_note_menu_keeps_privacy_without_edit_or_delete ... 
+thread 'tabs::listen::tests::privacy_only_note_menu_keeps_privacy_without_edit_or_delete' (1023082) panicked at surfaces/src/tabs/listen.rs:598:9:
+assertion failed: !html.contains("Edit note at 0:46")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    tabs::listen::tests::privacy_only_note_menu_keeps_privacy_without_edit_or_delete
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 109 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p redshank-surfaces --lib`
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p redshank-surfaces privacy_only_note_menu_keeps_privacy_without_edit_or_delete -- --nocapture"
+	User time (seconds): 219.34
+	System time (seconds): 47.47
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 4:38.50
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 754564
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1253
+	Minor (reclaiming a frame) page faults: 8872504
+	Voluntary context switches: 33564
+	Involuntary context switches: 7582
+	Swaps: 0
+	File system inputs: 1808152
+	File system outputs: 3960944
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

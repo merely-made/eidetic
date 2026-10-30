@@ -1,0 +1,38 @@
+--- failed-run/seed.scn
++++ current/seed.scn
+@@ -9,7 +9,7 @@
+ key enter
+ settle 5
+ act New research note
+-settle 30
++wait-knot 600 local file:///m5/run/profile/notes/research-
+ assert content-live
+ click surface:knot role:textbox
+ key end
+@@ -23,6 +23,8 @@
+ settle 20
+ act Open Inspector pane
+ settle 5
++wait-source-target 600 ${M5_ORIGIN}/A
++settle 3
+ click-row Save source and keep
+ wait-row 600 Source save: Saved
+ record-source-captures 02_A1
+@@ -30,6 +32,8 @@
+ settle 20
+ act Open Inspector pane
+ settle 5
++wait-source-target 600 ${M5_ORIGIN}/B
++settle 3
+ click-row Save source and keep
+ wait-row 600 Source save: Saved
+ record-source-captures 03_B
+@@ -131,6 +135,8 @@
+ settle 20
+ act Open Inspector pane
+ settle 5
++wait-source-target 600 ${M5_ORIGIN}/A
++settle 3
+ click-row Save source and keep
+ wait-row 600 Source save: Saved
+ assert row Saved captures: 2

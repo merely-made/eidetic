@@ -1,0 +1,67 @@
+{
+  "route_probe": {
+    "argv": [
+      "/m5/input/test-binary",
+      "inference_service::tests::model_free_fixture_refuses_inference_route",
+      "--ignored",
+      "--exact",
+      "--nocapture"
+    ],
+    "pid": 20,
+    "start_ns": 1793383520264331498,
+    "exit_ns": 1793383520328759667,
+    "exit_code": 0,
+    "pid_namespace": "pid:[4026532853]"
+  },
+  "custody_peer_after_probe": {
+    "pid": 7,
+    "uid": 0,
+    "gid": 0,
+    "device": 52,
+    "inode": 26953628
+  },
+  "app": {
+    "argv": [
+      "/m5/input/turnstone"
+    ],
+    "pid": 26,
+    "start_ns": 1793383520329044603,
+    "exit_ns": 1793383659638718540,
+    "exit_code": 0,
+    "pid_namespace": "pid:[4026532853]"
+  },
+  "failure": "PhaseError('scenario failed')",
+  "cleanup": [
+    {
+      "argv": [
+        "/m5/input/custodian",
+        "retained_custody_receipt_host",
+        "--ignored",
+        "--exact",
+        "--nocapture"
+      ],
+      "pid": 7,
+      "start_ns": 1793383518959326069,
+      "exit_ns": 1793383659646232089,
+      "exit_code": -15,
+      "pid_namespace": "pid:[4026532853]"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "/m5/input/fixture_server.py",
+        "--ready",
+        "/m5/run/seed/origin-ready.json",
+        "--log",
+        "/m5/run/fixture-requests.json",
+        "--source-dir",
+        "/m5/run/fixture-source"
+      ],
+      "pid": 6,
+      "start_ns": 1793383518858167012,
+      "exit_ns": 1793383659649525235,
+      "exit_code": -15,
+      "pid_namespace": "pid:[4026532853]"
+    }
+  ]
+}

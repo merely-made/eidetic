@@ -1,0 +1,175 @@
+{
+  "status": "provisional; adopted scenarios copied; intact/fault qualification pending",
+  "files": {
+    "acceptance-draft/run_acceptance.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db"
+    },
+    "acceptance-draft/run_native.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f"
+    },
+    "acceptance-draft/namespace_phase.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/namespace_phase.py",
+      "sha256": "33537b4aa61513c404745e33ad058dab5baa7318f88ba497a43be5b912834915"
+    },
+    "acceptance-draft/acceptance_phase.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db"
+    },
+    "acceptance-draft/fixture_server.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/fixture_server.py",
+      "sha256": "e369502e41cda592fdc4922c76534e47f6fbbe7b24f760fd075f4be04129bf57"
+    },
+    "acceptance-draft/test_acceptance.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/test_acceptance.py",
+      "sha256": "1ce28e4c8caeca1feacf132712c7db1cadc5cb02ae03850c70cdea12c80867d3"
+    },
+    "m5-draft/capture_build.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/capture_build.py",
+      "sha256": "7f1a7796509e60de33922421699adce7b052c7d57e0941f57fc220457ea7a4cd"
+    },
+    "m5-draft/run_native.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f"
+    },
+    "m5-draft/verify_receipt.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/verify_receipt.py",
+      "sha256": "e521c6f2bb538976fabc482f991354f720fb79e5c886ac33dd81d2e21cd9fc47"
+    },
+    "m5-draft/seed-composed.draft.scn": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/seed-composed.draft.scn",
+      "sha256": "d1cff0e4683dc23ff49fed25104f7c89de99e232d74a4bda8308fd2b1c79199e"
+    },
+    "m5-draft/reopen.scn": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/reopen.scn",
+      "sha256": "ed8f4d0350ee317645ae63ef99b512953cd1621003868d23ab2b55b85327f66d"
+    },
+    "m5-draft/test_distinct_verifier.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/test_distinct_verifier.py",
+      "sha256": "0409eaefabf90cacc55d1e035d2cb3e8569282a650f29fb027638d9146e5ae1e"
+    },
+    "m5-draft/test_selection_verifier.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/test_selection_verifier.py",
+      "sha256": "cc52527aceceba1cd0c10f2e3eeb36dd1a28c03b4e96b6c3d193fbbc2432d2bd"
+    },
+    "m5-draft/test_version_verifier.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/test_version_verifier.py",
+      "sha256": "a251d872f04ccc627fe46cb7655fbc38e75e2c5c6664d31ebf9cde3144470f17"
+    },
+    "m5-missing-draft/run_missing.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py",
+      "sha256": "260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5"
+    },
+    "m5-missing-draft/run_native.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_native.py",
+      "sha256": "bf14ab5d772c8a713d6e0473642e30922af180359de7bdbc58b9a4b8279aa29f"
+    },
+    "m5-missing-draft/run_acceptance.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_acceptance.py",
+      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db"
+    },
+    "m5-missing-draft/namespace_phase.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/namespace_phase.py",
+      "sha256": "fcac9ef1b535a3732db61ef8230415bc7f2cc26bef64c67abb988905ece87e26"
+    },
+    "m5-missing-draft/acceptance_phase.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/acceptance_phase.py",
+      "sha256": "832655170652da3f8117bdc917c99a60d9ce94008afe930b4f4d60d5ba02f1db"
+    },
+    "m5-missing-draft/fault_phase.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_phase.py",
+      "sha256": "a9b5790f3b37d3d3ffe24ff3ffcd42a99f438b01164e349f661ce323574b39ce"
+    },
+    "m5-missing-draft/verify_missing.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/verify_missing.py",
+      "sha256": "ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939"
+    },
+    "m5-missing-draft/missing.scn": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/missing.scn",
+      "sha256": "25ed5d23586a3bf7b29ba9d2e97db524968177f7febcf7293cfe5a5e463c55ab"
+    },
+    "m5-missing-draft/fault_helper.rs": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_helper.rs",
+      "sha256": "892bd625a7aa1cf59211bf9ec425f59f4a63837daea22c405ecfc095a8b8d992"
+    },
+    "m5-missing-draft/citation_event_history.rs": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/citation_event_history.rs",
+      "sha256": "a12f49ec3b4c2bc2f9ee4ea772370640cc64fa324cd45f606db18462645e35e8"
+    },
+    "m5-missing-draft/citation-observer.patch": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/citation-observer.patch",
+      "sha256": "2222f771bf93c764864120af653f54748123b0973c5a23721afc91f5c71cf8c0"
+    },
+    "m5-missing-draft/registration-lock.json": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
+      "sha256": "bbb705d915f50d0dca98975d811b0586f349f34ce8fed96c583b2ced8a7d696a"
+    },
+    "m5-missing-draft/test_missing.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py",
+      "sha256": "0db8337bc3d9678803ed0b7234b006d1e58941cf7057ef3dc1f07af2f971c4f7"
+    },
+    "m5-missing-draft/test_fault_ledger.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py",
+      "sha256": "4c54e948b8174a17dbda9aa624dd848cbd1a4bdc5ec18aaf138b290603368773"
+    },
+    "m5-receipt-integration/assemble.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/assemble.py",
+      "sha256": "3703bc8fea54e744c352374d9ce36d5d26997ee49b5e27e59c05071b54e9c178"
+    },
+    "m5-receipt-integration/verify.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/verify.py",
+      "sha256": "98bae452a8602831133e6eb1f233852084c06fff58f646a0bc4601d9725120de"
+    },
+    "m5-receipt-integration/test_receipt.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/test_receipt.py",
+      "sha256": "fd9af2661c9c78cddfd52a2d42612c2e29eae8afc4cb19cad441cb129882ada6"
+    },
+    "m5-receipt-integration/README.md": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/README.md",
+      "sha256": "4b7b37bb8ab89a07500ff03111f52cf078f727d396386a908365c3de6d1dfe10"
+    },
+    "build-guard/m2-queued-gate.py": {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m2-queued-gate.py",
+      "sha256": "29a3266bac6fdec59f3cda2087018e1395cc1a0a77f466e1773babcab8ed9574"
+    },
+    "controller/p-launch.sh": {
+      "source": "/home/markik/Code/testing/m5-intact-controller-20261030-p/launch.sh",
+      "sha256": "29c5de69934b123945dc3f01c9be042bdf20e548325cecec152ab6fea1da0978"
+    },
+    "fixtures/a1.html": {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/a1.html",
+      "sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7",
+      "decoded_sha256": "2542ad05e745276147c807b5c7f34843927ddeaf41dfc1f7b3d6eb74809c9ee7"
+    },
+    "fixtures/a2.html": {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/a2.html",
+      "sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b",
+      "decoded_sha256": "2c9f61c5e037fa3dc31dc59d5a55c39f572dbc79f9410a175ac9258e101dea4b"
+    },
+    "fixtures/b.html": {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/b.html",
+      "sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae",
+      "decoded_sha256": "b845ff4fad61dc15ec4482a953789bb0f7f4fad16516e165db4b8e0028b0e2ae"
+    },
+    "fixtures/foreign.html": {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/foreign.html",
+      "sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71",
+      "decoded_sha256": "5c993d328dec6070c2b1f49853b3632fe08d8ea9c740ea6f304f29dd9aca7a71"
+    },
+    "fixtures/selection.html": {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/selection.html",
+      "sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079",
+      "decoded_sha256": "528681f4fc4ded1e710063e21469afab233aacfa4ba6770e3218cee58d50c079"
+    },
+    "fixtures/episode.mp3.base64": {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-p/frozen/fixtures/episode.mp3",
+      "sha256": "8e406f6e26fba3a7d3c5e10956c649516633d193288335fd5df775e0e19508a5",
+      "decoded_sha256": "d7ed35034929790f46bbd4318d10431324d0bf4e53d209668221991c27de50a6"
+    },
+    "m5-missing-draft/test_custody_copy.py": {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_custody_copy.py",
+      "sha256": "e3877487244a7b9c75c2166ed6e86bc3e8588223cebd5669d8bf45d35ddd5dc2"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+Running as unit: custody-contract-eidetic-m1-wasm-01.scope; invocation ID: 4d697dc7d8f441d6af7dc062fa7e29cc
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+    Checking zerofrom v0.1.8
+    Checking stable_deref_trait v1.2.1
+    Checking yoke v0.8.3
+    Checking zerovec v0.11.8
+   Compiling serde_core v1.0.229
+    Checking tinystr v0.8.4
+    Checking writeable v0.6.4
+    Checking litemap v0.8.3
+    Checking icu_locale_core v2.3.0
+    Checking zerotrie v0.2.5
+    Checking potential_utf v0.1.6
+   Compiling serde v1.0.229
+    Checking icu_collections v2.3.0
+    Checking ptr_meta v0.3.2
+    Checking icu_provider v2.3.1
+    Checking rancor v0.1.3
+    Checking simdutf8 v0.1.5
+    Checking hashbrown v0.17.1
+    Checking smallvec v1.16.1
+    Checking icu_normalizer v2.3.0
+    Checking bytecheck v0.8.3
+   Compiling blake3 v1.8.7
+    Checking icu_properties v2.3.0
+    Checking constant_time_eq v0.4.2
+    Checking arrayvec v0.7.8
+    Checking indexmap v2.14.2
+    Checking serde_json v1.0.151
+    Checking hashbrown v0.15.5
+    Checking munge v0.4.7
+    Checking idna_adapter v1.2.2
+    Checking rend v0.5.4
+    Checking fixedbitset v0.5.7
+    Checking uuid v1.27.0
+    Checking petgraph v0.8.3
+    Checking muniment v0.2.0 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/muniment)
+    Checking rkyv v0.8.18
+    Checking slotmap v1.1.1
+    Checking idna v1.1.0
+   Compiling thiserror v1.0.69
+    Checking url v2.5.8
+    Checking chartulary v0.2.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/chartulary)
+    Checking zeroize v1.9.1
+    Checking eidetic v0.0.2 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-core)
+    Checking genet-text v0.1.0 (https://github.com/merely-made/genet.git?branch=main#01d3f528)
+    Checking eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `dev` profile [unoptimized] target(s) in 22.40s
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo check --locked -p eidetic-search --no-default-features --target wasm32-unknown-unknown"
+	User time (seconds): 15.72
+	System time (seconds): 5.83
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:22.48
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 354268
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 123
+	Minor (reclaiming a frame) page faults: 855741
+	Voluntary context switches: 1870
+	Involuntary context switches: 446
+	Swaps: 0
+	File system inputs: 248672
+	File system outputs: 75608
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

@@ -1,0 +1,25 @@
+Running as unit: custody-contract-m5-font-local-config-1.scope; invocation ID: e60268a108ce42c9a20a084c0ea0c01e
+AdwaitaMono-Regular.ttf: "Adwaita Mono" "Regular"
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s bwrap --die-with-parent --unshare-user --uid 0 --gid 0 --unshare-net --ro-bind /usr /usr --symlink usr/lib /lib --symlink usr/lib64 /lib64 --proc /proc --dev /dev --tmpfs /tmp --dir /m5 --ro-bind /home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/preflight-fonts.conf /m5/fonts.conf /usr/bin/env -i PATH=/usr/bin XDG_CACHE_HOME=/tmp FONTCONFIG_FILE=/m5/fonts.conf /usr/bin/timeout 20s /usr/bin/fc-match sans"
+	User time (seconds): 0.12
+	System time (seconds): 0.08
+	Percent of CPU this job got: 74%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.27
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7924
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 243
+	Minor (reclaiming a frame) page faults: 2436
+	Voluntary context switches: 277
+	Involuntary context switches: 12
+	Swaps: 0
+	File system inputs: 131352
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

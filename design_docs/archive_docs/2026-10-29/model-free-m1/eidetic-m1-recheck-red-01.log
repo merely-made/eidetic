@@ -1,0 +1,52 @@
+Running as unit: custody-contract-eidetic-m1-recheck-red-01.scope; invocation ID: 7cac88354afa41fcafb00b197be644c5
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `test` profile [unoptimized] target(s) in 0.91s
+     Running tests/model_free_recall.rs (/home/markik/Code/target/debug/deps/model_free_recall-98d11c95c6efb012)
+
+running 1 test
+test model_free_refuses_scope_change_before_return ... FAILED
+
+failures:
+
+---- model_free_refuses_scope_change_before_return stdout ----
+
+thread 'model_free_refuses_scope_change_before_return' (604887) panicked at crates/eidetic-search/tests/model_free_recall.rs:249:5:
+assertion failed: index.search("nebula", &[a.source.clone()]).is_err()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    model_free_refuses_scope_change_before_return
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p eidetic-search --test model_free_recall`
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked -p eidetic-search --test model_free_recall model_free_refuses_scope_change_before_return"
+	User time (seconds): 0.47
+	System time (seconds): 0.54
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.02
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 192488
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 11
+	Minor (reclaiming a frame) page faults: 66384
+	Voluntary context switches: 637
+	Involuntary context switches: 115
+	Swaps: 0
+	File system inputs: 3136
+	File system outputs: 6304
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

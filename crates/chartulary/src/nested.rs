@@ -13,12 +13,15 @@
 //! demand through the same [`load_full`](GraphLog::load_full) /
 //! [`load_checkpointed`](GraphLog::load_checkpointed) paths as any graph.
 //!
-//! Lifecycle is owned by the bearing node. Removing it through
+//! Lifecycle is owned by the nodes that bear it, together: the last of them to
+//! leave archives it. Removing a bearing node through
 //! [`GraphLog::remove_bearing_node`] archives the nested graph's slots (one
 //! atomic move to the `archive/` prefix) *before* the node leaves the parent,
-//! so a nested graph is archived, never orphaned: `keys("nested/")` lists the
-//! live ones, `keys("archive/nested/")` the archived ones, and a failed
-//! archive leaves the bearing node in place.
+//! unless another live node still bears the same graph, in which case the
+//! graph stays live for it. So a nested graph is archived, never orphaned, and
+//! never archived out from under a bearer: `keys("nested/")` lists the live
+//! ones, `keys("archive/nested/")` the archived ones, and a failed archive
+//! leaves the bearing node in place.
 
 use muniment::LogId;
 use muniment::{Backend, Codec, SlotStore, StoreError, WriteOp};
@@ -88,6 +91,13 @@ impl<N: Identified + GraphBearing, E> GraphLog<N, E> {
             .filter_map(|(_, node)| node.nested().cloned())
             .collect()
     }
+
+    /// Whether a live node other than `id` bears `nested`.
+    fn borne_by_another(&self, id: &N::Id, nested: &LogId) -> bool {
+        self.graph()
+            .nodes()
+            .any(|(_, node)| node.nested() == Some(nested) && node.id() != id)
+    }
 }
 
 impl<N, E> GraphLog<N, E>
@@ -120,8 +130,10 @@ where
 
     /// Remove the node with `id`, first archiving the nested graph it bears,
     /// so removal never orphans one. The archive lands before the node leaves
-    /// the graph: if archiving fails, the node stays. Returns the archived
-    /// graph's identity, or `None` if the node bore none (the node is removed
+    /// the graph: if archiving fails, the node stays. A nested graph another
+    /// live node still bears is left live for it; the last bearer to be removed
+    /// archives it. Returns the archived graph's identity, or `None` if the
+    /// node bore none or another node still bears it (the node is removed
     /// either way).
     ///
     /// **Crash window**: the archive is durable immediately, but the removal
@@ -136,7 +148,9 @@ where
         author: &Author,
         id: &N::Id,
     ) -> Result<Option<LogId>, StoreError> {
-        let nested = self.nested_of(id);
+        let nested = self
+            .nested_of(id)
+            .filter(|nested_id| !self.borne_by_another(id, nested_id));
         if let Some(nested_id) = &nested {
             archive_nested(slots.backend(), nested_id).await?;
         }
@@ -404,6 +418,73 @@ mod tests {
                 .unwrap();
             assert!(untouched.is_empty());
             assert_eq!(reloaded.live_nested(), vec![healthy]);
+        });
+    }
+
+    /// A parent whose "first" and "second" nodes both bear `nid`, with the
+    /// nested graph live in `slots`.
+    async fn two_bearers_of_one_graph(
+        slots: &SlotStore<MemoryBackend, muniment::JsonCodec>,
+        nid: &LogId,
+    ) -> GraphLog<Container, Relation> {
+        let mut nested = GraphLog::<Container, Relation>::with_id(nid.clone());
+        nested.insert_node(&keeper(), Container::new("content"));
+        nested.save_log(slots, &log_slot(nid)).await.unwrap();
+        let mut parent = GraphLog::<Container, Relation>::new();
+        parent.insert_node(&keeper(), Container::new("first").with_nested(nid.clone()));
+        parent.insert_node(&keeper(), Container::new("second").with_nested(nid.clone()));
+        parent
+    }
+
+    #[test]
+    fn removing_one_bearer_leaves_a_shared_nested_graph_live_for_the_others() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let nid = LogId::new("shared-child");
+            let mut parent = two_bearers_of_one_graph(&slots, &nid).await;
+
+            let archived = parent
+                .remove_bearing_node(&slots, &keeper(), &"first".to_string())
+                .await
+                .unwrap();
+
+            assert_eq!(archived, None, "another bearer still needs it");
+            assert!(parent.graph().get(&"first".to_string()).is_none());
+            assert!(parent.graph().get(&"second".to_string()).is_some());
+            assert_eq!(slots.keys("nested/").await.unwrap(), vec![log_slot(&nid)]);
+            assert!(slots.keys("archive/nested/").await.unwrap().is_empty());
+
+            let recovered = parent
+                .recover_archived_bearings(&slots, &keeper())
+                .await
+                .unwrap();
+            assert!(recovered.is_empty(), "the other bearer is not pending removal");
+            assert!(parent.graph().get(&"second".to_string()).is_some());
+        });
+    }
+
+    #[test]
+    fn the_last_bearer_to_leave_archives_a_shared_nested_graph() {
+        pollster::block_on(async {
+            let slots = JsonSlots::new(MemoryBackend::new());
+            let nid = LogId::new("shared-child");
+            let mut parent = two_bearers_of_one_graph(&slots, &nid).await;
+
+            parent
+                .remove_bearing_node(&slots, &keeper(), &"first".to_string())
+                .await
+                .unwrap();
+            let archived = parent
+                .remove_bearing_node(&slots, &keeper(), &"second".to_string())
+                .await
+                .unwrap();
+
+            assert_eq!(archived, Some(nid.clone()));
+            assert!(slots.keys("nested/").await.unwrap().is_empty());
+            assert_eq!(
+                slots.keys("archive/nested/").await.unwrap(),
+                vec![archived_log_slot(&nid)]
+            );
         });
     }
 

@@ -1,0 +1,148 @@
+{
+  "address_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ],
+      [
+        4,
+        null
+      ],
+      [
+        5,
+        null
+      ],
+      [
+        6,
+        null
+      ],
+      [
+        7,
+        null
+      ],
+      [
+        8,
+        null
+      ],
+      [
+        9,
+        null
+      ],
+      [
+        10,
+        null
+      ],
+      [
+        11,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-address-events/v1",
+    "total": 11
+  },
+  "admissions": [
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:8315e2cfb03fb76f941edc7dbd30aa0a8a075d0ca3934f857abd2aec84e8fbc2",
+        "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+        "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+        "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+      },
+      "occurrence": 0,
+      "title": "",
+      "url": ""
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:9660f90bfc49a344d6bc9a0b46ad1fb7f649adedb8a022eac4985cce6bd1256c",
+        "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+        "node": "083a91e9-0243-4d97-b15c-bd16a075b984",
+        "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+      },
+      "occurrence": 1,
+      "title": "",
+      "url": ""
+    },
+    {
+      "error": null,
+      "key": {
+        "annotation_manifest": "sealed-v1:blake3:67ffe86b17ee7980cf9fc364e337c58123c7a7ae4c1c49e129a94fa51af578da",
+        "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+        "node": "853dbf1a-61de-4fcc-94b3-c3584c4fcc1c",
+        "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+      },
+      "occurrence": 0,
+      "title": "",
+      "url": ""
+    }
+  ],
+  "entries": [],
+  "generation": "27ee557d-9e5a-46e9-ac37-396e1065fb60",
+  "reader_open_events": {
+    "dropped": 0,
+    "events": [
+      [
+        1,
+        null
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ]
+    ],
+    "overflow": false,
+    "schema": "turnstone.m5-reader-open-events/v1",
+    "total": 3
+  },
+  "reader_scope": {
+    "schema": "turnstone.m5-reader-scope/v1",
+    "selected": "restricted"
+  },
+  "readers": [],
+  "retained_admissions": [
+    {
+      "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+      "manifest": "blake3:3ebb1f33932d330ecfd849fb778971f3c65d00d3bc8d478d6b0ec6a5ce30d53a",
+      "node": "0957b9bd-079d-4ac5-8056-c55dab1d8687",
+      "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+    },
+    {
+      "graph": "839f22b0-423c-49ff-9de1-284fd202e4b0",
+      "manifest": "blake3:a35ed67c70de7b8d840985d04853236b55521893cf966c2db80d18ce8629132c",
+      "node": "3a9dc50f-5499-45d5-8a99-219461dc7c7a",
+      "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b"
+    }
+  ],
+  "retained_readers": [],
+  "search": {
+    "coverage": "Complete",
+    "generation": "27ee557d-9e5a-46e9-ac37-396e1065fb60:9",
+    "hits": [],
+    "inputs": [],
+    "request": "f8c30bea-df6d-46f6-ab09-120f0319992b",
+    "schema": "turnstone.research-search-summary/v1",
+    "scope": [],
+    "selected": [],
+    "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+    "total": 0
+  },
+  "session": "f7e4c88e-0d36-4c5d-941e-06d10d4f2b1b",
+  "status": ""
+}
