@@ -52,6 +52,7 @@ pub mod document;
 pub mod fusion;
 pub mod index;
 pub mod recall;
+pub mod query;
 pub mod spec;
 pub mod tokenize;
 
