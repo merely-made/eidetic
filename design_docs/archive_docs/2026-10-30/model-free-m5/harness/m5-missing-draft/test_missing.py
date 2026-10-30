@@ -6,40 +6,75 @@ import fault_phase
 import run_missing as run
 import verify_missing as verify
 
+SESSION='00000000-0000-0000-0000-000000000001'
+GRAPH='00000000-0000-0000-0000-000000000002'
+NODE='00000000-0000-0000-0000-000000000003'
+ANN_A='sealed-v1:blake3:'+'1'*64
+ANN_B='sealed-v1:blake3:'+'2'*64
+TEXT_A='blake3:'+'3'*64
+TEXT_B='blake3:'+'4'*64
+RAW_A='blake3:'+'5'*64
+RAW_B='blake3:'+'6'*64
+
 
 def evidence():
-    key = {'session':'s','graph':'g','node':'n','annotation_manifest':'sealed-v1:a'}
+    key = {'session':SESSION,'graph':GRAPH,'node':NODE,'annotation_manifest':ANN_A}
     a = {'key':key, 'occurrence':0, 'error':None}
-    b = {'key':dict(key, annotation_manifest='sealed-v1:b'), 'occurrence':1, 'error':None}
-    t1 = {'key':key,'text_hash':'ta','selector':{'start':0,'end':1}}
-    t2 = {'key':b['key'],'text_hash':'tb','selector':{'start':0,'end':1}}
-    c1 = {'text':'M5 A1 archive','text_hash':'ta','raw_manifest':'raw-a'}
-    c2 = {'text':'M5 A2 archive','text_hash':'tb','raw_manifest':'raw-b'}
+    b = {'key':dict(key, annotation_manifest=ANN_B), 'occurrence':1, 'error':None}
+    t1 = {'key':key,'text_hash':TEXT_A,'selector':{'start':0,'end':1}}
+    t2 = {'key':b['key'],'text_hash':TEXT_B,'selector':{'start':0,'end':1}}
+    c1 = {'text':'M5 A1 archive','text_hash':TEXT_A,'raw_manifest':RAW_A}
+    c2 = {'text':'M5 A2 archive','text_hash':TEXT_B,'raw_manifest':RAW_B}
     r1 = {'node':'reader-a','target':t1,'phase':'Ready','content':c1}
     r2 = {'node':'reader-b','target':t2,'phase':'Ready','content':c2}
-    citation = {'session':'s','admissions':[a],'readers':[r1]}
-    old = {'session':'s','admissions':[a,b],'readers':[r1]}
-    current = {'session':'s','admissions':[a,b],'readers':[r2]}
-    owner = {'schema':'turnstone.m5-store-inspection/v1','session':'s','graph':'g',
+    citation = {'session':SESSION,'admissions':[a],'readers':[r1]}
+    old = {'session':SESSION,'admissions':[a,b],'readers':[r1]}
+    current = {'session':SESSION,'admissions':[a,b],'readers':[r2]}
+    owner = {'schema':'turnstone.m5-store-inspection/v1','session':SESSION,'graph':GRAPH,
              'sealed_capture_receipts':{'schema':'turnstone.m5-sealed-capture-receipts/v1','count':2,'blake3':'b'*64},
              'captures':[{'admission':a,'content':c1},{'admission':b,'content':c2}]}
     return citation, old, current, owner
 
 
 def click_observations(data):
-    common = {'session':'s','generation':'generation-1','admissions':copy.deepcopy(data['all_admissions']),
+    common = {'session':SESSION,'generation':'generation-1','admissions':copy.deepcopy(data['all_admissions']),
               'reader_scope':{'schema':'turnstone.m5-reader-scope/v1','selected':None}}
     addresses = {'schema':'turnstone.m5-address-events/v1','total':0,'dropped':0,'overflow':False,'events':[]}
     reader_opens = {'schema':'turnstone.m5-reader-open-events/v1','total':0,'dropped':0,'overflow':False,'events':[]}
-    all_scope = dict(copy.deepcopy(common), search={'schema':'turnstone.research-search-summary/v1','session':'s','selected':None})
+    all_scope = dict(copy.deepcopy(common), search={'schema':'turnstone.research-search-summary/v1','session':SESSION,'selected':None})
     before = dict(copy.deepcopy(common), readers=[], address_events=addresses, reader_open_events=reader_opens)
-    after = dict(copy.deepcopy(common), readers=[{'node':'reader-a','target':data['a1_target'],'phase':'Error','content':None,'error':'missing'}],
+    after = dict(copy.deepcopy(common), readers=[{'node':'reader-a','target':data['a1_target'],'phase':'Error','content':None,'engine':None,'rendered_document':None,'url':verify.target_address(data['a1_target']),'error':'sealed source custody or integrity refusal: no local source resolved the sealed blob for manifest '+data['a1_content']['raw_manifest']}],
                  address_events=copy.deepcopy(addresses),
                  reader_open_events=dict(reader_opens,total=1,events=[[1,data['a1_target']]]))
     return all_scope, before, after
 
 
 class Binding(unittest.TestCase):
+    def test_real_w2_locked_reader_transitions_to_exact_missing_blob(self):
+        fixture=json.loads(Path(__file__).with_name('w2-observation-fixture.json').read_text())
+        before=fixture['missing_before_click']; after=fixture['missing_A1_open']
+        target=fixture['target']; raw=fixture['raw_manifest']
+        verify.verify_click_interval(before,after,target,raw)
+        prior_index=next(i for i,r in enumerate(before['readers']) if r['target']==target)
+        current_index=next(i for i,r in enumerate(after['readers']) if r['target']==target)
+        for field,value in [('phase','Ready'),('phase','Pending'),('error','sealed source custody or integrity refusal: no local source resolved the sealed blob for manifest '+raw),
+                            ('content',{}),('engine','old'),('rendered_document',{}),('node','different'),('url','different')]:
+            changed=copy.deepcopy(before); changed['readers'][prior_index][field]=value
+            with self.assertRaises(ValueError): verify.verify_click_interval(changed,after,target,raw)
+        duplicate=copy.deepcopy(before); duplicate['readers'].append(copy.deepcopy(duplicate['readers'][prior_index]))
+        with self.assertRaises(ValueError): verify.verify_click_interval(duplicate,after,target,raw)
+        wrong_before=copy.deepcopy(before); wrong_after=copy.deepcopy(after)
+        wrong_before['readers'][prior_index]['url']='mere://wrong'
+        wrong_after['readers'][current_index]['url']='mere://wrong'
+        with self.assertRaises(ValueError): verify.verify_click_interval(wrong_before,wrong_after,target,raw)
+        for field,value in [('error','Unlock the profile to read private saved sources'),('error','sealed source custody or integrity refusal: no local source resolved the sealed blob for manifest blake3:'+'0'*64),
+                            ('node','different'),('url','different'),('engine','engine'),('rendered_document',{})]:
+            changed=copy.deepcopy(after); changed['readers'][current_index][field]=value
+            with self.assertRaises(ValueError): verify.verify_click_interval(before,changed,target,raw)
+        changed=copy.deepcopy(after); history=changed['reader_open_events']; history['total']+=1; history['events'].append([history['total'],None])
+        with self.assertRaises(ValueError): verify.verify_click_interval(before,changed,target,raw)
+        changed=copy.deepcopy(after); changed['readers'].append({'node':'fallback','phase':'Ready','target':target,'content':{}})
+        with self.assertRaises(ValueError): verify.verify_click_interval(before,changed,target,raw)
     def test_citation_can_predate_a2_but_must_match(self):
         parts = evidence()
         result = run.bind_input('run', *parts)
@@ -49,8 +84,8 @@ class Binding(unittest.TestCase):
 
     def test_shared_payload_and_omitted_owner_fail(self):
         citation, old, current, owner = evidence()
-        current['readers'][0]['content']['raw_manifest'] = 'raw-a'
-        owner['captures'][1]['content']['raw_manifest'] = 'raw-a'
+        current['readers'][0]['content']['raw_manifest'] = RAW_A
+        owner['captures'][1]['content']['raw_manifest'] = RAW_A
         with self.assertRaises(ValueError): run.bind_input('run', citation, old, current, owner)
         citation, old, current, owner = evidence(); owner['captures'].pop()
         with self.assertRaises(ValueError): run.bind_input('run', citation, old, current, owner)
@@ -58,8 +93,8 @@ class Binding(unittest.TestCase):
     def test_exact_error_and_unchanged_a2(self):
         data = run.bind_input('run', *evidence())
         all_scope, before, error = click_observations(data)
-        ready = {'session':'s','readers':[{'node':'reader-b','target':data['a2_target'],'phase':'Ready','content':data['a2_content']}]}
-        runtime = {'schema':'turnstone.model-free-runtime/v1','session':'s','network_offline':True,'offline_acquisition_attempts':0}
+        ready = {'session':SESSION,'readers':[{'node':'reader-b','target':data['a2_target'],'phase':'Ready','content':data['a2_content']}]}
+        runtime = {'schema':'turnstone.model-free-runtime/v1','session':SESSION,'network_offline':True,'offline_acquisition_attempts':0}
         fault_phase.validate_gui(data, all_scope, before, error, ready, runtime)
         wrong = copy.deepcopy(error); wrong['readers'][0]['target']['selector'] = None
         with self.assertRaises(ValueError): fault_phase.validate_gui(data, all_scope, before, wrong, ready, runtime)
@@ -71,38 +106,38 @@ class Binding(unittest.TestCase):
     def test_click_interval_rejects_redacted_extra_lost_or_fallback(self):
         data = run.bind_input('run', *evidence())
         _, before, after = click_observations(data)
-        verify.verify_click_interval(before, after, data['a1_target'])
+        verify.verify_click_interval(before, after, data['a1_target'], data['a1_content']['raw_manifest'])
         for replacement in (None, {'other':'target'}):
             changed = copy.deepcopy(after); changed['reader_open_events']['events'][0][1] = replacement
-            with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+            with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
         changed = copy.deepcopy(after); changed['reader_open_events']['events'].append([2,None]); changed['reader_open_events']['total'] = 2
-        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
         for field in ('address_events','reader_open_events'):
             changed = copy.deepcopy(after); changed[field]['overflow'] = True
-            with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+            with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
             changed = copy.deepcopy(after); changed[field]['schema'] = 'wrong'
-            with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+            with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
         changed = copy.deepcopy(after); changed['reader_open_events'] = copy.deepcopy(before['reader_open_events'])
-        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
         changed = copy.deepcopy(after); changed['address_events']['total'] = 1; changed['address_events']['events'] = [[1,None]]
-        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
         changed = copy.deepcopy(after); changed['reader_open_events']['events'][0][0] = True
-        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
         full_before, dropped_after = copy.deepcopy(before), copy.deepcopy(after)
         full_before['reader_open_events'] = {'schema':'turnstone.m5-reader-open-events/v1','total':128,'dropped':0,'overflow':False,
                                               'events':[[i,None] for i in range(1,129)]}
         dropped_after['reader_open_events'] = {'schema':'turnstone.m5-reader-open-events/v1','total':129,'dropped':1,'overflow':False,
                                                 'events':[[i,None] for i in range(2,129)] + [[129,data['a1_target']]]}
-        with self.assertRaises(ValueError): verify.verify_click_interval(full_before, dropped_after, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(full_before, dropped_after, data['a1_target'], data['a1_content']['raw_manifest'])
         full_before, dropped_after = copy.deepcopy(before), copy.deepcopy(after)
         already_dropped = {'schema':'turnstone.m5-address-events/v1','total':129,'dropped':1,'overflow':False,
                            'events':[[i,None] for i in range(2,130)]}
         full_before['address_events'] = already_dropped; dropped_after['address_events'] = copy.deepcopy(already_dropped)
-        with self.assertRaises(ValueError): verify.verify_click_interval(full_before, dropped_after, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(full_before, dropped_after, data['a1_target'], data['a1_content']['raw_manifest'])
         changed = copy.deepcopy(after); changed['readers'].append({'node':'fallback','phase':'Ready','target':data['a2_target'],'content':data['a2_content']})
-        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
         stale = copy.deepcopy(before); stale['readers'].append({'node':'old-a1','phase':'Error','target':data['a1_target'],'content':None})
-        with self.assertRaises(ValueError): verify.verify_click_interval(stale, after, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(stale, after, data['a1_target'], data['a1_content']['raw_manifest'])
 
     def test_target_address_uses_exact_canonical_identity_and_selector(self):
         target = {'key':{'session':'00000000-0000-0000-0000-000000000001',
@@ -119,30 +154,30 @@ class Binding(unittest.TestCase):
         data = run.bind_input('run', *evidence())
         all_scope, before, after = click_observations(data)
         verify.verify_all_scope(all_scope, data['a1_target'], before)
-        verify.verify_click_interval(before, after, data['a1_target'])
+        verify.verify_click_interval(before, after, data['a1_target'], data['a1_content']['raw_manifest'])
         # A filtered observation may omit an alternate reader entirely. It
         # cannot pass merely because both visible reader lists look benign.
         for which in ('before','after'):
             changed_before, changed_after = copy.deepcopy(before), copy.deepcopy(after)
             (changed_before if which == 'before' else changed_after)['reader_scope']['selected'] = 'restricted'
-            with self.assertRaises(ValueError): verify.verify_click_interval(changed_before, changed_after, data['a1_target'])
+            with self.assertRaises(ValueError): verify.verify_click_interval(changed_before, changed_after, data['a1_target'], data['a1_content']['raw_manifest'])
         changed = copy.deepcopy(all_scope); changed['search']['selected'] = []
         with self.assertRaises(ValueError): verify.verify_all_scope(changed, data['a1_target'], before)
         changed = copy.deepcopy(after); changed['generation'] = 'other'
-        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
         changed = copy.deepcopy(after); changed['admissions'][0]['key']['graph'] = 'foreign'
-        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'])
+        with self.assertRaises(ValueError): verify.verify_click_interval(before, changed, data['a1_target'], data['a1_content']['raw_manifest'])
 
     def test_receipt_verifier_requires_owner_and_primary_invariants(self):
         citation, old, current, owner = evidence(); inp = run.bind_input('run', citation, old, current, owner)
         a1, a2 = inp['a1_target'], inp['a2_target']
         fault = {'schema':'turnstone.m5-missing-fault/v1','run_id':'run','a1_target':a1,'a2_target':a2,
-                 'a1_raw_manifest':'raw-a','a2_raw_manifest':'raw-b','deleted_ciphertext_hash':'blake3:'+'a'*64,
+                 'a1_raw_manifest':RAW_A,'a2_raw_manifest':RAW_B,'deleted_ciphertext_hash':'blake3:'+'a'*64,
                  'capture_receipts_hash':'blake3:'+'b'*64,'manifest_preserved':True,'capture_receipts_preserved':True,
                  'a1_raw_absent_after_reopen':True,'a1_owner_refused':True,'a2_owner_unchanged':True}
         all_scope, before_click, error = click_observations(inp)
-        ready = {'session':'s','readers':[{'node':'reader-b','target':a2,'phase':'Ready','content':inp['a2_content']}]}
-        runtime = {'schema':'turnstone.model-free-runtime/v1','session':'s','network_offline':True,'offline_acquisition_attempts':0}
+        ready = {'session':SESSION,'readers':[{'node':'reader-b','target':a2,'phase':'Ready','content':inp['a2_content']}]}
+        runtime = {'schema':'turnstone.model-free-runtime/v1','session':SESSION,'network_offline':True,'offline_acquisition_attempts':0}
         values = {'fault':fault,'old':old,'current':current,'error':error,'ready':ready,'runtime':runtime,'inspection':owner,'before_click':before_click,'all_scope':all_scope,
                   'primary':{'unchanged':True,'before':{'a':'b'},'after':{'a':'b'}},
                   'graph':{'unchanged':True,'before':{'g':'h'},'after':{'g':'h'}},

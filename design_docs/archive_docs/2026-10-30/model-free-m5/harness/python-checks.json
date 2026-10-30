@@ -3,29 +3,31 @@
   "results": {
     "acceptance-draft": 5,
     "m5-draft": 3,
-    "m5-missing-draft": 24,
+    "m5-missing-draft": 25,
     "m5-receipt-integration": 44
   },
   "failures": 0,
-  "scope": "Copied provisional Python harness tests only; native M5 fault attempt failed and final receipt assembly remains DRAFT.",
+  "scope": "Copied Python receipt-helper suite only; separate W3 native evidence and independent audit are recorded in the canonical receipt. No native or build work was run in this refresh.",
   "refresh": {
-    "source_manifest_sha256": "84394b00463a2f68f9d65ec4d752fcf1a54db246f58a972800602dc57d34a1a6",
+    "source_manifest_sha256": "1da53c8f9baaebaa2231d98c91f47620564a98b3ce950c8b973d01cbf133fb01",
     "files": {
       "m5-draft/seed-composed.draft.scn": "d1cff0e4683dc23ff49fed25104f7c89de99e232d74a4bda8308fd2b1c79199e",
       "m5-draft/reopen.scn": "ed8f4d0350ee317645ae63ef99b512953cd1621003868d23ab2b55b85327f66d",
-      "m5-missing-draft/missing.scn": "25ed5d23586a3bf7b29ba9d2e97db524968177f7febcf7293cfe5a5e463c55ab",
+      "m5-missing-draft/missing.scn": "5d051618e6da126b717a2d0d0eb70223e87ec37490864a5d8c22464cdc48c7b9",
       "m5-missing-draft/registration-lock.json": "1970f178e3a3bde39dff33bea3da18e650a644724d4bf1577ee2446f6a41f4df",
       "m5-receipt-integration/README.md": "4b7b37bb8ab89a07500ff03111f52cf078f727d396386a908365c3de6d1dfe10",
       "m5-draft/verify_receipt.py": "e521c6f2bb538976fabc482f991354f720fb79e5c886ac33dd81d2e21cd9fc47",
-      "m5-receipt-integration/verify.py": "bfbcb982f04a2db835eb78317ec6fd874da31505c2346e612323a8a0c63bc890",
-      "m5-receipt-integration/assemble.py": "07931c78e150b712f5f7371d0c7b2339a75484e89d8323ebf7480b49416542f8",
+      "m5-receipt-integration/verify.py": "4f5e6a08546ceb5497c80c5694aa1bb8ce3d05f92271961c63d5b97e287f1501",
+      "m5-receipt-integration/assemble.py": "d91bf112197c0bb4d30e571cd9d5cc546742f09b2e6f411af54c5c7e804a85a0",
       "m5-missing-draft/run_missing.py": "a84eee8f010426dbad6f700acc1358e8c0820fb68f2ef7a7b8afc3a798f4a89c",
-      "m5-missing-draft/fault_phase.py": "ef9bce2f1df05831ef07567eb3fec967e23ed0ad6256867754b57a164c6c0910",
-      "m5-missing-draft/test_missing.py": "9af6fa600f55175d0485e08d3582ce08213f6374db83115c5d1430784712369e",
+      "m5-missing-draft/fault_phase.py": "3979648c0751844a76046be9d6e390ffdf61ac10874ae5d71494a443e12d1822",
+      "m5-missing-draft/test_missing.py": "205dc19caacf8af13e01b5683d723d1896af0c3a29653059d8a7797540aca5c5",
       "acceptance-draft/run_acceptance.py": "e031222e73797592eabf87c1a756235db2a900481d28efef46f79d05dd25ac60",
       "acceptance-draft/test_acceptance.py": "e4f557dd0b4acfe4ad93b73495fe806f0c3962c599dfd8333b8efe90e18ac57e",
       "m5-missing-draft/run_acceptance.py": "e031222e73797592eabf87c1a756235db2a900481d28efef46f79d05dd25ac60",
-      "m5-receipt-integration/test_receipt.py": "0295c0b07266d30838cd60670329bb6405f76d5a27a2ba31269f2f561fd82981"
+      "m5-receipt-integration/test_receipt.py": "8d0ffd08a010b76ebf73f747aec46ae3752bac4e15a559118554c58d36554423",
+      "m5-missing-draft/verify_missing.py": "4f381f9c20693edaf0885e31254284386ccdf7a8233c276e1a7fc9d6b67197e8",
+      "m5-missing-draft/w2-observation-fixture.json": "31a6e654c78a63b4905840ef79d66f15ba937c48607eb4fc41d86473f10d0e02"
     },
     "ready_for_fault_collection": false,
     "finalization_status": "DRAFT",
@@ -59,23 +61,17 @@
       }
     }
   },
-  "ready_for_fault_collection": true,
-  "finalization_status": "DRAFT",
+  "ready_for_fault_collection": false,
+  "finalization_status": "VERIFIED",
   "latest_bounded_run": {
-    "suites": {
-      "acceptance-draft": 5,
-      "m5-draft": 3,
-      "m5-missing-draft": 24,
-      "m5-receipt-integration": 44
-    },
-    "total_tests": 76,
-    "failures": 0,
+    "suite": "m5-receipt-integration",
+    "tests": 44,
     "passed": true,
+    "failures": 0,
     "exit_code": 0,
-    "scope": "Copied provisional Python helper suites only; no Cargo, native run, or receipt assembly.",
-    "log": "/home/markik/Code/testing/m5-harness-current-v-fault-checks-20261030.log",
-    "log_sha256": "6882b15b3b2f06ddf522ca8609605fbef3627e634b7654d71e017d2d4cbaf21b",
-    "log_bytes": 11102
+    "log": "/home/markik/Code/testing/m5-harness-final-verification-checks-20261030.log",
+    "log_sha256": "4bf51db2715f0a71433f87db045df9fe2362875747d9ffd5fb4077b4ea91c243",
+    "log_bytes": 6344
   },
   "per_suite": {
     "acceptance-draft": {
@@ -89,7 +85,7 @@
       "exit_code": 0
     },
     "m5-missing-draft": {
-      "tests": 24,
+      "tests": 25,
       "passed": true,
       "exit_code": 0
     },
@@ -98,5 +94,13 @@
       "passed": true,
       "exit_code": 0
     }
+  },
+  "status": "copied final receipt integration helper suite",
+  "standalone_receipt_verification": {
+    "result": "PASS",
+    "manifest_status": "collected-awaiting-verification",
+    "manifest_sha256": "88c30c6ca8e40964d0dd606f1cf4965c75eeec5f7746fc69949a7621449900f7",
+    "audit_sha256": "b48e0b4e0f46738828d10dc4549ca842886a9b0d05dd2fc04754747f0c28fd1a",
+    "verifier_sha256": "4f5e6a08546ceb5497c80c5694aa1bb8ce3d05f92271961c63d5b97e287f1501"
   }
 }

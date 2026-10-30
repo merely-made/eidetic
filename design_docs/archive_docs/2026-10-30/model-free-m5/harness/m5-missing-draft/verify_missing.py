@@ -25,7 +25,7 @@ def target_address(target):
             + ann + '/' + text + '?start=' + str(selector['start']) + '&end=' + str(selector['end']))
 
 
-def verify_click_interval(before, after, target):
+def verify_click_interval(before, after, target, raw_manifest):
     key = target['key']
     require(before['session'] == after['session'] == key['session'] and before['generation'] == after['generation']
             and before['generation'], 'click crossed session or source generation')
@@ -39,8 +39,24 @@ def verify_click_interval(before, after, target):
         require(all(item['target']['key']['session'] == key['session'] and item['target']['key']['graph'] == key['graph']
                     for item in observation['readers']), 'reader crossed graph scope')
     require(any(item['key'] == key for item in before['admissions']), 'A1 absent from all-admitted graph')
-    require(not any(reader['target'] == target for reader in before['readers']),
-            'pre-existing A1 reader cannot prove a new open attempt')
+    prior = [reader for reader in before['readers'] if reader['target'] == target]
+    current = [reader for reader in after['readers'] if reader['target'] == target]
+    require(len(prior) <= 1 and len(current) == 1, 'A1 reader missing or ambiguous')
+    reader = current[0]
+    missing = 'sealed source custody or integrity refusal: no local source resolved the sealed blob for manifest ' + raw_manifest
+    fields = {'phase','content','engine','rendered_document','error','url','node','target'}
+    require(fields <= reader.keys(), 'A1 reader fields missing')
+    require(reader['phase'] == 'Error' and reader['content'] is None and reader['engine'] is None
+            and reader['rendered_document'] is None and reader['error'] == missing
+            and reader['url'] == target_address(target), 'exact missing-blob refusal absent')
+    if prior:
+        previous_reader = prior[0]
+        require(fields <= previous_reader.keys(), 'prior A1 reader fields missing')
+        require(previous_reader['phase'] == 'Error' and previous_reader['content'] is None
+                and previous_reader['engine'] is None and previous_reader['rendered_document'] is None
+                and previous_reader['error'] == 'Unlock the profile to read private saved sources'
+                and previous_reader['node'] == reader['node'] and previous_reader['url'] == reader['url'],
+                'pre-existing A1 reader is not the exact stale locked-profile refusal')
     def history(obs, field, schema):
         h = obs[field]; events = h['events']; total, dropped = h['total'], h['dropped']
         require(h['schema'] == schema and h['overflow'] is False
@@ -122,7 +138,7 @@ def verify_missing(case, bound, ledger):
 
     a1, a2 = fault['a1_target'], fault['a2_target']
     verify_all_scope(all_scope, a1, before_click)
-    verify_click_interval(before_click, failed, a1)
+    verify_click_interval(before_click, failed, a1, fault['a1_raw_manifest'])
     require(inspection['graph'] == a1['key']['graph'] == a2['key']['graph'], 'inspected graph differs')
     before1, before2 = reader(old, a1, 'Ready'), reader(current, a2, 'Ready')
     refusal, after2 = reader(failed, a1, 'Error'), reader(survived, a2, 'Ready')

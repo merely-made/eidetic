@@ -1,0 +1,264 @@
+{
+  "target": {
+    "key": {
+      "annotation_manifest": "sealed-v1:blake3:510b94386f410d3af15964d82ca9421160097e6cb7ded444fc94d6d961d34ddb",
+      "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+      "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+      "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+    },
+    "selector": {
+      "end": 57,
+      "start": 0
+    },
+    "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+  },
+  "raw_manifest": "blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be",
+  "missing_before_click": {
+    "session": "d4afaba3-0528-474c-8e04-38c367298d04",
+    "generation": "39534df5-3c56-477f-85f9-4d36f8860644",
+    "admissions": [
+      {
+        "error": null,
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:10bcf92c9e7cf4296cf9012ecc6f050cb605d36a6ade015fc27c41d7f5c6ea06",
+          "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+          "node": "27e267ef-54d4-4c93-be20-3478e6745d1e",
+          "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+        },
+        "occurrence": 0,
+        "title": "M5 B",
+        "url": "http://127.0.0.1:36435/B"
+      },
+      {
+        "error": null,
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:510b94386f410d3af15964d82ca9421160097e6cb7ded444fc94d6d961d34ddb",
+          "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+          "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+          "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+        },
+        "occurrence": 0,
+        "title": "M5 A",
+        "url": "http://127.0.0.1:36435/A"
+      },
+      {
+        "error": null,
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:175ccbceb3c7b3839952c96ccef3c505afc5a79fea701ca90140ba1249cea14d",
+          "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+          "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+          "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+        },
+        "occurrence": 1,
+        "title": "M5 A",
+        "url": "http://127.0.0.1:36435/A"
+      }
+    ],
+    "reader_scope": {
+      "schema": "turnstone.m5-reader-scope/v1",
+      "selected": null
+    },
+    "readers": [
+      {
+        "content": null,
+        "engine": null,
+        "error": "Unlock the profile to read private saved sources",
+        "node": "57b04cf4-67d5-497c-a028-1dba4121b5de",
+        "phase": "Error",
+        "rendered_document": null,
+        "target": {
+          "key": {
+            "annotation_manifest": "sealed-v1:blake3:175ccbceb3c7b3839952c96ccef3c505afc5a79fea701ca90140ba1249cea14d",
+            "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+            "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+            "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+          },
+          "selector": {
+            "end": 59,
+            "start": 0
+          },
+          "text_hash": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+        },
+        "url": "mere://saved-source/sealed-v1/d4afaba3-0528-474c-8e04-38c367298d04/980aa24a-2b44-4cd7-a530-fc490522ab6c/e4c42408-e9e7-4da2-9962-9d05a24ca3df/175ccbceb3c7b3839952c96ccef3c505afc5a79fea701ca90140ba1249cea14d/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d?start=0&end=59"
+      },
+      {
+        "content": null,
+        "engine": null,
+        "error": "Unlock the profile to read private saved sources",
+        "node": "b74a2e02-8ea3-45f8-8ce5-193857708fd2",
+        "phase": "Error",
+        "rendered_document": null,
+        "target": {
+          "key": {
+            "annotation_manifest": "sealed-v1:blake3:510b94386f410d3af15964d82ca9421160097e6cb7ded444fc94d6d961d34ddb",
+            "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+            "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+            "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+          },
+          "selector": {
+            "end": 57,
+            "start": 0
+          },
+          "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+        },
+        "url": "mere://saved-source/sealed-v1/d4afaba3-0528-474c-8e04-38c367298d04/980aa24a-2b44-4cd7-a530-fc490522ab6c/e4c42408-e9e7-4da2-9962-9d05a24ca3df/510b94386f410d3af15964d82ca9421160097e6cb7ded444fc94d6d961d34ddb/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57"
+      }
+    ],
+    "address_events": {
+      "dropped": 0,
+      "events": [
+        [
+          1,
+          null
+        ]
+      ],
+      "overflow": false,
+      "schema": "turnstone.m5-address-events/v1",
+      "total": 1
+    },
+    "reader_open_events": {
+      "dropped": 0,
+      "events": [
+        [
+          1,
+          null
+        ]
+      ],
+      "overflow": false,
+      "schema": "turnstone.m5-reader-open-events/v1",
+      "total": 1
+    }
+  },
+  "missing_A1_open": {
+    "session": "d4afaba3-0528-474c-8e04-38c367298d04",
+    "generation": "39534df5-3c56-477f-85f9-4d36f8860644",
+    "admissions": [
+      {
+        "error": null,
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:10bcf92c9e7cf4296cf9012ecc6f050cb605d36a6ade015fc27c41d7f5c6ea06",
+          "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+          "node": "27e267ef-54d4-4c93-be20-3478e6745d1e",
+          "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+        },
+        "occurrence": 0,
+        "title": "M5 B",
+        "url": "http://127.0.0.1:36435/B"
+      },
+      {
+        "error": null,
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:510b94386f410d3af15964d82ca9421160097e6cb7ded444fc94d6d961d34ddb",
+          "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+          "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+          "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+        },
+        "occurrence": 0,
+        "title": "M5 A",
+        "url": "http://127.0.0.1:36435/A"
+      },
+      {
+        "error": null,
+        "key": {
+          "annotation_manifest": "sealed-v1:blake3:175ccbceb3c7b3839952c96ccef3c505afc5a79fea701ca90140ba1249cea14d",
+          "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+          "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+          "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+        },
+        "occurrence": 1,
+        "title": "M5 A",
+        "url": "http://127.0.0.1:36435/A"
+      }
+    ],
+    "reader_scope": {
+      "schema": "turnstone.m5-reader-scope/v1",
+      "selected": null
+    },
+    "readers": [
+      {
+        "content": null,
+        "engine": null,
+        "error": "Unlock the profile to read private saved sources",
+        "node": "57b04cf4-67d5-497c-a028-1dba4121b5de",
+        "phase": "Error",
+        "rendered_document": null,
+        "target": {
+          "key": {
+            "annotation_manifest": "sealed-v1:blake3:175ccbceb3c7b3839952c96ccef3c505afc5a79fea701ca90140ba1249cea14d",
+            "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+            "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+            "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+          },
+          "selector": {
+            "end": 59,
+            "start": 0
+          },
+          "text_hash": "blake3:ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d"
+        },
+        "url": "mere://saved-source/sealed-v1/d4afaba3-0528-474c-8e04-38c367298d04/980aa24a-2b44-4cd7-a530-fc490522ab6c/e4c42408-e9e7-4da2-9962-9d05a24ca3df/175ccbceb3c7b3839952c96ccef3c505afc5a79fea701ca90140ba1249cea14d/ab4bfade17d364cb534ba2be301724352ebf2c51b3a3a34e165e95b78c838d4d?start=0&end=59"
+      },
+      {
+        "content": null,
+        "engine": null,
+        "error": "sealed source custody or integrity refusal: no local source resolved the sealed blob for manifest blake3:cc4da8c34e841076ce26e99db289da5fe58413ab0950cc2e105c8be4d552e1be",
+        "node": "b74a2e02-8ea3-45f8-8ce5-193857708fd2",
+        "phase": "Error",
+        "rendered_document": null,
+        "target": {
+          "key": {
+            "annotation_manifest": "sealed-v1:blake3:510b94386f410d3af15964d82ca9421160097e6cb7ded444fc94d6d961d34ddb",
+            "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+            "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+            "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+          },
+          "selector": {
+            "end": 57,
+            "start": 0
+          },
+          "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+        },
+        "url": "mere://saved-source/sealed-v1/d4afaba3-0528-474c-8e04-38c367298d04/980aa24a-2b44-4cd7-a530-fc490522ab6c/e4c42408-e9e7-4da2-9962-9d05a24ca3df/510b94386f410d3af15964d82ca9421160097e6cb7ded444fc94d6d961d34ddb/5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e?start=0&end=57"
+      }
+    ],
+    "address_events": {
+      "dropped": 0,
+      "events": [
+        [
+          1,
+          null
+        ]
+      ],
+      "overflow": false,
+      "schema": "turnstone.m5-address-events/v1",
+      "total": 1
+    },
+    "reader_open_events": {
+      "dropped": 0,
+      "events": [
+        [
+          1,
+          null
+        ],
+        [
+          2,
+          {
+            "key": {
+              "annotation_manifest": "sealed-v1:blake3:510b94386f410d3af15964d82ca9421160097e6cb7ded444fc94d6d961d34ddb",
+              "graph": "980aa24a-2b44-4cd7-a530-fc490522ab6c",
+              "node": "e4c42408-e9e7-4da2-9962-9d05a24ca3df",
+              "session": "d4afaba3-0528-474c-8e04-38c367298d04"
+            },
+            "selector": {
+              "end": 57,
+              "start": 0
+            },
+            "text_hash": "blake3:5a31c2e386e70c48770e6d3548c218ce81d928d2eb352d53901a95502582526e"
+          }
+        ]
+      ],
+      "overflow": false,
+      "schema": "turnstone.m5-reader-open-events/v1",
+      "total": 2
+    }
+  }
+}

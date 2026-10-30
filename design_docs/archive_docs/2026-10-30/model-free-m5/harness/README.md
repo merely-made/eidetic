@@ -1,12 +1,12 @@
 # M5 native qualification harness
 
 This bundle preserves the executable Python harness, scenarios, synthetic fixtures,
-validator tests and build guard. Qualification remains pending. The reviewed missing-source driver has been enabled
-and attempted; V failed its graph-inventory boundary. The original guard excluded
-legacy `memory/` but included the sealed owner root. A red regression rejected an
-intermediate exclusion of both roots; the reviewed guard excludes only the exact
-`memory.sealed-sources-v1/` root. No corrected native fault result exists. The
-final verifier remains DRAFT and deliberately refuses acceptance.
+validator tests and build guard. The W intact plus W3 missing-source receipt passed independent standalone
+verification for the recorded Linux source cohort (Turnstone `554f323f`, Mere
+`845fe1c4`, Genet `b7c0bef`). M5/P4a is complete for that bounded cohort. The
+receipt manifest remains `collected-awaiting-verification`; the separate verifier
+and independent audit report PASS. Historical directory names such as
+`m5-missing-draft/` remain for compatibility.
 The sibling directory names are required by the pinned validator imports.
 `source-manifest.json` binds each copied file to its original bytes.
 
@@ -64,27 +64,35 @@ The collector's completion ledger only means evidence was collected. Inspect
 the actual frames and independently validate the owner data, source identities,
 versions, scalar selectors, complete record inventories and computed outputs.
 Visual review records must name the actual reviewer, including Codex when used.
-The copied integration README is historical review-packet text; its referenced
+The integration README describes the final receipt workflow. The earlier
 [fault-ledger review](../review-packets/fault-ledger/fix1-current/fault-ledger-fix1-review.md)
-is retained separately. Historical integration prose saying "human review" must not be used to imply a
-human inspected frames that Codex reviewed.
+is retained separately. Historical prose saying "human review" must not be used
+to imply a human inspected frames that Codex reviewed.
 
 ## Missing source and final receipt
 
 After matching intact seed/reopen processes exit, the reviewed missing-source
 driver operates exclusively on disposable copied stores. V attempted the fault and
-failed the post-fault inventory check because the original guard excluded only
-legacy `memory/` while including `memory.sealed-sources-v1/`. The reviewed guard
-excludes only the exact sealed owner root and checks legacy `memory/`, graph data
-and similarly named siblings. The original V collection remained unchanged. The
-fault result is failed; no corrected native fault run has passed; final receipt
-assembly stays DRAFT. Keep all sibling files in `m5-missing-draft/` together.
+failed the post-fault inventory check because its guard excluded only legacy
+`memory/` while including `memory.sealed-sources-v1/`. The reviewed guard excludes
+the exact sealed owner root and checks legacy `memory/`, graph data and similarly
+named siblings. V remained unchanged. Later, W completed the intact run and W3
+completed the matching missing-source run; that pair passed the final standalone
+receipt verifier and independent audit. Earlier W and W2 fault attempts remain
+failed historical evidence. Keep the reviewed sibling files in `m5-missing-draft/`
+together; the directory name is historical.
 
 `m5-receipt-integration/assemble.py` copies ledger-bound evidence to a separate new
 receipt directory and checks executable bytes while still available. Standalone
 verification later checks their recorded bindings, not absent original binaries.
-The final DRAFT guard must remain until the intact and fault runs, semantic
-checks, visual reviews and independent final review all succeed.
+The final W3 receipt contains 206 ledger-bound files and 62 reviewed frames. The
+standalone verifier binds the recorded executable hashes but does not independently
+rehash binaries omitted from the receipt; the assembler checked those hashes
+against the frozen collection. The target-bound reader-open event is not
+request-ID causal proof. The result does not qualify non-Linux systems, hardware,
+personal custody, power-loss recovery, or general accessibility. Model semantic
+quality remains 8/15. Follow-up work can improve clipped labels and automatic
+restored-pane recovery without reopening this milestone.
 
 The Python unit tests in each directory can run with
 `python3 -m unittest discover -v` from that directory. They check harness behavior;

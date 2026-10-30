@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-11
 **Status (2026-10-30):** active plan, owned by the independent Eidetic
-repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), M1–M4 landed; M5 in progress.**
+repository. **P4a complete for the recorded Linux source cohort: M1–M5 landed.**
 The preceding producer and model receipts keep their bounded historical scope. The bounded custody connection and first producer-to-retention
 paths below have published suppliers and locally qualified Turnstone integration.
 Focused checks and bounded headed macOS receipt runs qualify saved-document
@@ -17,7 +17,8 @@ full-owner authoring. Personal-vault migration and broader host gates remain
 separate.
 Turnstone's complete saved-source research workflow and authored Knot note
 join have bounded macOS receipts, distinct from portable selected-content
-transfer. The first Fleece portable-clip draft has
+transfer. P4a/M1–M5 is now complete for the recorded Linux source cohort; later
+work remains scoped to the applicable host and source receipts. The first Fleece portable-clip draft has
 native transfer tests and browser compilation. Turnstone now qualifies native
 selected text/WAV receiving, restart, local playback and onward copy; the broader phases
 and remaining host checkpoints stay open. The first browser encounter slice
@@ -726,10 +727,10 @@ Runtime observations, retained clips/notes and rebuildable indexes keep separate
 lifecycles. A suggestion can be queryable at its declared keeping tier without
 becoming a personal tag or requiring an explicit clip-promotion operation.
 
-### P4a. Next milestone: model-free retained research
+### P4a. Model-free retained research
 
-**Status (2026-10-30): M1–M4 landed; M5 in progress.**
-This is the next Eidetic milestone. It advances P4's evidence and retrieval
+**Status (2026-10-30): M1–M5 complete for the recorded Linux source cohort.**
+This milestone advances P4's evidence and retrieval
 capabilities independently of model execution; it does not close the remaining
 P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
 
@@ -756,12 +757,13 @@ plan, grounded in the current code and the cross-source work we should keep. be
 sure to check upstream first!" The milestone follows the preceding agreed
 model-free baseline. The API names, phase boundaries and initial query profile
 below are planning choices, not additional quoted rulings.
-Links: area recall · plans P4a · summary Model-free retained research is the next milestone.
+Links: area recall · plans P4a · summary Model-free retained research is complete for the recorded Linux source cohort.
 
 For implementation, use `superpowers:executing-plans` or the user's chosen
-execution workflow task by task. Checkboxes below remain open until their
-specific deliverables and checks pass. M4 structured queries are landed; M5
-product/restart qualification remains open.
+execution workflow task by task. Checkboxes remain open until their specific
+deliverables and checks pass. M4 structured queries and M5 product/restart
+qualification are complete for the recorded Linux cohort; broader portability
+and custody claims remain outside that result.
 
 #### Findings: upstream basis and retained work, 2026-10-26
 
@@ -1116,8 +1118,9 @@ Provider, host regression, Wasm and optional-inference checks pass, with scoped
 review fixes covered separately in the
 [M3 receipt archive](../../archive_docs/receipts/2026-10-11_eidetic_development_plan_receipts.md#2026-10-30-retained-research).
 Stored capture and clip fixtures establish exact local reads and withdrawal
-refusal. They do not establish headed use or network-disabled cold restart;
-those remain M5. M4 structured queries are described below.
+refusal. M5 later qualified headed use and network-disabled cold restart for its
+recorded Linux cohort; broader host claims remain separate. M4 structured queries
+are described below.
 
 
 #### M4. Answer the supported structured questions
@@ -1294,82 +1297,64 @@ refused admission. Limits remain visible and configurable.
 Core/storage/evaluator, Wasm, production default/inference and full native
 library gates pass. The final cross-layer review and its diagnostic/test fixes
 are recorded in the dated receipt archive, including failed runs and deferred
-coverage gaps. These are source and library/actor qualifications; headed use,
-independent custody-process restart and network-disabled product acceptance
-remain M5. The portable test sealer is not cryptographic product qualification.
+coverage gaps. These are source and library/actor qualifications; M5 separately
+qualified headed use, independent custody-process restart and network-disabled
+product behavior for the recorded Linux cohort. The portable test sealer is not
+cryptographic product qualification.
 
 #### M5. Qualify offline restart and ordinary product use
 
-**Files:** new Turnstone `scenarios/model_free_research_{seed,reopen}.scn`,
-`scripts/verify_model_free_research.py`, existing `src/scenario.rs` and
-`src/shell/drive.rs`; receipts under
-`turnstone/docs/receipts/model_free_research_20261026/`. The script validates a
-receipt from a run; it cannot stand in for performing that run.
+**Files:** the copied and hash-bound harness under
+`design_docs/archive_docs/2026-10-30/model-free-m5/harness/`, with the final
+receipt integration scripts in `harness/m5-receipt-integration/`; the canonical
+narrative receipt is `design_docs/archive_docs/receipts/2026-10-11_eidetic_development_plan_receipts.md`.
+Raw W3 collection and review evidence remains external at
+`/home/markik/Code/testing/m5-final-receipt-20261030-w3/` per DOC_POLICY §8.
 
-- [ ] Extend existing real producer fixtures to retain a capture, actual selected
+- [x] Extend existing real producer fixtures to retain a capture, actual selected
   text and an authored note through their ordinary controls. Record producer
   provenance and source boundaries; do not substitute three synthetic PageText
   rows. Preserve full-source backing privacy during selection and onward export.
-- [ ] Start from isolated model-free stores/configuration, record that model
+- [x] Start from isolated model-free stores/configuration, record that model
   directories are absent, disable acquisition/network access, and stop the
   inference resident while retaining the required existing custody service.
   Record process IDs, exact executable/lock/source hashes and attempted network
   acquisition. Never remove the user's models or personal stores for this gate.
-- [ ] Exercise search, exact source opening, comparison, typed annotation and
+- [x] Exercise search, exact source opening, comparison, typed annotation and
   every structured operation. Save and exit. Remove original fixture sources
   and restart Turnstone and its test custody process; reopen retained sources
   and saved results. Show old/current, missing, withdrawn, scope-switch,
   model-unavailable and over-limit controls through the same UI/actions.
-- [ ] Require reviewed headed evidence and independent byte/record assertions:
+- [x] Require reviewed headed evidence and independent byte/record assertions:
   exact quotations and selected-only retention, replayed totals/groups,
   unchanged historical inputs, zero model-load/generation/acquisition requests,
   bounded no-match wording and no cross-scope rows. A parser-only scenario pass
   or a log line saying “ready” is insufficient.
-- [ ] Freeze the new receipt and commit it with a source-bound report. Run the
-  existing generated-answer compatibility cases separately; keep the 8/15
+- [x] Freeze the source-bound report and harness in the repository and commit
+  them with this plan; retain raw run evidence externally under `/testing` per
+  DOC_POLICY §8. Run generated-answer compatibility separately; keep the 8/15
   semantic result and other platform limits unchanged.
 
-**Progress (2026-10-30):** M1–M4 are landed; M5 remains in progress. Intact
-collection V completed its seed and cold reopen on Turnstone `61c25b0c`: 49 seed
-and 9 cold captures, both independent real-owner inspections passed, the original
-profile remained unchanged, and all 58 frames were reviewed. The visual reports
-note the clipped trailing word “records” with historical count 14 still visible,
-the empty-scope query with no result rows but no explicit empty-state sentence,
-and initial restored-pane identity still pending at capture. V is evidence for
-its frozen source, not for the newer upstream source.
+**Completion (2026-10-30):** M5 passed for the recorded Linux source cohort:
+Turnstone `554f323f`, Mere `845fe1c4` and Genet `b7c0bef`. A later Turnstone
+upstream fetch at `47809a2b` is outside this native receipt; it changes receiving
+tests and shared accessibility production code, and does not change the qualified
+source identity above. The W intact plus W3 missing-source collection passed all
+12 structured operations plus the owner, source and process checks;
+62 actual frames were reviewed, and the independent standalone receipt verifier
+and final audit passed. The manifest remains `collected-awaiting-verification`;
+PASS is the separate verifier/audit result. The recorded-source host suite passed
+1,403 tests, 0 failures and 21 ignored.
 
-V's disposable-copy missing-source attempt failed its graph-inventory boundary.
-The A1 raw blob was absent, A2 and the complete receipt inventory remained, and
-the original V collection was unchanged. The postcheck found only the sealed owner
-journal changed among 39 inventory entries. The failed run's graph guard excluded only legacy `memory/` while including the
-actual sealed owner root, so it flagged the expected sealed journal change. An
-intermediate candidate excluded both roots and was rejected by a red regression.
-The reviewed correction excludes only the exact `memory.sealed-sources-v1/` root
-and checks legacy memory, graph and similarly named siblings. The helper and
-postcheck each exited 0 in the original failed V run; that does not make the
-overall fault collection pass. The copied Python suites pass 76/0 (5 acceptance,
-3 seed/reopen, 24 missing-source, 44 receipt integration). No corrected native
-fault run has passed; final receipt assembly remains DRAFT.
+The later `47809a2b` receiving check passes 3 fetch-worker and 69
+accessibility-focused tests. These do not extend the frozen native receipt to
+that revision.
 
-A separate process-identity correction preserves U as failed: its aggregate check
-rejected repeated cross-time PID-namespace inode labels even though its ordered
-process/custody lifetimes and distinct sequential scopes were recorded. The
-reviewed replacement checks each process's namespace, cgroup, launcher unit,
-owned scope, invocation and lifetime, and verifies distinct sequential scopes.
-Do not infer kernel namespace reuse from the repeated labels.
-
-The clip owner worker/supplier source correction was published in Turnstone
-`9ec0da11`; the inspector correction and refreshed Settings/projection source
-were published at `61c25b0c`. Its warm full host suite passed 1,402 tests, 0
-failures and 21 ignored (log SHA-256
-`cfc44318b75e27c95a13a2b519632dbc0fe7a9561f04c7c6e9193eff42a8ff63`). This
-result applies to `61c25b0c`, not current upstream. Eidetic `0c89079`, Turnstone
-`554f323f` and Genet `b7c0bef` are now merged. An initial current-source gate
-stopped before compilation while exact Mere `845fe1c4` was unavailable; that
-checkout has since been fetched and a locked build is running with the lockfile
-unchanged. No current-source gate result is available yet. The fault collector
-is enabled after scoped review; its V result is failed and the final verifier
-remains DRAFT.
+The result preserves the known 8/15 model semantic score. It does not qualify
+non-Linux systems, hardware, personal custody, power-loss recovery or general
+accessibility. The receipt binds a target-specific reader-open event, not
+request-ID causality. Follow-ups outside this milestone: improve clipped labels
+and add automatic restored-pane recovery.
 
 **Done when:** all of the milestone goal passes in fresh native processes on
 the recorded platform. Portable shared-library/browser compilation is a separate
@@ -1960,12 +1945,12 @@ The implementation proposals still need these concrete decisions:
   headed UI, browser, assessment/tag or second-device verdict.
 
 
-- **2026-10-30, M5 current findings.** The clip owner worker/supplier and
-  inspector corrections are published; the warm full host suite passed 1,402/0/21
-  ignored on `61c25b0c`. Intact V completed on that frozen source, while its
-  disposable-copy fault attempt failed the graph-inventory boundary. The exact
-  sealed-root correction and 76 copied Python helper tests pass, but no corrected
-  native fault result exists and final receipt assembly remains DRAFT. Current
-  upstream Turnstone `554f323f` and Genet `b7c0bef` are merged; exact Mere
-  `845fe1c4` is fetched and the locked build is running, with no current-source
-  gate result yet. M1–M4 are landed; M5 remains in progress.
+- **2026-10-30, M5 complete for the recorded Linux source cohort.** Turnstone
+  `554f323f` with Mere `845fe1c4` and Genet `b7c0bef` passed the 1,403/0/21 host
+  suite. The W intact plus W3 missing-source collection passed all 12 structured operations plus owner, source and process checks; 62 actual frames
+  were reviewed and the independent standalone receipt verifier and audit passed.
+  The external manifest remains `collected-awaiting-verification`; the receipt
+  excludes binaries whose hashes were checked during assembly. The targeted
+  reader-open event is not request-ID causal proof. M5 leaves the 8/15 model
+  semantic limit, non-Linux/hardware/personal-custody boundaries, clipped labels
+  and restored-pane recovery follow-ups explicit.
