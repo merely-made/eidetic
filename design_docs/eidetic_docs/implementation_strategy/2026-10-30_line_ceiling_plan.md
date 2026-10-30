@@ -125,6 +125,15 @@ An entry without a reason is a configuration error. A physical line is a
 
   Links: amends line-ceiling E2 · summary Repositories install eidetic's tools by tag through prek's cli form; eidetic is not a hook repository.
 
+- **D5. line-ceiling is its own workspace (Mark, 2026-10-30):** "Also 1", the
+  standalone package, over staying a workspace member. `crates/line-ceiling`
+  carries its own `[workspace]` and `Cargo.lock`, so a tagged install fetches
+  only `serde` and `toml`, not eidetic's git sources (murm alone is about
+  1.9 GB of inherited Servo history). Asked with it, for responsa: "Neither;
+  rethink responsa", over git's command-line fetch on machines and CI.
+
+  Links: amends line-ceiling D1 · summary line-ceiling is a standalone package so its install fetches no workspace git sources.
+
 ## Progress
 
 - 2026-10-30: plan written; forks ruled as D1 to D3.
@@ -144,3 +153,13 @@ An entry without a reason is a configuration error. A physical line is a
   passes the pin to cargo as `--tag`, so it pins by tag only: a commit sha
   fails with "failed to find tag". Ruled as D4; the unpushed
   `.pre-commit-hooks.yaml` commit was dropped.
+- 2026-10-30: **E2, second checkpoint.** Tags `line-ceiling-v0.0.1` and
+  `responsa-v0.0.1` pushed at `7971d14`. Through prek on isocosm, both
+  installs (`cargo install --git … --tag … <package> --locked`) timed out at
+  580 s, each still fetching git dependencies: a git install loads the whole
+  eidetic workspace, so it fetches every member's git sources (p2panda,
+  dramatis, murm) whatever the package needs. murm is about 1.9 GB on GitHub
+  and cargo's built-in git fetch is slow on it. The same tagged install by
+  hand with `CARGO_NET_GIT_FETCH_WITH_CLI=true` finished in 87 s, on a cache
+  the earlier attempts had partly filled; a fresh CI machine would fetch murm
+  whole.

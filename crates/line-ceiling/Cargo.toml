@@ -7,16 +7,16 @@ description = "Fails source files over a line ceiling unless excluded by declare
 readme = "README.md"
 keywords = ["lint", "pre-commit", "source-size"]
 categories = ["development-tools", "command-line-utilities"]
-
-[package.edition]
-workspace = true
-
-[package.license]
-workspace = true
+edition = "2024"
+license = "MPL-2.0"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 toml = "1"
 
-[lints]
-workspace = true
+[lints.clippy]
+all = "warn"
+
+# Its own workspace, so a git install fetches only these dependencies and
+# not every git source of eidetic's workspace (line-ceiling plan D5).
+[workspace]
