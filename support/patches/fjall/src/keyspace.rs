@@ -138,7 +138,7 @@ impl Drop for KeyspaceInner {
 
         while self
             .active_background_threads
-            .load(std::sync::atomic::Ordering::Relaxed)
+            .load(std::sync::atomic::Ordering::Acquire)
             > 0
         {
             std::thread::sleep(std::time::Duration::from_micros(100));
@@ -1195,7 +1195,7 @@ mod tests {
     pub fn force_flush_multiple_partitions() -> crate::Result<()> {
         let folder = tempfile::tempdir()?;
 
-        let config = Config::new(folder);
+        let config = Config::new(folder).flush_workers(2);
         let keyspace = Keyspace::create_or_recover(config)?;
         let db = keyspace.open_partition("default", Default::default())?;
         let db2 = keyspace.open_partition("default2", Default::default())?;

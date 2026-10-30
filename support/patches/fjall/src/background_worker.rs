@@ -13,8 +13,9 @@ pub trait Activity {
 pub struct BackgroundWorker<A: Activity> {
     activity: A,
     poison_dart: PoisonDart,
-    thread_counter: Arc<AtomicUsize>,
     stop_signal: StopSignal,
+    // Last: activity and its lease-bearing fields must be dropped first.
+    _completion: WorkerCompletion,
 }
 
 impl<A: Activity> BackgroundWorker<A> {
@@ -24,11 +25,12 @@ impl<A: Activity> BackgroundWorker<A> {
         thread_counter: Arc<AtomicUsize>,
         stop_signal: StopSignal,
     ) -> Self {
+        thread_counter.fetch_add(1, std::sync::atomic::Ordering::AcqRel);
         Self {
             activity,
             poison_dart,
-            thread_counter,
             stop_signal,
+            _completion: WorkerCompletion(thread_counter),
         }
     }
 
@@ -37,9 +39,6 @@ impl<A: Activity> BackgroundWorker<A> {
     /// Does not start a thread; this function is blocking.
     pub fn start(mut self) {
         log::debug!("Starting background worker {:?}", self.activity.name());
-
-        self.thread_counter
-            .fetch_add(1, std::sync::atomic::Ordering::Release);
 
         loop {
             if self.stop_signal.is_stopped() {
@@ -59,9 +58,14 @@ impl<A: Activity> BackgroundWorker<A> {
     }
 }
 
-impl<A: Activity> Drop for BackgroundWorker<A> {
+struct WorkerCompletion(Arc<AtomicUsize>);
+
+impl Drop for WorkerCompletion {
     fn drop(&mut self) {
-        self.thread_counter
-            .fetch_sub(1, std::sync::atomic::Ordering::Release);
+        self.0.fetch_sub(1, std::sync::atomic::Ordering::Release);
     }
 }
+
+#[cfg(test)]
+#[path = "background_worker_lifecycle_tests.rs"]
+mod lifecycle_tests;

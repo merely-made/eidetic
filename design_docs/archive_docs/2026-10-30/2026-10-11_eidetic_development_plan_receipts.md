@@ -1064,3 +1064,49 @@ binds 41 files. All 1,955 indexed archive references verify after the release
 status refresh. The worker plan remains current; only the earlier registry
 proposal is superseded. These are archive/helper checks, not a native acceptance
 result.
+
+
+### Shared clip owner and supplier shutdown ordering
+
+The shared clip worker now has focused source-level evidence for read/write
+serialization, bounded outstanding payloads, queued cancellation, claimed export
+completion and scope/custody validation. Reviews caught and corrected a pending
+Play that could start after Stop, and a queued claimed export that could be lost
+on receiver drop or orderly worker shutdown. The queue was then changed to an
+atomically admitted nonblocking channel after a real first-submit refusal exposed
+contention with the idle worker. Final host qualification still requires the
+received supplier revision, a full host suite and fresh native evidence.
+
+The combined host gate also exposed a timing-sensitive store-lock refusal after
+an independent owner was dropped. Supplier source inspection found two concrete
+shutdown ordering defects: workers were counted only after their spawned thread
+started, and their count was decremented before their lease-bearing activity
+fields were dropped. The small supplier fix registers before spawn and decrements
+through a final completion field after activity destruction; store teardown reads
+that completion with Acquire ordering. It adds no retry or storage-format change.
+The actual holder/interleaving in the failed native B run remains unknown.
+
+Two deterministic tests failed the old registration/drop assertions. The final
+activity-drop test was then refined to start a stopped worker and hold its activity
+destructor, observing the count and lease before release and join. The corrected
+lifecycle tests pass 2/0. The complete revised Fjall library suite passes 33/0,
+and Muniment's Fjall capability gate passes 62/0, including bounded recovery and
+snapshot/iterator lifetime cases. The latter uses the same production code before
+a test-only fixture correction. Independent source review verifies the worker
+and completion ordering and the unchanged external capability leases.
+
+The first full Fjall run failed an older two-partition flush test. An isolated
+committed baseline fails identically. Under the machine CPU quota its default
+flush budget is one task, while that internal test expects one call to flush two
+tasks. The fixture now explicitly selects two flush workers; its assertions,
+production defaults and machine quota are unchanged. Both failed receipts are
+preserved. The passing full-gate log hash is
+`09fac1eaf19b7ddbead18e0928907f4ff5229f724864b6601922b05460962c14`;
+the Muniment gate hash is
+`2e0e549a016b6fa1e8c5f52cadf4d1ab0a8594e8d0908b169e3ea006ee5ae860`.
+
+The release check finds 2.11.2 is still the latest 2.x tag and retains the old
+worker ordering. Fjall 3.1.13 uses a different worker-pool architecture; its
+separate shutdown issue does not provide a drop-in v2 lease fix. Exact upstream
+references and limits are in the archived lifecycle report. Supplier publication
+and consumer receipt are the next steps. No fresh M5 native result is claimed.

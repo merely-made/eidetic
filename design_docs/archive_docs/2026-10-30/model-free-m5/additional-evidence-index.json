@@ -18658,8 +18658,8 @@
     "turnstone_source_commit": "22628cf9 (after fast-forwarding current upstream 5b7dacd9)",
     "genet_upstream": "5fdee500",
     "lock_sha256": "e939676c1b7a9116fd8c68539e947c0e4e3b121c7493ff0524a4f0be84176b30",
-    "source_bytes": "Owner source and test source match the report hashes 3ae7bde2\u20260660f1ee and 6f6f6201\u202685544a20 at commit 22628cf9.",
-    "gate_sequence": "Red-1 wrong address mode; Red-2 reproduced stale Saved Sources structured rows; Green-1 passed 1 test on old base; Upstream-1 failed before compile due to missing offline Genet; Upstream-2 on current upstream passed with fix1, log SHA-256 1634b266\u2026ec7f7e4.",
+    "source_bytes": "Owner source and test source match the report hashes 3ae7bde2…0660f1ee and 6f6f6201…85544a20 at commit 22628cf9.",
+    "gate_sequence": "Red-1 wrong address mode; Red-2 reproduced stale Saved Sources structured rows; Green-1 passed 1 test on old base; Upstream-1 failed before compile due to missing offline Genet; Upstream-2 on current upstream passed with fix1, log SHA-256 1634b266…ec7f7e4.",
     "qualification": "No new native qualification; separate fresh native build is running."
   },
   "visible_negatives_A_and_refusal_publication": [
@@ -19572,7 +19572,7 @@
   ],
   "intact_Q_boundary": {
     "seed": "Seed phase passed and captured 49 frames; 1,835 frames were presented and 0 were blank. This does not establish cold-reopen success.",
-    "cold_reopen": "Failed on the generic assertion text \u201cM5 authored Redshank note\u201d despite the actual Note Fleece body and frame. Visual review found three blocks: cold A1/A2 show only the graph without Read document, and the model-unavailable popup obscures its message.",
+    "cold_reopen": "Failed on the generic assertion text “M5 authored Redshank note” despite the actual Note Fleece body and frame. Visual review found three blocks: cold A1/A2 show only the graph without Read document, and the model-unavailable popup obscures its message.",
     "visual_review": "Seed visual review has 38 passes. Reopen visual review has 3 blocks.",
     "scope": "Full Q collection failed. No owner inspection or fault acceptance is established. A separate cold-only diagnostic is being staged; this archived Q copy was not modified.",
     "archive_boundary": "Phase/observer JSON and logs are archived with hashes. PNG frames and synthetic fixture HTML remain external and are bound by hashes. Stores, keys, custody/private material, caches, clips, audio and binaries are excluded."
@@ -20138,7 +20138,7 @@
     "stable_packet": "Review and source artifacts are scoped design evidence. Custody-copy report records 22 passing unit tests; its exact output is in the review markdown, with no separate 22-test log found. Custody runner pin log records 43 passing tests.",
     "qualification": "B/C are diagnostics only. No full cold acceptance, owner inspection, or fault acceptance is established; fault guard remains false and final status remains DRAFT.",
     "exclusions": "No profile or storage inventories, keys/private data, binaries, socket payloads, or PNG/HTML payloads copied. External frames/fixtures are referenced by hashes.",
-    "source_concurrency": "C source-integrity evidence shows unchanged original files and socket IDs. The concurrency hazard is established, but B\u2019s actual holder was not identified; no file-lock artifact is copied or claimed.",
+    "source_concurrency": "C source-integrity evidence shows unchanged original files and socket IDs. The concurrency hazard is established, but B’s actual holder was not identified; no file-lock artifact is copied or claimed.",
     "root_visual_review": "Root inspected the exact C A1/A2 frames. The completed C diagnostic remains capture-only and does not qualify clip, model-unavailable, or error panes.",
     "test_log_availability": "The retained verifier 43-test log is indexed from the existing archive harness area. The 22-test custody-copy output is present verbatim in its review markdown; no separate 22-test log or modified-files report was present in the SDD/testing locations."
   },
@@ -20269,5 +20269,669 @@
     "sha256": "83407c99bdbf28db2883fb6abc7dd852bd711adf5fe4b12a7c092bd01ff212c2",
     "bytes": 1114,
     "scope": "Release and issue status only; pinned v2 applicability remains in M4 report"
-  }
+  },
+  "current_clip_owner_worker_and_supplier_review_packets": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-export-claim-placement.md",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-export-claim-placement.md",
+      "sha256": "a26931981e102192033ce1df18f26bf4888b96d264700570bcdf6e6e4145973e",
+      "bytes": 2263,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-fjall-worker-lifecycle-report.md",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-fjall-worker-lifecycle-report.md",
+      "sha256": "fcf3840fd57637f16f20804060c77a9855c592796466d310db7fa6a4d57d291b",
+      "bytes": 4478,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-fjall-worker-lifecycle-review.md",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-fjall-worker-lifecycle-review.md",
+      "sha256": "18e00114016be0a4233a430cd2954aab913ecdff97ad266ea2b2087886c95d2e",
+      "bytes": 1769,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-core-fix1.sha256",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-core-fix1.sha256",
+      "sha256": "da5737e8e0a405d4448ca6c35806eff1014d543752c2c06dc3ebddffe1756ce1",
+      "bytes": 877,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-core-fix2.sha256",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-core-fix2.sha256",
+      "sha256": "c4d1043f02cd6635df7cd0e1254f6ac0ddd9d66840a60c9de8b01b999cf5e949",
+      "bytes": 989,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-core-fix3.sha256",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-core-fix3.sha256",
+      "sha256": "8d4b701100d3d9017ec5cafcb7dc00ea5a1fd473c9671e4e7fd85dd75cb14ba8",
+      "bytes": 989,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-core-fix4.sha256",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-core-fix4.sha256",
+      "sha256": "5df166485e4d92df6a79138c81fd56171c7512ff77c2d189936bbfb942122156",
+      "bytes": 989,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-core-freeze.sha256",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-core-freeze.sha256",
+      "sha256": "857a5459db7153c554fc7ebde904c2567cb49401e41b9c092b5ee97172e6162b",
+      "bytes": 877,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-final-review.md",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-final-review.md",
+      "sha256": "b3ffd089e314b37e1df3d3dbc1f7cecd7076d1e130249af4c90767bd0c1de781",
+      "bytes": 9907,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-scenario-review.md",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-scenario-review.md",
+      "sha256": "d70fd74046f14e76141a305cb855cd62389eb88de2d59fb18c098a6f1ec1d0d5",
+      "bytes": 2599,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-shell-fix1.sha256",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-shell-fix1.sha256",
+      "sha256": "ce494f2cf3024533db9735f349cdba987e3f016c0a0970eca73f7d273b3d649f",
+      "bytes": 2148,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-shell-freeze.sha256",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-shell-freeze.sha256",
+      "sha256": "f221f0846d7dda157b6c1d4d9b129091cdadf1e77a6b5095e4e67accad8b6465",
+      "bytes": 2148,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-owner-shell-review.md",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-owner-shell-review.md",
+      "sha256": "1dacfbb61a62c5090d1b3163e2e8fe50a46a6c6a94449c52c971369fb9d2a480",
+      "bytes": 3237,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-producer-bounds-root-review.md",
+      "archive_file": "review-packets/current-clip-owner-supplier-review/m5-producer-bounds-root-review.md",
+      "sha256": "45d6d5ee141c18a66adba236028f33241192fb280533244d90fb3fb1d838f0bd",
+      "bytes": 2050,
+      "copied_now": true,
+      "status": "current reviewed source/review packet"
+    }
+  ],
+  "clip_owner_worker_and_supplier_gate_receipts": [
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-1.json",
+      "sha256": "d949b8abe202f90e6bf493e2d11277df2d986682ef8e7d46e33781ae5381c63a",
+      "bytes": 1493,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-1.log",
+      "sha256": "0c05e949c1d4d14e89e624b6383b330cc667430c65ef7f7c4fd32d616df8b7de",
+      "bytes": 42741,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-2.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-2.json",
+      "sha256": "52a21e71a817d521d89284f37b8db6e34514f0368cee5be06cbb3259a609be40",
+      "bytes": 1491,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-2.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-2.log",
+      "sha256": "e01d57c0f9d451cd740a529f7b60e2465f210fb70b6d1f18bda646cf5488ed0d",
+      "bytes": 63814,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-3.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-3.json",
+      "sha256": "be20a92d12ed6ba080d6c6038422666ab6b52711af35de273cf0ea4e5bcb2350",
+      "bytes": 1493,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-3.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-3.log",
+      "sha256": "c65321f54e9529845326752a94b0259989158828165bb9ae6620a72ea1c14d4e",
+      "bytes": 41594,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-4.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-4.json",
+      "sha256": "6db3cfa931e6e87b64f22c52ebae6242e6168c202a45750d1ff1577bf6c49e56",
+      "bytes": 1491,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "worker integration focused gate completed; 23 passed, 0 failed, 1 ignored; provisional, full final suite pending"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-4.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-4.log",
+      "sha256": "12b0169118c420bcfc2935589b6be4bc8321999a220a65fe63cea0c995b7db3a",
+      "bytes": 63784,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-5.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-5.json",
+      "sha256": "d6a78b1630fd7ce9685a00420a98b3940b331ff5e56af87dc1b3dfe3cc2dca76",
+      "bytes": 1494,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-all-operation-integration-5.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-all-operation-integration-5.log",
+      "sha256": "a188262d9ddf83987b8cdd4b774e5ff3fea2ba754382e6f6c61cdc59704cd912",
+      "bytes": 65294,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-claim-order-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-claim-order-1.json",
+      "sha256": "bf1a9508a0dc40f8cc8fe4a6246976b5493eb33b59dc504024e5e77fdf81c702",
+      "bytes": 1502,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-claim-order-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-claim-order-1.log",
+      "sha256": "ad4e06be6e79150728d0c4c5609ccd41f0799b64eaa1bc08bbd742c9929cdbe8",
+      "bytes": 61048,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-core-green-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-core-green-1.json",
+      "sha256": "90d1bc38c7598935a7c06524859ca10e2233358a4348d5425f28d5aa604bad01",
+      "bytes": 1669,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-core-green-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-core-green-1.log",
+      "sha256": "7a39d1a264bad81539413d322e15c71ea09bf68bed07e5fb777ede964ebf048e",
+      "bytes": 61255,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-core-green-2.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-core-green-2.json",
+      "sha256": "2a26a1af150ef60554093a31f407615849a0a453f5ba6a65998d3cbf3b674f4a",
+      "bytes": 1477,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-core-green-2.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-core-green-2.log",
+      "sha256": "bf1f94e7c6dc8da2067ecf756628cf43f0981741dd6e9e3f8d273508246c59bf",
+      "bytes": 61587,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-overlap-red-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-overlap-red-1.json",
+      "sha256": "a0e9975aa0ab2a64143e722823b5241841673304cb6457eedf2f98a1c142948c",
+      "bytes": 1600,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed red gate; zero tests matched (0 passed, 0 failed); preserved as a failed readiness signal"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-overlap-red-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-overlap-red-1.log",
+      "sha256": "55af497c93c442f28e5046e9113b527f6c9831acb084628fd840cefdc9931ba6",
+      "bytes": 61106,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-overlap-red-2.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-overlap-red-2.json",
+      "sha256": "bb78e9da15679a3420959a621dd9cd3c0c16ee9c2188fb3556916698026680cb",
+      "bytes": 1672,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-overlap-red-2.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-overlap-red-2.log",
+      "sha256": "d42eee57261f86d90a1b318de17af6840fbe5b0584e7eb277f075c60a2e78497",
+      "bytes": 61758,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-read-integration-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-read-integration-1.json",
+      "sha256": "3dda08f6ef553f41026651c1e9235774bf45473b8ffaad756512dbf950fda076",
+      "bytes": 1495,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-read-integration-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-read-integration-1.log",
+      "sha256": "1129ff12cdc5dd48e904aa448976cda059b78e9d66b98ec941c9e47b5fcb60a5",
+      "bytes": 61800,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-release-diagnostic-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-release-diagnostic-1.json",
+      "sha256": "842e674931ea6492c8c4f044d3b4651782f4eb9b4665dce33f352147ccb2dea6",
+      "bytes": 1663,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-owner-release-diagnostic-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-owner-release-diagnostic-1.log",
+      "sha256": "2104dd3a6187733c0936c5dc32008fbb50a3cbfbddf82547935689cdff712933",
+      "bytes": 61140,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-play-stop-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-play-stop-1.json",
+      "sha256": "0bd4dd7e7986f370c4476f9b55a920ad1295a41ee89fca6e89bc3478ac259aae",
+      "bytes": 1526,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-play-stop-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-play-stop-1.log",
+      "sha256": "207d3490498041248ac0e4e3fe2450a7b8ba9ff943eaf65887b4532999894b3e",
+      "bytes": 62585,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-process-reopen-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-process-reopen-1.json",
+      "sha256": "66596ef9732d960ae28fc80a10481fbc1dd77b36143e95f7a5b3adfc9711a6ef",
+      "bytes": 1529,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-process-reopen-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-process-reopen-1.log",
+      "sha256": "d24ea66433d79bb7a0af3709677d2d54bd7acaa16be1bc5847bf8a4b19ff50f4",
+      "bytes": 62607,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-producer-bounds-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-producer-bounds-1.json",
+      "sha256": "2e6164b16858af15f835564875c7246eb8cbb2e7663613d3d6468834c9bdaf16",
+      "bytes": 1469,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-producer-bounds-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-producer-bounds-1.log",
+      "sha256": "10a60a7f1cc13e5236edc624e0acd902388a70ea173b177f7c422aef415f3c32",
+      "bytes": 61337,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-queue-fix4-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-queue-fix4-1.json",
+      "sha256": "11f8e8cd4ec8f1430e5296d38fadec33a0c838f3bbc8d25a83871d60f486c201",
+      "bytes": 1488,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-queue-fix4-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-queue-fix4-1.log",
+      "sha256": "4cff9e4981d563f57f7fa113da40d3f4d4b564dcb5fe1ff77b64c27ccff58401",
+      "bytes": 63488,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-reader-wait-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-reader-wait-1.json",
+      "sha256": "4bae91dc8cfbb5d55cb8f92935715c5481da14ef5b9205a96b700644f941597f",
+      "bytes": 1556,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-reader-wait-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-reader-wait-1.log",
+      "sha256": "1794628a5922c17082ec5575acb74c6fd96f77ce839588f2d0d5945e5489c541",
+      "bytes": 62608,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-research-migration-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-research-migration-1.json",
+      "sha256": "91ccc40a57c82febda8c07c3d1f21287fbfd9190ecf1cb87601431e074743634",
+      "bytes": 1475,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-research-migration-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-research-migration-1.log",
+      "sha256": "1af80f7d82375cb275343ccb73741d6f15c59691f43f4c9f29657fc42a6c7c55",
+      "bytes": 62093,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-research-migration-2.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-research-migration-2.json",
+      "sha256": "bf8cece6e0c561dce24d46f585de9135f46920cf9a24164a66a7c809040ffed2",
+      "bytes": 1473,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-research-migration-2.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-research-migration-2.log",
+      "sha256": "4303340bf1ee4d5e61a3100ae3c9f3eea8de01b78a71766816965998e1a67559",
+      "bytes": 61549,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-trail-research-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-trail-research-1.json",
+      "sha256": "193c35e3617dc4ca0251b307067b813ffbc85f2715b5b36c4d11ec4d7794b177",
+      "bytes": 1501,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-trail-research-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-trail-research-1.log",
+      "sha256": "6bbf81d8d0b55c6c283e556e9f57202cc6f5033a3caa62c5c707f0bf0880ea19",
+      "bytes": 61078,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-wait-parser-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-wait-parser-1.json",
+      "sha256": "36c80f116e10878986fe8c2044ea5b3363bfb5c9addf35adb10f898b9034aea3",
+      "bytes": 1512,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-wait-parser-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-wait-parser-1.log",
+      "sha256": "a5bf61c70994ed960db56827843ced1d5d5dc235ddf1cabd902fcab2ed9535f6",
+      "bytes": 61051,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-wait-status-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-wait-status-1.json",
+      "sha256": "831ff82316c1c1b1201bc9e1cfe927cb04b81e90f6c292718e498c49d4e52128",
+      "bytes": 1562,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-clip-wait-status-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-clip-wait-status-1.log",
+      "sha256": "56b4c2f08ed93d15040707d0095c41f69a2173254630d3df94ef1d94da9b5b1f",
+      "bytes": 61114,
+      "copied_now": true,
+      "result_group": "worker integration gate; provisional, full final suite pending",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-force-flush-baseline-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-force-flush-baseline-1.json",
+      "sha256": "f8e6a8de29903aabe2239fad94065c318f305da5fccb7c4e217fdc8d39bb765e",
+      "bytes": 1560,
+      "copied_now": true,
+      "result_group": "supplier lifecycle diagnostic/gate; completed",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-force-flush-baseline-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-force-flush-baseline-1.log",
+      "sha256": "5bb139758eb9d55d374575e5c28572184aa4b3ac467cc2cbde8dc8825838cb5a",
+      "bytes": 4028,
+      "copied_now": true,
+      "result_group": "supplier lifecycle diagnostic/gate; completed",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-force-flush-diagnostic-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-force-flush-diagnostic-1.json",
+      "sha256": "b39562afb97ae8a1b3714cef76620ccb95afcc8f6a5a18086f61a0fe81b7c336",
+      "bytes": 1562,
+      "copied_now": true,
+      "result_group": "supplier lifecycle diagnostic/gate; completed",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-force-flush-diagnostic-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-force-flush-diagnostic-1.log",
+      "sha256": "d79b4dc81d45a61bb23c416e0d93eb2c2b7e353be022890471178b566c8a68db",
+      "bytes": 3778,
+      "copied_now": true,
+      "result_group": "supplier lifecycle diagnostic/gate; completed",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-worker-lifecycle-full-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-worker-lifecycle-full-1.json",
+      "sha256": "caecffe84658478f3df37a78ee06c328b5900ccc6cd1250a1c88b8f38ba30721",
+      "bytes": 1417,
+      "copied_now": true,
+      "result_group": "supplier lifecycle diagnostic/gate; completed",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-worker-lifecycle-full-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-worker-lifecycle-full-1.log",
+      "sha256": "5845d767eaad2f88b58811200a53cfd769ea6448ccead6c7ee6acb9d78ab7330",
+      "bytes": 5987,
+      "copied_now": true,
+      "result_group": "supplier lifecycle diagnostic/gate; completed",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-worker-lifecycle-full-2.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-worker-lifecycle-full-2.json",
+      "sha256": "9e3a0493da06af20191b93fd08777dfe8da81f028fa3673b3b091d890cb72148",
+      "bytes": 1415,
+      "copied_now": true,
+      "result_group": "supplier lifecycle/capabilities gate; completed",
+      "status": "supplier lifecycle focused gate completed; 33 passed, 0 failed"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-worker-lifecycle-full-2.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-worker-lifecycle-full-2.log",
+      "sha256": "09fac1eaf19b7ddbead18e0928907f4ff5229f724864b6601922b05460962c14",
+      "bytes": 5696,
+      "copied_now": true,
+      "result_group": "supplier lifecycle/capabilities gate; completed",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-worker-lifecycle-green-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-worker-lifecycle-green-1.json",
+      "sha256": "9d1b09df14482b33ecd3c6dfdff2106f93adae9ac9bb7319b545af6bedd045e7",
+      "bytes": 1502,
+      "copied_now": true,
+      "result_group": "supplier lifecycle/capabilities gate; completed",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-worker-lifecycle-green-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-worker-lifecycle-green-1.log",
+      "sha256": "a05846e123e3990f6063acc0bb8772078b9a2a6f4c545c6bbdca91862e356972",
+      "bytes": 3617,
+      "copied_now": true,
+      "result_group": "supplier lifecycle/capabilities gate; completed",
+      "status": "completed; exit_code=0"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-worker-lifecycle-red-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-worker-lifecycle-red-1.json",
+      "sha256": "b5b701bd783c6127e6ef89dc7bdbfaf58d9e1c85f1e09617e7963379de1168f5",
+      "bytes": 1498,
+      "copied_now": true,
+      "result_group": "supplier lifecycle diagnostic/gate; completed",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-fjall-worker-lifecycle-red-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-fjall-worker-lifecycle-red-1.log",
+      "sha256": "ba37383c8b679914b70d886b9310875e2a6d7a87ae70c5b5d73ba6c217aadd04",
+      "bytes": 4823,
+      "copied_now": true,
+      "result_group": "supplier lifecycle diagnostic/gate; completed",
+      "status": "completed; exit_code=101"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-muniment-fjall-capabilities-1.json",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-muniment-fjall-capabilities-1.json",
+      "sha256": "ed77deec5149ffbbe84e4a2d57f88c11e526ec39598ddd37885a3d890c8c6241",
+      "bytes": 1431,
+      "copied_now": true,
+      "result_group": "supplier lifecycle/capabilities gate; completed",
+      "status": "Muniment/Fjall capability gate completed; 62 passed, 0 failed"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-muniment-fjall-capabilities-1.log",
+      "archive_file": "gate-receipts/clip-owner-worker-supplier/m5-muniment-fjall-capabilities-1.log",
+      "sha256": "2e0e549a016b6fa1e8c5f52cadf4d1ab0a8594e8d0908b169e3ea006ee5ae860",
+      "bytes": 12087,
+      "copied_now": true,
+      "result_group": "supplier lifecycle/capabilities gate; completed",
+      "status": "completed; exit_code=0"
+    }
+  ],
+  "cold_owner_publication_metadata_and_script_only": [
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/publication.json",
+      "archive_file": "publication/cold-owner-metadata-script-only/publication.json",
+      "sha256": "7110937176f6c71675d532db8bf05c036542c1e334357a7fab404cd508b9943e",
+      "bytes": 527,
+      "copied_now": true,
+      "status": "publication metadata/script only; no bundle copied"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/bundles.json",
+      "archive_file": "publication/cold-owner-metadata-script-only/bundles.json",
+      "sha256": "3d2fdd087b57fc0bc8ab730338d84e6b0019e90e627b18c73fdce062282ab9f4",
+      "bytes": 237,
+      "copied_now": true,
+      "status": "publication metadata/script only; no bundle copied"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-publication-20261030-cold-owner/publish_existing.py",
+      "archive_file": "publication/cold-owner-metadata-script-only/publish_existing.py",
+      "sha256": "dd9185dfa12b9a8d48e7928140e37ecd68d2700d15f9ebff92d88e7baf2ba0ad",
+      "bytes": 2011,
+      "copied_now": true,
+      "status": "publication metadata/script only; no bundle copied"
+    }
+  ]
 }

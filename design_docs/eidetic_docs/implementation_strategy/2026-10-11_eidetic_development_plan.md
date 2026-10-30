@@ -1370,6 +1370,14 @@ outcome. This is not a rollback guarantee or an atomic guarantee against externa
 revocation that has not yet been observed locally. Implementation and tests are
 in progress.
 
+The worker implementation has focused regression evidence and independent source
+reviews. Its combined gate exposed a second store-lifetime issue: Fjall's worker
+counter could signal completion before its owner lease was released. The supplier
+fix registers workers before spawn and signals completion after their activity
+fields drop. Its Fjall library gate passes 33 tests and the Muniment capability
+gate passes 62. The consumer must receive that revision before final qualification.
+A release audit found no newer 2.x patch containing this fix.
+
 The full retained-reader verifier repair and guarded persistent-store copy have
 passed their focused helper tests. A successful complete native run, independent
 copied-store inspection, missing-source fault run and final receipt verification
