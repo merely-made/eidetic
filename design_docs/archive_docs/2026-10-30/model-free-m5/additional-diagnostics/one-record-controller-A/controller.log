@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_acceptance.py", line 239, in <module>
+    main()
+    ~~~~^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_acceptance.py", line 235, in main
+    execute(args)
+    ~~~~~~~^^^^^^
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_acceptance.py", line 213, in execute
+    result = native.run_scope(scope, unit, out / (phase + '-launcher.log'), 610)
+  File "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_native.py", line 112, in run_scope
+    if code != 0: raise RuntimeError('scope launcher failed with exit ' + str(code))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: scope launcher failed with exit 1

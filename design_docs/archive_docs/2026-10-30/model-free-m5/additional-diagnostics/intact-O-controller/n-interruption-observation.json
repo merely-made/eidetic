@@ -1,0 +1,18 @@
+{
+  "unit": "m5-acceptance-seed-04ed35ff6da34be583543066f01b8863.scope",
+  "known_invocation": "923e95b7eebf42cfb897c4db84100612",
+  "observed_utc": "2026-10-30T18:27:38.342658+00:00",
+  "systemctl_argv": [
+    "systemctl",
+    "--user",
+    "show",
+    "m5-acceptance-seed-04ed35ff6da34be583543066f01b8863.scope",
+    "--property=LoadState,ActiveState,ControlGroup,InvocationID,Result",
+    "--no-pager"
+  ],
+  "systemctl_exit": 0,
+  "systemctl_output": "LoadState=not-found\nActiveState=inactive\nInvocationID=\nResult=success\nControlGroup=\n",
+  "matching_cgroup_paths": [],
+  "collector_cleanup_receipt_exists": false,
+  "interpretation": "interrupted; no collector cleanup receipt; systemd unit inactive and absent at observation"
+}

@@ -1,0 +1,18 @@
+commit d0d93da323249c001bd0ff214f69ee1885146ee9
+Author:     markik <mark_ik@outlook.com>
+AuthorDate: Fri Oct 30 14:09:22 2026 -0400
+Commit:     markik <mark_ik@outlook.com>
+CommitDate: Fri Oct 30 14:09:22 2026 -0400
+
+    Use translucent highlighting for Knot text selection
+
+diff --git a/src/knot_authoring/knot_sheet.rs b/src/knot_authoring/knot_sheet.rs
+index 8eddaf15..e8fbed6f 100644
+--- a/src/knot_authoring/knot_sheet.rs
++++ b/src/knot_authoring/knot_sheet.rs
+@@ -30,4 +30,4 @@ pub(crate) const KNOT_SHEET: &str = "\
+     .syntax-strong { color: rgb(235, 239, 247); } \
+     .syntax-emphasis { color: rgb(194, 205, 224); } \
+     .syntax-codeblock, .syntax-verbatim { color: rgb(141, 207, 160); } \
+-    .knot-selection { background-color: rgb(42, 76, 118); color: rgb(240, 245, 255); }";
++    .knot-selection { background-color: rgba(42, 76, 118, 0.35); color: rgb(240, 245, 255); }";

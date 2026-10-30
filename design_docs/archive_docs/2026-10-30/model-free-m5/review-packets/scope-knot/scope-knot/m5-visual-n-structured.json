@@ -1,0 +1,234 @@
+{
+  "reviewer": "Codex visual review Terra",
+  "scope": "Seed structured captures only; runtime in progress. Screenshots do not prove exact values, record inventory, cold reopen or fault behavior.",
+  "frames": [
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_0.png",
+      "sha256": "985e8e621637c2f819a49443212231758669454ccba100d33360ccd9f7866998",
+      "status": "pass",
+      "observations": "Author form is visible and readable at top after save; entity, property ID, schema revision and selected timestamp type shown. No visible error. Full record content and save count require owner inventory."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_1.png",
+      "sha256": "705b511614f61bf5296bb71d96fba89716bf38177fae736cdc2eafe1bda09613",
+      "status": "pass",
+      "observations": "Author form is visible and readable at top after save; entity, property ID, schema revision and selected timestamp type shown. No visible error. Full record content and save count require owner inventory."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_2.png",
+      "sha256": "102167423525cef035853e6c0334af297699a44546b84bb16d145f227a4e0701",
+      "status": "pass",
+      "observations": "Author form is visible and readable at top after save; entity, property ID, schema revision and selected timestamp type shown. No visible error. Full record content and save count require owner inventory."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_3.png",
+      "sha256": "962b9cc249e773c925f9f76db7e99374ee66e461306d104e571d993be73aaae4",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:clock and timestamp type; entity and schema revision visible. No visible error; owner inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_4.png",
+      "sha256": "e39678ba5574ba4776d050757e3d3342a48cb7a2bab2f96db661b1552a1e6f41",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:clock and timestamp type; entity and schema revision visible. No visible error; owner inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_5.png",
+      "sha256": "6151938dc7e80b9950d99a34e76dee4db31b021a06c6cbfd7c031b98f463ea9e",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:amount and integer type; entity and schema revision visible. No visible error; owner inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_6.png",
+      "sha256": "2790b62926bf66e9ee65e291257418fb706aa09112523e999b9b8ec40155c19c",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:amount and integer type; entity and schema revision visible. No visible error; owner inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_7.png",
+      "sha256": "fbdcac6c5e2cead46a448993e8c5c62dabd154da7158be306b6184b11c228587",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:overflow and integer type; entity and schema revision visible. No visible error; owner inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_8.png",
+      "sha256": "b26eedbb656b2b2ffd020dceb355beaa88a1675a1e3943b49c26ffb7bc891669",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:overflow and integer type; entity and schema revision visible. No visible error; owner inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_9.png",
+      "sha256": "974f93003ff36fe3cb5a52281d271486a21aba3431b1ec0788de381888ccfdc8",
+      "status": "pass",
+      "observations": "Author form visible and readable after save, showing m5:multi and text type; entity and schema revision visible. No visible error; owner inventory required for record content and count."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_10.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_11.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_12.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/authored_13.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_SourceLookup.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_CountByProducer.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_CountBySource.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_SourceTimeline.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_RecordTimeline.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_TagMembership.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_PropertyLookup.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_GroupValues.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_JoinEntity.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_JoinSource.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_Compare.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/op_Sum.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/withdraw_before.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/withdraw_inspected_active.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/withdraw_history.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/withdraw_fresh.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/withdraw_historical.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/scope_before.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/scope_empty_selector.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/scope_empty_search.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/scope_empty_before_run.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/scope_empty_fresh.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/negative_no_match.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    },
+    {
+      "path": "/home/markik/Code/testing/m5-intact-collection-20261030-n/sandbox/seed/negative_over_limit.png",
+      "sha256": null,
+      "status": "pending",
+      "observations": "Capture not yet reviewed."
+    }
+  ]
+}

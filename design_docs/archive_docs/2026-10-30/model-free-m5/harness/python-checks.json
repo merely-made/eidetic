@@ -1,0 +1,11 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -v",
+  "results": {
+    "acceptance-draft": 4,
+    "m5-draft": 3,
+    "m5-missing-draft": 17,
+    "m5-receipt-integration": 42
+  },
+  "failures": 0,
+  "scope": "Copied harness unit tests only; native acceptance remains pending."
+}

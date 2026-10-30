@@ -1,0 +1,78 @@
+{
+  "reviewer": "Codex visual review (Luna)",
+  "scope": "Requested native M5 N-run seed frames only; visual evidence only. The N run was interrupted during authored9 and is incomplete; this seed review is not whole-run acceptance.",
+  "collection_root": "/home/markik/Code/testing/m5-intact-collection-20261030-n",
+  "source_revision": "d0d93da",
+  "run_status": "interrupted_incomplete",
+  "overall_outcome": "pass",
+  "frames": [
+    {
+      "relative_path": "sandbox/seed/01_authored_note.png",
+      "sha256": "76668fbb4228f176c1b3154667218bca144160d3547f394407418a1185d1ffdf",
+      "observations": ["The saved note editor visibly shows heading 'Research note' and authored body 'M5 authored research note'."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/04_exact_A1.png",
+      "sha256": "bd7f27f8c8f2a218323114f20261a3c03da22dcc96c51da1bde957fdf897d1fa",
+      "observations": ["The retained A1 text is visibly rendered with the full expected quote: 'M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 units.'"],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/05_note_citation.png",
+      "sha256": "16772092ef902c3186ee1021fe0fa21b1c9559b1b98c5c2a8497fea1b9dfb577",
+      "observations": ["A visible 'Read saved passage 1: M5 A' citation link appears above the note.", "The serialized evidence metadata wraps inside the note editor pane; it does not spill into or overlap the adjacent outline column."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/07_selected_knot.png",
+      "sha256": "a8623c3fbc613a8937c211c8badc5df2da69742db3aea05feba48a23eff23d07",
+      "observations": ["The exact selected phrase 'only this linked finding' is visible and highlighted in the authored note editor.", "The visible editor text places it between 'M5 private preface zebra' and 'M5 private suffix otter'; these canaries are in the editor view."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/08_selected_clip.png",
+      "sha256": "28437fbdcfc38fc25bc725fc4a2504ea1f4cef3aca1168c888dba640aa1fb832",
+      "observations": ["The retained clip page visibly displays 'only this linked finding' as its content and as the original selection. Neither private canary is visible in this retained reader view."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/10_selection_admitted.png",
+      "sha256": "28f50b4cfd84f8931a2a6d45e3ee359918ae652a9823ab026974f769230c1125",
+      "observations": ["The search overlay visibly includes the Selection result 'Knot selection · only this linked finding'."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/redshank_note_private.png",
+      "sha256": "c0950455ff25267a4b96cb213008cd448c515c254a50f1b8a49de3f44975ac9d",
+      "observations": ["The episode notes panel visibly shows one text note; this private-state view does not expose a privacy action label."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/redshank_private_action_absent.png",
+      "sha256": "9d86d087bb3aa8e1f5446a151e0dbe5dc69debb87075bad23499a24cb834246b",
+      "observations": ["The captured graph view shows the note node and no privacy action control. This observation is limited to the visible view."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/redshank_note_shareable.png",
+      "sha256": "de69c5c5dd94119e2b6779a0e28e9b099150950d3c9ee119531f6c7bb051023e",
+      "observations": ["The note action menu visibly offers 'Make private', consistent with a shareable state."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/redshank_note_admitted.png",
+      "sha256": "720c39adbd8056a486a6e1fba9c757477c417d5e6c435e5de01eb8385b52f5cc",
+      "observations": ["The admitted results visibly include 'Note: Redshank note · M5 authored Redshank note' and a Selection result."],
+      "outcome": "pass"
+    },
+    {
+      "relative_path": "sandbox/seed/exact_pair.png",
+      "sha256": "ca1aa1dd6654185439392e8a97ed737819a311dd1c609d5372ca359179d103a6",
+      "observations": ["The overlay visibly shows 'Explicit pair · head and lineage unknown', 'Changes', 'Delete Left: M5 A1 archive: naïve — 東京 🐦. Evidence amount is 12 uni…', and 'Insert Right: M5 A2 archive: violet compass. Evidence amount is 18 u…'. The comparison is displayed.", "Both diff rows are clipped at the overlay's right edge, so their full evidence-amount strings are not visible in this frame."],
+      "outcome": "pass"
+    }
+  ],
+  "pending_frames": [],
+  "qualification_boundary": "This review covers only the 11 requested captured seed frames. It does not establish source authority, semantic identity, export byte correctness, privacy absence, final owner checks, or complete M5 acceptance. The N run is incomplete/interrupted."
+}

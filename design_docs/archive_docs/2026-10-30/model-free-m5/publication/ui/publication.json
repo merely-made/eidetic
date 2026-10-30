@@ -1,0 +1,36 @@
+{
+  "turnstone": {
+    "before": {
+      "head": "2dcba9dec9dc4ac4851f2f064fe295f614c89f34",
+      "status": ""
+    },
+    "bundle": {
+      "sha256": "4afd17e2d4d56259b35441073d44ec23d1f9e77a3af2047da579f530b40fc8ce",
+      "bytes": 4031,
+      "head": "d0d93da323249c001bd0ff214f69ee1885146ee9",
+      "base": "c2f69b743a0cb3d637b32fb2ef7f4c164fb60d8a"
+    },
+    "published": "d0d93da323249c001bd0ff214f69ee1885146ee9",
+    "after": {
+      "head": "2dcba9dec9dc4ac4851f2f064fe295f614c89f34",
+      "status": ""
+    }
+  },
+  "eidetic": {
+    "before": {
+      "head": "f3424a9c48aa886bc0c07655bf81c459b2bba6d7",
+      "status": ""
+    },
+    "bundle": {
+      "sha256": "a152a67816f60b565029bcb6ff20a040dd104277d4c3d5d218d9231cda38ddcd",
+      "bytes": 1224557,
+      "head": "450ceea930c4560a687c7625b2977769374c7dcd",
+      "base": "a251467aa4044ff625f38264cfff5f0bcd37c0f9"
+    },
+    "published": "450ceea930c4560a687c7625b2977769374c7dcd",
+    "after": {
+      "head": "f3424a9c48aa886bc0c07655bf81c459b2bba6d7",
+      "status": ""
+    }
+  }
+}

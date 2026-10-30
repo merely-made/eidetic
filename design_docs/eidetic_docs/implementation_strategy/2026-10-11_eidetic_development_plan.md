@@ -1329,21 +1329,28 @@ receipt from a run; it cannot stand in for performing that run.
   existing generated-answer compatibility cases separately; keep the 8/15
   semantic result and other platform limits unchanged.
 
-**Progress (2026-10-30):** the hosted Redshank text-note editor and privacy
-controls passed scoped review and 34 focused tests; its supplier capabilities
-are published after 111 surface tests. The refreshed host working tree passed
-1,262 library tests with `authoring,inference`. The real custody fixture now
-uses authoritative epochs and preserves its service lease through listener
-failure. Its scoped review and lifecycle tests pass. The host bridge and
-fixture are committed locally; publication is waiting on GitHub authentication.
+**Progress (2026-10-30):** the current host changes are published through
+Turnstone `d0d93da`, and the real custody fixture through Mere `8fec5603`.
+GitHub publication was recovered through an idle authorized host; exact commits
+were fetched back and remote checkouts were preserved. The host library suite
+passed 1,278 tests at `fe015c5`. Later reader, readiness, scope-order and Knot UI
+changes have focused test and native diagnostic evidence, rather than a renewed
+full-suite result.
 
-The isolated empty-profile startup gate passed with a visually inspected frame,
-the same custody principal in app and probe, a refused inference route and
-verified process cleanup. Earlier failed attempts remain recorded. This is
-startup evidence only. The full seed/reopen collector, exact input inventory,
-private-field projection and copied-store inspection are still being completed
-and reviewed before the actual three-producer run. Native Note retention,
-structured ordinary use, cold restart and missing-source refusal remain open.
+Native runs now exercise all three real producers, 14 authored records and all
+12 structured operations. They exposed and drove fixes for scope cancellation,
+note scrolling and selection readability. Completed diagnostics verify the
+exact 24-byte selection, visible highlighting and a complete fresh empty-scope
+lookup. Failed full collections and an interrupted controller remain preserved.
+A scenario correction clears a record-only property filter before source lookup;
+the native refusal and corrected query were separately checked.
+
+The current intact seed/cold-reopen collection remains in progress. A successful
+complete run, independent copied-store inspection, missing-source fault run and
+final receipt verification are still required. The coherent provisional harness
+is retained under `design_docs/archive_docs/2026-10-30/model-free-m5/harness/`,
+including exact scripts, scenarios, fixtures and build guard. Its 66 Python
+checks pass; the fault launcher and final acceptance guard remain closed.
 See the archived receipts for exact source and test boundaries.
 
 **Done when:** all of the milestone goal passes in fresh native processes on

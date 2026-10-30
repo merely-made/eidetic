@@ -883,3 +883,42 @@ The combined source diff and nine-file manifest are retained with the exact
 manifest at Turnstone HEAD `180df8758ba7c3be3d796287e1fcc0464a59dc9d`. The
 other eight tracked files are represented by the archived combined diff and
 manifest. The changing scope-order and Knot-fix packets remain excluded.
+
+### Scope, note display and scenario-filter follow-up
+
+Turnstone `180df875` fixes the order of stale structured invalidation and the
+replacement search, and uses the existing pane scroll machinery for the Knot
+editor. Scope-order and geometry checks each pass; existing Knot tests pass
+24 with 4 ignored, and research search tests pass 7. The first red scope log
+crossed concurrent Knot edits and is not a frozen-source receipt. Commit
+`d0d93da` changes only selection background transparency. The real native frame
+shows readable selected words, and the exported payload is exactly 24 bytes,
+with private surrounding canaries absent. This establishes host readability,
+not the suspected underlying Genet paint-order cause. Fresh Genet upstream
+still equals the pinned revision. Empty-scope diagnostic B separately proves
+that the replacement search completes with no sources or hits.
+
+Collection N was interrupted without a normal collector cleanup receipt. Its
+exact native scope was subsequently observed absent; the interruption cause is
+unknown. Collection O failed normally after all 14 authored records and 12
+operation observations. The scenario attempted SourceLookup while retaining
+`m5:withdraw`, a record-only filter. A short native diagnostic captured the
+exact Unsupported refusal. Clearing the filter before the query produces a
+current Complete saved SourceLookup with all filters null, chosen-empty scope,
+zero sources/records/rows and matching saved/content manifests. These diagnostic
+runs deliberately stop and have verified empty native cgroups. Full collection
+P uses the corrected scenario with the same `d0d93da` build cohort.
+
+The additional-evidence index now retains 1,643 copied-file references, all
+independently checked against their byte counts and SHA-256. It includes the
+new source reviews, focused gates, diagnostics, interrupted/failed collections
+and publication metadata. It excludes executables, stores, custody keys and
+Git bundles. UI publication records confirm Turnstone `d0d93da` and Eidetic
+`450ceea`, with unchanged remote checkouts. Full native M5 remains incomplete.
+
+The provisional `model-free-m5/harness/` bundle preserves 40 exact source and
+fixture files with a manifest, a documented build guard and detached controller
+recipe. A separate review checked sibling imports, pinned validator hashes and
+exact synthetic audio reconstruction. Copied harness unit suites pass 4 + 3 +
+17 + 42 tests. The fault driver remains disabled and final verification remains
+DRAFT. This is reproducibility and helper-test evidence, not native acceptance.
