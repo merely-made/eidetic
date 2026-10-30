@@ -164,4 +164,75 @@ Provider source commit `20c9793181723a40858487d9d14623c81837eb57` adds frozen ad
 
 The final guarded run `model-free-m2/eidetic-m2-query-final-01.json` ran the full no-default-feature search suite and the wasm32-unknown-unknown check successfully. The query suite has fifteen passing cases; existing recall and lexical suites also pass. Three measurement harnesses remain ignored. Initial red failed on the absent query module. Earlier lock-acquisition timeouts started no compiler. Raw command, resource and hash records are retained beside each log.
 
-Static review corrected quadratic scalar-offset scans, materialization of off-page match ranges, omitted metadata identities and incomplete operation bounds. Final scoped review found those issues addressed. This is shared-library evidence; Turnstone controls, default consumer tests and exact clip reader are still in progress. It is not a headed product or offline restart receipt.
+Static review corrected quadratic scalar-offset scans, materialization of off-page match ranges, omitted metadata identities and incomplete operation bounds. Final scoped review found those issues addressed. This provider packet is shared-library evidence. Turnstone receiving is recorded below. Neither packet is a headed product or offline restart receipt.
+
+
+## M2 Turnstone receiving and publication, 2026-10-29
+
+Turnstone commit `6646433538d1a71a01db6da17b30871952c67b96` receives provider
+`20c9793181723a40858487d9d14623c81837eb57` on upstream
+`13f4c31bbd608d4d300bda53997640c3398a8c6c`. The intervening custody/projection
+cut was fast-forwarded before final checks. The unpublished M2 state was preserved
+in stash `aba47166ae23b73aac58fc18aa010eeee7dc38b5` and reapplied cleanly.
+Both source commits are published to their respective `main` branches.
+
+The existing Saved Sources flow now queries captures, selections and notes with
+explicit modes, source/type/tag/date filters, aliases, bounded snippets, paging
+and coverage. Settings persist separately from transient page offsets. Exact
+clip readers validate the full canonical text hash, Unicode-scalar range and
+activation custody epoch. Metadata-only results open the full source without a
+fabricated quotation. Private query state clears at admission, custody and
+session boundaries and cannot fall through to URL navigation/history. The
+capture-only search implementation is retired while workshop loading remains.
+
+Final software receipts are in [model-free-m2](model-free-m2/):
+
+- `eidetic-m2-query-final-01`: `cargo test --locked -p eidetic-search
+  --no-default-features` passed 66 tests, with three measurement harnesses
+  ignored. `cargo check --locked -p eidetic-search --no-default-features
+  --target wasm32-unknown-unknown` passed.
+- `turnstone-m2-rebased-final-01`: `cargo test --locked --lib` with filters
+  `research`, `saved_source`, `saved_search` and `retained_clip` passed
+  15, 25, 2 and 18 tests respectively. These filters overlap: 57 unique tests
+  passed; one process fixture remained ignored. The command took 5m35.47s;
+  maximum process RSS was 2,586,864 KiB and process swaps were zero.
+- `turnstone-m2-inference-final-01`: `cargo check --locked --offline --lib
+  --features inference` passed in 57.76s, maximum process RSS 1,387,780 KiB.
+  This qualifies compilation only, not live generation.
+- Default and `default,inference` dependency boundary checks passed for their
+  respective resolved graphs. `python3 scripts/check_source_size.py` and
+  `git diff --check` passed. All owned Rust/test files remain within the
+  600-line limit.
+- `verification-summary.json` and `turnstone-m2-frozen-sources.json` record the
+  tested production/test/Cargo hashes and full lock comparison. All 1,661 locked
+  packages and their dependency selections equal the refreshed upstream graph
+  after normalization of only the intended Eidetic source revisions/alias.
+  Only the documentation index changed after the final tests.
+
+The shared heavy-work lock and compute limits remained: MemoryMax=3G,
+MemorySwapMax=0, CPUQuota=150%, one Cargo job, one test thread, incremental/debug
+output disabled, and a 600-second command timeout. Lock queue wait was extended
+from 60 to 600 seconds in a task-specific wrapper because other stack checks
+held the machine lock. Queue time is separate from actual execution: the final
+Turnstone receipt elapsed 619.45 seconds including the wait. The compute caps
+were not increased.
+
+Earlier attempts remain in the packet. Lock timeouts started no compiler. Red
+regressions demonstrated private URL fallback, inaccessible one-row controls,
+stale citations and ignored clip ranges/hashes. An intermediate saved-source
+failure came from an old test invoking the retired search action to trigger
+quiet workshop loading; the test now invokes the existing quiet loader and
+retains its generation/facet assertions. The final reader run was cancelled
+while queued to receive upstream, before compilation. Earlier successful runs
+are historical to their earlier source; final claims use the rebased packet.
+
+A bounded attempt on idle `s-pc` failed before compilation because the pinned
+arboard revision was unavailable from its configured GitHub remote. Its failed
+receipt and detached source worktree are preserved. Credentials and dependency
+pins were not changed. The local offline optional-inference check subsequently
+passed. This remote attempt is not a remote compilation receipt.
+
+Final scoped review found no demonstrated remaining Critical/Important defect.
+M2 is complete at its implementation/software-check boundary. M3 comparison,
+M4 structured queries and M5 headed use with a fresh offline restart remain
+open. These library tests do not qualify the complete native product workflow.

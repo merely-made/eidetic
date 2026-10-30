@@ -1,0 +1,78 @@
+Running as unit: custody-contract-turnstone-m2-remote-inference-01.scope; invocation ID: 3e4ddc6577fe40059698d038d8c3d641
+    Updating git repository `https://github.com/merely-made/murm.git`
+    Updating git repository `https://www.github.com/merely-made/gemot.git`
+    Updating git repository `https://www.github.com/merely-made/armillary.git`
+    Updating git repository `https://www.github.com/merely-made/eidetic.git`
+    Updating git repository `https://github.com/merely-made/armillary.git`
+    Updating git repository `https://github.com/merely-made/eidetic.git`
+    Updating git repository `https://github.com/merely-made/gemot.git`
+    Updating git repository `https://github.com/merely-made/errand.git`
+    Updating git repository `https://github.com/merely-made/esp.git`
+    Updating git repository `https://github.com/merely-made/dramatis.git`
+    Updating git repository `https://github.com/merely-made/mere.git`
+    Updating git repository `https://github.com/merely-made/genet.git`
+    Updating git repository `https://github.com/merely-made/wgpu-graft.git`
+    Updating git repository `https://github.com/merely-made/netrender.git`
+    Updating git repository `https://github.com/mark-ik/vello`
+    Updating git repository `https://www.github.com/merely-made/esp.git`
+    Updating crates.io index
+    Updating git repository `https://github.com/merely-made/knot-editor.git`
+    Updating git repository `https://github.com/merely-made/woodshed.git`
+error: invalid type: boolean `true`, expected a map
+ --> ../../../.cargo/git/checkouts/servo-e53a6e7b994a25fe/aac43a3/python/tidy/tests/lints-configuration/no-workspace/Cargo.toml:8:7
+  |
+8 | foo = true
+  |       ^^^^
+    Updating git repository `https://github.com/mark-ik/arboard.git`
+warning: spurious network error (3 tries remaining): unexpected http status code: 404; class=Http (34)
+warning: spurious network error (2 tries remaining): unexpected http status code: 404; class=Http (34)
+warning: spurious network error (1 try remaining): unexpected http status code: 404; class=Http (34)
+error: failed to get `arboard` as a dependency of package `genet-clipboard v0.1.0 (https://github.com/merely-made/genet.git?branch=main#565458ea)`
+    ... which satisfies git dependency `genet-clipboard` (locked to 0.1.0) of package `turnstone v0.1.0 (/home/markik/Code/worktrees/turnstone-model-free-m2-check-20261029)`
+
+Caused by:
+  failed to load source for dependency `arboard`
+
+Caused by:
+  unable to update https://github.com/mark-ik/arboard.git?branch=custom-formats#bec2dcd1
+
+Caused by:
+  failed to fetch into: /home/markik/.cargo/git/db/arboard-ad4239ae8a8bf149
+
+Caused by:
+  revision bec2dcd179deff24720e64107a0993bb36453df4 not found
+
+Caused by:
+  failed to authenticate when downloading repository
+
+  * attempted to find username/password via `credential.helper`, but maybe the found credentials were incorrect
+
+  if the git CLI succeeds then `net.git-fetch-with-cli` may help here
+  https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
+
+Caused by:
+  unexpected http status code: 404; class=Http (34)
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s /home/markik/.cargo/bin/cargo +1.99.1 check --locked --lib --features inference"
+	User time (seconds): 365.52
+	System time (seconds): 57.14
+	Percent of CPU this job got: 82%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 8:33.68
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1979796
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 27325
+	Minor (reclaiming a frame) page faults: 6557811
+	Voluntary context switches: 48859
+	Involuntary context switches: 4712
+	Swaps: 0
+	File system inputs: 2559376
+	File system outputs: 10294016
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

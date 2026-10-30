@@ -1,8 +1,8 @@
 # Eidetic development: content, encounters and computed memory
 
 **Date:** 2026-10-11
-**Status (2026-10-26):** active plan, owned by the independent Eidetic
-repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), planned and not yet implemented or qualified.**
+**Status (2026-10-29):** active plan, owned by the independent Eidetic
+repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), M1 and M2 landed; M3–M5 open.**
 The preceding producer and model receipts keep their bounded historical scope. The bounded custody connection and first producer-to-retention
 paths below have published suppliers and locally qualified Turnstone integration.
 Focused checks and bounded headed macOS receipt runs qualify saved-document
@@ -728,7 +728,7 @@ becoming a personal tag or requiring an explicit clip-promotion operation.
 
 ### P4a. Next milestone: model-free retained research
 
-**Status (2026-10-29): M1 landed; M2 in progress; M3–M5 open.**
+**Status (2026-10-29): M1 and M2 landed; M3–M5 open.**
 This is the next Eidetic milestone. It advances P4's evidence and retrieval
 capabilities independently of model execution; it does not close the remaining
 P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
@@ -760,7 +760,8 @@ Links: area recall · plans P4a · summary Model-free retained research is the n
 
 For implementation, use `superpowers:executing-plans` or the user's chosen
 execution workflow task by task. Checkboxes below remain open until their
-specific deliverables and checks pass. M2–M5 remain open during the M1 extraction.
+specific deliverables and checks pass. Next is M3 version comparison; M4 structured
+queries and M5 product/restart qualification remain open.
 
 #### Findings: upstream basis and retained work, 2026-10-26
 
@@ -1024,19 +1025,25 @@ shared API, and the existing inference caller uses that same lexical code.
   legacy lexical/embedding recall checks and native/Wasm provider checks pass.
   Turnstone's rebased saved-source/research tests and optional-inference compile
   check pass under the unchanged guard. Evidence and prior failed attempts live in the linked receipt archive.
-  M2–M5 remain open; next is ordinary three-source search and exact inspection.
+  M2 now supplies ordinary three-source search and exact inspection, as recorded below.
 
 #### M2. Search all three retained source kinds in Turnstone
 
-**Findings (2026-10-29):** upstream refreshed before implementation. The existing
-clip-opening action checks admission but does not consume its hash or selector;
-M2 must carry exact passage validation through that reader. Retained clip date
-metadata is not currently exposed by the portable clip body; unknown dates stay
+**Findings (2026-10-29):** upstream refreshed before implementation and again
+before publication to receive the custody/projection split. The retained clip
+reader now validates the complete text hash and Unicode-scalar selector, holds
+its activation custody epoch and displays the exact quotation. Retained clip
+date metadata is not exposed by the portable clip body; unknown dates stay
 unknown. Existing capture enumeration and retained-clip owner queues remain the
-authority for the default-build search path.
+authority for the default-build search path. Admission and custody invalidation
+must run at both action and update boundaries, including when settings refuse
+a search. Producer classification preserves edited selection bodies and actual
+Knot/Redshank profiles; ambiguous profiles remain explicitly unclassified.
 
-**Files/interfaces:** `query.rs`, existing `document.rs`/`tokenize.rs`, Turnstone
-research service/surface, saved-source actions and research adapters. Consume M1;
+**Files/interfaces:** `crates/eidetic-search/src/query.rs`, existing
+`document.rs`/`tokenize.rs`, Turnstone `src/research_search.rs`,
+`src/app/research_search_*.rs`, `src/app/research_clip_arms.rs` and research
+owner adapters. Consume M1;
 produce searchable admitted snapshots and exact clickable results.
 
 - [x] Add `model_free_` library cases for capture, selection and note in one
@@ -1046,11 +1053,11 @@ produce searchable admitted snapshots and exact clickable results.
 - [x] Run the new tests to establish failure, then implement the query modes
   over the existing index and exact canonical text. Evaluate phrases against
   complete admitted text before extracting snippets; never join across sources.
-- [ ] Extend the existing source chooser/search flow with mode and filter
+- [x] Extend the existing source chooser/search flow with mode and filter
   controls. Reuse exact reader actions and owner-scoped asynchronous work;
   cancel/discard results on admission-generation changes. Show effective scope,
   expansion and coverage. Register Actions/semantics once for UI and automation.
-- [ ] Run focused shared and Turnstone tests, including the existing saved-reader
+- [x] Run focused shared and Turnstone tests, including the existing saved-reader
   and research suites; commit the unified path and retire duplicated search
   logic only after its behavior is represented by the shared implementation.
 
@@ -1059,8 +1066,15 @@ service connection, including exact source/title-only and Unicode controls.
 
 **Progress (2026-10-29):** the shared query provider landed with explicit modes,
 filters, optional exact passages, stable pages and bounded frozen-input records.
-Shared regression and Wasm checks pass. Turnstone receiving and exact clip
-inspection remain in progress; native restart remains M5.
+Turnstone now uses the existing Saved Sources surface for all three producer
+kinds, with persistent settings, explicit scope, filters, aliases, pagination
+and coverage. Its coalesced owner work discards stale results and keeps private
+search text out of ordinary URL navigation and history. The capture-only search
+loop is retired; exact readers and the quiet workshop source loader remain.
+Shared regression/Wasm checks, rebased Turnstone research and reader tests,
+optional-inference compilation, dependency boundaries and source-size checks
+pass. The default search path requires no inference service. Headed product use
+and fresh offline restart remain unqualified until M5. M3 comparison is next.
 
 #### M3. Compare exact retained versions
 
