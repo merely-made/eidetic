@@ -28,7 +28,7 @@ FAULT_REQUIRED = {'inputs.json','primary-integrity.json','launcher.json','launch
                   'frozen/fault_phase.py','frozen/namespace_phase.py','frozen/acceptance_phase.py',
                   'frozen/verify_missing.py','frozen/missing.scn','frozen/fault_helper.rs',
                   'frozen/citation_event_history.rs','frozen/citation-observer.patch'}
-INTACT_REQUIRED = {'inputs.json','processes.json','seed-launcher.cleanup.json','reopen-launcher.cleanup.json',
+INTACT_REQUIRED = {'inputs.json','processes.json','seed-launcher.json','reopen-launcher.json','seed-launcher.cleanup.json','reopen-launcher.cleanup.json',
                    'sandbox/seed/phase-checked.json','sandbox/reopen/phase-checked.json',
                    'sandbox/reopen/inspection-source-hashes.json','sandbox/reopen/structured-inspection.json',
                    'sandbox/reopen/withdrawal-inspection.json','sandbox/reopen/inspection-integrity.json',
@@ -43,7 +43,7 @@ INTACT_REQUIRED = {'inputs.json','processes.json','seed-launcher.cleanup.json','
 TOOLS = {
     'verify_receipt.py': ('../m5-draft/verify_receipt.py','e521c6f2bb538976fabc482f991354f720fb79e5c886ac33dd81d2e21cd9fc47'),
     'verify_missing.py': ('../m5-missing-draft/verify_missing.py','ed2cde69988c15b44167b8c916124c8f2b7da8ca86c939f77a219f9f440fa939'),
-    'run_missing.py': ('../m5-missing-draft/run_missing.py','260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5'),
+    'run_missing.py': ('../m5-missing-draft/run_missing.py','a84eee8f010426dbad6f700acc1358e8c0820fb68f2ef7a7b8afc3a798f4a89c'),
 }
 
 
@@ -267,6 +267,37 @@ def check_producer_rows(sources, rows):
 def check_cleanup(cleanup):
     if cleanup.get('normal') is not True or cleanup.get('ownership_observed') is not True or not any(x.get('cgroup_empty_verified') is True for x in cleanup.get('cleanup', [])):
         raise ValueError('owned scope cleanup not established')
+
+
+def check_phase_identity(launcher, cleanup, net, children):
+    check_cleanup(cleanup)
+    scope = cleanup.get('scope')
+    invocation = cleanup.get('invocation')
+    if (not isinstance(scope, str) or not scope.startswith('m5-') or not scope.endswith('.scope')
+        or not isinstance(invocation, str) or len(invocation) != 32
+        or any(c not in '0123456789abcdef' for c in invocation)
+        or launcher.get('scope') != scope or launcher.get('ownership_observed') is not True
+        or launcher.get('exit_code') != 0 or launcher.get('timed_out') is not False
+        or net['cgroup']['path'].rsplit('/', 1)[-1] != scope):
+        raise ValueError('phase scope identity differs')
+    argv = launcher.get('argv', [])
+    if (argv.count('--unit') != 1 or argv[argv.index('--unit') + 1:argv.index('--unit') + 2] != [scope.removesuffix('.scope')]
+        or not all(flag in argv for flag in ('bwrap', '--unshare-user', '--unshare-net', '--unshare-pid', '--unshare-ipc'))):
+        raise ValueError('phase isolation command differs')
+    for child in children:
+        if (child.get('pid_namespace') != net['pidns'] or not isinstance(child.get('pid'), int)
+            or child['pid'] <= 0 or not launcher['start_ns'] <= child['start_ns'] < child['exit_ns'] <= launcher['exit_ns']):
+            raise ValueError('phase child identity differs')
+    return scope, invocation
+
+
+def check_distinct_phases(phases):
+    identities = [(phase[0], phase[1]) for phase in phases]
+    if len({x[0] for x in identities}) != len(identities) or len({x[1] for x in identities}) != len(identities):
+        raise ValueError('phase scope or invocation reused')
+    for previous, current in zip(phases, phases[1:]):
+        if previous[2]['exit_ns'] >= current[2]['start_ns']:
+            raise ValueError('phase launch lifetimes overlap')
 
 
 def check_runtime(runtime, pid, principal, offline):
@@ -701,9 +732,9 @@ def verify_draft(base):
     processes = bound('intact/processes.json')
     seed_app, reopen_app = processes['seed'], processes['reopen']
     a, b = processes['custody_seed'], processes['custody_reopen']
-    if (seed_app['exit_code'] != 0 or reopen_app['exit_code'] != 0 or seed_app['pid_namespace'] == reopen_app['pid_namespace']
+    if (seed_app['exit_code'] != 0 or reopen_app['exit_code'] != 0
         or not seed_app['start_ns'] < seed_app['exit_ns'] < reopen_app['start_ns'] < reopen_app['exit_ns']
-        or a['pid_namespace'] == b['pid_namespace'] or not a['exit_ns'] < b['start_ns']
+        or not a['exit_ns'] < b['start_ns']
         or a['public_identity'] != b['public_identity'] or a['binary_sha256'] != b['binary_sha256']
         or not processes['origin']['exit_ns'] < reopen_app['start_ns'] < reopen_app['exit_ns'] < processes['inspection']['start_ns']
         or processes['inspection']['exit_code'] != 0 or processes['withdrawal_inspection']['exit_code'] != 0
@@ -713,8 +744,21 @@ def verify_draft(base):
     fault_final = bound('fault/output/processes-final.json')
     if fault_final.get('failure') or fault_final.get('cleanup_errors') or fault_final.get('socket_cleanup') != 'owned socket absent':
         raise ValueError('fault child cleanup differs')
-    if not processes['withdrawal_inspection']['exit_ns'] < fault_process['fault']['start_ns'] or fault_process['app']['pid_namespace'] in (seed_app['pid_namespace'],reopen_app['pid_namespace']):
+    if not processes['withdrawal_inspection']['exit_ns'] < fault_process['fault']['start_ns']:
         raise ValueError('fault process was not distinct and post-inspection')
+    phase_ids = []
+    for name, children in (('seed', [seed_app, a, processes['origin']]),
+                           ('reopen', [reopen_app, b, processes['inspection'], processes['withdrawal_inspection']])):
+        launch = bound('intact/' + name + '-launcher.json')
+        identity = check_phase_identity(launch, bound('intact/' + name + '-launcher.cleanup.json'),
+                                        bound('intact/sandbox/' + name + '/namespace.json'), children)
+        phase_ids.append((*identity, launch))
+    fault_launch = bound('fault/launcher.json')
+    identity = check_phase_identity(fault_launch, bound('fault/launcher.cleanup.json'),
+                                    bound('fault/output/namespace.json'),
+                                    [fault_process['fault'], fault_process['postcheck'], fault_process['app'], fault_process['custody'], fault_process['route_probe']])
+    phase_ids.append((*identity, fault_launch))
+    check_distinct_phases(phase_ids)
     fault_check = bound('fault/output/phase-checked.json')
     route = bound('fault/output/route.json')
     if fault_check['principal'] != a['public_identity'] or route.get('outcome') != 'closed-during-open' or {'profile':route.get('profile'),'public_key':route.get('public_key')} != a['public_identity']:

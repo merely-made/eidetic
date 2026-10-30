@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Staged fault-copy collection. This entry is disabled pending helper review."""
+"""Collect the reviewed missing-source case on an isolated disposable copy."""
 import argparse, json, os, re, shutil, stat, time, uuid
 from pathlib import Path
 import run_native as native
@@ -7,7 +7,7 @@ import namespace_phase as phase
 import run_acceptance as acceptance
 from verify_missing import verify_missing
 
-READY_FOR_FAULT_COLLECTION = False
+READY_FOR_FAULT_COLLECTION = True
 LIMITS = {'memory_bytes': 3 * 1024**3, 'tasks_max': 128, 'cpu_percent': 150}
 TREES = ('profile', 'mere', 'data', 'config', 'cache')
 FROZEN = ('turnstone', 'custodian', 'test-binary')
@@ -148,7 +148,9 @@ def validate_collection_ledger(root, collection):
                 'sandbox/reopen/structured-inspection.json','sandbox/reopen/withdrawal-inspection.json',
                 'sandbox/reopen/inspection-source-hashes.json','sandbox/reopen/inspection-integrity.json',
                 'sandbox/reopen/withdrawal_inspection-integrity.json','sandbox/origin-info.json',
-                'seed-launcher.cleanup.json','reopen-launcher.cleanup.json'}
+                'seed-launcher.cleanup.json','reopen-launcher.cleanup.json',
+                'seed-launcher.json','reopen-launcher.json','sandbox/seed/namespace.json',
+                'sandbox/reopen/namespace.json'}
     # origin-info is an output outside phase dirs; the collector must include it.
     if not required <= set(ledger): raise ValueError('required collection artifact is unbound: ' + repr(sorted(required-set(ledger))))
     for rel, digest in ledger.items():
@@ -167,6 +169,7 @@ def collection_evidence(root):
     if inputs.get('kind') != 'model-free-acceptance-collection' or collection.get('schema') != 'turnstone.m5-collection/v1' or collection.get('status') != 'collected-awaiting-semantic-and-headed-verification':
         raise ValueError('successful intact collection required')
     ledger = validate_collection_ledger(root, collection)
+    scopes = {}
     for name in ('seed', 'reopen'):
         p = proc[name]
         if p['exit_code'] != 0 or not p['start_ns'] < p['exit_ns']: raise ValueError('intact app failed')
@@ -175,9 +178,17 @@ def collection_evidence(root):
         cleanup = load(root / (name + '-launcher.cleanup.json'))
         if not cleanup['normal'] or not cleanup['ownership_observed'] or not any(x.get('cgroup_empty_verified') is True for x in cleanup['cleanup']):
             raise ValueError('intact scope cleanup not verified: ' + name)
+        launch=load(root/(name+'-launcher.json'))
+        namespace=load(root/'sandbox'/name/'namespace.json')
+        children=([proc['seed'],proc['custody_seed'],proc['origin']] if name=='seed' else
+                  [proc['reopen'],proc['custody_reopen'],proc['inspection'],proc['withdrawal_inspection']])
+        scopes[name]=(acceptance.validate_phase_scope(launch,cleanup,namespace,children),launch)
+    if (scopes['seed'][0][0] == scopes['reopen'][0][0] or scopes['seed'][0][1] == scopes['reopen'][0][1]
+        or not scopes['seed'][1]['exit_ns'] < scopes['reopen'][1]['start_ns']):
+        raise ValueError('intact scopes are not distinct and ordered')
     if not proc['seed']['exit_ns'] < proc['reopen']['start_ns'] < proc['inspection']['start_ns'] or proc['inspection']['exit_code'] != 0:
         raise ValueError('intact process order or inspection missing')
-    if not proc['reopen']['exit_ns'] < proc['inspection']['start_ns'] or proc['seed']['pid_namespace'] == proc['reopen']['pid_namespace']:
+    if not proc['reopen']['exit_ns'] < proc['inspection']['start_ns']:
         raise ValueError('intact restart not established')
     if not proc['custody_seed']['exit_ns'] < proc['custody_reopen']['start_ns'] or proc['custody_reopen']['public_identity'] != proc['custody_seed']['public_identity']:
         raise ValueError('intact custody identity/order differs')
@@ -205,6 +216,15 @@ def collection_evidence(root):
         if not load(root / 'sandbox' / 'reopen' / (name + '-integrity.json'))['passed']:
             raise ValueError('inspection integrity failed: ' + name)
     return inputs, proc
+
+def validate_fault_scope(root, out, output, observed, launch):
+    fault_scope = acceptance.validate_phase_scope(launch, load(out/'launcher.cleanup.json'),
+        load(output/'namespace.json'), [observed[n] for n in ('route_probe','fault','postcheck','app','custody')])
+    for name in ('seed','reopen'):
+        previous = load(root/(name+'-launcher.cleanup.json'))
+        prior_launch = load(root/(name+'-launcher.json'))
+        if fault_scope[0] == previous['scope'] or fault_scope[1] == previous['invocation'] or not prior_launch['exit_ns'] < launch['start_ns']:
+            raise ValueError('fault scope not distinct and ordered')
 
 def verify_source_registration(root, source_root, registration_lock):
     here = Path(__file__).resolve().parent
@@ -399,8 +419,7 @@ def execute(args):
             raise ValueError('fault process cleanup was not established')
         if not processes['inspection']['exit_ns'] < observed['fault']['start_ns'] < observed['fault']['exit_ns'] < observed['postcheck']['start_ns'] < observed['postcheck']['exit_ns'] < observed['app']['start_ns']:
             raise ValueError('fault process sequence differs')
-        if observed['app']['pid_namespace'] in (processes['seed']['pid_namespace'], processes['reopen']['pid_namespace']):
-            raise ValueError('fault namespace was reused')
+        validate_fault_scope(root, out, output, observed, result)
     except BaseException as exc:
         native.record(out / 'failure.json', {'error':repr(exc), 'time_ns':time.time_ns()})
         raise

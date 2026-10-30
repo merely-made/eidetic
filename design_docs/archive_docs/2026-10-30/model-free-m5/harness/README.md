@@ -1,8 +1,12 @@
 # M5 native qualification harness
 
 This bundle preserves the executable Python harness, scenarios, synthetic fixtures,
-validator tests and build guard. Qualification remains pending. The missing-source
-driver is disabled and the final verifier deliberately refuses acceptance.
+validator tests and build guard. Qualification remains pending. The reviewed missing-source driver has been enabled
+and attempted; V failed its graph-inventory boundary. The original guard excluded
+legacy `memory/` but included the sealed owner root. A red regression rejected an
+intermediate exclusion of both roots; the reviewed guard excludes only the exact
+`memory.sealed-sources-v1/` root. No corrected native fault result exists. The
+final verifier remains DRAFT and deliberately refuses acceptance.
 The sibling directory names are required by the pinned validator imports.
 `source-manifest.json` binds each copied file to its original bytes.
 
@@ -67,12 +71,14 @@ human inspected frames that Codex reviewed.
 
 ## Missing source and final receipt
 
-After a matching intact seed/reopen succeeds and both processes exit, the
-reviewed missing-source driver operates exclusively on disposable copied stores.
-Its guard must be enabled through a reviewed change, with corresponding updated
-validator pins. It removes only the target raw blob and proves that the original
-stores are unchanged, the exact old citation fails, and the newer version opens.
-Keep all sibling files in `m5-missing-draft/` together.
+After matching intact seed/reopen processes exit, the reviewed missing-source
+driver operates exclusively on disposable copied stores. V attempted the fault and
+failed the post-fault inventory check because the original guard excluded only
+legacy `memory/` while including `memory.sealed-sources-v1/`. The reviewed guard
+excludes only the exact sealed owner root and checks legacy `memory/`, graph data
+and similarly named siblings. The original V collection remained unchanged. The
+fault result is failed; no corrected native fault run has passed; final receipt
+assembly stays DRAFT. Keep all sibling files in `m5-missing-draft/` together.
 
 `m5-receipt-integration/assemble.py` copies ledger-bound evidence to a separate new
 receipt directory and checks executable bytes while still available. Standalone

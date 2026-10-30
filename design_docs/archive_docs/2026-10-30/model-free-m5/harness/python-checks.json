@@ -1,24 +1,31 @@
 {
   "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s <copied-suite> -v",
   "results": {
-    "acceptance-draft": 4,
+    "acceptance-draft": 5,
     "m5-draft": 3,
-    "m5-missing-draft": 22,
-    "m5-receipt-integration": 43
+    "m5-missing-draft": 24,
+    "m5-receipt-integration": 44
   },
   "failures": 0,
-  "scope": "Copied provisional Python harness unit tests only; no native build or acceptance run.",
+  "scope": "Copied provisional Python harness tests only; native M5 fault attempt failed and final receipt assembly remains DRAFT.",
   "refresh": {
-    "source_manifest_sha256": "a592af67565db0f0524185faafe20f7e5ead5e617ed5a239ecbed1d7fd0daf72",
+    "source_manifest_sha256": "84394b00463a2f68f9d65ec4d752fcf1a54db246f58a972800602dc57d34a1a6",
     "files": {
       "m5-draft/seed-composed.draft.scn": "d1cff0e4683dc23ff49fed25104f7c89de99e232d74a4bda8308fd2b1c79199e",
       "m5-draft/reopen.scn": "ed8f4d0350ee317645ae63ef99b512953cd1621003868d23ab2b55b85327f66d",
       "m5-missing-draft/missing.scn": "25ed5d23586a3bf7b29ba9d2e97db524968177f7febcf7293cfe5a5e463c55ab",
-      "m5-missing-draft/registration-lock.json": "bbb705d915f50d0dca98975d811b0586f349f34ce8fed96c583b2ced8a7d696a",
+      "m5-missing-draft/registration-lock.json": "1970f178e3a3bde39dff33bea3da18e650a644724d4bf1577ee2446f6a41f4df",
       "m5-receipt-integration/README.md": "4b7b37bb8ab89a07500ff03111f52cf078f727d396386a908365c3de6d1dfe10",
       "m5-draft/verify_receipt.py": "e521c6f2bb538976fabc482f991354f720fb79e5c886ac33dd81d2e21cd9fc47",
-      "m5-receipt-integration/verify.py": "98bae452a8602831133e6eb1f233852084c06fff58f646a0bc4601d9725120de",
-      "m5-receipt-integration/assemble.py": "3703bc8fea54e744c352374d9ce36d5d26997ee49b5e27e59c05071b54e9c178"
+      "m5-receipt-integration/verify.py": "bfbcb982f04a2db835eb78317ec6fd874da31505c2346e612323a8a0c63bc890",
+      "m5-receipt-integration/assemble.py": "07931c78e150b712f5f7371d0c7b2339a75484e89d8323ebf7480b49416542f8",
+      "m5-missing-draft/run_missing.py": "a84eee8f010426dbad6f700acc1358e8c0820fb68f2ef7a7b8afc3a798f4a89c",
+      "m5-missing-draft/fault_phase.py": "ef9bce2f1df05831ef07567eb3fec967e23ed0ad6256867754b57a164c6c0910",
+      "m5-missing-draft/test_missing.py": "9af6fa600f55175d0485e08d3582ce08213f6374db83115c5d1430784712369e",
+      "acceptance-draft/run_acceptance.py": "e031222e73797592eabf87c1a756235db2a900481d28efef46f79d05dd25ac60",
+      "acceptance-draft/test_acceptance.py": "e4f557dd0b4acfe4ad93b73495fe806f0c3962c599dfd8333b8efe90e18ac57e",
+      "m5-missing-draft/run_acceptance.py": "e031222e73797592eabf87c1a756235db2a900481d28efef46f79d05dd25ac60",
+      "m5-receipt-integration/test_receipt.py": "0295c0b07266d30838cd60670329bb6405f76d5a27a2ba31269f2f561fd82981"
     },
     "ready_for_fault_collection": false,
     "finalization_status": "DRAFT",
@@ -52,16 +59,44 @@
       }
     }
   },
-  "ready_for_fault_collection": false,
+  "ready_for_fault_collection": true,
   "finalization_status": "DRAFT",
   "latest_bounded_run": {
-    "suite": "m5-receipt-integration",
-    "tests": 43,
+    "suites": {
+      "acceptance-draft": 5,
+      "m5-draft": 3,
+      "m5-missing-draft": 24,
+      "m5-receipt-integration": 44
+    },
+    "total_tests": 76,
+    "failures": 0,
     "passed": true,
     "exit_code": 0,
-    "scope": "Copied provisional Python helper suite only; no native/build/acceptance run.",
-    "log": "/home/markik/Code/testing/m5-harness-latest-integration-checks-20261030.log",
-    "log_sha256": "c8192329a75504310dfd8bbff3161334b667153e37e61faf57e122c50f4b4010",
-    "log_bytes": 6128
+    "scope": "Copied provisional Python helper suites only; no Cargo, native run, or receipt assembly.",
+    "log": "/home/markik/Code/testing/m5-harness-current-v-fault-checks-20261030.log",
+    "log_sha256": "6882b15b3b2f06ddf522ca8609605fbef3627e634b7654d71e017d2d4cbaf21b",
+    "log_bytes": 11102
+  },
+  "per_suite": {
+    "acceptance-draft": {
+      "tests": 5,
+      "passed": true,
+      "exit_code": 0
+    },
+    "m5-draft": {
+      "tests": 3,
+      "passed": true,
+      "exit_code": 0
+    },
+    "m5-missing-draft": {
+      "tests": 24,
+      "passed": true,
+      "exit_code": 0
+    },
+    "m5-receipt-integration": {
+      "tests": 44,
+      "passed": true,
+      "exit_code": 0
+    }
   }
 }

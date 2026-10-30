@@ -165,6 +165,46 @@ class Binding(unittest.TestCase):
 
 
 class Isolation(unittest.TestCase):
+    def test_graph_inventory_excludes_only_exact_owner_store(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d); session=root/'sessions'/'session'; session.mkdir(parents=True)
+            for name in ('memory','memory.sealed-sources-v1','memory.sealed-sources-v1-extra'):
+                (session/name).mkdir(); (session/name/'journal').write_text('before')
+            (session/'graph.json').write_text('graph')
+            prior=fault_phase.COPY
+            try:
+                fault_phase.COPY=root; before=fault_phase.graph_inventory('session')
+                (session/'memory.sealed-sources-v1'/'journal').write_text('deliberate owner deletion')
+                self.assertEqual(before,fault_phase.graph_inventory('session'))
+                (session/'memory'/'journal').write_text('unexpected legacy-store change')
+                self.assertNotEqual(before,fault_phase.graph_inventory('session'))
+                (session/'memory'/'journal').write_text('before')
+                (session/'memory.sealed-sources-v1-extra'/'journal').write_text('changed')
+                self.assertNotEqual(before,fault_phase.graph_inventory('session'))
+                (session/'memory.sealed-sources-v1-extra'/'journal').write_text('before')
+                (session/'graph.json').write_text('changed')
+                self.assertNotEqual(before,fault_phase.graph_inventory('session'))
+            finally: fault_phase.COPY=prior
+    def test_fault_scope_accepts_reused_inode_but_rejects_scope_and_time_aliases(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)/'intact'; out=Path(d)/'fault'; output=out/'output'
+            root.mkdir(); output.mkdir(parents=True)
+            for name, end, letter in [('seed',10,'a'),('reopen',20,'b')]:
+                (root/(name+'-launcher.cleanup.json')).write_text(json.dumps({'scope':'m5-'+name+'.scope','invocation':letter*32}))
+                (root/(name+'-launcher.json')).write_text(json.dumps({'exit_ns':end}))
+            launch={'scope':'m5-fault.scope','start_ns':30,'exit_ns':50,'exit_code':0,'timed_out':False,
+                    'ownership_observed':True,'argv':['--unit','m5-fault','bwrap','--unshare-user','--unshare-net','--unshare-pid','--unshare-ipc']}
+            cleanup={'scope':'m5-fault.scope','invocation':'c'*32,'normal':True,'ownership_observed':True,
+                     'cleanup':[{'cgroup_empty_verified':True}]}
+            (out/'launcher.cleanup.json').write_text(json.dumps(cleanup))
+            (output/'namespace.json').write_text(json.dumps({'pidns':'pid:[1]','cgroup':{'path':'/app/m5-fault.scope'}}))
+            child={'pid':1,'pid_namespace':'pid:[1]','start_ns':31,'exit_ns':49}
+            observed={name:dict(child) for name in ('route_probe','fault','postcheck','app','custody')}
+            run.validate_fault_scope(root,out,output,observed,launch)
+            bad=dict(launch,start_ns=19)
+            with self.assertRaises(ValueError): run.validate_fault_scope(root,out,output,observed,bad)
+            cleanup['invocation']='b'*32; (out/'launcher.cleanup.json').write_text(json.dumps(cleanup))
+            with self.assertRaises(ValueError): run.validate_fault_scope(root,out,output,observed,launch)
     def test_collection_ledger_refuses_changed_observation_and_primary(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d); profile=root/'sandbox/profile'; profile.mkdir(parents=True); (profile/'graph').write_text('graph')
@@ -173,7 +213,9 @@ class Isolation(unittest.TestCase):
                 'sandbox/reopen/structured-inspection.json','sandbox/reopen/withdrawal-inspection.json',
                 'sandbox/reopen/inspection-source-hashes.json','sandbox/reopen/inspection-integrity.json',
                 'sandbox/reopen/withdrawal_inspection-integrity.json','sandbox/origin-info.json',
-                'seed-launcher.cleanup.json','reopen-launcher.cleanup.json')
+                'seed-launcher.cleanup.json','reopen-launcher.cleanup.json',
+                'seed-launcher.json','reopen-launcher.json','sandbox/seed/namespace.json',
+                'sandbox/reopen/namespace.json')
             for name in paths:
                 p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text('{}')
             (root/'sandbox/reopen/inspection-source-hashes.json').write_text(json.dumps(run.regular_tree(profile)))

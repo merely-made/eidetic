@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -91,14 +92,52 @@ def make_command(sandbox, frozen, devices, config, phase):
                            '/usr/bin/python3', '/m5/input/acceptance_phase.py', '/m5/input/config.json']
 
 
+def validate_phase_scope(launch, cleanup, namespace, children):
+    """Bind supervised child lifetimes to one owned isolated phase scope."""
+    scope = launch.get('scope')
+    invocation = cleanup.get('invocation')
+    argv = launch.get('argv', [])
+    if (not isinstance(scope, str) or not scope.startswith('m5-') or not scope.endswith('.scope')
+        or not isinstance(invocation, str) or not re.fullmatch(r'[0-9a-f]{32}', invocation)
+        or launch.get('exit_code') != 0 or launch.get('timed_out') is not False
+        or launch.get('ownership_observed') is not True or cleanup.get('ownership_observed') is not True
+        or cleanup.get('normal') is not True or cleanup.get('scope') != scope
+        or not any(item.get('cgroup_empty_verified') is True for item in cleanup.get('cleanup', []))
+        or not namespace.get('cgroup', {}).get('path', '').endswith('/' + scope)
+        or not all(flag in argv for flag in ('bwrap','--unshare-user','--unshare-net','--unshare-pid','--unshare-ipc'))
+        or '--unit' not in argv or argv[argv.index('--unit')+1] + '.scope' != scope):
+        raise ValueError('phase scope or isolation evidence differs')
+    pidns = namespace.get('pidns')
+    if not isinstance(pidns, str) or not re.fullmatch(r'pid:\[\d+\]', pidns):
+        raise ValueError('phase PID namespace missing')
+    for child in children:
+        if (child.get('pid_namespace') != pidns or not isinstance(child.get('pid'), int) or child['pid'] <= 0
+            or not launch['start_ns'] <= child['start_ns'] < child['exit_ns'] <= launch['exit_ns']):
+            raise ValueError('child outside its phase namespace or lifetime')
+    return scope, invocation
+
+
 def aggregate(out, hashes):
     sandbox = out / 'sandbox'
     runs = {name: json.loads((sandbox / name / 'processes.json').read_text()) for name in ('seed', 'reopen')}
     checks = {name: json.loads((sandbox / name / 'phase-checked.json').read_text()) for name in runs}
     seed, reopen = runs['seed'], runs['reopen']
-    if not seed['app']['exit_ns'] < reopen['app']['start_ns'] or seed['app']['pid_namespace'] == reopen['app']['pid_namespace']:
+    phase_scopes = {}
+    for name, run in runs.items():
+        launch = json.loads((out / (name + '-launcher.json')).read_text())
+        cleanup = json.loads((out / (name + '-launcher.cleanup.json')).read_text())
+        namespace = json.loads((sandbox / name / 'namespace.json').read_text())
+        children = [run['app'], run['custody']]
+        if name == 'seed': children.append(run['origin'])
+        else: children.extend((run['inspection'], run['withdrawal_inspection']))
+        phase_scopes[name] = (validate_phase_scope(launch, cleanup, namespace, children), launch)
+    if (phase_scopes['seed'][0][0] == phase_scopes['reopen'][0][0]
+        or phase_scopes['seed'][0][1] == phase_scopes['reopen'][0][1]
+        or not phase_scopes['seed'][1]['exit_ns'] < phase_scopes['reopen'][1]['start_ns']):
+        raise ValueError('phase scopes are not distinct and ordered')
+    if not seed['app']['exit_ns'] < reopen['app']['start_ns']:
         raise ValueError('distinct app processes not demonstrated')
-    if seed['custody']['pid_namespace'] == reopen['custody']['pid_namespace'] or not seed['custody']['exit_ns'] < reopen['custody']['start_ns']:
+    if not seed['custody']['exit_ns'] < reopen['custody']['start_ns']:
         raise ValueError('distinct custody processes not demonstrated')
     if checks['seed']['custody_principal'] != checks['reopen']['custody_principal']:
         raise ValueError('reopened custody identity changed')

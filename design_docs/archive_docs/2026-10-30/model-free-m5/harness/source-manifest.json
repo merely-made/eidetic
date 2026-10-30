@@ -1,9 +1,9 @@
 {
-  "status": "provisional; adopted scenarios copied; intact/fault qualification pending",
+  "status": "provisional; V intact completed; V fault failed; final M5 qualification pending",
   "files": {
     "acceptance-draft/run_acceptance.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_acceptance.py",
-      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db"
+      "sha256": "e031222e73797592eabf87c1a756235db2a900481d28efef46f79d05dd25ac60"
     },
     "acceptance-draft/run_native.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_native.py",
@@ -23,7 +23,7 @@
     },
     "acceptance-draft/test_acceptance.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/test_acceptance.py",
-      "sha256": "1ce28e4c8caeca1feacf132712c7db1cadc5cb02ae03850c70cdea12c80867d3"
+      "sha256": "e4f557dd0b4acfe4ad93b73495fe806f0c3962c599dfd8333b8efe90e18ac57e"
     },
     "m5-draft/capture_build.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/capture_build.py",
@@ -59,7 +59,7 @@
     },
     "m5-missing-draft/run_missing.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py",
-      "sha256": "260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5"
+      "sha256": "a84eee8f010426dbad6f700acc1358e8c0820fb68f2ef7a7b8afc3a798f4a89c"
     },
     "m5-missing-draft/run_native.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_native.py",
@@ -67,7 +67,7 @@
     },
     "m5-missing-draft/run_acceptance.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_acceptance.py",
-      "sha256": "6559795113afed29dde549dd89dec6a260e9199d66beedbe4bc7051b45f002db"
+      "sha256": "e031222e73797592eabf87c1a756235db2a900481d28efef46f79d05dd25ac60"
     },
     "m5-missing-draft/namespace_phase.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/namespace_phase.py",
@@ -79,7 +79,7 @@
     },
     "m5-missing-draft/fault_phase.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_phase.py",
-      "sha256": "a9b5790f3b37d3d3ffe24ff3ffcd42a99f438b01164e349f661ce323574b39ce"
+      "sha256": "ef9bce2f1df05831ef07567eb3fec967e23ed0ad6256867754b57a164c6c0910"
     },
     "m5-missing-draft/verify_missing.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/verify_missing.py",
@@ -103,11 +103,11 @@
     },
     "m5-missing-draft/registration-lock.json": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
-      "sha256": "bbb705d915f50d0dca98975d811b0586f349f34ce8fed96c583b2ced8a7d696a"
+      "sha256": "1970f178e3a3bde39dff33bea3da18e650a644724d4bf1577ee2446f6a41f4df"
     },
     "m5-missing-draft/test_missing.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py",
-      "sha256": "0db8337bc3d9678803ed0b7234b006d1e58941cf7057ef3dc1f07af2f971c4f7"
+      "sha256": "9af6fa600f55175d0485e08d3582ce08213f6374db83115c5d1430784712369e"
     },
     "m5-missing-draft/test_fault_ledger.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_fault_ledger.py",
@@ -115,15 +115,15 @@
     },
     "m5-receipt-integration/assemble.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/assemble.py",
-      "sha256": "3703bc8fea54e744c352374d9ce36d5d26997ee49b5e27e59c05071b54e9c178"
+      "sha256": "07931c78e150b712f5f7371d0c7b2339a75484e89d8323ebf7480b49416542f8"
     },
     "m5-receipt-integration/verify.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/verify.py",
-      "sha256": "98bae452a8602831133e6eb1f233852084c06fff58f646a0bc4601d9725120de"
+      "sha256": "bfbcb982f04a2db835eb78317ec6fd874da31505c2346e612323a8a0c63bc890"
     },
     "m5-receipt-integration/test_receipt.py": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/test_receipt.py",
-      "sha256": "fd9af2661c9c78cddfd52a2d42612c2e29eae8afc4cb19cad441cb129882ada6"
+      "sha256": "0295c0b07266d30838cd60670329bb6405f76d5a27a2ba31269f2f561fd82981"
     },
     "m5-receipt-integration/README.md": {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/README.md",

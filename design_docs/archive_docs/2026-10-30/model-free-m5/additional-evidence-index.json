@@ -20146,8 +20146,8 @@
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_missing.py",
       "archive_file": "harness/m5-missing-draft/run_missing.py",
-      "sha256": "260d7e33b73d3abafea742007e150b3be46f12721f3669366d7e472989b046c5",
-      "bytes": 30315,
+      "sha256": "a84eee8f010426dbad6f700acc1358e8c0820fb68f2ef7a7b8afc3a798f4a89c",
+      "bytes": 31585,
       "copied_now": true,
       "kind": "refreshed archived harness source"
     },
@@ -20162,15 +20162,15 @@
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/verify.py",
       "archive_file": "harness/m5-receipt-integration/verify.py",
-      "sha256": "98bae452a8602831133e6eb1f233852084c06fff58f646a0bc4601d9725120de",
-      "bytes": 59340,
+      "sha256": "bfbcb982f04a2db835eb78317ec6fd874da31505c2346e612323a8a0c63bc890",
+      "bytes": 61990,
       "copied_now": true,
       "kind": "refreshed archived harness source"
     },
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/assemble.py",
       "archive_file": "harness/m5-receipt-integration/assemble.py",
-      "sha256": "3703bc8fea54e744c352374d9ce36d5d26997ee49b5e27e59c05071b54e9c178",
+      "sha256": "07931c78e150b712f5f7371d0c7b2339a75484e89d8323ebf7480b49416542f8",
       "bytes": 10548,
       "copied_now": true,
       "kind": "refreshed archived harness source"
@@ -20178,8 +20178,8 @@
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/test_receipt.py",
       "archive_file": "harness/m5-receipt-integration/test_receipt.py",
-      "sha256": "fd9af2661c9c78cddfd52a2d42612c2e29eae8afc4cb19cad441cb129882ada6",
-      "bytes": 38056,
+      "sha256": "0295c0b07266d30838cd60670329bb6405f76d5a27a2ba31269f2f561fd82981",
+      "bytes": 40222,
       "copied_now": true,
       "kind": "refreshed archived harness source"
     },
@@ -20210,10 +20210,11 @@
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/registration-lock.json",
       "archive_file": "harness/m5-missing-draft/registration-lock.json",
-      "sha256": "bbb705d915f50d0dca98975d811b0586f349f34ce8fed96c583b2ced8a7d696a",
-      "bytes": 2120,
+      "sha256": "1970f178e3a3bde39dff33bea3da18e650a644724d4bf1577ee2446f6a41f4df",
+      "bytes": 2337,
       "copied_now": true,
-      "status": "approved/adopted current provisional harness source"
+      "status": "approved/adopted current provisional harness source",
+      "kind": "refreshed archived harness source"
     },
     {
       "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-receipt-integration/README.md",
@@ -20222,6 +20223,46 @@
       "bytes": 5856,
       "copied_now": true,
       "status": "approved/adopted current provisional harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/run_acceptance.py",
+      "archive_file": "harness/acceptance-draft/run_acceptance.py",
+      "sha256": "e031222e73797592eabf87c1a756235db2a900481d28efef46f79d05dd25ac60",
+      "bytes": 16438,
+      "copied_now": true,
+      "kind": "refreshed archived harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/acceptance-draft/test_acceptance.py",
+      "archive_file": "harness/acceptance-draft/test_acceptance.py",
+      "sha256": "e4f557dd0b4acfe4ad93b73495fe806f0c3962c599dfd8333b8efe90e18ac57e",
+      "bytes": 9076,
+      "copied_now": true,
+      "kind": "refreshed archived harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/run_acceptance.py",
+      "archive_file": "harness/m5-missing-draft/run_acceptance.py",
+      "sha256": "e031222e73797592eabf87c1a756235db2a900481d28efef46f79d05dd25ac60",
+      "bytes": 16438,
+      "copied_now": true,
+      "kind": "refreshed archived harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/fault_phase.py",
+      "archive_file": "harness/m5-missing-draft/fault_phase.py",
+      "sha256": "ef9bce2f1df05831ef07567eb3fec967e23ed0ad6256867754b57a164c6c0910",
+      "bytes": 11829,
+      "copied_now": true,
+      "kind": "refreshed archived harness source"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-missing-draft/test_missing.py",
+      "archive_file": "harness/m5-missing-draft/test_missing.py",
+      "sha256": "9af6fa600f55175d0485e08d3582ce08213f6374db83115c5d1430784712369e",
+      "bytes": 24524,
+      "copied_now": true,
+      "kind": "refreshed archived harness source"
     }
   ],
   "pin_and_fault_review_packet_status": {
@@ -20235,12 +20276,12 @@
   "archive_harness_refresh_outputs": [
     {
       "source": "derived from approved SDD sources and copied-harness verification",
-      "sha256": "a592af67565db0f0524185faafe20f7e5ead5e617ed5a239ecbed1d7fd0daf72",
-      "bytes": 12251,
+      "sha256": "84394b00463a2f68f9d65ec4d752fcf1a54db246f58a972800602dc57d34a1a6",
+      "bytes": 12257,
       "copied_now": false,
       "kind": "refreshed source manifest",
-      "status": "previous manifest preserved under /testing; current manifest tracked in harness",
-      "external_path": "/home/markik/Code/testing/m5-harness-source-manifest-before-latest-20261030.json"
+      "status": "previous source manifest retained under /testing; current manifest tracked in harness",
+      "external_path": "/home/markik/Code/testing/m5-harness-source-manifest-before-v-fault-20261030.json"
     },
     {
       "source": "derived from approved SDD sources and copied-harness verification",
@@ -20286,11 +20327,11 @@
     },
     {
       "source": "derived from approved adopted SDD sources",
-      "sha256": "9ff68e4e9254f141e82bc7472120de6b61f7ebcbe78bfd00b1ab8a5fa17298da",
-      "bytes": 2270,
+      "sha256": "526d9341e0704d9357142be76651bcb5272873a2be5005528700e8e158fb8a36",
+      "bytes": 4032,
       "copied_now": true,
       "kind": "current lightweight copied-harness check metadata",
-      "status": "guards remain closed; DRAFT; helper checks only"
+      "status": "latest 76/0 copied Python helper checks; fault result failed, finalization DRAFT"
     },
     {
       "source": "copied provisional integration Python helper suite",
@@ -20300,6 +20341,15 @@
       "kind": "latest bounded Python test log",
       "status": "43 integration tests passed; no native qualification",
       "external_path": "/home/markik/Code/testing/m5-harness-latest-integration-checks-20261030.log"
+    },
+    {
+      "source": "copied provisional Python helper suites",
+      "external_path": "/home/markik/Code/testing/m5-harness-current-v-fault-checks-20261030.log",
+      "sha256": "6882b15b3b2f06ddf522ca8609605fbef3627e634b7654d71e017d2d4cbaf21b",
+      "bytes": 11102,
+      "copied_now": false,
+      "kind": "latest bounded Python helper test log",
+      "status": "76 tests passed across four copied suites; no native qualification"
     }
   ],
   "preserved_test_missing_source": {
@@ -21332,6 +21382,92 @@
       "bytes": 60644,
       "copied": false,
       "status": "Diagnostic B withdrawal source integrity evidence"
+    }
+  ],
+  "V_intact_and_failed_fault_external_evidence": [
+    {
+      "source": "/home/markik/Code/testing/m5-intact-collection-20261030-v/collection.json",
+      "external_path": "/home/markik/Code/testing/m5-intact-collection-20261030-v/collection.json",
+      "sha256": "b93e1bf2e5df571c898128ccea7ffb455dcf65754d11d1cf0c0b825354b3d432",
+      "bytes": 17703,
+      "copied": false,
+      "status": "V intact collection: 49 seed and 9 cold captures; both owner checks passed; profile unchanged; frozen at Turnstone 61c25b0c"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-missing-collection-20261030-v/primary-integrity.json",
+      "external_path": "/home/markik/Code/testing/m5-missing-collection-20261030-v/primary-integrity.json",
+      "sha256": "1b86a30b9bcde053dac93e8bd70c29b91b29e4a97e013e92a19ee4cbd39885c9",
+      "bytes": 248523,
+      "copied": false,
+      "status": "V missing-source fault: original collection unchanged"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-missing-collection-20261030-v/output/fault-postcheck.json",
+      "external_path": "/home/markik/Code/testing/m5-missing-collection-20261030-v/output/fault-postcheck.json",
+      "sha256": "2386f9af957b1d6a88353bdc8843391802be55a89557b0cf031a2bdff020ad06",
+      "bytes": 326,
+      "copied": false,
+      "status": "V original failed fault invocation postcheck: A1 raw absent, A2 and receipt inventory preserved; not a corrected native pass"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-missing-collection-20261030-v/output/graph-integrity.json",
+      "external_path": "/home/markik/Code/testing/m5-missing-collection-20261030-v/output/graph-integrity.json",
+      "sha256": "646ef6f545901d8e68f5b50d1621afc6de065618ac93258080a7f591b319f060",
+      "bytes": 6740,
+      "copied": false,
+      "status": "V fault failed graph-inventory boundary: only memory.sealed-sources-v1/journals/0 changed among 39 entries; original guard excluded memory/ and included sealed root"
+    },
+    {
+      "source": "/home/markik/Code/testing/m5-missing-collection-20261030-v/failure.json",
+      "external_path": "/home/markik/Code/testing/m5-missing-collection-20261030-v/failure.json",
+      "sha256": "29ae25672d7b4e144782d832c0feea5b2c6cd84745cb440a4b053e0d5985378c",
+      "bytes": 101,
+      "copied": false,
+      "status": "V disposable-copy fault collection failed after the graph-inventory boundary"
+    }
+  ],
+  "latest_upstream_host_attempt_external": [
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-host-fetch-full-3.json",
+      "external_path": "/home/markik/Code/testing/custody-contract-20261029/m5-host-fetch-full-3.json",
+      "sha256": "41f0b19386bdaa25e120c45adcfd20462b7195babc3a25ae66cf23963555fce8",
+      "bytes": 1402,
+      "copied": false,
+      "status": "Upstream host attempt stopped before compilation because exact Mere 845fe1c4 was unavailable; no current-source test result"
+    },
+    {
+      "source": "/home/markik/Code/testing/custody-contract-20261029/m5-host-fetch-full-3.log",
+      "external_path": "/home/markik/Code/testing/custody-contract-20261029/m5-host-fetch-full-3.log",
+      "sha256": "d5caef021638b0afc85f8c670f4e9824693679a0453c76929d907977a13e498c",
+      "bytes": 1459,
+      "copied": false,
+      "status": "Upstream host attempt output; stopped before compilation, no current-source test result"
+    }
+  ],
+  "V_visual_review_packets": [
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-v-seed-producers.json",
+      "external_path": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-v-seed-producers.json",
+      "sha256": "3c246eaabf8c1a7ce5c1ed85c8a2ed5645eca446d1704089611d10c23b9225a6",
+      "bytes": 3808,
+      "copied": false,
+      "status": "V visual review packet; Codex Terra; 11 producer/comparison frames"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-v-structured.json",
+      "external_path": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-v-structured.json",
+      "sha256": "9b1d5a7f350d44b8007e1230f1012f2502282fc2099e41d8175b4bbffcc94ad5",
+      "bytes": 17752,
+      "copied": false,
+      "status": "V visual review packet; Codex Luna; 38 structured/negative seed frames"
+    },
+    {
+      "source": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-v-reopen.json",
+      "external_path": "/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/.superpowers/sdd/2026-10-11_eidetic_development_plan/m5-draft/m5-visual-v-reopen.json",
+      "sha256": "ed2d5c5dc3760ffab7e9d434207854867b6ef45a88362ecf909e4816ba343cde",
+      "bytes": 3030,
+      "copied": false,
+      "status": "V visual review packet; Codex Terra; 9 cold frames"
     }
   ]
 }
