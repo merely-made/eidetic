@@ -1,0 +1,20 @@
+settle 20
+act Search saved sources
+type m5-scope-check
+wait-research-search 600
+choose-suggestion Structured records…
+choose-suggestion Run in this scope
+wait-structured-result 600
+record-structured-research prior_result
+choose-suggestion Back to search
+choose-suggestion Search options…
+choose-suggestion Sources and scope
+choose-suggestion Choose sources
+capture scope_selector
+choose-suggestion Back
+choose-suggestion Back to results
+settle 60
+capture scope_result
+record-saved-sources scope_result
+wait-research-search 600
+assert event m5-intentional-diagnostic-stop

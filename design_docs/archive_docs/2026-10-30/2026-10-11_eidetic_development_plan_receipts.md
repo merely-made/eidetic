@@ -832,3 +832,54 @@ publication metadata records the exact heads, bundle hashes and unchanged
 checkout states. The publishing script is retained for provenance; bundle
 archives and credentials are excluded. Publication is source state only and
 does not qualify M5.
+
+
+### M5 intact M, empty-scope diagnostic and readiness evidence
+
+Safe records for failed intact M and empty-scope diagnostic A are indexed in
+`model-free-m5/additional-evidence-index.json`. M emitted 14 authored frames and
+all 12 structured-operation observations. It then failed at the first Withdrawn
+record-history row, which was absent while the interface remained in Inspect view;
+subsequent assertions cascaded. The structured snapshot records 14 input records before
+withdrawal and 13 after. Independent copy inspection and reopen were not run, and
+the scope cleanup receipt verifies the cgroup empty. This is a failed collection,
+not M5 acceptance.
+
+Empty-scope diagnostic A reproduced a new search being cancelled by stale
+structured-result invalidation. After a saved structured result, the scope result
+reported `search: null` and an empty chosen scope, then timed out waiting for a
+current result. Cleanup verified the cgroup empty. This is a diagnostic result,
+not acceptance.
+
+The corrected visual review, stable readiness source/review packet and source
+helper, focused readiness gates, and current registration-lock-waits diff are
+indexed. The visual review marks the diff result visible but clipped; Knot
+metadata overflow and the selection not being visible remain blocked. Review and
+focused gates are scoped source/software evidence only. The changing scope-order
+and Knot-fix packet and running gate outputs were excluded. A complete seed-to-reopen run
+and final acceptance remain open.
+
+The completed M provenance receipts and logs are retained without build binaries.
+Readiness publication metadata and its script record Turnstone
+`c2f69b743a0cb3d637b32fb2ef7f4c164fb60d8a` and Eidetic
+`a251467aa4044ff625f38264cfff5f0bcd37c0f9` as published and independently
+fetched. Bundle files and credentials are excluded. Earlier push failures remain
+part of the historical record; this publication update does not qualify M5.
+
+
+### C2 author-save and remaining-waits review packets
+
+The stable C2 author-save and remaining-waits source/review packets are indexed
+in `model-free-m5/additional-evidence-index.json`, with their focused red, green,
+parser and refusal receipts. Author-save red-1 selected zero tests; red-2 failed
+on the missing status field; green-1 failed to compile; green-2 passed the
+owner-backed test 1/0, and the parser gate passed 1/0. The remaining-waits red
+case failed on the absent idle field; the owner-backed green, parser and bound
+refusal gates each passed 1/0. These are focused software checks. The native
+seed, reopen, inventory and full M5 acceptance remain unproven.
+
+The combined source diff and nine-file manifest are retained with the exact
+`src/shell/drive/shell_research_waits.rs` helper. The helper hash matches the
+manifest at Turnstone HEAD `180df8758ba7c3be3d796287e1fcc0464a59dc9d`. The
+other eight tracked files are represented by the archived combined diff and
+manifest. The changing scope-order and Knot-fix packets remain excluded.

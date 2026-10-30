@@ -1,0 +1,1636 @@
+Running as unit: custody-contract-m5-remaining-waits-parser-1.scope; invocation ID: 2c14a5008efc4d079f68c0599cba7951
+error: invalid type: boolean `true`, expected a map
+ --> ../../../.cargo/git/checkouts/servo-e53a6e7b994a25fe/aac43a3/python/tidy/tests/lints-configuration/no-workspace/Cargo.toml:8:7
+  |
+8 | foo = true
+  |       ^^^^
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `armillary v0.1.1 (https://github.com/merely-made/armillary.git?rev=35298c555f59a018e5cdd1afc624b4a427555f0f#35298c55)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/armillary.git
+warning: patch `chartulary v0.2.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `commons-spine v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `eidetic v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `esp v0.1.0 (https://github.com/merely-made/esp.git?rev=bd0468c5c44c0b098494d30b3cfd0aa283cecf48#bd0468c5)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/esp.git
+warning: patch `gemot v0.1.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `luggage v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mere-proofs v0.1.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `mien v0.0.1 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `mooting v0.1.0 (https://github.com/merely-made/gemot.git?rev=998133bc17b8636152e9c4f7605eb475498213c8#998133bc)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/gemot.git
+warning: patch `muniment v0.2.0 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `servitor v0.0.2 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: patch `stickleback v0.1.1 (https://github.com/merely-made/eidetic.git?rev=b39a3dc4d5ef0bd934fc95cb78d5e24e97eff3aa#b39a3dc4)` was not used in the crate graph
+  |
+  = help: perhaps you meant one of the following:
+          	https://www.github.com/merely-made/eidetic.git
+warning: unused imports: `Suggestion` and `normalize_address`
+  --> src/app/mod.rs:20:31
+   |
+20 | use crate::ui::{OmnibarState, Suggestion, normalize_address};
+   |                               ^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `browse`
+  --> src/app/mod.rs:26:13
+   |
+26 | use crate::{browse, session};
+   |             ^^^^^^
+
+warning: unused import: `Binding`
+ --> src/app/research_record_completion.rs:5:31
+  |
+5 | use crate::research_records::{Binding, Job, JobResult, PendingChoice, SavedResultChoice};
+  |                               ^^^^^^^
+
+warning: unused import: `Action`
+ --> src/app/research_search_arms.rs:8:21
+  |
+8 | use crate::action::{Action, Effect};
+  |                     ^^^^^^
+
+warning: unused import: `ProducerKind`
+  --> src/app/research_search_arms.rs:11:29
+   |
+11 | use eidetic_search::query::{ProducerKind, QueryMode};
+   |                             ^^^^^^^^^^^^
+
+warning: unused import: `Admission`
+ --> src/app/r2_saved_source_tests.rs:7:28
+  |
+7 | use crate::saved_sources::{Admission, Content, Entry, Key, Selector, Target};
+  |                            ^^^^^^^^^
+
+warning: unused import: `Suggestion`
+ --> src/app/saved_source_arms.rs:8:44
+  |
+8 | use crate::ui::{OmnibarMode, OmnibarState, Suggestion};
+  |                                            ^^^^^^^^^^
+
+warning: unused import: `CaretMove`
+  --> src/app/omnibar_arms.rs:12:29
+   |
+12 | use crate::action::{Action, CaretMove, Effect};
+   |                             ^^^^^^^^^
+
+warning: unused import: `crate::panes::PaneContent`
+  --> src/app/palette.rs:16:5
+   |
+16 | use crate::panes::PaneContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `uuid::Uuid`
+  --> src/app/session_lifecycle.rs:17:5
+   |
+17 | use uuid::Uuid;
+   |     ^^^^^^^^^^
+
+warning: unused import: `PaneContent`
+  --> src/app/session_lifecycle.rs:22:44
+   |
+22 | use crate::panes::{FrisketLayout, GraphId, PaneContent, SessionId};
+   |                                            ^^^^^^^^^^^
+
+warning: unused import: `Update`
+ --> src/denizen/tests.rs:5:29
+  |
+5 | use crate::action::{Action, Update};
+  |                             ^^^^^^
+
+warning: unused import: `save_certs::save_certs`
+   --> src/denizen.rs:224:9
+    |
+224 | pub use save_certs::save_certs;
+    |         ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Update`
+ --> src/focus_card/tests.rs:6:22
+  |
+6 |     action::{Action, Update},
+  |                      ^^^^^^
+
+warning: unused import: `ScopeVisit`
+  --> src/scope_navigation.rs:13:65
+   |
+13 |     NodeActivation, ScopeCamera, ScopeControls, ScopeDirection, ScopeVisit,
+   |                                                                 ^^^^^^^^^^
+
+warning: unused import: `std::ffi::OsString`
+ --> src/authoring_address.rs:4:5
+  |
+4 | use std::ffi::OsString;
+  |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `is_knot_address::is_knot_address`
+ --> src/authoring_address.rs:8:16
+  |
+8 | pub(crate) use is_knot_address::is_knot_address;
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `place_held_rewrite::place_held_rewrite`
+  --> src/authoring_address.rs:17:16
+   |
+17 | pub(crate) use place_held_rewrite::place_held_rewrite;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `normalized_absolute::normalized_absolute`
+  --> src/authoring_address.rs:23:5
+   |
+23 | use normalized_absolute::normalized_absolute;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `env_path::env_path`
+  --> src/authoring_address.rs:26:16
+   |
+26 | pub(crate) use env_path::env_path;
+   |                ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `mpsc`
+  --> src/device_receipts_service.rs:17:29
+   |
+17 | use std::sync::{Arc, Mutex, mpsc};
+   |                             ^^^^
+
+warning: unused import: `djinn::door::app_admission::AppId`
+  --> src/device_receipts_service.rs:19:5
+   |
+19 | use djinn::door::app_admission::AppId;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `graphshell_endpoint::door::projection::AppBrokerClient`
+  --> src/device_receipts_service.rs:20:5
+   |
+20 | use graphshell_endpoint::door::projection::AppBrokerClient;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `Deserialize` and `Serialize`
+  --> src/inference_surface.rs:23:13
+   |
+23 | use serde::{Deserialize, Serialize};
+   |             ^^^^^^^^^^^  ^^^^^^^^^
+
+warning: unused import: `NodeKind`
+  --> src/knot_authoring/tests.rs:11:33
+   |
+11 | use layout_dom_api::{LayoutDom, NodeKind};
+   |                                 ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/clip_knot_body.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/json_path.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/effect_mode.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/env_integer.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/effect_mode_value.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/split_list.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/format_cache_age.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/engine_id.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/default_max_source_bytes.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/default_effect_max_depth.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/default_effect_max_ops.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/knot_projection_authority.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/knot_projection_domain.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/knot_authoring/knot_sheet.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `PaneContent`
+ --> src/panes/workspace_blueprint.rs:7:25
+  |
+7 | use super::{LayoutNode, PaneContent, SpaceBlueprint};
+  |                         ^^^^^^^^^^^
+
+warning: unused import: `BTreeSet`
+  --> src/place/captured_collection.rs:15:34
+   |
+15 | use std::collections::{BTreeMap, BTreeSet};
+   |                                  ^^^^^^^^
+
+warning: unused import: `servitor::AuthorityProvider`
+  --> src/place/captured_collection.rs:25:5
+   |
+25 | use servitor::AuthorityProvider;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CapturedCollectionCache`, `CapturedContentGroup`, `CapturedContributionStatus`, `CapturedContribution`, and `CapturedRejectionReason`
+  --> src/place/captured_collection.rs:28:5
+   |
+28 |     CapturedCollectionCache, CapturedContentGroup, CapturedContribution,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+29 |     CapturedContributionStatus, CapturedRejectionReason,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Write`
+  --> src/retained_clip.rs:16:16
+   |
+16 |     io::{Read, Write},
+   |                ^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/controller_input.rs:17:13
+   |
+17 | use super::{NodeSessions, NodeSurfaces, Shell, content_link_target};
+   |             ^^^^^^^^^^^^
+
+warning: unused import: `self`
+  --> src/shell/cue_content.rs:13:14
+   |
+13 |     webcue::{self, Surface as _, *},
+   |              ^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/drive.rs:17:23
+   |
+17 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_run_scenario_step.rs:16:13
+   |
+16 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+  --> src/shell/drive/shell_run_scenario_step.rs:17:31
+   |
+17 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^  ^^^^^^^
+
+warning: unused imports: `cmp_f32` and `cmp_usize`
+   --> src/shell/drive/shell_run_scenario_step.rs:134:35
+    |
+134 |         use super::super::drive::{cmp_f32, cmp_usize};
+    |                                   ^^^^^^^  ^^^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+   --> src/shell/drive/shell_run_scenario_step.rs:135:13
+    |
+135 |         use crate::action::CaretMove;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+   --> src/shell/drive/shell_run_scenario_step.rs:136:31
+    |
+136 |         use crate::scenario::{CmpOp, EditKey, Step};
+    |                               ^^^^^  ^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_scenario_assert_focused.rs:12:13
+   |
+12 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `CmpOp` and `EditKey`
+  --> src/shell/drive/shell_scenario_assert_focused.rs:13:31
+   |
+13 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^  ^^^^^^^
+
+warning: unused import: `crate::action::CaretMove`
+  --> src/shell/drive/shell_scenario_assert_no_surface.rs:12:13
+   |
+12 |         use crate::action::CaretMove;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `CmpOp`
+  --> src/shell/drive/shell_scenario_assert_no_surface.rs:13:31
+   |
+13 |         use crate::scenario::{CmpOp, EditKey, Step};
+   |                               ^^^^^
+
+warning: unused import: `std::sync::mpsc::Receiver`
+  --> src/shell/effects.rs:14:5
+   |
+14 | use std::sync::mpsc::Receiver;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `FetchUpdate`
+  --> src/shell/effects.rs:16:27
+   |
+16 | use fetch::{FetchCommand, FetchUpdate};
+   |                           ^^^^^^^^^^^
+
+warning: unused import: `SessionClick`
+  --> src/shell/effects.rs:18:46
+   |
+18 |     DocumentFindQuery, EngineProfileBinding, SessionClick, SessionSpawnRequest, SurfaceSpawnRequest,
+   |                                              ^^^^^^^^^^^^
+
+warning: unused import: `crate::panes::PaneContent`
+  --> src/shell/effects.rs:23:5
+   |
+23 | use crate::panes::PaneContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/effects/browser_profile_path.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+ --> src/shell/nomadnet_fetch.rs:2:5
+  |
+2 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::sync::mpsc::Receiver`
+ --> src/shell/nomadnet_fetch.rs:3:5
+  |
+3 | use std::sync::mpsc::Receiver;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ActorHandle` and `Emitter`
+ --> src/shell/nomadnet_fetch.rs:5:17
+  |
+5 | use armillary::{ActorHandle, Emitter, Wake};
+  |                 ^^^^^^^^^^^  ^^^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/render.rs:15:13
+   |
+15 | use super::{NodeSessions, NodeSurfaces};
+   |             ^^^^^^^^^^^^
+
+warning: unused import: `netrender::external_texture::ExternalTexturePlacement`
+  --> src/shell/render.rs:20:5
+   |
+20 | use netrender::external_texture::ExternalTexturePlacement;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `inker::SessionClick`
+  --> src/shell/lens.rs:29:5
+   |
+29 | use inker::SessionClick;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ContentKey`
+ --> src/shell/lens_tests.rs:7:20
+  |
+7 |     content_pool::{ContentKey, HostPlacement, NodeDocuments},
+  |                    ^^^^^^^^^^
+
+warning: unused import: `NodeSessions`
+  --> src/shell/input.rs:15:13
+   |
+15 | use super::{NodeSessions, NodeSurfaces};
+   |             ^^^^^^^^^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/input.rs:17:23
+   |
+17 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `SessionClick` and `SessionScrollKey`
+  --> src/shell/input.rs:21:13
+   |
+21 | use inker::{SessionClick, SessionScrollKey};
+   |             ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused import: `CaretMove`
+  --> src/shell/input.rs:25:29
+   |
+25 | use crate::action::{Action, CaretMove};
+   |                             ^^^^^^^^^
+
+warning: unused import: `decode_sprite`
+  --> src/shell/input.rs:28:20
+   |
+28 | use super::{Shell, decode_sprite};
+   |                    ^^^^^^^^^^^^^
+
+warning: unused import: `frame_body_rects::frame_body_rects`
+  --> src/shell/outer_workspace.rs:59:16
+   |
+59 | pub(super) use frame_body_rects::frame_body_rects;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `SessionNavigationCommand`
+  --> src/shell/window_input_tests.rs:17:53
+   |
+17 |     Cookie, FocusReason, KeyboardEvent, MouseEvent, SessionNavigationCommand, SessionSpawnRequest,
+   |                                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `PeltLane`
+  --> src/shell/window_input_tests.rs:20:30
+   |
+20 | use pelt_core::{PeltContent, PeltLane, PeltRoute, PeltRouteSource, PeltRouteState};
+   |                              ^^^^^^^^
+
+warning: unused import: `input::pointer_button`
+  --> src/shell/mod.rs:62:5
+   |
+62 | use input::pointer_button;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+  --> src/shell/mod.rs:65:5
+   |
+65 | use std::path::Path;
+   |     ^^^^^^^^^^^^^^^
+
+warning: unused import: `image::ImageEncoder`
+  --> src/shell/mod.rs:72:5
+   |
+72 | use image::ImageEncoder;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `mere::canvas::WHEEL_PAN_SCALE`
+  --> src/shell/mod.rs:74:5
+   |
+74 | use mere::canvas::WHEEL_PAN_SCALE;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReaderSessionEngine`
+  --> src/shell/mod.rs:76:5
+   |
+76 |     ReaderSessionEngine, RemoteFetcher, SmolwebInlineMediaPolicy, SmolwebSessionEngine,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ColorLoad` and `NetrenderOptions`
+  --> src/shell/mod.rs:80:17
+   |
+80 | use netrender::{ColorLoad, NetrenderOptions};
+   |                 ^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused import: `winit::application::ApplicationHandler`
+  --> src/shell/mod.rs:81:5
+   |
+81 | use winit::application::ApplicationHandler;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `PhysicalPosition` and `PhysicalSize`
+  --> src/shell/mod.rs:82:18
+   |
+82 | use winit::dpi::{PhysicalPosition, PhysicalSize};
+   |                  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+
+warning: unused imports: `ElementState`, `Ime`, `MouseButton`, and `MouseScrollDelta`
+  --> src/shell/mod.rs:83:20
+   |
+83 | use winit::event::{ElementState, Ime, MouseButton, MouseScrollDelta, WindowEvent};
+   |                    ^^^^^^^^^^^^  ^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+
+warning: unused imports: `Key as WinitKey` and `NamedKey as WinitNamedKey`
+  --> src/shell/mod.rs:85:23
+   |
+85 | use winit::keyboard::{Key as WinitKey, NamedKey as WinitNamedKey};
+   |                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `A11yRoutes`
+ --> src/shell/window_a11y.rs:6:23
+  |
+6 |     a11y::{A11yRoute, A11yRoutes},
+  |                       ^^^^^^^^^^
+
+warning: unused import: `Effect`
+  --> src/shell/mod.rs:95:29
+   |
+95 | use crate::action::{Action, Effect, Update};
+   |                             ^^^^^^
+
+warning: unused import: `session`
+  --> src/shell/mod.rs:98:21
+   |
+98 | use crate::{browse, session};
+   |                     ^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/servo_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/weld_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/scry_construction_availability.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `super::*`
+ --> src/shell/servo_profile_directory.rs:4:5
+  |
+4 | use super::*;
+  |     ^^^^^^^^
+
+warning: unused import: `mere::canvas::palette`
+  --> src/swatch_pane/mod.rs:34:5
+   |
+34 | use mere::canvas::palette;
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ColorF`
+  --> src/swatch_pane/mod.rs:35:17
+   |
+35 | use sprigging::{ColorF, LeafRegistry, RenderedLeaves};
+   |                 ^^^^^^
+
+warning: unused import: `crate::content::NodeContent`
+  --> src/swatch_pane/mod.rs:39:5
+   |
+39 | use crate::content::NodeContent;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::overmap`
+  --> src/swatch_pane/mod.rs:40:5
+   |
+40 | use crate::overmap;
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `ime_cursor_area::ime_cursor_area`
+   --> src/ui.rs:375:9
+    |
+375 | pub use ime_cursor_area::ime_cursor_area;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `chrome_has_content::chrome_has_content`
+   --> src/ui.rs:381:9
+    |
+381 | pub use chrome_has_content::chrome_has_content;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `scene_from_dom_with_leaves::scene_from_dom_with_leaves`
+   --> src/ui.rs:487:9
+    |
+487 | pub use scene_from_dom_with_leaves::scene_from_dom_with_leaves;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `place_workbench_at`
+  --> src/workbench_pane.rs:36:48
+   |
+36 | use crate::workbench_tiling::{WorkbenchTiling, place_workbench_at};
+   |                                                ^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+ --> src/contributed_a11y/tests.rs:5:31
+  |
+5 | use accesskit::{Action, Node, Tree, TreeId};
+  |                               ^^^^
+  |
+  = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/contributed_a11y/tests.rs:20:24
+   |
+20 |             tree: Some(Tree::new(root)),
+   |                        ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/contributed_a11y/tests.rs:60:20
+   |
+60 |         tree: Some(Tree::new(NodeId(99))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+ --> src/foreign_a11y.rs:8:58
+  |
+8 | use accesskit::{ActionRequest, Node, NodeId, Rect, Role, Tree, TreeId, TreeUpdate};
+  |                                                          ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y.rs:15:11
+   |
+15 |     tree: Tree,
+   |           ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y/tests.rs:23:20
+   |
+23 |         tree: Some(Tree::new(NodeId(0))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y/tests.rs:41:20
+   |
+41 |         tree: Some(Tree::new(NodeId(0))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y/tests.rs:70:20
+   |
+70 |         tree: Some(Tree::new(NodeId(0))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/foreign_a11y/tests/incomplete_tree_waits_and_invalid_host_frame_keeps_cases.rs:17:34
+   |
+17 |     for tree_data in [None, Some(Tree::new(NodeId(0)))] {
+   |                                  ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/foreign_a11y/tests/incomplete_tree_waits_and_invalid_host_frame_keeps_cases.rs:228:28
+    |
+228 |                 tree: Some(Tree::new(NodeId(0))),
+    |                            ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/shell/lens_tests.rs:11:62
+   |
+11 |     Action as A11yAction, ActionRequest, Node, NodeId, Role, Tree, TreeId, TreeUpdate,
+   |                                                              ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/lens_tests.rs:113:20
+    |
+113 |         tree: Some(Tree::new(NodeId(0))),
+    |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/a11y_bridge.rs:207:31
+    |
+207 |         tree: Some(accesskit::Tree::new(root)),
+    |                               ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+ --> src/shell/a11y_bridge/admission_tests.rs:7:45
+  |
+7 | use accesskit::{Action, Node, NodeId, Role, Tree, TreeId};
+  |                                             ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+  --> src/shell/a11y_bridge/admission_tests.rs:25:20
+   |
+25 |         tree: Some(Tree::new(NodeId(0))),
+   |                    ^^^^
+
+warning: use of deprecated type alias `accesskit::Tree`: Use TreeInfo instead
+   --> src/shell/a11y_bridge.rs:234:35
+    |
+234 |             tree: Some(accesskit::Tree::new(root)),
+    |                                   ^^^^
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> src/inference_activity.rs:34:10
+   |
+34 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+34 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+34 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> src/inference_activity.rs:42:10
+   |
+42 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+42 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+42 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> src/inference_activity.rs:50:10
+   |
+50 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+50 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+50 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> src/place/captured_collection.rs:149:14
+    |
+149 |             .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+149 -             .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+149 +             .try_update(Ordering::SeqCst, Ordering::SeqCst, |epoch| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> src/shell/native_composition.rs:63:10
+   |
+63 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+63 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+63 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> src/shell/native_composition.rs:133:10
+    |
+133 |         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+    |          ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+133 -         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+133 +         .try_update(Ordering::Relaxed, Ordering::Relaxed, |next| {
+    |
+
+warning: unused import: `eidetic::Backend`
+ --> src/trail_memory/storage_owner_review_tests.rs:4:5
+  |
+4 | use eidetic::Backend as _;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `eidetic::Backend`
+ --> src/trail_memory/m5_store_integrity_tests.rs:5:5
+  |
+5 | use eidetic::Backend as _;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `super::NodeSessions`
+  --> src/shell/lens.rs:14:5
+   |
+14 | use super::NodeSessions;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `genet_clipboard::TextClipboard`
+  --> src/shell/effects/shell_effect_open_theme_workshop.rs:41:21
+   |
+41 |                 use genet_clipboard::TextClipboard as _;
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+ --> src/app/research_search_tests.rs:9:9
+  |
+9 |     let mut app = App::test_stub_at(root.to_path_buf());
+  |         ----^^^
+  |         |
+  |         help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `zoom`
+  --> src/chrome_view/window_chrome_view.rs:10:9
+   |
+10 |     let zoom = state.zoom;
+   |         ^^^^ help: if this is intentional, prefix it with an underscore: `_zoom`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `merged`
+  --> src/chrome_view/window_chrome_view.rs:19:9
+   |
+19 |     let merged = win.primary && state.shellbar_visible && !state.layout.toolbar_bottom;
+   |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_merged`
+
+warning: unused variable: `navigation_top`
+  --> src/chrome_view/window_chrome_view.rs:20:9
+   |
+20 |     let navigation_top = if state.layout.toolbar_bottom {
+   |         ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_navigation_top`
+
+warning: unused variable: `slot`
+ --> src/chrome_view/append_window_navigation.rs:9:5
+  |
+9 |     slot: usize,
+  |     ^^^^ help: if this is intentional, prefix it with an underscore: `_slot`
+
+warning: unused variable: `caption_at_top`
+  --> src/chrome_view/append_window_navigation.rs:16:9
+   |
+16 |     let caption_at_top = matches!(
+   |         ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_caption_at_top`
+
+warning: variable does not need to be mutable
+   --> src/shell/drive/shell_run_scenario_step.rs:519:21
+    |
+519 |                 let mut diagnostic = self.surface_a11y.publication_diagnostic(public_fixture);
+    |                     ----^^^^^^^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: unused variable: `caption`
+   --> src/shell/render/shell_render.rs:115:13
+    |
+115 |         let caption = self
+    |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_caption`
+
+warning: variable `surface_frame` is assigned to, but never used
+   --> src/shell/render/shell_render.rs:197:25
+    |
+197 |                     let mut surface_frame = None;
+    |                         ^^^^^^^^^^^^^^^^^
+    |
+    = note: consider using `_surface_frame` instead
+
+warning: value assigned to `surface_frame` is never read
+   --> src/shell/render/shell_render.rs:201:29
+    |
+201 | ...                   surface_frame = Some(frame);
+    |                       ^^^^^^^^^^^^^
+    |
+    = help: maybe it is overwritten before being read?
+    = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `host`
+  --> src/shell/lens/shell_render_lens.rs:41:18
+   |
+41 |         let Some(host) = lens.host.as_ref() else {
+   |                  ^^^^ help: if this is intentional, prefix it with an underscore: `_host`
+
+warning: unused variable: `space`
+  --> src/shell/lens/lens_content_plan_with_rects.rs:15:19
+   |
+15 |     let Some(Some(space)) = app.lenses.get(ordinal) else {
+   |                   ^^^^^ help: if this is intentional, prefix it with an underscore: `_space`
+
+warning: variable does not need to be mutable
+   --> src/shell/shell_ensure_render_recovery.rs:203:17
+    |
+203 |             let mut can_replace = true;
+    |                 ----^^^^^^^^^^^
+    |                 |
+    |                 help: remove this `mut`
+
+warning: type `RecoveryItem` is more private than the item `research_records::Job::Reconcile::item`
+   --> src/research_records.rs:128:9
+    |
+128 |         item: crate::trail_memory::record_actor::RecoveryItem,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ field `research_records::Job::Reconcile::item` is reachable at visibility `pub`
+    |
+note: but type `RecoveryItem` is only usable at visibility `pub(crate)`
+   --> src/trail_memory/sealed_record_receipts.rs:381:1
+    |
+381 | pub(crate) enum RecoveryItem {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: `#[warn(private_interfaces)]` on by default
+
+warning: type `RecoveryItem` is more private than the item `research_records::Job::RecoveryMark::item`
+   --> src/research_records.rs:133:9
+    |
+133 |         item: crate::trail_memory::record_actor::RecoveryItem,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ field `research_records::Job::RecoveryMark::item` is reachable at visibility `pub`
+    |
+note: but type `RecoveryItem` is only usable at visibility `pub(crate)`
+   --> src/trail_memory/sealed_record_receipts.rs:381:1
+    |
+381 | pub(crate) enum RecoveryItem {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: type `RecoveryItem` is more private than the item `research_records::Job::RecoveryAck::item`
+   --> src/research_records.rs:140:9
+    |
+140 |         item: crate::trail_memory::record_actor::RecoveryItem,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ field `research_records::Job::RecoveryAck::item` is reachable at visibility `pub`
+    |
+note: but type `RecoveryItem` is only usable at visibility `pub(crate)`
+   --> src/trail_memory/sealed_record_receipts.rs:381:1
+    |
+381 | pub(crate) enum RecoveryItem {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: type `RecoveryItem` is more private than the item `research_records::JobResult::Recovery::result`
+   --> src/research_records.rs:236:9
+    |
+236 | /         result: Result<
+237 | |             Vec<crate::trail_memory::record_actor::RecoveryItem>,
+238 | |             crate::research_storage::SourceReadError,
+239 | |         >,
+    | |_________^ field `research_records::JobResult::Recovery::result` is reachable at visibility `pub`
+    |
+note: but type `RecoveryItem` is only usable at visibility `pub(crate)`
+   --> src/trail_memory/sealed_record_receipts.rs:381:1
+    |
+381 | pub(crate) enum RecoveryItem {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: type `RecoveryItem` is more private than the item `research_records::JobResult::Reconcile::item`
+   --> src/research_records.rs:244:9
+    |
+244 |         item: crate::trail_memory::record_actor::RecoveryItem,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ field `research_records::JobResult::Reconcile::item` is reachable at visibility `pub`
+    |
+note: but type `RecoveryItem` is only usable at visibility `pub(crate)`
+   --> src/trail_memory/sealed_record_receipts.rs:381:1
+    |
+381 | pub(crate) enum RecoveryItem {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: type `RecoveryItem` is more private than the item `research_records::JobResult::RecoveryMark::item`
+   --> src/research_records.rs:250:9
+    |
+250 |         item: crate::trail_memory::record_actor::RecoveryItem,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ field `research_records::JobResult::RecoveryMark::item` is reachable at visibility `pub`
+    |
+note: but type `RecoveryItem` is only usable at visibility `pub(crate)`
+   --> src/trail_memory/sealed_record_receipts.rs:381:1
+    |
+381 | pub(crate) enum RecoveryItem {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: type `RecoveryItem` is more private than the item `research_records::JobResult::RecoveryAck::item`
+   --> src/research_records.rs:258:9
+    |
+258 |         item: crate::trail_memory::record_actor::RecoveryItem,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ field `research_records::JobResult::RecoveryAck::item` is reachable at visibility `pub`
+    |
+note: but type `RecoveryItem` is only usable at visibility `pub(crate)`
+   --> src/trail_memory/sealed_record_receipts.rs:381:1
+    |
+381 | pub(crate) enum RecoveryItem {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `live_toggle` is never used
+  --> src/arrange_pane/compose.rs:79:15
+   |
+79 | pub(super) fn live_toggle(
+   |               ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `sync` is never used
+   --> src/arrange_pane/arrange_pane_new.rs:104:12
+    |
+  6 | impl ArrangePane {
+    | ---------------- method in this implementation
+...
+104 |     pub fn sync(&mut self, app: &App, pane_w: f32, pane_h: f32) {
+    |            ^^^^
+
+warning: variants `NavBack`, `NavForward`, `NavigateRelationship`, and `RevealRelationship` are never constructed
+  --> src/chrome_view.rs:59:5
+   |
+53 | pub enum ChromeIntent {
+   |          ------------ variants in this enum
+...
+59 |     NavBack,
+   |     ^^^^^^^
+60 |     NavForward,
+   |     ^^^^^^^^^^
+...
+68 |     NavigateRelationship(crate::relationship_navigation::RelationshipTarget),
+   |     ^^^^^^^^^^^^^^^^^^^^
+69 |     RevealRelationship(crate::relationship_navigation::RelationshipTarget),
+   |     ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `ChromeIntent` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: associated function `start` is never used
+   --> src/custody_binding.rs:287:12
+    |
+218 | impl Setup {
+    | ---------- associated function in this implementation
+...
+287 |     pub fn start(
+    |            ^^^^^
+
+warning: function `save_certs` is never used
+ --> src/denizen/save_certs.rs:9:8
+  |
+9 | pub fn save_certs(session_dir: &Path, subject_hex: &str, certs: &[SignedDelegationCertificate]) {
+  |        ^^^^^^^^^^
+
+warning: function `is_knot_address` is never used
+ --> src/knot_authoring/is_knot_address.rs:4:8
+  |
+4 | pub fn is_knot_address(address: &str) -> bool {
+  |        ^^^^^^^^^^^^^^^
+
+warning: function `place_held_address` is never used
+  --> src/knot_authoring/place_held_address.rs:13:8
+   |
+13 | pub fn place_held_address(holder_root: &[u8; 32], path: &str) -> String {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: function `parse_place_held_address` is never used
+ --> src/knot_authoring/parse_place_held_address.rs:9:8
+  |
+9 | pub fn parse_place_held_address(address: &str) -> Option<([u8; 32], String)> {
+  |        ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `place_held_rewrite` is never used
+  --> src/knot_authoring/place_held_rewrite.rs:12:8
+   |
+12 | pub fn place_held_rewrite(
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: function `vault_relative` is never used
+  --> src/knot_authoring/vault_relative.rs:10:15
+   |
+10 | pub(super) fn vault_relative(
+   |               ^^^^^^^^^^^^^^
+
+warning: function `normalized_absolute` is never used
+ --> src/knot_authoring/normalized_absolute.rs:6:15
+  |
+6 | pub(super) fn normalized_absolute(path: &std::path::Path) -> Result<PathBuf, String> {
+  |               ^^^^^^^^^^^^^^^^^^^
+
+warning: function `env_path` is never used
+  --> src/knot_authoring/env_path.rs:12:15
+   |
+12 | pub(crate) fn env_path(name: &str) -> Option<PathBuf> {
+   |               ^^^^^^^^
+
+warning: associated function `new` is never used
+   --> src/device_receipts_pane.rs:130:12
+    |
+129 | impl DeviceReceiptsPane {
+    | ----------------------- associated function in this implementation
+130 |     pub fn new(service: Option<Arc<DeviceReceiptsService>>) -> Self {
+    |            ^^^
+
+warning: method `is_receipt` is never used
+  --> src/device_receipts_service.rs:41:12
+   |
+36 | impl ReceiptCardView {
+   | -------------------- method in this implementation
+...
+41 |     pub fn is_receipt(&self) -> bool {
+   |            ^^^^^^^^^^
+
+warning: associated function `new` is never used
+   --> src/frozen_projection_pane.rs:159:12
+    |
+158 | impl FrozenProjectionPane {
+    | ------------------------- associated function in this implementation
+159 |     pub fn new() -> Self {
+    |            ^^^
+
+warning: struct `HubProbe` is never constructed
+   --> src/knot_authoring.rs:236:19
+    |
+236 | pub(crate) struct HubProbe {
+    |                   ^^^^^^^^
+
+warning: associated function `connect_directory_evidence` is never used
+   --> src/knot_authoring/knot_authoring_engine_from_env.rs:285:19
+    |
+  6 | impl KnotAuthoringEngine {
+    | ------------------------ associated function in this implementation
+...
+285 |     pub(super) fn connect_directory_evidence(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: associated items `open`, `source`, `disclosed_address`, `save`, and `wait_for_unavailable` are never used
+  --> src/knot_authoring/hub_probe_open.rs:8:19
+   |
+ 7 | impl HubProbe {
+   | ------------- associated items in this implementation
+ 8 |     pub(crate) fn open(hub: Arc<KnotHub>, address: &str) -> Result<Self, String> {
+   |                   ^^^^
+...
+14 |     pub(crate) fn source(&self) -> &str {
+   |                   ^^^^^^
+...
+20 |     pub(crate) fn disclosed_address(&self) -> &str {
+   |                   ^^^^^^^^^^^^^^^^^
+...
+25 |     pub(crate) fn save(&mut self, source: &str) -> Result<String, String> {
+   |                   ^^^^
+...
+54 |     pub(crate) fn wait_for_unavailable(&self, budget: Duration) -> Option<String> {
+   |                   ^^^^^^^^^^^^^^^^^^^^
+
+warning: methods `projection_input_binding` and `runtime_projection_source` are never used
+   --> src/knot_authoring/knot_document_session_pointer_event.rs:383:12
+    |
+  6 | impl KnotDocumentSession {
+    | ------------------------ methods in this implementation
+...
+383 |     pub fn projection_input_binding(&self) -> Option<&ProjectionInputBinding> {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+393 |     pub fn runtime_projection_source(&self) -> Option<RuntimeSourceBinding<KnotRuntimeWitness>> {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: method `dom_ref` is never used
+  --> src/outer_frame/outer_frame_native_source_node.rs:65:19
+   |
+ 6 | impl OuterFrame {
+   | --------------- method in this implementation
+...
+65 |     pub(crate) fn dom_ref(&self) -> std::cell::Ref<'_, ScriptedDom> {
+   |                   ^^^^^^^
+
+warning: method `stamp` is never used
+   --> src/outer_frame/outer_frame_set_main_view_switch.rs:308:19
+    |
+  6 | impl OuterFrame {
+    | --------------- method in this implementation
+...
+308 |     pub(crate) fn stamp(&self) -> FrameStamp {
+    |                   ^^^^^
+
+warning: methods `split_axis` and `new_is_first` are never used
+   --> src/panes/mod.rs:365:19
+    |
+364 | impl InsertSide {
+    | --------------- methods in this implementation
+365 |     pub(crate) fn split_axis(self) -> SplitAxis {
+    |                   ^^^^^^^^^^
+...
+374 |     pub(crate) fn new_is_first(self) -> bool {
+    |                   ^^^^^^^^^^^^
+
+warning: method `is_current` is never used
+   --> src/place/captured_collection.rs:180:8
+    |
+100 | impl LocalCaptureLibrary {
+    | ------------------------ method in this implementation
+...
+180 |     fn is_current(&self, ticket: CustodyTicket) -> bool {
+    |        ^^^^^^^^^^
+
+warning: field `capture_library` is never read
+  --> src/place/protocol.rs:26:16
+   |
+22 | pub struct PlaceWorkerSettings {
+   |            ------------------- field in this struct
+...
+26 |     pub(crate) capture_library: crate::place::captured_collection::LocalCaptureLibrary,
+   |                ^^^^^^^^^^^^^^^
+   |
+   = note: `PlaceWorkerSettings` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: method `now_ms` is never used
+ --> src/place/worker/authority_clock_now_ms.rs:7:19
+  |
+6 | impl AuthorityClock {
+  | ------------------- method in this implementation
+7 |     pub(crate) fn now_ms(self) -> u64 {
+  |                   ^^^^^^
+
+warning: function `save_admitted_rendezvous` is never used
+  --> src/place/rendezvous.rs:67:15
+   |
+67 | pub(crate) fn save_admitted_rendezvous(
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: constant `PROJECTION_GRANT_FILE` is never used
+   --> src/place/rendezvous.rs:211:18
+    |
+211 | pub(crate) const PROJECTION_GRANT_FILE: &str = "place-projection-grant.json";
+    |                  ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `save_projection_grant` is never used
+   --> src/place/rendezvous.rs:215:15
+    |
+215 | pub(crate) fn save_projection_grant(directory: &Path, bytes: &[u8]) -> Result<(), String> {
+    |               ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `load_projection_grant` is never used
+   --> src/place/rendezvous.rs:231:15
+    |
+231 | pub(crate) fn load_projection_grant(directory: &Path) -> Option<Vec<u8>> {
+    |               ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `spawn_bin` is never used
+   --> src/recycle.rs:166:8
+    |
+166 | pub fn spawn_bin(wake: Wake, dir: PathBuf) -> (ActorHandle<BinCommand>, Receiver<Update>) {
+    |        ^^^^^^^^^
+
+warning: function `granted_ring_names` is never used
+   --> src/ring.rs:437:8
+    |
+437 | pub fn granted_ring_names(authority: &impl AuthorityProvider, subject: Subject) -> Vec<String> {
+    |        ^^^^^^^^^^^^^^^^^^
+
+warning: function `roster_grid_rows` is never used
+   --> src/roster_view.rs:101:8
+    |
+101 | pub fn roster_grid_rows(app: &App) -> Vec<RosterGridRow> {
+    |        ^^^^^^^^^^^^^^^^
+
+warning: field `0` is never read
+   --> src/scenario.rs:284:12
+    |
+284 |     Settle(u32),
+    |     ------ ^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `Step` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or remove the field
+    |
+284 -     Settle(u32),
+284 +     Settle(()),
+    |
+
+warning: field `0` is never read
+   --> src/scenario.rs:320:17
+    |
+320 |     AssertEvent(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `Step` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or remove the field
+    |
+320 -     AssertEvent(String),
+320 +     AssertEvent(()),
+    |
+
+warning: field `0` is never read
+   --> src/scenario.rs:384:9
+    |
+384 |     Log(String),
+    |     --- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `Step` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or remove the field
+    |
+384 -     Log(String),
+384 +     Log(()),
+    |
+
+warning: field `0` is never read
+  --> src/session_persistence.rs:12:37
+   |
+12 | pub(crate) struct SessionWriteLease(Arc<File>);
+   |                   ----------------- ^^^^^^^^^
+   |                   |
+   |                   field in this struct
+   |
+   = help: consider removing this field
+   = note: `SessionWriteLease` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: method `publish` is never used
+   --> src/settings_pane.rs:194:8
+    |
+180 | impl LiveSettingsHandle {
+    | ----------------------- method in this implementation
+...
+194 |     fn publish(&self, settings: &ApplicationSettings) {
+    |        ^^^^^^^
+
+warning: method `foreign_a11y_placements_in` is never used
+  --> src/shell/foreign_a11y.rs:65:19
+   |
+ 9 | impl Shell {
+   | ---------- method in this implementation
+...
+65 |     pub(super) fn foreign_a11y_placements_in(
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: method `on_key` is never used
+   --> src/shell/keys/shell_cambium_key.rs:322:29
+    |
+  6 | impl Shell {
+    | ---------- method in this implementation
+...
+322 |     pub(in super::super) fn on_key(&mut self, key: &WinitKey) {
+    |                             ^^^^^^
+
+warning: field `request` is never read
+  --> src/shell/nomadnet_fetch.rs:17:9
+   |
+16 |     Cancel {
+   |     ------ field in this variant
+17 |         request: u64,
+   |         ^^^^^^^
+
+warning: function `frame_body_rects` is never used
+ --> src/shell/outer_workspace/frame_body_rects.rs:7:25
+  |
+7 | pub(in super::super) fn frame_body_rects(
+  |                         ^^^^^^^^^^^^^^^^
+
+warning: methods `has_live_content` and `has_independent_reader_appearance` are never used
+   --> src/shell/shell_new.rs:435:19
+    |
+  6 | impl Shell {
+    | ---------- methods in this implementation
+...
+435 |     pub(super) fn has_live_content(&self, node: &uuid::Uuid) -> bool {
+    |                   ^^^^^^^^^^^^^^^^
+...
+439 |     pub(super) fn has_independent_reader_appearance(&self, node: &uuid::Uuid) -> bool {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: method `all_content_plans` is never used
+   --> src/shell/shell_publish_engine_inventory.rs:335:19
+    |
+  6 | impl Shell {
+    | ---------- method in this implementation
+...
+335 |     pub(super) fn all_content_plans(&self) -> Vec<crate::surface::Surface> {
+    |                   ^^^^^^^^^^^^^^^^^
+
+warning: method `pane_label` is never used
+  --> src/shell/shell_surface_plan.rs:42:19
+   |
+ 6 | impl Shell {
+   | ---------- method in this implementation
+...
+42 |     pub(super) fn pane_label(&self, id: crate::panes::PaneId) -> String {
+   |                   ^^^^^^^^^^
+
+warning: field `protection` is never read
+ --> src/shell/private_binding.rs:9:16
+  |
+6 | pub(super) struct PrivateBinding {
+  |                   -------------- field in this struct
+...
+9 |     pub(super) protection: Arc<dyn athanor::workshop_seal::Protection>,
+  |                ^^^^^^^^^^
+
+warning: fields `place_settings`, `place_wake`, and `close_after_alembic_workshop` are never read
+   --> src/shell/shell.rs:56:16
+    |
+  8 | pub struct Shell {
+    |            ----- fields in this struct
+...
+ 56 |     pub(super) place_settings: crate::place::worker::PlaceWorkerSettings,
+    |                ^^^^^^^^^^^^^^
+ 57 |     pub(super) place_wake: armillary::Wake,
+    |                ^^^^^^^^^^
+...
+327 |     pub(super) close_after_alembic_workshop: bool,
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: method `orphan` is never used
+   --> src/trail_memory/sealed_record_receipts.rs:392:19
+    |
+385 | impl RecoveryItem {
+    | ----------------- method in this implementation
+...
+392 |     pub(crate) fn orphan(&self) -> bool {
+    |                   ^^^^^^
+
+warning: function `ime_cursor_area` is never used
+  --> src/ui/ime_cursor_area.rs:10:8
+   |
+10 | pub fn ime_cursor_area(state: &OmnibarState, w: u32) -> ((f32, f32), (f32, f32)) {
+   |        ^^^^^^^^^^^^^^^
+
+warning: function `chrome_has_content` is never used
+ --> src/ui/chrome_has_content.rs:8:8
+  |
+8 | pub fn chrome_has_content(state: &OmnibarState, caption: Option<&str>) -> bool {
+  |        ^^^^^^^^^^^^^^^^^^
+
+warning: method `scene` is never used
+   --> src/ui/retained_subtree_layout_selector_point.rs:128:12
+    |
+  6 | impl RetainedSubtreeLayout {
+    | -------------------------- method in this implementation
+...
+128 |     pub fn scene(
+    |            ^^^^^
+
+warning: function `scene_from_dom_with_leaves` is never used
+  --> src/ui/scene_from_dom_with_leaves.rs:17:8
+   |
+17 | pub fn scene_from_dom_with_leaves(
+   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: associated function `new` is never used
+  --> src/unavailable_pane.rs:11:12
+   |
+10 | impl<S> UnavailablePane<S> {
+   | -------------------------- associated function in this implementation
+11 |     pub fn new(service: Option<Arc<S>>) -> Self {
+   |            ^^^
+
+warning: `turnstone` (lib test) generated 199 warnings (run `cargo fix --lib -p turnstone --tests` to apply 118 suggestions)
+    Finished `test` profile [unoptimized] target(s) in 1.41s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/turnstone-077499b95bb42cec)
+
+running 1 test
+test scenario::tests::model_free_structured_result_wait_requires_a_frame_limit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1298 filtered out; finished in 0.00s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test --locked --offline -p turnstone --features authoring,inference --lib model_free_structured_result_wait_requires_a_frame_limit -- --nocapture"
+	User time (seconds): 0.70
+	System time (seconds): 0.78
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.52
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 236212
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 59688
+	Voluntary context switches: 889
+	Involuntary context switches: 29
+	Swaps: 0
+	File system inputs: 64
+	File system outputs: 2000
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

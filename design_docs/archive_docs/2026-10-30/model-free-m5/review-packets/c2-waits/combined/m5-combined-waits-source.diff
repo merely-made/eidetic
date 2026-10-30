@@ -1,0 +1,213 @@
+diff --git a/src/app/research_record_integration_tests.rs b/src/app/research_record_integration_tests.rs
+index 6aaf2668..350b98aa 100644
+--- a/src/app/research_record_integration_tests.rs
++++ b/src/app/research_record_integration_tests.rs
+@@ -139,8 +139,45 @@ fn model_free_app_authors_saves_reopens_and_queries_a_sourced_property() {
+         status: Some("approved".into()),
+         evidence: target,
+     };
++    app.omnibar.open = true;
++    app.research_search.view = crate::app::research_search_state::View::Structured;
++    app.research_search.structured.view = crate::app::research_structured_state::View::Author;
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
+     let effects = app.structured_author(property.clone());
++    let pending_save = app.research_search.structured.controller.pending.clone().unwrap();
++    assert_eq!(app.structured_scenario_status()["structured_idle_ready"], false);
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
+     finish(&mut app, &bridge, &actor, effects);
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], true);
++    assert_eq!(app.structured_scenario_status()["structured_idle_ready"], true);
++    app.research_search.structured.error = Some("draft refusal".into());
++    assert_eq!(app.structured_scenario_status()["structured_idle_ready"], false);
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
++    app.research_search.structured.error = None;
++    app.research_search.structured.controller.error = Some("save refusal".into());
++    assert_eq!(app.structured_scenario_status()["structured_idle_ready"], false);
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
++    app.research_search.structured.controller.error = None;
++    app.omnibar.open = false;
++    assert_eq!(app.structured_scenario_status()["structured_idle_ready"], false);
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
++    app.omnibar.open = true;
++    app.research_search.structured.view = crate::app::research_structured_state::View::Home;
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
++    app.research_search.structured.view = crate::app::research_structured_state::View::Author;
++    app.research_search.structured.controller.busy = true;
++    assert_eq!(app.structured_scenario_status()["structured_idle_ready"], false);
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
++    app.research_search.structured.controller.busy = false;
++    app.research_search.structured.controller.pending = Some(pending_save);
++    assert_eq!(app.structured_scenario_status()["structured_idle_ready"], false);
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
++    app.research_search.structured.controller.pending = None;
++    let session = app.session_id;
++    app.session_id = pandect::SessionId(uuid::Uuid::new_v4());
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], false);
++    app.session_id = session;
++    assert_eq!(app.structured_scenario_status()["author_save_ready"], true);
+     assert!(app.research_search.structured.controller.error.is_none());
+     assert!(!app.research_search.structured.controller.busy);
+     let saved_graph = crate::session_graph_file::load(&graph_file)
+diff --git a/src/app/research_record_scope.rs b/src/app/research_record_scope.rs
+index b539536d..a992f853 100644
+--- a/src/app/research_record_scope.rs
++++ b/src/app/research_record_scope.rs
+@@ -47,6 +47,8 @@ impl App {
+             "schema": "turnstone.structured-status/v1", "session": self.session_id,
+             "view": format!("{:?}", state.view), "visible": visible,
+             "busy": controller.busy,
++            "author_save_ready": self.structured_scenario_author_save_ready(),
++            "structured_idle_ready": self.structured_scenario_idle_ready(),
+             "error": state.error.as_deref().or(controller.error.as_deref()),
+             "held_result": controller.result.is_some(),
+             "result_scope_current": current,
+@@ -132,6 +134,32 @@ impl App {
+         }))
+     }
+ 
++    /// Completion barrier after an ordinary structured command; not a receipt.
++    pub(crate) fn structured_scenario_idle_ready(&self) -> bool {
++        let state = &self.research_search.structured;
++        self.omnibar.open
++            && self.research_search.view == super::research_search_state::View::Structured
++            && state.error.is_none()
++            && state.controller.error.is_none()
++            && !state.controller.busy
++            && state.controller.pending.is_none()
++    }
++
++    /// The authoring submit clears view_scope; only the confirmed save restores it.
++    /// The preceding Save action must itself have succeeded in the scenario.
++    pub(crate) fn structured_scenario_author_save_ready(&self) -> bool {
++        let state = &self.research_search.structured;
++        let controller = &state.controller;
++        self.omnibar.open
++            && self.research_search.view == super::research_search_state::View::Structured
++            && state.view == super::research_structured_state::View::Author
++            && state.error.is_none()
++            && controller.error.is_none()
++            && !controller.busy
++            && controller.pending.is_none()
++            && controller.view_scope.as_ref().is_some_and(|scope| self.structured_scope_is_current(scope))
++    }
++
+     /// Wait only for an admitted, settled result with durable current identity,
+     /// or an explicitly historical replay. Never advances product state.
+     pub(crate) fn structured_scenario_result_ready(&self) -> bool {
+diff --git a/src/scenario.rs b/src/scenario.rs
+index 42c8259d..7986276a 100644
+--- a/src/scenario.rs
++++ b/src/scenario.rs
+@@ -341,6 +341,9 @@ pub enum Step {
+     WaitSourceTarget(u32, String),
+     /// Wait for a current saved structured result or historical replay.
+     WaitStructuredResult(u32),
++    WaitStructuredAuthorSave(u32),
++    WaitStructuredIdle(u32),
++    WaitStructuredLimitRefusal(u32),
+     /// Wait until the focused saved-source reader has content and a live engine.
+     WaitSavedReader(u32),
+     /// Write the place observation facts (`crate::observe::place_record`),
+diff --git a/src/scenario/parse.rs b/src/scenario/parse.rs
+index 46fd3406..c9651564 100644
+--- a/src/scenario/parse.rs
++++ b/src/scenario/parse.rs
+@@ -493,7 +493,7 @@ pub fn parse(body: &str) -> Result<Vec<Step>, String> {
+                 }
+                 Step::WaitSourceTarget(frames.unwrap(), target.unwrap().to_owned())
+             }
+-            "wait-saved-sources" | "wait-saved-reader" | "wait-research-search" | "wait-structured-result" => {
++            "wait-saved-sources" | "wait-saved-reader" | "wait-research-search" | "wait-structured-result" | "wait-structured-author-save" | "wait-structured-idle" | "wait-structured-limit-refusal" => {
+                 let frames = rest.trim().parse::<u32>().map_err(|_| {
+                     format!("line {}: {verb} wants '<frames>'", i + 1)
+                 })?;
+@@ -501,6 +501,9 @@ pub fn parse(body: &str) -> Result<Vec<Step>, String> {
+                     "wait-saved-sources" => Step::WaitSavedSources(frames),
+                     "wait-research-search" => Step::WaitResearchSearch(frames),
+                     "wait-structured-result" => Step::WaitStructuredResult(frames),
++                    "wait-structured-author-save" => Step::WaitStructuredAuthorSave(frames),
++                    "wait-structured-idle" => Step::WaitStructuredIdle(frames),
++                    "wait-structured-limit-refusal" => Step::WaitStructuredLimitRefusal(frames),
+                     _ => Step::WaitSavedReader(frames),
+                 }
+             }
+diff --git a/src/scenario/tests.rs b/src/scenario/tests.rs
+index 177b1936..33a840e3 100644
+--- a/src/scenario/tests.rs
++++ b/src/scenario/tests.rs
+@@ -346,6 +346,15 @@ fn model_free_structured_result_wait_requires_a_frame_limit() {
+         [Step::WaitStructuredResult(600)]
+     ));
+     assert!(parse("wait-structured-result invalid").is_err());
++    assert!(matches!(
++        parse("wait-structured-author-save 600").unwrap().as_slice(),
++        [Step::WaitStructuredAuthorSave(600)]
++    ));
++    assert!(parse("wait-structured-author-save invalid").is_err());
++    assert!(matches!(parse("wait-structured-idle 600").unwrap().as_slice(), [Step::WaitStructuredIdle(600)]));
++    assert!(matches!(parse("wait-structured-limit-refusal 600").unwrap().as_slice(), [Step::WaitStructuredLimitRefusal(600)]));
++    assert!(parse("wait-structured-idle invalid").is_err());
++    assert!(parse("wait-structured-limit-refusal invalid").is_err());
+ }
+ 
+ #[test]
+diff --git a/src/shell/drive.rs b/src/shell/drive.rs
+index c7aca4ae..ae92f03a 100644
+--- a/src/shell/drive.rs
++++ b/src/shell/drive.rs
+@@ -67,6 +67,8 @@ mod idle_diagnosis_is_busy;
+ mod shell_idle_diagnosis;
+ #[path = "drive/shell_wait_frames.rs"]
+ mod shell_wait_frames;
++#[path = "drive/shell_research_waits.rs"]
++mod shell_research_waits;
+ use focused_saved_reader_node_for::focused_saved_reader_node_for;
+ #[path = "drive/cmp_usize.rs"]
+ mod cmp_usize;
+diff --git a/src/shell/drive/shell_run_scenario_step.rs b/src/shell/drive/shell_run_scenario_step.rs
+index 7554ac68..28036ee8 100644
+--- a/src/shell/drive/shell_run_scenario_step.rs
++++ b/src/shell/drive/shell_run_scenario_step.rs
+@@ -110,7 +110,7 @@ impl Shell {
+             | Step::WaitSourceCapture(..)
+             | Step::WaitSavedSources(..)
+             | Step::WaitResearchSearch(..) | Step::WaitSourceTarget(..)
+-            | Step::WaitStructuredResult(..)
++            | Step::WaitStructuredResult(..) | Step::WaitStructuredAuthorSave(..) | Step::WaitStructuredIdle(..) | Step::WaitStructuredLimitRefusal(..)
+             | Step::WaitSavedReader(..)
+             | Step::WaitFile(..)
+             | Step::RecordPlace(..)
+diff --git a/src/shell/drive/shell_scenario_assert_no_surface.rs b/src/shell/drive/shell_scenario_assert_no_surface.rs
+index 6cb95f29..0af0de15 100644
+--- a/src/shell/drive/shell_scenario_assert_no_surface.rs
++++ b/src/shell/drive/shell_scenario_assert_no_surface.rs
+@@ -245,6 +245,21 @@ impl Shell {
+                     ));
+                 }
+             },
++            Step::WaitStructuredAuthorSave(frames) => {
++                self.wait_frames(*frames, |shell| {
++                    shell.app.structured_scenario_author_save_ready()
++                        || shell.app.structured_scenario_status()["error"].is_string()
++                });
++                if !self.app.structured_scenario_author_save_ready() {
++                    let status = self.app.structured_scenario_status();
++                    return Err(format!(
++                        "wait-structured-author-save after {frames} frames: no current confirmed save; error={}",
++                        status["error"]
++                    ));
++                }
++            },
++            Step::WaitStructuredIdle(frames) => self.scenario_wait_structured(*frames, false)?,
++            Step::WaitStructuredLimitRefusal(frames) => self.scenario_wait_structured(*frames, true)?,
+             Step::WaitStructuredResult(frames) => {
+                 if !self.wait_frames(*frames, |shell| {
+                     shell.app.structured_scenario_result_ready()
+@@ -472,6 +487,7 @@ impl Shell {
+                 .map_err(|e| format!("runtime observation write: {e}"))?;
+             },
+             Step::RecordComparison(name) => {
++                self.scenario_wait_comparison(600)?;
+                 let value = self.app.research_compare_observation()?;
+                 let bytes = serde_json::to_vec_pretty(&value).map_err(|e| e.to_string())?;
+                 std::fs::write(
