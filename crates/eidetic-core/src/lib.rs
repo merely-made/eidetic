@@ -76,6 +76,7 @@ pub mod engram {
 }
 pub mod manifest;
 pub mod retention;
+pub mod records;
 pub mod models;
 pub mod pack;
 pub mod schema;
