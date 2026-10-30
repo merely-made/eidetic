@@ -164,3 +164,126 @@ The core save/load fixture uses an XOR test sealer. It verifies schema and
 sealed-storage plumbing, not cryptographic confidentiality. Host custody,
 durable journal integration, headed product use and network-disabled fresh
 restart require their own evidence.
+
+
+## M4 host integration and supplier follow-through
+
+The first host checkpoint was `563fe91bbb8c3273259dee82f22a151bbf9ecd5f`.
+It passed 44 `model_free_` tests on a frozen 57-file source set before task
+review. Turnstone upstream then published `720f59f8`, the Djinn application
+client ownership migration. The checkpoint was rebased to `0d71a2f1` and all
+25 uncommitted review-fix files were restored byte-for-byte from retained stash
+`614a8c0`; the earlier M2 stash was preserved. The original hashes and restore
+proof are in `model-free-m4/upstream-720-reconciliation.json`.
+
+The bounded live resource-pair supplier is Mere
+`229f277a252440a8e47aefe367febca3cf502bbb`. Its first replacement regression
+exposed that durable snapshots omit session-only arrangements; live recovery
+must preserve them. The corrected API serializes borrowed selected assertions
+under byte and edge bounds before cloning, retaining all live assertion kinds.
+The rebased supplier passed 528 kernel tests; independent review approved it,
+with a deferred minor request for broader optional-field serialization parity
+fixtures. `mere-bounds-sources.json` records source hashes and all seven
+successful/failed gate packets. Later Mere changes through `4508898eb` are
+documentation only; Turnstone retains the tested code revision.
+
+The Turnstone receiving lock replaced 61 Mere source hashes without adding,
+removing or changing dependency edges. Eidetic's subsequent explicit-sync API,
+`a025008c36cc21c0afa63682e044cf1ca99403b4`, was received coherently in every
+manifest and lock source occurrence. That second comparison changed eight
+Eidetic package sources, with no package or edge changes, including normalized
+unused-patch records. The graph contains 1,662 lock package entries. Locked
+metadata resolves 1,114 packages and two workspace members. Default/inference
+boundary checks pass for 650/798 package names. An initial offline metadata
+attempt lacked the exact `www.github.com` supplier cache; fetching locked
+sources populated it without changing selections. Existing unused-patch
+warnings and the cached Servo malformed tidy-fixture diagnostic remain; the
+final metadata commands return valid JSON and exit zero.
+
+### Review corrections and authority
+
+Initial UI review identified omitted source contributors, inaccessible frozen
+inputs and full values, and repeated full-result traversal. The first fix made
+source, definition, record, lifecycle and settings inputs inspectable with
+indexed pages and Unicode-safe field chunks. Its scoped review accepted those
+fixes but found that active assertions had lost their live withdrawal route.
+The second fix adds a generation-checked current-assertion inspection route,
+keeping the saved record and current lifecycle distinct.
+
+Backend review identified completed receipt history exhausting active budgets,
+unbounded decode paths, and recovery copying unrelated graph payloads. The fix
+separates pending receipt keys from completion/idempotency keys, applies
+post-fetch envelope and manifest checks before unseal/decode, accounts for the
+complete selected input cumulatively, and uses Mere's bounded live-pair API.
+Saved results replay their frozen historical inputs; a new query excludes
+withdrawn assertions, and current inspection exposes the current state.
+Unpublished v1 receipt keys refuse with their bytes preserved rather than being
+silently interpreted as the new protocol.
+
+Turnstone's current graph owner is Mere's semantic-statement kernel, with
+process-local HostJournal capture. The canonical graph snapshot persists
+attribution, basis and tombstones. The existing session writer holds an OS
+file lock, checks directory/lease ownership, rejects loss of recorded operations,
+and propagates facet and graph errors. Its graph writer syncs a unique temporary,
+renames it atomically and syncs the parent directory. This is distinct from a
+durable event journal; intermediate cross-restart event replay remains open.
+
+The unchanged Muniment Fjall adapter initially exposed only buffered writes.
+Explicit `FjallStore::sync_all` now delegates to `PersistMode::SyncAll` and
+propagates failure. Its focused red failed on the missing API; all eight Fjall
+backend tests then passed. Independent source review confirmed the selected
+mode reaches `File::sync_all`. The subprocess fixture exits without dropping
+the store and reopens its synced receipt. It does not simulate power loss or
+inject a physical storage failure. Host mutation replies must follow the sync;
+completion must be synced while pending recovery evidence still exists, before
+that pending key can be removed.
+
+### Interim evidence retained
+
+The raw host attempts and source checkpoints are retained in `model-free-m4`.
+`host-interim-packets.json` distinguishes compilation failures, interim passes
+and frozen qualification. The first integration attempts failed with eleven,
+then six compiler errors. A later pass ran 29 tests, then another ran 30 while
+source edits raced its launch; that latter result is explicitly interim. The
+first combined freeze failed on an Inventory call arity; the second passed 44.
+The first review-fix freeze failed at compilation because replay-budget lines
+were placed in the evidence validator; no tests ran in that attempt.
+
+Correction to an earlier narrative: the `m4-host-definition-green-1` wrapper
+was cancelled, but its child later completed one passing test and exit zero.
+Its raw log is retained (65.05 seconds, 2,622,248 KiB peak RSS, zero swaps).
+There is no JSON completion packet or source-hash checkpoint for that orphaned
+wrapper, so it is not final-source qualification.
+
+### Remaining allocation and product boundaries
+
+Fjall's regular-tree `size_of` calls `get`; key iteration can materialize values,
+and value-block decompression precedes a public size result. A wrapper cannot
+honestly guarantee a bound before that initial allocation. Host limits now
+protect subsequent unseal/decode and cumulative retained inputs, but initial
+Fjall reads/listing and earlier source-loader temporary allocations remain open
+storage-owner work. No alternate store or migration was introduced. The user subsequently chose to extend M4 to close this gap and requested
+checking new releases first; design work for that extension is in progress.
+
+Manual authored records use the active Personae identity and distinct authored
+nonces. Repeated projection of one exact binding collapses; different bindings
+sharing a nonce refuse ambiguity. Copying source text does not establish
+independent corroboration. Clip/note capture time stays unknown because mutable
+manifest retention time is not an immutable capture event. Existing explicit
+All scope remains the default; an explicitly empty chosen scope stays empty.
+
+M5 headed ordinary use, absence of model files, disabled network acquisition,
+and independent-process cold restart are not established by these software
+fixtures. No physical power-loss qualification is claimed. The source changes
+use the same shared heavy-work lock and existing 3 GiB/zero-swap/150% CPU limits.
+Read-only SSH resource checks found S-PC idle, but no M4 source transfer or
+remote build was performed; its existing dirty worktree remains untouched.
+
+The reviewed-fix checkpoint `909715c9` passed 51 focused `model_free_` tests
+with all 60 recorded source hashes unchanged (packet
+`m4-host-review-fixes-freeze-2`, peak 2,767,988 KiB RSS and zero process swaps).
+UI round-two source review approved the live inspection/withdrawal fix. Backend
+round-one review retained two related history/recovery findings: saved discovery
+refuses all entries above the query record count, and a new attachment can exceed
+the graph scan work/byte bound before recovery captures its scope. These are
+being corrected; this checkpoint is not M4 completion or publication evidence.

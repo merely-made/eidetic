@@ -1,0 +1,7 @@
+{
+  "head": "a025008c36cc21c0afa63682e044cf1ca99403b4",
+  "file": "crates/muniment/src/fjall_backend.rs",
+  "sha256": "e3da27a06308604e399a1c45a9dab584bc52998c1e2026407eecb6c231ff3e62",
+  "review": "Approved; no findings",
+  "qualification": "Explicit SyncAll source mapping and child-process exit/reopen; no physical power-loss test"
+}

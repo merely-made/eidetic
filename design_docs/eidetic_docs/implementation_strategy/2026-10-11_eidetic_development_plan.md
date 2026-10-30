@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-11
 **Status (2026-10-30):** active plan, owned by the independent Eidetic
-repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), M1–M3 landed; M4–M5 open.**
+repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), M1–M3 landed; M4 in progress; M5 open.**
 The preceding producer and model receipts keep their bounded historical scope. The bounded custody connection and first producer-to-retention
 paths below have published suppliers and locally qualified Turnstone integration.
 Focused checks and bounded headed macOS receipt runs qualify saved-document
@@ -889,8 +889,8 @@ Prior source snapshots and software evidence are recorded in the
    records. Joins use explicit entity/source IDs. Date ranges, status and unit
    filters are explicit controls. Free-form questions continue to return lexical
    evidence unless the user selects a supported structured operation.
-8. **Typed assertions.** Reuse the source owner's existing attribution/withdrawal
-   journal and Eidetic typed payloads. A property record binds an explicit entity ID,
+8. **Typed assertions.** Reuse the source owner's attributed assertion/withdrawal
+   lifecycle, durable graph storage and Eidetic typed payloads. A property record binds an explicit entity ID,
    namespaced property/schema revision, typed value, optional valid-time interval,
    explicit status, author/method and evidence reference. Record time and valid
    time stay distinct. Unknown time/status is unknown, never implicitly current
@@ -964,7 +964,7 @@ removed scalar ranges, or an explicit limit refusal.
 
 `PropertyDefinitionV1` fixes property ID/revision, type, unit and cardinality.
 `PropertyRecordV1` carries the assertion fields in constraint 8 and links its
-lifecycle to the existing owner journal. Initially accept text, boolean, integer,
+lifecycle to the existing attributed graph statement. Initially accept text, boolean, integer,
 fixed-scale decimal with unit, civil date and offset-qualified timestamp; reject
 non-finite, ambiguous or incompatible values instead of coercing them.
 `RecordSnapshot` contains admitted property/metadata records, their schema
@@ -1123,20 +1123,67 @@ those remain M5. M4 structured queries are next.
 #### M4. Answer the supported structured questions
 
 **Findings (2026-10-30):** Turnstone's live graph uses Mere graph-kernel's
-semantic statements and recorded-delta journal, not Chartulary `GraphLog`.
-Bind sealed typed payloads to that existing owner's attributed assertions and
-withdrawal lifecycle. A reserved immutable manifest reference in assertion basis
+semantic statements and process-local recorded-delta capture, not Chartulary
+`GraphLog`. `turnstone/src/host_journal.rs` does not persist event history.
+`turnstone/src/session_persistence.rs` saves the canonical graph snapshot,
+including attributed statements, immutable basis and withdrawal tombstones.
+Bind sealed typed payloads to that existing owner's durable assertion lifecycle. A reserved immutable manifest reference in assertion basis
 can name the payload; typed values remain in sealed storage. Using the live
 owner avoids introducing a second fact journal. A later journal migration will
-need to preserve this binding explicitly.
+need to preserve this binding explicitly. Full intermediate event replay across
+restarts remains a separate host capability gap; M4 save/reopen tests establish
+statement and withdrawal persistence, not durable event-journal replay.
 
 Record identity must be available before sealed deposit; graph statement IDs
 are minted afterward. Keep an authored record nonce in the body and project
-its namespaced journal identity as a lifecycle observation. This avoids an
+its namespaced owner assertion identity as a lifecycle observation. This avoids an
 identity/hash cycle. Require the exact schema codicil to exist before invoking
 schema validation, whose general API otherwise tolerates missing schemas.
 
-**Files/interfaces:** core `records.rs`, shared search `records.rs`, existing
+The default graph writer identifies the trusted UI. Manual properties instead
+need the active root identity, using Mere's existing Personae author convention
+and scoped graph writer, with custody rechecked before durable attachment.
+
+Sealed deposit and graph save are separate operations. Pending receipts cannot
+be admitted as facts or saved results until their exact durable graph binding
+is reconciled. A UI reset or restart must not bypass that check. Retrying the
+same authored identity must not create another assertion; this is recoverable
+owner persistence, not an atomic transaction spanning both stores.
+The existing Fjall adapter flushes writes to operating-system buffers, while the
+graph writer syncs its replacement to disk. Structured admission must explicitly
+sync sealed payloads and pending receipts before attaching or saving their graph
+bindings, and sync acknowledgements before reporting completion. A failed sync
+must retain the recovery fence; this adds write latency without changing storage
+ownership or claiming an atomic transaction.
+
+Distinct authored assertions have distinct authored IDs. Repeated projection of
+the same exact owner binding can collapse. Different graph statements sharing
+one sealed authored ID are ambiguous and must refuse rather than silently merge
+or count twice. Copying a graph does not by itself establish a new assertion or
+a common lifecycle; admitting such copies requires explicit identity semantics.
+
+Source timelines preserve known document-capture time where the owner supplies
+it. Clip and note capture times currently remain unknown: their manifest
+retention timestamp can be rewritten for the same content and is not an
+immutable capture event. Exposing that observation requires a separately named
+metadata field or a stronger owner contract, rather than silently substituting
+it for capture time.
+
+**Storage-bound extension (approved 2026-10-30):** effective structured limits apply before unsealing,
+deserializing and retaining query inputs, with cumulative accounting across the
+selected set. They do not provide a total-memory ceiling: existing Fjall point
+reads and key enumeration can materialize stored values before the host sees
+their sizes, and the source reader has earlier temporary allocations under its
+own character limits. The user extended M4 to close the initial storage/read allocation gap and asked
+that new releases be checked first. The current upstream release still lacks
+the needed normal-tree read bound; its format migration also reads the old store
+unbounded. The proposed compatible engine extension must cover point reads,
+prefix inventory and journal recovery, including compressed and decoded sizes,
+with configurable operation bounds. Limit exhaustion must leave existing files
+intact and distinguish refusal from corruption. This is open implementation
+work; the post-fetch wrapper does not close it, and M5 remains separate.
+
+**Files/interfaces:** core `records/`, shared search `records/`, existing
 sealed typed storage and owner attribution; Turnstone research service/surface
 and annotation actions. Produce the property schemas, snapshots, `RecordQuery`
 and `evaluate` described above. No arbitrary-prose extractor enters this task.
@@ -1152,7 +1199,7 @@ and `evaluate` described above. No arbitrary-prose extractor enters this task.
   absence claims even when a lexical shortlist happens to contain all matches.
 - [ ] Run the failing tests; implement metadata adapters and explicit typed
   annotation authoring through the existing graph owner, schema validator,
-  journal and sealed payload storage. Withdrawal updates the existing lifecycle;
+  durable graph snapshot and sealed payload storage. Withdrawal updates the existing lifecycle;
   derived query indexes never become the authority. Validate references and
   scope again when a query runs or a typed annotation is committed.
 - [ ] Implement structured query controls and templated result sentences/tables,
