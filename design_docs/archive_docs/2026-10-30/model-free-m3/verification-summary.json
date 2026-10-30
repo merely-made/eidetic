@@ -1,0 +1,114 @@
+{
+  "provider_commit": "a90aa678d59abac1803b878fc57a16cef8957e60",
+  "turnstone_base": "6646433538d1a71a01db6da17b30871952c67b96",
+  "turnstone_code_commit": "29fa240e2173cf50eb2f182fb6226071aa9fafc3",
+  "turnstone_publication_commit": "cce607d38f5084a8b1ddec3361f7fd04e301b000",
+  "final_frozen_source_count": 24,
+  "final_source_hashes_match": true,
+  "normalized_lock_graph_equal_to_upstream": true,
+  "locked_packages": 1661,
+  "provider_passed_tests": 72,
+  "provider_ignored_measurement_harnesses": 3,
+  "initial_host_targeted_tests": 11,
+  "existing_host_filter_counts_before_review_fix": [
+    17,
+    26,
+    2,
+    18
+  ],
+  "existing_host_ignored_process_fixture": 1,
+  "final_review_fix_covering_tests": [
+    3,
+    1
+  ],
+  "inference_compile": "PASS --locked --offline --lib --features inference",
+  "default_and_inference_dependency_boundaries": "PASS",
+  "build_caps": {
+    "memory": "3GiB",
+    "swap": "0",
+    "cpu": "150%",
+    "jobs": 1,
+    "test_threads": 1,
+    "command_timeout_seconds": 600,
+    "lock_queue_seconds": 600
+  },
+  "headed_product": "UNTESTED",
+  "network_disabled_fresh_restart": "UNTESTED",
+  "receipts": [
+    {
+      "name": "eidetic-m3-provider-final-1",
+      "exit_code": 0,
+      "elapsed_seconds": 8.43
+    },
+    {
+      "name": "eidetic-m3-provider-green-1",
+      "exit_code": 0,
+      "elapsed_seconds": 3.92
+    },
+    {
+      "name": "eidetic-m3-provider-red-1",
+      "exit_code": 101,
+      "elapsed_seconds": 3.95
+    },
+    {
+      "name": "eidetic-m3-provider-red-identity-1",
+      "exit_code": 101,
+      "elapsed_seconds": 1.49
+    },
+    {
+      "name": "eidetic-m3-provider-review-final-1",
+      "exit_code": 0,
+      "elapsed_seconds": 8.45
+    },
+    {
+      "name": "eidetic-m3-provider-review-red-1",
+      "exit_code": 101,
+      "elapsed_seconds": 2.6
+    },
+    {
+      "name": "m3-host-green1",
+      "exit_code": 0,
+      "elapsed_seconds": 149.65
+    },
+    {
+      "name": "m3-host-model-free-final",
+      "exit_code": 0,
+      "elapsed_seconds": 73.95
+    },
+    {
+      "name": "m3-host-model-free",
+      "exit_code": 0,
+      "elapsed_seconds": 73.76
+    },
+    {
+      "name": "m3-host-red",
+      "exit_code": 101,
+      "elapsed_seconds": 159.82
+    },
+    {
+      "name": "m3-review-green",
+      "exit_code": 0,
+      "elapsed_seconds": 55.11
+    },
+    {
+      "name": "m3-review-red",
+      "exit_code": 101,
+      "elapsed_seconds": 57.88
+    },
+    {
+      "name": "m3-review-unavailable",
+      "exit_code": 0,
+      "elapsed_seconds": 11.67
+    },
+    {
+      "name": "turnstone-m3-final-01",
+      "exit_code": 0,
+      "elapsed_seconds": 42.19
+    },
+    {
+      "name": "turnstone-m3-inference-final-01",
+      "exit_code": 0,
+      "elapsed_seconds": 56.96
+    }
+  ]
+}

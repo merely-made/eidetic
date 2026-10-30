@@ -1,0 +1,40 @@
+Running as unit: custody-contract-eidetic-m3-provider-green-1.scope; invocation ID: 927c348011ce48c5839c1a9b26b166d2
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `test` profile [unoptimized] target(s) in 3.79s
+     Running tests/model_free_compare.rs (/home/markik/Code/target/debug/deps/model_free_compare-482eda51900bac9a)
+
+running 3 tests
+test model_free_equal_and_line_edits_reconstruct ... ok
+test model_free_limits_refuse ... ok
+test model_free_sources_require_explicit_choice ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test -p eidetic-search --no-default-features --test model_free_compare"
+	User time (seconds): 1.68
+	System time (seconds): 1.65
+	Percent of CPU this job got: 85%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.88
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 272888
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 682
+	Minor (reclaiming a frame) page faults: 107158
+	Voluntary context switches: 2044
+	Involuntary context switches: 100
+	Swaps: 0
+	File system inputs: 1036408
+	File system outputs: 24808
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

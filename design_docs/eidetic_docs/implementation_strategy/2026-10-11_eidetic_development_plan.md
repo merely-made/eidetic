@@ -1,8 +1,8 @@
 # Eidetic development: content, encounters and computed memory
 
 **Date:** 2026-10-11
-**Status (2026-10-29):** active plan, owned by the independent Eidetic
-repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), M1 and M2 landed; M3–M5 open.**
+**Status (2026-10-30):** active plan, owned by the independent Eidetic
+repository. **Next milestone: [P4a, model-free retained research](#p4a-next-milestone-model-free-retained-research), M1–M3 landed; M4–M5 open.**
 The preceding producer and model receipts keep their bounded historical scope. The bounded custody connection and first producer-to-retention
 paths below have published suppliers and locally qualified Turnstone integration.
 Focused checks and bounded headed macOS receipt runs qualify saved-document
@@ -728,7 +728,7 @@ becoming a personal tag or requiring an explicit clip-promotion operation.
 
 ### P4a. Next milestone: model-free retained research
 
-**Status (2026-10-29): M1 and M2 landed; M3–M5 open.**
+**Status (2026-10-30): M1–M3 landed; M4–M5 open.**
 This is the next Eidetic milestone. It advances P4's evidence and retrieval
 capabilities independently of model execution; it does not close the remaining
 P4 model, assessment/tag, P5 browser or P6 custody/exchange gates.
@@ -760,8 +760,8 @@ Links: area recall · plans P4a · summary Model-free retained research is the n
 
 For implementation, use `superpowers:executing-plans` or the user's chosen
 execution workflow task by task. Checkboxes below remain open until their
-specific deliverables and checks pass. Next is M3 version comparison; M4 structured
-queries and M5 product/restart qualification remain open.
+specific deliverables and checks pass. Next is M4 structured queries; M5
+product/restart qualification remains open.
 
 #### Findings: upstream basis and retained work, 2026-10-26
 
@@ -1074,26 +1074,51 @@ loop is retired; exact readers and the quiet workshop source loader remain.
 Shared regression/Wasm checks, rebased Turnstone research and reader tests,
 optional-inference compilation, dependency boundaries and source-size checks
 pass. The default search path requires no inference service. Headed product use
-and fresh offline restart remain unqualified until M5. M3 comparison is next.
+and fresh offline restart remain unqualified until M5. M3 comparison follows below.
 
 #### M3. Compare exact retained versions
+
+**Findings (2026-10-30):** the existing source owners admit exact immutable
+capture and clip records but expose no authoritative head or version lineage.
+Captures retained in a live reference series and clips still named by admitted
+nodes remain eligible for historical inspection. A stored artifact without a
+live admission is withdrawn; an admitted artifact whose bytes cannot be read is
+unavailable. Present an explicitly chosen Left/Right pair and unknown head state
+until an owner supplies a relationship. URL, title, node and timestamp equality
+never establish succession.
 
 **Files/interfaces:** shared `compare.rs`, Turnstone service/surface and exact
 source readers. Consume M2's exact-source reader; produce `Comparison`.
 
-- [ ] Add `model_free_` cases for equal text, insertion/deletion, repeated lines,
+- [x] Add `model_free_` cases for equal text, insertion/deletion, repeated lines,
   Unicode ranges, old/current versions, missing old bytes and a limit refusal.
   Assert comparison has both version/hash IDs and reconstructs each input from
   the reported spans. Different source IDs require an explicit two-source
   comparison, not an inferred revision relationship.
-- [ ] Run the failures, then implement a bounded deterministic line diff with
+- [x] Run the failures, then implement a bounded deterministic line diff with
   scalar ranges into canonical text; use hashes for exact equality. Show old
   and new sides with their own citations, and distinguish an explicit comparison
   from a source-owner-declared version sequence.
-- [ ] Run shared comparison and Turnstone open/withdrawal controls; commit.
+- [x] Run shared comparison and Turnstone open/withdrawal controls; commit.
 
 **Done when:** an authorized older snapshot opens and compares offline, while
 withdrawn or missing material produces its precise state rather than a fetch.
+
+**Progress (2026-10-30):** the shared deterministic line comparison is published.
+It retains both identities, canonical hashes, exact scalar spans, algorithm
+identity and effective limits. The work bound includes compared line bytes as
+well as table cells. Turnstone now composes explicit pair selection and exact
+side readers through the existing bounded research worker and Saved Sources
+controls. Source labels include the complete typed identity; preview extraction
+traverses each side at most once per page. Withdrawal and unavailable bytes have
+distinct messages. Existing settings files receive default comparison bounds.
+Provider, host regression, Wasm and optional-inference checks pass, with scoped
+review fixes covered separately in the
+[M3 receipt archive](../../archive_docs/2026-10-30/2026-10-11_eidetic_development_plan_receipts.md).
+Stored capture and clip fixtures establish exact local reads and withdrawal
+refusal. They do not establish headed use or network-disabled cold restart;
+those remain M5. M4 structured queries are next.
+
 
 #### M4. Answer the supported structured questions
 

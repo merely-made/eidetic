@@ -8,7 +8,7 @@ Canonical migration and current receipts: `mere/design_docs/mere_docs/implementa
 
 ## Family documents
 
-- [2026-10-11_eidetic_development_plan](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md) — active; next milestone is [P4a model-free retained research](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#p4a-next-milestone-model-free-retained-research): shared lexical retrieval, exact evidence, version comparison, bounded structured queries and offline Turnstone restart qualification. Upstream refreshed 2026-10-29; M1 extraction/receiving and M2 unified search/exact readers landed; M3–M5 open. Shared and rebased Turnstone software checks pass; headed product and restart qualification remain open. Earlier producer, embedding and inference receipts retain their separate limits.
+- [2026-10-11_eidetic_development_plan](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md) — active; next milestone is [P4a model-free retained research](eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#p4a-next-milestone-model-free-retained-research): shared lexical retrieval, exact evidence, version comparison, bounded structured queries and offline Turnstone restart qualification. Upstream refreshed 2026-10-30; M1 extraction/receiving, M2 unified search/exact readers and M3 explicit retained comparison landed; M4–M5 open. Shared and rebased Turnstone software checks pass; headed product and restart qualification remain open. Earlier producer, embedding and inference receipts retain their separate limits.
 - [2026-10-23_responsa_plan](eidetic_docs/implementation_strategy/2026-10-23_responsa_plan.md) — active; fading of doctrine statements and the answer-key rerun on toolchain bumps, both owed by isocosm's decision-links plan; nothing built.
 - [2026-05-09_eidetic_design_pass](eidetic_docs/research/2026-05-09_eidetic_design_pass.md)
 - [2026-07-08_codicil_founding_proposal](eidetic_docs/research/2026-07-08_codicil_founding_proposal.md)
@@ -23,3 +23,5 @@ Canonical migration and current receipts: `mere/design_docs/mere_docs/implementa
 ## Evidence archive
 
 - [Model-free retrieval receipts](archive_docs/2026-10-29/2026-10-11_eidetic_development_plan_receipts.md) — historical planning basis and scoped M1/M2 checks, including retained failed attempts; separate from headed product and restart qualification.
+
+- [Retained comparison receipts](archive_docs/2026-10-30/2026-10-11_eidetic_development_plan_receipts.md) — scoped M3 provider, host and review-fix checks; headed product and offline restart remain open.

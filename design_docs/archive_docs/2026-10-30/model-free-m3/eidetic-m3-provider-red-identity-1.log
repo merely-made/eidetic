@@ -1,0 +1,57 @@
+Running as unit: custody-contract-eidetic-m3-provider-red-identity-1.scope; invocation ID: 6ff7ad8a3119494d973ffdb2d064f87c
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+error[E0609]: no field `max_identity_bytes` on type `eidetic_search::compare::ComparisonSettings`
+   --> crates/eidetic-search/tests/model_free_compare.rs:129:14
+    |
+129 |     settings.max_identity_bytes = 2;
+    |              ^^^^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+129 -     settings.max_identity_bytes = 2;
+129 +     settings.max_input_bytes = 2;
+    |
+
+error[E0609]: no field `max_identity_bytes` on type `eidetic_search::compare::ComparisonSettings`
+   --> crates/eidetic-search/tests/model_free_compare.rs:131:14
+    |
+131 |     settings.max_identity_bytes = usize::MAX;
+    |              ^^^^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+131 -     settings.max_identity_bytes = usize::MAX;
+131 +     settings.max_input_bytes = usize::MAX;
+    |
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `eidetic-search` (test "model_free_compare") due to 2 previous errors
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test -p eidetic-search --no-default-features --test model_free_compare"
+	User time (seconds): 0.30
+	System time (seconds): 0.86
+	Percent of CPU this job got: 80%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.46
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 156416
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 291
+	Minor (reclaiming a frame) page faults: 50148
+	Voluntary context switches: 1025
+	Involuntary context switches: 25
+	Swaps: 0
+	File system inputs: 398680
+	File system outputs: 64
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

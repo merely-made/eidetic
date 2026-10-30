@@ -1,0 +1,59 @@
+Running as unit: custody-contract-eidetic-m3-provider-review-red-1.scope; invocation ID: 5328853dd7344201a71214fa2eeeea8d
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `test` profile [unoptimized] target(s) in 2.48s
+     Running tests/model_free_compare.rs (/home/markik/Code/target/debug/deps/model_free_compare-482eda51900bac9a)
+
+running 6 tests
+test model_free_equal_and_line_edits_reconstruct ... ok
+test model_free_identity_and_zero_limits_are_bounded ... ok
+test model_free_limits_refuse ... ok
+test model_free_long_repeated_lines_consume_comparison_work ... FAILED
+test model_free_sources_require_explicit_choice ... ok
+test model_free_ties_prefer_deletion_with_exact_selectors ... ok
+
+failures:
+
+---- model_free_long_repeated_lines_consume_comparison_work stdout ----
+
+thread 'model_free_long_repeated_lines_consume_comparison_work' (753437) panicked at crates/eidetic-search/tests/model_free_compare.rs:164:5:
+assertion `left == right` failed
+  left: Ok(Comparison { operation: "eidetic.line-comparison/v1", relationship: Explicit, settings: ComparisonSettings { max_input_bytes: 4194304, max_identity_bytes: 65536, max_diff_work: 1000, max_output_spans: 100000 }, old: ComparisonSource { source: RecallSourceId { kind: Capture, owner: Some("owner"), source: "a", node: None }, version: "1", text_hash: Hash { func: Blake3, digest: [104, 57, 64, 31, 56, 176, 115, 193, 184, 21, 147, 131, 80, 190, 4, 95, 7, 100, 100, 161, 145, 211, 111, 111, 7, 232, 131, 57, 100, 252, 175, 153] } }, new: ComparisonSource { source: RecallSourceId { kind: Capture, owner: Some("owner"), source: "a", node: None }, version: "2", text_hash: Hash { func: Blake3, digest: [203, 49, 162, 28, 124, 197, 218, 253, 237, 118, 35, 161, 235, 165, 5, 253, 110, 40, 209, 219, 72, 106, 243, 70, 121, 11, 201, 178, 179, 25, 81, 55] } }, spans: [ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 0, end: 1001 }), new: Some(PassageSelector { start: 0, end: 1001 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 1001, end: 2002 }), new: Some(PassageSelector { start: 1001, end: 2002 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 2002, end: 3003 }), new: Some(PassageSelector { start: 2002, end: 3003 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 3003, end: 4004 }), new: Some(PassageSelector { start: 3003, end: 4004 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 4004, end: 5005 }), new: Some(PassageSelector { start: 4004, end: 5005 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 5005, end: 6006 }), new: Some(PassageSelector { start: 5005, end: 6006 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 6006, end: 7007 }), new: Some(PassageSelector { start: 6006, end: 7007 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 7007, end: 8008 }), new: Some(PassageSelector { start: 7007, end: 8008 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 8008, end: 9009 }), new: Some(PassageSelector { start: 8008, end: 9009 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 9009, end: 10010 }), new: Some(PassageSelector { start: 9009, end: 10010 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 10010, end: 11011 }), new: Some(PassageSelector { start: 10010, end: 11011 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 11011, end: 12012 }), new: Some(PassageSelector { start: 11011, end: 12012 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 12012, end: 13013 }), new: Some(PassageSelector { start: 12012, end: 13013 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 13013, end: 14014 }), new: Some(PassageSelector { start: 13013, end: 14014 }) }, ComparisonSpan { kind: Equal, old: Some(PassageSelector { start: 14014, end: 15015 }), new: Some(PassageSelector { start: 14014, end: 15015 }) }, ComparisonSpan { kind: Delete, old: Some(PassageSelector { start: 15015, end: 16016 }), new: None }, ComparisonSpan { kind: Insert, old: None, new: Some(PassageSelector { start: 15015, end: 15017 }) }] })
+ right: Err(WorkLimit)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    model_free_long_repeated_lines_consume_comparison_work
+
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p eidetic-search --test model_free_compare`
+Command exited with non-zero status 101
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s cargo test -p eidetic-search --no-default-features --test model_free_compare"
+	User time (seconds): 0.43
+	System time (seconds): 1.59
+	Percent of CPU this job got: 78%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.57
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 184884
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 664
+	Minor (reclaiming a frame) page faults: 64752
+	Voluntary context switches: 1685
+	Involuntary context switches: 209
+	Swaps: 0
+	File system inputs: 1172672
+	File system outputs: 4064
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 101

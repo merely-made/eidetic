@@ -1,0 +1,170 @@
+Running as unit: custody-contract-eidetic-m3-provider-final-1.scope; invocation ID: ed4bb305b95447309e76cbf8a6ad3169
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `test` profile [unoptimized] target(s) in 2.59s
+     Running tests/model_free_compare.rs (/home/markik/Code/target/debug/deps/model_free_compare-482eda51900bac9a)
+
+running 4 tests
+test model_free_equal_and_line_edits_reconstruct ... ok
+test model_free_identity_and_zero_limits_are_bounded ... ok
+test model_free_limits_refuse ... ok
+test model_free_sources_require_explicit_choice ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `test` profile [unoptimized] target(s) in 3.74s
+     Running unittests src/lib.rs (/home/markik/Code/target/debug/deps/eidetic_search-987a4314c6da7f42)
+
+running 39 tests
+test bm25::tests::an_empty_index_answers_nothing ... ok
+test bm25::tests::term_frequency_saturates_and_missing_terms_score_nothing ... ok
+test bm25::tests::the_knobs_change_the_score_and_nothing_is_hardcoded ... ok
+test bm25::tests::the_weighted_field_wins_over_the_light_one ... ok
+test candidates::tests::a_host_component_matches_by_prefix ... ok
+test candidates::tests::a_key_appears_once_however_many_tokens_match ... ok
+test candidates::tests::a_mid_word_substring_no_longer_matches ... ok
+test candidates::tests::a_title_token_matches_by_prefix ... ok
+test candidates::tests::an_empty_query_yields_no_candidates ... ok
+test candidates::tests::candidate_index_at_corpus_scale ... ignored, timing receipt; run with --release --nocapture
+test candidates::tests::every_query_token_must_match ... ok
+test candidates::tests::the_layout_stays_consistent_with_what_it_indexed ... ok
+test document::tests::an_absolute_alias_query_returns_its_primary_document ... ok
+test document::tests::body_only_text_recalls_the_opaque_key ... ok
+test document::tests::one_grouped_input_document_stays_one_result_despite_aliases ... ok
+test fusion::tests::a_page_ranked_by_both_engines_beats_single_engine_pages ... ok
+test fusion::tests::a_third_ranking_contributes_and_is_visible ... ok
+test fusion::tests::empty_inputs_fuse_to_the_other_side ... ok
+test fusion::tests::two_rankings_agree_however_they_are_spelled ... ok
+test fusion::tests::weights_are_a_setting_that_actually_steers ... ok
+test index::tests::a_tantivy_era_sidecar_refuses_as_a_format_mismatch ... ok
+test index::tests::a_transient_index_writes_nothing_and_still_recalls ... ok
+test index::tests::body_text_is_recallable_via_rebuild_with_text ... ok
+test index::tests::domain_extraction_is_boring_and_correct ... ok
+test index::tests::field_weights_are_settings_the_ranking_follows ... ok
+test index::tests::open_refuses_a_drifted_spec_and_rebuild_recovers ... ok
+test index::tests::open_refuses_v3_fields_and_rebuild_recovers_url_recall ... ok
+test index::tests::opening_nothing_is_missing_not_a_panic ... ok
+test index::tests::rebuild_then_search_ranks_the_matching_page ... ok
+test index::tests::reports_run_over_the_stored_columns ... ok
+test index::tests::titleless_url_components_are_recallable ... ok
+test spec::tests::a_missing_sidecar_reads_as_missing ... ok
+test spec::tests::a_tantivy_era_sidecar_parses_into_a_mismatching_spec ... ok
+test spec::tests::the_current_spec_matches_itself_and_rejects_a_drifted_one ... ok
+test spec::tests::the_sidecar_round_trips ... ok
+test tokenize::tests::segmentation_is_not_ascii_only ... ok
+test tokenize::tests::shared_boundaries_keep_the_existing_index_token_stream ... ok
+test tokenize::tests::the_stemmer_seam_is_a_no_op_until_installed ... ok
+test tokenize::tests::urls_and_titles_tokenize_into_lowercase_components ... ok
+
+test result: ok. 38 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/lexical_ngram_recall.rs (/home/markik/Code/target/debug/deps/lexical_ngram_recall-59b916c25a30e3b2)
+
+running 3 tests
+test held_out_bm25_and_fusion_baselines_are_explicit ... ok
+test held_out_phrase_ranking_improves_without_control_regressions ... ok
+test measure_lexical_ngram_costs ... ignored, measurement harness; run explicitly in release mode
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/mint_ladder.rs (/home/markik/Code/target/debug/deps/mint_ladder-bbb2aa4b69939693)
+
+running 1 test
+test mint_and_query_ladder ... ignored, measurement harness; run explicitly in release mode
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/model_free_compare.rs (/home/markik/Code/target/debug/deps/model_free_compare-482eda51900bac9a)
+
+running 4 tests
+test model_free_equal_and_line_edits_reconstruct ... ok
+test model_free_identity_and_zero_limits_are_bounded ... ok
+test model_free_limits_refuse ... ok
+test model_free_sources_require_explicit_choice ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/model_free_query.rs (/home/markik/Code/target/debug/deps/model_free_query-0a191acb59b1d4f8)
+
+running 15 tests
+test model_free_collection_bounds_refuse_duplicate_kinds_and_empty_exclusions ... ok
+test model_free_empty_and_incomplete_scope_remain_distinct ... ok
+test model_free_input_identity_records_metadata_used_by_queries ... ok
+test model_free_invalid_bounds_and_duplicate_sources_are_rejected ... ok
+test model_free_invalid_metadata_and_nonfinite_weights_are_rejected ... ok
+test model_free_metadata_only_hits_have_no_body_passage ... ok
+test model_free_missing_scoped_source_downgrades_coverage_and_filter_cannot_widen_scope ... ok
+test model_free_mixed_kinds_and_filters_use_explicit_metadata ... ok
+test model_free_oversized_metadata_query_and_aliases_are_refused ... ok
+test model_free_pagination_is_stable_and_does_not_change_coverage ... ok
+test model_free_phrase_checks_whole_source_and_never_joins_sources ... ok
+test model_free_prefix_is_explicit_and_alias_expansion_is_visible ... ok
+test model_free_repeated_matches_on_late_page_keep_exact_ranges ... ok
+test model_free_source_filter_count_is_bounded_before_deduplication ... ok
+test model_free_unicode_ranges_and_hash_retain_exact_source ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/model_free_recall.rs (/home/markik/Code/target/debug/deps/model_free_recall-98d11c95c6efb012)
+
+running 11 tests
+test model_free_refuses_a_changed_scope_generation_even_when_heads_match ... ok
+test model_free_refuses_scope_change_before_return ... ok
+test model_free_refuses_scope_change_before_search ... ok
+test model_free_refuses_scope_change_during_snapshot ... ok
+test model_free_rejects_duplicate_sources_and_invalid_bounds ... ok
+test model_free_reports_selected_sources_absent_from_the_index ... ok
+test model_free_reports_stale_and_unavailable_heads ... ok
+test model_free_scope_is_explicit_and_content_breaks_score_ties ... ok
+test model_free_unicode_passage_id_matches_existing_chunk_contract ... ok
+test model_free_whitespace_text_counts_toward_bounds_and_still_observes_head ... ok
+test model_free_withdraws_source_when_admission_changes_during_search ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests eidetic_search
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+warning: patch `p2panda-auth v0.7.1 (https://github.com/mark-ik/p2panda.git?tag=mere-p2panda-net-0.7.5-upstream-20261013#1f69c9bc)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+    Checking eidetic-search v0.0.1 (/home/markik/Code/worktrees/eidetic-model-free-m1-20261029/crates/eidetic-search)
+    Finished `dev` profile [unoptimized] target(s) in 1.43s
+	Command being timed: "timeout --signal=TERM --kill-after=10s 600s bash -c cargo test -p eidetic-search --no-default-features --test model_free_compare && cargo test -p eidetic-search --no-default-features && cargo check -p eidetic-search --no-default-features --target wasm32-unknown-unknown"
+	User time (seconds): 5.44
+	System time (seconds): 3.03
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.40
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 288356
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 375
+	Minor (reclaiming a frame) page faults: 394410
+	Voluntary context switches: 4531
+	Involuntary context switches: 333
+	Swaps: 0
+	File system inputs: 334160
+	File system outputs: 62976
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
