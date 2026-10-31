@@ -8361,19 +8361,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "responsa"
-version = "0.0.1"
-dependencies = [
- "impresa",
- "muniment",
- "pollster",
- "regex",
- "serde",
- "serde_json",
- "toml",
-]
-
-[[package]]
 name = "rgb"
 version = "0.8.53"
 source = "registry+https://github.com/rust-lang/crates.io-index"

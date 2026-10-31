@@ -8,15 +8,12 @@ readme = "README.md"
 keywords = ["decisions", "documentation", "doctrine", "provenance"]
 categories = ["development-tools", "command-line-utilities"]
 
-[package.edition]
-workspace = true
-
-[package.license]
-workspace = true
+edition = "2024"
+license = "MPL-2.0"
 
 [dependencies]
 impresa = { path = "../impresa", version = "0.0.1" }
-muniment = { workspace = true, features = ["json", "directory"] }
+muniment = { path = "../muniment", version = "0.2.0", default-features = false, features = ["json", "directory"] }
 pollster = "0.4"
 regex = "1"
 serde = { version = "1", features = ["derive"] }
@@ -24,3 +21,7 @@ toml = "1"
 
 [dev-dependencies]
 serde_json = "1"
+
+# Its own workspace, so a tagged install fetches no git sources of
+# eidetic's workspace (line-ceiling plan D7).
+[workspace]

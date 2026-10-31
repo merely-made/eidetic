@@ -2,14 +2,14 @@
 
 **Date:** 2026-10-30
 
-**Status, 2026-10-30:** in progress. E1 landed; E2 at its checkpoint (install
-form awaits a ruling). Opened by mere's house-style plan
+**Status, 2026-10-30:** in progress. E1 landed; E2 ruled (D4 to D7), its
+Windows install run next. Opened by mere's house-style plan
 (`mere/design_docs/mere_docs/implementation_strategy/2026-10-30_house_style_plan.md`),
 whose phase H1 this carries for its first repository.
 
 **Scope:** a line-ceiling binary in eidetic, tagged releases of it and of
 responsa that repositories install through prek (D4), and isocosm as the first
-repository to run both through prek, locally and in CI. The Clippy lint set
+repository to run both through prek, locally (D6). The Clippy lint set
 (house-style D6) and `cargo deny` hooks are later phases of the house-style
 plan, not this one.
 
@@ -19,12 +19,12 @@ From the house-style plan, in the words given:
 
 - **mere:stack.7**, the ceiling: no tracked source file over 600 physical lines,
   comments and blanks included, without a listed technical reason; generated
-  and upstream sources excluded by declared path; one shared check at commit and
-  in CI.
+  and upstream sources excluded by declared path; one shared check at commit,
+  and over the whole tree in each repository's local gate (D6).
 - **mere:house-style D7:** "Happy to use existing development systems that
   satisfy the requirements i've outlined, if possible."
 - **mere:house-style D8:** "prek" runs the checks, from pre-commit's config
-  format, locally and in CI.
+  format (CI dropped by D6).
 - **mere:house-style D9:** "eidetic, as a Rust binary": a separate binary
   beside responsa, exposed as a hook; repositories pin eidetic's rev.
 - The workspace data-formats rule: a file a person authors is TOML.
@@ -40,7 +40,8 @@ From the house-style plan, in the words given:
   that pins eidetic's responsa at `aa94fe22` for its hook. A prek hook pinned
   to an eidetic rev replaces it.
 - 2026-10-30: isocosm has a GitHub remote (`merely-made/isocosm`) and no
-  workflows; eidetic has `.github/workflows/libraries.yml`.
+  workflows; eidetic's were removed too (`f1ada1a`, 2026-10-28: "Gates live in
+  local scripts and dated receipts").
 - 2026-10-30, prek's language reference: a `rust` hook repository is installed
   with `cargo install --bins --locked`, and virtual workspaces are supported.
   It does not say which packages a virtual-workspace install builds; E2
@@ -52,7 +53,7 @@ From the house-style plan, in the words given:
 `line-ceiling [--config <path>] <files>...` reads the repository's
 `line-ceiling.toml` and reports each named file over the ceiling that is
 neither excluded nor excepted. prek passes the staged files at commit and every
-tracked file under `prek run --all-files` in CI, so the binary reads files and
+tracked file under `prek run --all-files`, so the binary reads files and
 never calls git.
 
 ```toml
@@ -78,19 +79,21 @@ An entry without a reason is a configuration error. A physical line is a
   CRLF, a missing final newline and an empty file count as `ReadAllLines`
   would; an exclude or exception without a reason is refused; an excepted file
   passes; and a stale exception fails (D2).
-  `cargo test --workspace --locked` stays green in eidetic's CI.
-- **E2. Tagged tool releases (D4).** eidetic tags `line-ceiling-v0.0.1` and
-  `responsa-v0.0.1`; the line-ceiling README carries the hook stanza a
-  repository copies. Done when prek installs both from their tags on Windows,
-  with install times recorded here; Linux is proven by E3's CI run, and a Mac
-  run is recorded when one is reachable.
+  `cargo test --manifest-path crates/line-ceiling/Cargo.toml --locked` passes.
+- **E2. Tagged tool releases (D4, D5, D7).** Both tools are standalone
+  packages; eidetic tags `line-ceiling-v0.0.2` and `responsa-v0.0.2` (the
+  v0.0.1 tags stay, pointing at the workspace-member builds); the line-ceiling
+  README carries the hook stanza a repository copies. Done when prek installs
+  both from their tags on Windows with install times recorded here, and a Mac
+  or Linux run is recorded when one is reachable.
 - **E3. isocosm adopts.** `.pre-commit-config.yaml` pins eidetic's rev for both
   hooks; pack-json is ported to Rust in isocosm and runs as a hook (D3), its
   wiring (a local `language: rust` hook or a `system` hook on a workspace
   binary) chosen by what prek supports for a local Rust hook; `prek install`
-  replaces `core.hooksPath`; a workflow runs `prek run --all-files`. Done when
-  a planted 601-line file and a planted hand-written pack JSON each fail both
-  the commit and the CI run, a clean tree passes both, and
+  replaces `core.hooksPath`; isocosm's local gate runs `prek run --all-files`
+  (D6). Done when a planted 601-line file and a planted hand-written pack JSON
+  each fail both the commit and the full local run, a clean tree passes both,
+  and
   `scripts/line-ceiling.ps1`, `scripts/pack-json.ps1`, the exceptions file,
   `.githooks/` and `shared/responsa` are deleted.
 
@@ -133,6 +136,23 @@ An entry without a reason is a configuration error. A physical line is a
   rethink responsa", over git's command-line fetch on machines and CI.
 
   Links: amends line-ceiling D1 · summary line-ceiling is a standalone package so its install fetches no workspace git sources.
+
+- **D6. Local only (Mark, 2026-10-30):** "Local only", over one prek-only
+  workflow or CI as recorded. Found contradicting mere:stack.7 and
+  mere:house-style D3/D8 after CI was removed from eidetic and isocosm on
+  2026-10-28. The checks run in the prek pre-commit hook and, over the whole
+  tree, as `prek run --all-files` in each repository's local gate; a bypassed
+  hook is caught at the next full run.
+
+  Links: amends mere:stack.7, mere:house-style D3, mere:house-style D8 · summary The shared checks run locally, at commit and in each repository's full local gate; no CI.
+
+- **D7. responsa is its own workspace (Mark, 2026-10-30):** "Standalone, like
+  line-ceiling", over keeping it a workspace member. It reaches impresa and
+  muniment by path and locks 38 crates.io packages and no git sources; its 14
+  tests pass under `cargo test --manifest-path crates/responsa/Cargo.toml
+  --locked`.
+
+  Links: draws on line-ceiling D5 · summary responsa is a standalone package so its install fetches no workspace git sources.
 
 ## Progress
 
