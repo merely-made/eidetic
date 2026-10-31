@@ -13,6 +13,8 @@
 //! its path, schema, validation, and load policy. Replacement first uses the
 //! platform's normal rename-overwrite behavior. A backup rename is used only
 //! when that operation reports that the existing destination blocks it.
+//! [`replace_bytes_if_unchanged`] adds the guard for read-modify-write
+//! callers: it writes only if the file still holds the bytes the caller read.
 
 use std::fs::{self, File, OpenOptions};
 use std::io::{self, Write};
@@ -33,14 +35,83 @@ static NEXT_TEMP_ID: AtomicU64 = AtomicU64::new(0);
 /// removed as part of a successful replacement.
 pub fn write_bytes_with_backup(target: &Path, contents: &[u8]) -> io::Result<()> {
     let temporary = stage_bytes(target, contents)?;
-    let backup = target.with_extension(format!(
+    replace_temporary_with_backup(target, &temporary, &backup_path(target), |from, to| {
+        fs::rename(from, to)
+    })
+}
+
+/// How a guarded replacement ended.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[must_use = "a conflict means nothing was written"]
+pub enum Replacement {
+    /// The target held the baseline and now holds the new contents.
+    Installed,
+    /// The target no longer matched the baseline. Nothing was written.
+    Conflict,
+}
+
+/// Replace `target` with `contents` only if it still holds `baseline`: the
+/// bytes the caller read before computing `contents`, or `None` if the file did
+/// not exist then. Otherwise report [`Replacement::Conflict`] and write nothing,
+/// so the caller can reload and reapply its change.
+///
+/// An advisory lock on the sibling `<target>.lock` file covers the compare and
+/// the rename, so two guarded writers cannot both pass the compare and then
+/// replace each other's result. Staging and syncing the new contents happen
+/// before the lock is taken. The lock excludes other guarded replacements only;
+/// readers and plain [`write_bytes_with_backup`] callers do not take it. The
+/// lock file stays on disk: removing it would let two writers lock different
+/// files.
+pub fn replace_bytes_if_unchanged(
+    target: &Path,
+    baseline: Option<&[u8]>,
+    contents: &[u8],
+) -> io::Result<Replacement> {
+    let temporary = stage_bytes(target, contents)?;
+    let outcome = install_if_unchanged(target, baseline, &temporary);
+    if !matches!(outcome, Ok(Replacement::Installed)) {
+        let _ = fs::remove_file(&temporary);
+    }
+    outcome
+}
+
+fn install_if_unchanged(
+    target: &Path,
+    baseline: Option<&[u8]>,
+    temporary: &Path,
+) -> io::Result<Replacement> {
+    let mut lock_name = target.file_name().unwrap_or_default().to_os_string();
+    lock_name.push(".lock");
+    let lock = OpenOptions::new()
+        .create(true)
+        .truncate(false)
+        .write(true)
+        .open(target.with_file_name(lock_name))?;
+    // Dropping `lock` on any return releases it.
+    lock.lock()?;
+
+    let current = match fs::read(target) {
+        Ok(bytes) => Some(bytes),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => None,
+        Err(error) => return Err(error),
+    };
+    if current.as_deref() != baseline {
+        return Ok(Replacement::Conflict);
+    }
+    replace_temporary_with_backup(target, temporary, &backup_path(target), |from, to| {
+        fs::rename(from, to)
+    })?;
+    Ok(Replacement::Installed)
+}
+
+fn backup_path(target: &Path) -> PathBuf {
+    target.with_extension(format!(
         "{}.previous",
         target
             .extension()
             .and_then(|extension| extension.to_str())
             .unwrap_or_default()
-    ));
-    replace_temporary_with_backup(target, &temporary, &backup, |from, to| fs::rename(from, to))
+    ))
 }
 
 /// Fully write and sync `contents` to a uniquely created sibling temporary file,
@@ -411,6 +482,109 @@ mod tests {
             1,
             "successful installation consumes the staging file"
         );
+        fs::remove_dir_all(directory).expect("remove scratch");
+    }
+
+    fn replace(target: &Path, baseline: Option<&[u8]>, contents: &[u8]) -> Replacement {
+        replace_bytes_if_unchanged(target, baseline, contents).expect("guarded replacement")
+    }
+
+    fn open_lock(target: &Path) -> File {
+        OpenOptions::new()
+            .create(true)
+            .truncate(false)
+            .write(true)
+            .open(target.with_file_name("settings.json.lock"))
+            .expect("open lock file")
+    }
+
+    #[test]
+    fn a_changed_target_is_a_conflict_that_writes_nothing_and_releases_the_lock() {
+        let directory = scratch("guard-conflict");
+        let target = directory.join("settings.json");
+        write_bytes_with_backup(&target, b"loaded").expect("first write");
+        write_bytes_with_backup(&target, b"another writer").expect("competing write");
+
+        let outcome = replace(&target, Some(b"loaded"), b"mine");
+
+        assert_eq!(outcome, Replacement::Conflict);
+        assert_eq!(fs::read(&target).expect("read target"), b"another writer");
+        open_lock(&target)
+            .try_lock()
+            .expect("a conflict leaves the lock free");
+        let mut names: Vec<_> = fs::read_dir(&directory)
+            .expect("list scratch")
+            .map(|entry| entry.expect("entry").file_name())
+            .collect();
+        names.sort();
+        assert_eq!(
+            names,
+            ["settings.json", "settings.json.lock"],
+            "the refused contents leave no staging file"
+        );
+        fs::remove_dir_all(directory).expect("remove scratch");
+    }
+
+    #[test]
+    fn an_unchanged_target_is_replaced_and_a_missing_one_only_while_it_is_missing() {
+        let directory = scratch("guard-install");
+        let target = directory.join("settings.json");
+
+        assert_eq!(replace(&target, None, b"first"), Replacement::Installed);
+        assert_eq!(fs::read(&target).expect("read target"), b"first");
+        assert_eq!(
+            replace(&target, None, b"second"),
+            Replacement::Conflict,
+            "the file exists now, so a baseline of absent is stale"
+        );
+        assert_eq!(
+            replace(&target, Some(b"first"), b"second"),
+            Replacement::Installed
+        );
+        assert_eq!(fs::read(&target).expect("read target"), b"second");
+
+        fs::remove_file(&target).expect("remove target");
+        assert_eq!(
+            replace(&target, Some(b"second"), b"third"),
+            Replacement::Conflict,
+            "a file deleted since the load is a change"
+        );
+        assert!(!target.exists());
+        fs::remove_dir_all(directory).expect("remove scratch");
+    }
+
+    #[test]
+    fn a_held_lock_defers_the_compare_until_it_is_released() {
+        let directory = scratch("guard-lock");
+        let target = directory.join("settings.json");
+        write_bytes_with_backup(&target, b"loaded").expect("first write");
+        let lock = open_lock(&target);
+        lock.lock().expect("take the lock");
+
+        let (sender, receiver) = std::sync::mpsc::channel();
+        let writer = {
+            let target = target.clone();
+            std::thread::spawn(move || {
+                let outcome = replace(&target, Some(b"loaded"), b"mine");
+                sender.send(outcome).expect("report outcome");
+            })
+        };
+
+        assert!(
+            receiver
+                .recv_timeout(std::time::Duration::from_millis(200))
+                .is_err(),
+            "the writer must wait while another holds the lock"
+        );
+        assert_eq!(fs::read(&target).expect("read target"), b"loaded");
+
+        lock.unlock().expect("release the lock");
+        let outcome = receiver
+            .recv_timeout(std::time::Duration::from_secs(10))
+            .expect("writer finishes once the lock is free");
+        writer.join().expect("writer thread");
+        assert_eq!(outcome, Replacement::Installed);
+        assert_eq!(fs::read(&target).expect("read target"), b"mine");
         fs::remove_dir_all(directory).expect("remove scratch");
     }
 }
