@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-30
 
-**Status, 2026-10-30:** in progress. E1 landed; E2 ruled (D4 to D7), its
-Windows install run next. Opened by mere's house-style plan
+**Status, 2026-10-30:** in progress. E1 and E2 (Windows) landed; E3 next; a
+Mac or Linux install run is still owed. Opened by mere's house-style plan
 (`mere/design_docs/mere_docs/implementation_strategy/2026-10-30_house_style_plan.md`),
 whose phase H1 this carries for its first repository.
 
@@ -183,3 +183,8 @@ An entry without a reason is a configuration error. A physical line is a
   hand with `CARGO_NET_GIT_FETCH_WITH_CLI=true` finished in 87 s, on a cache
   the earlier attempts had partly filled; a fresh CI machine would fetch murm
   whole.
+- 2026-10-30: **E2 landed on Windows.** Tags `line-ceiling-v0.0.2` and
+  `responsa-v0.0.2` at `dd5c115`. Through prek on isocosm, from the README's
+  stanza: line-ceiling installed and passed in 35 s, responsa-check in 25 s;
+  a cached full run takes 1 s. Control: a planted 601-line file failed the
+  hook (exit 1) and was removed. Mac or Linux run owed.
