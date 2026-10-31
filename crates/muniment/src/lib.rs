@@ -30,6 +30,7 @@
 //! muniment stores durable bytes and their journaled order. Domain meaning and
 //! content models remain layers above it.
 
+pub mod atomic_file;
 pub mod backend;
 pub mod blob;
 pub mod codec;
