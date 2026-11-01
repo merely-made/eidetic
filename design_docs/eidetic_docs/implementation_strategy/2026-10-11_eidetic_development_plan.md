@@ -1621,7 +1621,7 @@ retention paths; retry cannot duplicate admitted content or erase its lineage.
 
 For shared community collections, reuse Gemot's contribution/collection authority
 and Stickleback's accepted-operation replication under the
-[community collection plan](https://github.com/merely-made/mere/blob/main/design_docs/moothold_docs/implementation_strategy/2026-06-12_moot_object_m1_plan.md#community-collections-and-author-offline-publishing-2026-09-04).
+[community collection plan](https://github.com/merely-made/gemot/blob/main/design_docs/archive_docs/2026-11-01/2026-06-12_moot_object_m1_plan.md#community-collections-and-author-offline-publishing-2026-09-04) (open work continues in the [Moot publication plan](https://github.com/merely-made/gemot/blob/main/design_docs/moothold_docs/implementation_strategy/2026-11-01_moot_publication_plan.md)).
 Private cross-mere copying does not require community publication. Collection
 membership replication and delivery of the corresponding byte payloads each
 need qualification. Later subscriptions must define membership/revision updates,
