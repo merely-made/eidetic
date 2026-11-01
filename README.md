@@ -7,7 +7,7 @@ application shell or surrendering their domain authority.
 The implementation history was promoted from Mere on 2026-10-19. Crates retain
 their names, formats, APIs, licenses and selectable features. Canonical migration
 and its historical receipts:
-`mere/design_docs/mere_docs/implementation_strategy/2026-10-19_family_promotion_plan.md`.
+`mere/design_docs/mere_docs/implementation_strategy/2026-10-28_family_promotion_plan.md`.
 
 | Crate | Responsibility | Boundary |
 |---|---|---|
@@ -29,7 +29,8 @@ embeddings; Dramatis owns identity/key vocabulary; Murm owns transport; Gemot
 owns community authority. The independent source home does not require those
 integrations to move with it. The current boundaries, verified
 source cuts and remaining qualification gates live in the
-[development plan](design_docs/eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#post-extraction-stack-review-2026-10-20).
+[development plan](design_docs/archive_docs/2026-11-01/2026-10-11_eidetic_development_plan.md#post-extraction-stack-review-2026-10-20)
+(archived 2026-11-01; open work is in `design_docs/eidetic_docs/implementation_strategy/2026-11-01_memory_gates_plan.md`).
 
 Run `python3 /Users/markik/Code/tools/build_storage.py build --lane eidetic-components --cwd . -- test --workspace`
 from the checkout for default library coverage. CI also checks the workspace

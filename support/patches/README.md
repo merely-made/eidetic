@@ -11,8 +11,8 @@ both licensed MIT OR Apache-2.0. Upstream license files and notices are retained
 Direct path edges let Git consumers receive these exact sources. The M4
 bounded read and non-mutating recovery changes, focused Linux receipts and
 qualification limits are recorded in the
-[milestone receipts](../../design_docs/archive_docs/2026-10-30/2026-10-11_eidetic_development_plan_receipts.md).
-M5 product restart qualification remains open.
+[milestone receipts](../../design_docs/archive_docs/receipts/2026-10-11_eidetic_development_plan_receipts.md).
+M5 product restart qualification passed for the recorded Linux cohort; it remains open elsewhere.
 Registry publication of Muniment needs a separate dependency strategy.
 The derived Fjall manifest uses the workspace's Rust 1.97.1 floor for native
 file locking; its upstream 2.11.2 manifest declared Rust 1.76.0.

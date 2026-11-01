@@ -4,7 +4,7 @@
 
 **Status, 2026-10-23:** plan; nothing built. Opened when isocosm's
 decision-links plan was archived, to hold the two points it left owed to this
-tool. responsa 0.0.1 (eidetic `aa94fe22`) does neither.
+tool. responsa 0.0.1 (eidetic `4210cec`) does neither.
 
 **Scope:** `crates/responsa` only. The rule it keeps is core §11 of each
 repository's `DOC_POLICY.md`; this plan changes no rule, it builds what rule 5
@@ -52,7 +52,7 @@ The test already exists: `crates/responsa/examples/answer_key.rs`, run as
 replays the anchor probe's key (definitions from git history, judged present,
 moved or removed) through the resolver against a SCIP index of isocosm at
 `afbce8a0`. The key and the probe's report are in
-`Code/testing/isometry/anchor-probe-2026-10-20/`.
+`Code/testing/isocosm/anchor-probe-2026-10-20/`.
 
 Done when, for a toolchain a consumer has just moved to:
 
@@ -90,7 +90,7 @@ them read from configuration.
 1. **The fading rate and floor.** Precedents the decision-links plan found, to
    weigh: the sim's reach field fades a strength by `decay_per_tick` down to a
    `legend_floor`, and legends do not fade
-   (`isocosm/shared/isocosm/src/reach.rs`); the hagiograph's feat rule judges
+   (`isocosm/shared/cosmograph/src/reach.rs`); the hagiograph's feat rule judges
    a mark that stood before the batch
    (`crates/hagiograph/src/reckoning.rs`). The doctrine's size is evidence
    too: isocosm's holds 133 statements across 17 areas, within its budget. Put as a card round with those numbers; recorded as

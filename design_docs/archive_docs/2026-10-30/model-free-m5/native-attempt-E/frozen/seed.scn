@@ -1,4 +1,0 @@
-# Bounded GUI and custody startup only; contains no retained content.
-settle 60
-record-runtime gui_preflight
-capture gui_preflight

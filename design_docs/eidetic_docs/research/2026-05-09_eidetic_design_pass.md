@@ -2,7 +2,7 @@
 
 **Status**: Research synthesis with recommendations
 
-> **Current continuation (2026-10-11):** the four-layer stack proposed here is largely built. The [Eidetic development plan](../implementation_strategy/2026-10-11_eidetic_development_plan.md) now owns encounters, general intake, session admission, engine capture, computed recall and dependency use. Its archived June checkpoint preserves the deferred backend/index proposals. This research's former crate names and donor paths are historical; dated receipts below remain historical record.
+> **Current continuation (2026-10-11):** the four-layer stack proposed here is largely built. The [Eidetic development plan](../../archive_docs/2026-11-01/2026-10-11_eidetic_development_plan.md) (archived 2026-11-01; its open work continues in [2026-11-01_memory_gates_plan](../implementation_strategy/2026-11-01_memory_gates_plan.md)) owned encounters, general intake, session admission, engine capture, computed recall and dependency use. Its archived June checkpoint preserves the deferred backend/index proposals. This research's former crate names and donor paths are historical; dated receipts below remain historical record.
 **Purpose**: Eidetic shipped 2026-05-06 as a 186-line blob-store contract. It needs to grow into Mere's actual private-memory layer — the substrate this research has been describing for months under various names (mnem, STM/LTM, EngramMemory, browsing memory). This pass proposes how, grounded in the inherited graphshell-era research and the immediate concrete pulls (eidetic-backed model storage, vector-index persistence, browsing-memory accumulation).
 **Audience**: Architecture / planning. Implementation plans should descend from this report.
 

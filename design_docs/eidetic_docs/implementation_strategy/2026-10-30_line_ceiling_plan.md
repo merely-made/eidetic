@@ -2,14 +2,15 @@
 
 **Date:** 2026-10-30
 
-**Status, 2026-10-30:** in progress. E1 and E2 (Windows) landed; E3 next; a
-Mac or Linux install run is still owed. Opened by mere's house-style plan
+**Status, 2026-11-01:** in progress. E1 and E2 (Windows) landed 2026-10-30; E3
+next; E4 (eidetic adopts its own tools, D8) added 2026-11-01; a Mac or Linux
+install run is still owed. Opened by mere's house-style plan
 (`mere/design_docs/mere_docs/implementation_strategy/2026-10-30_house_style_plan.md`),
 whose phase H1 this carries for its first repository.
 
 **Scope:** a line-ceiling binary in eidetic, tagged releases of it and of
 responsa that repositories install through prek (D4), and isocosm as the first
-repository to run both through prek, locally (D6). The Clippy lint set
+repository to run both through prek, locally (D6), then eidetic itself (E4, D8). The Clippy lint set
 (house-style D6) and `cargo deny` hooks are later phases of the house-style
 plan, not this one.
 
@@ -96,6 +97,24 @@ An entry without a reason is a configuration error. A physical line is a
   and
   `scripts/line-ceiling.ps1`, `scripts/pack-json.ps1`, the exceptions file,
   `.githooks/` and `shared/responsa` are deleted.
+- **E4. Eidetic adopts its own tools (D8).** This repository has neither a
+  `.pre-commit-config.yaml` nor a `line-ceiling.toml`. Add both: the config
+  carries the line-ceiling hook from the README stanza (naming the latest
+  `line-ceiling-v*` tag, or a local hook on the workspace binary, whichever
+  prek supports for a repository installing its own tool; E3 settles the
+  wiring), and `responsa-check` once this repository keeps a decisions
+  manifest. `line-ceiling.toml` excludes the vendored upstream sources
+  (`support/patches/`, with the reason) and lists no exception without a
+  technical reason. The control at E1 found 20 eidetic files over the ceiling,
+  so each is either split below 600 lines or excepted with its reason. A
+  2026-11-01 Python recount over the illustrative extension set (not the
+  binary) finds 31 tracked files over: 10 under `support/patches/`, the rest in
+  `crates/` and one frozen M5 harness script in `design_docs/archive_docs/`;
+  the binary's own count is the one that counts. Done when `prek install` is
+  in place, `prek run --all-files` passes on a clean tree, a planted 601-line
+  file fails both the commit and the full run, every exclude and exception in
+  `line-ceiling.toml` carries a reason, and the number of exceptions is
+  recorded here.
 
 ## Decisions
 
@@ -154,6 +173,13 @@ An entry without a reason is a configuration error. A physical line is a
 
   Links: draws on line-ceiling D5 · summary responsa is a standalone package so its install fetches no workspace git sources.
 
+- **D8. Eidetic adopts its own tools (Mark, 2026-11-01):** "Add as an E-phase",
+  as E4 of this plan. Eidetic hosts both tools yet has not installed either
+  for itself: it has no `.pre-commit-config.yaml` and no `line-ceiling.toml`,
+  and its E1 control found 20 files over the ceiling.
+
+  Links: draws on mere:stack.7, line-ceiling D6 · plans E4 · summary Eidetic runs its own line-ceiling hook from a .pre-commit-config.yaml and line-ceiling.toml; its 20 files over the ceiling become excludes, exceptions or splits.
+
 ## Progress
 
 - 2026-10-30: plan written; forks ruled as D1 to D3.
@@ -188,3 +214,4 @@ An entry without a reason is a configuration error. A physical line is a
   stanza: line-ceiling installed and passed in 35 s, responsa-check in 25 s;
   a cached full run takes 1 s. Control: a planted 601-line file failed the
   hook (exit 1) and was removed. Mac or Linux run owed.
+- 2026-11-01: **E4 added (D8).** Eidetic adopts its own tools; nothing built.

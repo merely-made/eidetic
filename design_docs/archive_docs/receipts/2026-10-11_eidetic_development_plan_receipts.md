@@ -1,5 +1,17 @@
 # Eidetic development plan receipts
 
+**Run outputs moved (2026-11-01).** The M1-M5 run outputs this file cites
+(`2026-10-29/` and `2026-10-30/`: logs, JSON receipts, review packets, frozen
+collections and the additional-evidence index) left the repository for
+`Code/testing/eidetic/`, same relative layout (2,773 files, 192,628,541 bytes;
+copy verified file by file by SHA-256). Paths below that read
+`Code/testing/eidetic/...` are path cites, not links. The hashes and index
+entries recorded here are unchanged. The M5 harness bundle followed them to
+`Code/testing/eidetic/2026-10-30/model-free-m5/harness/` (memory_gates D4). The plan these
+receipts belong to is archived whole at
+`../2026-11-01/2026-10-11_eidetic_development_plan.md` and succeeded by
+`design_docs/eidetic_docs/implementation_strategy/2026-11-01_memory_gates_plan.md`.
+
 ## 2026-10-26 through 2026-10-29: model-free retrieval
 
 
@@ -37,7 +49,7 @@ assume these manifest differences alone imply duplicated runtime types.
 
 M1 provider and receiving checks passed. Earlier resource-limited and superseded attempts are retained below. No native product or offline restart claim.
 
-Provider base: `f42aab7df545d957dcb4b38e533eb925e8dab8a7`, freshly fetched before publication. All compiler runs use the existing `machine-heavy.lock`, 3 GiB MemoryMax, zero swap, 150% CPU quota, one Cargo job and one test thread, with a 600-second timeout. Guard commands and log checksums are retained in [model-free-m1](../2026-10-29/model-free-m1/).
+Provider base: `f42aab7df545d957dcb4b38e533eb925e8dab8a7`, freshly fetched before publication. All compiler runs use the existing `machine-heavy.lock`, 3 GiB MemoryMax, zero swap, 150% CPU quota, one Cargo job and one test thread, with a 600-second timeout. Guard commands and log checksums are retained in `Code/testing/eidetic/2026-10-29/model-free-m1/`.
 
 - Initial red gate failed at the missing `eidetic_search::recall` import.
 - The emission-time scope-change regression failed before the final recheck was added.
@@ -165,7 +177,7 @@ M2–M5 product completion remain unclaimed.
 
 Provider source commit `20c9793181723a40858487d9d14623c81837eb57` adds frozen admitted-snapshot queries, explicit modes and filters, exact optional body passages, pagination, recorded input metadata and bounds. It preserves existing recall schemas and passage identities.
 
-The final guarded run `../2026-10-29/model-free-m2/eidetic-m2-query-final-01.json` ran the full no-default-feature search suite and the wasm32-unknown-unknown check successfully. The query suite has fifteen passing cases; existing recall and lexical suites also pass. Three measurement harnesses remain ignored. Initial red failed on the absent query module. Earlier lock-acquisition timeouts started no compiler. Raw command, resource and hash records are retained beside each log.
+The final guarded run `Code/testing/eidetic/2026-10-29/model-free-m2/eidetic-m2-query-final-01.json` ran the full no-default-feature search suite and the wasm32-unknown-unknown check successfully. The query suite has fifteen passing cases; existing recall and lexical suites also pass. Three measurement harnesses remain ignored. Initial red failed on the absent query module. Earlier lock-acquisition timeouts started no compiler. Raw command, resource and hash records are retained beside each log.
 
 Static review corrected quadratic scalar-offset scans, materialization of off-page match ranges, omitted metadata identities and incomplete operation bounds. Final scoped review found those issues addressed. This provider packet is shared-library evidence. Turnstone receiving is recorded below. Neither packet is a headed product or offline restart receipt.
 
@@ -188,7 +200,7 @@ fabricated quotation. Private query state clears at admission, custody and
 session boundaries and cannot fall through to URL navigation/history. The
 capture-only search implementation is retired while workshop loading remains.
 
-Final software receipts are in [model-free-m2](../2026-10-29/model-free-m2/):
+Final software receipts are in `Code/testing/eidetic/2026-10-29/model-free-m2/`:
 
 - `eidetic-m2-query-final-01`: `cargo test --locked -p eidetic-search
   --no-default-features` passed 66 tests, with three measurement harnesses
@@ -243,7 +255,7 @@ open. These library tests do not qualify the complete native product workflow.
 ## 2026-10-30: retained research
 
 
-Canonical plan: [P4a M3](../../eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#m3-compare-exact-retained-versions).
+Canonical plan: [P4a M3](../2026-11-01/2026-10-11_eidetic_development_plan.md#m3-compare-exact-retained-versions).
 Earlier M1/M2 evidence remains in the [October 29 archive](#2026-10-26-through-2026-10-29-model-free-retrieval).
 
 ### Published source and scope
@@ -275,7 +287,7 @@ and dependency selections outside the intended Eidetic revision substitution.
 ### Check results
 
 Raw commands, output, exit codes, elapsed time and log hashes are in
-[model-free-m3](../2026-10-30/model-free-m3/); `verification-summary.json` separates the source
+`Code/testing/eidetic/2026-10-30/model-free-m3/`; `verification-summary.json` separates the source
 and gate boundaries. `sources.json` is the initial host checkpoint;
 `final-sources.json` hashes the final 24 production/test/Cargo files. Only the
 host documentation index changed after the final code checks.
@@ -352,7 +364,7 @@ all earlier successful/failed qualification packets are preserved.
 
 ### M4 provider checkpoint
 
-Canonical continuation: [P4a M4](../../eidetic_docs/implementation_strategy/2026-10-11_eidetic_development_plan.md#m4-answer-the-supported-structured-questions).
+Canonical continuation: [P4a M4](../2026-11-01/2026-10-11_eidetic_development_plan.md#m4-answer-the-supported-structured-questions).
 This checkpoint establishes the portable provider. Turnstone host authoring and
 query integration remain in progress; it does not close M4 or M5.
 
@@ -376,7 +388,7 @@ status, cardinality and valid-time distinctions. It does not interpret arbitrary
 prose. The operation version is `eidetic.structured-records/v2`.
 
 All 30 provider gate packets and their original logs are retained in
-[model-free-m4](../2026-10-30/model-free-m4/). The packet log hashes were verified before
+`Code/testing/eidetic/2026-10-30/model-free-m4/`. The packet log hashes were verified before
 copying. `provider-manifest.json` records the final 11 source-file hashes and
 all packet statuses. The final reviewed-source gates are:
 
@@ -417,7 +429,7 @@ review. Turnstone upstream then published `720f59f8`, the Djinn application
 client ownership migration. The checkpoint was rebased to `0d71a2f1` and all
 25 uncommitted review-fix files were restored byte-for-byte from retained stash
 `614a8c0`; the earlier M2 stash was preserved. The original hashes and restore
-proof are in `../2026-10-30/model-free-m4/upstream-720-reconciliation.json`.
+proof are in `Code/testing/eidetic/2026-10-30/model-free-m4/upstream-720-reconciliation.json`.
 
 The bounded live resource-pair supplier is Mere
 `229f277a252440a8e47aefe367febca3cf502bbb`. Its first replacement regression
@@ -836,7 +848,7 @@ issues in the staged startup harness; they must be corrected before its run.
 No headed capture, real-note retention or fresh-process M5 acceptance is claimed.
 
 The initial 19 completed preparation packet/log pairs, supplier reviews and
-receiving records are preserved under `../2026-10-30/model-free-m5/`;
+receiving records are preserved under `Code/testing/eidetic/2026-10-30/model-free-m5/`;
 `preparation-gates-index.json` records their verified checksums and exit codes.
 
 
@@ -844,7 +856,7 @@ receiving records are preserved under `../2026-10-30/model-free-m5/`;
 
 The completed M5 packet/log pairs added since the initial 19, the scoped note and
 custody review materials, and the five completed native-preflight attempts are
-indexed in `../2026-10-30/model-free-m5/additional-evidence-index.json`. It records source and
+indexed in `Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`. It records source and
 archive SHA-256 values; failed receipts remain included. Native manifests,
 cleanup records and synthetic observations are preserved without binaries,
 profile stores, graphics caches, wallets or custody seeds. The D frame remains
@@ -877,7 +889,7 @@ Attempt E later passed the empty-profile startup/preflight gate. The app and
 probe reported the same family custody principal, the probe observed
 `closed-during-open`, offline acquisition, corpus publication and generation
 counts were all zero, and cleanup confirmed the scope cgroup empty. Its safe
-manifests and logs are indexed in `../2026-10-30/model-free-m5/additional-evidence-index.json`;
+manifests and logs are indexed in `Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`;
 the frame remains external with its path and SHA-256 recorded there. This
 qualifies startup/preflight only. No retained note, fresh-process restart or
 ordinary-use M5 acceptance is claimed, and the full M5 gate was not run.
@@ -887,7 +899,7 @@ ordinary-use M5 acceptance is claimed, and the full M5 gate was not run.
 
 The observer review chain, readiness/fault integration, fetch-wait review, and
 associated focused receipts are indexed in
-`../2026-10-30/model-free-m5/additional-evidence-index.json`. The initial observer review and
+`Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`. The initial observer review and
 fix1 review requested changes; fix2 was approved for scoped source review. Its
 three cleaned privacy/projection tests each passed 1/0. Readiness/fault plumbing
 and fetch-wait integration were also approved for scoped source review only.
@@ -917,7 +929,7 @@ incomplete.
 
 The additional safe manifests and logs for failed intact collections D and E,
 plus source-click diagnostics A and B, are indexed in
-`../2026-10-30/model-free-m5/additional-evidence-index.json`. D failed when the row-targeted
+`Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`. D failed when the row-targeted
 source-save click missed. E failed because the offered button was below the
 viewport. Neither saved the A source, and neither is an acceptance run.
 
@@ -939,7 +951,7 @@ pending.
 
 Safe run records for intact collections F, G and H, the research diagnostic, and
 passage-clip diagnostics A and B are indexed in
-`../2026-10-30/model-free-m5/additional-evidence-index.json`. The shared research-response
+`Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`. The shared research-response
 drain packet and root review, focused green-2 receipt, earlier failure receipts,
 and the reviewed fault-ledger-fix1 packet/tests/reviews are archived there too.
 The shared drain passed its focused real-worker test and root approved the
@@ -966,7 +978,7 @@ pending.
 
 The limit-refusal observer and cold-reader source review packets, focused receipts,
 reader-hoist diff/root review, and the final receipt-integration fix2 package are
-indexed in `../2026-10-30/model-free-m5/additional-evidence-index.json`. The limit observer
+indexed in `Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`. The limit observer
 review first found a refusal invalidation gap; the red roundtrip reproduced it,
 and the green roundtrip cleared it. A prior pre-dispatch explanation of the
 record limit is disproved: enumeration dispatches to the worker, which enforces
@@ -999,7 +1011,7 @@ reconstructible. Full M5 acceptance remains incomplete.
 #### M5 reader-open event evidence and focused host gate
 
 The full authoring/inference library gate receipt and the local reader-open
-focused receipts are indexed in `../2026-10-30/model-free-m5/additional-evidence-index.json`.
+focused receipts are indexed in `Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`.
 The full gate passed 1278/0/20 at Turnstone source
 `fe015c5df394f7be514609ebe2e5ecb25528f618`. The subsequent local
 `cf459cd832abc877c79ae3c68e61eb7014ccf533` event/Peek wording delta has one new
@@ -1030,7 +1042,7 @@ The main fresh build was still running, so its incomplete outputs were excluded.
 
 Safe records for failed intact J and intentionally aborted K, Knot editor
 diagnostics A-C, Redshank note-control diagnostics A-E, and the reviewed
-scenario deltas are indexed in `../2026-10-30/model-free-m5/additional-evidence-index.json`.
+scenario deltas are indexed in `Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`.
 J failed at note insertion because no focused text editor was active. K was
 intentionally aborted after the complete note-search observation lacked the
 required Note producer; the saved abort reason explains why following actions
@@ -1052,7 +1064,7 @@ acceptance remains incomplete.
 
 Safe manifests, logs, configuration, scenarios and selected capture/readback
 JSON from intact collection L are indexed in
-`../2026-10-30/model-free-m5/additional-evidence-index.json`. Its configured 450-second app
+`Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`. Its configured 450-second app
 deadline expired after authored step 4. The seed phase did not complete, so no
 reopen ran. Cleanup terminated the app, custodian and fixture server and later
 verified the scope cgroup empty. This is a timed-out collection, not a semantic
@@ -1061,7 +1073,7 @@ path, SHA-256 and size; binaries, media, stores, caches and custody identity
 data are excluded. L does not qualify save/reopen or M5 acceptance.
 
 The current `missing.scn`, its hash manifest and the scoped Read document review
-are preserved at `../2026-10-30/model-free-m5/review-packets/missing-document/`. Review found
+are preserved at `Code/testing/eidetic/2026-10-30/model-free-m5/review-packets/missing-document/`. Review found
 no issue with adding the ordinary Read document action after opening the
 research note. The existing 17 Python fault and ledger tests also passed. No
 native fault scenario ran; headed citation visibility remains unverified, and
@@ -1080,7 +1092,7 @@ does not qualify M5.
 #### M5 intact M, empty-scope diagnostic and readiness evidence
 
 Safe records for failed intact M and empty-scope diagnostic A are indexed in
-`../2026-10-30/model-free-m5/additional-evidence-index.json`. M emitted 14 authored frames and
+`Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`. M emitted 14 authored frames and
 all 12 structured-operation observations. It then failed at the first Withdrawn
 record-history row, which was absent while the interface remained in Inspect view;
 subsequent assertions cascaded. The structured snapshot records 14 input records before
@@ -1113,7 +1125,7 @@ part of the historical record; this publication update does not qualify M5.
 #### C2 author-save and remaining-waits review packets
 
 The stable C2 author-save and remaining-waits source/review packets are indexed
-in `../2026-10-30/model-free-m5/additional-evidence-index.json`, with their focused red, green,
+in `Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`, with their focused red, green,
 parser and refusal receipts. Author-save red-1 selected zero tests; red-2 failed
 on the missing status field; green-1 failed to compile; green-2 passed the
 owner-backed test 1/0, and the parser gate passed 1/0. The remaining-waits red
@@ -1159,7 +1171,7 @@ and publication metadata. It excludes executables, stores, custody keys and
 Git bundles. UI publication records confirm Turnstone `d0d93da` and Eidetic
 `450ceea`, with unchanged remote checkouts. Full native M5 remains incomplete.
 
-The provisional `../2026-10-30/model-free-m5/harness/` bundle preserves 40 exact source and
+The provisional `Code/testing/eidetic/2026-10-30/model-free-m5/harness/` bundle preserves 40 exact source and
 fixture files with a manifest, a documented build guard and detached controller
 recipe. A separate review checked sibling imports, pinned validator hashes and
 exact synthetic audio reconstruction. Copied harness unit suites pass 4 + 3 +
@@ -1362,7 +1374,7 @@ October 30 receipt documents are consolidated here; links in the plan and
 `design_docs/DOC_README.md` now point to this file. Their underlying testing
 records were not removed. Raw generated logs remain under
 `/home/markik/Code/testing`; the archive evidence index remains at
-`../2026-10-30/model-free-m5/additional-evidence-index.json`. No generated
+`Code/testing/eidetic/2026-10-30/model-free-m5/additional-evidence-index.json`. No generated
 outputs or captures were added beside this receipt.
 
 Turnstone publication is recorded at

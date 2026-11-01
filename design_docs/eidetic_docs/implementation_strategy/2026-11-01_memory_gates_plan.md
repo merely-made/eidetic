@@ -1,0 +1,520 @@
+# Memory gates plan: Eidetic's open phases after P4a
+
+**Status:** 2026-11-01: plan, a draft awaiting review. Cut from
+`2026-10-11_eidetic_development_plan.md`, archived whole in
+`../../archive_docs/2026-11-01/` (D1). Landed there: P4a, the model-free
+retained research milestone M1-M5, complete for the recorded Linux source
+cohort (Turnstone `554f323f`, Mere `845fe1c4`, Genet `b7c0bef`); the embedding
+envelope (2026-10-20, qualified through Mere's resident I10 gate); the inference
+surface (resident I5); the first browser encounter slice (`8c490e23`,
+2026-10-12); the first portable-clip transfer draft and its native receiver
+(2026-10-11, 2026-10-12); the native Knot and Redshank custody, retention and
+onward-export receipts (2026-10-19, 2026-10-20); and lexical recall's source
+home in `crates/eidetic-search`. Open: the capability ledger (P0), the
+encounter, admission and capture gates the 2026-10-12 qualification left open
+(P1, P2, P3), P4's remainder, which is next (D2), headed browser qualification
+(P5) and storage, custody, retention and exchange (P6).
+
+The keyword is `memory_gates`. The archived plan's keyword, `eidetic_development`,
+named the founding program, which has landed its model-free baseline. What
+remains is one build (P4's goal/query consumer and tag suggestions) and a set
+of named qualification gates over built code, each saying what a receipt must
+show before a claim widens. Phase numbers keep the archived plan's, because
+the Esp, Mere, Turnstone and Woodshed plans cite its phases by name.
+
+**For:** finishing Eidetic's retained-content and memory program: encounters
+preserved through intake, history and captured content admitted to the chosen
+mere, recall and model work over named evidence, browsing in a browser, and
+storage, custody and exchange of portable collections, each with a receipt
+that names its source, host and limits.
+
+Not here:
+- The M5 follow-ups, improved clipped labels and automatic restored-pane
+  recovery: Turnstone work, in `turnstone/design_docs/`. The M5 receipt bounds
+  its own claim without them.
+- Generated-answer quality (the 8/15 semantic score) and the optional-inference
+  path: Distillery and Turnstone's `cross_source_answers_20261022` packet, and
+  `mere/design_docs/mere_docs/implementation_strategy/2026-10-28_resident_inference_plan.md`
+  and `2026-10-28_distillery_models_plan.md`.
+- Dependency version moves and lockfile migrations:
+  `mere/design_docs/mere_docs/implementation_strategy/2026-10-28_workspace_hygiene_plan.md`.
+  This plan supplies use cases and gates for Fjall storage, JSON Schema and
+  tokenizers; it starts no competing migration.
+- Community collection publication and subscriptions:
+  `gemot/design_docs/moothold_docs/implementation_strategy/2026-11-01_moot_publication_plan.md`.
+- The source-size check and prek hooks: `2026-10-30_line_ceiling_plan.md`.
+
+Receipts from this plan's runs go to
+`archive_docs/receipts/2026-11-01_memory_gates_plan_receipts.md`, never into this
+plan (DOC_POLICY §8). The archived plan's receipts stay in
+`archive_docs/receipts/2026-10-11_eidetic_development_plan_receipts.md`; the M1-M5
+run outputs they cite are at `Code/testing/eidetic/` (D3). Evidence that matters
+is a test in the repository or a line in Findings.
+
+## Constraints
+
+Carried from the archived plan; none is a new ruling.
+
+- **Host-owned authority; existing formats.** Eidetic keeps retained facts
+  interpretable independently of an open browser or loaded model. The ownership
+  table below does not authorize changing domain semantics or replacing stored
+  formats silently; new records follow the workspace data-format rulings
+  (`repos/mere/design_docs/2026-10-06_data_formats_brief.md`), and existing
+  signed, hashed or persisted bytes need explicit compatibility work.
+- **Extend before adding.** Extend existing modules before proposing further
+  crates, a database, a query-language runtime or an execution supervisor.
+- **Stay inside the cohort.** A receipt covers its recorded source cohort and host.
+  A pin difference alone neither invalidates a frozen native receipt nor
+  justifies a blanket relock. Compile, automated, headed and physical evidence
+  are recorded separately; native and browser consumers are qualified separately.
+- **No acquisition by intake.** Importing history, gathering loaded links and
+  retaining a clip fetch no destination page. A crawl is an explicit,
+  bounded, cancellable action with its limits recorded.
+- **Dependency use is part of every phase.** Each phase updates the P0 ledger
+  rows it touches with the API used, source and version, feature set, target,
+  consumer and validation, and a disposition: use as supplied, adapt, repair
+  our use, upstream fix, or replace with evidence. Do not claim dependency
+  counts or browser suitability from manifest inspection.
+- **Test sealers are not custody.** The portable test sealer is not
+  cryptographic product qualification.
+
+| Owner | Responsibility | Consumer boundary |
+|---|---|---|
+| Muniment | Byte backends, immutable blobs, mutable slots, journals, atomic storage operations | The host chooses a backend and custody policy |
+| Chartulary / Stemma | Resource graph, attributed edits, individual encounters, owner-scoped branches | External observations are admitted through explicit mappings; arena handles are not portable visit identities |
+| Eidetic | Portable intake, typed retained content, schemas, source evidence, browsing corpus, model/corpus/evaluation artifacts | Keeps retained facts interpretable independently of an open browser or loaded model |
+| Pandect | Session manifests and lifecycle, graph/reference adapters, settings, restoration, graph-aware retention | Session attachment and saved view state stay distinct from durable facts |
+| Inker | Engine routing and the document/session/capture contracts engines implement | Reports what the selected engine can actually expose |
+| Fleece | Extraction, clipping, observed content links, bounded traversal over supplied sources | Source acquisition and session admission stay explicit adapters |
+| ESP / eidetic-search | Model execution, embeddings, numerical retrieval, lexical recall, ranking fusion | Results derive from named source versions and settings |
+| Distillery | Model selection, supervised jobs, execution status, reusable work surfaces | Uses ESP for execution and Eidetic for artifacts; the owning application admits proposed edits |
+
+## Phases
+
+### P4. Recall and model work over named evidence: the remainder (next, D2)
+
+*Landed (archived plan P4): the embedding envelope, 2026-10-20.
+`EmbeddingEnvelopeV1::ensure_compatible`
+(`crates/eidetic-core/src/models/embedding.rs:126`, commit `937d777`) with ESP's
+provider-bound `compatibility_space()`
+(`esp/crates/esp/src/embed/provider.rs:75,117,156`), qualified through Mere's
+resident I10 gate (`mere/support/receipts/resident-embedding-20261020/qualification.json`):
+cold reopen accepts a matching space, refuses a same-dimension foreign space and
+changed source, chunker or legacy records, and measures lexical, vector and
+fused recall on a frozen corpus. Also landed: the inference surface (resident
+I5: `models::inference::InferenceRunRecord`, `models::recall::InferencePassage`,
+streaming, pause, resume, cancel and reopen of a past answer with the origin
+offline), and the bounded answer contract (`models::answer::AnswerSupport`,
+focused coverage; its model qualification is tracked in Turnstone's packet).*
+
+The remainder is a goal/query consumer and tag work, with the archived plan's
+constraints:
+
+1. **Goal/query consumer.** Compose one real consumer that takes a goal or
+   query, directs Fleece traversal over supplied sources (bounded by node, depth,
+   fan-out, request and byte limits, with cancellation, omissions and source
+   receipts), and assesses retrieved material through ESP. Results cite exact
+   retained source versions and explain the traversal choices. Graph changes
+   are proposals the owning application admits. Alembic's workshop
+   (`mere/crates/distillery/alembic/src/workshop.rs`) already owns shared
+   selected-source proposals, review and acceptance; reuse it rather than
+   building a second review surface. Alembic selectors are UTF-8 byte offsets
+   and Eidetic passage selectors are Unicode scalar offsets, so any handoff
+   converts against the exact retained bytes with boundary checks.
+2. **Tag suggestions (CP3).** Generated tag suggestions are queryable with their
+   producer, run, input revision, settings and review state, outside asserted
+   personal `taggedWith`. Accepting one creates a personal assertion citing the
+   suggestion; rejecting or regenerating cannot rewrite existing personal tags.
+   Reuse identity-owned `TagConcept` and attributed resource statements. A
+   suggestion is queryable at its declared keeping tier without becoming a
+   personal tag or requiring an explicit clip promotion.
+3. **Lifecycles.** Runtime observations, retained clips and notes, and
+   rebuildable indexes keep separate lifecycles; evidence and review state
+   survive reopening.
+
+**Done when:** a real lexical or model provider produces query results over
+retained visits and captured content, cites source versions and explains
+traversal choices, on a goal given by a person, with the ordinary path usable
+when no model is present; suggestions are queryable with their run and input
+evidence, accepting one creates a personal assertion, and reject or regenerate
+leaves personal tags unchanged, with CP3 evidence and review state surviving
+restart; the headed receipt covers at least one native host and names its
+source cohort. Review the evidence already recorded for the archived clauses
+"a reusable Distillery surface streams a real run, cancels it and reopens its
+record" (resident I5) and "a meaningful recall and latency comparison" (I10)
+and close them here or restate them. A stub-provider pass alone does not qualify.
+
+### P0. Owners and dependency capabilities
+
+Inventory the read and write paths of Graphshell capture, Turnstone navigation,
+portable import, engine capture and Distillery model work. Classify repeated
+types by meaning before consolidating them; retain foreign transition tags
+through deliberate mappings instead of assuming every enum is interchangeable.
+Populate the capability ledger from locked dependency source and actual
+consumers, covering the families the archived plan names: petgraph, slotmap and
+Chartulary/Stemma; Muniment over redb, Fjall and IndexedDB; serde and codecs,
+BLAKE3, UUID and URL canonicalization; Eidetic Bundle, manifests and schemas;
+Knot composition, Redshank timed targets and graph tag statements; jsonschema;
+Genet DOM, session and text contracts with Fleece; Burn, CubeCL/wgpu, tokenizers
+and safetensors through ESP; and the Armillary, mesh, Fetch and Iroh adapters.
+Start with the rows P4 touches, then complete the rest.
+
+Feature review starts with Eidetic's defaults (`crates/eidetic-core/Cargo.toml`)
+and ESP's optional persistence and model-session edge
+(`https://github.com/merely-made/esp/blob/main/crates/esp/Cargo.toml`): which
+consumers need signing and full JSON Schema validation. Separate normal, build
+and dev cones, and test intended feature combinations without accidental
+workspace feature unification.
+
+**Done when:** every planned write and derived projection has a named owner;
+the ledger identifies existing APIs, unused useful capabilities, duplicated or
+bypassed behavior, feature costs and target limitations. Each proposed shuffle
+has a forcing consumer and gate. Missing source or runtime evidence is recorded
+as pending, not inferred. The portable-collection profile names its first
+producers and receiving hosts, minimum supported formats and dependency and
+disclosure rules; schema validation alone is not counted as a renderer or
+domain interpreter.
+
+### P1. Preserve encounters through intake
+
+*Landed 2026-10-12 (`8c490e23`): portable source scope, parent states and
+original-time fields in Eidetic; Chartulary's explicit-parent `admit_visit`;
+Graphshell stores the Stemma snapshot and unresolved intake under the receiving
+graph's identity. Qualified: a synthetic branching history, rapid revisits,
+a late parent, profile ID reuse, outside-range and withheld parents, failed-batch
+retry, idempotent re-import, cold reopen over Redb in separate processes, zero
+destination fetches and unmoved live cursors. This qualifies one receiving writer
+and synthetic custody.*
+
+Open from that qualification:
+
+- **Full input envelopes.** Retain, per visit, the source scope (browser product,
+  registered profile instance, history generation), original visit ID and parent
+  reference with its state (missing, source-reported root, outside range,
+  policy-withheld), source timestamp at original precision, raw transition and
+  qualifiers, adapter version, and conversion notices; conflicting facts for one
+  source identity stay inspectable and never silently replace an admitted
+  encounter. Capture-device context stays distinct from a source visit's known
+  or unknown original device.
+- **Live tab, window, frame and document correlation**, as separately admitted
+  observations; ambiguous correlation is preserved, a subframe parent is
+  containment context and not a referring visit.
+- **Source replacement and reinstallation binding**: a re-installed extension or
+  replaced profile binds to its prior scope by an explicit mapping, never by an
+  import-run ID.
+- **Concurrent independent writers** and real private browsing, which the first
+  slice does not qualify.
+
+**Done when:** fixtures for the open items above preserve a full envelope
+for each of repeated visits, two branches from one parent, two profiles reusing
+visit numbers, a parent arriving after its child and a parent outside the import
+range; ambiguous tab correlation is retained, not guessed; a reinstalled source
+rebinds by explicit mapping; two writers admit without losing or duplicating an
+encounter; re-import and restart keep the same admitted identities without moving
+a live cursor; existing stored records stay readable or take an explicit
+supported migration; missing facts are not fabricated.
+
+### P2. Admit imported and live history into the chosen mere
+
+Use Eidetic intake to retain source material, digest, scope and conversion
+notices. Pandect and the application session decide the destination mere and
+record accepted graph and history changes through existing attributed funnels.
+Durable facts, session attachment, navigation cursor and saved projection
+preferences stay separate; counts and recent-page lists derive from admitted
+encounters.
+
+Open from the 2026-10-12 qualification:
+
+- **Recall-trace source handles.** `history_event` still lowers an imported visit
+  to a URL-based `TraceEvent` with a millisecond timestamp and no source handle
+  (`crates/eidetic-core/src/import/history.rs:55-81`). The projection must cite
+  the supporting encounters, and a relation over a pair of documents must keep
+  the individual visits.
+- **Sealed custody of the whole path.** The extension queue uses ordinary
+  extension storage, and capture calls the unsealed access writer although a
+  sealed writer exists (`mere/ports/graphshell/src/access.rs`). Sealing one
+  payload does not qualify the other copies: staging, source evidence, encounter
+  records, graph snapshots and indexes. A locked or unavailable destination
+  visibly pauses capture or uses an explicitly supported bounded sealed inbox.
+
+**Done when:** imported and live encounters join one queryable history in the
+selected mere and reopen through Pandect. A second session sees the same durable
+facts with its own view and cursor. Retry after failure is idempotent,
+acknowledgements follow durable admission, and a destination switch cannot
+attach a late result to another mere. Raw intake and notices stay inspectable
+under the user's retention settings. Every derived edge and trace exposes its
+supporting source handles. A private deployment run proves the entire path is
+sealed or visibly paused, separate from synthetic unsealed fixtures.
+
+### P3. Capture engine content and relationship evidence
+
+Connect Inker's actual document, clip and capture capabilities to Fleece's
+source and version observations. Reuse the existing annotation and selector
+contracts; keep raw material distinct from normalized extraction; correlate
+capture with its originating session and document version (see
+`turnstone/design_docs/2026-08-28_page_capture_plan.md`). Retain separate
+evidence for followed navigation, a link contained in a captured document,
+clipping provenance and a model-proposed relation. An available link does not
+establish the person noticed it; an unclicked link is not a negative preference.
+An opaque engine reports its limitation.
+
+Carried gate: **HTTP pooled-cancellation race.** The bounded crawler pool turns
+canceled-request retries off (`mere/crates/system/fetch/src/crawler.rs:203`), so
+there is no hidden pooled-request retry; the existing streaming checks do not
+establish a deterministic pooled-cancellation race. Qualify that race with a
+controlled negative case when the adapter can exercise pool cancellation, kept
+distinct from general traversal tests.
+
+Also open: the Knot and Redshank producer gates (CP1, CP2) and the export
+preview; Fleece's `check_record` still refuses schema-bearing clip parts
+(`mere/crates/fleece/src/portable_clip.rs:88`), so typed parts need an
+explicitly qualified path before a structured export is carried.
+
+**Done when:** a loaded document and a non-web or engine-generated source both
+yield retained content and inspectable relationships through the same Fleece
+seam. Reopening resolves the captured version and selectors; stale completion is
+refused. Gathering loaded links produces zero destination fetches. Explicit
+crawling respects configurable node, depth, fan-out, request and byte limits,
+cancellation, omissions and source receipts. The HTTP adapter has a separately
+recorded controlled cancellation-race gate. The selected runtime exporters
+supply the collection profile's required material and retain exact source and
+capture identity; a clip's export preview distinguishes selected content,
+carried source evidence and external references; Knot and Redshank producer
+gates apply CP1 and CP2, keep an unavailable recording distinct from a complete
+portable note, and keep private backing outside the selection envelope.
+
+### P5. Qualify adding browsing in a browser
+
+Build on Graphshell's extension queue and browser-hosted mere. Provide the
+destination mere, import range, exclusions and a preview of visits and
+relationship evidence. Live remembering and explicit content capture have
+separate, user-configurable controls. Partial import caused by source limits or
+queue bounds is visible. Tab-opening context enriches visits only when observed;
+historical imports cannot invent it. Candidate caps, saturated time partitions,
+queue overflow and source retention limits report partial or unknown coverage;
+a successful batch acknowledgement does not imply a complete range.
+
+The 2026-10-12 simulations of the Chromium and Firefox APIs, the Rust wire
+admission and the wasm32 compile do not stand in for the headed runs below.
+
+**Done when:** headed Chrome and Firefox runs import a branching trail, record
+live revisits and optionally keep loaded content. The extension lifecycle
+(install, worker suspension, restart, reinstall) keeps its stable scope, and
+the IndexedDB-backed mere reopens cold retaining visits and edges. Permission
+refusal and disabled capture are handled, and the chosen mere's forget operation
+has tested scope (browser deletion does not silently dictate mere deletion, and
+remote erasure is not inferred). Browser persistence state, quota failure and
+backup or export are visible. Ordinary capture starts no crawl. Each receipt
+names its source, target, feature set and supported limits; other browsers need
+their own adapter and evidence review.
+
+### P6. Qualify storage, custody, retention and exchange
+
+Make selective replication of a portable collection a forcing consumer,
+following P2 and P3.
+
+**Portable-collection gate:** a selected collection containing a note, a
+document clip with a required image, and one recognized structured export moves
+between native and browser-hosted meres. With the source apps and origin services
+stopped and the receiver restarted, it still renders and inspects supported
+content, resolves its parts and selectors, and shows preserved provenance and
+relationships. An unselected item is omitted, an explicitly external relation is
+retained, a missing required asset and an unsupported schema are exercised, and
+a retry and local derivative keep their declared identities. Required bytes must
+actually be present at the receiver before it reports a complete offline copy.
+Assembly uses bounded, cycle-aware traversal and existing bundle resolution and
+hash verification; `verify_required_members` checks direct members only
+(`crates/eidetic-core/src/bundle.rs:144-174`), so the recursive dependency walk
+is new work. A two-device receipt qualifies peer delivery separately; source
+review, generic cards or blob transfer alone do not pass.
+
+**Knot/Redshank host gate:** a real shared host receives a Knot selection and a
+Redshank text or voice note and reopens with both source apps stopped. Private
+backing is retained where available and absent from selection-only sharing.
+Voice-body bytes are present; missing recording bytes give an honest
+playback-unavailable state. Explicit excerpt export is exercised separately.
+Verify selector units, unknown-schema retention, two tag concepts with equal
+labels but different owners, exact asserter provenance, and acceptance of an
+engine tag suggestion. Queue one supported edit while its owner is absent;
+reconnect shows review, re-resolves the source and refuses stale or denied
+requests. A current reviewed edit has an owner-issued durable outcome, with
+retry and deduplication qualified apart from message acceptance.
+
+**`Backend::transact` checkpoint.** Muniment's Redb, directory and IndexedDB
+backends implement `transact`; Fjall inherits the default `NotTransactional`
+refusal and ZIP refuses explicitly (see Findings). Decide, before consumer
+adoption of any additional adapter, whether adoption requires `transact` or the
+default is acceptable for that backend. Browser storage availability alone does
+not settle it. The archived-plan-tails checkpoint is at
+`mere/design_docs/archive_docs/2026-10-28/2026-07-03_archived_plan_tails_plan.md`.
+
+**Deletion and reference semantics.** Define how encounters, captures, schemas,
+model and corpus references, tombstones and derived indexes participate in
+retention. Preserve named checkpoints for deletion and shared-reference
+semantics before implementation. Reuse current signature, schema and transport
+admission for exchange; disclose unfamiliar payloads without claiming to
+interpret them. Community recall starts from admitted source records and local
+reminting. The former `EngramDirectory` proposal needs a concrete large-corpus
+consumer and a fresh comparison before returning as a dependency.
+
+Storage comparisons of native and browser backends use equivalent durability
+requirements; the June OPFS-versus-Fjall numbers used different flush behavior
+and cannot select a backend. An additional OPFS adapter or packed layout needs a
+demonstrated unmet workload and belongs below Eidetic. Requesting persistent
+browser storage can be refused.
+
+**Done when:** real backend close/reopen and failure fixtures preserve atomic
+admission; quota and persistence refusal have supported outcomes; collection
+cannot remove material still required by an admitted retained reference under
+the selected policy; a supported export and import round trip retains encounter
+identity and evidence; for any peer consumer, existing admission rejects altered
+or unadmitted input and preserves supported foreign fields; backend and format
+migrations include recovery and measured gates, owned jointly with their
+existing migration plans; remote erasure is not inferred from local forgetting;
+and the three gates above and the `transact` decision are recorded.
+
+## Order
+
+P4's remainder is the next milestone (D2). Populate the P0 ledger rows it
+touches first. Then the original dependency order holds: P1, then P2 with the
+bounded visit-preservation slice, with P3 able to follow the identity and
+admission contract; P5 first qualifies metadata intake after P2, then content
+capture after P3. P6's storage and custody review accompanies every durable
+change; new backends and federated consumers wait for a demonstrated need; the
+selected-copy gate follows P2 and P3. This core portability result does not
+depend on the inference or community-search slices.
+
+## Open questions
+
+The archived plan's six decisions still to make, with where each stands. None is
+decided here.
+
+1. **Portable encounter envelope and its mapping to native Stemma identity**;
+   supported old records and handling of malformed or contradictory parent
+   facts. The source scope, parent states and `admit_visit` seam exist; the
+   full envelope, old-record migration and contradictory-parent handling are
+   P1's open items.
+2. **Session and domain scope of imported and live encounters**, destination
+   selection and configurable retention defaults. Engine website storage stays
+   under the native session-store plan
+   (`mere/design_docs/archive_docs/2026-10-28/2026-06-23_native_session_store_plan.md`,
+   archived with no live cut).
+3. **The first engine pair, the embedding-envelope consumer and the Distillery
+   inference host**, including device injection and browser executor support.
+   The host is ruled (2026-10-15): djinn's resident, with recall over retained
+   material as its forcing consumer
+   (`mere/design_docs/archive_docs/2026-10-28/2026-10-15_resident_inference_and_recall_plan.md`;
+   live cut `2026-10-28_resident_inference_plan.md`), and the envelope consumer
+   has qualified (I10). The engine pair and the browser executor remain open.
+4. **Deletion and reference semantics, any demonstrated backend gap,
+   accepted-schema discovery and the first exchange consumer.** Named
+   checkpoints (P6); the plan chooses no universal database or automatic
+   sharing policy.
+5. **The first portable-content profile**, supported receiver formats and
+   operations, required dependency rules and preservation of collection
+   relationships. A selected snapshot and an ongoing synchronized collection
+   have separate gates. Knot and Redshank supply the first pair; exact wire
+   fields and capability promises remain draft choices; CP1 to CP4 have settled
+   their named policies (`mere/design_docs/2026-08-12_family_composition_thesis_brief.md`,
+   "Clip policy rulings").
+6. **Source-tag copying onto derivatives**, rights and revocation, deletion and
+   reference consequences, and measured backing and queue budgets. The safe
+   draft preserves source tags as related facts and creates new clip
+   assertions only through an attributable action.
+
+## Decisions
+
+- **D1, cut the plan, draft first (2026-11-01):** Mark: "Cut it, draft first".
+  The 1,956-line `2026-10-11_eidetic_development_plan.md` is archived whole at
+  `design_docs/archive_docs/2026-11-01/` with a Superseded header and its stale
+  statements corrected, and this plan carries every open item. The cut is staged
+  for review, not committed.
+
+  Links: area docs · plans memory_gates · summary The development plan is cut into this plan and archived whole; the cut is a draft for review.
+
+- **D2, P4's remainder is next (2026-11-01):** Mark: "P4 remainder". After the
+  completed P4a (M1-M5), the next milestone is P4's remainder: the goal/query
+  consumer over Fleece and ESP, plus tag suggestions. This supersedes the
+  archived plan's 2026-10-26 priority line, "P4a is the next milestone".
+
+  Links: area recall · draws on eidetic_development D1 · plans P4 · summary The next milestone is P4's remainder: the goal/query consumer over Fleece and ESP, and tag suggestions.
+
+- **D3, run outputs leave the repository (2026-11-01):** Mark: "Move out of the repo".
+  The M1-M5 run outputs tracked under `design_docs/archive_docs/2026-10-29/` and
+  `2026-10-30/` (2,773 files, 192,628,541 bytes) are copied to
+  `Code/testing/eidetic/` with their relative layout and removed from the
+  tree. The receipts file stays in the repository, with its links into those
+  folders turned into path cites (`Code/testing/eidetic/...`) and its recorded
+  hashes and index entries unchanged.
+
+  Links: area docs · plans memory_gates · summary The M1-M5 run outputs live under Code/testing/eidetic/; the repository keeps the receipts file.
+
+- **D4, the M5 harness follows the outputs (2026-11-01):** Mark: "Move it too".
+  The frozen M5 harness bundle (48 files of Python, shell, fixtures and its
+  source manifest), which the archived plan had kept in the repository, moves to
+  `Code/testing/eidetic/2026-10-30/model-free-m5/harness/`; the copy was compared byte for byte (48 identical) before removal.
+
+  Links: area docs · draws on memory_gates D3 · plans memory_gates · summary The frozen M5 harness lives with the run outputs under Code/testing/eidetic/.
+
+## Findings
+
+Verified 2026-11-01 against the current tree unless marked otherwise.
+
+- The embedding envelope exists: `EmbeddingEnvelopeV1` at
+  `crates/eidetic-core/src/models/embedding.rs:113`, `ensure_compatible` at `:126`;
+  ESP's `compatibility_space()` at `esp/crates/esp/src/embed/provider.rs:75,117,156`.
+- Stemma keeps entries, visits and owners as distinct arena keys
+  (`crates/chartulary/src/stemma/mod.rs:60-62`). `visit_entry` takes the
+  owner's current visit as parent and moves the cursor
+  (`crates/chartulary/src/stemma/mutations.rs:99-125`); `admit_visit` admits a
+  historical occurrence with an explicit parent and leaves live cursors alone
+  (`mutations.rs:163`).
+- `ImportedHistoryVisitItem` carries `source_scope`, `parent` and
+  `visited_at_unix_micros` (`crates/eidetic-core/src/import/mod.rs:136-156`), but
+  `history_event` still produces a URL-based `TraceEvent` with no source handle
+  (`crates/eidetic-core/src/import/history.rs:55-81`).
+- `verify_required_members` checks direct required members and does not walk a
+  recursive dependency set (`crates/eidetic-core/src/bundle.rs:144-174`).
+  `BlobManifest` records integrity, schema, source, provenance, privacy and trust
+  metadata (`crates/eidetic-core/src/manifest.rs:75`).
+- Muniment transactions: Redb `crates/muniment/src/redb_backend.rs:150`, directory
+  `directory_backend.rs:906`, IndexedDB `indexeddb_backend.rs:261` (feature
+  `indexeddb`, `crates/muniment/Cargo.toml:111`). The trait default refuses with
+  `StoreError::NotTransactional` (`backend.rs:139-146`), which Fjall inherits
+  (`fjall_backend.rs` has no override); ZIP refuses explicitly
+  (`zip_backend.rs:299-301`). An IndexedDB implementation or a browser compile
+  pass is not a headed durability or quota receipt.
+- Lexical recall is an in-tree weighted BM25 (`crates/eidetic-search/src/lib.rs:20`,
+  `bm25.rs`); no manifest in the workspace depends on Tantivy.
+- Structured records live in `crates/eidetic-core/src/records/` and
+  `crates/eidetic-search/src/records/`; comparison and query in
+  `crates/eidetic-search/src/{compare,query,recall}.rs`. The archived plan's
+  file-ownership table is a 2026-10-26 proposal, not this layout.
+- Fleece's portable-clip check refuses schema-bearing parts
+  (`mere/crates/fleece/src/portable_clip.rs:88`).
+- Community collections retain causal membership over signed contribution
+  references (`gemot/crates/gemot/src/moot/records/collection.rs:18-34`); that
+  authority is distinct from an arbitrary private collection's selection and
+  admission.
+- Alembic source selectors use UTF-8 byte offsets; Eidetic passage selectors use
+  Unicode scalar offsets (archived plan, M2 findings, 2026-10-29).
+- Turnstone's `semantic_challenge_20261026` records 8/15 semantic passes against
+  15/15 structural passes, over synthetic PageText sources; neither that failure
+  nor the four-case success is a verdict on all models. `SemanticReview::Unreviewed`
+  stays for existing model judgments (archived plan, M1 findings, 2026-10-26).
+- 2026-11-01: the dead citation `Code/output/graphshell-components/validation-resumed/`
+  in the archived plan's 2026-10-26 Progress entry no longer exists in the
+  workspace; it stays there as history.
+- 2026-11-01: the archived plan's browser-intake source findings (latest-only
+  visit selection, same-URL window dropping, Firefox exporter precision, transition
+  vocabulary) were repair targets of `8c490e23` and are not carried; only the
+  recall-trace and custody gaps above are confirmed open.
+
+## Progress
+
+- 2026-11-01: cut from the Eidetic development plan (D1). The archived copy
+  carries a Superseded header, marks the embedding envelope, the P4 first
+  done-clause and the M4 storage extension as landed, annotates the 2026-10-26
+  priority line as superseded by D2, and repoints its links to the extracted
+  crates into this repository and to the `esp` and `gemot` repositories. The
+  M1-M5 run outputs moved to `Code/testing/eidetic/` (D3). Draft, unreviewed.
