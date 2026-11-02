@@ -35,7 +35,7 @@ not a newly tested executable. Refresh them again before implementation.
 - Both rewritten `codex/cross-source-answers-20261022` tips are ancestors of
   their current consumer mains. Preserve the integrated history. Do not merge
   old pre-rewrite branches or cherry-pick this work a second time.
-  `turnstone/docs/receipts/eidetic_main_integration_20261026/README.md` records
+  `Code/testing/turnstone/receipts/eidetic_main_integration_20261026/README.md` records
   331 focused passing software checks and source-coherence checks. That receipt
   explicitly does not qualify a new model-free product path.
 Current consumers deliberately name different Eidetic revisions: Mere's core

@@ -260,7 +260,7 @@ missing-content refusal pass. Original recording bytes remain unavailable;
 source selectors and unknown source-tag attribution stay distinct from playback.
 That receipt uses an explicitly unsealed store and makes no encrypted-custody
 claim. Its exact source, nine reviewed captures and limits are recorded in
-`turnstone/docs/receipts/2026-10-11_retained_clip_receiver/README.md`
+`Code/testing/turnstone/receipts/2026-10-11_retained_clip_receiver/README.md`
 (Turnstone `bb09931`, implementation `d2fb07c`). Complete source-backing adapters,
 browser receiving, additional assets/structured formats, signed source tags,
 generated suggestions and reviewed reconnect queues remain under the host gate
@@ -272,13 +272,13 @@ for producer generation and qualification scope.
 
 The owner accepted the native receiving-host direction after a fresh source
 assessment. Keep this plan as the shared contract; Turnstone's existing
-`turnstone/design_docs/2026-10-11_retained_clip_receiver_plan.md` owns its host
+`turnstone/design_docs/archive_docs/2026-11-02/2026-10-11_retained_clip_receiver_plan.md` owns its host
 actions and acceptance. Extend the existing APIs and one receiving path.
 
 **Current baseline.** Turnstone `e3e94ce` joins saved passages to authored Knot
 notes through Knot `ceaf41f`. Ordinary authoring, exact saved-source citations,
 newer captures and offline cold return have a bounded macOS receipt at
-`turnstone/docs/receipts/research_notes_20261018/README.md`. It records 1,077
+`Code/testing/turnstone/receipts/research_notes_20261018/README.md`. It records 1,077
 workspace tests passing, 13 ignored, 12 reviewed captures and independent reads
 of the exited source and evidence stores. R4's earlier receipt covers scoped
 real-model Answers and both app and resident process restarts. Neither receipt
@@ -1909,7 +1909,7 @@ The implementation proposals still need these concrete decisions:
   removes the source blob and transfer packages, restarts both custodian and
   receiver, and reopens selected Knot and voice content with preserved UTF-8
   and millisecond selectors. Source hashes, artifact hashes and scope live in
-  `turnstone/docs/receipts/2026-10-19_retained_custody/qualification.json`.
+  `Code/testing/turnstone/receipts/2026-10-19_retained_custody/qualification.json`.
   Turnstone work remains isolated in `Code/worktrees/turnstone-eidetic-retention`;
   Redshank work is in `Code/worktrees/woodshed-eidetic-retention`, preserving
   shared concurrent edits and divergent Woodshed main. The receiver used
@@ -1939,7 +1939,7 @@ The implementation proposals still need these concrete decisions:
   cases pass. The earlier 56-case integration sweep and its different lock are
   preserved separately. Five native consumer phases, twelve reviewed captures,
   exact source/binary hashes and limits are in
-  `turnstone/docs/receipts/2026-10-19_retained_custody/headed/qualification.json`
+  `Code/testing/turnstone/receipts/2026-10-19_retained_custody/headed/qualification.json`
   within that local worktree; the standalone owner receipt lives in
   `woodshed/docs/receipts/2026-10-19_selected_note_export/qualification.json`.
   Embedded document drag selection forwarding remains open; this acceptance
