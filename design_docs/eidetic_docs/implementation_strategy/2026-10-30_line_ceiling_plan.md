@@ -3,7 +3,7 @@
 **Date:** 2026-10-30
 
 **Status, 2026-11-01:** in progress. E1 and E2 (Windows) landed 2026-10-30; E3
-next; E4 (eidetic adopts its own tools, D8) added 2026-11-01; a Mac or Linux
+ruled (D9 to D12) and under way; E4 (eidetic adopts its own tools, D8) added 2026-11-01; a Mac or Linux
 install run is still owed. Opened by mere's house-style plan
 (`mere/design_docs/mere_docs/implementation_strategy/2026-10-30_house_style_plan.md`),
 whose phase H1 this carries for its first repository.
@@ -87,16 +87,15 @@ An entry without a reason is a configuration error. A physical line is a
   README carries the hook stanza a repository copies. Done when prek installs
   both from their tags on Windows with install times recorded here, and a Mac
   or Linux run is recorded when one is reachable.
-- **E3. isocosm adopts.** `.pre-commit-config.yaml` pins eidetic's rev for both
-  hooks; pack-json is ported to Rust in isocosm and runs as a hook (D3), its
-  wiring (a local `language: rust` hook or a `system` hook on a workspace
-  binary) chosen by what prek supports for a local Rust hook; `prek install`
-  replaces `core.hooksPath`; isocosm's local gate runs `prek run --all-files`
-  (D6). Done when a planted 601-line file and a planted hand-written pack JSON
+- **E3. isocosm adopts.** `.pre-commit-config.yaml` runs line-ceiling and
+  `responsa regen --stage` from their v0.0.2 tags (D10) and pack-json as a
+  `fail` hook (D9); `prek install --allow-missing-config` replaces
+  `core.hooksPath`, so worktree branches without the config still commit;
+  `prek run --all-files` joins the hand-run gates (D12). Done when a planted 601-line file and a planted hand-written pack JSON
   each fail both the commit and the full local run, a clean tree passes both,
   and
   `scripts/line-ceiling.ps1`, `scripts/pack-json.ps1`, the exceptions file,
-  `.githooks/` and `shared/responsa` are deleted.
+  `.githooks/` and `shared/responsa` are deleted (D11).
 - **E4. Eidetic adopts its own tools (D8).** This repository has neither a
   `.pre-commit-config.yaml` nor a `line-ceiling.toml`. Add both: the config
   carries the line-ceiling hook from the README stanza (naming the latest
@@ -179,6 +178,39 @@ An entry without a reason is a configuration error. A physical line is a
   and its E1 control found 20 files over the ceiling.
 
   Links: draws on mere:stack.7, line-ceiling D6 · plans E4 · summary Eidetic runs its own line-ceiling hook from a .pre-commit-config.yaml and line-ceiling.toml; its 20 files over the ceiling become excludes, exceptions or splits.
+
+Put to Mark on 2026-11-01 before E3, with VTT development planning (the session
+working isocosm) consulted first:
+
+- **D9. pack-json is a prek `fail` hook (Mark, 2026-11-01):** "prek `fail`
+  hook", over the Rust port. The check is path-only (a `.json` file under a
+  `packs` segment and not under `fixtures`), which prek's built-in `fail`
+  language expresses from config. Replaces D3.
+
+  Links: replaces line-ceiling D3 · summary isocosm's pack-json check is a prek fail hook, no code.
+
+- **D10. Regenerate at commit (Mark, 2026-11-01):** "regen --stage", over a
+  failing `responsa check`. The hook keeps isocosm's behaviour: when a design
+  doc or Rust source is staged, `responsa regen --stage` rewrites and stages the
+  manifest and register. Verified in a scratch repository: prek passes the hook
+  and the regenerated manifest lands in the commit.
+
+  Links: summary The commit hook runs `responsa regen --stage`, as isocosm's did.
+
+- **D11. responsa by hand is installed by tag (Mark, 2026-11-01):** "Install by
+  tag, delete shared/responsa", over keeping the wrapper repinned.
+  `cargo install --locked --git https://github.com/merely-made/eidetic --tag
+  responsa-v0.0.2 responsa` puts `responsa` on PATH; isocosm's `CLAUDE.md` and
+  DOC_POLICY addendum say so (the answer is Mark's OK for that CLAUDE.md edit).
+
+  Links: summary People run responsa from a tagged install on PATH; shared/responsa is deleted.
+
+- **D12. The full-tree run joins the hand-run gates (Mark, 2026-11-01):** "Add
+  to the hand-run gate list", over a new gate script or the hook alone.
+  isocosm has no gate script; `prek run --all-files` is named beside its cargo
+  checks.
+
+  Links: amends line-ceiling D6 · summary Where a repository's gates are run by hand, `prek run --all-files` is named among them.
 
 ## Progress
 
