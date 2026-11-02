@@ -3,7 +3,7 @@
 **Date:** 2026-10-30
 
 **Status, 2026-11-01:** in progress. E1 and E2 (Windows) landed 2026-10-30; E3
-ruled (D9 to D12) and under way; E4 (eidetic adopts its own tools, D8) added 2026-11-01; a Mac or Linux
+landed 2026-11-01; E4 (eidetic adopts its own tools, D8) added 2026-11-01; a Mac or Linux
 install run is still owed. Opened by mere's house-style plan
 (`mere/design_docs/mere_docs/implementation_strategy/2026-10-30_house_style_plan.md`),
 whose phase H1 this carries for its first repository.
@@ -247,3 +247,14 @@ working isocosm) consulted first:
   a cached full run takes 1 s. Control: a planted 601-line file failed the
   hook (exit 1) and was removed. Mac or Linux run owed.
 - 2026-11-01: **E4 added (D8).** Eidetic adopts its own tools; nothing built.
+- 2026-11-01: **E3 landed** (isocosm `19c1b719`, pushed). Rulings D9 to D12,
+  VTT development planning consulted first. `.pre-commit-config.yaml` runs
+  line-ceiling and `responsa regen --stage` from the v0.0.2 tags and pack-JSON
+  as a `fail` hook; `core.hooksPath` unset and `prek install
+  --allow-missing-config` in the shared `.git/hooks`, so lane worktrees
+  without the config still commit. Controls: staged, a 601-line file and a
+  hand-written `packs/` JSON each failed (a `fixtures/` JSON passed); a real
+  commit carrying the 601-line file was refused; the clean tree passes
+  `prek run --all-files` and the switch committed through the hook.
+  `.githooks/`, both scripts, the empty exceptions file and `shared/responsa`
+  deleted; CLAUDE.md, DOC_POLICY and DOC_README updated.
