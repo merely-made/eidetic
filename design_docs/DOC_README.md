@@ -4,6 +4,13 @@ Preserve host-owned authority, existing formats and independent crate feature bo
 
 Supplier receiving audits compare complete locked dependency edges as well as package identities; preserve unrelated selections when updating a source revision.
 
+Registry release work (2026-11-03) is tracked in
+`mere/design_docs/mere_docs/implementation_strategy/2026-10-28_workspace_hygiene_plan.md`:
+Muniment's atomic-file API, the carried Fjall and LSM-tree forks required by its
+optional backend, and aligned Chartulary and Eidetic releases for custody and
+Pandect consumers. Existing persistence formats and owner policies remain in
+their owning plans.
+
 Canonical migration and current receipts: `mere/design_docs/mere_docs/implementation_strategy/2026-10-28_family_promotion_plan.md`. The plan it was cut from, `2026-10-19_family_promotion_plan.md`, is archived at `mere/design_docs/archive_docs/2026-10-28/2026-10-19_family_promotion_plan.md`.
 
 ## Family documents

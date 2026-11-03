@@ -1,3 +1,8 @@
+Published as `mere-lsm-tree` from the Eidetic repository. This fork retains the
+`lsm_tree` library name and adds bounded reads used by `mere-fjall` and Muniment.
+Its upstream is LSM-tree 2.10.4; the upstream MIT and Apache-2.0 licenses are
+retained. The documentation below describes upstream.
+
 <p align="center">
   <img src="/logo.png" height="160">
 </p>

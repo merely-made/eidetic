@@ -1,3 +1,8 @@
+Published as `mere-fjall` from the Eidetic repository. This fork retains the
+`fjall` library name and adds bounded reads, bounded recovery and owner-lifetime
+repairs used by Muniment. Its upstream is Fjall 2.11.2; the upstream MIT and
+Apache-2.0 licenses are retained. The documentation below describes upstream.
+
 <p align="center">
   <img src="/kawaii.png" height="200">
 </p>

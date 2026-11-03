@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 rust-version = "1.76.0"
-name = "lsm-tree"
+name = "mere-lsm-tree"
 version = "2.10.4"
 build = false
 include = [
@@ -26,7 +26,7 @@ autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
-description = "A K.I.S.S. implementation of log-structured merge trees (LSM-trees/LSMTs)"
+description = "Merely's LSM-tree fork with bounded reads, carried in Eidetic."
 homepage = "https://github.com/fjall-rs/lsm-tree"
 readme = "README.md"
 keywords = [
@@ -42,7 +42,7 @@ categories = [
     "algorithms",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/fjall-rs/lsm-tree"
+repository = "https://github.com/merely-made/eidetic"
 
 [package.metadata.cargo-all-features]
 denylist = []

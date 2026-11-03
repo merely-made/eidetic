@@ -25,7 +25,7 @@ authors = [
 ]
 
 [workspace.dependencies.muniment]
-version = "0.2.0"
+version = "0.2.1"
 path = "crates/muniment"
 default-features = false
 
@@ -36,11 +36,11 @@ git = "https://github.com/merely-made/dramatis.git"
 branch = "main"
 
 [workspace.dependencies.chartulary]
-version = "0.2.0"
+version = "0.3.0"
 path = "crates/chartulary"
 
 [workspace.dependencies.eidetic]
-version = "0.0.2"
+version = "0.0.3"
 path = "crates/eidetic-core"
 default-features = false
 

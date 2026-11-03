@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 rust-version = "1.97.1"
-name = "fjall"
+name = "mere-fjall"
 version = "2.11.2"
 build = false
 include = [
@@ -26,7 +26,7 @@ autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
-description = "Log-structured, embeddable key-value storage engine"
+description = "Merely's Fjall fork with bounded reads and recovery, carried in Eidetic."
 homepage = "https://github.com/fjall-rs/fjall"
 readme = "README.md"
 keywords = [
@@ -42,7 +42,7 @@ categories = [
     "algorithms",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/fjall-rs/fjall"
+repository = "https://github.com/merely-made/eidetic"
 
 [package.metadata.cargo-all-features]
 denylist = ["__internal_whitebox"]
@@ -80,7 +80,8 @@ version = "6.0.1"
 version = "0.4.21"
 
 [dependencies.lsm-tree]
-version = "~2.10.2"
+package = "mere-lsm-tree"
+version = "=2.10.4"
 path = "../lsm-tree"
 features = []
 default-features = false
