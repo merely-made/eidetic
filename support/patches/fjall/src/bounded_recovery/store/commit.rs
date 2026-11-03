@@ -425,7 +425,13 @@ mod tests {
     #[test]
     fn handle_path_charge_exact_boundary_and_refusal_preserves_many_partition_store() {
         let root = tempfile::tempdir().unwrap();
-        let path = root.path().join("x".repeat(150)).join("y".repeat(150));
+        // Bounded recovery deliberately refuses Windows paths whose OS
+        // normalization cannot be charged in advance. Exercise the same exact
+        // allocation boundary with a supported path on that platform.
+        let width = if cfg!(windows) { 16 } else { 150 };
+        let path = root.path().join("x".repeat(width)).join("y".repeat(width));
+        std::fs::create_dir_all(&path).unwrap();
+        let path = path.canonicalize().unwrap();
         {
             let keyspace = Config::new(&path)
                 .flush_workers(0)
