@@ -1,7 +1,6 @@
 # stickleback
 
-Shared replicated-space mechanics for signed peer domains in the
-[mere](https://crates.io/crates/mere) workspace: a muniment-backed operation store, policy-before-insert
+Eidetic's shared replicated-space mechanics for signed peer domains: a muniment-backed operation store, policy-before-insert
 processing, retention and epoch mechanics, group encryption state, and the
 native drop carrier.
 
@@ -25,7 +24,7 @@ grants a network task the existing admission path without its signing seed.
 
 `drop` and `object_stream` are public modules; the other
 surfaces are re-exported at the crate root, so a caller writes
-`stickleback::MunimentStore`. The `Source` column names the source file,.
+`stickleback::MunimentStore`. The `Source` column names the source file.
 
 | Source | Contents |
 | --- | --- |
@@ -126,7 +125,7 @@ initial bounds and current shared-ingress proposal with reproducible host inputs
 | `identity` (`personae`) | `IdentityProvider`, `DerivedKeyAttestation`, signature types for writer binding and prekey bundles. |
 | `proofs` (`mere-proofs`) | `Digest`, used for authority revisions and retention facts. |
 | `blake3`, `hex`, `serde` | Drop ids, framing, and CBOR payloads. |
-| `tokio`, `tokio-stream` | The drain task, status handles and bounded asynchronous object streams. |
+| `tokio` | Bounded asynchronous object streams and local synchronization. |
 
 ## Examples and tests
 
