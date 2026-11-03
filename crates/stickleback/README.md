@@ -121,9 +121,7 @@ initial bounds and current shared-ingress proposal with reproducible host inputs
 | --- | --- |
 | `muniment` | The `Backend` trait and `WriteOp` batches under `MunimentStore`. |
 | `p2panda-core` | `Operation`, `Header`, `Topic`, structural validation, prune backlinks. |
-| `p2panda-net` (`net`) | `Endpoint`, `Gossip`, and the LogSync stream `SyncedSpace` drains. |
 | `p2panda-store` | The `OperationStore` / `LogStore` / `TopicStore` traits `MunimentStore` implements. |
-| `p2panda-sync` (`net`) | Sync event types on the drain. |
 | `p2panda-encryption` (`data_scheme`, `message_scheme`) | Group secrets and DCGKA sessions behind `group_crypto` and `group_session`. |
 | `identity` (`personae`) | `IdentityProvider`, `DerivedKeyAttestation`, signature types for writer binding and prekey bundles. |
 | `proofs` (`mere-proofs`) | `Digest`, used for authority revisions and retention facts. |
