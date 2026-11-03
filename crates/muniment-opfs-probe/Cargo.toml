@@ -113,3 +113,13 @@ servitor = { git = "https://github.com/merely-made/eidetic.git", rev = "5afe6723
 spartan-protocol = { git = "https://github.com/merely-made/errand.git", rev = "897fb963d184f0e379ab9041d68e17e726cb7763" }
 stickleback = { git = "https://github.com/merely-made/eidetic.git", rev = "5afe6723b75cc2b62420328c079c05c60c90380d" }
 text-protocol = { git = "https://github.com/merely-made/errand.git", rev = "897fb963d184f0e379ab9041d68e17e726cb7763" }
+
+[workspace.lints.clippy]
+missing_errors_doc = "warn"
+missing_panics_doc = "warn"
+missing_safety_doc = "warn"
+undocumented_unsafe_blocks = "warn"
+too_many_lines = "warn"
+
+[lints]
+workspace = true
