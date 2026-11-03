@@ -52,8 +52,8 @@ branch = "main"
 
 [workspace.dependencies.esp]
 version = "0.1.0"
-git = "https://github.com/merely-made/esp.git"
-rev = "bd0468c5c44c0b098494d30b3cfd0aa283cecf48"
+git = "https://github.com/merely-made/distillery.git"
+rev = "63460e0660ebd02ddf43df87dd208f334cceeb7e"
 default-features = false
 
 [workspace.dependencies.transport]

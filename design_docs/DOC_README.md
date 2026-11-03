@@ -32,3 +32,8 @@ Canonical migration and current receipts: `mere/design_docs/mere_docs/implementa
 
 - [Eidetic development plan (archived 2026-11-01)](archive_docs/2026-11-01/2026-10-11_eidetic_development_plan.md) — superseded; cut into the memory gates plan and archived whole. P4a (M1-M5) landed for the recorded Linux cohort: the W intact plus W3 missing-source collection passed all 12 structured operations, 62 frames were reviewed, the 1,403/0/21 host suite is software evidence, and model semantics remain 8/15. The M1-M5 run outputs and the frozen M5 harness live under `Code/testing/eidetic/`.
 - [Eidetic development plan receipts](archive_docs/receipts/2026-10-11_eidetic_development_plan_receipts.md) — consolidated M1-M5 receipts for the recorded Linux source cohort (Turnstone `554f323f`, Mere `845fe1c4`, Genet `b7c0bef`), including the M5 final W3 receipt and its independent receipt verifier and audit, and the supplier, helper and failed-attempt records. The run outputs they cite are at `Code/testing/eidetic/` (path cites, not links). Non-Linux, hardware, personal-custody, power-loss and general-accessibility qualification remain open.
+
+Distillery receiving (2026-11-03): ESP keeps its crate name and now comes from
+`distillery.git`, after the history-preserving repository move. The canonical
+cutover plan and run receipts are in
+`mere/design_docs/mere_docs/implementation_strategy/2026-10-31_distillery_extraction_plan.md`.
