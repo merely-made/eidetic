@@ -1,0 +1,85 @@
+ceiling = 600
+
+[[exclude]]
+path = "support/patches/"
+reason = "Imported fjall and lsm-tree sources with local persistence patches; retain their upstream module layout."
+
+[[exception]]
+path = "crates/chartulary/src/commit.rs"
+reason = "Attributed batch validation, atomic application and rollback tests share the commit seam; a split must preserve private graph access."
+
+[[exception]]
+path = "crates/chartulary/src/spine.rs"
+reason = "Graph edit replay, snapshots and checkpoint recovery share GraphLog state and private replay fixtures."
+
+[[exception]]
+path = "crates/eidetic-core/src/browsing/page.rs"
+reason = "Content fingerprints, near-duplicate collapse and frecency tests specify one configurable page-table fold."
+
+[[exception]]
+path = "crates/eidetic-core/src/models/answer.rs"
+reason = "Claim-to-passage support validation and its adversarial fixtures define one reproducible evidence contract."
+
+[[exception]]
+path = "crates/eidetic-search/examples/eidetic-recall.rs"
+reason = "The browsing rehearsal CLI carries ingestion, lexical/vector recall and its command fixtures in one example target."
+
+[[exception]]
+path = "crates/eidetic-search/src/index.rs"
+reason = "TrailIndex projection persistence, rebuild and ranking-equivalence tests share private document state."
+
+[[exception]]
+path = "crates/eidetic-search/tests/lexical_ngram_recall.rs"
+reason = "One fixed corpus supports held-out phrase, BM25/fusion and optional learned-model comparisons; preserve the comparable receipt harness."
+
+[[exception]]
+path = "crates/luggage/src/install.rs"
+reason = "Signature verification precedes platform-specific update installation inherited from the upstream updater; preserve that ordering and its fixtures."
+
+[[exception]]
+path = "crates/luggage/src/updater.rs"
+reason = "The upstream-derived updater combines feed selection, target detection and platform path handling with their regression fixtures."
+
+[[exception]]
+path = "crates/muniment/src/directory_backend.rs"
+reason = "Atomic file/log transactions, redo recovery and fault tests share private DirectoryBackend transaction state."
+
+[[exception]]
+path = "crates/servitor/src/delegation.rs"
+reason = "The typed capability adapter and attenuation/revocation tests specify one mapping onto personae delegation certificates."
+
+[[exception]]
+path = "crates/servitor/src/gate.rs"
+reason = "The authority, scope and facet checks form one atomic petition admission path with shared refusal fixtures."
+
+[[exception]]
+path = "crates/servitor/src/run.rs"
+reason = "The deterministic run reducer and replay/interruption controls specify one recorded-effect state machine."
+
+[[exception]]
+path = "crates/stickleback/examples/inventory_compare/model.rs"
+reason = "The inventory comparison uses one bounded network model and common counters across all strategies and scenarios."
+
+[[exception]]
+path = "crates/stickleback/src/drop.rs"
+reason = "Plain and protected native-drop framing share bounded wire parsing and codec controls."
+
+[[exception]]
+path = "crates/stickleback/src/drop_io.rs"
+reason = "Native-drop import couples full-carrier verification, domain admission and one atomic store batch with its failure controls."
+
+[[exception]]
+path = "crates/stickleback/src/group_lane.rs"
+reason = "Signed group-key causal admission and durable settlement tests share private lane state and pending-frame fixtures."
+
+[[exception]]
+path = "crates/stickleback/src/group_session.rs"
+reason = "Serializable DCGKA transitions, recipient binding and versioned control payload tests share one group-session state machine."
+
+[[exception]]
+path = "crates/stickleback/src/processor.rs"
+reason = "Structural validation, retained-frontier continuity and domain policy must precede the same atomic indexed write."
+
+[[exception]]
+path = "crates/stickleback/src/store.rs"
+reason = "The p2panda store adapter maintains log, hash and topic indexes atomically and tests their consistency through private key helpers."

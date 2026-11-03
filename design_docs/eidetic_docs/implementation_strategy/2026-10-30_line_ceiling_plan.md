@@ -2,9 +2,9 @@
 
 **Date:** 2026-10-30
 
-**Status, 2026-11-01:** in progress. E1 and E2 (Windows) landed 2026-10-30; E3
-landed 2026-11-01; E4 (eidetic adopts its own tools, D8) added 2026-11-01; a Mac or Linux
-install run is still owed. Opened by mere's house-style plan
+**Status, 2026-11-02:** landed. E1 and E2 (Windows) landed 2026-10-30; E3
+landed 2026-11-01; E4 (eidetic adopts its own tools, D8) and E2's Linux
+install run landed 2026-11-02. Opened by mere's house-style plan
 (`mere/design_docs/mere_docs/implementation_strategy/2026-10-30_house_style_plan.md`),
 whose phase H1 this carries for its first repository.
 
@@ -32,6 +32,18 @@ From the house-style plan, in the words given:
 
 ## Findings
 
+- 2026-11-02: E4's current tree has 20 owned files over the ceiling and 10
+  imported files under `support/patches/`. The older 31-file recount included
+  a frozen harness that has since left the tracked tree. `line-ceiling.toml`
+  lists the 20 owned exceptions individually, with technical reasons, and
+  excludes the imported patch directory by path. No source was split in E4.
+- 2026-11-02: eidetic uses the same tagged hook as consumers; installing its
+  own tool needs no special local binary wiring. It still has no decisions
+  manifest, so the responsa hook remains conditional on adopting one.
+- Receipts for this lane: tagged Linux installs, E4's exact inventory,
+  passing full-tree run and rejected full-tree/real-commit controls in
+  `archive_docs/receipts/2026-10-30_line_ceiling_plan_receipts.md`.
+  Retained evidence cap: 100 MB; compact text only, no raw build logs.
 - 2026-10-30: isocosm's `scripts/line-ceiling.ps1` (47 lines) counts physical
   lines as .NET `ReadAllLines` does, checks staged blobs with `-Staged`, and
   reads `line-ceiling-exceptions.txt` (`path<TAB>reason`, zero entries today).
@@ -258,3 +270,13 @@ working isocosm) consulted first:
   `prek run --all-files` and the switch committed through the hook.
   `.githooks/`, both scripts, the empty exceptions file and `shared/responsa`
   deleted; CLAUDE.md, DOC_POLICY and DOC_README updated.
+- 2026-11-02: **E4 landed.** Tagged line-ceiling hook installed with
+  `prek install --allow-missing-config`; 20 owned exceptions and one imported
+  path exclusion, all with reasons. `prek run --all-files` passes. A staged
+  601-line source file failed the full-tree run and a real commit, leaving
+  HEAD unchanged; the control was removed and the clean run passed.
+  README names the hook installation and full-tree local gate.
+- 2026-11-02: **E2 Linux landed.** T-PC reached over SSH and verified by
+  mDNS. prek 0.5.9 installed both v0.0.2 tools by tag and invoked each
+  successfully. All E-phases are complete; stack-wide lint and repository
+  adoption remain in Mere's house-style plan.

@@ -33,8 +33,14 @@ source cuts and remaining qualification gates live in the
 (archived 2026-11-01; open work is in `design_docs/eidetic_docs/implementation_strategy/2026-11-01_memory_gates_plan.md`).
 
 Run `python3 /Users/markik/Code/tools/build_storage.py build --lane eidetic-components --cwd . -- test --workspace`
-from the checkout for default library coverage. CI also checks the workspace
-with default features disabled. Network, browser storage, native backend
+from the checkout for default library coverage. Also check the workspace
+with default features disabled in the local gates. Network, browser storage, native backend
 combinations, GPU/model and host acceptance retain their separate gates.
 A library pass does not qualify every backend or an installed personal custodian.
 No registry release is implied by source promotion.
+
+Install the local commit hook with `prek install --allow-missing-config`.
+Run `prek run --all-files` alongside the Cargo gates. The hook installs the
+shared line-ceiling tool from its pinned release tag; `line-ceiling.toml`
+lists the imported patch sources and each owned oversize file with its reason.
+Responsa joins the hook when this repository keeps a decisions manifest.
