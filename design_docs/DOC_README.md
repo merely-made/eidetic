@@ -1,5 +1,10 @@
 # Eidetic documentation
 
+Stickleback's network-session extraction (2026-11-03) is tracked by
+`murm/design_docs/2026-10-28_transport_consolidation_plan.md`, T7. The core keeps
+validated storage, causal processing, group encryption and admission; Murm
+receives live joining/sync and transport address books.
+
 Preserve host-owned authority, existing formats and independent crate feature boundaries. Read [documentation policy](DOC_POLICY.md) before editing. The maintainer-owned `PROJECT_DESCRIPTION.md` is absent from this checkout.
 
 Supplier receiving audits compare complete locked dependency edges as well as package identities; preserve unrelated selections when updating a source revision.

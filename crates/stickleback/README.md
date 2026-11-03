@@ -1,8 +1,7 @@
 # stickleback
 
 Shared replicated-space mechanics for signed peer domains in the
-[mere](https://crates.io/crates/mere) workspace: the p2panda join ceremony and
-receive drain, a muniment-backed operation store, policy-before-insert
+[mere](https://crates.io/crates/mere) workspace: a muniment-backed operation store, policy-before-insert
 processing, retention and epoch mechanics, group encryption state, and the
 native drop carrier.
 
@@ -14,28 +13,22 @@ infers authority from transport access or visible membership.
 Consumed by `murm`, `mesh`, `gemot`, `moothold`, and `commons-spine`. It was
 published as `murm-replication` through 0.1.0.
 
-## Features
+## Network boundary
 
-`net` is on by default. It is the peer-networking half: `JoinedSpace`,
-`SyncedSpace`, `MunimentAddressBook`, the `Endpoint`/`Gossip` re-exports, and
-`GroupKeyLane::join`/`publish`. It is the only feature that links `p2panda-net`
-and, through it, iroh and QUIC. Everything else (the operation store and
-processor, the causal index, group crypto and sessions, drop carriage, epoch
-retention) is local, so a consumer that never joins a peer space depends on
-stickleback with `default-features = false` and links no network. A consumer
-that joins names `features = ["net"]` (or leaves the default on).
+Since 0.2.0, live sessions and transport addresses live in Murm's `murm-sync`
+crate. Depend on it for `JoinedSpace`, `SyncedSpace`, `MunimentAddressBook`,
+`Endpoint`, `Gossip` and the `GroupKeySync` extension. Stickleback itself has no
+network feature or dependency on p2panda-net/sync. `GroupKeyLane::receiver`
+grants a network task the existing admission path without its signing seed.
 
 ## Public surface
 
-`address_book` (`net`), `drop` and `object_stream` are public modules; the other
+`drop` and `object_stream` are public modules; the other
 surfaces are re-exported at the crate root, so a caller writes
-`stickleback::MunimentStore`. The `Source` column names the source file, and
-`(net)` marks what only exists with the `net` feature (see Features).
+`stickleback::MunimentStore`. The `Source` column names the source file,.
 
 | Source | Contents |
 | --- | --- |
-| `synced_space` (`net`) | `SyncedSpace`, `SyncStatus`, `SyncRound`; the LogSync drain loop with real counters and a settle-based `resync` |
-| `joined_space` (`net`) | `JoinedSpace<E>`; the join ceremony (session, live stream, subscription, drive) as one call |
 | `lane` | `JoinError`, `lane_id`; the lane naming and join failures that need no transport |
 | `store` | `MunimentStore<B, E>`, `BlobGcReport`; `OperationStore` + `LogStore` + `TopicStore` over a muniment `Backend` |
 | `processor` | `OperationProcessor<B, E, P>`, `OperationPolicy`, `Admission<L>`, `StoreTarget<L>`, `HistoryAction`, `Reject`, `ProcessOutcome`, `ProcessError` |
@@ -50,11 +43,9 @@ surfaces are re-exported at the crate root, so a caller writes
 | `group_session` | `GroupSession`, `GroupSessionId`, `GroupSessionDispatch`, `GroupSessionProcess`, `GroupControlFrame`, `GroupControlAction`, `GroupControlId`, `GroupDirectFrame`, `GroupPrekeyBundle`, `GroupRecipientId`, `GroupSessionError` |
 | `writer` | `stable_writer_subject`, `WriterBindingError` |
 
-Root also re-exports `p2panda_net::{Endpoint, Gossip}` (with `net`; what
-`JoinedSpace::join` takes), `p2panda_core::Operation` (what
-`JoinedSpace::publish` takes), and `p2panda_encryption::data_scheme::GroupSecretId`,
-so a domain crate can call the join and publish seams without adopting a
-p2panda crate itself. `VERSION` and `STAGE` consts are present.
+Root also re-exports `p2panda_core::Operation` and
+`p2panda_encryption::data_scheme::GroupSecretId`. `VERSION` and `STAGE` consts
+are present. `GroupKeyReceiver` carries group-key admission capability.
 
 ## What a domain supplies
 

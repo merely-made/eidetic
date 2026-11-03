@@ -6,10 +6,8 @@
 
 //! The parts of joining a lane that need no transport.
 //!
-//! A lane's protocol id and the staged [`JoinError`] belong to every domain
-//! that names a lane, including a build without the `net` feature, where
-//! [`JoinedSpace`](crate::JoinedSpace) itself is absent. Keeping them here
-//! means a domain's error type does not change shape with the feature.
+//! Lane naming and staged join failures are carrier-neutral domain vocabulary.
+//! Live network sessions using them belong to Murm's `murm-sync` crate.
 
 /// Derive a lane's sync protocol id from its kind and its space.
 ///

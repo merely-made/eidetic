@@ -39,8 +39,6 @@ use insigne::DerivedKeyAttestation;
 use muniment::{Backend, StoreError, WriteOp};
 use p2panda_core::cbor::{decode_cbor, decode_cbor_strict, encode_cbor};
 use p2panda_core::{Body, Hash, Header, Operation, SigningKey, Topic, VerifyingKey};
-#[cfg(feature = "net")]
-use p2panda_net::{Endpoint, Gossip};
 use p2panda_store::topics::TopicStore;
 use serde::{Deserialize, Serialize};
 use serde_bytes::ByteBuf;
@@ -54,8 +52,6 @@ use crate::{
     decode_operation_record, observed_frontier, operation_record, stable_writer_subject,
     validate_causal_metadata,
 };
-#[cfg(feature = "net")]
-use crate::{JoinedSpace, lane_id};
 
 /// This lane's kind. The protocol id is `lane_id(GROUP_KEY_LANE, group.0)`.
 pub const GROUP_KEY_LANE: &str = "stickleback/group-key/v1";
@@ -340,9 +336,9 @@ async fn accept_operation<B: Backend>(
         Ok(outcome) if outcome.inserted() => {
             let released = release_parked(processor, author).await?;
             return Ok(GroupKeyAdmission::Inserted { released });
-        },
+        }
         Ok(_) => return Ok(GroupKeyAdmission::Duplicate),
-        Err(ProcessError::MissingPredecessor { .. }) => {},
+        Err(ProcessError::MissingPredecessor { .. }) => {}
         // A gap past the retained head parks; a fork at the next slot does not.
         Err(ProcessError::Backlink(detail)) => {
             let latest = store.get_latest_entry(&author, &GROUP_KEY_LOG).await?;
@@ -355,7 +351,7 @@ async fn accept_operation<B: Backend>(
             }) {
                 return Err(ProcessError::Backlink(detail).into());
             }
-        },
+        }
         Err(error) => return Err(error.into()),
     }
     let group = processor.policy().group;
@@ -419,6 +415,25 @@ pub struct GroupKeyLane<B: Backend + Clone> {
     limits: GroupKeyLimits,
 }
 
+/// Admission capability for a group-key lane, without its signing material.
+///
+/// A network task can clone this receiver and feed arrivals through the same
+/// policy-before-insert and parking path as [`GroupKeyLane::accept`].
+#[derive(Clone)]
+pub struct GroupKeyReceiver<B: Backend + Clone> {
+    processor: OperationProcessor<B, GroupKeyExt, GroupKeyPolicy>,
+}
+
+impl<B: Backend + Clone> GroupKeyReceiver<B> {
+    /// Authenticate, validate and store one received group-key operation.
+    pub async fn accept(
+        &self,
+        operation: &Operation<GroupKeyExt>,
+    ) -> Result<GroupKeyAdmission, GroupKeyLaneError> {
+        accept_operation(&self.processor, operation).await
+    }
+}
+
 impl<B: Backend + Clone> GroupKeyLane<B> {
     /// Replica writing under this group's Personae-derived key.
     pub fn for_identity<P: IdentityProvider + ?Sized>(
@@ -460,6 +475,13 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
 
     pub fn sync_store(&self) -> MunimentStore<B, GroupKeyExt> {
         self.store.clone()
+    }
+
+    /// Give a receive task admission capability without the local signing seed.
+    pub fn receiver(&self) -> GroupKeyReceiver<B> {
+        GroupKeyReceiver {
+            processor: self.processor(),
+        }
     }
 
     fn processor(&self) -> OperationProcessor<B, GroupKeyExt, GroupKeyPolicy> {
@@ -540,7 +562,7 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
         &self,
         operation: &Operation<GroupKeyExt>,
     ) -> Result<GroupKeyAdmission, GroupKeyLaneError> {
-        accept_operation(&self.processor(), operation).await
+        self.receiver().accept(operation).await
     }
 
     /// Apply every ready, unsettled frame to `session` in causal order.
@@ -619,13 +641,13 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
                                 process,
                             });
                             SettledFrame::Applied
-                        },
+                        }
                         Err(GroupSessionError::UnexpectedSequence {
                             expected, actual, ..
                         }) if actual < expected => {
                             drain.superseded.push(entry.operation);
                             SettledFrame::Superseded
-                        },
+                        }
                         Err(
                             GroupSessionError::UnexpectedSequence { .. }
                             | GroupSessionError::MissingPrekey(_),
@@ -633,10 +655,10 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
                             blocked.insert(entry.operation);
                             drain.pending.push(entry.operation);
                             continue;
-                        },
+                        }
                         Err(error) => SettledFrame::Refused(error.to_string()),
                     }
-                },
+                }
             };
             if let SettledFrame::Refused(reason) = &frame {
                 drain.refused.push(RefusedGroupFrame {
@@ -669,53 +691,6 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
             self.store.backend().apply(&marks).await?;
         }
         Ok(drain)
-    }
-}
-
-#[cfg(feature = "net")]
-impl<B: Backend + Clone + Send + Sync + 'static> GroupKeyLane<B> {
-    /// Join this group's key lane, admitting arrivals through [`Self::accept`].
-    ///
-    /// Protocol id `lane_id(GROUP_KEY_LANE, group.0)`; the topic is derived
-    /// from the group id (see the module docs). Arrivals are only stored: the
-    /// host runs [`Self::drain_ready`] when the lane reports new records.
-    pub async fn join(
-        &self,
-        endpoint: Endpoint,
-        gossip: Gossip,
-    ) -> Result<JoinedSpace<GroupKeyExt>, JoinError> {
-        let processor = self.processor();
-        JoinedSpace::join::<_, u64, _, _>(
-            lane_id(GROUP_KEY_LANE, self.group.0),
-            self.sync_store(),
-            endpoint,
-            gossip,
-            group_key_sync_topic(self.group),
-            move |operation: Operation<GroupKeyExt>| {
-                let processor = processor.clone();
-                async move {
-                    matches!(
-                        accept_operation(&processor, &operation).await,
-                        Ok(GroupKeyAdmission::Inserted { .. })
-                    )
-                }
-            },
-        )
-        .await
-    }
-
-    /// Author a fresh dispatch, then push it to connected peers.
-    ///
-    /// Storing is what makes it survive, publishing is what makes it arrive
-    /// now; a failed publish still leaves it stored for reconciliation.
-    pub async fn publish(
-        &self,
-        joined: &JoinedSpace<GroupKeyExt>,
-        dispatch: &GroupSessionDispatch,
-    ) -> Result<Operation<GroupKeyExt>, GroupKeyLaneError> {
-        let operation = self.author_dispatch(dispatch).await?;
-        joined.publish(operation.clone())?;
-        Ok(operation)
     }
 }
 
