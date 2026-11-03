@@ -37,6 +37,7 @@ repos:
         entry: line-ceiling
         language: rust
         types: [text]
+        always_run: true
         additional_dependencies: ["cli:https://github.com/merely-made/eidetic:line-ceiling-v0.0.2:line-ceiling"]
       - id: responsa-check
         name: responsa check
@@ -46,3 +47,6 @@ repos:
         always_run: true
         additional_dependencies: ["cli:https://github.com/merely-made/eidetic:responsa-v0.0.2:responsa"]
 ```
+
+`always_run` also checks stale exceptions in deletion-only commits, when
+prek has no existing source files to pass to the tool.

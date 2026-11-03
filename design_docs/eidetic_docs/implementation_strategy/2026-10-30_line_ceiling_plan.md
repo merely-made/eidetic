@@ -40,6 +40,10 @@ From the house-style plan, in the words given:
 - 2026-11-02: eidetic uses the same tagged hook as consumers; installing its
   own tool needs no special local binary wiring. It still has no decisions
   manifest, so the responsa hook remains conditional on adopting one.
+- 2026-11-02: the hook stanza needs `always_run: true`: a deletion-only
+  commit otherwise supplies no existing files and prek skips stale-exception
+  validation. The binary already handles an empty file list. The shared
+  README, eidetic and isocosm now run this control on every commit.
 - Receipts for this lane: tagged Linux installs, E4's exact inventory,
   passing full-tree run and rejected full-tree/real-commit controls in
   `archive_docs/receipts/2026-10-30_line_ceiling_plan_receipts.md`.
@@ -280,3 +284,6 @@ working isocosm) consulted first:
   mDNS. prek 0.5.9 installed both v0.0.2 tools by tag and invoked each
   successfully. All E-phases are complete; stack-wide lint and repository
   adoption remain in Mere's house-style plan.
+- 2026-11-02: deletion-only coverage corrected in the shared hook stanza and
+  both adopters. A missing-file exception fails through prek with an empty
+  effective file list; removing the temporary entry passes the same run.

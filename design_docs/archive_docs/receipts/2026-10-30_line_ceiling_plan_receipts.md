@@ -31,3 +31,14 @@ Before E4: eidetic `6d7b73e`, line-ceiling and responsa tags v0.0.2.
   environments and the installed prek executable remain for reuse.
 
 Retained evidence is this compact text receipt, under the 100 MB lane cap.
+
+### Deletion-only follow-up
+
+The shared stanza and both adopter configs set `always_run: true`.
+In eidetic, a temporary exception for the nonexistent
+`.house-style-deletion-control.rs` failed
+`prek run line-ceiling --files .house-style-deletion-control.rs` with exit 1
+and `stale exception ...: gone`. prek discarded the nonexistent filename,
+so the tool received an empty file list. After restoring the exact original
+configuration bytes, the same command passed rather than being skipped;
+the full-tree run passed too. No control source file was created.
