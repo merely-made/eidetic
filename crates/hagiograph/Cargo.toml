@@ -34,3 +34,6 @@ default-features = false
 features = [
     "alloc",
 ]
+
+[lints]
+workspace = true

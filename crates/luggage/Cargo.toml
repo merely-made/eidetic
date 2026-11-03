@@ -114,3 +114,6 @@ name = "luggage-manifest"
 required-features = [
     "native",
 ]
+
+[lints]
+workspace = true

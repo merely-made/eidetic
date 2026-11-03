@@ -113,3 +113,6 @@ default-features = false
 features = [
     "log_prune",
 ]
+
+[lints]
+workspace = true

@@ -131,3 +131,6 @@ name = "redb_cross_process_lock"
 required-features = [
     "redb",
 ]
+
+[lints]
+workspace = true

@@ -62,3 +62,6 @@ workspace = true
 features = [
     "json",
 ]
+
+[lints]
+workspace = true
