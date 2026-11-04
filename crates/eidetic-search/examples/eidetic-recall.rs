@@ -254,12 +254,12 @@ async fn open_or_mint(store: &mut FjallStore, index_dir: &str) -> Result<TrailIn
             );
             let memory = load(store).await?;
             mint_index(&memory, index_dir)
-        },
+        }
         Err(SearchError::Missing(_)) => {
             println!("no index yet — minting from traces");
             let memory = load(store).await?;
             mint_index(&memory, index_dir)
-        },
+        }
         Err(e) => Err(format!("open index: {e}")),
     }
 }
@@ -278,23 +278,23 @@ async fn run() -> Result<(), String> {
             "--db" => {
                 i += 1;
                 db = args.get(i).cloned().ok_or("--db needs a path")?;
-            },
+            }
             "--index" => {
                 i += 1;
                 index_dir = Some(args.get(i).cloned().ok_or("--index needs a path")?);
-            },
+            }
             "--model-dir" => {
                 i += 1;
                 model_dir = args.get(i).cloned().ok_or("--model-dir needs a path")?;
-            },
+            }
             "--backend" => {
                 i += 1;
                 backend = args.get(i).cloned().ok_or("--backend needs cpu|wgpu")?;
-            },
+            }
             "--owner" => {
                 i += 1;
                 owner = args.get(i).cloned().ok_or("--owner needs a tag")?;
-            },
+            }
             other => rest.push(other.to_string()),
         }
         i += 1;
@@ -330,7 +330,7 @@ async fn run() -> Result<(), String> {
                 items.len(),
                 traces.len()
             );
-        },
+        }
         Some("ingest-history") => {
             let path = rest.get(1).ok_or(usage)?;
             let contents =
@@ -352,7 +352,7 @@ async fn run() -> Result<(), String> {
                 items.len(),
                 traces.len()
             );
-        },
+        }
         Some("index") => {
             let memory = load(&mut store).await?;
             let index = mint_index(&memory, &index_dir)?;
@@ -360,7 +360,7 @@ async fn run() -> Result<(), String> {
                 "minted trail index at {index_dir}: {} traversal document(s)",
                 index.doc_count().map_err(|e| format!("count: {e}"))?
             );
-        },
+        }
         Some("search") => {
             let query = rest.get(1).ok_or(usage)?;
             let n = rest.get(2).and_then(|s| s.parse().ok()).unwrap_or(10);
@@ -376,7 +376,7 @@ async fn run() -> Result<(), String> {
                     h.at_ms
                 );
             }
-        },
+        }
         Some("embed-index") => {
             let provider = load_provider(&model_dir, &backend)?;
             let memory = load(&mut store).await?;
@@ -422,7 +422,7 @@ async fn run() -> Result<(), String> {
                 pages.len(),
                 provider.dimensions()
             );
-        },
+        }
         Some("recall") => {
             let query = rest.get(1).ok_or(usage)?;
             let n = rest.get(2).and_then(|s| s.parse().ok()).unwrap_or(10);
@@ -475,7 +475,7 @@ async fn run() -> Result<(), String> {
                     titles.get(&hit.url).map(String::as_str).unwrap_or("")
                 );
             }
-        },
+        }
         Some("report") => {
             let index = open_or_mint(&mut store, &index_dir).await?;
             let domains = index
@@ -492,7 +492,7 @@ async fn run() -> Result<(), String> {
             for (bucket, count) in &histogram {
                 println!("  {bucket:>13}  {count}");
             }
-        },
+        }
         Some("corridor") => {
             let n = rest.get(1).and_then(|s| s.parse().ok()).unwrap_or(10);
             let memory = load(&mut store).await?;
@@ -501,7 +501,7 @@ async fn run() -> Result<(), String> {
             for e in &corridor {
                 print_event(e);
             }
-        },
+        }
         Some("window") => {
             let start: u64 = rest.get(1).and_then(|s| s.parse().ok()).ok_or(usage)?;
             let end: u64 = rest.get(2).and_then(|s| s.parse().ok()).ok_or(usage)?;
@@ -511,7 +511,7 @@ async fn run() -> Result<(), String> {
             for p in &pages {
                 println!("  {} {}", p.url, p.title.as_deref().unwrap_or(""));
             }
-        },
+        }
         Some("co") => {
             let a = rest.get(1).ok_or(usage)?;
             let b = rest.get(2).ok_or(usage)?;
@@ -520,7 +520,7 @@ async fn run() -> Result<(), String> {
                 "direct traversals between the two (either direction): {}",
                 memory.co_occurrence(a, b)
             );
-        },
+        }
         Some("stats") => {
             let memory = load(&mut store).await?;
             let traces: Vec<&BrowsingTrace> = memory.traces().collect();
@@ -534,7 +534,7 @@ async fn run() -> Result<(), String> {
             let span = match (traces.first(), traces.last()) {
                 (Some(first), Some(last)) => {
                     format!("{} → {}", first.started_at_ms, last.ended_at_ms)
-                },
+                }
                 _ => "empty".to_string(),
             };
             println!(
@@ -543,7 +543,7 @@ async fn run() -> Result<(), String> {
                 events,
                 urls.len()
             );
-        },
+        }
         _ => return Err(usage.to_string()),
     }
     Ok(())
@@ -573,139 +573,5 @@ fn main() {
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn seed(url: &str, title: Option<&str>) -> ImportedPageSeed {
-        ImportedPageSeed {
-            canonical_url: url.to_string(),
-            normalized_title: title.map(str::to_string),
-            raw_url: None,
-            raw_title: None,
-            favicon_url: None,
-        }
-    }
-
-    #[test]
-    fn bookmarks_become_sorted_imported_origin_events() {
-        let items = vec![
-            eidetic::import::ImportedBookmarkItem {
-                page: seed("https://b.example", Some("B")),
-                bookmark_id: None,
-                folder_path: Vec::new(),
-                location: eidetic::import::BookmarkLocation::Toolbar,
-                created_at_unix_secs: Some(200),
-                modified_at_unix_secs: None,
-                tags: Vec::new(),
-            },
-            eidetic::import::ImportedBookmarkItem {
-                page: seed("https://a.example", Some("A")),
-                bookmark_id: None,
-                folder_path: Vec::new(),
-                location: eidetic::import::BookmarkLocation::Menu,
-                created_at_unix_secs: Some(100),
-                modified_at_unix_secs: None,
-                tags: Vec::new(),
-            },
-        ];
-        let events = events_from_bookmarks(&items);
-        assert_eq!(events.len(), 2);
-        assert_eq!(events[0].to.url, "https://a.example", "sorted by time");
-        assert_eq!(events[0].at_ms, 100_000);
-        assert!(
-            events
-                .iter()
-                .all(|e| e.transition == TraceTransition::Imported && e.from.is_none())
-        );
-    }
-
-    #[test]
-    fn history_visits_keep_real_transitions_and_referrers() {
-        let jsonl = r#"{"page":{"canonical_url":"https://b.example","normalized_title":"B","raw_url":null,"raw_title":null,"favicon_url":null},"visit_id":"2","visited_at_unix_secs":200,"visit_count_hint":3,"transition":"Link","referring_url":"https://a.example","session_context":null}"#;
-        let item: ImportedHistoryVisitItem = serde_json::from_str(jsonl).unwrap();
-        let events = events_from_history(&[item]);
-        assert_eq!(events.len(), 1);
-        assert_eq!(events[0].transition, TraceTransition::LinkClick);
-        assert_eq!(
-            events[0].from.as_ref().map(|p| p.url.as_str()),
-            Some("https://a.example")
-        );
-        assert_eq!(events[0].at_ms, 200_000);
-    }
-
-    #[test]
-    fn large_imports_chunk_into_segment_sized_traces() {
-        let events: Vec<TraceEvent> = (0..(SEGMENT + 3))
-            .map(|i| TraceEvent {
-                from: None,
-                to: PageRef {
-                    url: format!("https://p{i}.example"),
-                    title: None,
-                },
-                transition: TraceTransition::Imported,
-                at_ms: i as u64,
-                dwell_ms: None,
-                candidates: Vec::new(),
-            })
-            .collect();
-        let traces = traces_from_events("mark", events);
-        assert_eq!(traces.len(), 2);
-        assert_eq!(traces[0].events.len(), SEGMENT);
-        assert_eq!(traces[1].events.len(), 3);
-        assert_eq!(traces[0].owner, "mark");
-    }
-
-    #[test]
-    fn ingest_index_search_round_trips_through_real_stores() {
-        pollster::block_on(async {
-            let dir = tempfile::tempdir().unwrap();
-            let mut store = FjallStore::open(dir.path().join("recall")).unwrap();
-            eidetic::bootstrap(&mut store).await.unwrap();
-            bootstrap_browsing_schema(&mut store).await.unwrap();
-
-            let events = vec![
-                TraceEvent {
-                    from: None,
-                    to: PageRef {
-                        url: "https://a.example".into(),
-                        title: Some("alpha notes".into()),
-                    },
-                    transition: TraceTransition::UrlTyped,
-                    at_ms: 1_000,
-                    dwell_ms: None,
-                    candidates: Vec::new(),
-                },
-                TraceEvent {
-                    from: Some(PageRef {
-                        url: "https://a.example".into(),
-                        title: None,
-                    }),
-                    to: PageRef {
-                        url: "https://b.example".into(),
-                        title: Some("beta manual".into()),
-                    },
-                    transition: TraceTransition::LinkClick,
-                    at_ms: 2_000,
-                    dwell_ms: None,
-                    candidates: Vec::new(),
-                },
-            ];
-            let traces = traces_from_events("mark", events);
-            ingest(&mut store, &traces).await.unwrap();
-
-            let memory = load(&mut store).await.unwrap();
-            assert_eq!(memory.recent_corridor(10).len(), 2);
-            assert_eq!(
-                memory.co_occurrence("https://a.example", "https://b.example"),
-                1
-            );
-
-            // Mint the index from the corpus and recall by title word.
-            let index_dir = dir.path().join("recall.index");
-            let index = mint_index(&memory, index_dir.to_str().unwrap()).unwrap();
-            assert_eq!(index.doc_count().unwrap(), 2);
-            let hits = index.search("beta", 5).unwrap();
-            assert_eq!(hits[0].url, "https://b.example");
-        });
-    }
-}
+#[path = "eidetic-recall/tests.rs"]
+mod tests;
