@@ -1,6 +1,6 @@
-# Source splits: H6 Eidetic batch
+# Source splits: Eidetic H6 and H8
 
-**Status (2026-11-03):** landed; 15/15 paths qualified.
+**Status (2026-11-04):** landed; H6 fifteen and H8 five additional originals qualified; zero owned exceptions remain.
 
 This is the second fifty-file pass under Mere's house-style plan, H6.
 The eight earlier splits and all fifty H5 paths are excluded. Mark's
@@ -75,3 +75,52 @@ Responsa or line-ceiling workspaces; this pass does not modify those tools.
   starts before source edits. Retained receipt cap: shared 100 MB for H6.
 
 - 2026-11-03: S1–S3 landed. Fifteen exceptions retired; 746 baseline/post cases, optional recall-example type checks, docs and full local gate pass. Existing public paths, literal bytes and private authority are preserved.
+
+## H8: fourth fifty-file pass, 2026-11-04
+
+Mark requested another batch after H7. Mere's house-style plan owns the
+aggregate fifty. Earlier H6/H7 originals are excluded. This continuation
+keeps the existing API, authority, fields, generic bounds, numerical values,
+fixture bytes and production feature boundaries. Changes follow Mere's
+DOC_README source-move principles, including explicit child paths and
+optional fixture guards. H6's qualification and evidence stay unchanged.
+
+### H8 phases and done-conditions
+
+- **E1:** causal processing, group admission and encrypted session operations.
+- **E2:** operation storage and native-drop I/O, keeping formats and atomicity.
+
+An original counts only after it and all new modules fit 600 physical lines,
+its exact exception retires, relevant baseline/post inventories agree,
+existing failures remain distinguished, feature/docs checks and full local
+and actual commit hooks pass, and the source is pushed. No new CI or lint
+allows are introduced. This renews no headed, physical audio/device, personal
+custody, nested-port, model or other-platform qualification.
+
+The retained cap is 100 MB across H8 and Mere's aggregate. Compact summaries
+append to the existing source-split receipt. Historical evidence stays intact.
+Stable approved repository targets and two jobs apply; no isolated home or
+worktree is planned. Standalone tooling and excluded ports remain separate.
+
+### H8 selected originals
+
+- `crates/stickleback/src/drop_io.rs`
+- `crates/stickleback/src/group_lane.rs`
+- `crates/stickleback/src/group_session.rs`
+- `crates/stickleback/src/processor.rs`
+- `crates/stickleback/src/store.rs`
+
+### H8 findings
+
+- 2026-11-04: selected from clean main, with coherent existing methods and
+  fixture groups. Test baselines precede every selected Rust edit.
+
+### H8 progress
+
+- 2026-11-04: selected 5 additional originals; qualification starts.
+
+- 2026-11-04: H8 E1/E2 land for all five remaining originals. Their fields,
+  public paths, group admission, encryption, operation ordering and drop/store
+  formats remain intact. Native workspace baseline/post inventories match;
+  moved public docs and full local/actual hooks pass. Imported patches and
+  standalone tools retain their scopes; broader acceptance is unchanged.

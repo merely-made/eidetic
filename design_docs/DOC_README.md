@@ -43,4 +43,5 @@ Distillery receiving (2026-11-03): ESP keeps its crate name and now comes from
 cutover plan and run receipts are in
 `mere/design_docs/mere_docs/implementation_strategy/2026-10-31_distillery_extraction_plan.md`.
 
-- [Source splits, H6](eidetic_docs/implementation_strategy/2026-11-03_source_splits_plan.md) — Fifteen landed graph, storage, model and fixture splits under Mere's second fifty-file pass.
+
+- [Source splits, H6 and H8](eidetic_docs/implementation_strategy/2026-11-03_source_splits_plan.md): fifteen earlier and five additional originals landed; zero owned exceptions remain. Mere owns the aggregate; source notices, public paths, authority and existing acceptance boundaries stay intact.

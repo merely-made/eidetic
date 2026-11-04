@@ -3,23 +3,3 @@ ceiling = 600
 [[exclude]]
 path = "support/patches/"
 reason = "Imported fjall and lsm-tree sources with local persistence patches; retain their upstream module layout."
-
-[[exception]]
-path = "crates/stickleback/src/drop_io.rs"
-reason = "Native-drop import couples full-carrier verification, domain admission and one atomic store batch with its failure controls."
-
-[[exception]]
-path = "crates/stickleback/src/group_lane.rs"
-reason = "Signed group-key causal admission and durable settlement tests share private lane state and pending-frame fixtures."
-
-[[exception]]
-path = "crates/stickleback/src/group_session.rs"
-reason = "Serializable DCGKA transitions, recipient binding and versioned control payload tests share one group-session state machine."
-
-[[exception]]
-path = "crates/stickleback/src/processor.rs"
-reason = "Structural validation, retained-frontier continuity and domain policy must precede the same atomic indexed write."
-
-[[exception]]
-path = "crates/stickleback/src/store.rs"
-reason = "The p2panda store adapter maintains log, hash and topic indexes atomically and tests their consistency through private key helpers."

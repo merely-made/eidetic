@@ -46,3 +46,29 @@ The existing issuer-extension documentation link now names its actual trait.
 - Stable approved target `C:/t/cargo-targets/eidetic`, two jobs. Subsequent
   gates use cached locked inputs. No isolated target, Cargo home, worktree,
   new live-session, hardware or other-platform acceptance is claimed.
+
+## 2026-11-04: H8 untouched baseline
+
+Baseline `5b805a1eb808b32f890feb2c7464ef6b2471a9dc`. `cargo test --workspace --locked --no-fail-fast -- --test-threads=1` exits 0: 746 passed, 0 failed, 5 ignored, including doctests. Every selected Rust source remains untouched. Shared cap: 100 MB across H8.
+
+## 2026-11-04: H8 five originals qualified
+
+| Original | Before | After |
+|---|---:|---:|
+| `crates/stickleback/src/drop_io.rs` | 1943 | 525 |
+| `crates/stickleback/src/group_lane.rs` | 1079 | 442 |
+| `crates/stickleback/src/group_session.rs` | 1465 | 477 |
+| `crates/stickleback/src/processor.rs` | 1005 | 473 |
+| `crates/stickleback/src/store.rs` | 1696 | 511 |
+
+All new modules fit; maximum 557 physical lines. Exactly five exceptions
+retire, leaving zero owned exceptions and the existing imported-patch
+exclusion unchanged. Full native workspace post: 746 passed/five ignored,
+with identical complete leaf-name inventory. Stickleback docs and full
+prek hooks exit 0; actual commit repeats configured ceiling/Clippy gates.
+The staged audit matches 194 bodies, signatures and type fields exactly
+after scope/visibility normalization, with no formatting-only mismatches.
+Every moved public function retains its facade; owner fields and wire values
+stay intact. No manifest, lock, CI, tool release or policy change. Stable
+approved target, two jobs; broader physical/browser/platform claims remain
+separate. The H8 aggregate records the immutable published source commit.
