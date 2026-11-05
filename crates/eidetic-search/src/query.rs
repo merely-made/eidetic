@@ -383,7 +383,7 @@ fn has_match(text: &str, mode: &QueryMode, terms: &[String]) -> bool {
     });
     found
 }
-fn matches_for(text: &str, mode: &QueryMode, terms: &[String]) -> Vec<PassageSelector> {
+pub(crate) fn matches_for(text: &str, mode: &QueryMode, terms: &[String]) -> Vec<PassageSelector> {
     let mut ranges = Vec::new();
     let mut byte_cursor = 0;
     let mut scalar_cursor = 0;

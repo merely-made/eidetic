@@ -51,6 +51,7 @@ pub mod candidates;
 pub mod compare;
 pub mod document;
 pub mod fusion;
+pub mod goal;
 pub mod index;
 pub mod recall;
 pub mod records;
@@ -62,6 +63,10 @@ pub use bm25::{Bm25Config, Bm25Index};
 pub use candidates::CandidateIndex;
 pub use document::{DocumentHit, DocumentIndex, DocumentIndexConfig, SearchDocument};
 pub use fusion::{FusedHit, Ranking, fuse, fuse_many};
+pub use goal::{
+    CandidateLabel, GoalAssessment, GoalAssessor, GoalRecord, GoalSettings, GoalVerdict,
+    SelectionChoice, SelectionRule,
+};
 pub use index::{FieldWeights, Hit, IndexConfig, TrailIndex};
 pub use spec::{SEARCH_INDEX_SCHEMA_REF, SPEC_SIDECAR, SearchIndexSpec, bootstrap_search_schema};
 pub use tokenize::{Stemmer, Tokenizer};
