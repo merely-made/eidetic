@@ -510,6 +510,14 @@ decided here.
 
   Links: area storage · plans P6 · summary Native redb databases migrate to file format v3 via upgrade-on-open before the crate moves past 2.x.
 
+- **D9, the Mere half rides the p2mere 0.9 repin (2026-11-05):** Mark: "Ride
+  the 0.9 repin". Eidetic main reached p2mere 0.9 (`4aaa64d`) while the family
+  still builds on 0.8, so no Eidetic rev with this round's APIs builds in the
+  family yet. The Mere work waits as `agent/*` branches and merges once the
+  release-log lane's 0.9 repin lands; no separate Eidetic repin runs.
+
+  Links: area dependencies · draws on memory_gates D5 D6 · plans P4 P5 · summary This round's Mere work merges after the family's p2mere 0.9 repin instead of a separate Eidetic repin.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
@@ -616,3 +624,15 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   Interrupted-upgrade cases are fault-tested with injected failures, not a real
   crash. Phase 2, the crate bump past redb 2.x, waits until consumers have
   opened their files with this release.
+- 2026-11-05: P4 S2 and S4's Mere half built on Mere branch `agent/p4-s2`
+  (`c03040746`, `f99169bee`), unmerged per D9. Fleece feature
+  `retained-traversal`: `run_retained_traversal` drives `run_traversal` with
+  S1's selector and assessor over a host `RetainedProvider` that never fetches,
+  refuses version or source mismatches, enforces request and byte budgets
+  through the cancel seam (`RetainedStop::RequestBudget`/`ByteBudget`), and
+  emits a serializable receipt with the `GoalRecord`; 13 tests, wasm32 check.
+  Graph-kernel `admit_accepted_tag_suggestion` writes a personal `taggedWith`
+  citing the suggestion as basis evidence `urn:eidetic:tag-suggestion:<hex>`
+  under method `urn:mere:method:accepted-tag-suggestion`; idempotent per
+  asserter; 7 tests. The host maps `RecallSourceId` to a resource and the
+  reviewer string to an agent IRI. Both checked against Eidetic `8b4b3ec`.
