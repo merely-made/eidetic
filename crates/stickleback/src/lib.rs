@@ -29,6 +29,7 @@ mod group_lane;
 mod group_session;
 pub mod inventory;
 mod lane;
+mod message_session;
 pub mod object_stream;
 mod processor;
 #[cfg(test)]
@@ -63,11 +64,13 @@ pub use epoch_retention::{
     EpochRetentionFacts, EpochRetentionReason, RetainedEpoch, propose_epoch_pruning,
 };
 pub use group_crypto::{
-    DataKeyring, GroupCiphertext, GroupCryptoError, GroupEncryptionMode, GroupEncryptionProfile,
+    DEFAULT_RETAINED_DATA_EPOCHS, DataKeyring, GroupCiphertext, GroupCryptoError,
+    GroupEncryptionMode, GroupEncryptionProfile, MessageCiphertext, MessageLimits,
 };
 pub use group_lane::{
     AppliedGroupFrame, GROUP_KEY_LANE, GroupKeyAdmission, GroupKeyDrain, GroupKeyExt, GroupKeyLane,
-    GroupKeyLaneError, GroupKeyLimits, GroupKeyReceiver, RefusedGroupFrame, group_key_sync_topic,
+    GroupKeyLaneError, GroupKeyLimits, GroupKeyReceiver, GroupKeySession, RefusedGroupFrame,
+    group_key_sync_topic,
 };
 pub use group_session::{
     GroupControlAction, GroupControlFrame, GroupControlId, GroupDirectFrame, GroupPrekeyBundle,
@@ -75,6 +78,7 @@ pub use group_session::{
     GroupSessionProcess,
 };
 pub use lane::{JoinError, lane_id};
+pub use message_session::{MESSAGE_PREKEY_BATCH, MessagePrekeyBundle, MessageSession};
 pub use object_stream::{
     MAX_OBJECT_STREAM_BYTES, MAX_OBJECT_STREAM_TIMEOUT, ObjectStreamError, ObjectStreamLimits,
     read_object, write_object,

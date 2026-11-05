@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
+use crate::{GroupEncryptionMode, GroupEncryptionProfile};
 
 impl GroupSession {
     /// Prepare a local recipient and its publishable pre-key bundle.
@@ -289,6 +290,25 @@ impl GroupSession {
         Ok(())
     }
 
+    /// Apply a durable profile's retention window: forget epochs older than
+    /// its newest `retained_data_epochs`, the current epoch always kept.
+    /// A forward-secure profile has no epochs to forget.
+    pub fn enforce_retention(
+        &mut self,
+        profile: GroupEncryptionProfile,
+    ) -> Result<Vec<GroupSecretId>, GroupSessionError> {
+        if profile.mode != GroupEncryptionMode::Data {
+            return Ok(Vec::new());
+        }
+        let mut next = self.try_clone()?;
+        let forgotten = next
+            .keyring
+            .forget_outside_window(profile.retained_data_epochs);
+        next.validate()?;
+        *self = next;
+        Ok(forgotten)
+    }
+
     pub fn seal_random(&self, plaintext: &[u8]) -> Result<GroupCiphertext, GroupSessionError> {
         self.keyring
             .seal_random(plaintext)
@@ -418,6 +438,9 @@ impl GroupSession {
                     && self.members()?.contains(&self.member)
                     && *removed != self.member
             }
+            GroupControlAction::Ack { .. } | GroupControlAction::AddAck { .. } => {
+                return Err(GroupSessionError::ActionOutsideScheme);
+            }
         };
         match (needs_direct, direct) {
             (true, None) => return Err(GroupSessionError::MissingAddressedDirect(self.member)),
@@ -452,7 +475,7 @@ impl GroupSession {
         let input = ProcessInput {
             seq: control.id,
             sender: control.id.author,
-            control_message: control.action.clone().into(),
+            control_message: control.action.clone().try_into()?,
             direct_message,
         };
         let (state, output) = Dcgka::process(state, input)
@@ -469,7 +492,10 @@ impl GroupSession {
         if control.id.author == self.member {
             self.next_local_sequence = next_sequence;
         }
-        Ok(GroupSessionProcess { installed_epochs })
+        Ok(GroupSessionProcess {
+            installed_epochs,
+            outbound: None,
+        })
     }
 
     pub(super) fn decode_direct(

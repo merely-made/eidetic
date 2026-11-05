@@ -7,8 +7,9 @@
 //! Carrier-neutral group encryption state for replicated domains.
 //!
 //! Gemot decides membership and orders control facts. This module quarantines
-//! the p2panda encryption engine, persists its data-scheme epochs, and seals
-//! application bytes before a domain signs the resulting operation.
+//! the p2panda encryption engine, persists its data-scheme epochs and its
+//! message-scheme ratchets, and seals application bytes before a domain signs
+//! the resulting operation.
 
 use p2panda_core::cbor::{decode_cbor, encode_cbor};
 use p2panda_encryption::Rng;
@@ -18,6 +19,16 @@ use p2panda_encryption::data_scheme::{
 };
 use serde::{Deserialize, Serialize};
 
+use crate::GroupRecipientId;
+
+#[path = "group_crypto/message.rs"]
+mod message;
+
+pub use message::{MessageCiphertext, MessageLimits};
+pub(crate) use message::{
+    MessageDcgka, MessageDgm, MessageRatchets, generate_onetime_bundles, register_onetime_bundles,
+};
+
 /// Encryption semantics chosen by a shared-space profile.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum GroupEncryptionMode {
@@ -26,6 +37,9 @@ pub enum GroupEncryptionMode {
     /// Per-message ratchets provide stronger forward secrecy for chat.
     Message,
 }
+
+/// Epochs a bounded durable profile keeps readable by default.
+pub const DEFAULT_RETAINED_DATA_EPOCHS: usize = 8;
 
 /// Explicit product policy around the selected encryption engine.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -42,6 +56,13 @@ impl GroupEncryptionProfile {
             mode: GroupEncryptionMode::Data,
             retained_data_epochs,
         }
+    }
+
+    /// Durable data with the family's default bounded retention: the newest
+    /// [`DEFAULT_RETAINED_DATA_EPOCHS`] epochs stay readable, older ones are
+    /// forgotten by [`DataKeyring::forget_outside_window`].
+    pub const fn bounded_durable() -> Self {
+        Self::durable_data(DEFAULT_RETAINED_DATA_EPOCHS)
     }
 
     pub const fn forward_secure_messages() -> Self {
@@ -218,6 +239,23 @@ impl DataKeyring {
         removed.is_some()
     }
 
+    /// Forget every epoch outside the newest `retained` in installation
+    /// order, never the current one, and return what was forgotten. A keyring
+    /// of unknown chronology forgets nothing. Domains that gate pruning on
+    /// checkpoints use [`crate::propose_epoch_pruning`] instead; this is the
+    /// unconditional window.
+    pub fn forget_outside_window(&mut self, retained: usize) -> Vec<GroupSecretId> {
+        let Some(order) = self.epochs_oldest_first() else {
+            return Vec::new();
+        };
+        let keep = retained.max(1);
+        let expired: Vec<_> = order[..order.len().saturating_sub(keep)].to_vec();
+        for epoch in &expired {
+            self.forget_authorized(epoch);
+        }
+        expired
+    }
+
     pub fn to_bytes(&self) -> Result<Vec<u8>, GroupCryptoError> {
         encode_cbor(self).map_err(|error| GroupCryptoError::Encode(error.to_string()))
     }
@@ -250,6 +288,10 @@ impl DataKeyring {
 
 #[derive(Debug, thiserror::Error)]
 pub enum GroupCryptoError {
+    #[error("group has no sending ratchet yet")]
+    MissingSendRatchet,
+    #[error("group has no receiving ratchet for {0}")]
+    MissingReceiveRatchet(GroupRecipientId),
     #[error("group has no current data-encryption epoch")]
     MissingCurrentEpoch,
     #[error("group ciphertext names an unavailable epoch")]

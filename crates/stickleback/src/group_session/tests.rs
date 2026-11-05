@@ -7,6 +7,7 @@
 use identity::{InMemoryProvider, SealedRecordStorage};
 
 use super::*;
+use crate::GroupEncryptionProfile;
 
 fn register_all(sessions: &mut [&mut GroupSession], bundles: &[GroupPrekeyBundle]) {
     for session in sessions {
@@ -443,4 +444,41 @@ fn a_forgotten_epoch_leaves_exported_state_and_later_welcomes() {
     assert_eq!(exported_epochs(&dave), [second, third]);
     assert!(dave.open(&under_first).is_err());
     assert_eq!(dave.open(&under_second).unwrap(), [1]);
+}
+
+#[test]
+fn a_retention_window_forgets_old_epochs_and_keeps_recent_ones_readable() {
+    let (mut alice, _, sealed) = rotated_founder();
+    let profile = GroupEncryptionProfile::durable_data(2);
+
+    // A forward-secure profile has no epochs to forget.
+    assert!(
+        alice
+            .enforce_retention(GroupEncryptionProfile::forward_secure_messages())
+            .unwrap()
+            .is_empty()
+    );
+
+    let forgotten = alice.enforce_retention(profile).unwrap();
+    assert_eq!(forgotten, vec![sealed[0].0]);
+    assert!(matches!(
+        alice.open(&sealed[0].1),
+        Err(GroupSessionError::Crypto(GroupCryptoError::UnknownEpoch(_)))
+    ));
+    assert_eq!(alice.open(&sealed[1].1).unwrap(), [1]);
+    assert_eq!(alice.open(&sealed[2].1).unwrap(), [2]);
+
+    // The window is already satisfied, and a reopen keeps the result.
+    assert!(alice.enforce_retention(profile).unwrap().is_empty());
+    let reopened = GroupSession::from_bytes(&alice.to_bytes().unwrap()).unwrap();
+    assert!(reopened.open(&sealed[0].1).is_err());
+    assert_eq!(reopened.open(&sealed[2].1).unwrap(), [2]);
+
+    // A window of zero still keeps the current epoch.
+    let (mut alone, _, sealed) = rotated_founder();
+    alone
+        .enforce_retention(GroupEncryptionProfile::durable_data(0))
+        .unwrap();
+    assert_eq!(alone.open(&sealed[2].1).unwrap(), [2]);
+    assert!(alone.open(&sealed[1].1).is_err());
 }

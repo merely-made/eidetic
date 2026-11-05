@@ -39,8 +39,8 @@ use crate::{DataKeyring, GroupCiphertext, GroupCryptoError};
 
 const GROUP_SESSION_VERSION: u16 = 1;
 const GROUP_PREKEY_VERSION: u16 = 1;
-const GROUP_CONTROL_VERSION: u16 = 1;
-const GROUP_DIRECT_VERSION: u16 = 1;
+pub(crate) const GROUP_CONTROL_VERSION: u16 = 1;
+pub(crate) const GROUP_DIRECT_VERSION: u16 = 1;
 const GROUP_PREKEY_IDENTITY_DOMAIN: &[u8] = b"stickleback/group-prekey-identity/v1";
 
 /// Stable id for one encrypted group session.
@@ -77,6 +77,12 @@ pub struct GroupControlId {
 
 impl OperationId for GroupControlId {}
 
+impl fmt::Display for GroupControlId {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(formatter, "{}#{}", self.author, self.sequence)
+    }
+}
+
 /// Inspectable group-control grammar carried inside a domain operation.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum GroupControlAction {
@@ -90,6 +96,17 @@ pub enum GroupControlAction {
     Remove {
         removed: GroupRecipientId,
     },
+    /// Message scheme only: acknowledges the seed of another member's
+    /// operation.
+    Ack {
+        ack_sender: GroupRecipientId,
+        ack_seq: GroupControlId,
+    },
+    /// Message scheme only: acknowledges a member's addition.
+    AddAck {
+        ack_sender: GroupRecipientId,
+        ack_seq: GroupControlId,
+    },
 }
 
 /// Broadcast half of one DCGKA operation.
@@ -98,7 +115,7 @@ pub enum GroupControlAction {
 /// causal ordering. This frame only carries the crypto transition.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GroupControlFrame {
-    version: u16,
+    pub(crate) version: u16,
     pub group: GroupSessionId,
     pub id: GroupControlId,
     pub action: GroupControlAction,
@@ -116,7 +133,7 @@ impl GroupControlFrame {
         Ok(frame)
     }
 
-    fn validate(&self) -> Result<(), GroupSessionError> {
+    pub(crate) fn validate(&self) -> Result<(), GroupSessionError> {
         if self.version != GROUP_CONTROL_VERSION {
             return Err(GroupSessionError::UnsupportedControlVersion(self.version));
         }
@@ -127,11 +144,11 @@ impl GroupControlFrame {
 /// Recipient-bound half of one DCGKA operation.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GroupDirectFrame {
-    version: u16,
+    pub(crate) version: u16,
     pub group: GroupSessionId,
     pub control: GroupControlId,
     pub recipient: GroupRecipientId,
-    payload: Vec<u8>,
+    pub(crate) payload: Vec<u8>,
 }
 
 impl GroupDirectFrame {
@@ -146,7 +163,7 @@ impl GroupDirectFrame {
         Ok(frame)
     }
 
-    fn validate(&self) -> Result<(), GroupSessionError> {
+    pub(crate) fn validate(&self) -> Result<(), GroupSessionError> {
         if self.version != GROUP_DIRECT_VERSION {
             return Err(GroupSessionError::UnsupportedDirectVersion(self.version));
         }
@@ -343,6 +360,10 @@ type SessionDirect = DirectMessage<GroupRecipientId, GroupControlId, OrderedMemb
 pub struct GroupSessionProcess {
     /// Epochs learned from the addressed direct message, oldest first.
     pub installed_epochs: Vec<GroupSecretId>,
+    /// A frame this member must now author on the lane: the message scheme
+    /// answers key agreement with acknowledgements. The session has already
+    /// advanced past it, so persist the session before authoring.
+    pub outbound: Option<GroupSessionDispatch>,
 }
 
 /// Durable state for one DCGKA group member.
@@ -375,14 +396,19 @@ impl From<ControlMessage<GroupRecipientId>> for GroupControlAction {
     }
 }
 
-impl From<GroupControlAction> for ControlMessage<GroupRecipientId> {
-    fn from(value: GroupControlAction) -> Self {
-        match value {
+impl TryFrom<GroupControlAction> for ControlMessage<GroupRecipientId> {
+    type Error = GroupSessionError;
+
+    fn try_from(value: GroupControlAction) -> Result<Self, Self::Error> {
+        Ok(match value {
             GroupControlAction::Create { initial_members } => Self::Create { initial_members },
             GroupControlAction::Update => Self::Update,
             GroupControlAction::Add { added } => Self::Add { added },
             GroupControlAction::Remove { removed } => Self::Remove { removed },
-        }
+            GroupControlAction::Ack { .. } | GroupControlAction::AddAck { .. } => {
+                return Err(GroupSessionError::ActionOutsideScheme);
+            }
+        })
     }
 }
 
@@ -392,6 +418,14 @@ pub enum GroupSessionError {
     MissingState,
     #[error("group session already has membership state")]
     GroupAlreadyCreated,
+    #[error("pre-keys are addressed to {0}, not to the local member")]
+    PrekeysForAnotherPeer(GroupRecipientId),
+    #[error("control action belongs to the other encryption scheme")]
+    ActionOutsideScheme,
+    #[error("control frame was authored by the local member")]
+    OwnControlFrame,
+    #[error("message author {0} is not a current member")]
+    AuthorNotMember(GroupRecipientId),
     #[error("local group recipient is not an active member")]
     LocalMemberInactive,
     #[error("cannot remove the local author with its own rotation")]

@@ -149,13 +149,14 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
     /// session is then advanced before awaiting the settled-mark write, so it
     /// continues to match persisted state if that write fails or the future is
     /// cancelled.
-    pub async fn drain_ready<F, E>(
+    pub async fn drain_ready<S, F, E>(
         &self,
-        session: &mut GroupSession,
+        session: &mut S,
         persist: F,
     ) -> Result<GroupKeyDrain, GroupKeyLaneError>
     where
-        F: FnOnce(&GroupSession) -> Result<(), E>,
+        S: GroupKeySession,
+        F: FnOnce(&S) -> Result<(), E>,
         E: fmt::Display,
     {
         if session.group() != self.group {
@@ -201,7 +202,7 @@ impl<B: Backend + Clone> GroupKeyLane<B> {
             let frame = match open_record(&operations[index], self.group, &self.limits) {
                 Err(reject) => SettledFrame::Refused(reject.to_string()),
                 Ok((root, dispatch)) => {
-                    match working_session.process(
+                    match working_session.process_frame(
                         root,
                         &dispatch.control,
                         dispatch.direct_for(member),

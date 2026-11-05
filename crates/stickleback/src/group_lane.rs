@@ -46,12 +46,74 @@ use serde_bytes::ByteBuf;
 use crate::drop::DropRecord;
 use crate::{
     Admission, CausalEntry, CausalError, CausalLimits, GroupControlFrame, GroupControlId,
-    GroupDirectFrame, GroupSession, GroupSessionDispatch, GroupSessionError, GroupSessionId,
-    GroupSessionProcess, JoinError, MunimentStore, OperationPolicy, OperationProcessor,
-    ProcessError, Reject, StoreTarget, WriterBindingError, author_head, causal_projection,
-    decode_operation_record, observed_frontier, operation_record, stable_writer_subject,
-    validate_causal_metadata,
+    GroupDirectFrame, GroupRecipientId, GroupSession, GroupSessionDispatch, GroupSessionError,
+    GroupSessionId, GroupSessionProcess, JoinError, MessageSession, MunimentStore, OperationPolicy,
+    OperationProcessor, ProcessError, Reject, StoreTarget, WriterBindingError, author_head,
+    causal_projection, decode_operation_record, observed_frontier, operation_record,
+    stable_writer_subject, validate_causal_metadata,
 };
+
+/// A session the lane can drain frames into: the durable data scheme or the
+/// forward-secure message scheme.
+pub trait GroupKeySession: Sized {
+    fn group(&self) -> GroupSessionId;
+    fn member(&self) -> GroupRecipientId;
+    /// Apply one authenticated, causally ordered frame.
+    ///
+    /// # Errors
+    /// The session's own refusal; it leaves the session unchanged.
+    fn process_frame(
+        &mut self,
+        authenticated_author_root: [u8; 32],
+        control: &GroupControlFrame,
+        direct: Option<&GroupDirectFrame>,
+    ) -> Result<GroupSessionProcess, GroupSessionError>;
+    /// A working copy, for transactional draining.
+    ///
+    /// # Errors
+    /// The state could not be re-encoded.
+    fn try_clone(&self) -> Result<Self, GroupSessionError>;
+}
+
+impl GroupKeySession for GroupSession {
+    fn group(&self) -> GroupSessionId {
+        GroupSession::group(self)
+    }
+    fn member(&self) -> GroupRecipientId {
+        GroupSession::member(self)
+    }
+    fn process_frame(
+        &mut self,
+        root: [u8; 32],
+        control: &GroupControlFrame,
+        direct: Option<&GroupDirectFrame>,
+    ) -> Result<GroupSessionProcess, GroupSessionError> {
+        self.process(root, control, direct)
+    }
+    fn try_clone(&self) -> Result<Self, GroupSessionError> {
+        GroupSession::try_clone(self)
+    }
+}
+
+impl GroupKeySession for MessageSession {
+    fn group(&self) -> GroupSessionId {
+        MessageSession::group(self)
+    }
+    fn member(&self) -> GroupRecipientId {
+        MessageSession::member(self)
+    }
+    fn process_frame(
+        &mut self,
+        root: [u8; 32],
+        control: &GroupControlFrame,
+        direct: Option<&GroupDirectFrame>,
+    ) -> Result<GroupSessionProcess, GroupSessionError> {
+        self.process(root, control, direct)
+    }
+    fn try_clone(&self) -> Result<Self, GroupSessionError> {
+        MessageSession::try_clone(self)
+    }
+}
 
 /// This lane's kind. The protocol id is `lane_id(GROUP_KEY_LANE, group.0)`.
 pub const GROUP_KEY_LANE: &str = "stickleback/group-key/v1";
@@ -437,6 +499,10 @@ impl<B: Backend + Clone> GroupKeyReceiver<B> {
 #[cfg(test)]
 #[path = "group_lane/tests.rs"]
 mod tests;
+
+#[cfg(test)]
+#[path = "group_lane/message_tests.rs"]
+mod message_tests;
 
 #[path = "group_lane/operations.rs"]
 mod operations;
