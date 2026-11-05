@@ -31,6 +31,7 @@ futures-util = "0.3"
 hex = "0.4"
 blake3 = "1.5"
 serde_bytes = "0.11"
+serde_json = "1"
 thiserror = "1"
 
 [dependencies.insigne]
@@ -78,7 +79,6 @@ features = [
 ]
 
 [dev-dependencies]
-serde_json = "1"
 pollster = "0.4"
 tempfile = "3"
 
