@@ -27,6 +27,8 @@ use ::redb::{Database, ReadableTable, TableDefinition};
 
 use crate::backend::{Backend, TransactFn, TransactionReader, WriteOp};
 use crate::error::StoreError;
+use crate::redb_upgrade::RedbOpenOutcome;
+use crate::redb_upgrade::open_v3;
 
 /// The single key/value table: opaque string keys, raw byte values.
 const TABLE: TableDefinition<&str, &[u8]> = TableDefinition::new("muniment");
@@ -44,19 +46,44 @@ fn backend(err: impl std::fmt::Display) -> StoreError {
 #[derive(Clone)]
 pub struct RedbBackend {
     db: Arc<Database>,
+    outcome: RedbOpenOutcome,
 }
 
 impl RedbBackend {
     /// Open a database at `path`, creating it if absent.
     ///
+    /// New files are created in redb file format v3, and an existing v2 file is
+    /// upgraded to v3 once, in place, after a backup (see
+    /// [`redb_upgrade`](crate::redb_upgrade)). Use [`open_reporting`](Self::open_reporting)
+    /// or [`open_outcome`](Self::open_outcome) to learn whether that happened.
+    ///
     /// The table is materialized up front so a read on a fresh database sees an
     /// empty table rather than a "table does not exist" error.
     pub fn open(path: impl AsRef<Path>) -> Result<Self, StoreError> {
-        let db = Database::create(path).map_err(backend)?;
+        Self::open_reporting(path).map(|(backend, _)| backend)
+    }
+
+    /// Like [`open`](Self::open), also returning what happened to the file's
+    /// format. A failed upgrade is an error, never a silent v2 handle.
+    pub fn open_reporting(path: impl AsRef<Path>) -> Result<(Self, RedbOpenOutcome), StoreError> {
+        Self::open_with_upgrade(path.as_ref(), &Database::upgrade)
+    }
+
+    pub(crate) fn open_with_upgrade(
+        path: &Path,
+        upgrade: &dyn Fn(&mut Database) -> Result<bool, ::redb::UpgradeError>,
+    ) -> Result<(Self, RedbOpenOutcome), StoreError> {
+        let (db, outcome) = open_v3(path, upgrade)?;
         let txn = db.begin_write().map_err(backend)?;
         txn.open_table(TABLE).map_err(backend)?;
         txn.commit().map_err(backend)?;
-        Ok(Self { db: Arc::new(db) })
+        Ok((Self { db: Arc::new(db), outcome }, outcome))
+    }
+
+    /// What opening this handle did to the file's format.
+    #[must_use]
+    pub fn open_outcome(&self) -> RedbOpenOutcome {
+        self.outcome
     }
 }
 
@@ -315,4 +342,19 @@ mod tests {
             assert_eq!(reopened.get("k").await.unwrap(), Some(b"durable".to_vec()));
         });
     }
+
+    #[test]
+    fn new_database_is_v3() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("store.redb");
+        let (b, outcome) = RedbBackend::open_reporting(&path).unwrap();
+        assert_eq!(outcome, RedbOpenOutcome::Created);
+        assert_eq!(b.open_outcome(), RedbOpenOutcome::Created);
+        drop(b);
+        assert_eq!(crate::redb_upgrade::file_format(&path).unwrap(), Some(3));
+    }
 }
+
+#[cfg(test)]
+#[path = "redb_upgrade_tests.rs"]
+mod upgrade_tests;
