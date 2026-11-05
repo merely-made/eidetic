@@ -46,6 +46,7 @@ const DATABASE_VERSION: u32 = 1;
 pub struct IndexedDbBackend {
     database: IdbDatabase,
     store_name: String,
+    read_only: bool,
 }
 
 impl IndexedDbBackend {
@@ -80,7 +81,29 @@ impl IndexedDbBackend {
         Ok(Self {
             database,
             store_name: store_name.to_string(),
+            read_only: false,
         })
+    }
+
+    /// This handle with every write refused. Reads are unchanged; `put`,
+    /// `delete`, `apply` and `transact` return a [`StoreError`] without
+    /// opening an IndexedDB transaction. The original handle is unaffected.
+    pub fn read_only(mut self) -> Self {
+        self.read_only = true;
+        self
+    }
+
+    /// Whether this handle refuses writes.
+    pub fn is_read_only(&self) -> bool {
+        self.read_only
+    }
+
+    fn check_writable(&self) -> Result<(), StoreError> {
+        if self.read_only {
+            Err(backend_error("this store handle is read-only"))
+        } else {
+            Ok(())
+        }
     }
 
     fn transaction(
@@ -191,6 +214,7 @@ impl Backend for IndexedDbBackend {
     }
 
     async fn put(&self, key: &str, bytes: &[u8]) -> Result<(), StoreError> {
+        self.check_writable()?;
         let (transaction, store) = self.transaction(IdbTransactionMode::Readwrite)?;
         let value = Uint8Array::from(bytes);
         store
@@ -200,6 +224,7 @@ impl Backend for IndexedDbBackend {
     }
 
     async fn delete(&self, key: &str) -> Result<(), StoreError> {
+        self.check_writable()?;
         let (transaction, store) = self.transaction(IdbTransactionMode::Readwrite)?;
         store
             .delete(&JsValue::from_str(key))
@@ -228,6 +253,7 @@ impl Backend for IndexedDbBackend {
     }
 
     async fn apply(&self, ops: &[WriteOp]) -> Result<(), StoreError> {
+        self.check_writable()?;
         if ops.is_empty() {
             return Ok(());
         }
@@ -259,6 +285,7 @@ impl Backend for IndexedDbBackend {
     /// transaction only auto-closes once control returns to the browser event
     /// loop with no pending request, which never happens here.
     async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+        self.check_writable()?;
         let (transaction, store) = self.transaction(IdbTransactionMode::Readwrite)?;
         let snapshot = SnapshotReader(Self::all_entries(&store).await?);
         let ops = f(&snapshot);
