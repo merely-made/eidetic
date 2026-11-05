@@ -113,6 +113,60 @@ pub fn record_result_schema() -> SchemaDefinition {
         ],
     )
 }
+pub fn tag_suggestion_schema() -> SchemaDefinition {
+    schema(
+        "eidetic.TagSuggestion/v1",
+        &[
+            "subject",
+            "subject_version",
+            "input_text_hash",
+            "concept",
+            "producer",
+            "run",
+            "settings_digest",
+            "evidence",
+            "score",
+            "keeping",
+        ],
+        &[
+            ("subject", "object"),
+            ("subject_version", "string"),
+            ("input_text_hash", "string"),
+            ("concept", "object"),
+            ("producer", "object"),
+            ("run", "string"),
+            ("settings_digest", "string"),
+            ("evidence", "array"),
+            ("keeping", "string"),
+        ],
+    )
+}
+pub fn tag_suggestion_review_schema() -> SchemaDefinition {
+    schema(
+        "eidetic.TagSuggestionReview/v1",
+        &["suggestion", "decision", "reviewer", "at_unix_micros"],
+        &[("suggestion", "string"), ("reviewer", "string")],
+    )
+}
+pub fn personal_tag_assertion_draft_schema() -> SchemaDefinition {
+    schema(
+        "eidetic.PersonalTagAssertionDraft/v1",
+        &[
+            "subject",
+            "subject_version",
+            "concept",
+            "asserter",
+            "cites_suggestion",
+        ],
+        &[
+            ("subject", "object"),
+            ("subject_version", "string"),
+            ("concept", "object"),
+            ("asserter", "string"),
+            ("cites_suggestion", "string"),
+        ],
+    )
+}
 pub(super) fn schema_ref(definition: SchemaDefinition) -> SchemaRef {
     SchemaRef::from_id(ManifestId::of_blob(
         &serde_json::to_vec(&definition).expect("schema serializes"),
@@ -127,6 +181,9 @@ pub async fn bootstrap_record_schemas(store: &mut dyn Store) -> crate::Result<()
         record_snapshot_schema(),
         record_query_schema(),
         record_result_schema(),
+        tag_suggestion_schema(),
+        tag_suggestion_review_schema(),
+        personal_tag_assertion_draft_schema(),
     ] {
         let provenance = ProvenanceRecord {
             origin: ProvenanceOrigin::Generated,
