@@ -187,8 +187,11 @@ impl GoalAssessor {
         if let Some(title) = &retained.title {
             present.extend(self.present_terms(title));
         }
-        let (matched_terms, missing_terms): (Vec<_>, Vec<_>) =
-            self.terms.iter().cloned().partition(|t| present.contains(t));
+        let (matched_terms, missing_terms): (Vec<_>, Vec<_>) = self
+            .terms
+            .iter()
+            .cloned()
+            .partition(|t| present.contains(t));
         let coverage_permille = permille(matched_terms.len(), self.terms.len());
         let mut matches = matches_for(
             &retained.text,

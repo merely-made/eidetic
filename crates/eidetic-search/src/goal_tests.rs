@@ -72,7 +72,10 @@ fn assessment_cites_version_hash_terms_and_scalar_selectors() {
     let record = assessor.record();
     let assessed = &record.assessments[0];
     assert_eq!(assessed.version, "a@v1");
-    assert_eq!(assessed.text_hash, eidetic::Hash::of(source.text.as_bytes()));
+    assert_eq!(
+        assessed.text_hash,
+        eidetic::Hash::of(source.text.as_bytes())
+    );
     assert_eq!(assessed.matched_terms, ["harbour", "tide"]);
     assert!(assessed.missing_terms.is_empty());
     assert_eq!(assessed.coverage_permille, 1000);
@@ -107,7 +110,10 @@ fn coverage_below_threshold_continues_and_title_counts() {
     assert_eq!(record.assessments[0].missing_terms, ["harbour", "tide"]);
     assert_eq!(record.assessments[1].matched_terms, ["harbour", "tide"]);
     // Title matches count for coverage; selectors address the body only.
-    assert_eq!(record.assessments[1].matches, [PassageSelector { start: 4, end: 8 }]);
+    assert_eq!(
+        record.assessments[1].matches,
+        [PassageSelector { start: 4, end: 8 }]
+    );
     assert_eq!(record.matched, 1);
 }
 
@@ -118,8 +124,14 @@ fn satisfied_after_the_configured_number_of_matches() {
         ..GoalSettings::default()
     };
     let mut assessor = GoalAssessor::new("tide", settings).unwrap();
-    assert_eq!(assessor.assess(&retained("a", None, "tide")).unwrap(), GoalVerdict::Match);
-    assert_eq!(assessor.assess(&retained("b", None, "none")).unwrap(), GoalVerdict::Continue);
+    assert_eq!(
+        assessor.assess(&retained("a", None, "tide")).unwrap(),
+        GoalVerdict::Match
+    );
+    assert_eq!(
+        assessor.assess(&retained("b", None, "none")).unwrap(),
+        GoalVerdict::Continue
+    );
     assert_eq!(
         assessor.assess(&retained("c", None, "a tide")).unwrap(),
         GoalVerdict::Satisfied
@@ -133,7 +145,11 @@ fn oversized_source_is_refused_without_changing_state() {
         ..GoalSettings::default()
     };
     let mut assessor = GoalAssessor::new("tide", settings).unwrap();
-    assert!(assessor.assess(&retained("a", Some("tide"), "tide tide")).is_err());
+    assert!(
+        assessor
+            .assess(&retained("a", Some("tide"), "tide tide"))
+            .is_err()
+    );
     let record = assessor.record();
     assert!(record.assessments.is_empty());
     assert_eq!(record.matched, 0);
@@ -146,7 +162,9 @@ fn selector_cap_is_recorded() {
         ..GoalSettings::default()
     };
     let mut assessor = GoalAssessor::new("tide", settings).unwrap();
-    assessor.assess(&retained("a", None, "tide tide tide")).unwrap();
+    assessor
+        .assess(&retained("a", None, "tide tide tide"))
+        .unwrap();
     let assessed = &assessor.record().assessments[0];
     assert_eq!(assessed.matches.len(), 2);
     assert!(assessed.matches_truncated);
