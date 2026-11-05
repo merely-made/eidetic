@@ -73,6 +73,7 @@ features = [
     "Event",
     "IdbDatabase",
     "IdbFactory",
+    "IdbKeyRange",
     "IdbObjectStore",
     "IdbOpenDbRequest",
     "IdbRequest",

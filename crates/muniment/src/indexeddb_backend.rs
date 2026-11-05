@@ -12,10 +12,12 @@
 //! [`ZipBackend`](crate::ZipBackend) as the third host realization: redb for
 //! the desktop, zip for the portable archive, this for the browser.
 //!
-//! Keys are flat strings, so `list` and `scan` filter the key set rather than
-//! using a cursor range. That is correct for stores of the size a browser tab
-//! holds and keeps the transaction short; a cursor is the change to make if a
-//! consumer grows a key set where enumerating it is the cost.
+//! Keys are flat strings. `list` and `scan` narrow the fetch with an
+//! `IDBKeyRange` over `getAllKeys` when the bounds are safe (see
+//! [`key_range`](crate::key_range): IndexedDB orders strings by UTF-16 code
+//! units, Muniment by code point, and they agree only for bounds below
+//! U+D800), and otherwise fall back to enumerating every key. Either way the
+//! result is post-filtered with Rust's comparison, so it is identical.
 //!
 //! Writes go through a transaction that this awaits to completion, so `put`,
 //! `delete`, and `apply` resolve only once the browser has committed. `apply`
@@ -31,12 +33,13 @@ use js_sys::{Array, Uint8Array};
 use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::{Closure, JsValue};
 use web_sys::{
-    Event, IdbDatabase, IdbFactory, IdbObjectStore, IdbRequest, IdbTransaction, IdbTransactionMode,
+    Event, IdbDatabase, IdbFactory, IdbKeyRange, IdbObjectStore, IdbRequest, IdbTransaction, IdbTransactionMode,
 };
 
 use std::collections::HashMap;
 
 use crate::backend::{TransactFn, TransactionReader};
+use crate::key_range::{KeyBounds, prefix_bounds, scan_bounds};
 use crate::{Backend, StoreError, WriteOp};
 
 const DATABASE_VERSION: u32 = 1;
@@ -120,9 +123,28 @@ impl IndexedDbBackend {
         Ok((transaction, store))
     }
 
-    async fn all_keys(&self) -> Result<Vec<String>, StoreError> {
+    /// Keys inside `bounds` (a superset of the Rust-order answer; callers
+    /// post-filter). Unbounded enumerates every key.
+    async fn keys_in(&self, bounds: &KeyBounds) -> Result<Vec<String>, StoreError> {
         let (_transaction, store) = self.transaction(IdbTransactionMode::Readonly)?;
-        let request = store.get_all_keys().map_err(js_backend_error)?;
+        let lower = bounds.lower.as_deref().map(JsValue::from_str);
+        let upper = bounds.upper.as_deref().map(JsValue::from_str);
+        let range = match (&lower, &upper) {
+            (Some(l), Some(u)) => Some(IdbKeyRange::bound_with_lower_open_and_upper_open(
+                l, u, false, true,
+            )),
+            (Some(l), None) => Some(IdbKeyRange::lower_bound(l)),
+            (None, Some(u)) => Some(IdbKeyRange::upper_bound_with_open(u, true)),
+            (None, None) => None,
+        };
+        let request = match range {
+            Some(range) => {
+                let range = range.map_err(js_backend_error)?;
+                store.get_all_keys_with_key(&range)
+            },
+            None => store.get_all_keys(),
+        }
+        .map_err(js_backend_error)?;
         let value = await_request(&request).await?;
         Ok(Array::from(&value)
             .iter()
@@ -234,7 +256,7 @@ impl Backend for IndexedDbBackend {
 
     async fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError> {
         Ok(self
-            .all_keys()
+            .keys_in(&prefix_bounds(prefix))
             .await?
             .into_iter()
             .filter(|key| key.starts_with(prefix))
@@ -242,8 +264,11 @@ impl Backend for IndexedDbBackend {
     }
 
     async fn scan(&self, start: &str, end: &str) -> Result<Vec<String>, StoreError> {
+        let Some(bounds) = scan_bounds(start, end) else {
+            return Ok(Vec::new());
+        };
         let mut keys = self
-            .all_keys()
+            .keys_in(&bounds)
             .await?
             .into_iter()
             .filter(|key| key.as_str() >= start && key.as_str() < end)

@@ -13,9 +13,10 @@
 //! Four pieces over one seam:
 //!
 //! - [`Backend`] is the host-supplied byte store. The host realizes it as the
-//!   filesystem on desktop, OPFS in the browser, or an embedded store (redb,
-//!   fjall). It is `async` and `?Send` so a browser main thread can await OPFS
-//!   promises; desktop backends return ready futures and pay nothing. muniment
+//!   filesystem on desktop, IndexedDB in the browser (from a window or worker
+//!   scope; OPFS is a possible future host-supplied backend, not shipped), or an
+//!   embedded store (redb, fjall). It is `async` and `?Send` so a browser can
+//!   await IndexedDB promises; desktop backends return ready futures and pay nothing. muniment
 //!   ships only [`MemoryBackend`], the in-memory test floor.
 //! - [`SlotStore`] holds typed **mutable named slots**: `save` overwrites, `load`
 //!   returns the latest. The current-session, current-campaign, current-project
@@ -53,6 +54,7 @@ pub use fjall_limits::{
 #[cfg(all(feature = "indexeddb", target_arch = "wasm32"))]
 pub mod indexeddb_backend;
 pub mod journal;
+pub mod key_range;
 #[cfg(feature = "redb")]
 pub mod redb_backend;
 pub mod slot;
