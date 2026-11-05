@@ -22,6 +22,7 @@ mod authority;
 mod causal;
 pub mod drop;
 mod drop_io;
+pub mod edition;
 mod epoch_retention;
 mod group_crypto;
 mod group_lane;
