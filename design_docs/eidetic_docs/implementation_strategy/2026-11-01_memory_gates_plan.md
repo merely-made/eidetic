@@ -481,6 +481,35 @@ decided here.
 
   Links: area docs · draws on memory_gates D3 · plans memory_gates · summary The frozen M5 harness lives with the run outputs under Code/testing/eidetic/.
 
+- **D5, P4 continues with S2 and the tag draft's admission (2026-11-05):**
+  Mark: "S2 plus tag draft admission". After S1 and S4's Eidetic half, build
+  the Fleece adapter (S2) and admit `PersonalTagAssertionDraftV1` as a personal
+  assertion in Mere's graph (S4's Mere half).
+
+  Links: area recall · draws on memory_gates D2 · plans P4 · summary P4 continues with the Fleece adapter and admission of accepted tag suggestions into the owning graph.
+
+- **D6, browser followers queue edits (2026-11-05):** Mark: "Followers queue
+  edits". A Graphshell follower holds `IndexedDbBackend::read_only()` and hands
+  its edits to the lock-holding writer instead of writing; the writer admits
+  them. Answers the posture brief's decision 2.
+
+  Links: area storage · plans P1 P5 · summary Browser followers read through the read-only handle and queue edits for the writer to admit.
+
+- **D7, the writer lock stays in Graphshell (2026-11-05):** Mark: "Graphshell
+  only (as now)". Muniment supplies the read-only handle and no lock helper.
+  Answers the posture brief's decision 1.
+
+  Links: area storage · plans P5 · summary The browser writer lock and its page protocol stay host-side in Graphshell.
+
+- **D8, migrate native redb to file format v3 (2026-11-05):** Mark: "Migrate
+  native redb". Native databases move to redb's v3 format through redb 2.6's
+  `Database::upgrade()`, independent of OPFS: first a Muniment release that
+  upgrades on open and creates v3, then, once consumers have opened their
+  files with it, the crate bump past 2.x. Answers the posture brief's
+  decision 7; OPFS adoption stays behind its gate.
+
+  Links: area storage · plans P6 · summary Native redb databases migrate to file format v3 via upgrade-on-open before the crate moves past 2.x.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
