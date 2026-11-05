@@ -23,7 +23,7 @@
 //! staying readable by any zip tool.
 //!
 //! Native only, behind the `zip` feature: it uses filesystem paths. The browser
-//! reaches for an OPFS-backed store instead, the same split as redb.
+//! reaches for the IndexedDB backend instead, the same split as redb.
 //!
 //! Single-writer: there is no cross-process file lock. One process serializes
 //! its own writes through the internal mutex, but two processes that opened the

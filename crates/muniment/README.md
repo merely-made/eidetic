@@ -1,7 +1,7 @@
 # muniment
 
 A portable persistence store. One host-supplied byte `Backend` seam (filesystem,
-OPFS, redb, fjall), typed mutable `SlotStore` slots over a pluggable codec,
+IndexedDB, redb, fjall), typed mutable `SlotStore` slots over a pluggable codec,
 content-addressed immutable `BlobStore` blobs, and append-only `Journal<T>`
 histories. Format-agnostic and wasm-friendly. The storage floor a small app
 keeps its durable state in.
@@ -10,7 +10,7 @@ keeps its durable state in.
 use muniment::{BlobStore, JsonSlots, MemoryBackend};
 
 # pollster::block_on(async {
-let backend = MemoryBackend::new();               // host swaps in fs / OPFS
+let backend = MemoryBackend::new();               // host swaps in fs / IndexedDB
 let slots = JsonSlots::new(backend.clone());
 let blobs = BlobStore::new(backend);
 
@@ -51,7 +51,7 @@ matching codec.
 | `zip` | no | `ZipBackend`, a zip archive whose entries are the store's keys |
 | `indexeddb` | no | `IndexedDbBackend`. Its `js-sys` / `wasm-bindgen` / `web-sys` / `futures-channel` deps are declared for wasm32 only, so enabling it in a shared feature set is a no-op on desktop |
 
-The `Backend` is `async` and `?Send` so a browser main thread can await OPFS
+The `Backend` is `async` and `?Send` so a browser (window or worker) can await IndexedDB
 promises, while desktop backends return ready futures. `scan` is an ordered
 half-open range read; `apply` commits a batch of `WriteOp`s, atomically where the
 backend has transactions. `Journal<T>` supplies replayable order without taking

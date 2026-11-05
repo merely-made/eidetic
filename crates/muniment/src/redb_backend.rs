@@ -16,7 +16,7 @@
 //!
 //! Everything lives in one table keyed by muniment's opaque strings. The browser
 //! never compiles this module (it is behind the `redb` feature) and reaches for
-//! OPFS instead.
+//! IndexedDB instead.
 
 use std::path::Path;
 use std::sync::Arc;

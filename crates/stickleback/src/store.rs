@@ -9,8 +9,8 @@
 //! [`MunimentStore`] implements the three traits p2panda-net's `LogSync`
 //! reconciles against, [`OperationStore`], [`LogStore`] and [`TopicStore`], over
 //! a muniment [`Backend`]. One adapter, so a moot's log, a murmur and mesh's
-//! job queue can all sit on the same store family (redb on desktop, IndexedDB +
-//! OPFS in the browser) instead of a hand-rolled backend each.
+//! job queue can all sit on the same store family (redb on desktop, IndexedDB
+//! in the browser) instead of a hand-rolled backend each.
 //!
 //! `LogSync` needs only `LogStore` + `TopicStore`, but the full trio is provided
 //! so the adapter is a drop-in for p2panda's own `SqliteStore`. The `?Send`

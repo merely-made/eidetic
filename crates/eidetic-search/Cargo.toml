@@ -16,7 +16,7 @@ path = "src/lib.rs"
 eidetic = { workspace = true }
 # The only engine dependency: versioned UAX #29 word segmentation from
 # Genet (see `src/tokenize.rs`). The scorer itself is
-# in-tree — no mmap, no threads, no C, so the crate reaches wasm/OPFS.
+# in-tree — no mmap, no threads, no C, so the crate reaches wasm browser backends.
 genet-text = { workspace = true }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

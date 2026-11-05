@@ -29,7 +29,7 @@ pub enum StoreLimitKind {
 /// A storage failure.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum StoreError {
-    /// The host backend (filesystem, OPFS, redb, fjall, ...) failed. The string
+    /// The host backend (filesystem, IndexedDB, redb, fjall, ...) failed. The string
     /// is the backend's own error, stringified so the seam stays backend-agnostic.
     Backend(String),
     /// Encoding or decoding a typed value through a [`Codec`](crate::Codec) failed.

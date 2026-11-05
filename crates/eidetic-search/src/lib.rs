@@ -19,7 +19,7 @@
 //!
 //! The engine is a postings map and a weighted per-field BM25 ([`bm25`]) over
 //! one tokenizer ([`tokenize`]): no mmap, no threads, no C, so the crate
-//! follows muniment to wasm/OPFS. tantivy was retired for that reason and for
+//! follows muniment to wasm browser backends. tantivy was retired for that reason and for
 //! its fixed cost per re-mint, which is the only thing the consumer does.
 //!
 //! Three surfaces:

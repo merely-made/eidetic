@@ -13,15 +13,15 @@
 //! eidetic).
 //!
 //! Eidetic defines typed [`Request`] / [`Response`] enums, an async [`Store`]
-//! trait that storage backends implement (fjall, redb, OPFS, …), and a
+//! trait that storage backends implement (fjall, redb, IndexedDB, …), and a
 //! [`dispatch`] helper that routes requests to a store. Eidetic does not pick
 //! a storage backend, mount filesystems, or know about graphs — it is the
 //! portable intake and durable-content layer over caller-selected stores.
 //!
 //! ## Why async
 //!
-//! Browser-side stores (OPFS via `FileSystemSyncAccessHandle` in workers,
-//! or other wasm-bindgen-backed implementations) cannot expose a synchronous
+//! Browser-side stores (IndexedDB through promises, or other
+//! wasm-bindgen-backed implementations) cannot expose a synchronous
 //! I/O surface from Rust — there is no `block_on` in wasm32-unknown-unknown.
 //! The trait is therefore async, with native fjall/redb implementations
 //! returning ready futures (no actual async work) and browser implementations

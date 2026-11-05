@@ -66,11 +66,12 @@ pub type TransactFn = Box<dyn FnOnce(&dyn TransactionReader) -> Vec<WriteOp> + S
 pub type TransactFn = Box<dyn FnOnce(&dyn TransactionReader) -> Vec<WriteOp>>;
 
 /// A host-supplied key/value byte store. The host realizes it as the filesystem
-/// on desktop, OPFS in the browser, or an embedded store (redb, fjall). muniment
+/// on desktop, IndexedDB in the browser (OPFS is a possible future host-supplied
+/// backend, not shipped), or an embedded store (redb, fjall). muniment
 /// defines the contract; it never picks a backend.
 ///
-/// The async bound is platform-split: `Send` on native, `?Send` on wasm. Browser
-/// OPFS on the main thread can only await JS promises, whose futures are not
+/// The async bound is platform-split: `Send` on native, `?Send` on wasm. The
+/// browser's IndexedDB backend can only await JS promises, whose futures are not
 /// `Send`, so the wasm build relaxes the bound. Native backends (filesystem,
 /// redb) do their I/O synchronously and return `Send` futures, so native
 /// consumers get the stronger bound and can drive a store from a work-stealing
@@ -97,7 +98,8 @@ pub trait Backend {
     /// order**. This is the ordered read a log needs: a per-author log lives at
     /// contiguous fixed-width keys, so `[lo, hi)` returns its entries in `seq`
     /// order. Implementations back this with a native ordered index (redb ranges,
-    /// IndexedDB cursors), or filter and sort [`list`](Backend::list) where none
+    /// an `IDBKeyRange`-bounded `getAllKeys` on IndexedDB where the bounds sort the
+    /// same in UTF-16 and code point order), or filter and sort [`list`](Backend::list) where none
     /// exists.
     ///
     /// Required rather than defaulted: a defaulted async method's future would
@@ -231,7 +233,7 @@ impl<B: Backend + Sync + ?Sized> Backend for &B {
 /// An in-memory [`Backend`], the deterministic test and development floor. Not
 /// durable: state lives only as long as the handle. Cheap to clone (a shared
 /// handle), so one instance can seed both a `SlotStore` and a `BlobStore`, the
-/// way a real filesystem or OPFS handle is cheap to clone.
+/// way a real filesystem or database handle is cheap to clone.
 #[derive(Clone, Default)]
 pub struct MemoryBackend {
     map: Arc<Mutex<HashMap<String, Vec<u8>>>>,
@@ -357,7 +359,7 @@ mod tests {
 
     /// Native invariant: a backend's method futures are `Send`, so a store built
     /// over one can be driven from a work-stealing task (the LogSync drain needs
-    /// this). The wasm build relaxes to `?Send` for OPFS, so this only asserts on
+    /// this). The wasm build relaxes to `?Send` for IndexedDB, so this only asserts on
     /// native. Compile-time: the body never has to run.
     #[cfg(not(target_arch = "wasm32"))]
     #[test]

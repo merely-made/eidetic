@@ -11,10 +11,10 @@
 //! Body bytes are stored **raw** (media-friendly: no base64 / JSON-array bloat)
 //! under `content/body/<url>`, with the response content-type alongside under
 //! `content/ct/<url>`. The host supplies the concrete [`Store`] (fjall on native,
-//! OPFS on wasm), so this seam is backend- and host-agnostic — hence wasm-clean,
+//! IndexedDB on wasm), so this seam is backend- and host-agnostic — hence wasm-clean,
 //! unlike the filesystem Pandect session graph persistence.
 //!
-//! These calls are `async` (the `Store` trait is, for wasm OPFS). A native host
+//! These calls are `async` (the `Store` trait is, for wasm IndexedDB). A native host
 //! `pollster::block_on`s them over an `muniment::fjall_backend` store whose futures are
 //! ready, so the call is effectively synchronous on the UI thread.
 
