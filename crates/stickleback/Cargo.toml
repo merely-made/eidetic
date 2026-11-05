@@ -26,7 +26,7 @@ workspace = true
 path = "src/lib.rs"
 
 [dependencies]
-p2panda-core = "0.7.0"
+p2panda-core = { package = "p2mere-core", version = "0.8" }
 futures-util = "0.3"
 hex = "0.4"
 blake3 = "1.5"
@@ -50,14 +50,16 @@ features = [
 ]
 
 [dependencies.p2panda-encryption]
-version = "0.7.0"
+package = "p2mere-encryption"
+version = "0.8"
 features = [
     "data_scheme",
     "message_scheme",
 ]
 
 [dependencies.p2panda-store]
-version = "0.7.0"
+package = "p2mere-store"
+version = "0.8"
 default-features = false
 
 [dependencies.serde]
@@ -83,7 +85,8 @@ pollster = "0.4"
 tempfile = "3"
 
 [dev-dependencies.p2panda-stream]
-version = "0.7.0"
+package = "p2mere-stream"
+version = "0.8"
 default-features = false
 features = [
     "log_prune",
