@@ -1,0 +1,62 @@
+# Browser storage posture: writers, Web Locks, and the OPFS adoption question
+
+**Date:** 2026-11-05
+**Status:** brief, unreviewed. Read-only research; no repo file touched. Mere files read from fetched `merely-made/mere` main (FETCH_HEAD); Eidetic from local main (`1da8d5a`).
+
+Governing text: `eidetic/design_docs/eidetic_docs/implementation_strategy/2026-11-01_memory_gates_plan.md` P1 (:178, "concurrent independent writers" open at :205), P5 (:286), P6 (:311-373).
+
+## Correction to the premise
+
+Web Locks are already used, in the host, not in muniment. `mere/ports/graphshell/web/extension-profile.js:27` defines `WRITER_LOCK = "graphshell.local-profile.writer.v1"`; `claimWriter()` (called at `web/loader.js:410`) takes it with `ifAvailable`, holds it for the document's life, and mounts losers as followers via `GraphshellApp::observe_local` (`ports/graphshell/src/app.rs:144`, `src/web_tree/product.rs:229`). Handover and vacancy polling use `navigator.locks.request` with an abort signal and `locks.query()` (`extension-profile.js:468-499`), with a `BroadcastChannel` for `committed`/`handover`/`reloading` (`:378`, `:427`). This is documented in `mere/ports/graphshell/web/extension/README.md` ("Local profile") and `design_docs/mere_docs/implementation_strategy/2026-11-04_application_experience_plan.md:595-650` (checked headed on Chromium and Firefox; Firefox not rerun after the follower UI). That plan names the gap Eidetic just filled: the follower had no read-only handle (`:617`); `IndexedDbBackend::read_only()` (`eidetic/crates/muniment/src/indexeddb_backend.rs:91-107`) is that handle. It is not yet wired in (the follower still "hands no store to documents, panes or retained content").
+
+## A. Writers today
+
+Rust constructors of `IndexedDbBackend` (grep of fetched main):
+- `ports/graphshell/src/web_tree/product.rs:220` opens the profile mere (`graphshell-local-v1`, `src/local_profile.rs:22`) or a fixture DB. Context: the extension page `graph.html` (tab, Chrome side panel, Firefox sidebar), or the hosted web page.
+- `ports/graphshell/src/web_tree/applet.rs:313,355` opens `graphshell-capsule-applets-v1` (own DB). `web_tree/blocks.rs:58` and `forme.rs:27` hold handles. Whether these sit behind `claimWriter` is unverified.
+- `ports/graphshell/src/web_capture.rs:13,225-335`: capture admission into the writer's store.
+- Tests only: `crates/system/pandect/tests/graph_residency.rs:294,303`; the probe (`ports/muniment-opfs-probe/src/worker.rs:548`).
+- turnstone, murm, gemot, woodshed, isocosm (origin/main): no `IndexedDbBackend` reference. Browser mere is Graphshell-only.
+
+The MV3 service worker (`web/extension/background.js`) opens no IndexedDB. It queues visits in `chrome.storage.local` (serialized by `serializedQueueMutation`, ~:60-130); only a page drains the queue after taking the lock (README: "before reading the queue"). So the extension SW is not an IDB writer today; the writers are extension pages: two tabs, tab plus side panel, or a reloading page. Two can be live at once; the host lock makes one a follower. Fixture routes (`?fixture=`) skip the lock (`claimWriter` returns "writer").
+
+What IndexedDB does and does not give: each `transact` is one readwrite transaction (all entries snapshotted, closure runs synchronously, writes issued before `oncomplete`; `indexeddb_backend.rs:287-309`, `backend.rs:136`), so atomic and serialized per object store across all contexts of the origin. It gives no owner or claim discipline: two meres opened independently both succeed, which is exactly what the resident-host plan's RED test required (`mere/design_docs/archive_docs/2026-10-28/2026-10-09_resident_host_implementation_plan.md:817`, and `:396`: browser composition "is not proof of exclusive browser ownership"). Read-modify-write above muniment (cached graph state) is not covered. `open` sets only `onupgradeneeded` (`:55-70`); there is no `onversionchange` or `onblocked` handler, so a future schema bump from a new extension version would block behind old open connections (inference; not exercised). Also `transact` snapshots the whole store per call, a scale concern.
+
+## B. Web Locks posture
+
+Proposal, mostly already built host-side:
+1. One lock per mere: `muniment/<mere-id>/writer`, exclusive, held for the writing context's life; others `IndexedDbBackend::open(..).read_only()`.
+2. Acquire with `ifAvailable`; loser becomes a follower. Takeover by queued request (cooperative, as `extension-profile.js:468`), never `steal` except an explicit "break lock" action, since steal aborts the holder's callback and the old holder may still be mid-`transact`.
+3. Lock loss: a held lock is released when the agent dies (MDN is silent; spec behavior, consistent with the tab-close vacancy takeover Graphshell tested). Holder must treat release as writer-loss: `transact` is atomic, so a half-write cannot land, but cached in-memory state is stale; reload as follower.
+4. Extension SW: it would lose the lock whenever the browser suspends it, so it should never be the holder. Keep it queue-only (as now) and let a page write. Availability in service workers is unverified: MDN's page did not state it and the compat table did not load; Baseline "widely available" since March 2022 for window and dedicated worker. Not verified on WKWebView or Safari extension contexts (WebKit via Playwright did have `navigator.locks`, plan §5.12b).
+5. Placement: the lock name, steal rule and loss callback are policy about a mere, so a small muniment helper is defensible (a `WriterGuard` taking a callback; web-sys gates `LockManager::request` behind `web_sys_unstable_apis`, plan §3.4) but the page protocol (BroadcastChannel, UI, vacancy polling, reload handover) stays in Graphshell. Recommendation: keep it host-side; give muniment only the read-only handle (done) and, optionally, a `WriterGuard` if a second host appears.
+
+Gates: P1 "concurrent independent writers" (:205) is satisfied only if a receipt shows two live contexts, the second refused or demoted with unchanged bytes; P5 lifecycle needs worker suspension and reload runs to show the lock is retaken and the queue drained. Qualifying receipt: headed Chrome and Firefox, two views of one profile, writer killed mid-capture, follower promoted, store digest equals the committed prefix, read-only handle refusing writes in the follower. The 2026-11-04 plan already has the first half.
+
+## C. OPFS adoption
+
+Evidence (`mere/design_docs/archive_docs/2026-10-06_completed_plans/2026-08-22_redb_opfs_feasibility_plan.md`): redb 4.2 over a `FileSystemSyncAccessHandle` in a dedicated worker, no unsafe (§5.2, §7.1); 964 native and 727 browser recovery trials per engine, 0 unrecoverable (§7.1); portability both directions (§5.9); Chromium 151 and Firefox 153 agree (§5.12); creation staging 127 trials, 0 stubs, but atomic promotion not demonstrated (§5.4b, §7.2 item 3); ownership via `NoModificationAllowedError`, takeover 67 ms, post-kill release asynchronous (§5.6, lane 4); reads 21-46x faster than a fair IDB baseline, worst repeat 7.2x; writes 4.7-10.9x slower on Chromium, 1.7-5.0x on Firefox (§7.2 item 2, §5.13); a range-query IDB `scan` is an unpriced third option with a UTF-16 ordering bill (§7.2b, §5.13b). Open per §7.3: items 3 (promotion), 5 (Safari), 6 (price range scan), 7 (choose against a named consumer).
+
+1. **redb versions.** Production is 2.6.3, probe 4.2. Per redb's CHANGELOG: 2.6.0 added file format v3 with `Database::upgrade()`; 3.0.0 dropped v2 ("use `Database::upgrade()` in redb 2.6 to migrate to v3 first"); 4.0.0 lists no format change. So a native migration is a 2.6 `upgrade()` then bump, and going back to 2.x is not supported (2.6.1 note). Plan §5.14 says 4.x reports `UpgradeRequired`; the changelog does not mention that for 3/4 (unverified). Whether the probe's 4.2 files round-trip with a 3.x-format 2.6 file is unverified.
+2. **Safari/WKWebView.** MDN: `createSyncAccessHandle` is dedicated-worker only, Baseline since March 2023; Safari version cells unverified from MDN (plan §5.12b states 15.2 OPFS, 16.4 sync handles, unverified here). Playwright WebKit has no OPFS at all, so it cannot stand in. Needs Apple hardware: Safari and a WKWebView app, running `run-browser.mjs` lanes, plus a declared IndexedDB fallback.
+3. **Crash-atomic creation.** `FileSystemFileHandle.move()` is a vendor extension (§5.4b); Safari untested. Alternatives not needing rename atomicity: a fixed-name header-last creation, or treat a header-less file as "uninitialised, recreate" only when no commit marker exists in a sidecar. Design choice, not tested.
+4. **`transact`.** The probe adapters do not implement it (grep: no `transact` in `ports/muniment-opfs-probe/src` backends; plan §5.14 "Open"). Production `RedbBackend::transact` is just `begin_write` plus a table-backed reader (`eidetic/crates/muniment/src/redb_backend.rs:150-175`), so the OPFS adapter, being redb, can copy it: cheap. Custody claims need it (`backend.rs:136-146`; resident-host plan refuses unproven backends), so adoption should require it; Fjall is the counterexample (no `transact`).
+5. **Unmet workload (P6, :365-372).** Candidates: (a) portable-collection gate (:318): one redb file format shared native and browser; (b) read-heavy indexed recall at a corpus size where IDB's full-key `scan` hurts (and the per-`transact` whole-store snapshot). Neither is demonstrated: no measured Graphshell corpus exceeds IDB. The June numbers are barred (:370). A comparison needs equal durability, the sixth-round caveats on benchmark noise (§5.13), and the cheaper IDB range-scan option priced first.
+6. **Locks.** The sync handle is an exclusive per-file lock (`readwrite`), refusing a second writer with `NoModificationAllowedError`. But it lives only in a dedicated worker, so the single holder is one worker, and every other context (page, other tab, SW) must go through message passing to that worker, or via a Web Lock plus BroadcastChannel as in lane 4. MDN lists `read-only` access handle mode (multiple readers if all read-only), but redb opens read-write and may repair on open, so a read-only follower is unverified and probably means a worker-mediated read API. This is a different architecture from IDB, where every context opens the store directly.
+
+## D. Recommendation
+
+**Do not adopt now; adopt behind a named gate.** Keep `IndexedDbBackend` plus the Graphshell Web Lock as the browser posture, wire `read_only()` into the follower, and treat redb-over-OPFS as a below-Eidetic option unlocked only by a demonstrated workload (P6) and a Safari result. Note the Safari/no-OPFS finding means IndexedDB must remain regardless.
+
+Smallest next slice: in Graphshell (mere), pass `backend.read_only()` to the follower's documents, panes and retained content, and add a headed two-view receipt (writer killed, follower promoted, bytes equal committed prefix, follower write refused). That discharges the P1 concurrency item, serves P5, and costs nothing in storage engines. Optionally a timed Graphshell-corpus read test on IDB to see whether a workload exists.
+
+Decisions for Mark:
+1. Where does writer-lock code live? (a) host only, as now; (b) muniment `WriterGuard` helper behind a `web_sys_unstable_apis` feature; (c) a Graphshell-owned crate shared by future browser hosts.
+2. Followers: (a) read-only handle for all panes now; (b) keep unavailable until P5; (c) follower may queue edits for the writer.
+3. Extension service worker: (a) queue-only forever; (b) allow it to write under the lock, accepting loss on suspension; (c) offscreen document as sole writer.
+4. Is a Safari/WKWebView run a precondition for any OPFS decision? (a) yes, hardware required first; (b) trails, ship Chromium/Firefox with IDB fallback; (c) drop OPFS until an Apple target is real.
+5. Pricing the IDB range-scan option first (§7.2b): (a) do it before any OPFS work; (b) skip, unneeded; (c) only if a consumer measures slow scans.
+6. If OPFS is ever adopted, `transact`: (a) required (recommended); (b) default `NotTransactional` accepted, with custody refused on it.
+7. Redb production version: (a) stay on 2.6.3; (b) migrate native to 3.x via `upgrade()` first, independent of OPFS; (c) 4.2 only for browser, format-bridged by export.
+
+Unverified: service-worker and Safari support for Web Locks and sync handles (MDN tables did not load); whether applet/blocks/forme stores are gated by the writer lock; 4.x `UpgradeRequired` behavior; redb read-only open over OPFS; IDB versionchange blocking in practice.

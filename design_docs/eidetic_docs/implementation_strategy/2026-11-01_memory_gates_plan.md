@@ -132,6 +132,31 @@ constraints:
    rebuildable indexes keep separate lifecycles; evidence and review state
    survive reopening.
 
+Slices, in order (2026-11-05):
+
+- **S1, model-free goal assessment (Eidetic).** `eidetic_search::goal`:
+  candidate selection by goal-term overlap of a known label and source
+  assessment by goal-term coverage, each choice kept in a `GoalRecord` that
+  cites retained version, text hash, matched and missing terms, scalar
+  selectors and the selection rule. Done when it is the ordinary no-model path
+  for S2. Landed (see Progress).
+- **S2, the Fleece adapter (Mere).** A retained-source provider and the S1
+  selector and assessor plugged into `fleece::traversal::run_traversal`, with
+  the request and byte limits the plan names and Fleece lacks (it bounds nodes,
+  depth, fan-out and pending only). The report and `GoalRecord` travel
+  together. Done when a traversal over supplied retained sources makes zero
+  fetches, reports omissions and cites versions.
+- **S3, the model path (ESP).** An ESP assessor that reranks or replaces S1's
+  verdicts and records its model, settings and envelope beside the S1 record;
+  the S1 path still runs when no model is present.
+- **S4, tag suggestions (Eidetic records, then the owning graph).** Portable
+  suggestion, review and assertion-draft records in Eidetic; the owning
+  application admits the draft as a personal assertion through its attributed
+  funnel.
+- **S5, the host.** A person-given goal in a native host, results and
+  proposals through Alembic's workshop with byte-to-scalar selector
+  conversion, and the headed receipt the done-clause asks for.
+
 **Done when:** a real lexical or model provider produces query results over
 retained visits and captured content, cites source versions and explains
 traversal choices, on a goal given by a person, with the ordinary path usable
@@ -505,6 +530,21 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
 - 2026-11-01: the dead citation `Code/output/graphshell-components/validation-resumed/`
   in the archived plan's 2026-10-26 Progress entry no longer exists in the
   workspace; it stays there as history.
+- 2026-11-05: browser writers are Graphshell extension pages only; the MV3
+  service worker queues in `chrome.storage.local` and opens no IndexedDB. A
+  host Web Lock (`mere/ports/graphshell/web/extension-profile.js:27`,
+  `claimWriter`) already makes one page the writer and the rest followers;
+  followers do not yet hold `IndexedDbBackend::read_only()`. See
+  `../research/2026-11-05_browser_storage_posture_brief.md`.
+- 2026-11-05: `IndexedDbBackend::list`/`scan` narrow `getAllKeys` with an
+  `IDBKeyRange` when a bound is made of characters below U+D800, where UTF-16
+  and code-point order agree (`crates/muniment/src/key_range.rs`); otherwise
+  they enumerate every key. Results are post-filtered in Rust either way.
+  `transact` still snapshots the whole store per call.
+- 2026-11-05: Fleece's `run_traversal` bounds nodes, depth, fan-out and
+  pending candidates (`mere/crates/fleece/src/traversal.rs:41-49`); it has no
+  request or byte limit and its `GoalDecision` carries no explanation, which
+  S1's `GoalRecord` supplies.
 - 2026-11-01: the archived plan's browser-intake source findings (latest-only
   visit selection, same-URL window dropping, Firefox exporter precision, transition
   vocabulary) were repair targets of `8c490e23` and are not carried; only the
@@ -518,3 +558,8 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   priority line as superseded by D2, and repoints its links to the extracted
   crates into this repository and to the `esp` and `gemot` repositories. The
   M1-M5 run outputs moved to `Code/testing/eidetic/` (D3). Draft, unreviewed.
+- 2026-11-05: P4 S1 landed: `crates/eidetic-search/src/goal.rs`, ten focused
+  tests, wasm32 check. P6 storage: IndexedDB `list`/`scan` key ranges
+  (`d2ebdf3`, bound arithmetic tested natively; no browser run) and crate docs
+  corrected to say IndexedDB is the shipped browser backend and OPFS is not
+  (`496ad9d`).
