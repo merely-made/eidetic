@@ -636,3 +636,11 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   under method `urn:mere:method:accepted-tag-suggestion`; idempotent per
   asserter; 7 tests. The host maps `RecallSourceId` to a resource and the
   reviewer string to an agent IRI. Both checked against Eidetic `8b4b3ec`.
+- 2026-11-05: D6 built on Mere branch `agent/follower-queue` (`dc2a5d13d`,
+  `7fde6d7c6`, `a69301d58`), unmerged per D9. A Graphshell follower opens its
+  store with `IndexedDbBackend::read_only()` and queues adds, titles and tags
+  to the writer, which admits them through its own save funnels, refuses stale
+  or changed bases with a reason, and replays a repeated request id's answer.
+  Checked by Graphshell lib tests, the writer-handover smoke and a partial
+  headed Chromium run; not qualified. Its detail and open items are in Mere's
+  application experience plan on that branch.
