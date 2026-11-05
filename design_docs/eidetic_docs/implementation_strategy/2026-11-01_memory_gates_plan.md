@@ -574,6 +574,15 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   pending candidates (`mere/crates/fleece/src/traversal.rs:41-49`); it has no
   request or byte limit and its `GoalDecision` carries no explanation, which
   S1's `GoalRecord` supplies.
+- 2026-11-05: redb 2.6.3 creates v2 files by default
+  (`Builder::create_with_file_format_v3`, `db.rs:1149`); `Database::upgrade`
+  (`db.rs:459`) rewrites the commit headers in place with no documented crash
+  atomicity; the format has no public reader, so Muniment reads the primary
+  commit slot's version byte (`header.rs:44-76`). redb 2.6.3 panics instead of
+  erring on some damaged files at open (`page_manager.rs:243`,
+  `region.rs:333`); Muniment catches that as corruption. Every consumer in the
+  family opens Muniment's redb files through `RedbBackend`; gemot declares an
+  unused `redb = "2"` (`crates/gemot/Cargo.toml:49`) that phase 2 must drop.
 - 2026-11-01: the archived plan's browser-intake source findings (latest-only
   visit selection, same-URL window dropping, Firefox exporter precision, transition
   vocabulary) were repair targets of `8c490e23` and are not carried; only the
@@ -600,3 +609,10 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   helper, with schemas seeded by `bootstrap_record_schemas`. Eidetic-search's
   `TagId` is now `records::TagIdentity`. Admission of the draft into the owning
   graph is open.
+- 2026-11-05: D8 phase 1 landed (`26c5efa`, `0cd9047`): `RedbBackend::open`
+  creates format v3 and upgrades a v2 file on open after a durable
+  `<file>.pre-v3` backup, restoring it if the upgrade fails;
+  `open_reporting` returns `RedbOpenOutcome` (created, current, upgraded).
+  Interrupted-upgrade cases are fault-tested with injected failures, not a real
+  crash. Phase 2, the crate bump past redb 2.x, waits until consumers have
+  opened their files with this release.
