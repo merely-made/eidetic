@@ -19,11 +19,8 @@ pub enum ProducerKind {
     Note,
     Other,
 }
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub struct TagId {
-    pub owner: String,
-    pub concept: String,
-}
+/// The identity-owned tag concept reference, defined once in `eidetic::records`.
+pub use eidetic::records::TagIdentity as TagId;
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ResearchSource {
     pub retained: RetainedSourceText,

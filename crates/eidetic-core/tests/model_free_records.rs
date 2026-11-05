@@ -168,3 +168,47 @@ fn model_free_schema_bootstrap_provides_resolvable_real_definitions() {
             .unwrap();
     });
 }
+#[test]
+fn tag_suggestion_records_validate_against_bootstrapped_schemas_and_reopen() {
+    use eidetic::models::recall::PassageSelector;
+    pollster::block_on(async {
+        let s = TagSuggestionV1 {
+            subject: record().evidence.source().clone(),
+            subject_version: "v1".into(),
+            input_text_hash: Hash::of(b"t"),
+            concept: TagIdentity {
+                owner: "o".into(),
+                concept: "c".into(),
+            },
+            producer: SuggestionProducer {
+                kind: SuggestionProducerKind::Lexical,
+                operation_version: "v1".into(),
+            },
+            run: "run".into(),
+            settings_digest: Hash::of(b"s"),
+            evidence: vec![PassageSelector { start: 0, end: 2 }],
+            score: None,
+            keeping: KeepingTier::Retained,
+        };
+        let (review, draft) = accept(&s, "me", 1);
+        let mut store = MemoryBackend::default();
+        assert!(
+            validate_required_schema(&mut store, &mut NoFetcher, &s)
+                .await
+                .is_err()
+        );
+        bootstrap_record_schemas(&mut store).await.unwrap();
+        validate_required_schema(&mut store, &mut NoFetcher, &s)
+            .await
+            .unwrap();
+        validate_required_schema(&mut store, &mut NoFetcher, &review)
+            .await
+            .unwrap();
+        validate_required_schema(&mut store, &mut NoFetcher, &draft)
+            .await
+            .unwrap();
+        roundtrip(&mut store, &s).await;
+        roundtrip(&mut store, &review).await;
+        roundtrip(&mut store, &draft).await;
+    });
+}

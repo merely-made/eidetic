@@ -8,12 +8,15 @@ use crate::{Hash, ManifestId, SchemaRef, TypedPayload};
 use serde::{Deserialize, Serialize};
 
 mod schemas;
+mod suggestions;
 mod validate;
 pub use schemas::{
-    bootstrap_record_schemas, property_definition_schema, property_record_schema,
-    record_query_schema, record_result_schema, record_snapshot_schema, validate_required_schema,
+    bootstrap_record_schemas, personal_tag_assertion_draft_schema, property_definition_schema,
+    property_record_schema, record_query_schema, record_result_schema, record_snapshot_schema,
+    tag_suggestion_review_schema, tag_suggestion_schema, validate_required_schema,
 };
 
+pub use suggestions::*;
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum ValueType {
     Text,
@@ -278,3 +281,9 @@ payload!(PropertyRecordV1, property_record_schema);
 payload!(RecordSnapshot, record_snapshot_schema);
 payload!(RecordQuery, record_query_schema);
 payload!(RecordResult, record_result_schema);
+payload!(TagSuggestionV1, tag_suggestion_schema);
+payload!(TagSuggestionReviewV1, tag_suggestion_review_schema);
+payload!(
+    PersonalTagAssertionDraftV1,
+    personal_tag_assertion_draft_schema
+);
