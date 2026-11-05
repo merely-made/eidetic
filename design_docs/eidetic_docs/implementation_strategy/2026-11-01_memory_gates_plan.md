@@ -562,4 +562,12 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   tests, wasm32 check. P6 storage: IndexedDB `list`/`scan` key ranges
   (`d2ebdf3`, bound arithmetic tested natively; no browser run) and crate docs
   corrected to say IndexedDB is the shipped browser backend and OPFS is not
-  (`496ad9d`).
+  (`496ad9d`). P4 S4's Eidetic half landed (`c96092d`):
+  `records::suggestions` holds `TagSuggestionV1` (id = BLAKE3 over the whole
+  record, so a regeneration is a new suggestion), the append-only
+  `TagSuggestionReviewV1` (latest review wins; a later reject does not
+  retract an accepted draft), `PersonalTagAssertionDraftV1` citing the
+  suggestion, `KeepingTier` (runtime, rebuildable, retained) and a query
+  helper, with schemas seeded by `bootstrap_record_schemas`. Eidetic-search's
+  `TagId` is now `records::TagIdentity`. Admission of the draft into the owning
+  graph is open.
