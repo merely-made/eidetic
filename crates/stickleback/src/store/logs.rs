@@ -14,7 +14,7 @@ where
 {
     type Error = StoreError;
 
-    async fn get_latest_entry(
+    async fn get_latest_entry_tx(
         &self,
         author: &VerifyingKey,
         log_id: &L,
@@ -28,14 +28,6 @@ where
             },
             None => Ok(None),
         }
-    }
-
-    async fn get_latest_entry_tx(
-        &self,
-        author: &VerifyingKey,
-        log_id: &L,
-    ) -> Result<Option<Operation<E>>, StoreError> {
-        self.get_latest_entry(author, log_id).await
     }
 
     async fn get_log_heights(
@@ -137,7 +129,7 @@ where
         Ok(Box::pin(stream))
     }
 
-    async fn prune_entries(
+    async fn prune_entries_tx(
         &self,
         author: &VerifyingKey,
         log_id: &L,
@@ -160,7 +152,7 @@ where
 {
     type Error = StoreError;
 
-    async fn get_latest_entry(
+    async fn get_latest_entry_tx(
         &self,
         author: &VerifyingKey,
         log_id: &L,
@@ -176,17 +168,6 @@ where
                 .transpose(),
             None => Ok(None),
         }
-    }
-
-    async fn get_latest_entry_tx(
-        &self,
-        author: &VerifyingKey,
-        log_id: &L,
-    ) -> Result<Option<AnyOperation>, StoreError> {
-        <Self as LogStore<AnyOperation, VerifyingKey, L, u32, Hash>>::get_latest_entry(
-            self, author, log_id,
-        )
-        .await
     }
 
     async fn get_log_heights(
@@ -288,7 +269,7 @@ where
         Ok(Box::pin(stream))
     }
 
-    async fn prune_entries(
+    async fn prune_entries_tx(
         &self,
         author: &VerifyingKey,
         log_id: &L,

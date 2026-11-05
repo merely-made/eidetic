@@ -46,6 +46,7 @@ use p2panda_core::cbor::{decode_cbor, encode_cbor};
 use p2panda_core::{
     AnyOperation, Body, Extensions, Hash, Header, LogId, Operation, Topic, VerifyingKey,
 };
+use p2panda_store::Transaction;
 use p2panda_store::logs::{LogEntry, LogStore};
 use p2panda_store::operations::OperationStore;
 use p2panda_store::topics::TopicStore;
@@ -406,6 +407,32 @@ fn decode_any_op(bytes: &[u8]) -> Result<AnyOperation, StoreError> {
     })
 }
 
+// ── Transaction ───────────────────────────────────────────────────────────────
+
+/// Every `_tx` write lands as one atomic backend batch, so the permit has
+/// nothing to hold and commit has nothing left to flush. Rollback cannot undo
+/// a write that already applied; p2panda's processors only roll back around
+/// reads that fail before any write.
+impl<B, E> Transaction for MunimentStore<B, E>
+where
+    B: Backend,
+{
+    type Error = StoreError;
+    type Permit = ();
+
+    async fn begin(&self) -> Result<(), StoreError> {
+        Ok(())
+    }
+
+    async fn rollback(&self, _permit: ()) -> Result<(), StoreError> {
+        Ok(())
+    }
+
+    async fn commit(&self, _permit: ()) -> Result<(), StoreError> {
+        Ok(())
+    }
+}
+
 // ── OperationStore ────────────────────────────────────────────────────────────
 
 impl<B, E> OperationStore<Operation<E>, Hash> for MunimentStore<B, E>
@@ -415,7 +442,7 @@ where
 {
     type Error = StoreError;
 
-    async fn insert_operation<L: LogId>(
+    async fn insert_operation_tx<L: LogId>(
         &self,
         id: &Hash,
         operation: &Operation<E>,
@@ -466,19 +493,15 @@ where
         self.get_operation(id).await
     }
 
-    async fn has_operation(&self, id: &Hash) -> Result<bool, StoreError> {
-        self.has_operation(id).await
-    }
-
     async fn has_operation_tx(&self, id: &Hash) -> Result<bool, StoreError> {
         self.has_operation(id).await
     }
 
-    async fn delete_operation(&self, id: &Hash) -> Result<bool, StoreError> {
+    async fn delete_operation_tx(&self, id: &Hash) -> Result<bool, StoreError> {
         self.delete_operation(id).await
     }
 
-    async fn delete_operation_payload(&self, id: &Hash) -> Result<bool, StoreError> {
+    async fn delete_operation_payload_tx(&self, id: &Hash) -> Result<bool, StoreError> {
         self.delete_operation_payload(id).await
     }
 }

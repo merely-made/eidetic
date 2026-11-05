@@ -212,7 +212,7 @@ fn checkpoint_authority_gates_destructive_retention() {
         // The authorized signer at the current revision may prune.
         assert!(authority.permits_checkpoint(*author.as_bytes(), &authority.authority_revision()));
         let pruned =
-            LogStore::<Operation<LedgerExt>, _, u64, u32, p2panda_core::Hash>::prune_entries(
+            LogStore::<Operation<LedgerExt>, _, u64, u32, p2panda_core::Hash>::prune_entries_tx(
                 processor.store(),
                 &author,
                 &log_id,

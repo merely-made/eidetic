@@ -14,7 +14,7 @@ where
 {
     type Error = StoreError;
 
-    async fn associate(
+    async fn associate_tx(
         &self,
         topic: &Topic,
         author: &VerifyingKey,
@@ -28,7 +28,7 @@ where
         Ok(true)
     }
 
-    async fn remove(
+    async fn remove_tx(
         &self,
         topic: &Topic,
         author: &VerifyingKey,

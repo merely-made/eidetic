@@ -74,19 +74,19 @@ fn round_trips_and_orders_a_log() {
         // Insert-or-ignore: the first insert takes, the repeat is a no-op.
         assert!(
             store
-                .insert_operation(&op0.hash, &op0, &log_id)
+                .insert_operation_tx(&op0.hash, &op0, &log_id)
                 .await
                 .unwrap()
         );
         assert!(
             !store
-                .insert_operation(&op0.hash, &op0, &log_id)
+                .insert_operation_tx(&op0.hash, &op0, &log_id)
                 .await
                 .unwrap()
         );
         assert!(
             store
-                .insert_operation(&op1.hash, &op1, &log_id)
+                .insert_operation_tx(&op1.hash, &op1, &log_id)
                 .await
                 .unwrap()
         );
@@ -161,13 +161,13 @@ fn associates_and_resolves_a_topic() {
         let topic = Topic::random();
         let log_id = 7u64;
 
-        assert!(store.associate(&topic, &author, &log_id).await.unwrap());
-        assert!(!store.associate(&topic, &author, &log_id).await.unwrap());
+        assert!(store.associate_tx(&topic, &author, &log_id).await.unwrap());
+        assert!(!store.associate_tx(&topic, &author, &log_id).await.unwrap());
 
         let resolved = store.resolve(&topic).await.unwrap();
         assert_eq!(resolved.get(&author), Some(&vec![log_id]));
 
-        assert!(store.remove(&topic, &author, &log_id).await.unwrap());
+        assert!(store.remove_tx(&topic, &author, &log_id).await.unwrap());
         let empty: BTreeMap<VerifyingKey, Vec<u64>> = store.resolve(&topic).await.unwrap();
         assert!(empty.is_empty());
     });
@@ -185,7 +185,7 @@ fn prunes_below_a_sequence() {
         let op1 = make_op(&sk, 1, Some(op0.hash), b"one");
         let op2 = make_op(&sk, 2, Some(op1.hash), b"two");
         for op in [&op0, &op1, &op2] {
-            store.insert_operation(&op.hash, op, &log_id).await.unwrap();
+            store.insert_operation_tx(&op.hash, op, &log_id).await.unwrap();
         }
 
         // Prune below seq 2: op0 and op1 go, op2 stays.
@@ -195,7 +195,7 @@ fn prunes_below_a_sequence() {
             u64,
             u32,
             Hash,
-        >>::prune_entries(&store, &author, &log_id, &2)
+        >>::prune_entries_tx(&store, &author, &log_id, &2)
         .await
         .unwrap();
         assert_eq!(pruned, 2);
