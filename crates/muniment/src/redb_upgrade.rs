@@ -141,21 +141,45 @@ pub(crate) fn open_v3(
             before.unwrap_or(0)
         )));
     }
+    // redb 2.6 asserts, rather than erring, on some damaged files (a truncated
+    // file, a corrupt region header), so a panic during open is caught and
+    // reported as corruption. Under `panic = "abort"` it still aborts.
+    let open = || {
+        std::panic::catch_unwind(|| {
+            let mut builder = Builder::new();
+            builder.create_with_file_format_v3(true);
+            builder.create(path)
+        })
+        .unwrap_or_else(|_| {
+            Err(::redb::DatabaseError::Storage(::redb::StorageError::Corrupted(
+                "redb panicked while opening the file".into(),
+            )))
+        })
+    };
+    let refuse = |err: ::redb::DatabaseError| {
+        if matches!(err, ::redb::DatabaseError::Storage(::redb::StorageError::Corrupted(_)))
+            && !stale_backup
+        {
+            return StoreError::Corruption(err.to_string());
+        }
+        if stale_backup {
+            StoreError::Corruption(format!(
+                "cannot open redb file ({err}); an interrupted upgrade left {}: copy it over the database file",
+                backup.display()
+            ))
+        } else {
+            StoreError::Backend(err.to_string())
+        }
+    };
+    // A backup left by an interrupted upgrade may be the only good copy, so it
+    // is replaced only once the current file has been shown to open.
+    if needs_upgrade && stale_backup {
+        drop(open().map_err(refuse)?);
+    }
     // Back up before the open: redb locks the file while the handle lives.
     let made_backup = if needs_upgrade { Some(write_backup(path)?) } else { None };
 
-    let mut builder = Builder::new();
-    builder.create_with_file_format_v3(true);
-    let mut db = match builder.create(path) {
-        Ok(db) => db,
-        Err(err) if stale_backup && made_backup.is_none() => {
-            return Err(StoreError::Corruption(format!(
-                "cannot open redb file ({err}); an interrupted upgrade left {}: copy it over the database file",
-                backup.display()
-            )));
-        },
-        Err(err) => return Err(StoreError::Backend(err.to_string())),
-    };
+    let mut db = open().map_err(refuse)?;
 
     let outcome = if needs_upgrade {
         let backup = made_backup.as_ref().expect("backup exists when upgrading");
@@ -170,7 +194,17 @@ pub(crate) fn open_v3(
             },
         }
     } else if before.is_some() {
-        RedbOpenOutcome::Current
+        // The header byte only decides whether to back up; `upgrade` is the
+        // authority, and on a v3 file it is a no-op.
+        match upgrade(&mut db) {
+            Ok(false) => RedbOpenOutcome::Current,
+            Ok(true) => RedbOpenOutcome::Upgraded { from_format: 2 },
+            Err(err) => {
+                return Err(StoreError::Unsupported(format!(
+                    "redb upgrade to file format v3 failed ({err:?}); no backup was taken because the header read as v3"
+                )));
+            },
+        }
     } else {
         RedbOpenOutcome::Created
     };

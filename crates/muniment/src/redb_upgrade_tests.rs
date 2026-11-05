@@ -123,3 +123,22 @@ fn unopenable_file_beside_a_backup_names_the_backup() {
     assert!(matches!(&err, StoreError::Corruption(m) if m.contains(".pre-v3")), "{err:?}");
     assert!(backup_path(&path).exists(), "backup is kept for recovery");
 }
+
+#[test]
+fn unopenable_file_with_a_v2_header_keeps_the_existing_backup() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = v2_file(dir.path());
+    std::fs::copy(&path, backup_path(&path)).unwrap();
+    let good = std::fs::read(backup_path(&path)).unwrap();
+    // A v2 header over a body redb cannot read: the shape an upgrade
+    // interrupted before its first header commit could leave.
+    let mut damaged = std::fs::read(&path).unwrap();
+    for byte in &mut damaged[512..] {
+        *byte = 0xA5;
+    }
+    std::fs::write(&path, &damaged).unwrap();
+    assert_eq!(file_format(&path).unwrap(), Some(2));
+    let err = RedbBackend::open(&path).err().expect("must fail");
+    assert!(matches!(&err, StoreError::Corruption(m) if m.contains(".pre-v3")), "{err:?}");
+    assert_eq!(std::fs::read(backup_path(&path)).unwrap(), good, "backup bytes unchanged");
+}
