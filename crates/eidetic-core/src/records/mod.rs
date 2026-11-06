@@ -8,6 +8,7 @@ use crate::{Hash, ManifestId, SchemaRef, TypedPayload};
 use serde::{Deserialize, Serialize};
 
 mod schemas;
+mod suggestion_ledger;
 mod suggestions;
 mod validate;
 pub use schemas::{
@@ -16,6 +17,7 @@ pub use schemas::{
     tag_suggestion_review_schema, tag_suggestion_schema, validate_required_schema,
 };
 
+pub use suggestion_ledger::{LEDGER_PREFIX, LedgerEntry, LedgerError, Recorded, SuggestionLedger};
 pub use suggestions::*;
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum ValueType {
