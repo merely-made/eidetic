@@ -587,6 +587,13 @@ decided here.
 
   Links: area recall · amends memory_gates D16 · plans S6 P2 P3 · summary Native retained text comes from Turnstone's capture core promoted into Eidetic.
 
+- **D18, real captures come later (2026-11-05):** Mark: "None yet". There are
+  no real Graphshell captures to run against; the browser-mere goal surface is
+  built and proven on a fixture profile, then Mark installs the build and
+  browses, and the real-content receipt is taken after that.
+
+  Links: area recall · draws on memory_gates D15 · plans P4 P5 · summary The real-content goal receipt waits until Mark has browsed with the new extension build.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
@@ -779,6 +786,11 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   `recommended_match_similarity_milli` returns 220 for the pinned weights,
   opt-in; the default stays 500. Recalibrate on real retained sources before
   relying on it. Debug CPU: load 1.7 s, 56 pairs 51 to 78 s.
+- 2026-11-05: family on Eidetic `86e78dd`: Murm `98f79b4`/`2070296`, gemot
+  `f4c1b60`, Knot `b41853a`/`0c458c0`, Distillery `25db074`, Mere `b38abf4`
+  (goal surface tests updated for stop words; `model.rs` uses
+  `PassageSelector::to_byte_range`). Cleromancy, Isocosm and Turnstone remain
+  on older Eidetic revs.
 - 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
   `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
   `RetainedProvider` over a snapshot of `PageTextStore` and
