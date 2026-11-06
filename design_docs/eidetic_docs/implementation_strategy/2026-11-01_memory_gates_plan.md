@@ -896,6 +896,17 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   `testing/secure-sessions-n3` still carry several unused patches. Build
   output was committed and removed in Murm `e58031d` and gemot `bd17bb7`
   (history not rewritten).
+- 2026-11-06: Turnstone runs on the promoted capture core (Turnstone
+  `9f01378a`, src +763/-1514): `capture_core.rs` implements `SourceAnnotator`
+  over Fleece and the type conversions; `sealed_capture.rs`,
+  `sealed_records.rs` and recall are thin wrappers over `eidetic::capture`,
+  `eidetic_search::records::sealed` and `recall_mint`. Turnstone's real Fleece
+  annotator reproduces Eidetic's golden fixtures byte for byte (4 tests).
+  Default lib 1389 passed, authoring 1427 passed, each with the one
+  pre-existing Genet paint failure; M5 inspection, integrity and inventory pass
+  under `authoring` with no inventory change. Still in Turnstone:
+  `saved_sources`, the receipt files, the recovery emitters and
+  `sealed_capture::content()`.
 - 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
   `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
   `RetainedProvider` over a snapshot of `PageTextStore` and
