@@ -907,6 +907,15 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   under `authoring` with no inventory change. Still in Turnstone:
   `saved_sources`, the receipt files, the recovery emitters and
   `sealed_capture::content()`.
+- 2026-11-06: the wrapped-highlight bug is fixed in Genet (`dda323e3c`): the
+  shaped text of an inline group drained before a decoration that starts on a
+  later line, whose background then covered it (regression from Genet
+  `418bbd653d5`); text runs on or after a pending deferred decoration's line
+  now wait for it. Regression test in `genet-livery/tests/paint.rs`; livery
+  809 pass; CSS2 linebox reftests 164 (one more pass). Mere's goal-surface CSS
+  workaround can go once Mere locks this Genet. The Turnstone
+  `resolve_color` panic ("C3 resolves every paint color") is a separate,
+  uninvestigated colour-resolution failure.
 - 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
   `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
   `RetainedProvider` over a snapshot of `PageTextStore` and
