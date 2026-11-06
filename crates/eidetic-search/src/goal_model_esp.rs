@@ -63,3 +63,30 @@ impl<P: EmbeddingProvider> GoalEmbedder for EspGoalEmbedder<P> {
         self.provider.embed(&refs).map_err(|e| e.to_string())
     }
 }
+
+/// `match_similarity_milli` calibrated for all-MiniLM-L6-v2 (ESP `bert-f32`)
+/// under [`ModelAssessRule::Or`](crate::ModelAssessRule::Or): the middle of the
+/// thresholds that maximise F1 on the frozen corpus
+/// `tests/fixtures/goal_calibration/corpus.txt`, measured by
+/// `tests/goal_model_minilm.rs`. It sits 84 below the highest unrelated
+/// source and 79 below the lowest paraphrase, so it passes paraphrases and
+/// drops unrelated text; near-miss text that shares goal words is not
+/// separated by any threshold (S1 already passes it).
+pub const MINILM_L6_V2_MATCH_SIMILARITY_MILLI: i16 = 220;
+
+/// Blake3 of the pinned all-MiniLM-L6-v2 `model.safetensors`, as ESP records
+/// it in the space's producer artifacts.
+const MINILM_L6_V2_WEIGHTS_BLAKE3: [u8; 32] = [
+    128, 135, 233, 191, 151, 194, 101, 248, 67, 94, 210, 104, 115, 62, 207, 55, 145, 130, 90, 210,
+    72, 80, 253, 93, 132, 216, 158, 50, 238, 58, 88, 154,
+];
+
+/// The calibrated `match_similarity_milli` for `space`, or `None` for a space
+/// nobody has calibrated (use the generic default only as a placeholder there:
+/// cosine scales differ per model). Keyed on the checkpoint's weights, not just
+/// the producer name, because every ESP BERT checkpoint shares the name.
+pub fn recommended_match_similarity_milli(space: &EmbeddingSpaceV1) -> Option<i16> {
+    let weights = space.producer.artifacts.get("model.safetensors")?;
+    (space.producer.name == "esp.bert-f32" && weights.as_bytes() == &MINILM_L6_V2_WEIGHTS_BLAKE3)
+        .then_some(MINILM_L6_V2_MATCH_SIMILARITY_MILLI)
+}
