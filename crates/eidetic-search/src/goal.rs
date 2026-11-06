@@ -26,7 +26,36 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
 /// Operation identity recorded with every [`GoalRecord`].
-pub const GOAL_OPERATION_VERSION: &str = "eidetic.goal-assessment/v1";
+pub const GOAL_OPERATION_VERSION: &str = "eidetic.goal-assessment/v2";
+
+/// Identity of [`STOP_WORDS`], recorded in [`GoalRecord::stop_words`] when the
+/// list was applied.
+pub const STOP_WORDS_ID: &str = "eidetic.stop-words/en-v1";
+
+/// Small fixed English stop list: articles, conjunctions, prepositions,
+/// pronouns and auxiliaries. Removed from goal terms only, never from source
+/// text. Sorted for binary search; changing it requires a new id.
+pub const STOP_WORDS: &[&str] = &[
+    "a", "about", "after", "all", "am", "an", "and", "any", "are", "as", "at", "be", "been", "but",
+    "by", "can", "could", "did", "do", "does", "for", "from", "had", "has", "have", "he", "her",
+    "him", "his", "i", "if", "in", "into", "is", "it", "its", "me", "my", "nor", "of", "on", "or",
+    "our", "she", "should", "so", "that", "the", "their", "them", "then", "they", "this", "to",
+    "us", "was", "we", "were", "while", "who", "will", "with", "would", "you", "your",
+];
+
+fn is_stop_word(term: &str) -> bool {
+    STOP_WORDS.binary_search(&term).is_ok()
+}
+
+fn default_true() -> bool {
+    true
+}
+fn default_gap() -> usize {
+    40
+}
+fn default_context() -> usize {
+    60
+}
 
 /// Thresholds and input bounds for one goal run.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -42,6 +71,16 @@ pub struct GoalSettings {
     pub max_text_chars: usize,
     /// Maximum match selectors kept per assessment.
     pub max_selectors: usize,
+    /// Drop [`STOP_WORDS`] from goal terms (unless that would leave none).
+    #[serde(default = "default_true")]
+    pub ignore_stop_words: bool,
+    /// Matches overlapping or within this many scalars merge into one passage.
+    #[serde(default = "default_gap")]
+    pub passage_gap_chars: usize,
+    /// Scalars of context added each side of a passage, clamped to the text
+    /// and snapped to whitespace where possible.
+    #[serde(default = "default_context")]
+    pub passage_context_chars: usize,
 }
 
 impl Default for GoalSettings {
@@ -52,6 +91,9 @@ impl Default for GoalSettings {
             max_goal_chars: 10_000,
             max_text_chars: 10_000_000,
             max_selectors: 64,
+            ignore_stop_words: true,
+            passage_gap_chars: default_gap(),
+            passage_context_chars: default_context(),
         }
     }
 }
@@ -79,6 +121,13 @@ pub struct GoalAssessment {
     pub matches: Vec<PassageSelector>,
     /// Whether matches beyond the cap were left out.
     pub matches_truncated: bool,
+    /// `matches` merged into passages (gap-joined, context-expanded), in
+    /// scalar offsets, capped at [`GoalSettings::max_selectors`].
+    #[serde(default)]
+    pub passages: Vec<PassageSelector>,
+    /// Whether passages beyond the cap were left out.
+    #[serde(default)]
+    pub passages_truncated: bool,
     pub verdict: GoalVerdict,
 }
 
@@ -116,6 +165,9 @@ pub struct GoalRecord {
     pub tokenizer: String,
     pub goal: String,
     pub terms: Vec<String>,
+    /// [`STOP_WORDS_ID`] when the stop list was applied to the goal terms.
+    #[serde(default)]
+    pub stop_words: Option<String>,
     pub settings: GoalSettings,
     pub selections: Vec<SelectionChoice>,
     pub assessments: Vec<GoalAssessment>,
@@ -128,6 +180,7 @@ pub struct GoalAssessor {
     tokenizer: Tokenizer,
     goal: String,
     terms: Vec<String>,
+    stop_words: Option<String>,
     settings: GoalSettings,
     selections: Vec<SelectionChoice>,
     assessments: Vec<GoalAssessment>,
@@ -150,19 +203,30 @@ impl GoalAssessor {
             return Err("goal exceeds max_goal_chars".into());
         }
         let tokenizer = Tokenizer::new();
-        let terms: Vec<String> = tokenizer
+        let all: Vec<String> = tokenizer
             .tokens(goal)
             .into_iter()
             .collect::<BTreeSet<_>>()
             .into_iter()
             .collect();
-        if terms.is_empty() {
+        if all.is_empty() {
             return Err("goal has no searchable terms".into());
+        }
+        let mut terms = all.clone();
+        let mut stop_words = None;
+        if settings.ignore_stop_words {
+            let kept: Vec<String> = all.iter().filter(|t| !is_stop_word(t)).cloned().collect();
+            // A goal made only of stop words keeps its terms.
+            if !kept.is_empty() {
+                terms = kept;
+                stop_words = Some(STOP_WORDS_ID.to_owned());
+            }
         }
         Ok(Self {
             tokenizer,
             goal: goal.to_owned(),
             terms,
+            stop_words,
             settings,
             selections: Vec::new(),
             assessments: Vec::new(),
@@ -218,6 +282,8 @@ impl GoalAssessor {
             &QueryMode::Terms(String::new()),
             &matched_terms,
         );
+        matches.sort_by_key(|m| (m.start, m.end));
+        let (passages, passages_truncated) = self.passages(&retained.text, &matches);
         let matches_truncated = matches.len() > self.settings.max_selectors;
         matches.truncate(self.settings.max_selectors);
         let verdict = if coverage_permille < self.settings.min_coverage_permille {
@@ -239,6 +305,8 @@ impl GoalAssessor {
             coverage_permille,
             matches,
             matches_truncated,
+            passages,
+            passages_truncated,
             verdict,
         });
         Ok(verdict)
@@ -290,11 +358,51 @@ impl GoalAssessor {
             tokenizer: format!("{TOKENIZER_NAME}/{SEGMENTATION_PROFILE}"),
             goal: self.goal.clone(),
             terms: self.terms.clone(),
+            stop_words: self.stop_words.clone(),
             settings: self.settings.clone(),
             selections: self.selections.clone(),
             assessments: self.assessments.clone(),
             matched: self.matched,
         }
+    }
+
+    /// Merge sorted matches into passages, then expand by context.
+    fn passages(&self, text: &str, matches: &[PassageSelector]) -> (Vec<PassageSelector>, bool) {
+        let mut merged: Vec<PassageSelector> = Vec::new();
+        for m in matches {
+            match merged.last_mut() {
+                Some(last)
+                    if m.start <= last.end.saturating_add(self.settings.passage_gap_chars) =>
+                {
+                    last.end = last.end.max(m.end);
+                }
+                _ => merged.push(m.clone()),
+            }
+        }
+        let truncated = merged.len() > self.settings.max_selectors;
+        merged.truncate(self.settings.max_selectors);
+        let context = self.settings.passage_context_chars;
+        if context > 0 && !merged.is_empty() {
+            let chars: Vec<char> = text.chars().collect();
+            let len = chars.len();
+            let mut out: Vec<PassageSelector> = Vec::new();
+            for p in &merged {
+                let mut start = p.start.saturating_sub(context);
+                while start < p.start && start > 0 && !chars[start - 1].is_whitespace() {
+                    start += 1;
+                }
+                let mut end = p.end.saturating_add(context).min(len);
+                while end > p.end && end < len && !chars[end].is_whitespace() {
+                    end -= 1;
+                }
+                match out.last_mut() {
+                    Some(last) if start <= last.end => last.end = last.end.max(end),
+                    _ => out.push(PassageSelector { start, end }),
+                }
+            }
+            merged = out;
+        }
+        (merged, truncated)
     }
 
     fn present_terms(&self, text: &str) -> BTreeSet<String> {

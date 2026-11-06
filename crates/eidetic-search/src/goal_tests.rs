@@ -212,3 +212,124 @@ fn record_round_trips_and_names_its_operation() {
     let back: GoalRecord = serde_json::from_str(&json).unwrap();
     assert_eq!(back, record);
 }
+
+fn scalars(text: &str, p: &PassageSelector) -> String {
+    text.chars().skip(p.start).take(p.end - p.start).collect()
+}
+
+fn no_context() -> GoalSettings {
+    GoalSettings {
+        passage_context_chars: 0,
+        ..GoalSettings::default()
+    }
+}
+
+#[test]
+fn stop_list_is_sorted_for_binary_search() {
+    assert!(STOP_WORDS.windows(2).all(|w| w[0] < w[1]));
+}
+
+#[test]
+fn stop_words_are_excluded_from_terms_coverage_and_selection() {
+    let mut a = GoalAssessor::new("keep a starter alive", GoalSettings::default()).unwrap();
+    assert_eq!(a.terms(), ["alive", "keep", "starter"]);
+    assert_eq!(a.record().stop_words.as_deref(), Some(STOP_WORDS_ID));
+    let s = retained("s", None, "a a a keep the starter alive");
+    a.assess(&s).unwrap();
+    let got = a.last_assessment().unwrap();
+    assert_eq!(got.coverage_permille, 1000);
+    assert_eq!(got.matches.len(), 3);
+    let picked = a.select(&[label("x", Some("a a a")), label("y", Some("alive"))]);
+    assert_eq!(picked, Some(1));
+    let off = GoalSettings {
+        ignore_stop_words: false,
+        ..GoalSettings::default()
+    };
+    let b = GoalAssessor::new("keep a starter", off).unwrap();
+    assert_eq!(b.terms(), ["a", "keep", "starter"]);
+    assert_eq!(b.record().stop_words, None);
+}
+
+#[test]
+fn all_stop_word_goal_keeps_its_terms() {
+    let a = GoalAssessor::new("to be or not to be", GoalSettings::default()).unwrap();
+    assert_eq!(a.terms(), ["not"]);
+    let b = GoalAssessor::new("to be", GoalSettings::default()).unwrap();
+    assert_eq!(b.terms(), ["be", "to"]);
+    let all = GoalAssessor::new("the of", GoalSettings::default()).unwrap();
+    assert_eq!(all.terms(), ["of", "the"]);
+    assert_eq!(all.record().stop_words, None);
+}
+
+#[test]
+fn old_settings_json_deserializes_with_defaults() {
+    let json = r#"{"min_coverage_permille":500,"satisfy_after":3,"max_goal_chars":10,
+        "max_text_chars":100,"max_selectors":4}"#;
+    let s: GoalSettings = serde_json::from_str(json).unwrap();
+    assert!(s.ignore_stop_words);
+    assert_eq!(s.passage_gap_chars, 40);
+    assert_eq!(s.passage_context_chars, 60);
+    let mut a = GoalAssessor::new("tide", GoalSettings::default()).unwrap();
+    a.assess(&retained("a", None, "tide")).unwrap();
+    let mut v = serde_json::to_value(a.record()).unwrap();
+    v.as_object_mut().unwrap().remove("stop_words");
+    v["assessments"][0]
+        .as_object_mut()
+        .unwrap()
+        .remove("passages");
+    v["assessments"][0]
+        .as_object_mut()
+        .unwrap()
+        .remove("passages_truncated");
+    let back: GoalRecord = serde_json::from_value(v).unwrap();
+    assert_eq!(back.stop_words, None);
+    assert!(back.assessments[0].passages.is_empty());
+}
+
+#[test]
+fn passages_merge_nearby_hits_and_separate_distant_ones() {
+    let text = format!("tide and harbour {} tide", "x".repeat(200));
+    let mut a = GoalAssessor::new("tide harbour", no_context()).unwrap();
+    a.assess(&retained("a", None, &text)).unwrap();
+    let got = a.last_assessment().unwrap();
+    assert_eq!(got.matches.len(), 3);
+    assert_eq!(got.passages.len(), 2);
+    assert_eq!(scalars(&text, &got.passages[0]), "tide and harbour");
+    assert_eq!(scalars(&text, &got.passages[1]), "tide");
+    assert!(!got.passages_truncated);
+}
+
+#[test]
+fn passages_expand_with_context_on_multibyte_text_within_bounds() {
+    let text = "ééé ééé tide ééé ééé";
+    let settings = GoalSettings {
+        passage_context_chars: 5,
+        ..GoalSettings::default()
+    };
+    let mut a = GoalAssessor::new("tide", settings).unwrap();
+    a.assess(&retained("a", None, text)).unwrap();
+    let p = &a.last_assessment().unwrap().passages[0];
+    assert_eq!(scalars(text, p), "ééé tide ééé");
+    let big = GoalSettings {
+        passage_context_chars: 1000,
+        ..GoalSettings::default()
+    };
+    let mut b = GoalAssessor::new("tide", big).unwrap();
+    b.assess(&retained("a", None, text)).unwrap();
+    let p = &b.last_assessment().unwrap().passages[0];
+    assert_eq!((p.start, p.end), (0, text.chars().count()));
+}
+
+#[test]
+fn passage_cap_is_recorded() {
+    let text = format!("tide{}", format!(" {} tide", "x".repeat(100)).repeat(3));
+    let settings = GoalSettings {
+        max_selectors: 2,
+        ..no_context()
+    };
+    let mut a = GoalAssessor::new("tide", settings).unwrap();
+    a.assess(&retained("a", None, &text)).unwrap();
+    let got = a.last_assessment().unwrap();
+    assert_eq!(got.passages.len(), 2);
+    assert!(got.passages_truncated);
+}
