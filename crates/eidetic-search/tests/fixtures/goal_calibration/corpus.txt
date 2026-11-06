@@ -1,0 +1,79 @@
+# Frozen goal-calibration corpus for tests/goal_model_minilm.rs. Do not edit
+# casually: changing a line changes the recorded calibration numbers.
+# Format: "@goal <id> <goal text>" then one source per line:
+#   <R|I>|<kind>|<source id>|<title>|<text>
+# R relevant, I irrelevant. kinds: lexical (relevant, shares goal words),
+# paraphrase (relevant, few goal words), nearmiss (irrelevant, shares goal
+# words), unrelated (irrelevant, different topic).
+
+@goal g01 how ocean tides are caused by the moon
+R|lexical|g01-a|Tides explained|Ocean tides are caused mainly by the gravitational pull of the moon, which draws the water on the near side of the earth into a bulge.
+R|lexical|g01-b|Why the moon moves the ocean|The moon causes two tides a day because its gravity stretches the ocean toward it and, less obviously, away from it.
+R|paraphrase|g01-c|Spring and neap cycles|Coastal water rises and falls twice daily as our satellite tugs on the seas; when sun and satellite line up the swings grow largest.
+R|paraphrase|g01-d|Lunar gravity and the shore|Harbour depth changes through the day because the natural satellite's attraction deforms the planet's liquid surface.
+I|nearmiss|g01-e|Moon landing anniversary|The moon landing was watched by millions; astronauts collected rock samples and planted a flag near the ocean of storms crater.
+I|nearmiss|g01-f|Ocean cleanup report|Plastic pollution in the ocean is caused by fishing nets and packaging, and new boats are being built to remove it.
+I|unrelated|g01-g|Sourdough starter guide|Feed your starter flour and water every day and keep it somewhere warm until it doubles in size.
+
+@goal g02 fix a memory leak in a Rust program
+R|lexical|g02-a|Finding leaks in Rust|To fix a memory leak in a Rust program, check for reference cycles with Rc and RefCell and break them using Weak pointers.
+R|lexical|g02-b|Rust leak debugging|A growing Rust program usually leaks memory through forgotten channels or cached values that are never removed from a map.
+R|paraphrase|g02-c|Heap profiling walkthrough|Run the binary under heaptrack and compare allocation snapshots to see which function keeps allocating without ever freeing.
+R|paraphrase|g02-d|Cycles with Arc|Two structs holding strong Arc handles to each other will never be dropped, so the allocation lives until the process exits.
+I|nearmiss|g02-e|Rust game review|Rust the survival game has a memory of its own: players leak into each other's bases and a program of events fixes the map.
+I|nearmiss|g02-f|Rust removal on cars|Preventing rust on a car body means fixing chips quickly; a leak in the door seal lets moisture sit in the metal.
+I|unrelated|g02-g|Marathon pacing|Start the first miles slowly, take water every five kilometres and save energy for the final stretch.
+
+@goal g03 compare electric cars and petrol cars running costs
+R|lexical|g03-a|Electric versus petrol costs|Running costs for electric cars are usually lower than petrol cars because electricity per mile is cheaper than fuel.
+R|lexical|g03-b|Cost of ownership|Compared with petrol cars, electric cars have fewer moving parts, so servicing costs less over ten years.
+R|paraphrase|g03-c|Charging at home|Plugging in overnight on a cheap tariff can cost a third of what the same distance costs at the fuel pump.
+R|paraphrase|g03-d|Battery vehicles and the wallet|Owners of battery vehicles save on maintenance and fuel, though depreciation and a pricey purchase can eat into the gain.
+I|nearmiss|g03-e|Electric guitar pickups|Electric guitars cost less than you think; compare single coil and humbucker pickups before choosing cars of strings.
+I|nearmiss|g03-f|Model cars show|Collectors compare petrol station dioramas and electric slot cars at the annual miniature running event.
+I|unrelated|g03-g|Gardening in autumn|Plant tulip bulbs before the first frost and mulch the beds to protect them over winter.
+
+@goal g04 recipe for vegetarian lasagne with spinach
+R|lexical|g04-a|Spinach lasagne|This vegetarian lasagne layers spinach, ricotta and tomato sauce between sheets of pasta and bakes for forty minutes.
+R|lexical|g04-b|Meat-free lasagne recipe|A recipe for lasagne without meat: wilt the spinach, mix it with cheese and layer with white sauce.
+R|paraphrase|g04-c|Green pasta bake|Layer flat noodles with sauteed leafy greens, creamy cheese and passata, then bake until bubbling; no meat needed.
+R|paraphrase|g04-d|Dinner for non-meat eaters|Our hearty baked pasta dish uses mushrooms, wilted greens and mozzarella and feeds six people.
+I|nearmiss|g04-e|Spinach as a crop|Spinach grows best in cool soil; sow seed in early spring and harvest the leaves when they are the size of your hand.
+I|nearmiss|g04-f|Lasagne restaurant review|The lasagne at this place was disappointing, and the vegetarian option was a recipe for a long wait.
+I|unrelated|g04-g|Tax filing deadlines|Self-assessment returns must be submitted online by the end of January to avoid a penalty.
+
+@goal g05 treat a sprained ankle at home
+R|lexical|g05-a|Sprained ankle care|You can treat a sprained ankle at home with rest, ice, compression and elevation during the first two days.
+R|lexical|g05-b|Home treatment for sprains|Treat a mild sprain at home by resting the ankle, icing it for twenty minutes and wrapping it with a bandage.
+R|paraphrase|g05-c|Rolled foot recovery|After twisting your foot, keep weight off it, apply a cold pack, bind it snugly and prop it above heart level.
+R|paraphrase|g05-d|Ligament injury basics|Overstretched ligaments around the joint swell and bruise; gentle movement and a supportive wrap help them heal.
+I|nearmiss|g05-e|Ankle bracelets in fashion|Silver ankle bracelets are treated as a summer staple and can be worn at home or on the beach.
+I|nearmiss|g05-f|Sprained budget|The council sprained its budget at home by overspending; officials will treat the shortfall with cuts.
+I|unrelated|g05-g|Telescope buying advice|A larger aperture gathers more light, so choose it over high magnification for faint galaxies.
+
+@goal g06 learn basic chess opening principles
+R|lexical|g06-a|Chess opening principles|The basic principles of the chess opening are to control the centre, develop your pieces and castle early.
+R|lexical|g06-b|Learn chess openings|Beginners learn the opening basics by moving centre pawns first and bringing knights out before bishops.
+R|paraphrase|g06-c|Starting a game well|In the first ten moves, fight for the middle squares, get minor pieces off the back rank and tuck your king away safely.
+R|paraphrase|g06-d|Early game habits|Avoid moving the same piece twice or launching an early queen raid; instead build a sound structure quickly.
+I|nearmiss|g06-e|Chess set woodworking|Learn to turn a basic chess set on the lathe; the principles of cutting a knight apply to every opening in the wood.
+I|nearmiss|g06-f|Opening night review|The opening of the new chess cafe was a principle-free affair, but the basic menu is cheap.
+I|unrelated|g06-g|Vaccination schedule|Infants receive their first round of immunisations at eight weeks, followed by boosters at twelve and sixteen weeks.
+
+@goal g07 how photosynthesis converts sunlight into energy in plants
+R|lexical|g07-a|Photosynthesis basics|Photosynthesis converts sunlight into chemical energy in plants, using chlorophyll to turn water and carbon dioxide into sugar.
+R|lexical|g07-b|How plants make energy|In plants, sunlight is converted into energy during photosynthesis: light reactions capture photons, then the Calvin cycle builds glucose.
+R|paraphrase|g07-c|Leaves as factories|Green pigment in foliage absorbs rays and drives the production of carbohydrates from air and water, releasing oxygen as waste.
+R|paraphrase|g07-d|Chloroplast chemistry|Inside tiny organelles, captured light splits water molecules and powers the assembly of food molecules for the organism.
+I|nearmiss|g07-e|Solar panel installation|Sunlight is converted into electricity by panels on your roof; installers say energy bills fall, and plants nearby may shade them.
+I|nearmiss|g07-f|Power plants and energy|Coal power plants convert fuel into energy, and sunlight rarely figures in how they work.
+I|unrelated|g07-g|Jazz piano voicings|Rootless voicings leave the bass to another player and stack extensions above the guide tones.
+
+@goal g08 renew a passport before travelling abroad
+R|lexical|g08-a|Passport renewal|You should renew your passport at least six weeks before travelling abroad, as processing can take several weeks.
+R|lexical|g08-b|Before you travel abroad|Renew a passport online before you travel abroad; check that it is valid for the whole trip.
+R|paraphrase|g08-c|Expired travel documents|If your identity booklet is about to lapse, send the form, photos and fee early so it arrives before your overseas flight.
+R|paraphrase|g08-d|Getting papers for a trip|Many countries insist on a booklet with months of validity left, so apply for a fresh one well ahead of departure.
+I|nearmiss|g08-e|Passport game on mobile|The Passport puzzle game lets you renew stamps and travel abroad through twelve cartoon cities.
+I|nearmiss|g08-f|Abroad in the kitchen|Before travelling abroad in flavour, renew your pantry with spices; a good curry needs fresh cumin.
+I|unrelated|g08-g|Bicycle chain maintenance|Clean the chain with a degreaser, dry it, and apply a drop of lubricant to each link.
