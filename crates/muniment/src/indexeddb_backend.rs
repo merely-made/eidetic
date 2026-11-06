@@ -23,6 +23,19 @@
 //! `delete`, and `apply` resolve only once the browser has committed. `apply`
 //! puts every op in ONE transaction, which is what makes a multi-key write
 //! atomic: a tab closed mid-batch leaves the previous state, not half of it.
+//!
+//! # Version changes
+//!
+//! When another page opens the same database at a higher version, the browser
+//! fires `versionchange` here. This connection closes itself so the upgrade
+//! can proceed, and every later operation fails with a clear [`StoreError`]
+//! ("database closed for a newer version; reopen"); hosts poll
+//! [`IndexedDbBackend::is_closed_for_upgrade`] to reload. Conversely, if
+//! `open` itself is blocked by another connection holding an older version,
+//! it fails immediately with a typed error rather than waiting (an open
+//! request that is blocked can wait indefinitely); the abandoned request
+//! closes its connection if the browser later completes it. Browser behavior
+//! here is not covered by native unit tests; only the pure state is.
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -39,6 +52,7 @@ use web_sys::{
 use std::collections::HashMap;
 
 use crate::backend::{TransactFn, TransactionReader};
+use crate::idb_lifecycle::{ClosedFlag, blocked_error};
 use crate::key_range::{KeyBounds, prefix_bounds, scan_bounds};
 use crate::{Backend, StoreError, WriteOp};
 
@@ -50,6 +64,21 @@ pub struct IndexedDbBackend {
     database: IdbDatabase,
     store_name: String,
     read_only: bool,
+    closed: ClosedFlag,
+    /// Keeps the `onversionchange` closure alive for the life of the
+    /// connection (shared by clones) and unregisters it on drop.
+    _version_guard: Rc<VersionChangeGuard>,
+}
+
+struct VersionChangeGuard {
+    database: IdbDatabase,
+    _closure: Closure<dyn FnMut(Event)>,
+}
+
+impl Drop for VersionChangeGuard {
+    fn drop(&mut self) {
+        self.database.set_onversionchange(None);
+    }
 }
 
 impl IndexedDbBackend {
@@ -76,16 +105,65 @@ impl IndexedDbBackend {
         });
         request.set_onupgradeneeded(Some(on_upgrade.as_ref().unchecked_ref()));
 
-        let value = await_request(&request).await?;
-        request.set_onupgradeneeded(None);
+        let value = match await_open(&request).await {
+            Ok(value) => {
+                request.set_onupgradeneeded(None);
+                value
+            },
+            Err(error) => {
+                // Blocked: the request is still pending and may yet fire
+                // `upgradeneeded`/`success`, so its closures must outlive
+                // this call. One-shot, rare path.
+                if matches!(&error, StoreError::Backend(m) if m == crate::idb_lifecycle::OPEN_BLOCKED)
+                {
+                    on_upgrade.forget();
+                    let late = Closure::<dyn FnMut(Event)>::new({
+                        let late_request = request.clone();
+                        move |_| {
+                            let database = late_request
+                                .result()
+                                .ok()
+                                .and_then(|value| value.dyn_into::<IdbDatabase>().ok());
+                            if let Some(database) = database {
+                                database.close();
+                            }
+                        }
+                    });
+                    request.set_onsuccess(Some(late.as_ref().unchecked_ref()));
+                    late.forget();
+                }
+                return Err(error);
+            },
+        };
         let database = value
             .dyn_into::<IdbDatabase>()
             .map_err(|value| js_backend_error(value.into()))?;
+
+        let closed = ClosedFlag::default();
+        let version_closed = closed.clone();
+        let version_database = database.clone();
+        let on_version_change = Closure::<dyn FnMut(Event)>::new(move |_| {
+            version_closed.mark_closed();
+            version_database.close();
+        });
+        database.set_onversionchange(Some(on_version_change.as_ref().unchecked_ref()));
         Ok(Self {
-            database,
+            database: database.clone(),
             store_name: store_name.to_string(),
             read_only: false,
+            closed,
+            _version_guard: Rc::new(VersionChangeGuard {
+                database,
+                _closure: on_version_change,
+            }),
         })
+    }
+
+    /// Whether this connection was closed because another page requested a
+    /// newer database version. Once true every operation fails; the host
+    /// should reload (or reopen) to pick up the new version.
+    pub fn is_closed_for_upgrade(&self) -> bool {
+        self.closed.is_closed()
     }
 
     /// This handle with every write refused. Reads are unchanged; `put`,
@@ -102,6 +180,7 @@ impl IndexedDbBackend {
     }
 
     fn check_writable(&self) -> Result<(), StoreError> {
+        self.closed.check()?;
         if self.read_only {
             Err(backend_error("this store handle is read-only"))
         } else {
@@ -113,6 +192,7 @@ impl IndexedDbBackend {
         &self,
         mode: IdbTransactionMode,
     ) -> Result<(IdbTransaction, IdbObjectStore), StoreError> {
+        self.closed.check()?;
         let transaction = self
             .database
             .transaction_with_str_and_mode(&self.store_name, mode)
@@ -331,6 +411,51 @@ impl Backend for IndexedDbBackend {
         }
         await_transaction(&transaction).await
     }
+}
+
+/// Await an open request. Unlike [`await_request`] this also resolves on
+/// `blocked` (with a typed error), so a held older connection cannot hang
+/// the caller.
+async fn await_open(request: &IdbRequest) -> Result<JsValue, StoreError> {
+    let open: &web_sys::IdbOpenDbRequest = request.unchecked_ref();
+    let (sender, receiver) = oneshot::channel::<Result<(), StoreError>>();
+    let sender = Rc::new(RefCell::new(Some(sender)));
+    let success_sender = sender.clone();
+    let success = Closure::<dyn FnMut(Event)>::new(move |_| {
+        if let Some(sender) = success_sender.borrow_mut().take() {
+            let _ = sender.send(Ok(()));
+        }
+    });
+    let blocked_sender = sender.clone();
+    let blocked = Closure::<dyn FnMut(Event)>::new(move |_| {
+        if let Some(sender) = blocked_sender.borrow_mut().take() {
+            let _ = sender.send(Err(blocked_error()));
+        }
+    });
+    let error_sender = sender;
+    let error_request = request.clone();
+    let error = Closure::<dyn FnMut(Event)>::new(move |_| {
+        if let Some(sender) = error_sender.borrow_mut().take() {
+            let message = error_request
+                .error()
+                .ok()
+                .flatten()
+                .map(|error| error.message())
+                .unwrap_or_else(|| "IndexedDB request failed".to_string());
+            let _ = sender.send(Err(backend_error(message)));
+        }
+    });
+    request.set_onsuccess(Some(success.as_ref().unchecked_ref()));
+    request.set_onerror(Some(error.as_ref().unchecked_ref()));
+    open.set_onblocked(Some(blocked.as_ref().unchecked_ref()));
+    let outcome = receiver
+        .await
+        .map_err(|_| backend_error("IndexedDB request was cancelled"))?;
+    request.set_onsuccess(None);
+    request.set_onerror(None);
+    open.set_onblocked(None);
+    outcome?;
+    request.result().map_err(js_backend_error)
 }
 
 async fn await_request(request: &IdbRequest) -> Result<JsValue, StoreError> {

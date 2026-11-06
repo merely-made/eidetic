@@ -51,6 +51,8 @@ pub use fjall_limits::{
     FjallBoundError, FjallLimitKind, FjallOwnerLimits, FjallReadBudget, FjallReadLimits,
     FjallRecoveryLimits,
 };
+#[cfg(any(test, all(feature = "indexeddb", target_arch = "wasm32")))]
+mod idb_lifecycle;
 #[cfg(all(feature = "indexeddb", target_arch = "wasm32"))]
 pub mod indexeddb_backend;
 pub mod journal;
