@@ -156,18 +156,20 @@ Slices, in order (2026-11-05):
 - **S5, the host.** A person-given goal in a native host, results and
   proposals through Alembic's workshop with byte-to-scalar selector
   conversion, and the headed receipt the done-clause asks for.
-- **S6, native retained text in Mere (planned, D16).** Mere's resident opens
-  no retained page-text store in production; only fixtures and tests do
-  (Findings, 2026-11-05). The slice: a Pandect-reservoir-owned
-  `PageTextStore`/`ResourceCaptureStore` (store lifetimes stay with the store,
-  distillery-extraction D19); a native Graphshell capture writer that records
-  into it through the sealed path P2 requires, or visibly pauses; the resident
-  lending it to its routes; and a read-only, bounded resident-door request
-  (`chirograph`) returning the goal surface's page snapshot under the
-  viewer's existing per-app graph scope. Done when graphshell-mere runs the
-  goal surface over pages it captured natively, after a cold reopen, with
-  sealed custody or a visible pause, and a headed receipt. Turnstone's
-  `trail_memory` (Fjall) is the existing native writer to compare against.
+- **S6, native retained text (planned, D16, D17).** Mere's resident opens no
+  retained page-text store in production (Findings, 2026-11-05); Turnstone's
+  `trail_memory` already captures natively and qualified M1-M5. Promote its
+  storage-agnostic core into Eidetic over a host-supplied `Backend`: browsing
+  capture, the sealed capture writer, capture-source documents, the page
+  corpus and recall minting. Turnstone keeps its armillary actor, M5 receipts
+  and inspection. Natively, Pandect's reservoir supplies the store (store
+  lifetimes stay with the store, distillery-extraction D19); Graphshell gets a
+  native capture writer over the promoted core and a read-only, bounded
+  resident-door request (`chirograph`) for the goal surface's page snapshot
+  under the viewer's per-app graph scope. Done when Turnstone runs on the
+  promoted core with its M5 checks intact, and graphshell-mere runs the goal
+  surface over pages it captured natively, after a cold reopen, with sealed
+  custody or a visible pause, and a headed receipt.
 
 **Done when:** a real lexical or model provider produces query results over
 retained visits and captured content, cites source versions and explains
@@ -577,6 +579,13 @@ decided here.
   built after the browser-mere goal surface lands.
 
   Links: area recall · plans P2 P3 P4 · summary Native retained text in Mere is planned as S6 and built after the browser goal surface.
+
+- **D17, promote Turnstone's capture core into Eidetic (2026-11-05):** Mark
+  asked "Why wouldn't we promote turnstone's to the stack?", then chose "Yes:
+  core to Eidetic". S6 promotes `trail_memory`'s storage-agnostic capture core
+  into Eidetic instead of writing a second native writer in Mere.
+
+  Links: area recall · amends memory_gates D16 · plans S6 P2 P3 · summary Native retained text comes from Turnstone's capture core promoted into Eidetic.
 
 ## Findings
 
