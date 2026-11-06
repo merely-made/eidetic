@@ -703,3 +703,20 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   `recommended_match_similarity_milli` returns 220 for the pinned weights,
   opt-in; the default stays 500. Recalibrate on real retained sources before
   relying on it. Debug CPU: load 1.7 s, 56 pairs 51 to 78 s.
+- 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
+  `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
+  `RetainedProvider` over a snapshot of `PageTextStore` and
+  `ResourceCaptureStore` (source = chartulary resource id, version = BLAKE3 of
+  the page text, links from `projected_relations`), a native goal surface
+  with cited passages and a per-step "how the walk chose" explanation, view
+  state only; 9 tests. Headed receipt
+  `mere/ports/graphshell/docs/receipts/goal_surface_20261105/` (Apple M4,
+  macOS 26.5.1, Eidetic `5182e4e`, captures under
+  `Code/testing/eidetic/goal_surface_20261105/`), checked by eye: two cited
+  results with versions, terms and highlighted passages, and the
+  explanation including an unretained target reported as not fetched.
+  Limits: synthetic five-page fixture, harness-driven input, the port's
+  shared native host rather than `graphshell-mere` (whose door serves
+  projection cards, not retained text), no model path, no proposals (D11).
+  Seen in the capture: S1 counts the stop word "a" as a goal term, and each
+  matched term gets its own snippet of the same sentence.
