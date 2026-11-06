@@ -8,6 +8,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::io::{self, Write};
 mod operations;
 mod output;
+pub mod sealed;
 
 struct Budget {
     left: usize,
