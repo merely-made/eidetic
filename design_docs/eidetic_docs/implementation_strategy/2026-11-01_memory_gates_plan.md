@@ -691,3 +691,15 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   (`models::selector_units`, `d2a8673`) convert scalar selectors to UTF-8 byte
   ranges and back against the exact text, refusing reversed, out-of-bounds and
   mid-sequence offsets.
+- 2026-11-05: S3's first real-model run (`067e295`): pinned all-MiniLM-L6-v2
+  through `EspGoalEmbedder` on CPU (`esp.bert-f32`, 384 dimensions, no query or
+  document prefix). On a synthetic, hand-labelled corpus of 8 goals and 56
+  sources (`crates/eidetic-search/tests/fixtures/goal_calibration/`), S1 finds
+  no paraphrases (0/16) and fires on every near-miss; the `Or` rule at 220
+  thousandths lifts recall from 0.50 to 1.00 and F1 from 0.51 to 0.80
+  (precision 0.67), on a flat F1 plateau from 140 to 290; the generic 500
+  default gives recall 0.56. Near-misses (195 to 716) overlap paraphrases
+  (299 to 536), so no cosine threshold restores precision.
+  `recommended_match_similarity_milli` returns 220 for the pinned weights,
+  opt-in; the default stays 500. Recalibrate on real retained sources before
+  relying on it. Debug CPU: load 1.7 s, 56 pairs 51 to 78 s.
