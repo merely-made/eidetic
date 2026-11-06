@@ -259,3 +259,53 @@ fn adopted_traces_join_reads_but_not_quota() {
         assert_eq!(memory.traces().count(), 1);
     });
 }
+
+#[test]
+fn a_failed_flush_keeps_the_open_segment_buffered() {
+    use muniment::{MemoryBackend, StoreError, WriteOp};
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    struct Flaky {
+        inner: MemoryBackend,
+        failing: AtomicBool,
+    }
+    #[async_trait]
+    impl muniment::Backend for Flaky {
+        async fn get(&self, key: &str) -> std::result::Result<Option<Vec<u8>>, StoreError> {
+            self.inner.get(key).await
+        }
+        async fn put(&self, key: &str, bytes: &[u8]) -> std::result::Result<(), StoreError> {
+            if self.failing.load(Ordering::SeqCst) {
+                return Err(StoreError::Backend("disk on fire".into()));
+            }
+            self.inner.put(key, bytes).await
+        }
+        async fn delete(&self, key: &str) -> std::result::Result<(), StoreError> {
+            self.inner.delete(key).await
+        }
+        async fn list(&self, prefix: &str) -> std::result::Result<Vec<String>, StoreError> {
+            self.inner.list(prefix).await
+        }
+        async fn scan(&self, start: &str, end: &str) -> std::result::Result<Vec<String>, StoreError> {
+            self.inner.scan(start, end).await
+        }
+        async fn apply(&self, ops: &[WriteOp]) -> std::result::Result<(), StoreError> {
+            self.inner.apply(ops).await
+        }
+    }
+
+    pollster::block_on(async {
+        let mut store = Flaky {
+            inner: MemoryBackend::new(),
+            failing: AtomicBool::new(true),
+        };
+        let mut memory = BrowsingMemory::new(8);
+        memory.record_traversal("", event(None, "https://a.example", 10));
+        assert!(memory.flush(&mut store, 99).await.is_err());
+        // The segment is still open: a later flush stores it.
+        store.failing.store(false, Ordering::SeqCst);
+        let ids = memory.flush(&mut store, 100).await.unwrap();
+        assert_eq!(ids.len(), 1);
+        assert_eq!(memory.traces().next().unwrap().events.len(), 1);
+    });
+}
