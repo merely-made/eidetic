@@ -41,7 +41,7 @@ required-features = ["recall-example"]
 
 [features]
 recall-example = ["dep:esp", "esp/bert", "esp/bert-wgpu", "esp/persistence"]
-bert = ["dep:esp", "esp/bert"]
+bert = ["dep:esp", "esp/bert", "esp/persistence"]
 
 [lints]
 workspace = true

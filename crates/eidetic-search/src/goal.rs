@@ -175,6 +175,26 @@ impl GoalAssessor {
         &self.terms
     }
 
+    /// The goal text as given.
+    pub fn goal(&self) -> &str {
+        &self.goal
+    }
+
+    /// The settings this run was built with.
+    pub fn settings(&self) -> &GoalSettings {
+        &self.settings
+    }
+
+    /// The most recent assessment, without cloning the whole record.
+    pub fn last_assessment(&self) -> Option<&GoalAssessment> {
+        self.assessments.last()
+    }
+
+    /// The most recent selection, without cloning the whole record.
+    pub fn last_selection(&self) -> Option<&SelectionChoice> {
+        self.selections.last()
+    }
+
     /// Assess one observed, retained source. A refused input (oversized text)
     /// records nothing and leaves the run's state unchanged.
     pub fn assess(&mut self, retained: &RetainedSourceText) -> Result<GoalVerdict, QueryError> {

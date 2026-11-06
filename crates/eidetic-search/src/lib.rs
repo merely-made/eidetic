@@ -52,10 +52,13 @@ pub mod compare;
 pub mod document;
 pub mod fusion;
 pub mod goal;
+pub mod goal_model;
+#[cfg(any(feature = "bert", feature = "recall-example"))]
+pub mod goal_model_esp;
 pub mod index;
+pub mod query;
 pub mod recall;
 pub mod records;
-pub mod query;
 pub mod spec;
 pub mod tokenize;
 
@@ -66,6 +69,10 @@ pub use fusion::{FusedHit, Ranking, fuse, fuse_many};
 pub use goal::{
     CandidateLabel, GoalAssessment, GoalAssessor, GoalRecord, GoalSettings, GoalVerdict,
     SelectionChoice, SelectionRule,
+};
+pub use goal_model::{
+    EmbedRole, GoalEmbedder, ModelAssessRule, ModelAssessment, ModelGoalAssessor, ModelGoalRecord,
+    ModelGoalSettings, ModelSelectMode, ModelSelection, ModelStatus, SelectionWinner, chunk_text,
 };
 pub use index::{FieldWeights, Hit, IndexConfig, TrailIndex};
 pub use spec::{SEARCH_INDEX_SCHEMA_REF, SPEC_SIDECAR, SearchIndexSpec, bootstrap_search_schema};
