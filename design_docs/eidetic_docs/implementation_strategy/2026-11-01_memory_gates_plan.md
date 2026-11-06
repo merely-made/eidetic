@@ -156,6 +156,18 @@ Slices, in order (2026-11-05):
 - **S5, the host.** A person-given goal in a native host, results and
   proposals through Alembic's workshop with byte-to-scalar selector
   conversion, and the headed receipt the done-clause asks for.
+- **S6, native retained text in Mere (planned, D16).** Mere's resident opens
+  no retained page-text store in production; only fixtures and tests do
+  (Findings, 2026-11-05). The slice: a Pandect-reservoir-owned
+  `PageTextStore`/`ResourceCaptureStore` (store lifetimes stay with the store,
+  distillery-extraction D19); a native Graphshell capture writer that records
+  into it through the sealed path P2 requires, or visibly pauses; the resident
+  lending it to its routes; and a read-only, bounded resident-door request
+  (`chirograph`) returning the goal surface's page snapshot under the
+  viewer's existing per-app graph scope. Done when graphshell-mere runs the
+  goal surface over pages it captured natively, after a cold reopen, with
+  sealed custody or a visible pause, and a headed receipt. Turnstone's
+  `trail_memory` (Fjall) is the existing native writer to compare against.
 
 **Done when:** a real lexical or model provider produces query results over
 retained visits and captured content, cites source versions and explains
@@ -553,6 +565,19 @@ decided here.
 
   Links: area recall · plans P4 · summary P4's remaining gaps are S1 polish, a real-content run, the model path in the surface and durable tag suggestions.
 
+- **D15, the real-content goal run uses the browser mere (2026-11-05):**
+  Mark: "Use the browser mere". Real retained captures land in Graphshell's
+  extension IndexedDB, so the real-content goal surface and receipt are taken
+  there; the native receipt stays on its fixture.
+
+  Links: area recall · amends memory_gates D13 · plans P4 P5 · summary The real-content goal run is taken in Graphshell's browser mere over its IndexedDB captures.
+
+- **D16, native retained text: plan now, build after (2026-11-05):** Mark:
+  "Plan it now, build after". The native equivalent (S6) is planned here and
+  built after the browser-mere goal surface lands.
+
+  Links: area recall · plans P2 P3 P4 · summary Native retained text in Mere is planned as S6 and built after the browser goal surface.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
@@ -613,6 +638,13 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   and code-point order agree (`crates/muniment/src/key_range.rs`); otherwise
   they enumerate every key. Results are post-filtered in Rust either way.
   `transact` still snapshots the whole store per call.
+- 2026-11-05: in production, neither Mere's resident nor graphshell-mere
+  opens a `PageTextStore` or `ResourceCaptureStore`; the opens are the goal
+  surface fixture and proof host, `capture_resources.rs` tests and
+  `mere-resident` tests that lend a `PageTextCorpus`. The resident door
+  (`chirograph` `CarrierRequestBody`) has no data-returning read for retained
+  text; `IntentResult` carries no payload. Turnstone's `trail_memory` writes
+  both stores natively over Fjall.
 - 2026-11-05: Fleece's `run_traversal` bounds nodes, depth, fan-out and
   pending candidates (`mere/crates/fleece/src/traversal.rs:41-49`); it has no
   request or byte limit and its `GoalDecision` carries no explanation, which
@@ -735,3 +767,12 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   projection cards, not retained text), no model path, no proposals (D11).
   Seen in the capture: S1 counts the stop word "a" as a goal term, and each
   matched term gets its own snippet of the same sentence.
+- 2026-11-05: S1 polish (`8960601`): goal terms drop a 63-word English stop
+  list (`eidetic.stop-words/en-v1`, recorded in `GoalRecord`) unless the goal
+  is only stop words; `GoalAssessment.passages` merges hits within 40 scalars
+  and adds 60 of context; operation `eidetic.goal-assessment/v2`. Tag
+  suggestions are durable (`4a6c3c3`): `records::SuggestionLedger` journals
+  suggestions and reviews through Muniment (runtime tier in memory only),
+  reopened on Redb and directory backends in tests. Lexical producer
+  (`cb90383`): `eidetic_search::suggest_tags` proposes concepts whose label
+  terms all occur in a source, with evidence selectors.
