@@ -594,6 +594,14 @@ decided here.
 
   Links: area recall · draws on memory_gates D15 · plans P4 P5 · summary The real-content goal receipt waits until Mark has browsed with the new extension build.
 
+- **D19, page text on both sides, in parallel (2026-11-06):** Mark: "Both, in
+  parallel". S6's promotion of Turnstone's capture core and the browser
+  extension's optional "keep page text" control proceed together; both write
+  Eidetic's existing `PageTextStore`/`ResourceCaptureStore` records so the two
+  writers share one format.
+
+  Links: area recall · draws on memory_gates D17 · plans S6 P5 · summary Native capture promotion and browser keep-content proceed in parallel over one page-text format.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
