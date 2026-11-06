@@ -60,6 +60,7 @@ pub mod query;
 pub mod recall;
 pub mod records;
 pub mod spec;
+pub mod tag_suggest;
 pub mod tokenize;
 
 pub use bm25::{Bm25Config, Bm25Index};
@@ -76,6 +77,10 @@ pub use goal_model::{
 };
 pub use index::{FieldWeights, Hit, IndexConfig, TrailIndex};
 pub use spec::{SEARCH_INDEX_SCHEMA_REF, SPEC_SIDECAR, SearchIndexSpec, bootstrap_search_schema};
+pub use tag_suggest::{
+    TAG_SUGGEST_OPERATION_VERSION, TAG_SUGGEST_RULE, TagConcept, TagSuggestSettings, settings_digest,
+    suggest_tags,
+};
 pub use tokenize::{Stemmer, Tokenizer};
 
 /// Search-lane failures.
