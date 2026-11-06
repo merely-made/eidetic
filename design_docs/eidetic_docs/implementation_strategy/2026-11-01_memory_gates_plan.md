@@ -791,6 +791,30 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   (goal surface tests updated for stop words; `model.rs` uses
   `PassageSelector::to_byte_range`). Cleromancy, Isocosm and Turnstone remain
   on older Eidetic revs.
+- 2026-11-06: browser-mere goal surface and durable tag suggestions merged
+  into Mere main (`ad3e17b00`, `1b9fcc229`, merge `0312a8631`). The browser
+  keeps no page body: `BrowserVisit` carries URL, title and transition, and
+  nothing in the web path writes `PageTextStore`, so the provider reads one
+  record per graph object ("title. address", BLAKE3 version, opt-in
+  `RetainedPages::load_facts(.., records: true)`) and stored page text wins
+  where present. A browser goal therefore matches titles and addresses only;
+  keeping loaded page text in the browser (P5's "optionally keep loaded
+  content") is unbuilt. Tag suggestions: `suggest_tags` over the graph's
+  concepts, a `SuggestionLedger` on the IndexedDB store (writer only;
+  followers read-only), accept through `admit_accepted_tag_suggestion` then
+  the review. Headed Chrome 156 on a fixture profile: goal run, four
+  suggestions, one accepted and one rejected, regeneration not re-proposing the
+  held tag, and a cold reopen keeping all seven rows with their review states
+  (receipt `mere/ports/graphshell/docs/receipts/browser_goal_20261105/`,
+  captures under `Code/testing/eidetic/browser_goal_20261105/`, checked by
+  eye). Not run: Firefox, real data, a follower queueing reviews. 346
+  Graphshell lib tests.
+- 2026-11-06: the Distillery resident-test flake ("Database already open")
+  predates this round. p2mere-net's sync manager drained a topic-manager actor
+  without waiting while that actor held the store, so `leave_and_wait`
+  returned early. Fixed on p2mere's `p2mere` branch (`436da84f`, one line:
+  `drain_and_wait`) with a `p2mere-net` 0.9.1 bump (`4bd620af`); consumers
+  pick it up after the crates.io publish, which Mark holds.
 - 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
   `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
   `RetainedProvider` over a snapshot of `PageTextStore` and
