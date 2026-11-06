@@ -843,6 +843,23 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   plain serde receipt types. Turnstone's switch-over: repin past `0b615d4`,
   implement `SourceAnnotator` over Fleece, convert its types, and rerun the
   M5 checks; extra seeded record schemas may move a count-based M5 inventory.
+- 2026-11-06: browser "Keep page text" merged into Mere main (`fe283b6d4`,
+  merge `7f9ea7cf6`): off by default and separate from remembering visits;
+  `scripting` and `<all_urls>` are optional permissions requested at enable
+  time; text of pages the person loads (never background fetches; private
+  windows, excluded origins and non-HTML skipped) is extracted in the page,
+  bounded (32, 128 or 256 KiB), queued by the service worker and recorded by
+  the writer page through `PageTextStore` (`blob/<hash>`,
+  `page-text/<url hash>`, `resource-capture/<id>/page-text/<hash>`; version =
+  BLAKE3 of text), idempotent per version, acknowledged after the write.
+  Headed Chrome 156 on a local fixture server: a body-only goal matched 0 of 3
+  before and 1 of 3 after keeping, citing body passages; a cold reopen kept
+  it; the server saw no unrequested fetch. Not qualified: the real permission
+  prompt (the run installed the permissions), Firefox, quota and incognito
+  headed, real data. Kept text and visits are not committed atomically
+  together. Seen in captures: empty highlight boxes in the browser presenter,
+  and one snippet per term because the surface does not yet use
+  `GoalAssessment.passages`.
 - 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
   `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
   `RetainedProvider` over a snapshot of `PageTextStore` and
