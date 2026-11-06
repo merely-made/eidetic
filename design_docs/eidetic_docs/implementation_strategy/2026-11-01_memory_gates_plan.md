@@ -644,3 +644,13 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   Checked by Graphshell lib tests, the writer-handover smoke and a partial
   headed Chromium run; not qualified. Its detail and open items are in Mere's
   application experience plan on that branch.
+- 2026-11-05: IndexedDB lifecycle (`aea66e8`): an open connection closes
+  itself on `versionchange` and later calls fail with a reopen error
+  (`IndexedDbBackend::is_closed_for_upgrade`); an open that is `blocked` by an
+  older connection fails instead of hanging. Pure logic tested natively;
+  browser events unexercised. Dormant until `DATABASE_VERSION` moves past 1.
+- 2026-11-05: `agent/p4-s2` and `agent/follower-queue` merged into Mere main
+  by the release-log lane after Mere moved to Eidetic `5182e4e`; a hidden
+  writer's queued edits now drain without animation frames (`8131e527a`).
+  Fresh clone of Mere `d952835f9`: mere-fleece (retained-traversal) 20,
+  mere-kernel 535, graphshell 330 pass.
