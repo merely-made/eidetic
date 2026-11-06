@@ -873,6 +873,29 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   web's lock: relocked and pruned to 0 unused patches (`84972c7cd`), then
   `md-5` and `sha1` moved to 0.11 so `spareval` sees one `digest` generation
   (`37f5813f0`).
+- 2026-11-06: the model path is in the goal surface (Mere `f78c0ff91`, merge
+  `b82e62ed4`): opt-in feature `goal-surface-model` (+112 crates, native
+  only), "Use the model" off by default, model folder from
+  `GRAPHSHELL_GOAL_MODEL_DIR` with pinned SHA-256 checks, a worker thread
+  owning the embedder, threshold from `recommended_match_similarity_milli`
+  (220 for the pinned MiniLM) with the `Or` rule by default. Fleece gained
+  `RetainedGoal` and `run_retained_traversal_with`, so S1 and S3 drive the
+  same bounded traversal; the receipt carries the `ModelGoalRecord`. Headed
+  native receipt (`mere/ports/graphshell/docs/receipts/goal_model_20261106/`):
+  for "preserve my sourdough while I am on holiday", lexical 0 of 5, model on 2
+  of 5 (0.425 and 0.311), checked by eye. Gap: model-only matches show no
+  cited passage although the record names the best chunk.
+- 2026-11-06: p2mere-net 0.9.1 is published (tag `p2mere-0.9.1`) and locked
+  across Murm, gemot, Knot, Distillery, Mere, Turnstone and Isocosm;
+  Distillery's workspace passed 5 of 5 runs with no "Database already open".
+  The family then moved to Eidetic `98f2c69` (Murm `68f9a83`/`feeb14c`, gemot
+  `204ee03`, Distillery `01268ae`, Knot `28ccb30`/`78beeeb`, Mere `e9ac10d`,
+  Turnstone `bd5fb52`, whose lock is deterministic again). Pre-existing:
+  Turnstone's `bulk_projection_matches_point_geometry_after_scoped_retained_changes`
+  panics in Genet paint at `7095acc`; Isocosm's roots and Murm
+  `testing/secure-sessions-n3` still carry several unused patches. Build
+  output was committed and removed in Murm `e58031d` and gemot `bd17bb7`
+  (history not rewritten).
 - 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
   `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
   `RetainedProvider` over a snapshot of `PageTextStore` and
