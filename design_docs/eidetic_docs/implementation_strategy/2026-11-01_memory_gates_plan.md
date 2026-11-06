@@ -654,3 +654,16 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   writer's queued edits now drain without animation frames (`8131e527a`).
   Fresh clone of Mere `d952835f9`: mere-fleece (retained-traversal) 20,
   mere-kernel 535, graphshell 330 pass.
+- 2026-11-05: P4 S3 built, stub-only (`365f569`):
+  `eidetic_search::goal_model::ModelGoalAssessor` wraps S1 over a
+  `GoalEmbedder` (query and document roles), records S1's `GoalRecord` beside
+  per-step model scores, the combination rule and an `EmbeddingEnvelopeV1`
+  naming the space, the `eidetic.goal-chunk/v1` chunker and the sources read.
+  Selection defaults to model ranking; assessment defaults to S1-or-model
+  (similarity at least 500 thousandths, to be calibrated per space); an
+  embedder failure falls back to S1 for that step and is recorded.
+  `EspGoalEmbedder` (features `bert`/`recall-example`; `bert` now enables
+  ESP's `persistence` for `compatibility_space`) compiles but has not run a
+  real model, so S3 does not yet count toward P4's done-clause: that needs a
+  local BERT model, a calibrated threshold and a run through Fleece's
+  `run_retained_traversal`.
