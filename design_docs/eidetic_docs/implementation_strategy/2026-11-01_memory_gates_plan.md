@@ -538,6 +538,21 @@ decided here.
 
   Links: area recall · plans P4 · summary S3 runs on the pinned MiniLM artifacts kept outside the repository.
 
+- **D13, the goal surface moves into graphshell-mere (2026-11-05):** Mark:
+  "Idk, 2, but i feel like we're gonna revisit these boundaries later anyway".
+  P4's native host is the ordinary `graphshell-mere` viewer, through the
+  lightest retained-text read over the resident door; the boundary is expected
+  to be revisited, so no general retained-content API is built for it.
+
+  Links: area recall · amends memory_gates D10 · plans P4 · summary The goal surface moves into graphshell-mere through a minimal resident-door read of retained text.
+
+- **D14, close P4's remaining gaps (2026-11-05):** Mark chose all four: S1
+  polish (stop words, one snippet per passage), a run over real retained
+  content, the model path in the surface, and tag suggestions that survive a
+  restart.
+
+  Links: area recall · plans P4 · summary P4's remaining gaps are S1 polish, a real-content run, the model path in the surface and durable tag suggestions.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
