@@ -602,6 +602,31 @@ decided here.
 
   Links: area recall · draws on memory_gates D17 · plans S6 P5 · summary Native capture promotion and browser keep-content proceed in parallel over one page-text format.
 
+- **D20, native capture keeps an explicit fetch (2026-11-06):** Mark: "Keep
+  explicit fetch". graphshell-mere has no engine capture of loaded pages, so
+  the native writer fetches the one address a person types, on their action,
+  reduces it to visible text, keeps it, and records the fetch; no links are
+  followed.
+
+  Links: area recall · plans S6 P3 · summary Native page text comes from an explicit, recorded one-page fetch with no link following.
+
+- **D21, retained text is sealed before landing (2026-11-06):** Mark: "Wire
+  sealing now", then "Custodian payload (Recommended)", "Shared retained
+  lane" and "Acceptable for now". `retained.redb` values are sealed through
+  djinn's custodian (`ResidentCustody::payload`), so keys stay with the
+  custodian and a locked vault visibly pauses writes; one retained-text lane
+  is shared by Graphshell and Turnstone; hashed page-text keys stay visible, a
+  recorded limit.
+
+  Links: area custody · plans S6 P2 · summary Native retained text is sealed per value through the custodian in a lane shared by Graphshell and Turnstone, with hashed keys visible.
+
+- **D22, rewrite Murm and gemot history (2026-11-06):** Mark: "Rewrite both".
+  Build output committed by mistake (Murm `e58031d`, gemot `bd17bb7`) was
+  filtered out of history and both mains force-pushed (Murm `ce85204c2`, gemot
+  `bea700941`), with every family pin remapped to the rewritten SHAs.
+
+  Links: area dependencies · summary Murm and gemot history were rewritten to drop committed build output, and family pins remapped.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
