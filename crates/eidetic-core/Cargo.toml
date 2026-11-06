@@ -33,6 +33,7 @@ async-trait = "0.1"
 blake3 = "1.5"
 serde_json = "1.0"
 url = "2.5"
+uuid = { version = "1", features = ["serde"] }
 
 [dependencies.identity]
 workspace = true
@@ -73,6 +74,7 @@ lineage = []
 
 [dev-dependencies]
 pollster = "0.4"
+uuid = { version = "1", features = ["serde", "v4"] }
 tempfile = "3"
 chacha20poly1305 = "0.11"
 
