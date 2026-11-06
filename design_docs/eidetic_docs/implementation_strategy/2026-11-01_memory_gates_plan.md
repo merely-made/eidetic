@@ -823,6 +823,26 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   returned early. Fixed on p2mere's `p2mere` branch (`436da84f`, one line:
   `drain_and_wait`) with a `p2mere-net` 0.9.1 bump (`4bd620af`); consumers
   pick it up after the crates.io publish, which Mark holds.
+- 2026-11-06: S6a landed (`9dcb2c8`, `a799cdd`, `ec516fc`, `0b615d4`).
+  Golden fixtures in `crates/eidetic-core/tests/fixtures/capture_golden/`
+  were produced by running Turnstone `cc9cc6d2` (Eidetic `1fcdb359`) on
+  synthetic input, since no M1-M5 session directory survives on this machine;
+  they use Turnstone's XOR test sealer, and Eidetic re-writes every fixture
+  byte for byte. `eidetic::capture` holds sealed and unsealed capture,
+  verification, preflight and structured deposits over `Store`, with
+  `PayloadSealer`, `CaptureClock`, `BoundedRead` and `SourceAnnotator`
+  seams; the annotator seam exists because the core used Fleece and
+  `genet_static_dom`, which sit above Eidetic. `eidetic_search::recall_mint`
+  and `records::sealed` hold recall minting and sealed results. Collapsed
+  into `eidetic::browsing`: title overlay (`BrowsingMemory::traces_with_titles`)
+  and `PageTextStore::load_all_or_empty`; `BrowsingMemory::flush` now keeps a
+  segment whose write failed. Fault-at-each-write runs on memory, Fjall and
+  Redb (the directory backend refuses `:` in keys). Deferred: `saved_sources`,
+  the receipt files and the recovery emitters, which need
+  `BoundedRead::list_inventory`, a sealed content reader on the annotator and
+  plain serde receipt types. Turnstone's switch-over: repin past `0b615d4`,
+  implement `SourceAnnotator` over Fleece, convert its types, and rerun the
+  M5 checks; extra seeded record schemas may move a count-based M5 inventory.
 - 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
   `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
   `RetainedProvider` over a snapshot of `PageTextStore` and
