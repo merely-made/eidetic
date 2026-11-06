@@ -518,6 +518,26 @@ decided here.
 
   Links: area dependencies · draws on memory_gates D5 D6 · plans P4 P5 · summary This round's Mere work merges after the family's p2mere 0.9 repin instead of a separate Eidetic repin.
 
+- **D10, S5's host is Graphshell native (2026-11-05):** Mark: "Graphshell
+  native". The goal surface and its headed receipt are built in Mere's native
+  Graphshell viewer over its retained captures, which already builds on this
+  round's Eidetic; Turnstone and the resident host are not used for S5.
+
+  Links: area recall · draws on memory_gates D5 · plans P4 · summary P4's goal surface and headed receipt are built in Graphshell's native viewer.
+
+- **D11, proposals wait for Alembic's move (2026-11-05):** Mark: "Wait for the
+  move". S5 shows cited results and traversal explanations; routing proposals
+  through Alembic's workshop follows its move from Mere to Distillery.
+
+  Links: area recall · plans P4 · summary Goal-run proposals route through Alembic's workshop only after it moves to Distillery.
+
+- **D12, fetch the pinned MiniLM for S3 (2026-11-05):** Mark: "Yes, download
+  it". The pinned all-MiniLM-L6-v2 artifacts live at
+  `Code/testing/eidetic/models/all-MiniLM-L6-v2` (sha256 matches
+  `MINILM_ARTIFACTS`), for S3's real-model run and threshold calibration.
+
+  Links: area recall · plans P4 · summary S3 runs on the pinned MiniLM artifacts kept outside the repository.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
@@ -667,3 +687,7 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   real model, so S3 does not yet count toward P4's done-clause: that needs a
   local BERT model, a calibrated threshold and a run through Fleece's
   `run_retained_traversal`.
+- 2026-11-05: `PassageSelector::to_byte_range`/`from_byte_range`
+  (`models::selector_units`, `d2a8673`) convert scalar selectors to UTF-8 byte
+  ranges and back against the exact text, refusing reversed, out-of-bounds and
+  mid-sequence offsets.
