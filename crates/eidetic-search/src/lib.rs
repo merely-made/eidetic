@@ -58,6 +58,7 @@ pub mod goal_model_esp;
 pub mod index;
 pub mod query;
 pub mod recall;
+pub mod recall_mint;
 pub mod records;
 pub mod spec;
 pub mod tag_suggest;

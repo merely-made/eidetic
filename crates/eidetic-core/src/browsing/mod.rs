@@ -36,6 +36,7 @@ pub mod frecency;
 pub mod lineage;
 pub mod page;
 pub mod text;
+pub mod titles;
 
 use serde::{Deserialize, Serialize};
 
@@ -222,6 +223,11 @@ pub struct BrowsingMemory {
 }
 
 impl BrowsingMemory {
+    /// Traversals per stored trace segment. Segments are the flush
+    /// granularity: small enough that a crash loses minutes, large enough that
+    /// a stored trace is a meaningful corridor slice.
+    pub const DEFAULT_SEGMENT_SIZE: usize = 32;
+
     /// An empty memory with the given segment size (events per flushed
     /// trace).
     pub fn new(segment_size: usize) -> Self {
@@ -261,17 +267,22 @@ impl BrowsingMemory {
     }
 
     /// Flush every non-empty open segment as a stored trace. Returns the new
-    /// manifest ids.
+    /// manifest ids. A segment whose write fails stays buffered (and the error
+    /// returns), so a later flush retries it rather than losing it.
     pub async fn flush(&mut self, store: &mut dyn Store, now_ms: u64) -> Result<Vec<ManifestId>> {
         let mut ids = Vec::new();
         let owners: Vec<String> = self.open.keys().cloned().collect();
         for owner in owners {
-            let events = self.open.remove(&owner).unwrap_or_default();
+            let events = self.open.get(&owner).cloned().unwrap_or_default();
             if events.is_empty() {
+                self.open.remove(&owner);
                 continue;
             }
-            let trace = BrowsingTrace::from_events(owner, events);
+            let trace = BrowsingTrace::from_events(owner.clone(), events);
+            // The segment leaves the open buffer only once it is stored, so a
+            // failed write keeps it buffered for the next lifecycle edge.
             let id = save_trace(store, &trace, now_ms).await?;
+            self.open.remove(&owner);
             ids.push(id);
             self.traces.push((Some(id), trace));
         }

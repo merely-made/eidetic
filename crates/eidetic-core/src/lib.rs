@@ -62,6 +62,7 @@ use serde::{Deserialize, Serialize};
 
 pub mod browsing;
 pub mod bundle;
+pub mod capture;
 pub mod clip_profile;
 pub mod codicil;
 pub mod content_store;

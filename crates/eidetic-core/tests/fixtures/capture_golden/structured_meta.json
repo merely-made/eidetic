@@ -1,0 +1,45 @@
+{
+  "definition": {
+    "cardinality": "Single",
+    "id": "fixture.departure",
+    "revision": "1",
+    "statuses": [
+      "approved"
+    ],
+    "unit": null,
+    "value_type": "Text"
+  },
+  "definition_id": "blake3:90efde265b1a2bb960b1d8f28367636428861846387fb8260210093496b2869f",
+  "record": {
+    "author": "owner",
+    "context": "route-1",
+    "definition_manifest": "blake3:90efde265b1a2bb960b1d8f28367636428861846387fb8260210093496b2869f",
+    "entity": "entity-1",
+    "evidence": {
+      "Passage": {
+        "hash": "blake3:521cb6ef3a4023c5ba07cc3fc7072c63184b6a7ca8abb681370cf4a1e8d210a5",
+        "selector": {
+          "end": 7,
+          "start": 0
+        },
+        "source": {
+          "kind": "capture",
+          "owner": "owner",
+          "source": "retained-source"
+        },
+        "version": "v1"
+      }
+    },
+    "id": "nonce-1",
+    "method": "manual",
+    "property": "fixture.departure",
+    "recorded_at": 100,
+    "schema_revision": "1",
+    "status": "approved",
+    "valid_time": null,
+    "value": {
+      "Text": "SYNTHETIC-DEPARTURE"
+    }
+  },
+  "record_id": "blake3:b33a3b767a17dceaed9b0f6b68dbd1f6c2055581fa72f17df215e4e73cbe9317"
+}

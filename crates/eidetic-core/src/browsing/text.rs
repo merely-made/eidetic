@@ -163,6 +163,16 @@ impl<B: Backend + Clone> PageTextStore<B> {
             .map_err(|_| crate::Error::new("retained page text is not UTF-8"))
     }
 
+    /// [`load_all`](Self::load_all) for a projection that must not fail: an
+    /// unreadable store yields an empty snapshot (pages then recall by title
+    /// and URL) and the error comes back beside it for the caller to log.
+    pub async fn load_all_or_empty(&self) -> (PageTexts, Option<crate::Error>) {
+        match self.load_all().await {
+            Ok(texts) => (texts, None),
+            Err(error) => (PageTexts::default(), Some(error)),
+        }
+    }
+
     /// Every stored body, canonical URL to text — the snapshot a projection
     /// reads once and then closes over. One store round trip per address, so
     /// a caller that wants many reads this rather than calling
