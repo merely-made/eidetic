@@ -8,6 +8,8 @@
 use crate::{Hash, ManifestId, SchemaRef, TypedPayload};
 use serde::{Deserialize, Serialize};
 
+pub use super::selector_units::{ByteRange, SelectorError};
+
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum RecallSourceKind {

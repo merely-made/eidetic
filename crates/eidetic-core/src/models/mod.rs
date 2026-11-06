@@ -17,6 +17,7 @@ pub mod embedding;
 pub mod inference;
 pub mod library;
 pub mod recall;
+pub mod selector_units;
 pub mod requested;
 pub mod training;
 
