@@ -654,6 +654,26 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   (`chirograph` `CarrierRequestBody`) has no data-returning read for retained
   text; `IntentResult` carries no payload. Turnstone's `trail_memory` writes
   both stores natively over Fjall.
+- 2026-11-05, S6 inventory of Turnstone `src/trail_memory/` (about 14.5k
+  lines): about 3.6k lines of stack core (1.7k clean: `sealed_capture`,
+  `sealed_records`, `capture_source_document_in`, `verify_source_document`,
+  `preflight_source_artifact`, `recall_index_mint`, `page_corpus`; 1.9k
+  entangled with Turnstone types: `saved_sources`, the `*_receipts` and
+  `emit_*_recovery` files) plus about 3.6k of tests that move with it; about
+  5.7k Turnstone-specific (worker, `record_actor`, `open_memory`, M5
+  inspection and inventory, inference owners, `structured_bounded_store`).
+  No `Backend::transact` use: it relies on ordered apply, idempotent writes
+  and receipt-then-recover. Seams: `muniment::Backend`, Eidetic's existing
+  `PayloadSealer` (`crates/eidetic-core/src/seal.rs:93`, so no Dramatis
+  dependency), a clock trait, Eidetic-owned neutral request and document
+  types, and a capture error over `StoreError`. Thin wrappers (`page_corpus`,
+  `keep_page_text`, `navigation`) collapse into `eidetic::browsing` rather
+  than being copied. Risks: stored bytes (sealed markers, receipt envelopes,
+  key layouts) must stay readable, so freeze golden fixtures from a real
+  session first; it is proven only on Fjall, so the fault-at-each-write suite
+  runs on the reservoir too; and two writers for the same keys if it is not
+  reconciled with `BrowsingMemory`/`PageTextStore`. Turnstone repins from
+  Eidetic `1fcdb359` after the landing.
 - 2026-11-05: Fleece's `run_traversal` bounds nodes, depth, fan-out and
   pending candidates (`mere/crates/fleece/src/traversal.rs:41-49`); it has no
   request or byte limit and its `GoalDecision` carries no explanation, which
