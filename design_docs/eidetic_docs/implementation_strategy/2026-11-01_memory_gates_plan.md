@@ -860,6 +860,19 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   together. Seen in captures: empty highlight boxes in the browser presenter,
   and one snippet per term because the surface does not yet use
   `GoalAssessment.passages`.
+- 2026-11-06: both defects fixed on Mere main (`1200dfe95`, merge
+  `19bce7f4f`): the goal surface renders one snippet per
+  `GoalAssessment.passages` entry with every hit highlighted (selectors via
+  `PassageSelector::to_byte_range`); the empty boxes were Genet's inline
+  layout painting a `<mark>` that starts a wrapped line without its text (the
+  DOM was correct), worked around in the goal surface's native and browser
+  stylesheets (`mark{display:inline-block}`, `white-space:pre-wrap`).
+  Confirmed in the native proof host at 1280 and 520 px
+  (`Code/testing/eidetic/goal_surface_20261106/`); the browser presenter was
+  not re-run. The Genet layout bug itself is unreported upstream. Graphshell
+  web's lock: relocked and pruned to 0 unused patches (`84972c7cd`), then
+  `md-5` and `sha1` moved to 0.11 so `spareval` sees one `digest` generation
+  (`37f5813f0`).
 - 2026-11-05: P4 S5, lexical path, merged into Mere main (`ea317d523`,
   `0b806729d`, merge `f23ddcc0e`). Graphshell feature `goal-surface`: a
   `RetainedProvider` over a snapshot of `PageTextStore` and
