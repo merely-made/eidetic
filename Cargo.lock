@@ -1859,6 +1859,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "mere-framing"
+version = "0.0.2"
+dependencies = [
+ "postcard",
+ "serde",
+]
+
+[[package]]
 name = "mere-lsm-tree"
 version = "2.10.4"
 dependencies = [
@@ -3138,6 +3146,16 @@ name = "stable_deref_trait"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
+
+[[package]]
+name = "state-witness"
+version = "0.0.1"
+dependencies = [
+ "mere-framing",
+ "postcard",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "std-semaphore"

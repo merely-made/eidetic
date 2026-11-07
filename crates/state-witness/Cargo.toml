@@ -1,0 +1,21 @@
+[package]
+rust-version = "1.97.1"
+name = "state-witness"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+description = "A labelled FNV-1a state witness: keyed entries, a first-divergence report and a tick trace."
+
+# serde, postcard and mere-framing only (F117 as amended by F125).
+[dependencies]
+serde.workspace = true
+postcard = { version = "1", default-features = false, features = ["alloc"] }
+framing.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+
+[lints]
+workspace = true

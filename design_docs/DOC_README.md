@@ -47,4 +47,11 @@ cutover plan and run receipts are in
 `mere/design_docs/mere_docs/implementation_strategy/2026-10-31_distillery_extraction_plan.md`.
 
 
+State witness and framing receiving (2026-11-07): `state-witness` and `mere-framing`
+are workspace members at `crates/state-witness` and `crates/framing`, copied byte for
+byte from Mere `0adc6b1dc` (`crates/system/`), so Seiche's replay and Isocosm take them
+from `eidetic.git` without a Mere edge. Package names, versions and the separate
+framing crate are kept. The ruling and cutover are Mere's:
+`mere/design_docs/mere_docs/implementation_strategy/2026-11-07_engine_split_plan.md`, D12.
+
 - [Source splits, H6 and H8](eidetic_docs/implementation_strategy/2026-11-03_source_splits_plan.md): fifteen earlier and five additional originals landed; zero owned exceptions remain. Mere owns the aggregate; source notices, public paths, authority and existing acceptance boundaries stay intact.
