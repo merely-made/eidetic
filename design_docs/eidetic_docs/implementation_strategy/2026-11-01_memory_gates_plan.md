@@ -633,6 +633,22 @@ decided here.
 
   Links: area dependencies · summary Murm and gemot history were rewritten to drop committed build output, and family pins remapped.
 
+- **D23, keep 220; fix the calibration test (2026-11-06):** Mark: "Keep 220, fix
+  test". `MINILM_L6_V2_MATCH_SIMILARITY_MILLI` stays 220 (the drift findings,
+  Findings 2026-11-06, and Progress). The ESP test
+  `calibrate_match_similarity` (`distillery/crates/esp/tests/goal_model_minilm.rs`,
+  Distillery `4e53e7d`) now asserts that the constant's `Or` F1 is within 0.01
+  of the sweep's best (compared in thousandths: the unrounded gap is 0.0101) and
+  that it lies inside the margin window (`MARGIN_MILLI` 75 from the highest
+  unrelated and lowest paraphrase score; 211 to 224 today), instead of equalling
+  the sweep's middle pick. Each run prints its identity: stop list
+  `eidetic.stop-words/en-v1`, S1 operation `eidetic.goal-assessment/v2`,
+  chunker `eidetic.goal-chunk/v1/chars=1000/overlap=100/max=16`, corpus sha256,
+  the three model-file sha256 values and the space name. With the MiniLM files and
+  `--include-ignored` both ESP model tests pass (2 passed, 160 s).
+
+  Links: area recall · plans P4 · summary The MiniLM threshold stays 220; the calibration test now checks F1 within 0.01 of the best and the margin window, and prints the stop-list id and calibration identity.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.
