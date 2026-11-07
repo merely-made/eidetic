@@ -759,7 +759,7 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
     536, near-miss 195 to 716, unrelated -55 to 136). Only S1 changed. Stop
     words were goal terms, so near-misses that share only function words
     ("the", "my", "while", "on") with the goal reached `s1_match` through
-    coverage; without them S1 coverage on 16 of the 56 pairs changed (mostly
+    coverage; without them S1 coverage changed on 39 of the 56 pairs (most
     paraphrases fall to 0), S1 fires on 12 rather than 15 of the 24 irrelevant
     sources, and still on 16 of 32 relevant ones. Three near-misses stopped being S1
     matches: g01-f (sim 275), g01-e (336) and g02-f (407). Under `Or` an S1
