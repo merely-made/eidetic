@@ -7,6 +7,8 @@ receives live joining/sync and transport address books.
 
 Preserve host-owned authority, existing formats and independent crate feature boundaries. Read [documentation policy](DOC_POLICY.md) before editing. The maintainer-owned `PROJECT_DESCRIPTION.md` is absent from this checkout.
 
+`eidetic-search` keeps only the `GoalEmbedder` trait (2026-11-06, Mere `design_docs/mere_docs/implementation_strategy/2026-11-06_cycle_breaks_plan.md` P4, D2): the ESP adapter, the MiniLM calibration test and the `eidetic-recall` example live in ESP (`distillery/crates/esp`), and Eidetic's manifests and lock name no `esp`.
+
 Supplier receiving audits compare complete locked dependency edges as well as package identities; preserve unrelated selections when updating a source revision.
 
 Registry release work (2026-11-03) is tracked in

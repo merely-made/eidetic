@@ -170,8 +170,8 @@ impl MintObserver for () {
     fn phase_done(&mut self, _phase: MintPhase) {}
 }
 
-/// The lexical index directory beside a memory store, on eidetic-recall's
-/// `<db>.index` convention. Derived state: re-minted from the corpus, never
+/// The lexical index directory beside a memory store, on the `<db>.index`
+/// convention of ESP's `eidetic-recall` example. Derived state: re-minted from the corpus, never
 /// repaired.
 #[must_use]
 pub fn index_dir(memory: &Path) -> PathBuf {

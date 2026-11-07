@@ -50,12 +50,6 @@ git = "https://github.com/merely-made/genet.git"
 # Match the existing family source identity; Cargo.lock fixes the revision.
 branch = "main"
 
-[workspace.dependencies.esp]
-version = "0.1.0"
-git = "https://github.com/merely-made/distillery.git"
-branch = "main"
-default-features = false
-
 [workspace.dependencies.transport]
 package = "mere-transport"
 version = "0.0.2"

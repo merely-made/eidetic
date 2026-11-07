@@ -149,6 +149,12 @@ Slices, in order (2026-11-05):
 - **S3, the model path (ESP).** An ESP assessor that reranks or replaces S1's
   verdicts and records its model, settings and envelope beside the S1 record;
   the S1 path still runs when no model is present.
+  Since 2026-11-06 (Mere cycle breaks D2) `eidetic-search` keeps only the
+  `GoalEmbedder` trait; the ESP adapter `EspGoalEmbedder`,
+  `recommended_match_similarity_milli` (220 for the pinned MiniLM), the
+  calibration test and the `eidetic-recall` example live in ESP
+  (`esp::embed::goal_model`, feature `goal-model`; `tests/goal_model_minilm.rs`;
+  feature `recall-example`), and Eidetic no longer depends on `esp`.
 - **S4, tag suggestions (Eidetic records, then the owning graph).** Portable
   suggestion, review and assertion-draft records in Eidetic; the owning
   application admits the draft as a personal assertion through its attributed
@@ -967,3 +973,21 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   reopened on Redb and directory backends in tests. Lexical producer
   (`cb90383`): `eidetic_search::suggest_tags` proposes concepts whose label
   terms all occur in a source, with evidence selectors.
+- 2026-11-06: the ESP adapter left Eidetic (Mere cycle breaks P4, D2). ESP took
+  `goal_model_esp.rs` as `esp::embed::goal_model` (behind the new `goal-model`
+  feature), the MiniLM calibration test with its corpus, the lexical n-gram
+  recall receipt and the `eidetic-recall` example (feature `recall-example`),
+  in Distillery `e33bbaf`; Eidetic then dropped them with the `bert` and
+  `recall-example` features, the `esp` dependencies and the workspace `esp` row,
+  and its lock holds no `esp` (Eidetic commit recorded in Mere's cycle breaks
+  plan). `eidetic-search` default tests unchanged: 74 lib passed, 1 ignored.
+  The moved tests have the same counts in ESP: lexical receipt 2 passed, 1
+  ignored (4 passed with `bert` and `--include-ignored`), example 4 passed,
+  `adapter_end_to_end` passed. Open, unchanged by the move: `calibrate_match_similarity`
+  already failed on Eidetic main before the move and fails identically in ESP:
+  the sweep's best F1 for `Or` is 0.810 at 280 to 290 and the test picks 290,
+  not the recorded 220 (`CALIBRATED_MILLI` and
+  `MINILM_L6_V2_MATCH_SIMILARITY_MILLI`). The F1 plateau the 2026-11-05 entry
+  records (140 to 290, 0.800) predates the stop-word S1 polish, which changes
+  S1's matches; the threshold stays 220 until Mark rules whether to recalibrate
+  (the test is ignored by default).

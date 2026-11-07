@@ -53,8 +53,6 @@ pub mod document;
 pub mod fusion;
 pub mod goal;
 pub mod goal_model;
-#[cfg(any(feature = "bert", feature = "recall-example"))]
-pub mod goal_model_esp;
 pub mod index;
 pub mod query;
 pub mod recall;
