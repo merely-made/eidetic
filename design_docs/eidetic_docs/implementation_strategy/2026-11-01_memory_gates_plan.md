@@ -738,6 +738,71 @@ Verified 2026-11-01 against the current tree unless marked otherwise.
   vocabulary) were repair targets of `8c490e23` and are not carried; only the
   recall-trace and custody gaps above are confirmed open.
 
+- 2026-11-06, the MiniLM threshold drift (Mark: "Investigate first"; nothing changed):
+  - **Commit.** 220 was set by `067e295` (2026-11-05, "Add MiniLM goal-model
+    calibration test, frozen corpus and recommended threshold") and justified
+    by that commit's own sweep and the Progress entry for it: best F1 0.800 on
+    the flat plateau 140 to 290, middle chosen. The sweep stopped agreeing at
+    `8960601` (2026-11-05 21:59, "goal: drop stop words from goal terms and
+    merge matches into passages"). Re-run on the model files at
+    `Code/testing/eidetic/models/all-MiniLM-L6-v2`: `067e295` and its child
+    `acc9ade` choose 220 (plateau 140 to 290, F1 0.800); `8960601` chooses 290
+    (best F1 0.810 at 280 and 290) and the test fails; the drift is unchanged on
+    Eidetic main and in ESP. The corpus file has no commit after `067e295` and
+    the scorer is untouched. Separating the two halves of `8960601`: the same
+    commit with `ignore_stop_words = false` (scratch edit, not committed)
+    reproduces `acc9ade`'s 56 rows exactly and chooses 220, so the stop list
+    alone moves it; the passages change cannot (it touches no verdict).
+  - **Mechanism.** Similarities did not move: the embedder takes the raw goal
+    text, not its terms, and every one of the 56 `sim` values is identical
+    before and after (distributions: lexical 698 to 893, paraphrase 299 to
+    536, near-miss 195 to 716, unrelated -55 to 136). Only S1 changed. Stop
+    words were goal terms, so near-misses that share only function words
+    ("the", "my", "while", "on") with the goal reached `s1_match` through
+    coverage; without them S1 coverage on 16 of the 56 pairs changed (mostly
+    paraphrases fall to 0), S1 fires on 12 rather than 15 of the 24 irrelevant
+    sources, and still on 16 of 32 relevant ones. Three near-misses stopped being S1
+    matches: g01-f (sim 275), g01-e (336) and g02-f (407). Under `Or` an S1
+    false positive is a false positive at every threshold; a model-only one
+    disappears above its similarity. The sole one the sweep can see is g01-f
+    at 275: the others sit above the paraphrases' floor (299), where raising the
+    threshold loses recall. So 280 and 290 now drop one false positive that 140
+    to 270 keep. Before the change nothing the model could do shed any.
+  - **Numbers** (calibration corpus, 32 relevant, 24 irrelevant, `Or`):
+    at 220: 32 tp, 16 fp, 0 fn, precision 0.667, recall 1.000, F1 0.800; at
+    290: 32 tp, 15 fp, 0 fn, precision 0.681, recall 1.000, F1 0.810; 300
+    already loses the 299 paraphrase (recall 0.969). The generic 500: 18 tp,
+    12 fp, recall 0.562, F1 0.581 (0.554 before the change). The two thresholds
+    differ by one pair, g01-f, in a corpus of 56 hand-made pairs.
+  - **Margin.** 290 sits 9 below the lowest paraphrase (299). The test's own
+    `MARGIN_MILLI` rule (75 to the nearest labelled score on each side) allows
+    only 211 to 224 (unrelated max 136, paraphrase min 299), and 220 is inside
+    it. The "middle of the tied thresholds" pick landed on 290 because the tie
+    set shrank to two points, not because 290 separates better.
+  - **Consequence.** Goal surface: the model-path receipt
+    (`Code/testing/eidetic/goal_model_20261106/wide/qualification.json`, goal
+    "preserve my sourdough while I am on holiday") scores its five pages 153,
+    425, 311, 191 and 130; the matches (425 and 311) are the same at 220 and at
+    290, since nothing falls between 220 and 290. The lexical S1 to S5 receipts
+    never used the model. Where they could differ: a source scoring 220 to 289
+    is a match at 220 only, which is how g01-f (275) behaves, and that is a
+    near-miss, so 290 would show fewer such near-miss matches and sit
+    9 under the paraphrase floor, where an unseen paraphrase scoring 280 would
+    be lost.
+  - **Recommendation.** Keep 220; do not recalibrate to 290. The F1 gain is one
+    near-miss on a synthetic 56-pair corpus; the cost is the margin the test
+    itself demands. Fix the test, not the constant: replace the "max F1, middle
+    of ties" assertion with "F1 within 0.01 of the best and inside the margin
+    window" (211 to 224 today), so S1 preprocessing changes that only move
+    S1's side of the sweep cannot fail it. A per-preprocessing threshold is
+    not needed now: similarities are independent of S1, and a threshold keyed to
+    the stop-list id would be churn for a one-pair effect. If the embedder's
+    input, the chunker or the corpus changes, recalibrate; record the stop-list
+    id (`eidetic.stop-words/en-v1`) beside the calibration run so a later S1
+    change names itself. Recalibrate on real retained sources before
+    relying on it (as the 2026-11-05 entry says). Any code change is Mark's
+    call; this entry changed none.
+
 ## Progress
 
 - 2026-11-01: cut from the Eidetic development plan (D1). The archived copy
