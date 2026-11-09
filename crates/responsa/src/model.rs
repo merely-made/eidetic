@@ -94,11 +94,22 @@ const SEP: &str = " · ";
 /// Parses one fields line:
 /// `Links: area Execution · draws on 975, 338 · plans sim-execution ·
 /// governs isocosm::stage::Stage · stack · summary <text>`.
-/// `summary` is last and takes the rest of the line.
+/// `summary` is last and takes the rest of the line. This form fails on the
+/// first bad part; the lenient form keeps what parsed.
 pub fn parse_links(line: &str) -> Result<Links, String> {
-    let body = line.trim().strip_prefix(PREFIX).ok_or("not a fields line")?.trim();
+    let (links, mut errors) = parse_links_lenient(line);
+    if errors.is_empty() { Ok(links) } else { Err(errors.remove(0)) }
+}
+
+/// Parses a fields line field by field: every part that parses is kept and
+/// every part that does not is reported, so one bad part loses nothing else.
+pub fn parse_links_lenient(line: &str) -> (Links, Vec<String>) {
     let mut links = Links::default();
-    let mut parts = body.split(SEP);
+    let mut errors = Vec::new();
+    let Some(body) = line.trim().strip_prefix(PREFIX) else {
+        return (links, vec!["not a fields line".to_string()]);
+    };
+    let mut parts = body.trim().split(SEP);
     while let Some(part) = parts.next() {
         let part = part.trim();
         if let Some(rest) = part.strip_prefix("summary ") {
@@ -116,33 +127,57 @@ pub fn parse_links(line: &str) -> Result<Links, String> {
         } else if let Some(v) = part.strip_prefix("area ") {
             links.area = Some(v.trim().to_string());
         } else if let Some(v) = part.strip_prefix("draws on ") {
-            links.draws_on = keys(v)?;
+            keys(v, &mut links.draws_on, &mut errors);
         } else if let Some(v) = part.strip_prefix("amends ") {
-            links.amends = keys(v)?;
+            keys(v, &mut links.amends, &mut errors);
         } else if let Some(v) = part.strip_prefix("replaces ") {
-            links.replaces = keys(v)?;
+            keys(v, &mut links.replaces, &mut errors);
         } else if let Some(v) = part.strip_prefix("contradicts ") {
-            links.contradicts = keys(v)?;
+            keys(v, &mut links.contradicts, &mut errors);
         } else if let Some(v) = part.strip_prefix("plans ") {
-            links.plans = list(v).map(str::to_string).collect();
-            if let Some(bad) = links.plans.iter().find(|p| !valid_keyword(p)) {
-                return Err(format!("bad plan keyword {bad:?}"));
+            for p in list(v) {
+                match plan_ref(p) {
+                    Some(kw) => {
+                        links.plans.insert(kw.to_string());
+                    }
+                    None => errors.push(format!("bad plan keyword {p:?}")),
+                }
             }
         } else if let Some(v) = part.strip_prefix("governs ") {
             links.governs = list(v).map(str::to_string).collect();
         } else if !part.is_empty() {
-            return Err(format!("unknown link {part:?}"));
+            errors.push(format!("unknown link {part:?}"));
         }
     }
-    Ok(links)
+    (links, errors)
+}
+
+/// A `plans` item: a bare keyword, or a keyword and its phase
+/// (`engine-split P0`), which is kept as the keyword. A lone phase (`P3`) is
+/// not a plan.
+fn plan_ref(p: &str) -> Option<&str> {
+    if valid_keyword(p) {
+        return Some(p);
+    }
+    let (kw, phase) = p.split_once(' ')?;
+    let phase_ok = phase.bytes().next().is_some_and(|b| b.is_ascii_uppercase())
+        && phase.bytes().all(|b| b.is_ascii_alphanumeric());
+    (valid_keyword(kw) && phase_ok).then_some(kw)
 }
 
 fn list(v: &str) -> impl Iterator<Item = &str> {
     v.split(',').map(str::trim).filter(|s| !s.is_empty())
 }
 
-fn keys(v: &str) -> Result<BTreeSet<Key>, String> {
-    list(v).map(|k| Key::parse(k).ok_or_else(|| format!("bad key {k:?}"))).collect()
+fn keys(v: &str, into: &mut BTreeSet<Key>, errors: &mut Vec<String>) {
+    for k in list(v) {
+        match Key::parse(k) {
+            Some(key) => {
+                into.insert(key);
+            }
+            None => errors.push(format!("bad key {k:?}")),
+        }
+    }
 }
 
 /// An anchor (`isocosm::stage::Simulation::stage`) as an impresa identity.
@@ -199,5 +234,30 @@ mod tests {
         assert!(l.stack);
         assert_eq!(l.summary.as_deref(), Some("Bodies by Arc · copy on write"));
         assert!(parse_links("Links: drawn from 3").is_err());
+    }
+
+    #[test]
+    fn plans_take_a_phase_and_keep_the_keyword() {
+        let (l, errs) = parse_links_lenient("Links: plans engine-split P0, release-log, cycle-breaks P1b · summary s");
+        assert!(errs.is_empty(), "{errs:?}");
+        assert_eq!(l.plans, BTreeSet::from(["engine-split".to_string(), "release-log".to_string(), "cycle-breaks".to_string()]));
+        assert_eq!(l.summary.as_deref(), Some("s"));
+    }
+
+    #[test]
+    fn an_elided_phase_is_reported_and_the_first_is_kept() {
+        let (l, errs) = parse_links_lenient("Links: plans cycle-breaks P2, P3, Sim P4");
+        assert_eq!(l.plans, BTreeSet::from(["cycle-breaks".to_string()]));
+        assert_eq!(errs, ["bad plan keyword \"P3\"", "bad plan keyword \"Sim P4\""]);
+    }
+
+    #[test]
+    fn a_bad_part_loses_only_itself() {
+        let (l, errs) = parse_links_lenient("Links: area stack · draws on cycle-breaks D1, D15, 975 · plans x · closes y · summary kept");
+        assert_eq!(l.area.as_deref(), Some("stack"));
+        assert_eq!(l.draws_on, BTreeSet::from([Key::Plan("cycle-breaks".into(), 1), Key::Case(975)]));
+        assert_eq!(l.summary.as_deref(), Some("kept"));
+        assert_eq!(errs, ["bad key \"D15\"", "unknown link \"closes y\""]);
+        assert!(parse_links("Links: area stack · draws on D15").is_err());
     }
 }

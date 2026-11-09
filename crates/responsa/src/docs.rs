@@ -121,10 +121,9 @@ fn entries(
             e.title = title(&format!("{} {part}", e.title));
         }
         if l.trim_start().starts_with(model::PREFIX) {
-            match model::parse_links(l) {
-                Ok(links) => e.links = links,
-                Err(err) => e.errors.push(format!("{path}:{n}: {err}")),
-            }
+            let (links, errs) = model::parse_links_lenient(l);
+            e.links = links;
+            e.errors.extend(errs.into_iter().map(|err| format!("{path}:{n}: {err}")));
         } else {
             body.push_str(l);
             body.push('\n');
@@ -216,5 +215,19 @@ mod tests {
         let files = vec![("p.md".to_string(), crate::scan::Facts { entries: plan(text), ..Default::default() })];
         let m = crate::manifest::Manifest::build(&files);
         assert_eq!(m.errors, ["cycle-breaks D24 declared twice: p.md:3 and p.md:7"]);
+    }
+
+    #[test]
+    fn a_bad_part_is_reported_with_its_line_and_the_rest_kept() {
+        let d = plan("## Decisions
+
+- **D1. T (Mark, 2026-11-08):** b
+
+  Links: area stack · draws on D9 · plans cycle-breaks P2 · summary s
+");
+        assert_eq!(d[0].errors, ["p.md:5: bad key \"D9\""]);
+        assert_eq!(d[0].links.area.as_deref(), Some("stack"));
+        assert_eq!(d[0].links.plans.len(), 1);
+        assert_eq!(d[0].links.summary.as_deref(), Some("s"));
     }
 }
