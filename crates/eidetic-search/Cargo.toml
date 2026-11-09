@@ -13,7 +13,7 @@ name = "eidetic_search"
 path = "src/lib.rs"
 
 [dependencies]
-eidetic = { workspace = true }
+eidetic = { workspace = true, features = ["browsing", "models", "records", "capture"] }
 # The only engine dependency: versioned UAX #29 word segmentation from
 # Genet (see `src/tokenize.rs`). The scorer itself is
 # in-tree — no mmap, no threads, no C, so the crate reaches wasm browser backends.

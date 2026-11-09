@@ -60,14 +60,21 @@
 
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "browsing")]
 pub mod browsing;
 pub mod bundle;
+#[cfg(feature = "capture")]
 pub mod capture;
+#[cfg(feature = "clip_profile")]
 pub mod clip_profile;
 pub mod codicil;
+#[cfg(feature = "content_store")]
 pub mod content_store;
+#[cfg(feature = "deleted")]
 pub mod deleted;
+#[cfg(feature = "image_content")]
 pub mod image_content;
+#[cfg(feature = "import")]
 pub mod import;
 pub mod schema_facets;
 /// Compatibility surface for pre-rename readers. New code uses [`crate::codicil`].
@@ -77,7 +84,9 @@ pub mod engram {
 }
 pub mod manifest;
 pub mod retention;
+#[cfg(feature = "records")]
 pub mod records;
+#[cfg(feature = "models")]
 pub mod models;
 pub mod pack;
 pub mod schema;
@@ -87,15 +96,20 @@ pub mod typed;
 
 // `frecency::ranked` stays behind its module path: the bare name says nothing
 // at the crate root.
+#[cfg(feature = "browsing")]
 pub use browsing::frecency::{FrecencyConfig, TransitionWeights, frecency, frecency_by};
 // `page::simhash` and `normalize_text` stay behind the module path for the
 // same reason `ranked` does.
+#[cfg(feature = "browsing")]
 pub use browsing::captures::{CaptureContent, ResourceCaptureRef, ResourceCaptureStore};
+#[cfg(feature = "browsing")]
 pub use browsing::page::{
     FingerprintSource, PageFingerprint, PageRecord, PageTable, PageTableConfig, canonical_url,
     frecency_by_page, page_table, page_table_with,
 };
+#[cfg(feature = "browsing")]
 pub use browsing::text::{PageTextRef, PageTextStore, PageTexts};
+#[cfg(feature = "browsing")]
 pub use browsing::{
     BROWSING_TRACE_SCHEMA_REF, BrowsingMemory, BrowsingTrace, PageRef, TraceEvent, TraceTransition,
     bootstrap_browsing_schema, save_trace,
@@ -107,12 +121,14 @@ pub use bundle::{
 /// Stable resource identity from the shared canonical IRI.
 pub use chartulary::resource_id;
 pub use codicil::{Codicil, TimeBounds};
+#[cfg(feature = "deleted")]
 pub use deleted::{DeletedNode, clear_deleted, list_deleted, purge_deleted, record_deleted};
 /// Compatibility name for serialized and source consumers written before the
 /// Engram-to-Codicil migration. The serialized representation is unchanged.
 #[deprecated(since = "0.0.3", note = "use eidetic::Codicil")]
 pub type Engram = Codicil;
 pub use manifest::{BlobFetcher, BlobManifest, BlobSource, NoFetcher, delete_manifest};
+#[cfg(feature = "models")]
 pub use models::{
     AdapterRuntimeCompat, EVAL_REPORT_SCHEMA_REF, EvalMetric, EvalReport, EvalTally,
     LEGACY_TRAINING_CORPUS_SCHEMA_REF, MODEL_ADAPTER_MANIFEST_SCHEMA_REF, ModelAdapterManifest,

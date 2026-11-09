@@ -47,7 +47,16 @@ stores return ready futures.
 |---|---|---|
 | `pack-signing` | yes | Pack signing and verification via `personae` (`dep:identity`) |
 | `json-schema` | yes | Full JSON Schema validation via `jsonschema`. Without it, stored JSON Schema definitions return a "validator unavailable" error |
-| `lineage` | no | `browsing::lineage`, which projects a `chartulary::stemma` into `BrowsingTrace` codicils |
+| `product` | yes | Every product feature below; the substrate is always compiled, so a substrate-only consumer sets `default-features = false` |
+| `browsing` | via `product` | The `browsing` module and its root re-exports (frecency, page table, captures, page text) |
+| `models` | via `product` | The `models` module and its root re-exports |
+| `import` | via `product` | The `import` module; enables `browsing` |
+| `records` | via `product` | The `records` module; enables `models` |
+| `capture` | via `product` | The `capture` module; enables `browsing`, `models`, `records` |
+| `content_store`, `image_content`, `deleted`, `clip_profile` | via `product` | The module of the same name, each alone |
+| `lineage` | no | `browsing::lineage`, which projects a `chartulary::stemma` into `BrowsingTrace` codicils; enables `browsing` |
+
+Ungated substrate: `schema`, `manifest`, `typed`, `schema_def`, `schema_facets`, `codicil`, `bundle`, `pack`, `seal`, `retention`.
 
 ## Explicit retained copies
 

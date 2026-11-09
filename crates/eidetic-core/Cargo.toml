@@ -63,6 +63,7 @@ workspace = true
 default = [
     "pack-signing",
     "json-schema",
+    "product",
 ]
 pack-signing = [
     "dep:identity",
@@ -70,7 +71,41 @@ pack-signing = [
 json-schema = [
     "dep:jsonschema",
 ]
-lineage = []
+lineage = [
+    "browsing",
+]
+# The browsing-memory product half (engine-split D50). The substrate (schema,
+# typed payloads, retention, seal, manifest, codicil, pack, bundle, schema_def
+# and schema facets) is always compiled; a substrate-only consumer sets
+# `default-features = false`. Features that name another feature need it.
+product = [
+    "browsing",
+    "capture",
+    "clip_profile",
+    "content_store",
+    "deleted",
+    "image_content",
+    "import",
+    "models",
+    "records",
+]
+browsing = []
+models = []
+import = [
+    "browsing",
+]
+records = [
+    "models",
+]
+capture = [
+    "browsing",
+    "models",
+    "records",
+]
+content_store = []
+deleted = []
+clip_profile = []
+image_content = []
 
 [dev-dependencies]
 pollster = "0.4"
@@ -96,6 +131,22 @@ features = [
     "json",
     "redb",
 ]
+
+[[test]]
+name = "capture_faults"
+required-features = ["capture"]
+
+[[test]]
+name = "capture_golden"
+required-features = ["capture"]
+
+[[test]]
+name = "capture_sealed"
+required-features = ["capture"]
+
+[[test]]
+name = "model_free_records"
+required-features = ["records"]
 
 [lints]
 workspace = true
