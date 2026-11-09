@@ -106,6 +106,9 @@ fn check(repo: &Repo) -> Result<ExitCode, String> {
         }
         Err(_) => println!("no {BUDGET} staged; budget not checked"),
     }
+    for e in &m.errors {
+        println!("warning: {e}");
+    }
     let across = across::check(&repo.root, &m);
     if across.checked > 0 && across.broken.is_empty() {
         println!("links to other repositories: {} checked, all declared", across.checked);

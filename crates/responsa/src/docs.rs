@@ -24,7 +24,7 @@ pub struct Entry {
 
 static CASE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(\d{1,4})\. \*\*(.+?)(?:\*\*|$)").unwrap());
 static STATEMENT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^### (.+?) (\d{1,3})\. (.+)$").unwrap());
-static DECISION: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^- \*\*D(\d{1,3})\b[,:]?\s*(.*?)(?::?\*\*|$)").unwrap());
+static DECISION: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^- \*\*D(\d{1,3})\b[,:.]?\s*(.*?)(?::?\*\*|$)").unwrap());
 
 /// The case numbers a design record's §0 holds, cheaply, for the citer.
 pub fn case_numbers(record: &str) -> BTreeSet<u32> {
@@ -42,6 +42,8 @@ pub fn record_cases(path: &str, text: &str, citer: &Citer) -> Vec<Entry> {
 }
 
 /// A plan's keyed decisions, under any heading that starts "## Decisions".
+/// The key may be followed by `,`, `:` or `.` (`**D24. Title (Mark, date):**`);
+/// that mark is not part of the title.
 pub fn plan_decisions(path: &str, text: &str, keyword: &str, citer: &Citer) -> Vec<Entry> {
     let lines: Vec<(usize, &str)> = section(text, "## Decisions", "## ").collect();
     entries(path, &lines, citer, |l| {
@@ -162,5 +164,57 @@ mod tests {
         assert_eq!(d[0].key.to_string(), "sim-execution D1");
         assert_eq!(d[0].title, "draw keys (2026-10-19)");
         assert!(d[0].mentions.contains(&Key::Case(975)));
+    }
+
+    fn plan(text: &str) -> Vec<Entry> {
+        let plans = BTreeSet::new();
+        let c = Citer { max_case: 984, plans: &plans, record: None };
+        plan_decisions("p.md", text, "cycle-breaks", &c)
+    }
+
+    const NEWER: &str = "## Decisions\n\n- **D24. Declared authority stays pending (Mark, 2026-11-08):** body text\n  more body.\n  still more.\n\n  Links: area stack · draws on cycle-breaks D1, cycle-breaks D15 · summary Stays pending; nothing built.\n\n- **D25. No links here (Mark, 2026-11-08):** body only.\n\n- **D26. Swapped (Mark, 2026-11-08):** x\n\n  Links: area stack · amends cycle-breaks D1 · replaces cycle-breaks D2 · summary Swapped.\n\n## Findings\n";
+
+    #[test]
+    fn newer_style_takes_key_title_and_every_field() {
+        let d = plan(NEWER);
+        assert_eq!(d.len(), 3);
+        assert_eq!(d[0].key.to_string(), "cycle-breaks D24");
+        assert_eq!(d[0].title, "Declared authority stays pending (Mark, 2026-11-08)");
+        assert_eq!(d[0].line, 3);
+        assert_eq!(d[0].links.area.as_deref(), Some("stack"));
+        assert_eq!(d[0].links.summary.as_deref(), Some("Stays pending; nothing built."));
+        let want: BTreeSet<Key> = ["cycle-breaks D1", "cycle-breaks D15"].iter().filter_map(|k| Key::parse(k)).collect();
+        assert_eq!(d[0].links.draws_on, want);
+        assert!(d[0].errors.is_empty());
+    }
+
+    #[test]
+    fn newer_style_without_links_and_with_amends_replaces() {
+        let d = plan(NEWER);
+        assert_eq!(d[1].title, "No links here (Mark, 2026-11-08)");
+        assert_eq!(d[1].links, Links::default());
+        assert_eq!(d[2].links.amends, BTreeSet::from([Key::Plan("cycle-breaks".into(), 1)]));
+        assert_eq!(d[2].links.replaces, BTreeSet::from([Key::Plan("cycle-breaks".into(), 2)]));
+    }
+
+    #[test]
+    fn older_style_titles_are_unchanged() {
+        let d = plan("## Decisions\n\n- **D1, draw keys (2026-10-19):** x\n- **D2: colon (2026-10-19):** y\n- **D3 bare:** z\n");
+        let titles: Vec<&str> = d.iter().map(|e| e.title.as_str()).collect();
+        assert_eq!(titles, ["draw keys (2026-10-19)", "colon (2026-10-19)", "bare"]);
+    }
+
+    #[test]
+    fn a_wrapped_newer_title_joins_its_lines() {
+        let d = plan("## Decisions\n\n- **D7. A title that\n  wraps (Mark, 2026-11-08):** body\n");
+        assert_eq!(d[0].title, "A title that wraps (Mark, 2026-11-08)");
+    }
+
+    #[test]
+    fn a_duplicated_decision_is_reported_with_both_lines() {
+        let text = "## Decisions\n\n- **D24. First (Mark, 2026-11-08):** a\n\n  Links: area stack · summary one\n\n- **D24. First (Mark, 2026-11-08):** a\n\n  Links: area other · summary two\n";
+        let files = vec![("p.md".to_string(), crate::scan::Facts { entries: plan(text), ..Default::default() })];
+        let m = crate::manifest::Manifest::build(&files);
+        assert_eq!(m.errors, ["cycle-breaks D24 declared twice: p.md:3 and p.md:7"]);
     }
 }
