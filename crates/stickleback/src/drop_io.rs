@@ -513,12 +513,13 @@ pub use receipts::{
     discard_peer_drop_receipts, local_drop_receipt, peer_drop_receipt, store_peer_drop_receipt,
 };
 
-use receipts::{peer_receipt_key, receipt_key};
+use receipts::receipt_key;
 
 #[path = "drop_io/files.rs"]
 mod files;
 
-use files::{create_export_temporary, write_staged_drop};
+#[cfg(test)]
+use files::write_staged_drop;
 
 pub use files::{
     export_plain_topic_file, export_protected_topic_file, export_selected_plain_topic_file,

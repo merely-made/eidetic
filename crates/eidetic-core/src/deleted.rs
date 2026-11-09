@@ -146,8 +146,8 @@ pub async fn clear_deleted(store: &mut dyn Store) -> Result<usize> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use async_trait::async_trait;
-    use std::collections::HashMap;
+    
+    
 
     // The in-memory test store is muniment's (2026-07-12): eidetic's
     // hand-rolled one was the same map behind the same seam.

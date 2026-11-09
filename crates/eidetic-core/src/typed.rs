@@ -210,9 +210,9 @@ mod tests {
         ManifestId, ModerationState, ProvenanceOrigin, ProvenanceRecord, SchemaRef, Timestamp,
         TrustLevel,
     };
-    use async_trait::async_trait;
+    
     use serde::{Deserialize, Serialize};
-    use std::collections::HashMap;
+    
 
     // The in-memory test store is muniment's (2026-07-12): eidetic's
     // hand-rolled one was the same map behind the same seam.

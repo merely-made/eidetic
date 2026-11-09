@@ -337,7 +337,7 @@ mod tests {
     #[test]
     fn save_then_load_returns_same_bytes() {
         pollster::block_on(async {
-            let (mut store, _dir) = open_store();
+            let (store, _dir) = open_store();
             store.put("k", b"hello").await.unwrap();
             let got = store.get("k").await.unwrap();
             assert_eq!(got, Some(b"hello".to_vec()));
@@ -347,7 +347,7 @@ mod tests {
     #[test]
     fn load_missing_returns_none() {
         pollster::block_on(async {
-            let (mut store, _dir) = open_store();
+            let (store, _dir) = open_store();
             let got = store.get("never-saved").await.unwrap();
             assert!(got.is_none());
         });
@@ -356,7 +356,7 @@ mod tests {
     #[test]
     fn save_overwrites_existing() {
         pollster::block_on(async {
-            let (mut store, _dir) = open_store();
+            let (store, _dir) = open_store();
             store.put("k", b"first").await.unwrap();
             store.put("k", b"second").await.unwrap();
             let got = store.get("k").await.unwrap();
@@ -369,11 +369,11 @@ mod tests {
         pollster::block_on(async {
             let dir = TempDir::new().expect("tempdir");
             {
-                let mut store = FjallStore::open(dir.path()).expect("open 1");
+                let store = FjallStore::open(dir.path()).expect("open 1");
                 store.put("persistent", b"survive").await.unwrap();
             }
             {
-                let mut store = FjallStore::open(dir.path()).expect("open 2");
+                let store = FjallStore::open(dir.path()).expect("open 2");
                 let got = store.get("persistent").await.unwrap();
                 assert_eq!(got, Some(b"survive".to_vec()));
             }
@@ -428,7 +428,7 @@ mod tests {
     #[test]
     fn iter_keys_returns_prefix_matches() {
         pollster::block_on(async {
-            let (mut store, _dir) = open_store();
+            let (store, _dir) = open_store();
             store.put("manifest:a", b"1").await.unwrap();
             store.put("manifest:b", b"2").await.unwrap();
             store.put("blob:c", b"3").await.unwrap();

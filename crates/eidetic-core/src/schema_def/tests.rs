@@ -7,8 +7,6 @@
 use super::*;
 use crate::manifest::NoFetcher;
 use crate::schema::{ProvenanceOrigin, ProvenanceRecord, Timestamp};
-use async_trait::async_trait;
-use std::collections::HashMap;
 
 // The in-memory test store is muniment's (2026-07-12): eidetic's
 // hand-rolled one was the same map behind the same seam.
