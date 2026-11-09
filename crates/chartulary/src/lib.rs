@@ -45,14 +45,23 @@
 //! `2026-07-18_one_node_facets_layer_map.md`): `Container` is the node, and
 //! everything else is a facet.
 
+//! Fields are the third graph primitive beside nodes and edges: [`field`],
+//! [`field_ast`], [`coupling`] and [`edge_path`] define them as portable data
+//! (identity, extent, the scalar/vector AST, how elements respond, how an edge
+//! is drawn). Evaluation is not here; the numen crate in Seiche evaluates them.
+
 pub mod assertion;
 pub mod canonical;
 pub mod caps;
 pub mod commit;
+pub mod coupling;
 pub mod container;
 pub mod content_class;
+pub mod edge_path;
 pub mod edit;
 pub mod facet;
+pub mod field;
+pub mod field_ast;
 pub mod graph;
 pub mod nested;
 /// RDF export of the semantic relation ring, folded from the standalone

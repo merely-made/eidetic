@@ -52,6 +52,21 @@ features = [
 version = "1"
 features = [
     "v5",
+    "serde",
+]
+
+# Field and coupling ids (from numen, D49): random ids are native-only; wasm
+# hosts mint ids from a host-supplied UUID.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.uuid]
+version = "1"
+features = [
+    "v4",
+]
+
+[target.'cfg(all(target_family = "wasm", target_os = "unknown"))'.dependencies.uuid]
+version = "1"
+features = [
+    "js",
 ]
 
 [dev-dependencies]
