@@ -14,6 +14,8 @@ members = [
     "crates/impresa",
     "crates/state-witness",
     "crates/framing",
+    # Revision-bound UTF-8 edit proposals, from Mere (engine split D40).
+    "crates/source-edit",
 ]
 
 [workspace.package]
