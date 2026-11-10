@@ -83,6 +83,8 @@ pub mod engram {
     pub use crate::codicil::{Codicil as Engram, TimeBounds};
 }
 pub mod manifest;
+#[cfg(feature = "memory")]
+pub mod memory;
 pub mod retention;
 #[cfg(feature = "records")]
 pub mod records;

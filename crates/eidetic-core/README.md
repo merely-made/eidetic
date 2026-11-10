@@ -27,6 +27,7 @@ Muniment and Pandect respectively.
 | `browsing` | `BrowsingTrace`, `BrowsingMemory`, `TraceEvent`, `TraceTransition`, `PageRef`, `save_trace`, `bootstrap_browsing_schema`; `browsing::lineage::project_lineage` behind the `lineage` feature |
 | `import` | Portable browser interchange, `Intake<T>`, original source bytes, provenance and conversion notices |
 | `content_store` / `image_content` | Store-neutral fetched-content cache and content-addressed image bytes, with stable existing keys |
+| `memory` | Memory levels (short-term and long-term records, eviction policy), forgetting's apply and tombstone retirement, generic over node records; `eidetic::retention` stays the custody module |
 | `schema_facets` | Eidetic schema registration and Chartulary facet validation |
 | `deleted` | `DeletedNode`, `record_deleted`, `list_deleted`, `purge_deleted`, `clear_deleted` |
 | `models` | `ModelManifest`, `ModelLibrary`, `ModelComponents`, `OpaqueBlob`; `models::embedding` binds an exact embedding space, chunker and source revisions for compatible derived indexes |
@@ -54,6 +55,7 @@ stores return ready futures.
 | `records` | via `product` | The `records` module; enables `models` |
 | `capture` | via `product` | The `capture` module; enables `browsing`, `models`, `records` |
 | `content_store`, `image_content`, `deleted`, `clip_profile` | via `product` | The module of the same name, each alone |
+| `memory` | via `product` | The `memory` module (`levels`, `forgetting`, `retirement`); enables `content_store` and `deleted` |
 | `lineage` | no | `browsing::lineage`, which projects a `chartulary::stemma` into `BrowsingTrace` codicils; enables `browsing` |
 
 Ungated substrate: `schema`, `manifest`, `typed`, `schema_def`, `schema_facets`, `codicil`, `bundle`, `pack`, `seal`, `retention`.

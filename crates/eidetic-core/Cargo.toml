@@ -86,6 +86,7 @@ product = [
     "deleted",
     "image_content",
     "import",
+    "memory",
     "models",
     "records",
 ]
@@ -103,6 +104,10 @@ capture = [
     "records",
 ]
 content_store = []
+memory = [
+    "content_store",
+    "deleted",
+]
 deleted = []
 clip_profile = []
 image_content = []
