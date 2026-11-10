@@ -36,7 +36,7 @@ pub const SCHEMA_NAME: &str = "https://schema.org/name";
 pub const SCHEMA_KEYWORDS: &str = "https://schema.org/keywords";
 
 /// An RDF term: an IRI or a literal.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Term {
     /// A named node (an IRI).
     Iri(String),

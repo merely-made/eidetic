@@ -64,6 +64,9 @@ pub mod field;
 pub mod field_ast;
 pub mod graph;
 pub mod nested;
+/// A dictionary and six-ordering quad index over dense term ids, generic over
+/// the term type: the store a query engine's dataset reads. See [`quads`].
+pub mod quads;
 /// RDF export of the semantic relation ring, folded from the standalone
 /// `scholia` crate. See [`rdf`] for expanded JSON-LD and N-Quads output.
 pub mod rdf;

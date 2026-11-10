@@ -35,6 +35,7 @@ Canonical migration and current receipts: `mere/design_docs/mere_docs/implementa
 - [2026-07-08_chartulary_g0](eidetic_docs/technical_architecture/2026-07-08_chartulary_g0.md) — G0 of the generic graph substrate: the generic graph, capability traits, default payloads and two-ring taxonomy.
 - [2026-07-08_chartulary_g1](eidetic_docs/technical_architecture/2026-07-08_chartulary_g1.md) — G1: the edit spine, an event-sourced graph where mutations are logged edits and replay rebuilds the graph.
 - [2026-07-08_chartulary_g2](eidetic_docs/technical_architecture/2026-07-08_chartulary_g2.md) — G2: fork and lineage, self-contained graph forks and per-node derivation records.
+- [2026-11-09_chartulary_g3_quads](eidetic_docs/technical_architecture/2026-11-09_chartulary_g3_quads.md) — G3: `chartulary::quads`, a dictionary and six-ordering quad index over dense term ids with live and history views; P1 of Mere's quad index plan.
 
 ## Evidence archive
 

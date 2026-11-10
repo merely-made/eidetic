@@ -1,0 +1,24 @@
+# chartulary G3: the quad index
+
+**Date:** 2026-11-09
+**Status:** G3 landed on a branch on 2026-11-10 and is not yet on main. It follows G2 (`2026-07-08_chartulary_g2.md`). This is P1 of Mere's quad index plan, `mere/design_docs/mere_docs/implementation_strategy/2026-11-09_quad_index_plan.md`, which carries out Mere's indexed dataset brief, `mere/design_docs/mere_docs/technical_architecture/2026-11-09_indexed_dataset_brief.md`. Rulings are cited by the keys those documents use: brief D1 to D5 and plan D1 to D7. G2 named "a first real consumer" as G3. The substrate plan's lettering has drifted since (G4, scholia, is already folded in as `chartulary::rdf`), so this G3 is simply the next layer the crate gained.
+
+## What G3 is
+
+The module `chartulary::quads`: a dictionary and quad index over dense term ids, generic over the term type, with no new dependency (brief D1, plan D2). Brief §1 measured Mere's SPARQL adapter re-scanning the whole graph for every pattern. This is the store half of the fix. Mere's engine supplies the terms and implements its evaluator's dataset seam over this index (plan P2). Eidetic indexes the ids it is handed and never learns Mere's literal or reifier vocabulary.
+
+- **`Dictionary<T: Hash + Eq + Clone>`.** Append-only: `intern`, `lookup`, `resolve`, `get`, `len`. A rebuild makes a new dictionary (brief D2, D4).
+- **`TermId`.** A `NonZeroU32` minted from 1, so `Option<TermId>` is four bytes. `TermId::DEFAULT_GRAPH` is `u32::MAX`, and no dictionary mints or resolves it (plan D5). A caller never interns a term for the default graph: it passes the reserved id.
+- **`Quad` and `QuadMeta`.** A quad is four ids. Its meta records whether it is held, plus an optional asserter and statement: the fields a filter needs beside the triple (brief §3).
+- **`QuadIndex::build`.** Collapses identical `(quad, meta)` rows but keeps every distinct meta of a quad (plan D6). It stores one base table sorted SPO then graph, and five orderings of `u32` positions into it: POS, OSP and the graph-first GSPO, GPOS, GOSP (brief D3, plan D4).
+- **`pattern(s, p, o, g, view)`.** Picks the ordering whose prefix the bound positions fill, finds one range of it by binary search, and walks it. Each quad comes out once per view, its held row first. `View::Live` skips withdrawn rows and `View::History` keeps them (brief D5). For the graph, `Some(None)` is the default graph.
+- **`graph_names(view)` and `contains_graph(id, view)`.** These list only the named graphs that have a row visible in the view, so Mere's withdrawn-only history graph is absent from a live read (plan D7). The default graph is never listed.
+- **`len()` and `memory_bytes()`.** `len()` counts stored rows; `memory_bytes()` is there for the measurement. Each row costs 28 bytes in the base table plus 20 across the five orderings, so 80,000 quads take 3,840,200 bytes, against brief §4's 10 MB cap.
+
+## Tests
+
+The tests live in `crates/chartulary/src/quads/tests.rs`. A generated dataset of 3,000 rows has exact duplicates, quads repeated with differing metas, four named graphs (one holding only withdrawn rows) and the default graph. On it, every one of the sixteen bound shapes is checked in both views against a brute-force filter. Further tests cover the default graph as `Some(None)`, collapsing and held-first yield, `graph_names` and `contains_graph` under each view, the dictionary's reserved id, and an index of `chartulary::rdf::to_quads` interned as `rdf::Term`, which gained `Hash` for it. One test pins the 80k memory figure under 10 MB.
+
+## Not here
+
+The `spareval` seam, the `oxrdf` term type and the conformance layer are Mere's (plan P2). So is the id for a term the dictionary lacks: `TermId::from_u32` lets P2 name one that matches no row. Incremental maintenance and deriving reifier rows on read wait on P3's numbers (brief D4, plan D1).
