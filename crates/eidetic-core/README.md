@@ -27,6 +27,7 @@ Muniment and Pandect respectively.
 | `browsing` | `BrowsingTrace`, `BrowsingMemory`, `TraceEvent`, `TraceTransition`, `PageRef`, `save_trace`, `bootstrap_browsing_schema`; `browsing::lineage::project_lineage` behind the `lineage` feature |
 | `import` | Portable browser interchange, `Intake<T>`, original source bytes, provenance and conversion notices |
 | `content_store` / `image_content` | Store-neutral fetched-content cache and content-addressed image bytes, with stable existing keys |
+| `kept_text` | Page text the person chose to keep: `KeepTextPolicy`, `KeptBatch`, `record_kept_pages` and `forget_kept_text` over `PageTextStore` (from the Graphshell app, engine split D71) |
 | `memory` | Memory levels (short-term and long-term records, eviction policy), forgetting's apply and tombstone retirement, generic over node records; `eidetic::retention` stays the custody module |
 | `schema_facets` | Eidetic schema registration and Chartulary facet validation |
 | `deleted` | `DeletedNode`, `record_deleted`, `list_deleted`, `purge_deleted`, `clear_deleted` |
@@ -55,6 +56,7 @@ stores return ready futures.
 | `records` | via `product` | The `records` module; enables `models` |
 | `capture` | via `product` | The `capture` module; enables `browsing`, `models`, `records` |
 | `content_store`, `image_content`, `deleted`, `clip_profile` | via `product` | The module of the same name, each alone |
+| `kept_text` | via `product` | The `kept_text` module; enables `browsing` |
 | `memory` | via `product` | The `memory` module (`levels`, `forgetting`, `retirement`); enables `content_store` and `deleted` |
 | `lineage` | no | `browsing::lineage`, which projects a `chartulary::stemma` into `BrowsingTrace` codicils; enables `browsing` |
 

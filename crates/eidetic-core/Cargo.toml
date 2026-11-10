@@ -86,6 +86,7 @@ product = [
     "deleted",
     "image_content",
     "import",
+    "kept_text",
     "memory",
     "models",
     "records",
@@ -104,6 +105,10 @@ capture = [
     "records",
 ]
 content_store = []
+# Page text the person chose to keep, over PageTextStore (engine-split D71).
+kept_text = [
+    "browsing",
+]
 memory = [
     "content_store",
     "deleted",

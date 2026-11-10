@@ -76,6 +76,10 @@ pub mod deleted;
 pub mod image_content;
 #[cfg(feature = "import")]
 pub mod import;
+#[cfg(feature = "kept_text")]
+pub mod kept_text;
+#[cfg(all(test, feature = "kept_text"))]
+mod kept_text_tests;
 pub mod schema_facets;
 /// Compatibility surface for pre-rename readers. New code uses [`crate::codicil`].
 #[deprecated(since = "0.0.3", note = "renamed to eidetic::codicil")]
