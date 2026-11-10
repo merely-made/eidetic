@@ -2124,9 +2124,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-core"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c15b784917e4ce22c172cc440493a9feb9053571f6823dc08f094dee88b02faf"
+checksum = "1a67d1f1973733b0fb3d56762c9bdba4cab9f940f5f5cac0d6069d4a9e6d6106"
 dependencies = [
  "blake3",
  "cbor-core",
@@ -2140,9 +2140,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-encryption"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4cd68e2e46efeb84e1a6a5ae3cb33d870b6f86ebbaeca6a03cc9298caf3e2e99"
+checksum = "66f89e7e0b84d4153ba9a3ffb2e940c62b1ca2b94e6ca413aae0ae8ed826edbc"
 dependencies = [
  "chacha20poly1305 0.10.1",
  "curve25519-dalek",
@@ -2164,9 +2164,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-store"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc97eccd1875ea2c6ec6a99b89ec545266556e11262bfe35d06164174b0268f8"
+checksum = "6bb5772a4d6fce7323f81803fff06eb9d6ead8b22b0f92ea36f872067873b0c1"
 dependencies = [
  "async-stream",
  "futures-util",
@@ -2175,9 +2175,9 @@ dependencies = [
 
 [[package]]
 name = "p2mere-stream"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7f5a7ea7467d7fab5384667b0bc53360fe3fd4ff10a64513e193b041cc261af"
+checksum = "3f2ff9ee9368b17152fd3326fb6ded97a3b6b311dfb3341e1c96940044776077"
 dependencies = [
  "futures-util",
  "p2mere-core",
