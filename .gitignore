@@ -1,3 +1,5 @@
 /target/
 /.cargo/config.local.toml
 /crates/*/target/
+# Not tracked: what cargo resolved is a git note on each commit (scripts/record-resolved.sh).
+Cargo.lock
