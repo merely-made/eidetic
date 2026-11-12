@@ -21,15 +21,28 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $probeRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$mereRoot = (Resolve-Path (Join-Path $probeRoot '..\..')).Path
-# The repository's pinned toolchain (rust-toolchain.toml; burn plan 13.45),
-# not whatever rustup picks in the neutral directory below.
-. (Join-Path $mereRoot 'scripts\repo-toolchain.ps1')
-Use-RepoToolchain -MereRoot $mereRoot
+$repoRoot = (Resolve-Path (Join-Path $probeRoot '..\..')).Path
+# The repository's pinned toolchain (rust-toolchain.toml; the burn migration
+# plan 13.45 reference came from Mere and is not checked here), not whatever
+# rustup picks in the neutral directory below. Read the channel directly; refuse
+# one that is not installed, with no download and no fallback.
+$toolchainFile = Join-Path $repoRoot 'rust-toolchain.toml'
+$channelMatch = [regex]::Match((Get-Content -Raw -LiteralPath $toolchainFile), '(?m)^\s*channel\s*=\s*"([^"]+)"')
+if (-not $channelMatch.Success) { throw "No toolchain channel in $toolchainFile." }
+$channel = $channelMatch.Groups[1].Value
+$env:RUSTUP_AUTO_INSTALL = '0'
+$installed = @(rustup toolchain list | ForEach-Object { ($_ -split '\s+')[0] })
+if (-not ($installed | Where-Object { $_ -eq $channel -or $_ -like "$channel-*" })) {
+    throw "The repository pins Rust $channel ($toolchainFile), which is not installed. Install it with rustup; this runner does not fall back to another toolchain."
+}
+$env:RUSTUP_TOOLCHAIN = $channel
+$rustcVersion = (rustc --version | Out-String).Trim()
+if ($LASTEXITCODE -ne 0 -or -not $rustcVersion) { throw "rustc from toolchain $channel did not run." }
+Write-Host "toolchain: $channel ($rustcVersion)"
 $manifest = Join-Path $probeRoot 'Cargo.toml'
 $env:CARGO_TARGET_DIR = $TargetDir
-$env:MUNIMENT_OPFS_PROBE_COMMIT = (git -C $mereRoot rev-parse HEAD).Trim()
-$ownedStatus = git -C $mereRoot status --porcelain -- crates/muniment-opfs-probe
+$env:MUNIMENT_OPFS_PROBE_COMMIT = (git -C $repoRoot rev-parse HEAD).Trim()
+$ownedStatus = git -C $repoRoot status --porcelain -- crates/muniment-opfs-probe crates/muniment
 $env:MUNIMENT_OPFS_PROBE_DIRTY = if ($ownedStatus) { 'true' } else { 'false' }
 
 New-Item -ItemType Directory -Force -Path $TargetDir, $NeutralDir | Out-Null
@@ -90,14 +103,11 @@ $probeFiles = Get-ChildItem -Path $probeRoot -Recurse -File |
     } | ForEach-Object { $_.FullName }
 $env:MUNIMENT_OPFS_PROBE_SOURCE_SHA256 = Get-TreeHash -Files $probeFiles -Root $probeRoot
 
-# Muniment is a git supplier; its locked source (repository and revision)
-# identifies what was built.
+# Muniment is a path dependency (../muniment), so the lockfile carries no
+# source for it. Its identity is the repository commit, which the dirty flag
+# above covers for crates/muniment as well as the probe.
 $lockPath = Join-Path $probeRoot 'Cargo.lock'
-$munimentLock = Select-String -LiteralPath $lockPath -Pattern '^name = "muniment"$' -Context 0, 2
-$munimentSource = $munimentLock.Context.PostContext | Where-Object { $_ -match '^source = "(.+)"$' } |
-    ForEach-Object { $Matches[1] }
-if (-not $munimentSource) { throw "Cargo.lock has no source for muniment." }
-$env:MUNIMENT_OPFS_PROBE_MUNIMENT_SOURCE = $munimentSource
+$env:MUNIMENT_OPFS_PROBE_MUNIMENT_SOURCE = "path crates/muniment @ $env:MUNIMENT_OPFS_PROBE_COMMIT"
 
 # The real lockfile, hashed whole: sources and checksums included, not just
 # names and versions. `--locked` below proves it is the one that was used.
@@ -142,7 +152,7 @@ $sink = Start-Process -PassThru -FilePath 'python' `
     -ArgumentList @((Join-Path $probeRoot 'receipt-sink.py'), $SinkPort)
 try {
     Write-Host "receipt sink on $SinkPort (pid $($sink.Id)). Press Ctrl+C to stop both."
-    python -m http.server $Port --directory $mereRoot
+    python -m http.server $Port --directory $repoRoot
 } finally {
     if (-not $sink.HasExited) { Stop-Process -Id $sink.Id -Force }
 }
