@@ -70,6 +70,13 @@ current directory, renders the same options, and exits 1 with one line when
 the file differs. A repository refreshes its file with
 `house hooks <its options> > .pre-commit-config.yaml`.
 
+Options: `--no-decisions`, `--regen` (run `house decisions regen --stage`
+before the check), `--deny`, `--clippy-base ARGS` (the first clippy pass, when
+it is not `--all-targets`), `--clippy ARGS` for each further pass, and
+`--local FILE` for a repository's own hooks: a YAML list at column 0, kept in
+the repository and appended after the fixed hooks. The first line of the
+generated file records the options, so `--check` needs none.
+
 In the template a `#{name` line opens a block kept only when its option is
 on (`clippy` repeats once per extra pass), `#}` closes it, and `{{key}}` is
 filled in.

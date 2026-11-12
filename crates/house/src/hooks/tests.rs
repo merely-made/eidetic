@@ -155,3 +155,30 @@ fn bad_options_are_refused() {
     assert!(Options::parse(&args(&["--frob"])).is_err());
     assert!(Options::parse(&args(&["--check"])).unwrap().1);
 }
+
+#[test]
+fn base_regen_and_local_change_only_their_parts() {
+    let base = render(&Options::default());
+    let (added, removed) = diff(&base, &render(&options(&["--clippy-base", "-p a -p b --all-targets"])));
+    assert_eq!(added.len(), 2);
+    assert!(added.iter().any(|l| l == "        entry: cargo clippy -p a -p b --all-targets"));
+    assert!(removed.iter().any(|l| l == "        entry: cargo clippy --all-targets"));
+
+    let (added, removed) = diff(&base, &render(&options(&["--regen"])));
+    assert_eq!(removed, ["# house hooks"]);
+    assert!(added.iter().any(|l| l == "        entry: house decisions regen --stage"));
+    assert_eq!(added.len(), 1 + 6);
+    // Regen with no decisions manifest has nothing to regenerate.
+    assert!(!render(&options(&["--no-decisions", "--regen"])).contains("decisions regen"));
+
+    let with_local = Options { local: Some(("hooks.local.yaml".into(), "- id: pack-json\n  language: fail\n".into())), ..Options::default() };
+    let out = render(&with_local);
+    assert!(out.starts_with("# house hooks --local hooks.local.yaml\n"));
+    let lines: Vec<&str> = out.lines().collect();
+    let at = lines.iter().position(|l| *l == "      # From hooks.local.yaml:").expect("the local block");
+    assert_eq!(lines[at + 1], "      - id: pack-json");
+    assert_eq!(lines[at + 2], "        language: fail");
+    // The repository's own hooks sit before the two resolved hooks.
+    assert!(lines[at..].iter().any(|l| l.contains("id: record-resolved")));
+}
+

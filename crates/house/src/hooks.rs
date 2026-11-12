@@ -14,7 +14,9 @@ const TEMPLATE: &str = include_str!("template.yaml");
 /// The file a consumer repository carries at its root.
 pub const FILE: &str = ".pre-commit-config.yaml";
 const HEADER: &str = "# house hooks";
-const USAGE: &str = "usage: house hooks [--no-decisions] [--deny] [--clippy ARGS]... | house hooks --check";
+const USAGE: &str = "usage: house hooks [--no-decisions] [--regen] [--deny] [--clippy-base ARGS] [--clippy ARGS]... [--local FILE] | house hooks --check";
+/// What the first clippy pass runs when a repository names nothing else.
+const CLIPPY_BASE: &str = "--all-targets";
 
 /// What a repository's hook file carries beyond the fixed hooks.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -25,11 +27,18 @@ pub struct Options {
     pub deny: bool,
     /// Extra `cargo clippy` passes, each its argument string.
     pub clippy: Vec<String>,
+    /// `house decisions regen --stage` before the check.
+    pub regen: bool,
+    /// The first clippy pass's arguments, when not `--all-targets`.
+    pub clippy_base: Option<String>,
+    /// A repository's own hooks: the file's path and its text, a YAML list
+    /// at column 0, appended after the fixed hooks.
+    pub local: Option<(String, String)>,
 }
 
 impl Default for Options {
     fn default() -> Self {
-        Options { decisions: true, deny: false, clippy: Vec::new() }
+        Options { decisions: true, deny: false, clippy: Vec::new(), regen: false, clippy_base: None, local: None }
     }
 }
 
@@ -47,6 +56,19 @@ impl Options {
                 "--no-decisions" => o.decisions = false,
                 "--deny" => o.deny = true,
                 "--check" => check = true,
+                "--regen" => o.regen = true,
+                "--clippy-base" => {
+                    let base = args.next().ok_or("--clippy-base needs its cargo clippy arguments")?;
+                    if base.trim().is_empty() || base.contains(['\n', '\r']) {
+                        return Err("--clippy-base needs arguments on one line".into());
+                    }
+                    o.clippy_base = Some(base.clone());
+                }
+                "--local" => {
+                    let path = args.next().ok_or("--local needs a file")?;
+                    let text = std::fs::read_to_string(path).map_err(|e| format!("--local {path}: {e}"))?;
+                    o.local = Some((path.clone(), text.replace("\r\n", "\n")));
+                }
                 "--clippy" => {
                     let extra = args.next().ok_or("--clippy needs its cargo clippy arguments")?;
                     if extra.trim().is_empty() || extra.contains(['\n', '\r']) {
@@ -66,12 +88,23 @@ impl Options {
         if !self.decisions {
             line.push_str(" --no-decisions");
         }
+        if self.regen {
+            line.push_str(" --regen");
+        }
         if self.deny {
             line.push_str(" --deny");
+        }
+        if let Some(base) = &self.clippy_base {
+            line.push_str(" --clippy-base ");
+            line.push_str(&words::quote(base));
         }
         for c in &self.clippy {
             line.push_str(" --clippy ");
             line.push_str(&words::quote(c));
+        }
+        if let Some((path, _)) = &self.local {
+            line.push_str(" --local ");
+            line.push_str(&words::quote(path));
         }
         line
     }
@@ -80,6 +113,8 @@ impl Options {
         match name {
             "decisions" => Ok(usize::from(self.decisions)),
             "deny" => Ok(usize::from(self.deny)),
+            "regen" => Ok(usize::from(self.regen && self.decisions)),
+            "local" => Ok(usize::from(self.local.is_some())),
             "clippy" => Ok(self.clippy.len()),
             _ => Err(format!("template: unknown block {name}")),
         }
@@ -130,13 +165,25 @@ fn yaml_scalar(s: &str) -> String {
 /// the tests catch.
 pub fn render(options: &Options) -> String {
     let opts = options.command_line();
-    let globals = [("options", opts.as_str())];
+    let base = self_base(options);
+    let globals = [("options", opts.as_str()), ("base", base.as_str())];
     let mut out = String::new();
     let mut lines = TEMPLATE.lines();
     while let Some(line) = lines.next() {
         if let Some(block) = line.strip_prefix("#{") {
             let body: Vec<&str> = lines.by_ref().take_while(|l| *l != "#}").collect();
             let times = options.block_on(block).expect("template block");
+            if let (true, Some((path, text))) = (block == "local", &options.local) {
+                out.push_str(&format!("      # From {path}:\n"));
+                for l in text.lines() {
+                    if !l.trim().is_empty() {
+                        out.push_str("      ");
+                        out.push_str(l);
+                    }
+                    out.push('\n');
+                }
+                continue;
+            }
             for i in 0..times {
                 // `times` is the clippy count only inside the clippy block.
                 let pass = options.clippy.get(i).filter(|_| block == "clippy").map(|args| clippy_pass(i, args));
@@ -155,6 +202,11 @@ pub fn render(options: &Options) -> String {
         out.push('\n');
     }
     out
+}
+
+/// The first clippy pass's arguments, as the entry line writes them.
+fn self_base(options: &Options) -> String {
+    options.clippy_base.clone().unwrap_or_else(|| CLIPPY_BASE.to_string())
 }
 
 /// The `n`, `name` and `entry` of the `i`th extra clippy pass; ids start

@@ -15,6 +15,14 @@ repos:
         language: system
         types: [text]
         always_run: true
+#{regen
+      - id: decisions-regen
+        name: decisions regen
+        entry: house decisions regen --stage
+        language: system
+        pass_filenames: false
+        always_run: true
+#}
 #{decisions
       - id: decisions
         name: decisions check
@@ -25,7 +33,7 @@ repos:
 #}
       - id: clippy
         name: clippy
-        entry: cargo clippy --all-targets
+        entry: cargo clippy {{base}}
         language: system
         files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'
         pass_filenames: false
@@ -44,6 +52,8 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+#}
+#{local
 #}
       # No Cargo.lock is tracked; what cargo resolved rides on each commit as a
       # git note under refs/notes/resolved (`house resolved show <commit>`).
