@@ -14,7 +14,7 @@ const TEMPLATE: &str = include_str!("template.yaml");
 /// The file a consumer repository carries at its root.
 pub const FILE: &str = ".pre-commit-config.yaml";
 const HEADER: &str = "# house hooks";
-const USAGE: &str = "usage: house hooks [--no-decisions] [--regen] [--deny] [--clippy-base ARGS] [--clippy ARGS]... [--local FILE] | house hooks --check";
+const USAGE: &str = "usage: house hooks [--no-decisions] [--regen] [--deny] [--deny-args ARGS] [--clippy-base ARGS] [--clippy ARGS]... [--local FILE] | house hooks --check";
 /// What the first clippy pass runs when a repository names nothing else.
 const CLIPPY_BASE: &str = "--all-targets";
 
@@ -27,6 +27,8 @@ pub struct Options {
     pub deny: bool,
     /// Extra `cargo clippy` passes, each its argument string.
     pub clippy: Vec<String>,
+    /// Arguments between `cargo deny` and `check bans`; implies `deny`.
+    pub deny_args: Option<String>,
     /// `house decisions regen --stage` before the check.
     pub regen: bool,
     /// The first clippy pass's arguments, when not `--all-targets`.
@@ -38,7 +40,7 @@ pub struct Options {
 
 impl Default for Options {
     fn default() -> Self {
-        Options { decisions: true, deny: false, clippy: Vec::new(), regen: false, clippy_base: None, local: None }
+        Options { decisions: true, deny: false, clippy: Vec::new(), regen: false, clippy_base: None, local: None, deny_args: None }
     }
 }
 
@@ -57,6 +59,14 @@ impl Options {
                 "--deny" => o.deny = true,
                 "--check" => check = true,
                 "--regen" => o.regen = true,
+                "--deny-args" => {
+                    let extra = args.next().ok_or("--deny-args needs its cargo deny arguments")?;
+                    if extra.trim().is_empty() || extra.contains(['\n', '\r']) {
+                        return Err("--deny-args needs arguments on one line".into());
+                    }
+                    o.deny = true;
+                    o.deny_args = Some(extra.clone());
+                }
                 "--clippy-base" => {
                     let base = args.next().ok_or("--clippy-base needs its cargo clippy arguments")?;
                     if base.trim().is_empty() || base.contains(['\n', '\r']) {
@@ -91,8 +101,13 @@ impl Options {
         if self.regen {
             line.push_str(" --regen");
         }
-        if self.deny {
-            line.push_str(" --deny");
+        match &self.deny_args {
+            Some(extra) => {
+                line.push_str(" --deny-args ");
+                line.push_str(&words::quote(extra));
+            }
+            None if self.deny => line.push_str(" --deny"),
+            None => {}
         }
         if let Some(base) = &self.clippy_base {
             line.push_str(" --clippy-base ");
@@ -166,7 +181,8 @@ fn yaml_scalar(s: &str) -> String {
 pub fn render(options: &Options) -> String {
     let opts = options.command_line();
     let base = self_base(options);
-    let globals = [("options", opts.as_str()), ("base", base.as_str())];
+    let deny = options.deny_args.as_ref().map_or_else(|| "check bans".to_string(), |a| format!("{a} check bans"));
+    let globals = [("options", opts.as_str()), ("base", base.as_str()), ("deny", deny.as_str())];
     let mut out = String::new();
     let mut lines = TEMPLATE.lines();
     while let Some(line) = lines.next() {

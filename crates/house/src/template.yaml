@@ -48,7 +48,7 @@ repos:
 #{deny
       - id: dependency-bans
         name: dependency bans
-        entry: cargo deny check bans
+        entry: cargo deny {{deny}}
         language: system
         pass_filenames: false
         always_run: true

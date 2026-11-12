@@ -182,3 +182,11 @@ fn base_regen_and_local_change_only_their_parts() {
     assert!(lines[at..].iter().any(|l| l.contains("id: record-resolved")));
 }
 
+#[test]
+fn deny_args_sit_before_check_bans() {
+    let out = render(&options(&["--deny-args", "--manifest-path host/Cargo.toml"]));
+    assert!(out.starts_with("# house hooks --deny-args '--manifest-path host/Cargo.toml'\n"));
+    assert!(out.lines().any(|l| l == "        entry: cargo deny --manifest-path host/Cargo.toml check bans"));
+    assert!(render(&options(&["--deny"])).lines().any(|l| l == "        entry: cargo deny check bans"));
+}
+

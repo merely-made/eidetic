@@ -71,7 +71,8 @@ the file differs. A repository refreshes its file with
 `house hooks <its options> > .pre-commit-config.yaml`.
 
 Options: `--no-decisions`, `--regen` (run `house decisions regen --stage`
-before the check), `--deny`, `--clippy-base ARGS` (the first clippy pass, when
+before the check), `--deny`, `--deny-args ARGS` (arguments between `cargo deny`
+and `check bans`), `--clippy-base ARGS` (the first clippy pass, when
 it is not `--all-targets`), `--clippy ARGS` for each further pass, and
 `--local FILE` for a repository's own hooks: a YAML list at column 0, kept in
 the repository and appended after the fixed hooks. The first line of the
