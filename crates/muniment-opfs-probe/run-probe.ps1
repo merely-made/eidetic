@@ -22,8 +22,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $probeRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = (Resolve-Path (Join-Path $probeRoot '..\..')).Path
-# The repository's pinned toolchain (rust-toolchain.toml; the burn migration
-# plan 13.45 reference came from Mere and is not checked here), not whatever
+# The repository's pinned toolchain (rust-toolchain.toml), not whatever
 # rustup picks in the neutral directory below. Read the channel directly; refuse
 # one that is not installed, with no download and no fallback.
 $toolchainFile = Join-Path $repoRoot 'rust-toolchain.toml'
