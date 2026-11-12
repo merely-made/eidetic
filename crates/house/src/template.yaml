@@ -1,0 +1,66 @@
+# house hooks{{options}}
+# Written by `house hooks` (eidetic, crates/house); `house hooks --check` fails when this file drifts from it.
+fail_fast: true
+default_install_hook_types: [pre-commit, post-commit, pre-push]
+# Hooks without stages run at pre-commit only, so the notes push inside
+# `house resolved push` reruns nothing but that hook.
+default_stages: [pre-commit]
+repos:
+  - repo: local
+    hooks:
+      - id: line-ceiling
+        name: line ceiling
+        entry: house line-ceiling
+        language: rust
+        types: [text]
+        always_run: true
+        additional_dependencies: ["{{install}}"]
+#{decisions
+      - id: decisions
+        name: decisions check
+        entry: house decisions check
+        language: rust
+        pass_filenames: false
+        always_run: true
+        additional_dependencies: ["{{install}}"]
+#}
+      - id: clippy
+        name: clippy
+        entry: cargo clippy --all-targets
+        language: system
+        files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'
+        pass_filenames: false
+#{clippy
+      - id: clippy-{{n}}
+        name: {{name}}
+        entry: {{entry}}
+        language: system
+        files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'
+        pass_filenames: false
+#}
+#{deny
+      - id: dependency-bans
+        name: dependency bans
+        entry: cargo deny check bans
+        language: system
+        pass_filenames: false
+        always_run: true
+#}
+      # No Cargo.lock is tracked; what cargo resolved rides on each commit as a
+      # git note under refs/notes/resolved (`house resolved show <commit>`).
+      - id: record-resolved
+        name: record resolved versions
+        entry: house resolved record
+        language: rust
+        pass_filenames: false
+        always_run: true
+        stages: [post-commit]
+        additional_dependencies: ["{{install}}"]
+      - id: push-resolved
+        name: push resolved versions
+        entry: house resolved push
+        language: rust
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+        additional_dependencies: ["{{install}}"]

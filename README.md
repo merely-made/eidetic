@@ -22,6 +22,7 @@ and its historical receipts:
 | [servitor](crates/servitor) | Scoped participant petitions, graph admission, watches and recorded run reduction | Hosts execute work, supply time and reconcile outcomes; this is not an execution supervisor |
 | [impresa](crates/impresa) | Validated association records for anything pointable, and their lapses | Products store the records in their own accepted history and derive readings from them |
 | [responsa](crates/responsa) | Answers kept as cases and reconciled into a doctrine (DOC_POLICY core §11): manifest, register, lookup, budget, links across repositories | Repositories keep their own cases and doctrine; the tool generates, never decides |
+| [house](crates/house) | The git-hook tooling as one command: line ceiling, decisions, resolved-version notes and the canonical hook file | Repositories name it from their hook file; nothing is copied between them |
 
 Fleece extraction/selected-package adapters, Pandect sessions, Inker document
 routing and application adapters remain in Mere. ESP owns model execution and

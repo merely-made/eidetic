@@ -7,7 +7,8 @@
 //! ceiling or gone fails too, so the inventory shrinks only on purpose.
 
 use std::fmt;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::process::ExitCode;
 
 use serde::Deserialize;
 
@@ -254,6 +255,37 @@ fn lines_of(root: &Path, path: &str) -> Result<Option<usize>, String> {
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(e) => Err(format!("{path}: {e}")),
     }
+}
+
+/// The command line, `line-ceiling [--config PATH] FILE...` without the
+/// program name, run from the repository root. Exits 1 when a file is over
+/// the ceiling or an exception is stale, 2 on a configuration or usage error.
+pub fn run(args: Vec<String>) -> ExitCode {
+    match run_args(args) {
+        Ok(failed) => ExitCode::from(u8::from(failed)),
+        Err(e) => {
+            eprintln!("line-ceiling: {e}");
+            ExitCode::from(2)
+        }
+    }
+}
+
+fn run_args(args: Vec<String>) -> Result<bool, String> {
+    let mut config_path = PathBuf::from(CONFIG);
+    let mut files = Vec::new();
+    let mut args = args.into_iter();
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--config" => config_path = args.next().ok_or("--config needs a path")?.into(),
+            "-h" | "--help" => return Err("usage: line-ceiling [--config PATH] FILE...".into()),
+            _ => files.push(arg),
+        }
+    }
+    let root = std::env::current_dir().map_err(|e| e.to_string())?;
+    let config = Config::load(&config_path)?;
+    let report = check(&root, &files, &config)?;
+    eprint!("{report}");
+    Ok(report.failed())
 }
 
 #[cfg(test)]

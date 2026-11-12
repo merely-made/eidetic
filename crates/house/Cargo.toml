@@ -1,0 +1,30 @@
+[package]
+rust-version = "1.97.1"
+name = "house"
+version = "0.0.1"
+repository = "https://github.com/merely-made/eidetic"
+description = "The family's git-hook tooling in one command: line ceiling, decisions, resolved-version notes and the canonical hook file"
+readme = "README.md"
+keywords = ["pre-commit", "hooks", "lint", "git-notes"]
+categories = ["development-tools", "command-line-utilities"]
+edition = "2024"
+license = "MPL-2.0"
+
+[dependencies]
+line-ceiling = { path = "../line-ceiling", version = "0.0.1" }
+responsa = { path = "../responsa", version = "0.0.3" }
+
+# Its own workspace, so a tagged install fetches no git sources of
+# eidetic's workspace (line-ceiling plan D7).
+[workspace]
+
+[workspace.lints.clippy]
+all = "warn"
+missing_errors_doc = "warn"
+missing_panics_doc = "warn"
+missing_safety_doc = "warn"
+undocumented_unsafe_blocks = "warn"
+too_many_lines = "warn"
+
+[lints]
+workspace = true

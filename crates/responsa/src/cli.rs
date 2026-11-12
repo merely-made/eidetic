@@ -20,7 +20,12 @@ use crate::{DOCTRINE, MANIFEST, Snapshot, across, journal, scan};
 /// The command line, for a binary or a runner that names its own.
 pub fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
-    match run(&args) {
+    run_args(&args)
+}
+
+/// The command line without the program name.
+pub fn run_args(args: &[String]) -> ExitCode {
+    match run(args) {
         Ok(code) => code,
         Err(e) => {
             eprintln!("responsa: {e}");
