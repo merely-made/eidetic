@@ -29,7 +29,7 @@ Use-RepoToolchain -MereRoot $mereRoot
 $manifest = Join-Path $probeRoot 'Cargo.toml'
 $env:CARGO_TARGET_DIR = $TargetDir
 $env:MUNIMENT_OPFS_PROBE_COMMIT = (git -C $mereRoot rev-parse HEAD).Trim()
-$ownedStatus = git -C $mereRoot status --porcelain -- ports/muniment-opfs-probe
+$ownedStatus = git -C $mereRoot status --porcelain -- crates/muniment-opfs-probe
 $env:MUNIMENT_OPFS_PROBE_DIRTY = if ($ownedStatus) { 'true' } else { 'false' }
 
 New-Item -ItemType Directory -Force -Path $TargetDir, $NeutralDir | Out-Null
@@ -134,7 +134,7 @@ $wasm = Join-Path $TargetDir 'wasm32-unknown-unknown\release\muniment_opfs_probe
 & $WasmBindgen --target web --out-dir (Join-Path $probeRoot 'web\pkg') $wasm
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-$url = "http://localhost:$Port/ports/muniment-opfs-probe/web/"
+$url = "http://localhost:$Port/crates/muniment-opfs-probe/web/"
 Write-Host "muniment OPFS probe: $url"
 if ($NoServe) { exit 0 }
 

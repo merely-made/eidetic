@@ -29,7 +29,7 @@ const PORT = Number(args.port ?? 8733);
 const LANES = (args.lanes ?? "1,2,4,5,6").split(",").map((s) => s.trim());
 const OUT = args.out ?? `receipts/${new Date().toISOString().slice(0, 10)}_${ENGINE}.json`;
 const HEADLESS = args.headed !== "true";
-const URL_BASE = `http://127.0.0.1:${PORT}/ports/muniment-opfs-probe/web/`;
+const URL_BASE = `http://127.0.0.1:${PORT}/crates/muniment-opfs-probe/web/`;
 
 // ESM ignores NODE_PATH, so a Playwright installed outside this tree (which
 // is where it belongs — the probe does not carry node_modules) is named by

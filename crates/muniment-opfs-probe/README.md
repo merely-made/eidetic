@@ -1,15 +1,15 @@
 # muniment OPFS probe
 
 The executable half of the
-[redb-over-OPFS feasibility plan](../../design_docs/archive_docs/2026-10-06_completed_plans/2026-08-22_redb_opfs_feasibility_plan.md):
+redb-over-OPFS feasibility plan (Mere, `design_docs/archive_docs/2026-10-06_completed_plans/2026-08-22_redb_opfs_feasibility_plan.md`, not carried here):
 can redb 4.2 run over an OPFS sync-access handle as a muniment backend, inside
 a dedicated browser worker, keeping redb's storage contract and recovery
 guarantees, without an `unsafe` thread claim and without browser authority
 leaking above the seam?
 
 Production `muniment` is untouched. This is a standalone Cargo workspace, like
-`ports/distillery/probe`, so its redb 4.2 pin and wasm-bindgen pin never reach
-mere's product graph; muniment is consumed as a git dependency on Eidetic with its own
+`crates/line-ceiling`, so its redb 4.2 pin and wasm-bindgen pin never reach
+eidetic's product graph; muniment is consumed by path, with its own
 `redb` (2.x) feature off.
 
 ## What is where
@@ -34,18 +34,18 @@ Native halves first (fault sweep, invariant, workloads, adapter):
 
 ```powershell
 $env:CARGO_TARGET_DIR = 'C:\t\muniment-opfs-probe'
-cargo test --manifest-path ports/muniment-opfs-probe/Cargo.toml
+cargo test --manifest-path crates/muniment-opfs-probe/Cargo.toml
 ```
 
-Browser halves, from the mere root:
+Browser halves, from the repository root:
 
 ```powershell
-ports/muniment-opfs-probe/run-probe.ps1
+crates/muniment-opfs-probe/run-probe.ps1
 ```
 
 This builds the wasm, writes `fixtures/portability.redb` natively, runs
 wasm-bindgen 0.2.129 (the CLI the tree pins; pass `-WasmBindgen` for another
-path), and serves the mere root on port 8733. Open the printed URL in a headed
+path), and serves the repository root on port 8733. Open the printed URL in a headed
 Chromium and press **Run every lane**, or drive it:
 
 ```js

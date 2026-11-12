@@ -3,3 +3,19 @@ ceiling = 600
 [[exclude]]
 path = "support/patches/"
 reason = "Imported fjall and lsm-tree sources with local persistence patches; retain their upstream module layout."
+
+[[exception]]
+path = "crates/muniment-opfs-probe/src/fault.rs"
+reason = "Fault injection around a redb [StorageBackend]: call-indexed errors, short writes, a quota ceiling, and a cut (the process dies inside write k or before resize k, so nothing after. Existing source-size debt; a responsibility split must preserve FaultPlan, FaultCounters, FaultState and existing module visibility."
+
+[[exception]]
+path = "crates/muniment-opfs-probe/src/opfs_backend.rs"
+reason = "redb's [StorageBackend] over one OPFS FileSystemSyncAccessHandle, kept worker-local. Existing source-size debt; a responsibility split must preserve Registry, Token, IoCounters and existing module visibility."
+
+[[exception]]
+path = "crates/muniment-opfs-probe/src/worker.rs"
+reason = "The wasm execution body: one run_command entry the worker script calls with a JSON [ProbeCommand], answering a JSON [ProbeReport], plus the export_file entry that hands the page a. Existing source-size debt; a responsibility split must preserve Opened, OpenFailure and existing module visibility."
+
+[[exception]]
+path = "crates/muniment-opfs-probe/web/probe.js"
+reason = "Probe. Existing source-size debt; a responsibility split must preserve existing entry points, fixture identity and module visibility."
