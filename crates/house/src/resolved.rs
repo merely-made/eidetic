@@ -56,7 +56,7 @@ fn git() -> Command {
 }
 
 /// Runs git quietly; its stdout when it succeeded.
-fn git_out(args: &[&str], dir: Option<&Path>) -> Option<Vec<u8>> {
+pub(crate) fn git_out(args: &[&str], dir: Option<&Path>) -> Option<Vec<u8>> {
     let mut cmd = git();
     cmd.args(args).stdin(Stdio::null()).stderr(Stdio::null());
     if let Some(dir) = dir {
@@ -70,7 +70,7 @@ fn git_ok(args: &[&str]) -> bool {
     git_out(args, None).is_some()
 }
 
-fn toplevel() -> Option<PathBuf> {
+pub(crate) fn toplevel() -> Option<PathBuf> {
     let out = git_out(&["rev-parse", "--show-toplevel"], None)?;
     let text = String::from_utf8(out).ok()?;
     Some(PathBuf::from(text.trim_end_matches(['\n', '\r'])))

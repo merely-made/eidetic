@@ -1,6 +1,6 @@
 # house
 
-The family's git-hook tooling as one command, so a repository's
+The family's git-hook tooling and repository checks as one command, so a repository's
 `.pre-commit-config.yaml` names one tool and nothing is copied between
 repositories.
 
@@ -9,6 +9,8 @@ house line-ceiling [--config PATH] FILE...
 house decisions check | regen [--stage] | lookup ... | anchors ...
 house resolved record | push | show COMMIT [--write [--force]]
 house hooks [--no-decisions] [--deny] [--clippy ARGS]... | house hooks --check
+house cycles [--family-dir DIR | --remote] [--repo NAME]... [--allowlist PATH] [--dev-warn] [--strict-locks] [--verbose] [--json]
+house doc-audit [--json] [--root DIR] [--docs DIR] [--ledger DIR] [--snapshot PATH] [--corrections PATH] [--moved-out PATH] [--receipt-relocations PATH] [--workspace DIR] [--snapshot-sha256 HEX]
 ```
 
 ## line-ceiling and decisions
@@ -86,7 +88,34 @@ The hooks call `house` from the PATH (`language: system`); install it once per
 machine with `cargo install --git https://github.com/merely-made/eidetic house`
 and rerun that to update. No hook builds a private copy, and no tag is named.
 
-## Not folded yet
+## cycles
 
-Mere's `scripts/check_family_cycles.py` and
-`scripts/mere_doc_judgment_audit.py` are the next candidates.
+`house cycles` is a port of Mere's `scripts/check_family_cycles.py`: same
+options, report and exit codes. It reads the checkouts under
+`--family-dir` (default: the directory holding the current repository) or,
+with `--remote`, shallow clones of every `merely-made` repository; builds the
+workspace-root edge graph from every family `git` row; leaves out what
+`support/family-cycles/allowed.toml` rules; and fails on any normal, build or
+(unless `--dev-warn`) dev cycle that remains, or on an allowlist entry that
+sits on no cycle.
+
+The per-lock check (a cycle inside one resolved graph warns, and fails under
+`--strict-locks`) takes each lock from the `refs/notes/resolved` note on the
+checkout's `HEAD`, else from a `Cargo.lock` on disk. `--remote` fetches the
+notes beside each clone. An expected lock root (a `[workspace]` directory, or
+a package under none) with neither is printed as
+`no resolved versions recorded: <repo>/<path>` and the check goes on with the
+manifest edges; `--json` lists them under `unresolved_roots`. Unlike the
+script, the walk does not follow directory links or junctions.
+
+## doc-audit
+
+`house doc-audit` is a port of Mere's `scripts/mere_doc_judgment_audit.py`:
+same report, `--json` and exit codes. It walks `design_docs/` (skipping
+`archive_docs`), reads the D2 judgment records in
+`support/doc-audit/d2/batch_*.md` and the legacy snapshot beside them, and
+reports each active document lacking a record and each record for a document
+no longer active. The root is the current repository (`--root` to change
+it); the other paths default to the script's and resolve under the root. An
+absent snapshot, corrections file or moved-out list counts as empty, so the
+audit runs in a repository that has only the two directories.
