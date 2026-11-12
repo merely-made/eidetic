@@ -49,7 +49,9 @@ fn default_carries_every_fixed_hook() {
     }
     assert!(!out.contains("#{") && !out.contains("#}") && !out.contains("{{"));
     assert!(!out.contains("cargo deny"));
-    assert_eq!(out.matches(INSTALL).count(), 4);
+    // `house` runs from the PATH: no hook installs or names a private copy.
+    assert!(!out.contains("additional_dependencies") && !out.contains("language: rust"));
+    assert_eq!(out.matches("        entry: house ").count(), 4);
 }
 
 #[test]
@@ -78,7 +80,7 @@ fn no_decisions_drops_only_that_hook() {
     assert_eq!(removed[0], "# house hooks");
     assert!(removed.iter().any(|l| l == "        entry: house decisions check"));
     assert!(removed.iter().any(|l| l == "      - id: decisions"));
-    assert_eq!(removed.len(), 1 + 7);
+    assert_eq!(removed.len(), 1 + 6);
 }
 
 #[test]

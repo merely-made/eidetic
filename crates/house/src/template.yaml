@@ -1,5 +1,6 @@
 # house hooks{{options}}
 # Written by `house hooks` (eidetic, crates/house); `house hooks --check` fails when this file drifts from it.
+# `house` is on the PATH: cargo install --git https://github.com/merely-made/eidetic house
 fail_fast: true
 default_install_hook_types: [pre-commit, post-commit, pre-push]
 # Hooks without stages run at pre-commit only, so the notes push inside
@@ -11,18 +12,16 @@ repos:
       - id: line-ceiling
         name: line ceiling
         entry: house line-ceiling
-        language: rust
+        language: system
         types: [text]
         always_run: true
-        additional_dependencies: ["{{install}}"]
 #{decisions
       - id: decisions
         name: decisions check
         entry: house decisions check
-        language: rust
+        language: system
         pass_filenames: false
         always_run: true
-        additional_dependencies: ["{{install}}"]
 #}
       - id: clippy
         name: clippy
@@ -51,16 +50,14 @@ repos:
       - id: record-resolved
         name: record resolved versions
         entry: house resolved record
-        language: rust
+        language: system
         pass_filenames: false
         always_run: true
         stages: [post-commit]
-        additional_dependencies: ["{{install}}"]
       - id: push-resolved
         name: push resolved versions
         entry: house resolved push
-        language: rust
+        language: system
         pass_filenames: false
         always_run: true
         stages: [pre-push]
-        additional_dependencies: ["{{install}}"]

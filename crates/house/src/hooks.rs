@@ -13,9 +13,6 @@ use crate::words;
 const TEMPLATE: &str = include_str!("template.yaml");
 /// The file a consumer repository carries at its root.
 pub const FILE: &str = ".pre-commit-config.yaml";
-/// The prek install spec every `house` hook names.
-pub const INSTALL: &str =
-    concat!("cli:https://github.com/merely-made/eidetic:house-v", env!("CARGO_PKG_VERSION"), ":house");
 const HEADER: &str = "# house hooks";
 const USAGE: &str = "usage: house hooks [--no-decisions] [--deny] [--clippy ARGS]... | house hooks --check";
 
@@ -133,7 +130,7 @@ fn yaml_scalar(s: &str) -> String {
 /// the tests catch.
 pub fn render(options: &Options) -> String {
     let opts = options.command_line();
-    let globals = [("options", opts.as_str()), ("install", INSTALL)];
+    let globals = [("options", opts.as_str())];
     let mut out = String::new();
     let mut lines = TEMPLATE.lines();
     while let Some(line) = lines.next() {
@@ -141,7 +138,8 @@ pub fn render(options: &Options) -> String {
             let body: Vec<&str> = lines.by_ref().take_while(|l| *l != "#}").collect();
             let times = options.block_on(block).expect("template block");
             for i in 0..times {
-                let pass = (block == "clippy").then(|| clippy_pass(i, &options.clippy[i]));
+                // `times` is the clippy count only inside the clippy block.
+                let pass = options.clippy.get(i).filter(|_| block == "clippy").map(|args| clippy_pass(i, args));
                 let mut vars = globals.to_vec();
                 if let Some([n, name, entry]) = &pass {
                     vars.extend([("n", n.as_str()), ("name", name.as_str()), ("entry", entry.as_str())]);

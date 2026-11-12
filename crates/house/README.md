@@ -72,8 +72,11 @@ the file differs. A repository refreshes its file with
 
 In the template a `#{name` line opens a block kept only when its option is
 on (`clippy` repeats once per extra pass), `#}` closes it, and `{{key}}` is
-filled in. The hooks install `house` from eidetic's `house-v<version>` tag,
-as the two tools before it installed from theirs.
+filled in.
+
+The hooks call `house` from the PATH (`language: system`); install it once per
+machine with `cargo install --git https://github.com/merely-made/eidetic house`
+and rerun that to update. No hook builds a private copy, and no tag is named.
 
 ## Not folded yet
 
