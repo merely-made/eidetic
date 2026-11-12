@@ -46,7 +46,7 @@ features = [
 ]
 
 [dependencies.jsonschema]
-version = "0.18"
+version = "0.61"
 default-features = false
 optional = true
 

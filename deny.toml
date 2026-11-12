@@ -1,0 +1,53 @@
+# cargo-deny configuration for eidetic.
+#
+#   cargo deny check bans
+#
+# Two versions of one crate in a build are a defect: move the older version's
+# holder forward. Each skip below is a duplicate that cannot be removed from
+# here yet, with the holder that keeps it and what would remove it.
+
+[graph]
+all-features = true
+
+[bans]
+multiple-versions = "deny"
+wildcards = "allow"
+skip = [
+  # RustCrypto 0.10 generation: p2mere-encryption 0.10.0 (the family's p2panda fork)
+  # and minisign 0.10.0 (luggage dev, via scrypt 0.11) are both at their latest.
+  { crate = "aead@0.5.2", reason = "chacha20poly1305 0.10.1 requires it, held by p2mere-encryption 0.10.0; goes when p2mere-encryption moves to chacha20poly1305 0.11" },
+  { crate = "chacha20poly1305@0.10.1", reason = "p2mere-encryption 0.10.0 requires it; goes when p2mere-encryption moves to chacha20poly1305 0.11" },
+  { crate = "chacha20@0.9.1", reason = "chacha20poly1305 0.10.1 requires it, held by p2mere-encryption 0.10.0; goes with chacha20poly1305 0.11" },
+  { crate = "poly1305@0.8.0", reason = "chacha20poly1305 0.10.1 requires it, held by p2mere-encryption 0.10.0; goes with chacha20poly1305 0.11" },
+  { crate = "universal-hash@0.5.1", reason = "poly1305 0.8.0 requires it, held by p2mere-encryption 0.10.0; goes with chacha20poly1305 0.11" },
+  { crate = "cipher@0.4.4", reason = "chacha20 0.9.1 (p2mere-encryption 0.10.0) and salsa20 0.10.2 (scrypt 0.11 under minisign 0.10.0, luggage dev) require it; goes when both move to cipher 0.5" },
+  { crate = "inout@0.1.4", reason = "cipher 0.4.4 requires it, held by p2mere-encryption 0.10.0 and minisign 0.10.0; goes with cipher 0.5" },
+  { crate = "hkdf@0.12.4", reason = "p2mere-encryption 0.10.0 requires it; goes when p2mere-encryption moves to hkdf 0.13" },
+  { crate = "hmac@0.12.1", reason = "hkdf 0.12.4 (p2mere-encryption 0.10.0) and pbkdf2 0.12.2 (scrypt 0.11 under minisign 0.10.0) require it; goes when both move to hmac 0.13" },
+  { crate = "sha2@0.10.9", reason = "p2mere-encryption 0.10.0 and scrypt 0.11.0 (minisign 0.10.0, luggage dev) require it; goes when both move to sha2 0.11" },
+  { crate = "digest@0.10.7", reason = "sha2 0.10.9 and hmac 0.12.1 require it, held by p2mere-encryption 0.10.0 and minisign 0.10.0; goes with sha2 0.11" },
+  { crate = "block-buffer@0.10.4", reason = "digest 0.10.7 requires it, held by p2mere-encryption 0.10.0 and minisign 0.10.0; goes with digest 0.11" },
+  { crate = "crypto-common@0.1.7", reason = "digest 0.10.7, cipher 0.4.4 and aead 0.5.2 require it, held by p2mere-encryption 0.10.0 and minisign 0.10.0; goes with them" },
+  { crate = "cpufeatures@0.2.17", reason = "sha2 0.10.9, chacha20 0.9.1 and poly1305 0.8.0 require it, held by p2mere-encryption 0.10.0 and minisign 0.10.0; goes with them" },
+  { crate = "rand@0.8.8", reason = "p2mere-core 0.10.0 requires it; goes when p2mere-core moves to rand 0.10" },
+  { crate = "rand_chacha@0.3.1", reason = "rand 0.8.8 requires it, held by p2mere-core 0.10.0; goes with rand 0.10" },
+  { crate = "rand_core@0.6.4", reason = "rand 0.8.8 requires it, held by p2mere-core 0.10.0; goes with rand 0.10" },
+  { crate = "rand_chacha@0.9.0", reason = "p2mere-encryption 0.10.0 requires it; goes when p2mere-encryption moves to rand_chacha 0.10" },
+  { crate = "rand_core@0.9.5", reason = "rand_chacha 0.9.0 requires it, held by p2mere-encryption 0.10.0; goes with rand_chacha 0.10" },
+  { crate = "hax-lib@0.3.7", reason = "core-models 0.0.7 (latest) requires it, via libcrux-intrinsics 0.0.9 under hpke-rs 0.8.0 under p2mere-encryption 0.10.0; goes when core-models moves to hax-lib 0.4" },
+  { crate = "hax-lib-macros@0.3.7", reason = "hax-lib 0.3.7 requires it, held by core-models 0.0.7; goes with hax-lib 0.4" },
+  { crate = "hax-lib-macros-types@0.3.7", reason = "hax-lib-macros 0.3.7 requires it, held by core-models 0.0.7; goes with hax-lib 0.4" },
+  { crate = "shlex@1.3.0", reason = "bindgen 0.72.1 requires it, via crabgrind 0.3.1 under libcrux-secrets 0.0.7 (latest) under p2mere-encryption 0.10.0; goes when libcrux-secrets moves to crabgrind 0.6" },
+  # Elsewhere.
+  { crate = "getrandom@0.2.17", reason = "ring 0.17.14 (latest, under reqwest 0.12 in luggage) and rand_core 0.6.4 (p2mere-core 0.10.0) require it; goes when ring moves on and p2mere-core moves to rand 0.10" },
+  { crate = "getrandom@0.3.4", reason = "jsonschema 0.61.2 (latest), personae 0.3.1 (dramatis) and rand_core 0.9.5 (p2mere-encryption) require it; goes when all three move to getrandom 0.4" },
+  { crate = "r-efi@5.3.0", reason = "getrandom 0.3.4 requires it, held by jsonschema 0.61.2, personae (dramatis) and p2mere-encryption; goes with getrandom 0.4" },
+  { crate = "windows-sys@0.52.0", reason = "ring 0.17.14 (latest) requires it, under rustls via reqwest 0.12 in luggage; goes when ring moves to windows-sys 0.61 or luggage leaves ring" },
+  { crate = "base64@0.22.1", reason = "reqwest 0.12.28 (luggage) requires it; reqwest 0.13 removes it but swaps rustls-tls for aws-lc-rs and the platform verifier, a TLS backend choice" },
+  { crate = "hashbrown@0.15.5", reason = "petgraph 0.8.3 (latest, chartulary) requires it; goes when petgraph moves to hashbrown 0.17" },
+  { crate = "foldhash@0.1.5", reason = "hashbrown 0.15.5 requires it, held by petgraph 0.8.3; goes with it" },
+  { crate = "hashbrown@0.14.5", reason = "dashmap 6.2.1 (latest release, vendored mere-fjall) requires it; goes with dashmap 7, now only a release candidate" },
+  { crate = "syn@2.0.119", reason = "most proc-macros (pin-project-internal, async-stream-impl, enum_dispatch, curve25519-dalek-derive, ctor, munge_macro, bindgen) still require syn 2; goes as they move to syn 3" },
+  { crate = "thiserror@1.0.69", reason = "personae 0.3.1 (dramatis) requires it; goes when personae moves to thiserror 2" },
+  { crate = "thiserror-impl@1.0.69", reason = "thiserror 1.0.69 requires it, held by personae (dramatis); goes with thiserror 2" },
+]

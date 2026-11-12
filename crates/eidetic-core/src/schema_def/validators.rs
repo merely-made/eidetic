@@ -38,7 +38,7 @@ impl SchemaValidator for JsonSchemaValidator {
 
         #[cfg(feature = "json-schema")]
         {
-            let compiled = jsonschema::JSONSchema::compile(&definition.body).map_err(|e| {
+            let compiled = jsonschema::validator_for(&definition.body).map_err(|e| {
                 Error::new(format!(
                     "json-schema compile ({}): {e}",
                     definition.schema_id
@@ -48,10 +48,11 @@ impl SchemaValidator for JsonSchemaValidator {
             let payload_value: serde_json::Value = serde_json::from_slice(payload_bytes)
                 .map_err(|e| Error::new(format!("payload parse (json-schema): {e}")))?;
 
-            if let Err(errors) = compiled.validate(&payload_value) {
-                let collected: Vec<String> = errors
-                    .map(|e| format!("{} at {}", e, e.instance_path))
-                    .collect();
+            let collected: Vec<String> = compiled
+                .iter_errors(&payload_value)
+                .map(|e| format!("{} at {}", e, e.instance_path()))
+                .collect();
+            if !collected.is_empty() {
                 return Err(Error::new(format!(
                     "json-schema validation failed for {}: {}",
                     definition.schema_id,

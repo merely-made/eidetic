@@ -28,7 +28,7 @@ path = "src/lib.rs"
 
 [dependencies]
 blake3 = "1.5"
-thiserror = "1"
+thiserror = "2"
 
 [dependencies.serde]
 version = "1"
