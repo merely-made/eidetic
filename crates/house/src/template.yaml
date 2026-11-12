@@ -35,14 +35,14 @@ repos:
         name: clippy
         entry: cargo clippy {{base}}
         language: system
-        files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'
+        files: '(^|/)(Cargo\.toml|rust-toolchain\.toml|[^/]+\.rs)$'
         pass_filenames: false
 #{clippy
       - id: clippy-{{n}}
         name: {{name}}
         entry: {{entry}}
         language: system
-        files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'
+        files: '(^|/)(Cargo\.toml|rust-toolchain\.toml|[^/]+\.rs)$'
         pass_filenames: false
 #}
 #{deny

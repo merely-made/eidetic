@@ -39,7 +39,7 @@ fn default_carries_every_fixed_hook() {
         "        types: [text]",
         "        entry: house decisions check",
         "        entry: cargo clippy --all-targets",
-        r"        files: '(^|/)(Cargo\.toml|[^/]+\.rs)$'",
+        r"        files: '(^|/)(Cargo\.toml|rust-toolchain\.toml|[^/]+\.rs)$'",
         "        entry: house resolved record",
         "        stages: [post-commit]",
         "        entry: house resolved push",
