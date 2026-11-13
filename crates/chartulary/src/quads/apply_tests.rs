@@ -61,6 +61,11 @@ fn assert_same(incremental: &QuadIndex, rows: &HashSet<Row>, probes: &[Quad], co
         }
     }
     assert_eq!(incremental.len(), oracle.len(), "{context}: len");
+    for (quad, meta) in rows.iter().take(64) {
+        assert!(incremental.contains(quad, meta), "{context}: contains");
+        let other = QuadMeta { held: !meta.held, ..*meta };
+        assert_eq!(incremental.contains(quad, &other), rows.contains(&(*quad, other)));
+    }
 }
 
 /// A row over a small id space, so asserts repeat and withdrawals hit.

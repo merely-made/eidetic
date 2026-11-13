@@ -307,6 +307,12 @@ impl QuadIndex {
         self.rows.len() - self.dead_count
     }
 
+    /// Whether the exact row `(quad, meta)` is stored and not removed.
+    #[must_use]
+    pub fn contains(&self, quad: &Quad, meta: &QuadMeta) -> bool {
+        self.find(quad, meta).is_some()
+    }
+
     /// Rows dropped in place and still occupying space; a caller rebuilds
     /// with [`QuadIndex::build`] when it judges them too many.
     #[must_use]
