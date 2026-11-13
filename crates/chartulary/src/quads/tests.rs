@@ -8,21 +8,21 @@ use std::collections::{BTreeMap, HashSet};
 
 use super::{Dictionary, Quad, QuadIndex, QuadMeta, TermId, View};
 
-fn id(raw: u32) -> TermId {
+pub(super) fn id(raw: u32) -> TermId {
     TermId::from_u32(raw).expect("non-zero")
 }
 
 /// Named graph ids in the generated data; the last holds only withdrawn rows,
 /// like Mere's history graph.
-const NAMED: [u32; 4] = [100_001, 100_002, 100_003, 100_004];
+pub(super) const NAMED: [u32; 4] = [100_001, 100_002, 100_003, 100_004];
 const WITHDRAWN_ONLY: u32 = 100_004;
 /// An id no generated row uses.
-const ABSENT: u32 = 999_999;
+pub(super) const ABSENT: u32 = 999_999;
 
-struct Rng(u64);
+pub(super) struct Rng(pub(super) u64);
 
 impl Rng {
-    fn next(&mut self, below: u32) -> u32 {
+    pub(super) fn next(&mut self, below: u32) -> u32 {
         self.0 ^= self.0 << 13;
         self.0 ^= self.0 >> 7;
         self.0 ^= self.0 << 17;
@@ -33,7 +33,7 @@ impl Rng {
 /// `count` rows over `nodes` subjects, eight predicates, objects that are
 /// nodes or literals, the default graph and four named graphs. Every seventh
 /// row repeats exactly; every eleventh repeats its quad with another meta.
-fn dataset(count: usize, nodes: u32) -> Vec<(Quad, QuadMeta)> {
+pub(super) fn dataset(count: usize, nodes: u32) -> Vec<(Quad, QuadMeta)> {
     let mut rng = Rng(0x9E37_79B9_7F4A_7C15);
     let mut rows = Vec::with_capacity(count);
     while rows.len() < count {
@@ -73,7 +73,7 @@ fn dataset(count: usize, nodes: u32) -> Vec<(Quad, QuadMeta)> {
     rows
 }
 
-type Pattern = (
+pub(super) type Pattern = (
     Option<TermId>,
     Option<TermId>,
     Option<TermId>,
@@ -82,7 +82,7 @@ type Pattern = (
 
 /// The pattern binding the positions in `mask` (bit 0 subject, 1 predicate,
 /// 2 object, 3 graph) to `quad`'s values.
-fn bind(mask: u32, quad: &Quad) -> Pattern {
+pub(super) fn bind(mask: u32, quad: &Quad) -> Pattern {
     let graph = (!quad.graph.is_default_graph()).then_some(quad.graph);
     (
         (mask & 1 != 0).then_some(quad.subject),

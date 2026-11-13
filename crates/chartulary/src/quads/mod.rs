@@ -19,24 +19,28 @@
 //! (`mere/design_docs/mere_docs/technical_architecture/2026-11-09_indexed_dataset_brief.md`,
 //! D1 to D5) and its quad index plan
 //! (`mere/design_docs/mere_docs/implementation_strategy/2026-11-09_quad_index_plan.md`,
-//! D1 to D7):
+//! D1 to D7, and P4):
 //!
 //! - **Dense ids per rebuild.** A [`TermId`] is minted when a dictionary is
 //!   built and lives as long as it. Nothing of it is persisted; durable
-//!   identity stays with whatever the consumer's terms name. The dictionary
-//!   and the index are append-only and rebuilt per revision, never mutated in
-//!   place.
+//!   identity stays with whatever the consumer's terms name.
+//! - **Append-only maintenance.** Between rebuilds a dictionary only grows,
+//!   and [`QuadIndex::apply`] appends asserted rows and flips withdrawn ones
+//!   in place; [`QuadIndex::build`] stays the fallback and the oracle.
 //! - **One index, two views.** Held and withdrawn rows sit in one index;
 //!   [`View::Live`] reads only the held rows and [`View::History`] reads them
 //!   all.
-//! - **Ordinals into one base table.** The rows are stored once, sorted SPO
-//!   then graph, and the five other orderings are `u32` positions into them.
+//! - **Ordinals into one base table.** The rows are stored once and the
+//!   orderings are `u32` positions into them. Built rows are sorted SPO then
+//!   graph and serve that ordering directly until the first apply.
 //! - **Every (quad, meta) row is kept, each quad yielded once.** The same quad
 //!   can arrive with several metas (two asserters, or one held and one
 //!   withdrawn row); a pattern yields it once per view, its held row first.
 
 mod dictionary;
 mod index;
+#[cfg(test)]
+mod apply_tests;
 #[cfg(test)]
 mod tests;
 
