@@ -1,12 +1,12 @@
 # Portolan plan: split and rename chartulary
 
-**Status (2026-11-12):** plan, a draft awaiting review. Nothing is built. Twelve
-forks (F1 to F12, under Decisions) are open, and P1 waits on them.
+**Status (2026-11-12):** in progress. The twelve forks are answered (D3 to D15);
+P0 is done and P1 is being built in the `eidetic-portolan` worktree, unpushed.
 
 Eidetic's `chartulary` crate (`crates/chartulary`, 10,190 source lines in 19
 modules, plus a 157-line example) becomes four crates. The core is renamed
-`portolan`, the `stemma` module becomes the crate `hodograph`, and `quads` and
-the fields modules become two more crates whose names are open (F1, F2). This
+`portolan`, the `stemma` module becomes the crate `hodograph`, `quads` becomes
+`quadstore`, and the fields modules become `fieldbook`. This
 plan measures what crosses each seam, who consumes what, what is persisted and
 what is published, then lays out the phases.
 
@@ -31,8 +31,79 @@ were not checked.
 
   Links: area The stack · draws on portolan D1 · plans portolan · summary The core is portolan and the lineage crate is hodograph.
 
-The open forks are listed at the end of this plan (F1 to F12). Each answer is
-recorded here as `portolan D<n>`, in answer order, in the words given.
+- **portolan D3, release the old name (Mark, 2026-11-12):** "i really meant
+  'release the name of chartulary back to the crates.io pool'". The aim is to
+  delete `chartulary` from crates.io, not keep it as a pointer. Carried by D11
+  and P6.
+
+  Links: area The stack · draws on portolan D2 · plans portolan · summary chartulary's crates.io name goes back to the pool once nothing published needs it.
+
+- **portolan D4, F1, the quads crate is quadstore (Mark, 2026-11-12):**
+  "quadstore", chosen over `graticule` (recommended) and `quaternio`.
+
+  Links: area The stack · draws on portolan D1 · plans portolan · summary The quads crate is quadstore.
+
+- **portolan D5, F2, the fields crate is fieldbook (Mark, 2026-11-12):**
+  "fieldbook (Recommended)".
+
+  Links: area The stack · draws on portolan D1 · plans portolan · summary The fields crate is fieldbook.
+
+The answers D6 to D15 are the coordinator's, told to Mark; each is his to
+overrule.
+
+- **portolan D6, F3 (coordinator, 2026-11-12):** (A). `canonical` is a module of
+  portolan, with the root re-exports kept.
+
+  Links: area The stack · plans portolan · summary canonical stays in portolan.
+
+- **portolan D7, F4 (coordinator, 2026-11-12):** (A). `rdf` is a module of
+  portolan. The quads test that uses `rdf::Term` moves to portolan, with
+  quadstore as a dev-dependency, so quadstore has no dependencies.
+
+  Links: area The stack · plans portolan · summary rdf stays in portolan; quadstore has no dependencies.
+
+- **portolan D8, F5 (coordinator, 2026-11-12):** (A). A transitional
+  `chartulary` shim, git-only and never published; its removal is P4's
+  done-condition.
+
+  Links: area The stack · plans portolan · summary A git-only chartulary shim carries consumers until P4 removes it.
+
+- **portolan D9, F6 (coordinator, 2026-11-12):** (A). The flip path and the
+  meta fields move unchanged; revisit after Mere P6's derived-layer benchmark.
+
+  Links: area The stack · draws on mere:quad-index plan · plans portolan · summary quadstore's API moves unchanged.
+
+- **portolan D10, F7 (coordinator, 2026-11-12):** (A). `TransitionKind` moves
+  unchanged into hodograph; generalizing it is a later plan.
+
+  Links: area The stack · plans portolan · summary TransitionKind moves unchanged.
+
+- **portolan D11, F8 (coordinator, 2026-11-12):** no further chartulary
+  releases and no published shim. The aim is to delete the crate from
+  crates.io once its 11 published dependents have each published a version off
+  it; P6, which first confirms crates.io's deletion rule.
+
+  Links: area The stack · draws on portolan D3 · plans portolan · summary No more chartulary releases; deletion once dependents move off it.
+
+- **portolan D12, F9 (coordinator, 2026-11-12):** (A). The three persisted
+  `chartulary.class` strings stay verbatim.
+
+  Links: area The stack · plans portolan · summary Persisted chartulary.* identifiers stay as written.
+
+- **portolan D13, F10 (coordinator, 2026-11-12):** (A). All four crates start
+  at 0.1.0.
+
+  Links: area The stack · plans portolan · summary The four crates start at 0.1.0.
+
+- **portolan D14, F11 (coordinator, 2026-11-12):** (A). The G0 to G3 doc file
+  names are kept; their text is updated.
+
+  Links: area docs · plans portolan · summary G-doc file names kept, text updated.
+
+- **portolan D15, F12 (coordinator, 2026-11-12):** (A). Publish right after P1
+  lands on Eidetic main; publishing is Mark's to run.
+
+  Links: area The stack · plans portolan · summary Publish right after P1 lands; Mark runs it.
 
 ## Findings (2026-11-12)
 
@@ -61,13 +132,13 @@ Three corrections to the picture this plan started from:
 
 1. **`rdf` depends on the core, not the other way round.** Taxonomy names `rdf`
    only in doc links. `rdf` imports six core items. So `rdf` cannot go into the
-   quads crate without making that crate depend on the core.
+   quadstore without making quadstore depend on the core.
 2. **`quads` has no code dependency on anything.** Its one use of `rdf` and the
-   core is a single test. With that test moved, the quads crate has zero
+   core is a single test. With that test moved, quadstore has zero
    dependencies, normal or dev.
 3. **`coupling` has no code dependency on `taxonomy`.** The one "use" is a doc
-   link to a constant that does not exist. `edge_path` must go with the fields
-   crate, since it imports `FieldId`.
+   link to a constant that does not exist. `edge_path` must go with fieldbook,
+   since it imports `FieldId`.
 
 No module is feature-gated. The only cfg gates are in `field.rs`
 (`FieldId::new` and `CouplingId::new` are `cfg(not(target_arch = "wasm32"))`)
@@ -84,8 +155,8 @@ and `edge_path.rs` are comments ("rkyv lands at the `Persisted*` DTO layer").
 | + `canonical` if it stays (F3) | canonical | 263 | adds uuid 1 `v5` | none |
 | + `rdf` if it stays (F4) | rdf | 346 | none new (serde_json) | none |
 | `hodograph` | stemma (mod, mutations, queries, snapshot, tests) | 1,902 | serde `derive`, slotmap 1 `serde`, rkyv 0.8 `std` | none |
-| quads crate (F1) | quads (mod, dictionary, index, tests, apply_tests); `examples/quads_apply.rs` | 1,382 (+157) | none | none, once the rdf test moves (F4) |
-| fields crate (F2) | field, field_ast, coupling, edge_path | 943 | serde `derive`, uuid 1 `serde`, `v4` off wasm32, `js` on wasm32-unknown-unknown | serde_json |
+| `quadstore` | quads (mod, dictionary, index, tests, apply_tests); `examples/quads_apply.rs` | 1,382 (+157) | none | none, once the rdf test moves (F4) |
+| `fieldbook` | field, field_ast, coupling, edge_path | 943 | serde `derive`, uuid 1 `serde`, `v4` off wasm32, `js` on wasm32-unknown-unknown | serde_json |
 
 The core needs no rkyv, slotmap or uuid today. rkyv and slotmap leave it with
 hodograph. uuid stays in it only if `canonical` does (F3); muniment does not
@@ -129,7 +200,7 @@ used"). Patch rows can redirect a registry `chartulary`, never point it at
 Imported items, grouped by the crate they would come from. Files are `.rs`
 files that import chartulary, by owning crate.
 
-| Repo | Crate (files) | portolan | canonical | hodograph | quads crate | fields crate | rdf |
+| Repo | Crate (files) | portolan | canonical | hodograph | quadstore | fieldbook | rdf |
 |---|---|---|---|---|---|---|---|
 | cleromancy | root (8) | AcceptAll, Container, EditSpec, FacetError, FacetId, GraphLog, Relation | | | | | |
 | esp | athanor (2) | AcceptAll, FacetId | canonical_url, resource_id_from_canonical_iri | | | | |
@@ -170,7 +241,7 @@ NodeHistoryTransitionKind`, and the whole fields surface at `graph/mod.rs:222-22
 
 One crate gets lighter: Graphshell's `cambium` uses only stemma items, so it
 would depend on `hodograph` alone and drop petgraph and muniment. Seiche's
-`numen` would depend on the fields crate alone.
+`numen` would depend on fieldbook alone.
 
 Names in live non-Rust files: Genet's CI family list
 (`support/ci/check_dependency_cones.py:295`), Turnstone's
@@ -263,13 +334,13 @@ commit, no hand edits.
 
 ## Target layout
 
-Illustrative, not compile-ready. Names in angle brackets wait on F1 and F2.
+Illustrative, not compile-ready.
 
 ```
 crates/portolan/     core modules, lib.rs re-exports; canonical and rdf per F3, F4
 crates/hodograph/    stemma/{mod,mutations,queries,snapshot,tests}.rs -> src/
-crates/<quads>/      quads/* -> src/, examples/quads_apply.rs
-crates/<fields>/     field.rs, field_ast.rs, coupling.rs, edge_path.rs
+crates/quadstore/      quads/* -> src/, examples/quads_apply.rs
+crates/fieldbook/     field.rs, field_ast.rs, coupling.rs, edge_path.rs
 crates/chartulary/   transitional shim, only if F5 is (A)
 ```
 
@@ -281,8 +352,8 @@ Path changes for consumers, one table for the mechanical rewrite:
 | `chartulary::{canonical_url, resource_id, resource_id_from_canonical_iri}` | `portolan::…` if F3 is (A) |
 | `chartulary::rdf::…` | `portolan::rdf::…` if F4 is (A) |
 | `chartulary::stemma::X` | `hodograph::X` |
-| `chartulary::quads::X` | `<quads>::X` |
-| `chartulary::{field, field_ast, coupling, edge_path}::X` | `<fields>::{field, field_ast, coupling, edge_path}::X` |
+| `chartulary::quads::X` | `quadstore::X` |
+| `chartulary::{field, field_ast, coupling, edge_path}::X` | `fieldbook::{field, field_ast, coupling, edge_path}::X` |
 | `chartulary::{LogId, Provenance}` | `portolan::{LogId, Provenance}` (muniment re-export kept) |
 
 The shim, if chosen (illustrative):
@@ -290,8 +361,8 @@ The shim, if chosen (illustrative):
 ```rust
 pub use portolan::*;
 pub use hodograph as stemma;
-pub use <quads> as quads;
-pub use <fields>::{coupling, edge_path, field, field_ast};
+pub use quadstore as quads;
+pub use fieldbook::{coupling, edge_path, field, field_ast};
 ```
 
 Its version is 0.3.2, so Mere's `version = "0.3.1"` lower bound still holds.
@@ -304,36 +375,38 @@ types are the same types.
 
 - Done when: F1 to F12 each have an answer recorded under Decisions in the
   words given; the two new names are rechecked on crates.io the day P1 starts.
+- Done 2026-11-12: D3 to D15.
 
 ### P1. The split, built in a worktree
 
 Eidetic only. `git mv` each module so history follows. Four manifests with
 exactly the dependencies in F-2; workspace `members`,
 `[workspace.dependencies]` and both `[patch."…eidetic.git"]` and
-`[patch."…mere.git"]` rows for each new crate; the shim if F5 is (A). Fix the
+`[patch."…mere.git"]` rows for each new crate; the git-only shim (D8). Fix the
 doc links: `coupling.rs:51`, `quads/mod.rs:16`, `taxonomy.rs:21,27`, the
-crate-level docs in `lib.rs`. Move the quads rdf test per F4. Split
+crate-level docs in `lib.rs`. Move the quads rdf test to portolan (D7). Split
 `README.md`. Point `eidetic-core` and `servitor` at the new crates (10 files,
 2 manifests).
 
 - Done when:
   - the chartulary test count on origin/main is recorded first, and the four
     crates plus eidetic-core and servitor pass the same tests after;
-  - `cargo tree` shows: hodograph with serde, slotmap and rkyv only; the quads
-    crate with no dependencies; the fields crate with serde and uuid only;
+  - `cargo tree` shows: hodograph with serde, slotmap and rkyv only; quadstore
+    with no dependencies; fieldbook with serde and uuid only;
     portolan with no rkyv or slotmap;
   - `cargo check --target wasm32-unknown-unknown` passes for all four (the
-    fields crate's uuid gates are target-specific);
+    uuid gates in fieldbook are target-specific);
   - `cargo publish --dry-run` passes for each of the four;
   - the commit hooks pass (line ceiling, clippy, dependency bans).
 
 ### P2. Landed and claimed
 
 Merge P1 to Eidetic main. Publishing is Mark's to do or approve, in this order:
-hodograph, the quads crate, the fields crate (no family dependencies), then
-portolan (needs muniment 0.2.1, already published). Timing is F12.
+hodograph, quadstore, fieldbook (no family dependencies), then
+portolan (needs muniment 0.2.1, already published), right after P1 lands (D15).
+The `chartulary` shim is never published (D8, D11).
 
-- Done when: the four names show on crates.io at their first versions (F10);
+- Done when: the four names show on crates.io at their first versions, 0.1.0 (D13);
   the naming ledger records them, with Mark's approval for that edit.
 
 ### P3. Consumers, one small commit per repository
@@ -349,7 +422,7 @@ Order, fewest files first, Mere last or at a quiet point:
 
 | Order | Repo | Manifests | Files | New crates needed |
 |---|---|---|---|---|
-| 1 | seiche | 1 | 1 | fields only |
+| 1 | seiche | 1 | 1 | fieldbook only |
 | 2 | inker, isocosm, mer3ly | 7 | 0 | patch rows only |
 | 3 | murm | 2 | 1 | portolan |
 | 4 | esp | 4 | 2 | portolan |
@@ -357,9 +430,9 @@ Order, fewest files first, Mere last or at a quiet point:
 | 6 | knot-editor | 3 | 6 | portolan |
 | 7 | cleromancy | 2 | 8 | portolan |
 | 8 | gemot | 6 | 8 | portolan |
-| 9 | graphshell | 7 | 14 | portolan, hodograph (cambium alone), fields (cartography) |
+| 9 | graphshell | 7 | 14 | portolan, hodograph (cambium alone), fieldbook (cartography) |
 | 10 | turnstone | 3 | 59 | portolan, hodograph (ports/graphshell) |
-| 11 | mere | 5 | 51 | portolan, hodograph (graph-kernel, pandect), quads (engine), fields (graph-kernel) |
+| 11 | mere | 5 | 51 | portolan, hodograph (graph-kernel, pandect), quadstore (engine), fieldbook (graph-kernel) |
 
 Knot first among the Mere pair if a change ever breaks both (they compile each
 other). For Mere: if the P6 session holds uncommitted work in the touched files,
@@ -369,7 +442,7 @@ wait; that work is active and not ours.
   finds nothing but comments slated for P5; its gates pass; the commit is on its
   main.
 
-### P4. The shim retires (only if F5 is (A))
+### P4. The shim retires (D8)
 
 - Done when: no manifest in the 13 consumer repositories names `chartulary` as
   a dependency or patch, and the shim crate is removed from Eidetic in one
@@ -377,13 +450,25 @@ wait; that work is active and not ours.
 
 ### P5. Docs, pointers and the registry
 
-DOC_README entries; the G0 to G3 technical architecture docs (F11); the root
-`README.md`; Genet's CI family list; the `deny.toml` reasons; the
-chartulary crates.io pointer (F8). Other repositories' design docs change only
-when next touched.
+DOC_README entries; the text of the G0 to G3 technical architecture docs, file
+names kept (D14); the root `README.md`; Genet's CI family list; the `deny.toml`
+reasons. No chartulary release, pointer or otherwise (D11). Other repositories'
+design docs change only when next touched.
 
-- Done when: Eidetic's active docs name the new crates; the F8 answer is carried
-  out or recorded as declined.
+- Done when: Eidetic's active docs name the new crates.
+
+### P6. The chartulary name goes back to the crates.io pool (D3, D11)
+
+First, confirm crates.io's deletion rule from its own policy page before
+anything is promised: whether a crate must have a single owner, stay under a
+download ceiling or age limit, and have no reverse dependencies, and whether
+old versions of dependents count as dependents. Then each of the 11 published
+dependents (F-4) publishes a version off chartulary, each by its own owner's
+release. Deleting is Mark's to run.
+
+- Done when: the rule is quoted in Findings with its source and date; either
+  chartulary is deleted from crates.io, or the rule is shown to forbid it and
+  that finding goes back to Mark as a fork.
 
 ## What could invalidate this plan
 
@@ -397,7 +482,7 @@ when next touched.
   distinct from portolan's, as 0.2 and 0.3 already are; a graph where they meet
   fails to compile until the dependent republishes.
 - **P6 changes the quads API.** The derived layer may add a `View` or a meta
-  bit (engine split D143). That lands in the quads crate during or after the
+  bit (engine split D143). That lands in quadstore during or after the
   move; it does not change the split, but a removal under F6 would collide.
 - **The persisted strings change.** Renaming `chartulary.class` without a
   reader for the old id loses every stored class membership (F9).
@@ -409,11 +494,13 @@ when next touched.
   Inker were not checked; GitHub code search is incomplete and was not used as
   evidence.
 
-## Forks
+## Forks (answered 2026-11-12)
 
-Each fork lists options, recommendation first.
+Each fork lists options, recommendation first. Answers: F1 D4, F2 D5, F3 D6,
+F4 D7, F5 D8, F6 D9, F7 D10, F8 D11 (with D3), F9 D12, F10 D13, F11 D14,
+F12 D15.
 
-- **F1. The quads crate's name.** It is a dictionary and six-ordering index
+- **F1. quadstore's name.** It is a dictionary and six-ordering index
   over quads, 1,382 lines, with no dependencies. Checked on crates.io only:
   `graticule`, `quaternio`, `quadstore`, `quadrat`, `isogram` are free;
   `concordance`, `repertory`, `quire`, `quadrant`, `tetrad` are taken.
@@ -422,7 +509,7 @@ Each fork lists options, recommendation first.
   (B) `quaternio`: codicology's quire of four sheets; names the four terms.
   (C) `quadstore`: plain, says what it is.
   (D) keep it a module of portolan after all (undoes part of D1).
-- **F2. The fields crate's name.** Field, field_ast, coupling and edge_path,
+- **F2. fieldbook's name.** Field, field_ast, coupling and edge_path,
   943 lines; definitions only, evaluation stays in Seiche's numen. Free on
   crates.io: `fieldbook`, `isopleth`, `hachure`, `isoline`, `windrose`,
   `relief`; taken: `contour`. (A) `fieldbook`: a surveyor's book of field
@@ -439,10 +526,10 @@ Each fork lists options, recommendation first.
   does not use.
 - **F4. Where `rdf` lives.** 346 lines; it imports six core items; one consumer
   (woodshed-graph, in `src/tests.rs`). (A) a module of portolan; the quads test
-  that uses `rdf::Term` moves to portolan, which takes the quads crate as a
-  dev-dependency, so the quads crate stays dependency-free. (B) its own crate,
+  that uses `rdf::Term` moves to portolan, which takes quadstore as a
+  dev-dependency, so quadstore stays dependency-free. (B) its own crate,
   depending on portolan (the old `scholia` name is the family's on crates.io at
-  0.1.1). (C) into the quads crate: makes it depend on portolan.
+  0.1.1). (C) into quadstore: makes it depend on portolan.
 - **F5. Shim or one pass.** Either way consumers make the same edits: 45
   manifests (53 rows) in 13 repositories and 154 files. (A) a transitional
   `chartulary` shim crate, about 40 lines, retired in P4 when no manifest names
@@ -482,7 +569,7 @@ Each fork lists options, recommendation first.
   (B) portolan at 0.4.0, continuing chartulary's line, the other three at 0.1.0.
 - **F11. The G0 to G3 doc file names.** (A) keep the dated file names; update
   their text and DOC_README descriptions: no links to repair. (B) rename them
-  `portolan_g0` to `portolan_g3` (G3 to the quads crate's name), repairing links
+  `portolan_g0` to `portolan_g3` (G3 to quadstore's name), repairing links
   under DOC_POLICY §5.
 - **F12. When to publish.** (A) right after P1 lands on main, before any
   consumer moves: claims the names early, and consumers can take registry
