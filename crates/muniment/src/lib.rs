@@ -59,8 +59,6 @@ pub mod journal;
 pub mod key_range;
 #[cfg(feature = "redb")]
 pub mod redb_backend;
-#[cfg(feature = "redb")]
-pub mod redb_upgrade;
 pub mod slot;
 #[cfg(feature = "zip")]
 pub mod zip_backend;
@@ -79,8 +77,6 @@ pub use indexeddb_backend::IndexedDbBackend;
 
 #[cfg(feature = "redb")]
 pub use redb_backend::RedbBackend;
-#[cfg(feature = "redb")]
-pub use redb_upgrade::RedbOpenOutcome;
 
 #[cfg(feature = "zip")]
 pub use zip_backend::ZipBackend;

@@ -42,7 +42,7 @@ features = [
 optional = true
 
 [dependencies.redb]
-version = "2"
+version = "4"
 optional = true
 
 [dependencies.zip]
