@@ -1,6 +1,10 @@
 # cargo-deny configuration for eidetic.
 #
-#   cargo deny check bans
+#   cargo deny --workspace --all-features check -D unmatched-skip bans
+#
+# The hook runs that here and in each nested workspace that ships (crates/house,
+# crates/line-ceiling, crates/responsa), each against its own deny.toml. A skip
+# that matches nothing fails. Not gated: crates/muniment-opfs-probe, a probe.
 #
 # Two versions of one crate in a build are a defect: move the older version's
 # holder forward. Each skip below is a duplicate that cannot be removed from

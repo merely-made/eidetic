@@ -1,10 +1,10 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! `house hooks [--no-decisions] [--deny] [--clippy ARGS]... | --check`:
+//! `house hooks [--no-decisions] [--bans DIR]... [--clippy ARGS]... | --check`:
 //! the canonical `.pre-commit-config.yaml`, rendered from `template.yaml`.
 //! In the template a `#{name` line opens a block kept only when its option
-//! is on (`clippy` repeats once per extra pass) and `#}` closes it.
+//! is on (`clippy` and `bans` repeat once per pass) and `#}` closes it.
 
 use std::process::ExitCode;
 
@@ -14,7 +14,7 @@ const TEMPLATE: &str = include_str!("template.yaml");
 /// The file a consumer repository carries at its root.
 pub const FILE: &str = ".pre-commit-config.yaml";
 const HEADER: &str = "# house hooks";
-const USAGE: &str = "usage: house hooks [--no-decisions] [--regen] [--deny] [--deny-args ARGS] [--clippy-base ARGS] [--clippy ARGS]... [--local FILE] | house hooks --check";
+const USAGE: &str = "usage: house hooks [--no-decisions] [--regen] [--bans DIR]... [--deny] [--deny-args ARGS] [--clippy-base ARGS] [--clippy ARGS]... [--local FILE] | house hooks --check";
 /// What the first clippy pass runs when a repository names nothing else.
 const CLIPPY_BASE: &str = "--all-targets";
 
@@ -23,7 +23,12 @@ const CLIPPY_BASE: &str = "--all-targets";
 pub struct Options {
     /// `house decisions check`; off for repositories with no manifest.
     pub decisions: bool,
-    /// `cargo deny check bans`.
+    /// One bans pass per workspace directory (`.` is the repository root):
+    /// the whole workspace with every feature, read against that directory's
+    /// own `deny.toml`, failing on a skip that matches nothing.
+    pub bans: Vec<String>,
+    /// `cargo deny check bans`: the root with default features. The form
+    /// `bans` replaces; it leaves when no repository's file names it.
     pub deny: bool,
     /// Extra `cargo clippy` passes, each its argument string.
     pub clippy: Vec<String>,
@@ -40,7 +45,7 @@ pub struct Options {
 
 impl Default for Options {
     fn default() -> Self {
-        Options { decisions: true, deny: false, clippy: Vec::new(), regen: false, clippy_base: None, local: None, deny_args: None }
+        Options { decisions: true, deny: false, clippy: Vec::new(), regen: false, clippy_base: None, local: None, deny_args: None, bans: Vec::new() }
     }
 }
 
@@ -48,7 +53,9 @@ impl Options {
     /// Parses options; `Ok((options, check))`.
     ///
     /// # Errors
-    /// An unknown option, or `--clippy` with no usable argument.
+    /// An unknown option, an option with no usable argument, a `--bans`
+    /// directory that is not a plain relative path or is named twice, or
+    /// `--bans` beside the `--deny` form it replaces.
     pub fn parse(args: &[String]) -> Result<(Options, bool), String> {
         let mut o = Options::default();
         let mut check = false;
@@ -58,6 +65,16 @@ impl Options {
                 "--no-decisions" => o.decisions = false,
                 "--deny" => o.deny = true,
                 "--check" => check = true,
+                "--bans" => {
+                    let dir = args.next().ok_or("--bans needs a workspace directory")?;
+                    if !plain_dir(dir) {
+                        return Err(format!("--bans {dir}: name `.` or a relative directory with `/` separators"));
+                    }
+                    if o.bans.contains(dir) {
+                        return Err(format!("--bans {dir} is named twice"));
+                    }
+                    o.bans.push(dir.clone());
+                }
                 "--regen" => o.regen = true,
                 "--deny-args" => {
                     let extra = args.next().ok_or("--deny-args needs its cargo deny arguments")?;
@@ -89,6 +106,9 @@ impl Options {
                 _ => return Err(USAGE.into()),
             }
         }
+        if o.deny && !o.bans.is_empty() {
+            return Err("--bans replaces --deny and --deny-args; name one form".into());
+        }
         Ok((o, check))
     }
 
@@ -100,6 +120,10 @@ impl Options {
         }
         if self.regen {
             line.push_str(" --regen");
+        }
+        for dir in &self.bans {
+            line.push_str(" --bans ");
+            line.push_str(&words::quote(dir));
         }
         match &self.deny_args {
             Some(extra) => {
@@ -131,6 +155,7 @@ impl Options {
             "regen" => Ok(usize::from(self.regen && self.decisions)),
             "local" => Ok(usize::from(self.local.is_some())),
             "clippy" => Ok(self.clippy.len()),
+            "bans" => Ok(self.bans.len()),
             _ => Err(format!("template: unknown block {name}")),
         }
     }
@@ -201,8 +226,11 @@ pub fn render(options: &Options) -> String {
                 continue;
             }
             for i in 0..times {
-                // `times` is the clippy count only inside the clippy block.
-                let pass = options.clippy.get(i).filter(|_| block == "clippy").map(|args| clippy_pass(i, args));
+                let pass = match block {
+                    "clippy" => options.clippy.get(i).map(|args| clippy_pass(i, args)),
+                    "bans" => options.bans.get(i).map(|dir| bans_pass(dir)),
+                    _ => None,
+                };
                 let mut vars = globals.to_vec();
                 if let Some([n, name, entry]) = &pass {
                     vars.extend([("n", n.as_str()), ("name", name.as_str()), ("entry", entry.as_str())]);
@@ -229,6 +257,25 @@ fn self_base(options: &Options) -> String {
 /// at `clippy-2`, the fixed pass being the first.
 fn clippy_pass(i: usize, args: &str) -> [String; 3] {
     [(i + 2).to_string(), yaml_scalar(&format!("clippy {args}")), yaml_scalar(&format!("cargo clippy {args}"))]
+}
+
+/// Whether `dir` is `.` or a relative directory of plain `/`-separated names.
+fn plain_dir(dir: &str) -> bool {
+    let bad = |c: char| c.is_whitespace() || c == ':' || c == char::from(92);
+    let name = |part: &str| !part.is_empty() && part != "." && part != ".." && !part.contains(bad);
+    dir == "." || dir.split('/').all(name)
+}
+
+/// The `n`, `name` and `entry` of the bans pass over the workspace at `dir`;
+/// `n` is the id's suffix, empty for the root.
+fn bans_pass(dir: &str) -> [String; 3] {
+    const CHECK: &str = "check -D unmatched-skip bans";
+    if dir == "." {
+        return [String::new(), "dependency bans".into(), format!("cargo deny --workspace --all-features {CHECK}")];
+    }
+    let entry =
+        format!("cargo deny --manifest-path {dir}/Cargo.toml --workspace --all-features --config {dir}/deny.toml {CHECK}");
+    [format!("-{}", dir.replace('/', "-")), yaml_scalar(&format!("dependency bans {dir}")), yaml_scalar(&entry)]
 }
 
 /// Checks a hook file against what its own first line says would render.

@@ -8,7 +8,7 @@ repositories.
 house line-ceiling [--config PATH] FILE...
 house decisions check | regen [--stage] | lookup ... | anchors ...
 house resolved record | push | show COMMIT [--write [--force]]
-house hooks [--no-decisions] [--deny] [--clippy ARGS]... | house hooks --check
+house hooks [--no-decisions] [--bans DIR]... [--clippy ARGS]... | house hooks --check
 house cycles [--family-dir DIR | --remote] [--repo NAME]... [--allowlist PATH] [--dev-warn] [--strict-locks] [--verbose] [--json]
 house doc-audit [--json] [--root DIR] [--docs DIR] [--ledger DIR] [--snapshot PATH] [--corrections PATH] [--moved-out PATH] [--receipt-relocations PATH] [--workspace DIR] [--snapshot-sha256 HEX]
 ```
@@ -61,7 +61,14 @@ a stale line-ceiling failure once kept the notes from reaching a remote.
 
 - `--no-decisions` drops the decisions check, for repositories with no
   `design_docs/decisions.toml`.
-- `--deny` adds `cargo deny check bans`.
+- `--bans DIR`, repeatable, adds a duplicate-version pass over the workspace
+  at `DIR` (`.` for the repository root): `cargo deny --workspace
+  --all-features check -D unmatched-skip bans`, read against `DIR/deny.toml`.
+  Name the root and every nested workspace that ships. Each workspace keeps
+  its own skips, so a skip that matches nothing is stale and fails the commit.
+- `--deny` adds `cargo deny check bans`: the root with default features only.
+  `--bans .` replaces it; `--deny` and `--deny-args` leave when no repository
+  names them, and cannot be combined with `--bans`.
 - `--clippy ARGS`, repeatable, adds a `cargo clippy ARGS` pass per use (for
   a feature the workspace build leaves off).
 
@@ -73,7 +80,7 @@ the file differs. A repository refreshes its file with
 `house hooks <its options> > .pre-commit-config.yaml`.
 
 Options: `--no-decisions`, `--regen` (run `house decisions regen --stage`
-before the check), `--deny`, `--deny-args ARGS` (arguments between `cargo deny`
+before the check), `--bans DIR` for each workspace, `--deny`, `--deny-args ARGS` (arguments between `cargo deny`
 and `check bans`), `--clippy-base ARGS` (the first clippy pass, when
 it is not `--all-targets`), `--clippy ARGS` for each further pass, and
 `--local FILE` for a repository's own hooks: a YAML list at column 0, kept in
@@ -81,7 +88,7 @@ the repository and appended after the fixed hooks. The first line of the
 generated file records the options, so `--check` needs none.
 
 In the template a `#{name` line opens a block kept only when its option is
-on (`clippy` repeats once per extra pass), `#}` closes it, and `{{key}}` is
+on (`clippy` and `bans` repeat once per pass), `#}` closes it, and `{{key}}` is
 filled in.
 
 The hooks call `house` from the PATH (`language: system`); install it once per

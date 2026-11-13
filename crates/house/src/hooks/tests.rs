@@ -190,3 +190,47 @@ fn deny_args_sit_before_check_bans() {
     assert!(render(&options(&["--deny"])).lines().any(|l| l == "        entry: cargo deny check bans"));
 }
 
+
+#[test]
+fn bans_adds_a_pass_per_workspace() {
+    let base = render(&Options::default());
+    let out = render(&options(&["--bans", ".", "--bans", "native", "--bans", "apps/signalman-desktop"]));
+    let (added, removed) = diff(&base, &out);
+    assert_eq!(removed, ["# house hooks"]);
+    assert_eq!(added[0], "# house hooks --bans . --bans native --bans apps/signalman-desktop");
+    for want in [
+        "      - id: dependency-bans",
+        "        name: dependency bans",
+        "        entry: cargo deny --workspace --all-features check -D unmatched-skip bans",
+        "      - id: dependency-bans-native",
+        "        name: dependency bans native",
+        "        entry: cargo deny --manifest-path native/Cargo.toml --workspace --all-features --config native/deny.toml check -D unmatched-skip bans",
+        "      - id: dependency-bans-apps-signalman-desktop",
+        "        entry: cargo deny --manifest-path apps/signalman-desktop/Cargo.toml --workspace --all-features --config apps/signalman-desktop/deny.toml check -D unmatched-skip bans",
+    ] {
+        assert!(added.iter().any(|l| l == want), "missing {want:?}");
+    }
+    assert_eq!(added.len(), 1 + 3 * 6);
+    assert!(check_text(&out).is_ok());
+}
+
+#[test]
+fn bans_refuses_bad_directories_and_the_old_form() {
+    let bad: [&[&str]; 9] = [
+        &["--bans"],
+        &["--bans", ""],
+        &["--bans", "../x"],
+        &["--bans", "a//b"],
+        &["--bans", "a/"],
+        &["--bans", "C:/x"],
+        &["--bans", "a b"],
+        &["--bans", "./a"],
+        &["--bans", "/a"],
+    ];
+    for b in bad {
+        assert!(Options::parse(&args(b)).is_err(), "{b:?}");
+    }
+    assert!(Options::parse(&args(&["--bans", "a", "--bans", "a"])).unwrap_err().contains("twice"));
+    assert!(Options::parse(&args(&["--bans", ".", "--deny"])).unwrap_err().contains("replaces"));
+    assert!(Options::parse(&args(&["--deny-args", "-q", "--bans", "a"])).unwrap_err().contains("replaces"));
+}

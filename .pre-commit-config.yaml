@@ -1,4 +1,4 @@
-# house hooks --no-decisions --deny
+# house hooks --no-decisions --bans . --bans crates/house --bans crates/line-ceiling --bans crates/responsa
 # Written by `house hooks` (eidetic, crates/house); `house hooks --check` fails when this file drifts from it.
 # `house` is on the PATH: cargo install --git https://github.com/merely-made/eidetic house
 fail_fast: true
@@ -23,7 +23,25 @@ repos:
         pass_filenames: false
       - id: dependency-bans
         name: dependency bans
-        entry: cargo deny check bans
+        entry: cargo deny --workspace --all-features check -D unmatched-skip bans
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: dependency-bans-crates-house
+        name: dependency bans crates/house
+        entry: cargo deny --manifest-path crates/house/Cargo.toml --workspace --all-features --config crates/house/deny.toml check -D unmatched-skip bans
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: dependency-bans-crates-line-ceiling
+        name: dependency bans crates/line-ceiling
+        entry: cargo deny --manifest-path crates/line-ceiling/Cargo.toml --workspace --all-features --config crates/line-ceiling/deny.toml check -D unmatched-skip bans
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: dependency-bans-crates-responsa
+        name: dependency bans crates/responsa
+        entry: cargo deny --manifest-path crates/responsa/Cargo.toml --workspace --all-features --config crates/responsa/deny.toml check -D unmatched-skip bans
         language: system
         pass_filenames: false
         always_run: true
