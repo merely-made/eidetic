@@ -6,12 +6,12 @@
 
 //! Times `QuadIndex::apply` against `QuadIndex::build` on a chain-shaped
 //! dataset (8 rows per node). Release only: `cargo run --release -p
-//! chartulary --example quads_apply [nodes]` (default 100,000 = 800k rows).
+//! quadstore --example quads_apply [nodes]` (default 100,000 = 800k rows).
 
 use std::hint::black_box;
 use std::time::{Duration, Instant};
 
-use chartulary::quads::{Quad, QuadIndex, QuadMeta, TermId, View};
+use quadstore::{Quad, QuadIndex, QuadMeta, TermId, View};
 
 const PREDICATES: u32 = 8;
 const GRAPHS: u32 = 4;

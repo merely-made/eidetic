@@ -10,8 +10,9 @@
 //! A stemma (as in *stemma codicum*, the family tree of manuscript copies) is a
 //! record of descent. This crate is that record for a graph's content: which
 //! things were engaged, in what order, branching where history diverged, shared
-//! across the cursors that walked them. It is chartulary's lineage layer, a
-//! projection over the edit spine and never a second store.
+//! across the cursors that walked them. It is portolan's lineage layer (until
+//! 2026-11-12, `chartulary::stemma`), a projection over the edit spine and never
+//! a second store.
 //!
 //! - [`Entry`](EntryRecord) is the deduplicated content-identity layer; many
 //!   visits can resolve to one entry.

@@ -13,7 +13,7 @@
 //! subject, predicate, object and graph reads one contiguous range. The module
 //! never learns what a term is: a consumer supplies the terms (Mere's engine
 //! interns `oxrdf` terms and implements its SPARQL evaluator's dataset seam
-//! over this index), and [`crate::rdf::Term`] works as well.
+//! over this index), and `portolan::rdf::Term` works as well.
 //!
 //! The shape was ruled in Mere's indexed dataset brief
 //! (`mere/design_docs/mere_docs/technical_architecture/2026-11-09_indexed_dataset_brief.md`,

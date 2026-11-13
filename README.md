@@ -12,7 +12,10 @@ and its historical receipts:
 | Crate | Responsibility | Boundary |
 |---|---|---|
 | [muniment](crates/muniment) | Byte backends, immutable blobs, mutable slots, journals and atomic storage operations | Callers choose the backend; transaction support is a backend capability |
-| [chartulary](crates/chartulary) | Generic resource graph, attributed edits/assertions and owner-scoped Stemma encounters | Domain meaning and destination admission stay with the caller |
+| [portolan](crates/portolan) | Generic resource graph, attributed edits/assertions, facets, content classes and the RDF projection | Domain meaning and destination admission stay with the caller |
+| [hodograph](crates/hodograph) | Owner-scoped Stemma encounters: lineage through branching visits | What an entry or owner is stays with the caller |
+| [quadstore](crates/quadstore) | Dictionary and six-ordering quad index over dense term ids | What a term is stays with the caller |
+| [fieldbook](crates/fieldbook) | Graph fields, couplings and edge paths as portable data | Evaluation stays with the caller |
 | [eidetic](crates/eidetic-core) | Typed retained content, manifests, schemas, intake, source evidence, browsing corpus and model-work artifacts | Stores and fetchers are injected; possession supplies no disclosure or edit authority |
 | [eidetic-search](crates/eidetic-search) | Derived lexical recall over browsing traces: BM25, weighted fields, reports and ranking fusion | Indexes are rebuildable views; callers supply vector rankings |
 | [hagiograph](crates/hagiograph) | Standing marks, significant events and a product-driven deep-time seam | Products define significance and run their own simulation |

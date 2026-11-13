@@ -52,8 +52,8 @@ impl ResourceCaptureRef {
     }
 
     fn validate(&self, key: &str) -> Result<()> {
-        if self.canonical_iri != chartulary::canonical_url(&self.canonical_iri)
-            || self.resource_id != chartulary::resource_id(&self.canonical_iri).to_string()
+        if self.canonical_iri != portolan::canonical_url(&self.canonical_iri)
+            || self.resource_id != portolan::resource_id(&self.canonical_iri).to_string()
             || self.key() != key
         {
             return Err(Error::new(
@@ -93,9 +93,9 @@ impl<'a, B: Backend + ?Sized> ResourceCaptureStore<'a, B> {
         content: CaptureContent,
         stored_at_ms: u64,
     ) -> Result<ResourceCaptureRef> {
-        let canonical_iri = chartulary::canonical_url(url);
+        let canonical_iri = portolan::canonical_url(url);
         let entry = ResourceCaptureRef {
-            resource_id: chartulary::resource_id(&canonical_iri).to_string(),
+            resource_id: portolan::resource_id(&canonical_iri).to_string(),
             canonical_iri,
             content_hash: hash,
             content,
@@ -128,7 +128,7 @@ impl<'a, B: Backend + ?Sized> ResourceCaptureStore<'a, B> {
     }
 
     pub async fn for_url(&self, url: &str) -> Result<Vec<ResourceCaptureRef>> {
-        self.for_resource(&chartulary::resource_id(url).to_string())
+        self.for_resource(&portolan::resource_id(url).to_string())
             .await
     }
 
@@ -234,7 +234,7 @@ mod tests {
                 2
             );
             let mut damaged = acquired.clone();
-            damaged.resource_id = chartulary::resource_id("https://other.test").to_string();
+            damaged.resource_id = portolan::resource_id("https://other.test").to_string();
             JsonSlots::new(&backend)
                 .save(&acquired.key(), &damaged)
                 .await

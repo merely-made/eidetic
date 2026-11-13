@@ -4,10 +4,11 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! chartulary (aka **chart**) — the generic content-addressed container graph.
+//! portolan — the generic content-addressed container graph.
 //!
-//! A chartulary is the register a house kept its charters and muniments in. This
-//! crate is that register for an app's nodes and their relations: a
+//! Until 2026-11-12 this was the core of the `chartulary` crate (aka **chart**),
+//! the register a house kept its charters and muniments in. This crate is that
+//! register for an app's nodes and their relations: a
 //! [`Graph<N, E>`] where nodes are content-addressed containers and edges are
 //! typed relations, over one shared, app-agnostic model.
 //!
@@ -29,8 +30,9 @@
 //! are attributed [`Batch`] entries in a journal (each batch a group of
 //! [`GraphEdit`]s that applied atomically, committed against an expected
 //! revision — see [`commit`]), the graph is the replay, and muniment
-//! snapshots give checkpoint-plus-tail loading. The [`stemma`] lineage layer and
-//! [`rdf`] semantic-ring projection are part of the crate. The canonical plan is mere's
+//! snapshots give checkpoint-plus-tail loading. The [`rdf`] semantic-ring
+//! projection is part of the crate; the lineage layer is the `hodograph` crate.
+//! The canonical plan is mere's
 //! `design_docs/.../2026-07-08_generic_graph_substrate_plan.md`.
 //!
 //! **Facets** ([`facet`]) are the runtime tier of node metadata, complementing
@@ -40,44 +42,30 @@
 //! ([`content_class`]) type a node by the facets it carries — the node-side
 //! analog of the edge [`taxonomy`] — defined as data so a class ships like any
 //! other content. Validation is injected through the
-//! [`FacetValidator`](facet::FacetValidator) seam; chartulary stays
+//! [`FacetValidator`](facet::FacetValidator) seam; portolan stays
 //! schema-agnostic. This realizes the one-node ruling (mere design_docs
 //! `2026-07-18_one_node_facets_layer_map.md`): `Container` is the node, and
 //! everything else is a facet.
 
-//! Fields are the third graph primitive beside nodes and edges: [`field`],
-//! [`field_ast`], [`coupling`] and [`edge_path`] define them as portable data
-//! (identity, extent, the scalar/vector AST, how elements respond, how an edge
-//! is drawn). Evaluation is not here; the numen crate in Seiche evaluates them.
+//! Fields are the third graph primitive beside nodes and edges; the `fieldbook`
+//! crate defines them as portable data, and dictionary-encoded quads are the
+//! `quadstore` crate. Both, and `hodograph`, were modules of `chartulary`.
 
 pub mod assertion;
 pub mod canonical;
 pub mod caps;
 pub mod commit;
-pub mod coupling;
 pub mod container;
 pub mod content_class;
-pub mod edge_path;
 pub mod edit;
 pub mod facet;
-pub mod field;
-pub mod field_ast;
 pub mod graph;
 pub mod nested;
-/// A dictionary and six-ordering quad index over dense term ids, generic over
-/// the term type: the store a query engine's dataset reads. See [`quads`].
-pub mod quads;
 /// RDF export of the semantic relation ring, folded from the standalone
 /// `scholia` crate. See [`rdf`] for expanded JSON-LD and N-Quads output.
 pub mod rdf;
 
 pub mod spine;
-/// The lineage layer: owner-scoped descent of content through branching visits
-/// (folded in from the standalone `stemma` crate 2026-07-12 — the crates.io
-/// name was taken by an unrelated DOCX tool, and the module always described
-/// itself as "chartulary's lineage layer, a projection over the edit spine and
-/// never a second store"; the sibling repo archives).
-pub mod stemma;
 pub mod taxonomy;
 
 pub use assertion::{

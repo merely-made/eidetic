@@ -14,7 +14,7 @@
 //! resident helper (a servitor), a script, a scenario runner, a remote peer,
 //! an agent. It holds an identity (a keyholder [`Subject`]) and a scoped
 //! structural capability, and it proposes changes as **petitions** that the
-//! [`gate`] validates against the capability and applies through chartulary's
+//! [`gate`] validates against the capability and applies through portolan's
 //! attributed, revision-checked commit. Every applied change is attributed to
 //! the participant in the journal.
 //!
@@ -49,10 +49,10 @@
 //!   interruptions; hosts execute work and reconcile uncertain effects.
 //!
 //! A participant's inner world (its grant projections, storage markers, registered
-//! commands, journal cursors) is an ordinary [`chartulary::GraphLog`]: the
+//! commands, journal cursors) is an ordinary [`portolan::GraphLog`]: the
 //! nested graph a graph-bearing node points at. The gate operates on that
 //! nested graph; wiring a participant node in a host graph to bear it is the host's
-//! job (mere's `Node` implementing `chartulary::GraphBearing`).
+//! job (mere's `Node` implementing `portolan::GraphBearing`).
 //!
 //! The capability model is typed but still small: [`Cap`] carries the three
 //! shapes real consumers hold (an app's closed ring set, a graph's unbounded
@@ -138,9 +138,9 @@ impl Subject {
     /// The journal author label for changes this subject commits: `denizen:`
     /// plus the first 8 hex chars of the key. Attribution, not authentication;
     /// the gate has already checked authority before it commits.
-    pub fn to_author(&self) -> chartulary::Author {
+    pub fn to_author(&self) -> portolan::Author {
         let hex = self.to_hex();
-        chartulary::Author::new(format!("denizen:{}", &hex[..8]))
+        portolan::Author::new(format!("denizen:{}", &hex[..8]))
     }
 }
 

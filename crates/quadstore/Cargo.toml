@@ -1,0 +1,23 @@
+[package]
+rust-version = "1.97.1"
+name = "quadstore"
+version = "0.1.0"
+edition = "2024"
+description = "A dictionary and six-ordering quad index over dense term ids, generic over the term type, with live and history views and in-place maintenance. No dependencies. Formerly the quads module of the chartulary crate."
+repository = "https://github.com/merely-made/eidetic"
+keywords = [
+    "rdf",
+    "quad",
+    "index",
+    "triple-store",
+]
+categories = [
+    "data-structures",
+    "database-implementations",
+]
+
+[package.license]
+workspace = true
+
+[lints]
+workspace = true

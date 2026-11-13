@@ -32,7 +32,7 @@
 //!
 //! | journal | author label | set by |
 //! |---|---|---|
-//! | chartulary (a participant's nested world) | `denizen:abcd1234` | [`Subject::to_author`] |
+//! | portolan (a participant's nested world) | `denizen:abcd1234` | [`Subject::to_author`] |
 //! | mere's `GraphJournal` (the main graph) | the full 64-char hex | turnstone `remote_projection.rs` |
 //!
 //! Deriving the self-author here would therefore be right on one tier and
@@ -440,7 +440,7 @@ mod tests {
     #[test]
     fn the_self_author_label_is_whatever_the_journal_uses() {
         // The hazard the explicit label exists for: mere's main journal
-        // attributes a participant by full hex, chartulary's by `denizen:` plus
+        // attributes a participant by full hex, portolan's by `denizen:` plus
         // eight. A watch registered for one journal must refuse self-wake in
         // that journal's own terms.
         let alice = subject(1);

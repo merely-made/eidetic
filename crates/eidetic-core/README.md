@@ -58,7 +58,7 @@ stores return ready futures.
 | `content_store`, `image_content`, `deleted`, `clip_profile` | via `product` | The module of the same name, each alone |
 | `kept_text` | via `product` | The `kept_text` module; enables `browsing` |
 | `memory` | via `product` | The `memory` module (`levels`, `forgetting`, `retirement`); enables `content_store` and `deleted` |
-| `lineage` | no | `browsing::lineage`, which projects a `chartulary::stemma` into `BrowsingTrace` codicils; enables `browsing` |
+| `lineage` | no | `browsing::lineage`, which projects a `hodograph::Stemma` into `BrowsingTrace` codicils; enables `browsing` |
 
 Ungated substrate: `schema`, `manifest`, `typed`, `schema_def`, `schema_facets`, `codicil`, `bundle`, `pack`, `seal`, `retention`.
 
@@ -79,7 +79,7 @@ URL caches, public export, hosting, expiry and permission to erase.
 
 ## Dependencies
 
-`muniment` (path), `chartulary`, `async-trait`, `blake3`, `serde`, `serde_json`,
+`muniment` (path), `portolan`, `hodograph`, `async-trait`, `blake3`, `serde`, `serde_json`,
 `url`. Optional: `personae` (as `identity`), `jsonschema`.
 
 ## Companions

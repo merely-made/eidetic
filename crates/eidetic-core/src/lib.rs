@@ -125,7 +125,7 @@ pub use bundle::{
     verify_required_members,
 };
 /// Stable resource identity from the shared canonical IRI.
-pub use chartulary::resource_id;
+pub use portolan::resource_id;
 pub use codicil::{Codicil, TimeBounds};
 #[cfg(feature = "deleted")]
 pub use deleted::{DeletedNode, clear_deleted, list_deleted, purge_deleted, record_deleted};

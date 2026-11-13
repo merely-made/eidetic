@@ -4,9 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Eidetic-backed validation for chartulary facets.
+//! Eidetic-backed validation for portolan facets.
 //!
-//! [`chartulary::FacetValidator`] is synchronous while schema resolution from
+//! [`portolan::FacetValidator`] is synchronous while schema resolution from
 //! an eidetic store is asynchronous. The host therefore resolves schema
 //! codicils once, registers the parsed [`crate::SchemaDefinition`]s here, and
 //! uses this immutable in-memory adapter on every write. Unknown facet ids
@@ -19,11 +19,11 @@ use crate::{
     PrivacyClass, ProvenanceRecord, SchemaDefinition, SchemaRef, Store, Timestamp, TrustEnvelope,
     TypedPayload, bootstrap_meta_schema, load_typed, save_schema, save_typed,
 };
-use chartulary::{ContentClass, FacetError, FacetId, FacetValidator};
+use portolan::{ContentClass, FacetError, FacetId, FacetValidator};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-/// A preloaded facet-schema registry implementing chartulary's synchronous
+/// A preloaded facet-schema registry implementing portolan's synchronous
 /// validation seam.
 #[derive(Clone, Debug, Default)]
 pub struct SchemaFacetValidator {
@@ -123,7 +123,7 @@ pub fn content_class_schema_ref() -> SchemaRef {
     SchemaRef::from_id(ManifestId::from_hash(Hash::of(&bytes)))
 }
 
-/// Eidetic typed binding for chartulary's data-defined content class.
+/// Eidetic typed binding for portolan's data-defined content class.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct ContentClassCodicil(pub ContentClass);

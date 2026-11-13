@@ -44,7 +44,7 @@ skip = [
   { crate = "r-efi@5.3.0", reason = "getrandom 0.3.4 requires it, held by jsonschema 0.61.2, personae (dramatis) and p2mere-encryption; goes with getrandom 0.4" },
   { crate = "windows-sys@0.52.0", reason = "ring 0.17.14 (latest) requires it, under rustls via reqwest 0.12 in luggage; goes when ring moves to windows-sys 0.61 or luggage leaves ring" },
   { crate = "base64@0.22.1", reason = "reqwest 0.12.28 (luggage) requires it; reqwest 0.13 removes it but swaps rustls-tls for aws-lc-rs and the platform verifier, a TLS backend choice" },
-  { crate = "hashbrown@0.15.5", reason = "petgraph 0.8.3 (latest, chartulary) requires it; goes when petgraph moves to hashbrown 0.17" },
+  { crate = "hashbrown@0.15.5", reason = "petgraph 0.8.3 (latest, portolan) requires it; goes when petgraph moves to hashbrown 0.17" },
   { crate = "foldhash@0.1.5", reason = "hashbrown 0.15.5 requires it, held by petgraph 0.8.3; goes with it" },
   { crate = "hashbrown@0.14.5", reason = "dashmap 6.2.1 (latest release, vendored mere-fjall) requires it; goes with dashmap 7, now only a release candidate" },
   { crate = "syn@2.0.119", reason = "most proc-macros (pin-project-internal, async-stream-impl, enum_dispatch, curve25519-dalek-derive, ctor, munge_macro, bindgen) still require syn 2; goes as they move to syn 3" },

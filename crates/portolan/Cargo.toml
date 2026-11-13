@@ -1,0 +1,58 @@
+[package]
+rust-version = "1.97.1"
+name = "portolan"
+version = "0.1.0"
+edition = "2024"
+description = "A generic content-addressed container graph: Graph<N, E> on petgraph with capability traits, default Container/Relation payloads, an event-sourced edit spine over muniment journals, typed node facets and content classes, and an RDF projection of the semantic relation ring. The core of the former chartulary crate."
+repository = "https://github.com/merely-made/eidetic"
+keywords = [
+    "graph",
+    "content-addressed",
+    "knowledge-graph",
+    "petgraph",
+]
+categories = [
+    "data-structures",
+]
+
+[package.license]
+workspace = true
+
+[dependencies]
+serde_json = "1"
+
+[dependencies.petgraph]
+version = "0.8"
+features = [
+    "serde-1",
+]
+
+[dependencies.serde]
+version = "1"
+features = [
+    "derive",
+]
+
+[dependencies.muniment]
+workspace = true
+
+# Deterministic resource ids (`canonical`).
+[dependencies.uuid]
+version = "1"
+features = [
+    "v5",
+]
+
+[dev-dependencies]
+pollster = "0.4"
+# Path only, so publishing strips it: the quadstore-over-rdf integration test.
+quadstore = { path = "../quadstore" }
+
+[dev-dependencies.muniment]
+workspace = true
+features = [
+    "json",
+]
+
+[lints]
+workspace = true

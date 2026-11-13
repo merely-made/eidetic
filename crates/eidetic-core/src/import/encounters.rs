@@ -7,7 +7,7 @@
 //! Source-scoped browser encounters. Stemma owns admitted occurrences; source
 //! children awaiting a parent remain intake, never guessed chronological edges.
 
-use chartulary::stemma::{EntryPrivacy, Stemma, StemmaSnapshot, TransitionKind};
+use hodograph::{EntryPrivacy, Stemma, StemmaSnapshot, TransitionKind};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]

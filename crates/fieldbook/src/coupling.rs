@@ -48,7 +48,7 @@ pub enum NodeSelector {
 /// beyond force name themselves under sub-namespaces, e.g.
 /// `…/coupling#visual/highlight`, `nav/focus`, `selection/member`,
 /// `semantic/assert`, `trigger/fire`. Provisional base; mirrors
-/// [`crate::taxonomy`]'s `REL_VOCAB`.
+/// portolan's `taxonomy` relation namespace.
 pub const COUPLING_VOCAB: &str = "https://mere.computer/ns/coupling#";
 
 /// How a node responds to a field at its position.

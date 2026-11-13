@@ -1,7 +1,8 @@
 # Portolan plan: split and rename chartulary
 
 **Status (2026-11-12):** in progress. The twelve forks are answered (D3 to D15);
-P0 is done and P1 is being built in the `eidetic-portolan` worktree, unpushed.
+P0 is done; P1 is built in the `eidetic-portolan` worktree, unpushed. P2 (land
+on main, then Mark publishes) is next.
 
 Eidetic's `chartulary` crate (`crates/chartulary`, 10,190 source lines in 19
 modules, plus a 157-line example) becomes four crates. The core is renamed
@@ -381,8 +382,9 @@ types are the same types.
 
 Eidetic only. `git mv` each module so history follows. Four manifests with
 exactly the dependencies in F-2; workspace `members`,
-`[workspace.dependencies]` and both `[patch."…eidetic.git"]` and
-`[patch."…mere.git"]` rows for each new crate; the git-only shim (D8). Fix the
+`[workspace.dependencies]` and `[patch."…eidetic.git"]` rows for each new
+crate (no `mere.git` rows: the new crates never lived there); the git-only
+shim (D8). Fix the
 doc links: `coupling.rs:51`, `quads/mod.rs:16`, `taxonomy.rs:21,27`, the
 crate-level docs in `lib.rs`. Move the quads rdf test to portolan (D7). Split
 `README.md`. Point `eidetic-core` and `servitor` at the new crates (10 files,
@@ -580,3 +582,9 @@ F12 D15.
 
 - 2026-11-12: plan written from measurements at the origin/main commits named
   above. No code changed.
+- 2026-11-12: P1 built, unpushed. Tests 440 before and after (chartulary 126 =
+  portolan 81 + hodograph 14 + quadstore 13 + fieldbook 18, same names; servitor
+  98; eidetic 216); clippy 246 warning sites before and after, none new; wasm32,
+  publish dry runs (portolan against muniment 0.2.1 from crates.io),
+  `house hooks --check` and the line ceiling pass. The shim compiles 31 verbatim
+  Mere and Turnstone import lines plus 8 more, and a bogus path fails.

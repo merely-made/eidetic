@@ -85,7 +85,7 @@ fn records_are_page_text_stores_and_the_version_is_the_blake3_of_the_text() {
         assert_eq!(versions.len(), 1);
         assert_eq!(versions[0].content, CaptureContent::PageText);
         assert_eq!(versions[0].content_hash.to_hex(), version);
-        let resource = chartulary::resource_id(CANON).to_string();
+        let resource = portolan::resource_id(CANON).to_string();
         assert_eq!(
             backend.list("resource-capture/").await.unwrap(),
             vec![format!("resource-capture/{resource}/page-text/{version}")]

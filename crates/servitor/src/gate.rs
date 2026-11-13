@@ -21,14 +21,14 @@
 //! 4. checks **facet authority**: every facet write needs a covering
 //!    [`Cap::Facet`] at [`Mode::Write`] as well as node scope;
 //! 5. **commits** the batch attributed to the participant, revision-checked, atomic
-//!    (chartulary's `commit_batch`).
+//!    (portolan's `commit_batch`).
 //!
 //! Authority is materialized elsewhere and *projected* here read-only:
 //! [`Gate::project_grant`] renders a [`Grant`] into the nested graph as a
 //! reserved-namespace node, committed by the gate's own author, so "what may
 //! this participant do" is a browsable question answered from the graph itself.
 
-use chartulary::{Author, CommitError, Committed, Container, EditSpec, GraphLog, Relation};
+use portolan::{Author, CommitError, Committed, Container, EditSpec, GraphLog, Relation};
 
 use crate::Subject;
 use crate::cap::{Cap, ScopePath};
@@ -154,7 +154,7 @@ pub enum GateError {
         node: String,
     },
     /// The underlying attributed commit refused (revision conflict, unknown
-    /// node, and so on). Carries chartulary's error, including the current
+    /// node, and so on). Carries portolan's error, including the current
     /// revision on a conflict so the participant can rebase.
     Commit(CommitError<String>),
 }

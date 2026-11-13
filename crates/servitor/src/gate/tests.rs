@@ -6,7 +6,7 @@
 
 use super::*;
 use crate::grant::GrantTable;
-use chartulary::{AssertionBasis, Container, FacetId, RelationClass};
+use portolan::{AssertionBasis, Container, FacetId, RelationClass};
 
 fn subject(tag: u8) -> Subject {
     Subject::new([tag; 32])
@@ -54,7 +54,7 @@ fn seed_assertion(
     nested: &mut GraphLog<Container, Relation>,
     from: &str,
     to: &str,
-) -> chartulary::EdgeId {
+) -> portolan::EdgeId {
     let mut specs: Vec<EditSpec<Container, Relation>> = Vec::new();
     for id in [from, to] {
         if nested.graph().key_of(&id.to_string()).is_none()
@@ -72,7 +72,7 @@ fn seed_assertion(
         .edges[0]
 }
 
-fn exact_id_operations(id: chartulary::EdgeId) -> [EditSpec<Container, Relation>; 3] {
+fn exact_id_operations(id: portolan::EdgeId) -> [EditSpec<Container, Relation>; 3] {
     [
         EditSpec::Disconnect(id),
         EditSpec::ConfirmAssertion { id, at_ms: Some(8) },
@@ -318,7 +318,7 @@ fn an_unknown_assertion_id_reaches_the_atomic_commit_error() {
     let sub = subject(1);
     let auth = authority(sub);
     let mut nested = GraphLog::<Container, Relation>::new();
-    let unknown = chartulary::EdgeId::local(99);
+    let unknown = portolan::EdgeId::local(99);
     let revision = nested.revision();
 
     let error = gate

@@ -1,0 +1,40 @@
+[package]
+rust-version = "1.97.1"
+name = "hodograph"
+version = "0.1.0"
+edition = "2024"
+description = "An owner-scoped lineage model: the descent of entries through branching visits. Generic Entry / Visit / Owner records with append-only visits, projected edges and serde/rkyv snapshots. Formerly the stemma module of the chartulary crate."
+repository = "https://github.com/merely-made/eidetic"
+keywords = [
+    "lineage",
+    "history",
+    "provenance",
+    "tree",
+]
+categories = [
+    "data-structures",
+]
+
+[package.license]
+workspace = true
+
+[dependencies.serde]
+version = "1"
+features = [
+    "derive",
+]
+
+[dependencies.rkyv]
+version = "0.8"
+features = [
+    "std",
+]
+
+[dependencies.slotmap]
+version = "1.0"
+features = [
+    "serde",
+]
+
+[lints]
+workspace = true

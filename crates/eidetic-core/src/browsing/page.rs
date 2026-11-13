@@ -26,7 +26,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use super::frecency::{FrecencyConfig, frecency_by};
 use super::{BrowsingTrace, TraceEvent};
 
-pub use chartulary::canonical_url;
+pub use portolan::canonical_url;
 
 /// Whitespace-collapsed page text — the exact hash's input.
 ///

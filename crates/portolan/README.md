@@ -1,6 +1,6 @@
-# chartulary
+# portolan
 
-The generic content-addressed container graph (aka **chart**). A `Graph<N, E>`
+The generic content-addressed container graph. A `Graph<N, E>`
 where nodes are content-addressed containers and edges are typed relations, over
 one shared, app-agnostic model. The substrate that binds
 [muniment](https://github.com/merely-made/mere)'s blobs and
@@ -10,7 +10,7 @@ Fully generic: a node needs one capability, `Identified`, to live in the graph.
 Everything else is an opt-in trait that unlocks a feature.
 
 ```rust
-use chartulary::{Container, Graph, Recognized, Relation, RelationClass};
+use portolan::{Container, Graph, Recognized, Relation, RelationClass};
 
 let mut g: Graph<Container, Relation> = Graph::new();
 let a = g.insert(Container::new("a").with_title("Article A").with_tag("research"));
@@ -44,7 +44,7 @@ an app that needs more implements the traits on its own types.
 | `assertion` | `AssertionRecord`, `AssertionSpan`, `AssertionWithdrawal`, `AssertionBasis`, `AssertionMethod`: retained, source-attributed relations keyed by `EdgeId` |
 | `facet` | `NodeFacets`, `FacetStore`, `FacetId`, `FacetValidator`, `AcceptAll`, `FacetError`, `ExpiringFacet`. Runtime typed node metadata, validated through an injected seam; revision-indexed shelf life stays a read predicate and never mutates stored state |
 | `content_class` | `ContentClass`, `ClassId`, `ClassRegistry`, `ClassMembership`, `CLASS_FACET`, `ClassError` |
-| `stemma` | `Stemma`, `StemmaSnapshot`, `EntryRecord`, `VisitRecord`, `OwnerRecord`, `TransitionKind`, `EntryPrivacy`, `OwnerBranchProjection`, `GcReport`. Owner-scoped descent of content through branching visits |
+| `canonical` | `canonical_url`, `resource_id`, `resource_id_from_canonical_iri`: canonical resource addresses and their UUIDv5 ids |
 | `nested` | Slot-name helpers: `log_slot`, `snap_slot`, `archived_log_slot`, `archived_snap_slot` |
 
 `muniment::LogId` and `muniment::Provenance` are re-exported so a consumer can
@@ -65,20 +65,27 @@ graph-only RDF functions still export held semantic triples; assertion
 reifiers and explicit retained-history RDF export remain a separate adapter.
 
 Dependencies: `petgraph` (with `serde-1`), `muniment` (default features off, for
-the blake3 `Hash` and append-only journal), `rkyv` and `slotmap` (the stemma snapshot and visit
-arena), `serde`, `serde_json`.
+the blake3 `Hash` and append-only journal), `serde`, `serde_json`, and `uuid`
+(`v5`, for `canonical`).
 
-The name: a chartulary is the register a house kept its charters and muniments in.
-`chart = { package = "chartulary" }` in a consumer workspace for the short name.
+## Where this came from
 
-The standalone `stemma` crate was folded in as `chartulary::stemma` on
-2026-07-12. The RDF projection followed as `chartulary::rdf`; it projects only
-the semantic relation ring, leaving app-private families out of the export.
+Until 2026-11-12 this code was the core of the `chartulary` crate (aka
+**chart**; a chartulary is the register a house kept its charters and muniments
+in). That crate split four ways: this core became `portolan`; its lineage layer
+(`chartulary::stemma`) became [`hodograph`](../hodograph); its quad index
+(`chartulary::quads`) became [`quadstore`](../quadstore); and its field
+definitions became [`fieldbook`](../fieldbook). Item names and behaviour are
+unchanged; only the paths moved. The split is planned in Eidetic's
+`design_docs/eidetic_docs/implementation_strategy/2026-11-12_portolan_plan.md`.
+The RDF projection was folded into chartulary from the standalone `scholia`
+crate; it projects only the semantic relation ring, leaving app-private families
+out of the export.
 
 Build phases and their done conditions live in the canonical plan, mere's
 `design_docs/mere_docs/technical_architecture/2026-07-08_generic_graph_substrate_plan.md`,
 and are not restated here: the module table above is what the crate actually
 ships, and a phase ladder copied into a README drifts from it.
-See [`design_docs/`](https://github.com/merely-made/eidetic/blob/main/crates/chartulary/design_docs).
+See Eidetic's [`design_docs/`](https://github.com/merely-made/eidetic/blob/main/design_docs).
 
 License: MPL-2.0 (see LICENSE).

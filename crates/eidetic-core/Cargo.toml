@@ -56,7 +56,10 @@ features = [
     "derive",
 ]
 
-[dependencies.chartulary]
+[dependencies.portolan]
+workspace = true
+
+[dependencies.hodograph]
 workspace = true
 
 [features]

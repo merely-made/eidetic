@@ -14,11 +14,11 @@ A participant is anything admitted to act on a graph, a resident helper (a
 servitor), a script, a scenario runner, a remote peer, an agent. It holds a
 keyholder identity and a capability, and proposes **petitions** that the gate
 validates and commits. A participant's inner world is an ordinary
-`chartulary::GraphLog`, the nested graph a graph-bearing node points at; wiring
+`portolan::GraphLog`, the nested graph a graph-bearing node points at; wiring
 a host-graph node to bear it is the host's job.
 
 Headless and app-agnostic. Owns the shared capability algebra and depends on
-`chartulary` for the nested-graph substrate, plus Personae and Insigne from
+`portolan` for the nested-graph substrate, plus Personae and Insigne from
 Dramatis for signed delegation and proof checking.
 
 ## Modules
@@ -106,7 +106,7 @@ the gate changing.
 pipeline: refuse specs that touch a grant projection, check authority at
 `Mode::Write`, check every touched node id falls under the claimed scope by
 segment, require a covering facet capability for every `SetFacet` or
-`RemoveFacet`, then commit through chartulary's attributed revision-checked
+`RemoveFacet`, then commit through portolan's attributed revision-checked
 batch. It returns `Committed` or a `GateError` of `Unauthorized`,
 `OutOfScope`, `UnauthorizedFacet`, `TouchesProjection`, or `Commit`.
 
