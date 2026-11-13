@@ -1,0 +1,27 @@
+[package]
+rust-version = "1.97.1"
+name = "chartulary"
+# Above 0.3.1 so consumers' `version = "0.3.1"` lower bounds still hold.
+version = "0.3.2"
+edition = "2024"
+description = "Transitional re-export of portolan, hodograph, quadstore and fieldbook under chartulary's old paths. Git-only; never published; removed when no consumer names it (portolan plan P4)."
+repository = "https://github.com/merely-made/eidetic"
+publish = false
+
+[package.license]
+workspace = true
+
+[dependencies.portolan]
+workspace = true
+
+[dependencies.hodograph]
+workspace = true
+
+[dependencies.quadstore]
+workspace = true
+
+[dependencies.fieldbook]
+workspace = true
+
+[lints]
+workspace = true

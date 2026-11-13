@@ -16,6 +16,7 @@ and its historical receipts:
 | [hodograph](crates/hodograph) | Owner-scoped Stemma encounters: lineage through branching visits | What an entry or owner is stays with the caller |
 | [quadstore](crates/quadstore) | Dictionary and six-ordering quad index over dense term ids | What a term is stays with the caller |
 | [fieldbook](crates/fieldbook) | Graph fields, couplings and edge paths as portable data | Evaluation stays with the caller |
+| [chartulary](crates/chartulary) | Transitional re-export of the four above under the old paths; git-only | Removed when no consumer names it |
 | [eidetic](crates/eidetic-core) | Typed retained content, manifests, schemas, intake, source evidence, browsing corpus and model-work artifacts | Stores and fetchers are injected; possession supplies no disclosure or edit authority |
 | [eidetic-search](crates/eidetic-search) | Derived lexical recall over browsing traces: BM25, weighted fields, reports and ranking fusion | Indexes are rebuildable views; callers supply vector rankings |
 | [hagiograph](crates/hagiograph) | Standing marks, significant events and a product-driven deep-time seam | Products define significance and run their own simulation |

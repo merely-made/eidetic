@@ -7,6 +7,8 @@ members = [
     "crates/hodograph",
     "crates/quadstore",
     "crates/fieldbook",
+    # Transitional re-export shim, git-only (portolan plan D8, removed at P4).
+    "crates/chartulary",
     "crates/eidetic-core",
     "crates/eidetic-search",
     "crates/hagiograph",
@@ -113,6 +115,9 @@ too_many_lines = "warn"
 [patch."https://github.com/merely-made/eidetic.git".muniment]
 path = "crates/muniment"
 
+[patch."https://github.com/merely-made/eidetic.git".chartulary]
+path = "crates/chartulary"
+
 [patch."https://github.com/merely-made/eidetic.git".portolan]
 path = "crates/portolan"
 
@@ -145,6 +150,9 @@ path = "crates/servitor"
 
 [patch."https://github.com/merely-made/mere.git".muniment]
 path = "crates/muniment"
+
+[patch."https://github.com/merely-made/mere.git".chartulary]
+path = "crates/chartulary"
 
 [patch."https://github.com/merely-made/mere.git".eidetic]
 path = "crates/eidetic-core"
