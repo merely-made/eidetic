@@ -16,6 +16,7 @@ use std::collections::BTreeMap;
 use serde::de::{self, Deserializer, MapAccess, SeqAccess, Visitor};
 use serde::{Deserialize, Serialize, Serializer};
 
+use super::body::{BodyError, LensBody, TypedBody, VocabularyBody};
 use super::canonical::{CanonicalError, from_canonical, sort_set, to_canonical};
 use crate::schema::{Hash, HashFn};
 
@@ -129,8 +130,9 @@ impl<'de> Deserialize<'de> for Multihash {
     }
 }
 
-/// Plain data in a kind's body until that kind's schema lands: no floats,
-/// tags or null, and text map keys.
+/// Plain data in a kind's body: no floats, tags or null, and text map keys.
+/// The `vocabulary` and `lens` bodies must also read as their typed forms
+/// ([`VocabularyBody`], [`LensBody`]); the other kinds stay plain until theirs land.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum BodyValue {
     Bool(bool),
@@ -270,6 +272,8 @@ pub enum HeaderError {
     BodyKinds,
     /// A part's name, role or media type is empty.
     EmptyPartField(&'static str),
+    /// A typed body is refused.
+    Body { kind: PackKind, error: BodyError },
 }
 
 impl std::fmt::Display for HeaderError {
@@ -283,6 +287,7 @@ impl std::fmt::Display for HeaderError {
             Self::NoKind => f.write_str("a pack declares at least one kind"),
             Self::BodyKinds => f.write_str("the body holds one entry per declared kind"),
             Self::EmptyPartField(field) => write!(f, "a part's {field} is empty"),
+            Self::Body { kind, error } => write!(f, "the {kind:?} body: {error}"),
         }
     }
 }
@@ -304,7 +309,8 @@ impl PackHeader {
     pub fn to_canonical(&self) -> Result<Vec<u8>, HeaderError> {
         let mut header = self.clone();
         header.normalize()?;
-        header.validate()?;
+        // `normalize` checked the typed bodies as it rewrote them.
+        header.validate_fields()?;
         Ok(to_canonical(&header)?)
     }
 
@@ -315,13 +321,27 @@ impl PackHeader {
     /// Refuses non-canonical bytes (unsorted sets included) and invalid fields.
     pub fn from_canonical(bytes: &[u8]) -> Result<Self, HeaderError> {
         let header: Self = from_canonical(bytes)?;
-        header.validate()?;
+        header.validate_fields()?;
         let mut sorted = header.clone();
-        sorted.normalize()?;
+        sorted.sort_sets()?;
         if sorted != header {
             return Err(HeaderError::Canonical(CanonicalError::NotCanonical));
         }
+        // Typed bodies read strictly: valid, and their sets already in order.
+        header.typed_body_strict::<VocabularyBody>(PackKind::Vocabulary)?;
+        header.typed_body_strict::<LensBody>(PackKind::Lens)?;
         Ok(header)
+    }
+
+    fn typed_body_strict<B: TypedBody>(&self, kind: PackKind) -> Result<(), HeaderError> {
+        let Some(value) = self.body.get(&kind) else {
+            return Ok(());
+        };
+        match B::from_value(value, true) {
+            Ok(_) => Ok(()),
+            Err(BodyError::Set(e)) => Err(HeaderError::Canonical(e)),
+            Err(error) => Err(HeaderError::Body { kind, error }),
+        }
     }
 
     /// The pin of the document whose canonical bytes are `canonical`.
@@ -338,7 +358,7 @@ impl PackHeader {
         })
     }
 
-    fn normalize(&mut self) -> Result<(), CanonicalError> {
+    fn sort_sets(&mut self) -> Result<(), CanonicalError> {
         sort_set(&mut self.kind)?;
         sort_set(&mut self.requires)?;
         sort_set(&mut self.provides)?;
@@ -347,12 +367,60 @@ impl PackHeader {
         sort_set(&mut self.parts)
     }
 
+    fn normalize(&mut self) -> Result<(), HeaderError> {
+        self.sort_sets()?;
+        for (kind, value) in &mut self.body {
+            let typed = match kind {
+                PackKind::Vocabulary => {
+                    VocabularyBody::from_value(value, false).and_then(|b| b.to_value())
+                }
+                PackKind::Lens => LensBody::from_value(value, false).and_then(|b| b.to_value()),
+                _ => continue,
+            };
+            *value = typed.map_err(|error| HeaderError::Body { kind: *kind, error })?;
+        }
+        Ok(())
+    }
+
+    /// The typed `vocabulary` body, if the pack declares that kind.
+    ///
+    /// # Errors
+    ///
+    /// The body does not read as a [`VocabularyBody`].
+    pub fn vocabulary(&self) -> Result<Option<VocabularyBody>, HeaderError> {
+        self.typed_body(PackKind::Vocabulary)
+    }
+
+    /// The typed `lens` body, if the pack declares that kind.
+    ///
+    /// # Errors
+    ///
+    /// The body does not read as a [`LensBody`].
+    pub fn lens(&self) -> Result<Option<LensBody>, HeaderError> {
+        self.typed_body(PackKind::Lens)
+    }
+
+    fn typed_body<B: TypedBody>(&self, kind: PackKind) -> Result<Option<B>, HeaderError> {
+        self.body
+            .get(&kind)
+            .map(|v| B::from_value(v, false).map_err(|error| HeaderError::Body { kind, error }))
+            .transpose()
+    }
+
     /// Check every field against its spec.
     ///
     /// # Errors
     ///
     /// The first field that fails, as a [`HeaderError`].
     pub fn validate(&self) -> Result<(), HeaderError> {
+        self.validate_fields()?;
+        self.vocabulary()?;
+        self.lens()?;
+        Ok(())
+    }
+
+    /// Every field but the typed bodies' contents.
+    fn validate_fields(&self) -> Result<(), HeaderError> {
         if self.format != PACK2_FORMAT {
             return Err(HeaderError::Format(self.format.clone()));
         }

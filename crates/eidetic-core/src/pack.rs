@@ -40,6 +40,10 @@
 //! [`from_canonical`]), the multihash digest, and the detached COSE_Sign1
 //! envelope ([`sign_canonical`], [`verify_envelope`]) with its acceptance
 //! policy ([`TrustPolicy`]). v1 stays until its consumers move (the plan's L6).
+//!
+//! L2 adds the typed `vocabulary` and `lens` bodies ([`VocabularyBody`],
+//! [`LensBody`]) and, behind `pack-authoring`, the authored-TOML compiler
+//! ([`compile_authored`]).
 
 #[cfg(feature = "pack-signing")]
 use identity::{Ed25519Keypair, Ed25519PublicKey, Ed25519Signature};
@@ -50,11 +54,20 @@ use crate::schema::{ManifestId, SchemaRef};
 use crate::schema::{SignatureRef, TrustEnvelope};
 use crate::typed::TypedPayload;
 
+#[cfg(feature = "pack-authoring")]
+mod authored;
+mod body;
 mod canonical;
 #[cfg(feature = "pack-signing")]
 mod envelope;
 mod header;
 
+#[cfg(feature = "pack-authoring")]
+pub use authored::{AuthoredError, compile_authored};
+pub use body::{
+    BodyError, Entail, LensBody, Presentation, Selection, Settlement, Term, TermKind, TypedBody,
+    VocabularyBody,
+};
 pub use canonical::{CanonicalError, from_canonical, to_canonical};
 #[cfg(feature = "pack-signing")]
 pub use envelope::{
@@ -66,6 +79,10 @@ pub use header::{
     PackHeader, PackKind, Part, Pin, Requirement,
 };
 
+#[cfg(all(test, feature = "pack-authoring"))]
+mod v2_authored_tests;
+#[cfg(test)]
+mod v2_body_tests;
 #[cfg(test)]
 mod v2_codec_tests;
 #[cfg(all(test, feature = "pack-signing"))]

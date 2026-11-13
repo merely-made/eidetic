@@ -18,22 +18,22 @@ use crate::schema::{Hash, HashFn};
 
 pub(super) fn fixture() -> PackHeader {
     let mut body = BTreeMap::new();
-    body.insert(
-        PackKind::Vocabulary,
-        BodyValue::Map(BTreeMap::from([
-            (
-                "prefixes".to_string(),
-                BodyValue::Map(BTreeMap::from([(
-                    "mere".to_string(),
-                    BodyValue::Text("https://mere.computer/ns/".to_string()),
-                )])),
-            ),
-            (
-                "terms".to_string(),
-                BodyValue::Array(vec![BodyValue::Integer(-3)]),
-            ),
-        ])),
-    );
+    let ns = "https://mere.computer/ns/";
+    let vocabulary = VocabularyBody {
+        terms: vec![Term {
+            iri: format!("{ns}rel#cites"),
+            kind: TermKind::Predicate,
+            family: Some(format!("{ns}family#semantic")),
+            handler: None,
+            axes: BTreeMap::from([(
+                format!("{ns}axis#stratum"),
+                vec![format!("{ns}stratum#resource")],
+            )]),
+            labels: BTreeMap::from([("en".to_string(), "cites".to_string())]),
+        }],
+        defaults: BTreeMap::from([(format!("{ns}axis#stratum"), format!("{ns}stratum#resource"))]),
+    };
+    body.insert(PackKind::Vocabulary, vocabulary.to_value().unwrap());
     body.insert(PackKind::Participant, BodyValue::Bytes(vec![0, 1, 2]));
     PackHeader {
         format: PACK2_FORMAT.to_string(),
@@ -497,10 +497,11 @@ fn known_answer_pack_digests() {
     assert_eq!(from_canonical::<Pin>(&pin_bytes).unwrap(), sha256);
 }
 
-// Recorded 2026-11-13; the SHA-256 was cross-checked with Python's hashlib over the same bytes.
-const FIXTURE_LEN: usize = 638;
-const FIXTURE_BLAKE3: &str = "9e341ee5d1fae4b00d95c0fbcb08d396643c14b5570f45abca4390727ccf7e21";
-const FIXTURE_SHA256: &str = "3ddd4d058329a645be4ae9df9df9d81f05f5def6a96676d8d6492893b3c23e9e";
+// Re-recorded 2026-11-13 when the fixture's vocabulary body became typed (L2);
+// the SHA-256 was cross-checked with Python's hashlib over the same bytes.
+const FIXTURE_LEN: usize = 898;
+const FIXTURE_BLAKE3: &str = "b57c9f8e24f8407275f6f74222cf232ef6fd75db6c71913e9c0ea80bd149c378";
+const FIXTURE_SHA256: &str = "144887bf0b85915c2aa5378d1a21786446b446649042fe09f3a164f7c5e346e7";
 
 // ---- the CDDL is the schema the encoder writes --------------------------------
 

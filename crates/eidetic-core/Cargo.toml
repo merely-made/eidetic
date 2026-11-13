@@ -46,6 +46,9 @@ spdx = "0.13.6"
 # base64url binding; `kid` is a did:key read by insigne.
 coset = { version = "0.4.2", optional = true }
 base64 = { version = "0.23.1", optional = true }
+# The authored form's compiler (declared-lens D13): TOML 1.0, off the run-time
+# path; a consumer takes it at build time.
+toml = { version = "1", optional = true }
 
 [dependencies.identity]
 workspace = true
@@ -92,6 +95,9 @@ pack-signing = [
 ]
 json-schema = [
     "dep:jsonschema",
+]
+pack-authoring = [
+    "dep:toml",
 ]
 lineage = [
     "browsing",
@@ -146,6 +152,8 @@ cddl = { version = "0.10.7", default-features = false, features = ["std", "cbor"
 uuid = { version = "1", features = ["serde", "v4"] }
 tempfile = "3"
 chacha20poly1305 = "0.11"
+# Order-independence of the authored compiler (declared-lens §3.1).
+proptest = "1.11"
 
 [dev-dependencies.identity]
 workspace = true

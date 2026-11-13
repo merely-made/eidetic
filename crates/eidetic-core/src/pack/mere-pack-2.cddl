@@ -42,18 +42,47 @@ part = {
   "bytes": uint,
 }
 
-; One entry per declared kind (the decoder checks the keys equal `kind`). Each
-; kind's body is plain data until its own schema lands (declared-lens L2); the
-; data model admits no floats, tags or null.
+; One entry per declared kind (the decoder checks the keys equal `kind`).
+; `vocabulary` and `lens` are typed (declared-lens L2, D13); the other kinds
+; stay plain data until their schemas land: no floats, tags or null.
 body = {
-  ? "vocabulary" => body-value,
+  ? "vocabulary" => vocabulary-body,
   ? "rules" => body-value,
   ? "shapes" => body-value,
-  ? "lens" => body-value,
+  ? "lens" => lens-body,
   ? "participant" => body-value,
   ? "host-profile" => body-value,
 }
 body-value = bool / int64 / tstr / bstr / [* body-value] / { * tstr => body-value }
+
+; Prefixes are authored-form only: in this form every CURIE is expanded.
+vocabulary-body = {
+  "terms": [* term],                 ; a set, one row per IRI
+  "defaults": { * tstr => iri },     ; axis IRI to value; honoured in the core pack only
+}
+term = {
+  "iri": iri,
+  "kind": term-kind,
+  ? "family": iri,
+  ? "handler": iri,                  ; verified by activation (D21)
+  "axes": { * tstr => [+ iri] },     ; axis IRI to a chain of values, newest first (D32)
+  "labels": { * tstr => tstr },      ; BCP 47 language tag to text
+}
+term-kind = "predicate" / "class" / "family"
+; Map keys are written `tstr`, not `iri`: the `cddl` crate's validator refuses
+; a named rule in key position. The decoder checks the keys as IRIs.
+
+lens-body = {
+  "select": [* selection],           ; in order, one per pack id
+  "settle": [* settlement],          ; a set
+  "rules": [* iri],                  ; a set of rule-set IRIs (L4)
+  "shapes": [* iri],                 ; a set of shape-set IRIs (L4)
+  "entail": { "rdfs": bool, "owl2-rl": bool },
+  "present": [* presentation],       ; a set
+}
+selection = { "pack": iri, "version": semver }   ; a lower bound (D4, D13)
+settlement = { "term": iri, "pack": iri }
+presentation = { "term": iri, "class": iri, ? "opens": iri }
 int64 = -9223372036854775808..9223372036854775807
 
 ; {id, version, digest}: the pin, carried beside the document.

@@ -161,7 +161,8 @@ fn a_tampered_or_swapped_payload_is_broken() {
         ("version", |h| h.version = "1.2.4".into()),
         ("kind", |h| {
             h.kind.push(PackKind::Lens);
-            h.body.insert(PackKind::Lens, BodyValue::Bool(true));
+            h.body
+                .insert(PackKind::Lens, LensBody::default().to_value().unwrap());
         }),
         ("licence", |h| h.licence = "MIT".into()),
         ("credit", |h| h.credit.reverse()),

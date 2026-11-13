@@ -31,36 +31,24 @@ const AXES: [&str; 8] = [
     "derivation",
 ];
 
-fn term(i: usize) -> BodyValue {
+fn term(i: usize) -> Term {
     let ns = "https://mere.computer/ns/";
-    let axes = AXES
-        .iter()
-        .map(|a| {
-            (
-                format!("{ns}axis/{a}"),
-                BodyValue::Text(format!("{ns}value/{a}/{}", i % 5)),
-            )
-        })
-        .collect();
-    BodyValue::Map(BTreeMap::from([
-        (
-            "iri".to_string(),
-            BodyValue::Text(format!("{ns}term/t{i:04}")),
-        ),
-        ("kind".to_string(), BodyValue::Text("predicate".to_string())),
-        (
-            "family".to_string(),
-            BodyValue::Text(format!("{ns}family/f{}", i % 6)),
-        ),
-        ("axes".to_string(), BodyValue::Map(axes)),
-        (
-            "labels".to_string(),
-            BodyValue::Map(BTreeMap::from([(
-                "en".to_string(),
-                BodyValue::Text(format!("term {i}")),
-            )])),
-        ),
-    ]))
+    Term {
+        iri: format!("{ns}term/t{i:04}"),
+        kind: TermKind::Predicate,
+        family: Some(format!("{ns}family/f{}", i % 6)),
+        handler: None,
+        axes: AXES
+            .iter()
+            .map(|a| {
+                (
+                    format!("{ns}axis/{a}"),
+                    vec![format!("{ns}value/{a}/{}", i % 5)],
+                )
+            })
+            .collect(),
+        labels: BTreeMap::from([("en".to_string(), format!("term {i}"))]),
+    }
 }
 
 fn median(mut runs: Vec<Duration>) -> Duration {
@@ -85,13 +73,11 @@ fn time<T>(n: usize, mut f: impl FnMut() -> T) -> Duration {
 fn thousand_term_costs() {
     let mut header = fixture();
     header.kind = vec![PackKind::Vocabulary];
-    header.body = BTreeMap::from([(
-        PackKind::Vocabulary,
-        BodyValue::Map(BTreeMap::from([(
-            "terms".to_string(),
-            BodyValue::Array((0..1000).map(term).collect()),
-        )])),
-    )]);
+    let vocabulary = VocabularyBody {
+        terms: (0..1000).map(term).collect(),
+        defaults: BTreeMap::new(),
+    };
+    header.body = BTreeMap::from([(PackKind::Vocabulary, vocabulary.to_value().unwrap())]);
     let bytes = header.to_canonical().unwrap();
     let keypair = Ed25519Keypair::from_seed([3; 32]);
     let env = TrustEnvelope {
