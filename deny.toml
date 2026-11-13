@@ -48,6 +48,4 @@ skip = [
   { crate = "foldhash@0.1.5", reason = "hashbrown 0.15.5 requires it, held by petgraph 0.8.3; goes with it" },
   { crate = "hashbrown@0.14.5", reason = "dashmap 6.2.1 (latest release, vendored mere-fjall) requires it; goes with dashmap 7, now only a release candidate" },
   { crate = "syn@2.0.119", reason = "most proc-macros (pin-project-internal, async-stream-impl, enum_dispatch, curve25519-dalek-derive, ctor, munge_macro, bindgen) still require syn 2; goes as they move to syn 3" },
-  { crate = "thiserror@1.0.69", reason = "personae 0.3.1 (dramatis) requires it; goes when personae moves to thiserror 2" },
-  { crate = "thiserror-impl@1.0.69", reason = "thiserror 1.0.69 requires it, held by personae (dramatis); goes with thiserror 2" },
 ]
