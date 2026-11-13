@@ -22,12 +22,15 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 /// Per the event-DAG substrate brief §13, every digest field carries its hash
 /// function identifier alongside the digest, so a future hash migration
 /// (BLAKE4, post-quantum, ...) needs no flag day: new writes carry a new tag
-/// and old reads still parse. BLAKE3 is the only function today; adding one is
-/// the only change a migration requires here.
+/// and old reads still parse. BLAKE3 is the default; SHA-256 is accepted for
+/// pack digests (declared-lens D22). Adding a function is the only change a
+/// migration requires here.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum HashFn {
     /// BLAKE3-256. Multicodec `0x1e`, 32-byte digest.
     Blake3,
+    /// SHA2-256. Multicodec `0x12`, 32-byte digest.
+    Sha256,
 }
 
 impl HashFn {
@@ -35,6 +38,7 @@ impl HashFn {
     pub const fn multicodec(self) -> u64 {
         match self {
             HashFn::Blake3 => 0x1e,
+            HashFn::Sha256 => 0x12,
         }
     }
 
@@ -42,19 +46,21 @@ impl HashFn {
     pub const fn name(self) -> &'static str {
         match self {
             HashFn::Blake3 => "blake3",
+            HashFn::Sha256 => "sha2-256",
         }
     }
 
     /// Digest length in bytes.
     pub const fn digest_len(self) -> usize {
         match self {
-            HashFn::Blake3 => 32,
+            HashFn::Blake3 | HashFn::Sha256 => 32,
         }
     }
 
     fn from_name(name: &str) -> Option<Self> {
         match name {
             "blake3" => Some(HashFn::Blake3),
+            "sha2-256" => Some(HashFn::Sha256),
             _ => None,
         }
     }
@@ -62,6 +68,7 @@ impl HashFn {
     fn from_multicodec(code: u64) -> Option<Self> {
         match code {
             0x1e => Some(HashFn::Blake3),
+            0x12 => Some(HashFn::Sha256),
             _ => None,
         }
     }
@@ -111,6 +118,18 @@ impl Hash {
             func: HashFn::Blake3,
             digest: *blake3::hash(bytes).as_bytes(),
         }
+    }
+
+    /// Compute the digest of a byte slice under `func`.
+    pub fn digest(func: HashFn, bytes: &[u8]) -> Self {
+        let digest = match func {
+            HashFn::Blake3 => *blake3::hash(bytes).as_bytes(),
+            HashFn::Sha256 => {
+                use sha2::Digest as _;
+                sha2::Sha256::digest(bytes).into()
+            }
+        };
+        Self { func, digest }
     }
 
     /// Compute the BLAKE3 hash by streaming chunks through the incremental
@@ -552,7 +571,7 @@ mod tests {
         match prov.origin {
             ProvenanceOrigin::Imported { source } => {
                 assert_eq!(source, "hf:test-model");
-            },
+            }
             _ => panic!("expected Imported origin"),
         }
         assert!(prov.upstream.is_empty());

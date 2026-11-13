@@ -1,0 +1,66 @@
+; mere.pack/2, the shared pack header (Mere declared-lens plan §3.2; D5, D10).
+;
+; Schema language: RFC 8610 (CDDL). Encoding: RFC 8949 §4.2.1 core
+; deterministic encoding, with text keys only, no tags, no floats and no null.
+; Arrays marked "a set" are sorted by their elements' encoded bytes and hold no
+; duplicates. A decoder re-encodes what it read and refuses unequal bytes.
+;
+; The pack digest is a multihash over these canonical bytes. It rides beside
+; the document (a pin, a selection record, the envelope), never inside it.
+
+pack = {
+  "format": "mere.pack/2",
+  "id": iri,                         ; absolute IRI (R4)
+  "version": semver,
+  "kind": [+ pack-kind],             ; a set
+  "licence": spdx-expression,
+  "credit": [* tstr],                ; attribution lines, in the author's order
+  "requires": [* requirement],       ; a set (C3: packs and capabilities)
+  "provides": [* iri],               ; a set: namespaces whose terms this pack declares
+  "contributes": [* contribution],   ; a set (Surfaces 3)
+  "scopes": [* tstr],                ; a set: grants asked for, from the host's closed list (D16)
+  "parts": [* part],                 ; a set: referenced files (R6)
+  "body": body,
+}
+
+pack-kind = "vocabulary" / "rules" / "shapes" / "lens" / "participant" / "host-profile"
+
+; A pack requirement names a lower bound (D4); the digest a load resolved goes
+; into the selection record, not here.
+requirement = pack-requirement / capability-requirement
+pack-requirement = { "pack": iri, "version": semver }
+capability-requirement = { "capability": iri }
+
+contribution = { "kind": contribution-kind, "id": iri }
+contribution-kind = "presentation" / "pane-adapter" / "pane" / "servitor"
+
+part = {
+  "name": tstr,
+  "role": tstr,
+  "media": tstr,                     ; a media type (RFC 6838)
+  "digest": multihash,
+  "bytes": uint,
+}
+
+; One entry per declared kind (the decoder checks the keys equal `kind`). Each
+; kind's body is plain data until its own schema lands (declared-lens L2); the
+; data model admits no floats, tags or null.
+body = {
+  ? "vocabulary" => body-value,
+  ? "rules" => body-value,
+  ? "shapes" => body-value,
+  ? "lens" => body-value,
+  ? "participant" => body-value,
+  ? "host-profile" => body-value,
+}
+body-value = bool / int64 / tstr / bstr / [* body-value] / { * tstr => body-value }
+int64 = -9223372036854775808..9223372036854775807
+
+; {id, version, digest}: the pin, carried beside the document.
+pin = { "id": iri, "version": semver, "digest": multihash }
+
+iri = tstr                           ; RFC 3987 absolute IRI
+semver = tstr                        ; SemVer 2.0.0
+spdx-expression = tstr               ; SPDX license expression
+multihash = bstr                     ; uvarint(code) ++ uvarint(len) ++ digest;
+                                     ; 0x1e BLAKE3-256 (default), 0x12 SHA2-256

@@ -32,8 +32,14 @@
 //!
 //! Canonicalization (v1): the manifest's `serde_json` encoding — struct-order
 //! stable and sufficient for a self-contained payload signed and verified by
-//! this module. The canonical-CBOR upgrade (wallet_grant's discipline) is a
-//! compatible follow-on: the binding string is versioned by its prefix.
+//! this module.
+//!
+//! **`mere.pack/2`** (Mere's declared-lens plan, L1) lives beside v1: the
+//! shared [`PackHeader`] with its [`Pin`], [`Requirement`] and [`Part`], the
+//! canonical CBOR codec with strict decoding ([`to_canonical`],
+//! [`from_canonical`]), the multihash digest, and the detached COSE_Sign1
+//! envelope ([`sign_canonical`], [`verify_envelope`]) with its acceptance
+//! policy ([`TrustPolicy`]). v1 stays until its consumers move (the plan's L6).
 
 #[cfg(feature = "pack-signing")]
 use identity::{Ed25519Keypair, Ed25519PublicKey, Ed25519Signature};
@@ -43,6 +49,31 @@ use crate::schema::{ManifestId, SchemaRef};
 #[cfg(feature = "pack-signing")]
 use crate::schema::{SignatureRef, TrustEnvelope};
 use crate::typed::TypedPayload;
+
+mod canonical;
+#[cfg(feature = "pack-signing")]
+mod envelope;
+mod header;
+
+pub use canonical::{CanonicalError, from_canonical, to_canonical};
+#[cfg(feature = "pack-signing")]
+pub use envelope::{
+    Admission, Broken, COSE_SIGN1_PREFIX, NoReview, Origin, PACK_ALG, Refusal, SignerReview,
+    TrustPolicy, Verdict, sign_canonical, verify_envelope,
+};
+pub use header::{
+    BodyValue, Contribution, ContributionKind, HeaderError, Multihash, PACK2_CDDL, PACK2_FORMAT,
+    PackHeader, PackKind, Part, Pin, Requirement,
+};
+
+#[cfg(test)]
+mod v2_codec_tests;
+#[cfg(all(test, feature = "pack-signing"))]
+mod v2_cose_vectors;
+#[cfg(all(test, feature = "pack-signing"))]
+mod v2_costs;
+#[cfg(all(test, feature = "pack-signing"))]
+mod v2_envelope_tests;
 
 /// The pack schema id (`SchemaRef` derives from it by content hash).
 pub const PACK_SCHEMA: &str = "mere.pack/v1";

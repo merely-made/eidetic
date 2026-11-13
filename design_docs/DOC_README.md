@@ -56,4 +56,15 @@ from `eidetic.git` without a Mere edge. Package names, versions and the separate
 framing crate are kept. The ruling and cutover are Mere's:
 `mere/design_docs/mere_docs/implementation_strategy/2026-11-07_engine_split_plan.md`, D12.
 
+Pack header and envelope (2026-11-13): `eidetic::pack` carries `mere.pack/2` beside
+`mere.pack/v1`, landing L1 of
+`mere/design_docs/mere_docs/implementation_strategy/2026-11-12_declared_lens_plan.md`
+(its D3 to D6 and D10). The header's CDDL is `crates/eidetic-core/src/pack/mere-pack-2.cddl`;
+its canonical bytes are RFC 8949 §4.2.1 CBOR, decoded strictly by re-encoding; its digest is
+a BLAKE3 or SHA-256 multihash beside the document; its signatures are detached COSE_Sign1
+(Ed25519, `alg` -19, `kid` a `did:key`) carried as `cose-sign1:` bindings, with release-key
+and per-pack review acceptance. The vector suite is the cose-wg Examples at
+`Code/crates/cose-examples` (`53c9d634`). v1 stays until the plan's L6 moves its consumers;
+the plan, its decisions and its receipts are Mere's.
+
 - [Source splits, H6 and H8](eidetic_docs/implementation_strategy/2026-11-03_source_splits_plan.md): fifteen earlier and five additional originals landed; zero owned exceptions remain. Mere owns the aggregate; source notices, public paths, authority and existing acceptance boundaries stay intact.
