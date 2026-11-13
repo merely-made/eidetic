@@ -13,9 +13,12 @@ use super::{Quad, QuadIndex, QuadMeta, TermId, View};
 
 type Row = (Quad, QuadMeta);
 
-/// The rows `apply` should leave: asserts added, then each withdrawal turns
-/// its held row (if any) into the withdrawn one.
-fn model(rows: &mut HashSet<Row>, asserted: &[Row], withdrawn: &[Row]) {
+/// The rows `apply` should leave: removals dropped, asserts added, then each
+/// withdrawal turns its held row (if any) into the withdrawn one.
+fn model(rows: &mut HashSet<Row>, asserted: &[Row], withdrawn: &[Row], removed: &[Row]) {
+    for row in removed {
+        rows.remove(row);
+    }
     rows.extend(asserted.iter().copied());
     for (quad, meta) in withdrawn {
         rows.remove(&(*quad, QuadMeta { held: true, ..*meta }));
@@ -113,7 +116,7 @@ fn random_edit_sequences_match_a_rebuild() {
         rows.extend(initial.iter().copied());
         let mut index = if seed % 3 == 0 {
             let mut index = QuadIndex::default();
-            index.apply(initial, []);
+            index.apply(initial, [], []);
             index
         } else {
             QuadIndex::build(initial)
@@ -122,15 +125,19 @@ fn random_edit_sequences_match_a_rebuild() {
         for batch in 0..25 {
             let asserted: Vec<Row> = (0..rng.next(5)).map(|_| small_row(&mut rng)).collect();
             let mut withdrawn: Vec<Row> = (0..rng.next(4)).map(|_| small_row(&mut rng)).collect();
-            // Most withdrawals name a row that is there.
+            let mut removed: Vec<Row> = (0..rng.next(3)).map(|_| small_row(&mut rng)).collect();
+            // Most withdrawals and removals name a row that is there.
             let present: Vec<Row> = rows.iter().copied().collect();
             if !present.is_empty() {
                 for _ in 0..rng.next(4) {
                     withdrawn.push(present[rng.next(present.len() as u32) as usize]);
                 }
+                for _ in 0..rng.next(4) {
+                    removed.push(present[rng.next(present.len() as u32) as usize]);
+                }
             }
-            model(&mut rows, &asserted, &withdrawn);
-            index.apply(asserted, withdrawn);
+            model(&mut rows, &asserted, &withdrawn, &removed);
+            index.apply(asserted, withdrawn, removed);
             assert_same(&index, &rows, &probes, &format!("seed {seed} batch {batch}"));
         }
     }
@@ -147,11 +154,11 @@ fn a_large_index_edited_in_place_matches_a_rebuild() {
     let mut rng = Rng(0xD1B5_4A32_D192_ED03);
     for chunk in more[3_000..].chunks(8) {
         let present: Vec<Row> = rows.iter().copied().collect();
-        let withdrawn: Vec<Row> = (0..2)
-            .map(|_| present[rng.next(present.len() as u32) as usize])
-            .collect();
-        model(&mut rows, chunk, &withdrawn);
-        index.apply(chunk.iter().copied(), withdrawn);
+        let mut pick = || present[rng.next(present.len() as u32) as usize];
+        let withdrawn: Vec<Row> = (0..2).map(|_| pick()).collect();
+        let removed: Vec<Row> = (0..3).map(|_| pick()).collect();
+        model(&mut rows, chunk, &withdrawn, &removed);
+        index.apply(chunk.iter().copied(), withdrawn, removed);
     }
     let mut probes: Vec<Quad> = more.iter().step_by(97).map(|(quad, _)| *quad).collect();
     probes.push(Quad {
@@ -172,7 +179,7 @@ fn withdrawing_onto_an_existing_withdrawn_row_drops_the_duplicate() {
     };
     let mut index = QuadIndex::build([(quad, QuadMeta::HELD), (quad, gone)]);
     assert_eq!(index.len(), 2);
-    index.apply([], [(quad, QuadMeta::HELD)]);
+    index.apply([], [(quad, QuadMeta::HELD)], []);
     assert_eq!(index.len(), 1);
     assert_eq!(index.pattern(None, None, None, None, View::Live).count(), 0);
     let seen: Vec<_> = index.pattern(None, None, None, None, View::History).collect();
@@ -181,9 +188,40 @@ fn withdrawing_onto_an_existing_withdrawn_row_drops_the_duplicate() {
     // A withdrawn-only named graph leaves the live listing and stays in history.
     let graph = id(NAMED[0]);
     let named = Quad { graph, ..quad };
-    index.apply([(named, QuadMeta::HELD)], []);
+    index.apply([(named, QuadMeta::HELD)], [], []);
     assert!(index.contains_graph(graph, View::Live));
-    index.apply([], [(named, QuadMeta::HELD)]);
+    index.apply([], [(named, QuadMeta::HELD)], []);
     assert!(!index.contains_graph(graph, View::Live));
     assert!(index.contains_graph(graph, View::History));
+}
+
+#[test]
+fn removing_rows_tombstones_them_until_a_rebuild() {
+    let graph = id(NAMED[1]);
+    let a = Quad {
+        graph,
+        ..Quad::in_default_graph(id(1), id(2), id(3))
+    };
+    let b = Quad { object: id(4), ..a };
+    let mut index = QuadIndex::build([(a, QuadMeta::HELD), (b, QuadMeta::HELD)]);
+    // An absent row, or one differing only in `held`, removes nothing.
+    let gone = QuadMeta {
+        held: false,
+        ..QuadMeta::HELD
+    };
+    index.apply([], [], [(a, gone), (Quad { object: id(9), ..a }, QuadMeta::HELD)]);
+    assert_eq!((index.len(), index.tombstones()), (2, 0));
+
+    index.apply([], [], [(a, QuadMeta::HELD)]);
+    assert_eq!((index.len(), index.tombstones()), (1, 1));
+    assert!(index.contains_graph(graph, View::Live));
+    index.apply([], [], [(b, QuadMeta::HELD)]);
+    assert!(index.is_empty());
+    assert!(!index.contains_graph(graph, View::History));
+    assert_eq!(index.pattern(None, None, None, None, View::History).count(), 0);
+
+    // Removed then asserted again in one batch: present.
+    index.apply([(a, QuadMeta::HELD)], [], [(a, QuadMeta::HELD)]);
+    assert_eq!((index.len(), index.tombstones()), (1, 2));
+    assert_eq!(index.pattern(Some(id(1)), None, None, None, View::Live).count(), 1);
 }

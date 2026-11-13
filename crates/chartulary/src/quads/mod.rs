@@ -25,8 +25,8 @@
 //!   built and lives as long as it. Nothing of it is persisted; durable
 //!   identity stays with whatever the consumer's terms name.
 //! - **Append-only maintenance.** Between rebuilds a dictionary only grows,
-//!   and [`QuadIndex::apply`] appends asserted rows and flips withdrawn ones
-//!   in place; [`QuadIndex::build`] stays the fallback and the oracle.
+//!   and [`QuadIndex::apply`] appends asserted rows, flips withdrawn ones
+//!   and tombstones removed ones in place; [`QuadIndex::build`] stays the fallback and the oracle.
 //! - **One index, two views.** Held and withdrawn rows sit in one index;
 //!   [`View::Live`] reads only the held rows and [`View::History`] reads them
 //!   all.

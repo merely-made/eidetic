@@ -114,7 +114,7 @@ fn main() {
         statement(nodes, ids, edit * 7919 % nodes, edit * 104_729 % nodes)
     };
     let t = Instant::now();
-    index.apply(next_edit(&mut ids), []);
+    index.apply(next_edit(&mut ids), [], []);
     println!("first apply after build (materializes SPOG, grows every Vec): {:.2} ms", t.elapsed().as_secs_f64() * 1e3);
 
     let mut asserts = Vec::new();
@@ -122,7 +122,7 @@ fn main() {
     for _ in 0..101 {
         let rows = next_edit(&mut ids);
         let t = Instant::now();
-        index.apply(rows.iter().copied(), []);
+        index.apply(rows.iter().copied(), [], []);
         asserts.push(t.elapsed());
         applied.push(rows);
     }
@@ -131,25 +131,26 @@ fn main() {
     let mut withdraws = Vec::new();
     for rows in &applied {
         let t = Instant::now();
-        index.apply([], rows.iter().copied());
+        index.apply([], rows.iter().copied(), []);
         withdraws.push(t.elapsed());
     }
     println!("withdraw one statement (8 rows flipped): median {:.4} ms", median(withdraws));
 
-    // Mere's withdrawal shape: the held rows go and history rows arrive.
+    // Mere's withdrawal shape: the held rows are removed and history rows arrive.
     let mut mixed = Vec::new();
     for _ in 0..101 {
         let held = next_edit(&mut ids);
-        index.apply(held.iter().copied(), []);
+        index.apply(held.iter().copied(), [], []);
         let history: Vec<_> = next_edit(&mut ids)
             .into_iter()
             .map(|(quad, meta)| (quad, QuadMeta { held: false, ..meta }))
             .collect();
         let t = Instant::now();
-        index.apply(history, held);
+        index.apply(history, [], held);
         mixed.push(t.elapsed());
     }
-    println!("8 withdrawn rows added plus 8 flipped: median {:.3} ms", median(mixed));
+    println!("8 held rows removed plus 8 withdrawn rows added: median {:.3} ms", median(mixed));
+    println!("tombstones {}", index.tombstones());
 
     let (point, scan) = reads(&index, nodes);
     println!("reads after apply: point {point:.4} ms, bound predicate {scan:.3} ms; {} bytes", index.memory_bytes());

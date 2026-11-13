@@ -100,7 +100,7 @@ pub struct QuadIndex {
     base_sorted: bool,
     /// Each named graph with its held and total live row counts, by id.
     graphs: Vec<GraphRows>,
-    /// Rows dropped as exact duplicates by a withdrawal, as a bitset.
+    /// Rows removed, or dropped as duplicates by a withdrawal, as a bitset.
     dead: Vec<u64>,
     dead_count: usize,
 }
@@ -158,9 +158,12 @@ impl QuadIndex {
         }
     }
 
-    /// Apply one batch of changes in place: every asserted row, then every
-    /// withdrawal.
+    /// Apply one batch of changes in place: every removal, then every asserted
+    /// row, then every withdrawal.
     ///
+    /// A removed row (matched exactly, `held` included) is dropped: a
+    /// tombstone every read skips, until a rebuild compacts it (see
+    /// [`tombstones`](QuadIndex::tombstones)); an absent one is ignored.
     /// An asserted row already present is ignored; a new one is appended and
     /// entered in each ordering at its sorted place. A withdrawal names a row
     /// by quad, asserter and statement (its `held` is ignored): the held row
@@ -175,11 +178,18 @@ impl QuadIndex {
         &mut self,
         asserted: impl IntoIterator<Item = (Quad, QuadMeta)>,
         withdrawn: impl IntoIterator<Item = (Quad, QuadMeta)>,
+        removed: impl IntoIterator<Item = (Quad, QuadMeta)>,
     ) {
         if self.base_sorted {
             let count = u32::try_from(self.rows.len()).expect("at most u32::MAX quad rows");
             self.ordinals[Order::Spog.slot()] = (0..count).collect();
             self.base_sorted = false;
+        }
+        for (quad, meta) in removed {
+            if let Some(at) = self.find(&quad, &meta) {
+                self.kill(at);
+                self.count_graph(quad.graph, -i32::from(meta.held), -1);
+            }
         }
         self.insert(asserted.into_iter().collect());
 
@@ -295,6 +305,13 @@ impl QuadIndex {
     #[must_use]
     pub fn len(&self) -> usize {
         self.rows.len() - self.dead_count
+    }
+
+    /// Rows dropped in place and still occupying space; a caller rebuilds
+    /// with [`QuadIndex::build`] when it judges them too many.
+    #[must_use]
+    pub fn tombstones(&self) -> usize {
+        self.dead_count
     }
 
     /// Whether the index holds no rows.
