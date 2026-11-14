@@ -36,6 +36,8 @@
 
 pub mod causal;
 mod digest;
+#[cfg(test)]
+mod digest_vectors;
 pub mod entries;
 pub mod fork;
 pub mod log;
