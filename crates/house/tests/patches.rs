@@ -155,6 +155,20 @@ fn write_check_and_every_drift() {
     let from_wt = house(&t, &wt, &["patches", "--check"]);
     assert!(from_wt.status.success(), "{}", stderr(&from_wt));
 
+    // Inside a git hook, where git exports the consumer's own repository.
+    let git_dir = String::from_utf8(git(&consumer, &["rev-parse", "--absolute-git-dir"]).stdout).unwrap();
+    let git_dir = PathBuf::from(git_dir.trim());
+    let hooked = Command::new(env!("CARGO_BIN_EXE_house"))
+        .args(["patches", "--check"])
+        .current_dir(&consumer)
+        .env("CARGO_HOME", t.0.join("cargo-home"))
+        .env_remove("CARGO_TARGET_DIR")
+        .env("GIT_INDEX_FILE", git_dir.join("index"))
+        .env("GIT_DIR", &git_dir)
+        .output()
+        .unwrap();
+    assert!(hooked.status.success(), "{}", stderr(&hooked));
+
     // A row edited by hand.
     t.write("family/consumer/Cargo.toml", &root.replace("branch = \"work\"", "branch = \"wurk\""));
     let bad = house(&t, &consumer, &check);

@@ -12,7 +12,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use super::scan::{self, ORG};
 use crate::json;
-use crate::resolved::{REF, git_out};
+use crate::resolved::{REF, elsewhere, git_out};
 use crate::text::py_path;
 
 const CLONE_WORKERS: usize = 6;
@@ -120,7 +120,8 @@ pub fn remote(workdir: &Path, only: &BTreeSet<String>) -> Result<BTreeMap<String
 fn clone(workdir: &Path, name: &str) -> std::io::Result<Output> {
     let target = workdir.join(name);
     let url = format!("https://github.com/{ORG}/{name}.git");
-    let out = Command::new("git")
+    let mut cmd = Command::new("git");
+    let out = elsewhere(&mut cmd)
         .args(["clone", "-q", "--depth", "1", &url])
         .arg(&target)
         .env("GIT_TERMINAL_PROMPT", "0")
@@ -129,7 +130,8 @@ fn clone(workdir: &Path, name: &str) -> std::io::Result<Output> {
     if out.status.success() {
         // A clone carries no notes; a remote without any is not an error.
         let notes = format!("refs/notes/{REF}:refs/notes/{REF}");
-        let _ = Command::new("git")
+        let mut cmd = Command::new("git");
+        let _ = elsewhere(&mut cmd)
             .args(["fetch", "-q", "--depth", "1", "origin", &notes])
             .current_dir(&target)
             .env("GIT_TERMINAL_PROMPT", "0")

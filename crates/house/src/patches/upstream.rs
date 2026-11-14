@@ -8,7 +8,7 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 
 use crate::cycles::tree::{self, Toml};
-use crate::resolved::git_out;
+use crate::resolved::{elsewhere, git_out};
 use crate::text::py_path;
 
 /// One patch row: the crate and its string fields, in the upstream's order.
@@ -171,7 +171,8 @@ pub fn manifest_at(checkout: &Path, rev: &str) -> Result<String, String> {
 /// # Errors
 /// The clone failing.
 pub fn remote(url: &str, branch: &str, dir: &Path) -> Result<String, String> {
-    let out = Command::new("git")
+    let mut cmd = Command::new("git");
+    let out = elsewhere(&mut cmd)
         .args(["clone", "-q", "--depth", "1", "--no-checkout", "--branch", branch, url])
         .arg(dir)
         .env("GIT_TERMINAL_PROMPT", "0")

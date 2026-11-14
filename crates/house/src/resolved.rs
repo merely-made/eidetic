@@ -55,12 +55,24 @@ fn git() -> Command {
     Command::new("git")
 }
 
+/// Git's repository variables. A hook runs with them naming its own
+/// repository, and a git call in another directory would follow them back.
+const REPO_ENV: [&str; 5] = ["GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_COMMON_DIR", "GIT_OBJECT_DIRECTORY"];
+
+/// Clears git's repository variables, for a call aimed at another directory.
+pub(crate) fn elsewhere(cmd: &mut Command) -> &mut Command {
+    for var in REPO_ENV {
+        cmd.env_remove(var);
+    }
+    cmd
+}
+
 /// Runs git quietly; its stdout when it succeeded.
 pub(crate) fn git_out(args: &[&str], dir: Option<&Path>) -> Option<Vec<u8>> {
     let mut cmd = git();
     cmd.args(args).stdin(Stdio::null()).stderr(Stdio::null());
     if let Some(dir) = dir {
-        cmd.current_dir(dir);
+        elsewhere(&mut cmd).current_dir(dir);
     }
     let out = cmd.output().ok()?;
     out.status.success().then_some(out.stdout)
