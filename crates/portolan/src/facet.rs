@@ -26,6 +26,7 @@ use std::collections::BTreeMap;
 use std::fmt;
 use std::sync::Arc;
 
+use rpds::RedBlackTreeMapSync;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -172,27 +173,31 @@ impl NodeFacets {
 /// `Identified::Id` (a `String` for [`Container`](crate::Container)). Use a
 /// string-serializable id with a JSON codec (the id is a map key).
 ///
-/// Each node's facets sit behind their own `Arc`, so a clone copies pointers
-/// and a write copies only the node it touches. Two stores cloned from one
-/// another then differ only at [`unshared_nodes`](Self::unshared_nodes). The
-/// sharing is invisible to serde, `Debug` and equality.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+/// The nodes sit in a persistent ordered map (rpds), each node's facets behind
+/// their own `Arc`: a clone is O(1), and a write copies the map's path to the
+/// node and the node it touches. Two stores cloned from one another then
+/// differ only at [`unshared_nodes`](Self::unshared_nodes). The sharing is
+/// invisible to serde, `Debug` and equality, which see the ordered map.
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 #[serde(bound(
-    serialize = "Id: Serialize",
+    serialize = "Id: Ord + Serialize",
     deserialize = "Id: Ord + Deserialize<'de>"
 ))]
 pub struct FacetStore<Id: Ord> {
     #[serde(with = "shared_entries")]
-    nodes: BTreeMap<Id, Arc<NodeFacets>>,
+    nodes: Nodes<Id>,
 }
 
-/// Serde for the shared entries, as the plain map they hold.
-mod shared_entries {
-    use super::{Arc, BTreeMap, NodeFacets};
-    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+type Nodes<Id> = RedBlackTreeMapSync<Id, Arc<NodeFacets>>;
 
-    pub(super) fn serialize<Id: Serialize, S: Serializer>(
-        nodes: &BTreeMap<Id, Arc<NodeFacets>>,
+/// Serde for the shared entries, as the plain ordered map they hold.
+mod shared_entries {
+    use super::{BTreeMap, NodeFacets, Nodes};
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+    use std::sync::Arc;
+
+    pub(super) fn serialize<Id: Ord + Serialize, S: Serializer>(
+        nodes: &Nodes<Id>,
         serializer: S,
     ) -> Result<S::Ok, S::Error> {
         serializer.collect_map(nodes.iter().map(|(id, facets)| (id, &**facets)))
@@ -200,17 +205,32 @@ mod shared_entries {
 
     pub(super) fn deserialize<'de, Id: Ord + Deserialize<'de>, D: Deserializer<'de>>(
         deserializer: D,
-    ) -> Result<BTreeMap<Id, Arc<NodeFacets>>, D::Error> {
+    ) -> Result<Nodes<Id>, D::Error> {
         let nodes = BTreeMap::<Id, NodeFacets>::deserialize(deserializer)?;
         Ok(nodes.into_iter().map(|(id, f)| (id, Arc::new(f))).collect())
     }
 }
 
-// Manual, so `Id` need not be `Default` (a `BTreeMap` is empty by default).
+/// `Debug` as the ordered map it holds (rpds maps have no `Debug`).
+impl<Id: Ord + fmt::Debug> fmt::Debug for FacetStore<Id> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        struct Map<'a, Id: Ord>(&'a Nodes<Id>);
+        impl<Id: Ord + fmt::Debug> fmt::Debug for Map<'_, Id> {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.debug_map().entries(self.0.iter()).finish()
+            }
+        }
+        f.debug_struct("FacetStore")
+            .field("nodes", &Map(&self.nodes))
+            .finish()
+    }
+}
+
+// Manual, so `Id` need not be `Default`.
 impl<Id: Ord> Default for FacetStore<Id> {
     fn default() -> Self {
         Self {
-            nodes: BTreeMap::new(),
+            nodes: Nodes::default(),
         }
     }
 }
@@ -218,9 +238,7 @@ impl<Id: Ord> Default for FacetStore<Id> {
 impl<Id: Ord + Clone> FacetStore<Id> {
     /// An empty store.
     pub fn new() -> Self {
-        Self {
-            nodes: BTreeMap::new(),
-        }
+        Self::default()
     }
 
     /// Set (or replace) a facet on a node, validating it first. On rejection
@@ -233,10 +251,21 @@ impl<Id: Ord + Clone> FacetStore<Id> {
         validator: &impl FacetValidator,
     ) -> Result<(), FacetError> {
         validator.validate(&facet_id, &value)?;
-        Arc::make_mut(self.nodes.entry(node).or_default())
-            .facets
-            .insert(facet_id, value);
+        if self.nodes.contains_key(&node) {
+            self.node_mut(&node).facets.insert(facet_id, value);
+        } else {
+            let facets = NodeFacets {
+                facets: BTreeMap::from([(facet_id, value)]),
+            };
+            self.nodes.insert_mut(node, Arc::new(facets));
+        }
         Ok(())
+    }
+
+    /// A held node's facets for writing: copies the node if it is shared.
+    fn node_mut(&mut self, node: &Id) -> &mut NodeFacets {
+        let facets = self.nodes.get_mut(node).expect("a held node");
+        Arc::make_mut(facets)
     }
 
     /// The value of one facet on one node, if present.
@@ -252,21 +281,23 @@ impl<Id: Ord + Clone> FacetStore<Id> {
     /// Remove one facet from a node, returning its value if it was present. An
     /// emptied node is dropped so the store lists only nodes with facets.
     pub fn remove(&mut self, node: &Id, facet_id: &FacetId) -> Option<Value> {
-        let facets = self.nodes.get_mut(node)?;
-        // An absent facet leaves the node's allocation shared.
-        if !facets.has(facet_id) {
+        // An absent facet leaves the store shared.
+        if !self.nodes.get(node)?.has(facet_id) {
             return None;
         }
-        let removed = Arc::make_mut(facets).facets.remove(facet_id);
+        let facets = self.node_mut(node);
+        let removed = facets.facets.remove(facet_id);
         if facets.is_empty() {
-            self.nodes.remove(node);
+            self.nodes.remove_mut(node);
         }
         removed
     }
 
     /// Drop every facet of a node (node removed from the graph).
     pub fn remove_node(&mut self, node: &Id) -> Option<NodeFacets> {
-        self.nodes.remove(node).map(Arc::unwrap_or_clone)
+        let removed = self.nodes.get(node).cloned()?;
+        self.nodes.remove_mut(node);
+        Some(Arc::unwrap_or_clone(removed))
     }
 
     /// Whether no node carries any facet.
@@ -283,9 +314,13 @@ impl<Id: Ord + Clone> FacetStore<Id> {
     /// order: held by one only, or by both in separate allocations. In two
     /// stores cloned from one another these are the nodes either has written
     /// since; every other node is one allocation, so equal by construction.
-    /// The listed ones may still be equal, and are for the caller to compare.
+    /// Listed ones may still be equal, for the caller to compare; stores
+    /// neither has written since a clone answer at once.
     pub fn unshared_nodes<'a>(&'a self, other: &'a Self) -> Vec<&'a Id> {
         use std::cmp::Ordering::{Equal, Greater, Less};
+        if self.nodes.ptr_eq(&other.nodes) {
+            return Vec::new();
+        }
         let (mut a, mut b) = (self.nodes.iter().peekable(), other.nodes.iter().peekable());
         let mut unshared = Vec::new();
         loop {
@@ -316,10 +351,13 @@ impl<Id: Ord + Clone> FacetStore<Id> {
     /// inline columns into facets, then overlay the already-canonical sidecar.
     /// The sidecar wins where both contain the same facet.
     pub fn overlay(&mut self, other: Self) {
-        for (node, facets) in other.nodes {
-            Arc::make_mut(self.nodes.entry(node).or_default())
-                .facets
-                .extend(Arc::unwrap_or_clone(facets).facets);
+        for (node, facets) in other.nodes.iter() {
+            if !self.nodes.contains_key(node) {
+                self.nodes.insert_mut(node.clone(), Arc::clone(facets));
+                continue;
+            }
+            let incoming = facets.facets.clone();
+            self.node_mut(node).facets.extend(incoming);
         }
     }
 }
