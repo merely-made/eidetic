@@ -11,7 +11,7 @@ use std::collections::BTreeMap;
 
 use serde::Serialize;
 
-use super::Journal;
+use super::{DigestChain, Journal};
 
 #[derive(Serialize)]
 struct Edit {
@@ -51,5 +51,24 @@ fn v1_prefix_digests_match_their_vectors() {
     for (len, want) in V1.iter().enumerate() {
         let got = log.prefix_digest(len).unwrap().unwrap().to_hex();
         assert_eq!(got, *want, "v1 at {len}");
+    }
+}
+
+/// v2 (`chain_digest`, `DigestChain`) at lengths 0 to 3.
+const V2: [&str; 4] = [
+    "d07475b941dddc278b6ac72a34c7156ca231d4c923ece239da1c8b0926c22f84",
+    "87d2bfa71cac6befbd4479ac3926711b49c8425a4961bf4f1abadd7e801c251f",
+    "c419b7a3c4ad38053e4081fbe71ea48e0ba1a26642bee2e04a7036ed1df6a46b",
+    "42acb2e3c40e50c9e3d1a9d2a2f385cce05433f215c777492704aa8ca4dd45d9",
+];
+
+#[test]
+fn v2_chain_digests_match_their_vectors() {
+    let log = journal();
+    let chain = DigestChain::of(&log).unwrap();
+    for (len, want) in V2.iter().enumerate() {
+        let got = log.chain_digest(len).unwrap().unwrap().to_hex();
+        assert_eq!(got, *want, "v2 at {len}");
+        assert_eq!(chain.at(len).unwrap().to_hex(), *want, "v2 chain at {len}");
     }
 }

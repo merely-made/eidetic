@@ -35,6 +35,7 @@
 //! linear one.
 
 pub mod causal;
+mod chain;
 mod digest;
 #[cfg(test)]
 mod digest_vectors;
@@ -45,6 +46,7 @@ pub mod persist;
 pub mod seq;
 
 pub use causal::CausalError;
+pub use chain::DigestChain;
 pub use entries::entry_key;
 pub use fork::{LogId, Provenance};
 pub use log::Journal;

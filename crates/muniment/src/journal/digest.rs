@@ -37,6 +37,9 @@ const DOMAIN: &str = "muniment journal prefix digest v1";
 impl<T: Serialize> Journal<T> {
     /// A digest of the first `len` entries, or `None` if the log holds fewer.
     ///
+    /// This is v1, kept to check digests stored before v2: new digests are
+    /// [`chain_digest`](Journal::chain_digest) and [`DigestChain`](super::DigestChain).
+    ///
     /// It covers each entry whole (an entry that records its author or
     /// provenance binds them) and the count, and nothing else: not the log's
     /// [`id`](Journal::id), its [`provenance`](Journal::provenance) or the causes
@@ -67,6 +70,18 @@ impl<T: Serialize> Journal<T> {
         }
         Ok(Some(Hash::from_bytes(*hasher.finalize().as_bytes())))
     }
+}
+
+/// Replaces `out` with `entry`'s canonical encoding, the bytes both digest
+/// versions frame and hash.
+pub(super) fn canonical_into<T: ?Sized + Serialize>(
+    entry: &T,
+    out: &mut Vec<u8>,
+) -> Result<(), StoreError> {
+    out.clear();
+    entry
+        .serialize(Canonical { out })
+        .map_err(|error| StoreError::Codec(error.0))
 }
 
 mod tag {
