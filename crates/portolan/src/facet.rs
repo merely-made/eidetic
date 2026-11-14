@@ -294,6 +294,10 @@ where
 }
 
 #[cfg(test)]
+#[path = "facet_vectors.rs"]
+mod vectors;
+
+#[cfg(test)]
 mod tests {
     use super::*;
     use muniment::{JsonSlots, MemoryBackend};
