@@ -173,11 +173,10 @@ impl NodeFacets {
 /// `Identified::Id` (a `String` for [`Container`](crate::Container)). Use a
 /// string-serializable id with a JSON codec (the id is a map key).
 ///
-/// The nodes sit in a persistent ordered map (rpds), each node's facets behind
-/// their own `Arc`: a clone is O(1), and a write copies the map's path to the
-/// node and the node it touches. Two stores cloned from one another then
-/// differ only at [`unshared_nodes`](Self::unshared_nodes). The sharing is
-/// invisible to serde, `Debug` and equality, which see the ordered map.
+/// Nodes sit in a persistent ordered map (rpds), each node's facets behind an
+/// `Arc`: a clone is O(1), a write copies only its path, so clones differ only
+/// at [`unshared_nodes`](Self::unshared_nodes). Serde, `Debug` and `==` see the
+/// ordered map.
 #[derive(Clone, PartialEq, Serialize, Deserialize)]
 #[serde(bound(
     serialize = "Id: Ord + Serialize",
@@ -251,13 +250,14 @@ impl<Id: Ord + Clone> FacetStore<Id> {
         validator: &impl FacetValidator,
     ) -> Result<(), FacetError> {
         validator.validate(&facet_id, &value)?;
-        if self.nodes.contains_key(&node) {
-            self.node_mut(&node).facets.insert(facet_id, value);
-        } else {
-            let facets = NodeFacets {
-                facets: BTreeMap::from([(facet_id, value)]),
-            };
-            self.nodes.insert_mut(node, Arc::new(facets));
+        match self.nodes.get_mut(&node) {
+            Some(facets) => drop(Arc::make_mut(facets).facets.insert(facet_id, value)),
+            None => {
+                let facets = NodeFacets {
+                    facets: BTreeMap::from([(facet_id, value)]),
+                };
+                self.nodes.insert_mut(node, Arc::new(facets));
+            },
         }
         Ok(())
     }
