@@ -20,7 +20,7 @@ fn three() -> FacetStore<String> {
     store
 }
 
-fn ids<'a>(list: Vec<&'a String>) -> Vec<&'a str> {
+fn ids(list: Vec<&String>) -> Vec<&str> {
     list.into_iter().map(String::as_str).collect()
 }
 
