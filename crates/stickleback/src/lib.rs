@@ -16,7 +16,7 @@
 //! access or visible membership: it supplies the erasure mechanics and calls
 //! the domain's gate.
 //!
-#![doc(html_root_url = "https://docs.rs/stickleback/0.2.0")]
+#![doc(html_root_url = "https://docs.rs/stickleback/0.4.0")]
 
 mod authority;
 mod causal;

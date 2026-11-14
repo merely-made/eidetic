@@ -59,7 +59,12 @@ it's all in git history. If needed, it'll be there." and "I wonder about
 Forward-secure conversations are deferred to a future choice among maintained
 schemes; this crate no longer promises them. The control-action tags `Ack` and
 `AddAck` stay reserved and are never reused: a frame carrying one decodes to
-`GroupSessionError::RetiredControlAction`.
+`GroupSessionError::RetiredControlAction`. In the same 0.4.0 release (Mark,
+2026-11-14: "Remove in 0.4.0") the label `GroupEncryptionMode::Message` and
+`GroupEncryptionProfile::forward_secure_messages()` went too; the mode returns
+with whatever forward-secure scheme is chosen later. `Data` is the one mode
+left, and an encoded `Message` decodes to a retired-mode error, never to
+another mode.
 
 ## What a domain supplies
 

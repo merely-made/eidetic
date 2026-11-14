@@ -19,12 +19,36 @@ use p2panda_encryption::data_scheme::{
 use serde::{Deserialize, Serialize};
 
 /// Encryption semantics chosen by a shared-space profile.
+///
+/// The mode `Message` left with the message scheme on 2026-11-14 and returns
+/// only with whatever forward-secure scheme is chosen later. Its name stays
+/// reserved: an encoded `Message` fails to decode as a retired mode, never as
+/// another one.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(try_from = "WireEncryptionMode")]
 pub enum GroupEncryptionMode {
     /// Retained epochs support durable shared documents and historical reads.
     Data,
-    /// Per-message ratchets provide stronger forward secrecy for chat.
+}
+
+/// Decode-side modes: the live one plus the reserved, retired name.
+#[derive(Deserialize)]
+enum WireEncryptionMode {
+    Data,
     Message,
+}
+
+impl TryFrom<WireEncryptionMode> for GroupEncryptionMode {
+    type Error = &'static str;
+
+    fn try_from(value: WireEncryptionMode) -> Result<Self, Self::Error> {
+        match value {
+            WireEncryptionMode::Data => Ok(Self::Data),
+            WireEncryptionMode::Message => {
+                Err("retired group encryption mode Message: removed with the message scheme")
+            }
+        }
+    }
 }
 
 /// Epochs a bounded durable profile keeps readable by default.
@@ -52,13 +76,6 @@ impl GroupEncryptionProfile {
     /// forgotten by [`DataKeyring::forget_outside_window`].
     pub const fn bounded_durable() -> Self {
         Self::durable_data(DEFAULT_RETAINED_DATA_EPOCHS)
-    }
-
-    pub const fn forward_secure_messages() -> Self {
-        Self {
-            mode: GroupEncryptionMode::Message,
-            retained_data_epochs: 0,
-        }
     }
 }
 
@@ -400,9 +417,19 @@ mod tests {
                 retained_data_epochs: 3,
             }
         );
+    }
+
+    #[test]
+    fn the_retired_message_mode_decodes_to_an_error_not_another_mode() {
+        let data = encode_cbor(&GroupEncryptionMode::Data).unwrap();
         assert_eq!(
-            GroupEncryptionProfile::forward_secure_messages().mode,
-            GroupEncryptionMode::Message
+            decode_cbor::<GroupEncryptionMode, _>(data.as_slice()).unwrap(),
+            GroupEncryptionMode::Data
         );
+        let retired = encode_cbor(&"Message").unwrap();
+        let error = decode_cbor::<GroupEncryptionMode, _>(retired.as_slice())
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("retired group encryption mode Message"), "{error}");
     }
 }

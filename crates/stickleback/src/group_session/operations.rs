@@ -292,7 +292,6 @@ impl GroupSession {
 
     /// Apply a durable profile's retention window: forget epochs older than
     /// its newest `retained_data_epochs`, the current epoch always kept.
-    /// A forward-secure profile has no epochs to forget.
     pub fn enforce_retention(
         &mut self,
         profile: GroupEncryptionProfile,

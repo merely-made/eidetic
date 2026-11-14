@@ -497,14 +497,6 @@ fn a_retention_window_forgets_old_epochs_and_keeps_recent_ones_readable() {
     let (mut alice, _, sealed) = rotated_founder();
     let profile = GroupEncryptionProfile::durable_data(2);
 
-    // A forward-secure profile has no epochs to forget.
-    assert!(
-        alice
-            .enforce_retention(GroupEncryptionProfile::forward_secure_messages())
-            .unwrap()
-            .is_empty()
-    );
-
     let forgotten = alice.enforce_retention(profile).unwrap();
     assert_eq!(forgotten, vec![sealed[0].0]);
     assert!(matches!(
