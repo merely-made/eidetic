@@ -46,6 +46,21 @@ Root also re-exports `p2panda_core::Operation` and
 `p2panda_encryption::data_scheme::GroupSecretId`. `VERSION` and `STAGE` consts
 are present. `GroupKeyReceiver` carries group-key admission capability.
 
+### Message session removed (2026-11-14)
+
+`MessageSession` (forward-secure conversations over p2panda's message scheme),
+`MessagePrekeyBundle`, `MESSAGE_PREKEY_BATCH`, `MessageCiphertext`,
+`MessageLimits` and `GroupSessionProcess::outbound` are gone, and with them
+p2mere-encryption's `message_scheme` and `test_utils` features: the session ran
+on upstream's test-only membership type and edited the DCGKA engine's private
+state. It had no product caller. The owner's ruling (Mark, 2026-11-14): "Eh,
+it's all in git history. If needed, it'll be there." and "I wonder about
+'forward secure conversations; on what transport? Is that the only way?"
+Forward-secure conversations are deferred to a future choice among maintained
+schemes; this crate no longer promises them. The control-action tags `Ack` and
+`AddAck` stay reserved and are never reused: a frame carrying one decodes to
+`GroupSessionError::RetiredControlAction`.
+
 ## What a domain supplies
 
 | Item | Role |
@@ -121,7 +136,7 @@ initial bounds and current shared-ingress proposal with reproducible host inputs
 | `muniment` | The `Backend` trait and `WriteOp` batches under `MunimentStore`. |
 | `p2panda-core` | `Operation`, `Header`, `Topic`, structural validation, prune backlinks. |
 | `p2panda-store` | The `OperationStore` / `LogStore` / `TopicStore` traits `MunimentStore` implements. |
-| `p2panda-encryption` (`data_scheme`, `message_scheme`) | Group secrets and DCGKA sessions behind `group_crypto` and `group_session`. |
+| `p2panda-encryption` (`data_scheme`) | Group secrets and DCGKA sessions behind `group_crypto` and `group_session`. |
 | `identity` (`personae`) | `IdentityProvider`, `DerivedKeyAttestation`, signature types for writer binding and prekey bundles. |
 | `proofs` (`mere-proofs`) | `Digest`, used for authority revisions and retention facts. |
 | `blake3`, `hex`, `serde` | Drop ids, framing, and CBOR payloads. |

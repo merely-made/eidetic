@@ -17,6 +17,52 @@ fn register_all(sessions: &mut [&mut GroupSession], bundles: &[GroupPrekeyBundle
     }
 }
 
+// The message scheme's `Ack` and `AddAck` tags were retired on 2026-11-14 and
+// stay reserved: old bytes carrying one get a named refusal, never a panic and
+// never another action.
+#[test]
+fn retired_control_action_tags_decode_to_the_unsupported_error() {
+    #[derive(Serialize)]
+    enum RetiredAction {
+        Ack {
+            ack_sender: GroupRecipientId,
+            ack_seq: GroupControlId,
+        },
+        AddAck {
+            ack_sender: GroupRecipientId,
+            ack_seq: GroupControlId,
+        },
+    }
+    #[derive(Serialize)]
+    struct RetiredFrame {
+        version: u16,
+        group: GroupSessionId,
+        id: GroupControlId,
+        action: RetiredAction,
+    }
+    let id = GroupControlId {
+        author: GroupRecipientId([0xa1; 32]),
+        sequence: 7,
+    };
+    let ack_sender = GroupRecipientId([0xb2; 32]);
+    for (action, tag) in [
+        (RetiredAction::Ack { ack_sender, ack_seq: id }, "Ack"),
+        (RetiredAction::AddAck { ack_sender, ack_seq: id }, "AddAck"),
+    ] {
+        let bytes = encode_cbor(&RetiredFrame {
+            version: GROUP_CONTROL_VERSION,
+            group: GroupSessionId([0x47; 32]),
+            id,
+            action,
+        })
+        .unwrap();
+        match GroupControlFrame::from_bytes(&bytes) {
+            Err(GroupSessionError::RetiredControlAction(found)) => assert_eq!(found, tag),
+            other => panic!("{tag}: expected the retired-action refusal, got {other:?}"),
+        }
+    }
+}
+
 // Strictness control for the wire decodes (device pairing plan, ruling 24):
 // the same frame with `version` in a non-shortest integer form is valid
 // CBOR that a lenient decode accepts, and a peer frame must be refused.

@@ -47,14 +47,15 @@ use crate::drop::DropRecord;
 use crate::{
     Admission, CausalEntry, CausalError, CausalLimits, GroupControlFrame, GroupControlId,
     GroupDirectFrame, GroupRecipientId, GroupSession, GroupSessionDispatch, GroupSessionError,
-    GroupSessionId, GroupSessionProcess, JoinError, MessageSession, MunimentStore, OperationPolicy,
+    GroupSessionId, GroupSessionProcess, JoinError, MunimentStore, OperationPolicy,
     OperationProcessor, ProcessError, Reject, StoreTarget, WriterBindingError, author_head,
     causal_projection, decode_operation_record, observed_frontier, operation_record,
     stable_writer_subject, validate_causal_metadata,
 };
 
-/// A session the lane can drain frames into: the durable data scheme or the
-/// forward-secure message scheme.
+/// A session the lane can drain frames into. [`GroupSession`] (the durable
+/// data scheme) is the one implementation since the message scheme's removal
+/// on 2026-11-14.
 pub trait GroupKeySession: Sized {
     fn group(&self) -> GroupSessionId;
     fn member(&self) -> GroupRecipientId;
@@ -92,26 +93,6 @@ impl GroupKeySession for GroupSession {
     }
     fn try_clone(&self) -> Result<Self, GroupSessionError> {
         GroupSession::try_clone(self)
-    }
-}
-
-impl GroupKeySession for MessageSession {
-    fn group(&self) -> GroupSessionId {
-        MessageSession::group(self)
-    }
-    fn member(&self) -> GroupRecipientId {
-        MessageSession::member(self)
-    }
-    fn process_frame(
-        &mut self,
-        root: [u8; 32],
-        control: &GroupControlFrame,
-        direct: Option<&GroupDirectFrame>,
-    ) -> Result<GroupSessionProcess, GroupSessionError> {
-        self.process(root, control, direct)
-    }
-    fn try_clone(&self) -> Result<Self, GroupSessionError> {
-        MessageSession::try_clone(self)
     }
 }
 
@@ -499,10 +480,6 @@ impl<B: Backend + Clone> GroupKeyReceiver<B> {
 #[cfg(test)]
 #[path = "group_lane/tests.rs"]
 mod tests;
-
-#[cfg(test)]
-#[path = "group_lane/message_tests.rs"]
-mod message_tests;
 
 #[path = "group_lane/operations.rs"]
 mod operations;

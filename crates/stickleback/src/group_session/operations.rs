@@ -438,9 +438,6 @@ impl GroupSession {
                     && self.members()?.contains(&self.member)
                     && *removed != self.member
             }
-            GroupControlAction::Ack { .. } | GroupControlAction::AddAck { .. } => {
-                return Err(GroupSessionError::ActionOutsideScheme);
-            }
         };
         match (needs_direct, direct) {
             (true, None) => return Err(GroupSessionError::MissingAddressedDirect(self.member)),
@@ -475,7 +472,7 @@ impl GroupSession {
         let input = ProcessInput {
             seq: control.id,
             sender: control.id.author,
-            control_message: control.action.clone().try_into()?,
+            control_message: control.action.clone().into(),
             direct_message,
         };
         let (state, output) = Dcgka::process(state, input)
@@ -492,10 +489,7 @@ impl GroupSession {
         if control.id.author == self.member {
             self.next_local_sequence = next_sequence;
         }
-        Ok(GroupSessionProcess {
-            installed_epochs,
-            outbound: None,
-        })
+        Ok(GroupSessionProcess { installed_epochs })
     }
 
     pub(super) fn decode_direct(

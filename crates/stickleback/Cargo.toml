@@ -55,8 +55,6 @@ package = "p2mere-encryption"
 version = "0.11"
 features = [
     "data_scheme",
-    "message_scheme",
-    "test_utils",
 ]
 
 [dependencies.p2panda-store]

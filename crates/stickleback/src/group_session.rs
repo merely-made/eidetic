@@ -84,7 +84,12 @@ impl fmt::Display for GroupControlId {
 }
 
 /// Inspectable group-control grammar carried inside a domain operation.
+///
+/// The tags `Ack` and `AddAck` belonged to the message scheme, removed on
+/// 2026-11-14. They stay reserved and are never reused: a frame carrying one
+/// decodes to [`GroupSessionError::RetiredControlAction`].
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(try_from = "WireControlAction")]
 pub enum GroupControlAction {
     Create {
         initial_members: Vec<GroupRecipientId>,
@@ -96,17 +101,60 @@ pub enum GroupControlAction {
     Remove {
         removed: GroupRecipientId,
     },
-    /// Message scheme only: acknowledges the seed of another member's
-    /// operation.
-    Ack {
-        ack_sender: GroupRecipientId,
-        ack_seq: GroupControlId,
+}
+
+/// Decode-side grammar: the live actions plus the reserved, retired tags.
+#[derive(Deserialize)]
+enum WireControlAction {
+    Create {
+        initial_members: Vec<GroupRecipientId>,
     },
-    /// Message scheme only: acknowledges a member's addition.
-    AddAck {
-        ack_sender: GroupRecipientId,
-        ack_seq: GroupControlId,
+    Update,
+    Add {
+        added: GroupRecipientId,
     },
+    Remove {
+        removed: GroupRecipientId,
+    },
+    Ack(serde::de::IgnoredAny),
+    AddAck(serde::de::IgnoredAny),
+}
+
+/// A retired control-action tag, named in the decode error.
+#[derive(Debug)]
+pub(crate) struct RetiredTag(&'static str);
+
+impl fmt::Display for RetiredTag {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(formatter, "{RETIRED_ACTION_PREFIX}{}", self.0)
+    }
+}
+
+const RETIRED_ACTION_PREFIX: &str = "retired group control action ";
+
+impl TryFrom<WireControlAction> for GroupControlAction {
+    type Error = RetiredTag;
+
+    fn try_from(value: WireControlAction) -> Result<Self, Self::Error> {
+        Ok(match value {
+            WireControlAction::Create { initial_members } => Self::Create { initial_members },
+            WireControlAction::Update => Self::Update,
+            WireControlAction::Add { added } => Self::Add { added },
+            WireControlAction::Remove { removed } => Self::Remove { removed },
+            WireControlAction::Ack(_) => return Err(RetiredTag("Ack")),
+            WireControlAction::AddAck(_) => return Err(RetiredTag("AddAck")),
+        })
+    }
+}
+
+/// Map a decode failure, naming a retired control-action tag when it was one.
+fn control_decode_error(detail: String) -> GroupSessionError {
+    for tag in ["AddAck", "Ack"] {
+        if detail.contains(&format!("{RETIRED_ACTION_PREFIX}{tag}")) {
+            return GroupSessionError::RetiredControlAction(tag);
+        }
+    }
+    GroupSessionError::Decode(detail)
 }
 
 /// Broadcast half of one DCGKA operation.
@@ -128,7 +176,7 @@ impl GroupControlFrame {
 
     pub fn from_bytes(bytes: &[u8]) -> Result<Self, GroupSessionError> {
         let frame: Self = decode_cbor_strict(bytes)
-            .map_err(|error| GroupSessionError::Decode(error.to_string()))?;
+            .map_err(|error| control_decode_error(error.to_string()))?;
         frame.validate()?;
         Ok(frame)
     }
@@ -360,10 +408,6 @@ type SessionDirect = DirectMessage<GroupRecipientId, GroupControlId, OrderedMemb
 pub struct GroupSessionProcess {
     /// Epochs learned from the addressed direct message, oldest first.
     pub installed_epochs: Vec<GroupSecretId>,
-    /// A frame this member must now author on the lane: the message scheme
-    /// answers key agreement with acknowledgements. The session has already
-    /// advanced past it, so persist the session before authoring.
-    pub outbound: Option<GroupSessionDispatch>,
 }
 
 /// Durable state for one DCGKA group member.
@@ -396,19 +440,14 @@ impl From<ControlMessage<GroupRecipientId>> for GroupControlAction {
     }
 }
 
-impl TryFrom<GroupControlAction> for ControlMessage<GroupRecipientId> {
-    type Error = GroupSessionError;
-
-    fn try_from(value: GroupControlAction) -> Result<Self, Self::Error> {
-        Ok(match value {
+impl From<GroupControlAction> for ControlMessage<GroupRecipientId> {
+    fn from(value: GroupControlAction) -> Self {
+        match value {
             GroupControlAction::Create { initial_members } => Self::Create { initial_members },
             GroupControlAction::Update => Self::Update,
             GroupControlAction::Add { added } => Self::Add { added },
             GroupControlAction::Remove { removed } => Self::Remove { removed },
-            GroupControlAction::Ack { .. } | GroupControlAction::AddAck { .. } => {
-                return Err(GroupSessionError::ActionOutsideScheme);
-            }
-        })
+        }
     }
 }
 
@@ -418,14 +457,10 @@ pub enum GroupSessionError {
     MissingState,
     #[error("group session already has membership state")]
     GroupAlreadyCreated,
-    #[error("pre-keys are addressed to {0}, not to the local member")]
-    PrekeysForAnotherPeer(GroupRecipientId),
-    #[error("control action belongs to the other encryption scheme")]
-    ActionOutsideScheme,
-    #[error("control frame was authored by the local member")]
-    OwnControlFrame,
-    #[error("message author {0} is not a current member")]
-    AuthorNotMember(GroupRecipientId),
+    /// The frame carries a control-action tag retired with the message scheme
+    /// (2026-11-14). The tag stays reserved and is never reused.
+    #[error("unsupported group control action {0}: retired with the message scheme")]
+    RetiredControlAction(&'static str),
     #[error("local group recipient is not an active member")]
     LocalMemberInactive,
     #[error("cannot remove the local author with its own rotation")]
