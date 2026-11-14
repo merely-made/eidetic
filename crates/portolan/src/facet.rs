@@ -24,6 +24,7 @@
 
 use std::collections::BTreeMap;
 use std::fmt;
+use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -170,9 +171,39 @@ impl NodeFacets {
 /// Persisted beside the graph as one document; the node id type is the graph's
 /// `Identified::Id` (a `String` for [`Container`](crate::Container)). Use a
 /// string-serializable id with a JSON codec (the id is a map key).
+///
+/// Each node's facets sit behind their own `Arc`, so a clone copies pointers
+/// and a write copies only the node it touches. Two stores cloned from one
+/// another then differ only at [`unshared_nodes`](Self::unshared_nodes). The
+/// sharing is invisible to serde, `Debug` and equality.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(bound(
+    serialize = "Id: Serialize",
+    deserialize = "Id: Ord + Deserialize<'de>"
+))]
 pub struct FacetStore<Id: Ord> {
-    nodes: BTreeMap<Id, NodeFacets>,
+    #[serde(with = "shared_entries")]
+    nodes: BTreeMap<Id, Arc<NodeFacets>>,
+}
+
+/// Serde for the shared entries, as the plain map they hold.
+mod shared_entries {
+    use super::{Arc, BTreeMap, NodeFacets};
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+    pub(super) fn serialize<Id: Serialize, S: Serializer>(
+        nodes: &BTreeMap<Id, Arc<NodeFacets>>,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error> {
+        serializer.collect_map(nodes.iter().map(|(id, facets)| (id, &**facets)))
+    }
+
+    pub(super) fn deserialize<'de, Id: Ord + Deserialize<'de>, D: Deserializer<'de>>(
+        deserializer: D,
+    ) -> Result<BTreeMap<Id, Arc<NodeFacets>>, D::Error> {
+        let nodes = BTreeMap::<Id, NodeFacets>::deserialize(deserializer)?;
+        Ok(nodes.into_iter().map(|(id, f)| (id, Arc::new(f))).collect())
+    }
 }
 
 // Manual, so `Id` need not be `Default` (a `BTreeMap` is empty by default).
@@ -202,9 +233,7 @@ impl<Id: Ord + Clone> FacetStore<Id> {
         validator: &impl FacetValidator,
     ) -> Result<(), FacetError> {
         validator.validate(&facet_id, &value)?;
-        self.nodes
-            .entry(node)
-            .or_default()
+        Arc::make_mut(self.nodes.entry(node).or_default())
             .facets
             .insert(facet_id, value);
         Ok(())
@@ -217,14 +246,19 @@ impl<Id: Ord + Clone> FacetStore<Id> {
 
     /// All facets a node carries, or `None` if the node has none.
     pub fn facets_of(&self, node: &Id) -> Option<&NodeFacets> {
-        self.nodes.get(node)
+        self.nodes.get(node).map(|facets| &**facets)
     }
 
     /// Remove one facet from a node, returning its value if it was present. An
     /// emptied node is dropped so the store lists only nodes with facets.
     pub fn remove(&mut self, node: &Id, facet_id: &FacetId) -> Option<Value> {
-        let removed = self.nodes.get_mut(node)?.facets.remove(facet_id);
-        if self.nodes.get(node).is_some_and(NodeFacets::is_empty) {
+        let facets = self.nodes.get_mut(node)?;
+        // An absent facet leaves the node's allocation shared.
+        if !facets.has(facet_id) {
+            return None;
+        }
+        let removed = Arc::make_mut(facets).facets.remove(facet_id);
+        if facets.is_empty() {
             self.nodes.remove(node);
         }
         removed
@@ -232,17 +266,47 @@ impl<Id: Ord + Clone> FacetStore<Id> {
 
     /// Drop every facet of a node (node removed from the graph).
     pub fn remove_node(&mut self, node: &Id) -> Option<NodeFacets> {
-        self.nodes.remove(node)
+        self.nodes.remove(node).map(Arc::unwrap_or_clone)
     }
 
     /// Whether no node carries any facet.
     pub fn is_empty(&self) -> bool {
-        self.nodes.values().all(NodeFacets::is_empty)
+        self.nodes.values().all(|facets| facets.is_empty())
     }
 
     /// Iterate (node id, its facets).
     pub fn iter(&self) -> impl Iterator<Item = (&Id, &NodeFacets)> {
-        self.nodes.iter()
+        self.nodes.iter().map(|(id, facets)| (id, &**facets))
+    }
+
+    /// The nodes whose facets this store and `other` do not share, in id
+    /// order: held by one only, or by both in separate allocations. In two
+    /// stores cloned from one another these are the nodes either has written
+    /// since; every other node is one allocation, so equal by construction.
+    /// The listed ones may still be equal, and are for the caller to compare.
+    pub fn unshared_nodes<'a>(&'a self, other: &'a Self) -> Vec<&'a Id> {
+        use std::cmp::Ordering::{Equal, Greater, Less};
+        let (mut a, mut b) = (self.nodes.iter().peekable(), other.nodes.iter().peekable());
+        let mut unshared = Vec::new();
+        loop {
+            let order = match (a.peek(), b.peek()) {
+                (None, None) => return unshared,
+                (Some(_), None) => Less,
+                (None, Some(_)) => Greater,
+                (Some((x, _)), Some((y, _))) => x.cmp(y),
+            };
+            match order {
+                Less => unshared.extend(a.next().map(|(id, _)| id)),
+                Greater => unshared.extend(b.next().map(|(id, _)| id)),
+                Equal => {
+                    if let (Some((id, x)), Some((_, y))) = (a.next(), b.next())
+                        && !Arc::ptr_eq(x, y)
+                    {
+                        unshared.push(id);
+                    }
+                },
+            }
+        }
     }
 
     /// Overlay every facet from `other`, replacing values with the same
@@ -253,11 +317,9 @@ impl<Id: Ord + Clone> FacetStore<Id> {
     /// The sidecar wins where both contain the same facet.
     pub fn overlay(&mut self, other: Self) {
         for (node, facets) in other.nodes {
-            self.nodes
-                .entry(node)
-                .or_default()
+            Arc::make_mut(self.nodes.entry(node).or_default())
                 .facets
-                .extend(facets.facets);
+                .extend(Arc::unwrap_or_clone(facets).facets);
         }
     }
 }
@@ -296,6 +358,10 @@ where
 #[cfg(test)]
 #[path = "facet_vectors.rs"]
 mod vectors;
+
+#[cfg(test)]
+#[path = "facet_sharing_tests.rs"]
+mod sharing_tests;
 
 #[cfg(test)]
 mod tests {
