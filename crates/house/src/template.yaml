@@ -61,6 +61,14 @@ repos:
         pass_filenames: false
         always_run: true
 #}
+#{patches
+      - id: house-patches
+        name: house patches
+        entry: house patches --check
+        language: system
+        pass_filenames: false
+        always_run: true
+#}
 #{local
 #}
       # No Cargo.lock is tracked; what cargo resolved rides on each commit as a

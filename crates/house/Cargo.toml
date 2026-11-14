@@ -1,9 +1,9 @@
 [package]
 rust-version = "1.97.1"
 name = "house"
-version = "0.0.8"
+version = "0.0.9"
 repository = "https://github.com/merely-made/eidetic"
-description = "The family's repository checks in one command: line ceiling, decisions, resolved-version notes, the canonical hook file, family cycles and the doc audit"
+description = "The family's repository checks in one command: line ceiling, decisions, resolved-version notes, the canonical hook file, family cycles, the doc audit and consumers' fork patch rows"
 readme = "README.md"
 keywords = ["pre-commit", "hooks", "lint", "git-notes"]
 categories = ["development-tools", "command-line-utilities"]

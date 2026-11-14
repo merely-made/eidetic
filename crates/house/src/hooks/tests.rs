@@ -234,3 +234,18 @@ fn bans_refuses_bad_directories_and_the_old_form() {
     assert!(Options::parse(&args(&["--bans", ".", "--deny"])).unwrap_err().contains("replaces"));
     assert!(Options::parse(&args(&["--deny-args", "-q", "--bans", "a"])).unwrap_err().contains("replaces"));
 }
+
+#[test]
+fn patches_adds_the_check_hook() {
+    let base = render(&Options::default());
+    let out = render(&options(&["--bans", ".", "--patches"]));
+    let (added, removed) = diff(&base, &out);
+    assert_eq!(removed, ["# house hooks"]);
+    assert_eq!(added[0], "# house hooks --bans . --patches");
+    for want in ["      - id: house-patches", "        entry: house patches --check", "        pass_filenames: false", "        always_run: true"] {
+        assert!(added.iter().any(|l| l == want), "missing {want:?}");
+    }
+    assert_eq!(added.len(), 1 + 6 + 6);
+    assert_eq!(check_text(&out), Ok(()));
+    assert!(check_text(&out.replace(" --patches", "")).is_err());
+}

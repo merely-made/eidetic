@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! `house hooks [--no-decisions] [--bans DIR]... [--clippy ARGS]... | --check`:
+//! `house hooks [--no-decisions] [--bans DIR]... [--patches] [--clippy ARGS]... | --check`:
 //! the canonical `.pre-commit-config.yaml`, rendered from `template.yaml`.
 //! In the template a `#{name` line opens a block kept only when its option
 //! is on (`clippy` and `bans` repeat once per pass) and `#}` closes it.
@@ -14,7 +14,7 @@ const TEMPLATE: &str = include_str!("template.yaml");
 /// The file a consumer repository carries at its root.
 pub const FILE: &str = ".pre-commit-config.yaml";
 const HEADER: &str = "# house hooks";
-const USAGE: &str = "usage: house hooks [--no-decisions] [--regen] [--bans DIR]... [--deny] [--deny-args ARGS] [--clippy-base ARGS] [--clippy ARGS]... [--local FILE] | house hooks --check";
+const USAGE: &str = "usage: house hooks [--no-decisions] [--regen] [--bans DIR]... [--patches] [--deny] [--deny-args ARGS] [--clippy-base ARGS] [--clippy ARGS]... [--local FILE] | house hooks --check";
 /// What the first clippy pass runs when a repository names nothing else.
 const CLIPPY_BASE: &str = "--all-targets";
 
@@ -27,6 +27,8 @@ pub struct Options {
     /// the whole workspace with every feature, read against that directory's
     /// own `deny.toml`, failing on a skip that matches nothing.
     pub bans: Vec<String>,
+    /// `house patches --check` over every manifest carrying a block.
+    pub patches: bool,
     /// `cargo deny check bans`: the root with default features. The form
     /// `bans` replaces; it leaves when no repository's file names it.
     pub deny: bool,
@@ -45,7 +47,7 @@ pub struct Options {
 
 impl Default for Options {
     fn default() -> Self {
-        Options { decisions: true, deny: false, clippy: Vec::new(), regen: false, clippy_base: None, local: None, deny_args: None, bans: Vec::new() }
+        Options { decisions: true, deny: false, clippy: Vec::new(), regen: false, clippy_base: None, local: None, deny_args: None, bans: Vec::new(), patches: false }
     }
 }
 
@@ -64,6 +66,7 @@ impl Options {
             match a.as_str() {
                 "--no-decisions" => o.decisions = false,
                 "--deny" => o.deny = true,
+                "--patches" => o.patches = true,
                 "--check" => check = true,
                 "--bans" => {
                     let dir = args.next().ok_or("--bans needs a workspace directory")?;
@@ -133,6 +136,9 @@ impl Options {
             None if self.deny => line.push_str(" --deny"),
             None => {}
         }
+        if self.patches {
+            line.push_str(" --patches");
+        }
         if let Some(base) = &self.clippy_base {
             line.push_str(" --clippy-base ");
             line.push_str(&words::quote(base));
@@ -156,6 +162,7 @@ impl Options {
             "local" => Ok(usize::from(self.local.is_some())),
             "clippy" => Ok(self.clippy.len()),
             "bans" => Ok(self.bans.len()),
+            "patches" => Ok(usize::from(self.patches)),
             _ => Err(format!("template: unknown block {name}")),
         }
     }
