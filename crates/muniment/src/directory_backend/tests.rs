@@ -174,6 +174,47 @@ fn a_key_cannot_also_be_a_directory() {
     });
 }
 
+/// The sorted placement check refuses what a scan of every planned path
+/// refused, across siblings that sort between a path and its descendants, and
+/// through a log's directory.
+#[test]
+fn placement_check_sees_past_sorted_siblings() {
+    pollster::block_on(async {
+        let (_dir, store) = store();
+        for batch in [
+            vec![
+                put("x", "f"),
+                put("x.z", "s"),
+                put("x-a/q", "s"),
+                put("x/y", "in"),
+            ],
+            vec![
+                put("p/x", "f"),
+                put("p/x.z", "s"),
+                put("p/x/l.jsonl/0000000000000000", "0"),
+            ],
+            vec![put("m/n/o", "deep"), put("m", "f"), put("m.0", "s")],
+        ] {
+            assert!(store.apply(&batch).await.is_err(), "{batch:?}");
+        }
+        assert_eq!(store.list("").await.unwrap(), Vec::<String>::new());
+        store
+            .apply(&[
+                put("x", "f"),
+                put("x.z", "s"),
+                put("x-a/q", "s"),
+                put("xa/y", "s"),
+            ])
+            .await
+            .unwrap();
+        assert_eq!(
+            store.list("").await.unwrap().len(),
+            4,
+            "a clean batch lands"
+        );
+    });
+}
+
 #[test]
 fn list_and_scan_see_files_and_log_entries() {
     pollster::block_on(async {

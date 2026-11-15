@@ -212,13 +212,11 @@ impl Inner {
                 }
             }
         }
-        let planned: Vec<&PathBuf> = files.keys().chain(entries.keys()).collect();
         for (path, value) in &files {
             if value.is_some() {
                 self.check_placeable(path)?;
-                if let Some(inside) = planned
-                    .iter()
-                    .find(|other| other.starts_with(path) && **other != path)
+                if let Some(inside) =
+                    first_inside(&files, path).or_else(|| first_inside(&entries, path))
                 {
                     return Err(StoreError::Backend(format!(
                         "{}: a key cannot also be the directory of {}",
@@ -430,4 +428,15 @@ impl Inner {
         fs::remove_file(&redo).map_err(|error| io_error(&redo, error))?;
         sync_dir(&self.root)
     }
+}
+
+/// The first planned path strictly inside `path`. Paths order by component, so
+/// a path's descendants sort together right after it (`x`, `x/y`, `x.z`) and
+/// the first key past it answers, instead of a scan of every planned path.
+fn first_inside<'a, V>(map: &'a BTreeMap<PathBuf, V>, path: &Path) -> Option<&'a PathBuf> {
+    use std::ops::Bound::{Excluded, Unbounded};
+    map.range::<Path, _>((Excluded(path), Unbounded))
+        .next()
+        .map(|(key, _)| key)
+        .filter(|key| key.starts_with(path))
 }
