@@ -147,6 +147,18 @@ pub trait Backend {
         let _ = f;
         Err(StoreError::NotTransactional)
     }
+
+    /// Whether this handle is the store's one owner: no other process or
+    /// connection can read the store while this handle writes, so every read
+    /// goes through this handle. Only then may a collector delete, at once, a
+    /// key the store's current state no longer names; a store that other
+    /// connections read (IndexedDB across tabs) needs protected readers first.
+    ///
+    /// Defaulted to `false`, so a backend that does not say, and a wrapper that
+    /// does not delegate, is never collected under.
+    fn single_owner(&self) -> bool {
+        false
+    }
 }
 
 /// A boxed backend is a backend, so a host can **choose** one at runtime.
@@ -189,6 +201,10 @@ impl<B: Backend + Sync + ?Sized> Backend for Box<B> {
     async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
         (**self).transact(f).await
     }
+
+    fn single_owner(&self) -> bool {
+        (**self).single_owner()
+    }
 }
 
 /// A **borrowed** backend is a backend, so a consumer that owns one store
@@ -227,6 +243,10 @@ impl<B: Backend + Sync + ?Sized> Backend for &B {
 
     async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
         (**self).transact(f).await
+    }
+
+    fn single_owner(&self) -> bool {
+        (**self).single_owner()
     }
 }
 
@@ -351,11 +371,63 @@ impl Backend for MemoryBackend {
         }
         Ok(())
     }
+
+    /// One map in this process; clones share it, so nothing reads it apart
+    /// from this handle.
+    fn single_owner(&self) -> bool {
+        true
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A wrapper that forwards every call but `single_owner`, so it reads as
+    /// shared.
+    struct Silent(MemoryBackend);
+    #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+    #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
+    impl Backend for Silent {
+        async fn get(&self, key: &str) -> Result<Option<Vec<u8>>, StoreError> {
+            self.0.get(key).await
+        }
+        async fn put(&self, key: &str, bytes: &[u8]) -> Result<(), StoreError> {
+            self.0.put(key, bytes).await
+        }
+        async fn delete(&self, key: &str) -> Result<(), StoreError> {
+            self.0.delete(key).await
+        }
+        async fn list(&self, prefix: &str) -> Result<Vec<String>, StoreError> {
+            self.0.list(prefix).await
+        }
+        async fn scan(&self, start: &str, end: &str) -> Result<Vec<String>, StoreError> {
+            self.0.scan(start, end).await
+        }
+        async fn apply(&self, ops: &[WriteOp]) -> Result<(), StoreError> {
+            self.0.apply(ops).await
+        }
+        async fn transact(&self, f: TransactFn) -> Result<(), StoreError> {
+            self.0.transact(f).await
+        }
+    }
+
+    /// Memory declares one owner, `Box` and `&` forward it, and a wrapper
+    /// that does not forward reads as shared.
+    #[test]
+    fn single_owner_is_declared_and_forwarded() {
+        fn owner(backend: impl Backend) -> bool {
+            backend.single_owner()
+        }
+        let memory = MemoryBackend::new();
+        assert!(owner(memory.clone()));
+        assert!(owner(&memory));
+        let boxed: Box<dyn Backend + Sync> = Box::new(memory.clone());
+        assert!(owner(boxed));
+        let silent = Silent(memory);
+        assert!(!owner(&silent));
+        assert!(!owner(Box::new(silent)));
+    }
 
     /// Native invariant: a backend's method futures are `Send`, so a store built
     /// over one can be driven from a work-stealing task (the LogSync drain needs

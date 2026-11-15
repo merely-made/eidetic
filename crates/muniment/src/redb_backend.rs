@@ -223,6 +223,12 @@ impl Backend for RedbBackend {
         txn.commit().map_err(backend)?;
         Ok(())
     }
+
+    /// redb locks its file, so a second opener, in this process or another,
+    /// is refused while this handle (or a clone) holds it.
+    fn single_owner(&self) -> bool {
+        true
+    }
 }
 
 #[cfg(test)]
@@ -235,6 +241,17 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let backend = RedbBackend::open(dir.path().join("store.redb")).unwrap();
         (dir, backend)
+    }
+
+    /// One owner: the handle says so, and a second open of its file is
+    /// refused while it is held.
+    #[test]
+    fn redb_is_single_owner() {
+        let (dir, b) = temp_backend();
+        assert!(b.single_owner());
+        assert!(RedbBackend::open(dir.path().join("store.redb")).is_err());
+        drop(b);
+        assert!(RedbBackend::open(dir.path().join("store.redb")).is_ok());
     }
 
     #[test]

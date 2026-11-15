@@ -252,6 +252,7 @@ fn list_and_scan_see_files_and_log_entries() {
 fn a_second_owner_is_refused_until_the_first_lets_go() {
     let dir = tempfile::tempdir().unwrap();
     let first = DirectoryBackend::open(dir.path()).unwrap();
+    assert!(first.single_owner(), "the lock makes it the one owner");
     let refused = DirectoryBackend::open(dir.path())
         .err()
         .expect("the store is held");

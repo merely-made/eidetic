@@ -500,6 +500,12 @@ impl Backend for DirectoryBackend {
         };
         self.inner.apply(&mut state, &ops)
     }
+
+    /// The exclusive `.muniment-lock` refuses every other opener, in this
+    /// process or another; see the module docs.
+    fn single_owner(&self) -> bool {
+        true
+    }
 }
 
 #[cfg(test)]
