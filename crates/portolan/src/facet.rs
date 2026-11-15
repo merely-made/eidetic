@@ -24,9 +24,10 @@
 
 use std::collections::BTreeMap;
 use std::fmt;
+use std::hash::Hash;
 use std::sync::Arc;
 
-use rpds::RedBlackTreeMapSync;
+use rpds::HashTrieMapSync;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -173,36 +174,44 @@ impl NodeFacets {
 /// `Identified::Id` (a `String` for [`Container`](crate::Container)). Use a
 /// string-serializable id with a JSON codec (the id is a map key).
 ///
-/// Nodes sit in a persistent ordered map (rpds), each node's facets behind an
+/// Nodes sit in a persistent hash trie (rpds), each node's facets behind an
 /// `Arc`: a clone is O(1), a write copies only its path, so clones differ only
-/// at [`unshared_nodes`](Self::unshared_nodes). Serde, `Debug` and `==` see the
-/// ordered map.
+/// at [`unshared_nodes`](Self::unshared_nodes). The trie keeps no order, so
+/// whatever is read in order (serde, `Debug`, [`iter`](Self::iter)) is sorted
+/// by id as it is read; `==` compares content.
 #[derive(Clone, PartialEq, Serialize, Deserialize)]
 #[serde(bound(
-    serialize = "Id: Ord + Serialize",
-    deserialize = "Id: Ord + Deserialize<'de>"
+    serialize = "Id: Ord + Hash + Serialize",
+    deserialize = "Id: Ord + Hash + Deserialize<'de>"
 ))]
-pub struct FacetStore<Id: Ord> {
+pub struct FacetStore<Id: Ord + Hash> {
     #[serde(with = "shared_entries")]
     nodes: Nodes<Id>,
 }
 
-type Nodes<Id> = RedBlackTreeMapSync<Id, Arc<NodeFacets>>;
+type Nodes<Id> = HashTrieMapSync<Id, Arc<NodeFacets>>;
+
+/// The nodes in id order (engine split D170: an ordered read collects and sorts).
+fn in_order<Id: Ord + Hash>(nodes: &Nodes<Id>) -> Vec<(&Id, &Arc<NodeFacets>)> {
+    let mut sorted: Vec<_> = nodes.iter().collect();
+    sorted.sort_unstable_by_key(|(id, _)| *id);
+    sorted
+}
 
 /// Serde for the shared entries, as the plain ordered map they hold.
 mod shared_entries {
-    use super::{BTreeMap, NodeFacets, Nodes};
+    use super::{BTreeMap, Hash, NodeFacets, Nodes, in_order};
     use serde::{Deserialize, Deserializer, Serialize, Serializer};
     use std::sync::Arc;
 
-    pub(super) fn serialize<Id: Ord + Serialize, S: Serializer>(
+    pub(super) fn serialize<Id: Ord + Hash + Serialize, S: Serializer>(
         nodes: &Nodes<Id>,
         serializer: S,
     ) -> Result<S::Ok, S::Error> {
-        serializer.collect_map(nodes.iter().map(|(id, facets)| (id, &**facets)))
+        serializer.collect_map(in_order(nodes).into_iter().map(|(id, f)| (id, &**f)))
     }
 
-    pub(super) fn deserialize<'de, Id: Ord + Deserialize<'de>, D: Deserializer<'de>>(
+    pub(super) fn deserialize<'de, Id: Ord + Hash + Deserialize<'de>, D: Deserializer<'de>>(
         deserializer: D,
     ) -> Result<Nodes<Id>, D::Error> {
         let nodes = BTreeMap::<Id, NodeFacets>::deserialize(deserializer)?;
@@ -210,13 +219,13 @@ mod shared_entries {
     }
 }
 
-/// `Debug` as the ordered map it holds (rpds maps have no `Debug`).
-impl<Id: Ord + fmt::Debug> fmt::Debug for FacetStore<Id> {
+/// `Debug` as the ordered map it holds.
+impl<Id: Ord + Hash + fmt::Debug> fmt::Debug for FacetStore<Id> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        struct Map<'a, Id: Ord>(&'a Nodes<Id>);
-        impl<Id: Ord + fmt::Debug> fmt::Debug for Map<'_, Id> {
+        struct Map<'a, Id: Ord + Hash>(&'a Nodes<Id>);
+        impl<Id: Ord + Hash + fmt::Debug> fmt::Debug for Map<'_, Id> {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                f.debug_map().entries(self.0.iter()).finish()
+                f.debug_map().entries(in_order(self.0)).finish()
             }
         }
         f.debug_struct("FacetStore")
@@ -226,7 +235,7 @@ impl<Id: Ord + fmt::Debug> fmt::Debug for FacetStore<Id> {
 }
 
 // Manual, so `Id` need not be `Default`.
-impl<Id: Ord> Default for FacetStore<Id> {
+impl<Id: Ord + Hash> Default for FacetStore<Id> {
     fn default() -> Self {
         Self {
             nodes: Nodes::default(),
@@ -234,7 +243,7 @@ impl<Id: Ord> Default for FacetStore<Id> {
     }
 }
 
-impl<Id: Ord + Clone> FacetStore<Id> {
+impl<Id: Ord + Hash + Clone> FacetStore<Id> {
     /// An empty store.
     pub fn new() -> Self {
         Self::default()
@@ -305,9 +314,9 @@ impl<Id: Ord + Clone> FacetStore<Id> {
         self.nodes.values().all(|facets| facets.is_empty())
     }
 
-    /// Iterate (node id, its facets).
+    /// Iterate (node id, its facets), in id order.
     pub fn iter(&self) -> impl Iterator<Item = (&Id, &NodeFacets)> {
-        self.nodes.iter().map(|(id, facets)| (id, &**facets))
+        in_order(&self.nodes).into_iter().map(|(id, facets)| (id, &**facets))
     }
 
     /// The nodes whose facets this store and `other` do not share, in id
@@ -317,31 +326,16 @@ impl<Id: Ord + Clone> FacetStore<Id> {
     /// Listed ones may still be equal, for the caller to compare; stores
     /// neither has written since a clone answer at once.
     pub fn unshared_nodes<'a>(&'a self, other: &'a Self) -> Vec<&'a Id> {
-        use std::cmp::Ordering::{Equal, Greater, Less};
         if self.nodes.ptr_eq(&other.nodes) {
             return Vec::new();
         }
-        let (mut a, mut b) = (self.nodes.iter().peekable(), other.nodes.iter().peekable());
-        let mut unshared = Vec::new();
-        loop {
-            let order = match (a.peek(), b.peek()) {
-                (None, None) => return unshared,
-                (Some(_), None) => Less,
-                (None, Some(_)) => Greater,
-                (Some((x, _)), Some((y, _))) => x.cmp(y),
-            };
-            match order {
-                Less => unshared.extend(a.next().map(|(id, _)| id)),
-                Greater => unshared.extend(b.next().map(|(id, _)| id)),
-                Equal => {
-                    if let (Some((id, x)), Some((_, y))) = (a.next(), b.next())
-                        && !Arc::ptr_eq(x, y)
-                    {
-                        unshared.push(id);
-                    }
-                },
-            }
-        }
+        let differs = |(id, x): (&'a Id, &Arc<NodeFacets>)| {
+            other.nodes.get(id).is_none_or(|y| !Arc::ptr_eq(x, y)).then_some(id)
+        };
+        let mut unshared: Vec<&Id> = self.nodes.iter().filter_map(differs).collect();
+        unshared.extend(other.nodes.keys().filter(|id| !self.nodes.contains_key(*id)));
+        unshared.sort_unstable();
+        unshared
     }
 
     /// Overlay every facet from `other`, replacing values with the same
@@ -365,7 +359,7 @@ impl<Id: Ord + Clone> FacetStore<Id> {
 // Persistence through muniment, beside the graph (one slot).
 impl<Id> FacetStore<Id>
 where
-    Id: Ord + Clone + Serialize + serde::de::DeserializeOwned,
+    Id: Ord + Hash + Clone + Serialize + serde::de::DeserializeOwned,
 {
     /// Write the store to a muniment slot.
     pub async fn save<B, C>(
