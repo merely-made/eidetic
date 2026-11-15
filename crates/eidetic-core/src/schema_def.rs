@@ -151,7 +151,7 @@ pub async fn bootstrap_meta_schema(store: &mut dyn Store) -> Result<()> {
         provenance: ProvenanceRecord {
             origin: ProvenanceOrigin::Generated,
             upstream: Vec::new(),
-            tooling: Some(format!("eidetic/{}", env!("CARGO_PKG_VERSION"))),
+            tooling: Some(crate::schema::SEED_TOOLING.to_string()),
             generated_at: Timestamp::ZERO,
         },
         trust: TrustEnvelope {
@@ -179,7 +179,7 @@ pub fn meta_schema_codicil() -> Codicil {
         ProvenanceRecord {
             origin: ProvenanceOrigin::Generated,
             upstream: Vec::new(),
-            tooling: Some(format!("eidetic/{}", env!("CARGO_PKG_VERSION"))),
+            tooling: Some(crate::schema::SEED_TOOLING.to_string()),
             generated_at: Timestamp::ZERO,
         },
         TrustEnvelope {

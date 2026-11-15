@@ -188,7 +188,7 @@ pub async fn bootstrap_record_schemas(store: &mut dyn Store) -> crate::Result<()
         let provenance = ProvenanceRecord {
             origin: ProvenanceOrigin::Generated,
             upstream: vec![],
-            tooling: Some(format!("eidetic/{}", env!("CARGO_PKG_VERSION"))),
+            tooling: Some(crate::schema::SEED_TOOLING.to_string()),
             generated_at: Timestamp::ZERO,
         };
         let trust = TrustEnvelope {

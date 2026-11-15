@@ -85,7 +85,7 @@ pub async fn bootstrap_browsing_schema(store: &mut dyn Store) -> Result<()> {
         provenance: ProvenanceRecord {
             origin: ProvenanceOrigin::Generated,
             upstream: Vec::new(),
-            tooling: Some(format!("eidetic/{}", env!("CARGO_PKG_VERSION"))),
+            tooling: Some(crate::schema::SEED_TOOLING.to_string()),
             generated_at: Timestamp::ZERO,
         },
         trust: TrustEnvelope {
@@ -194,7 +194,7 @@ pub async fn save_trace(
         ProvenanceRecord {
             origin: ProvenanceOrigin::Generated,
             upstream: Vec::new(),
-            tooling: Some(format!("eidetic-browsing/{}", env!("CARGO_PKG_VERSION"))),
+            tooling: Some(crate::schema::BROWSING_TOOLING.to_string()),
             generated_at: Timestamp(now_ms),
         },
         TrustEnvelope {

@@ -649,6 +649,24 @@ decided here.
 
   Links: area recall · plans P4 · summary The MiniLM threshold stays 220; the calibration test now checks F1 within 0.01 of the best and the margin window, and prints the stop-list id and calibration identity.
 
+- **D24, freeze the tooling stamp on seeds and browsing segments (2026-11-15):**
+  Mark chose "Freeze stamp to a const" over neutral `/v1` stamps, a
+  test that ignores `tooling`, and regenerating the goldens each release.
+  Bumping `eidetic` to 0.0.4 failed two `capture_golden` tests (7 of 7 pass
+  unbumped) because `provenance.tooling` followed `CARGO_PKG_VERSION` at five
+  sites in `eidetic-core`. Ids never moved (a schema id is the hash of its
+  payload; the failing `manifest:41f9...` key is present in both runs), but
+  eight golden manifest values hold `eidetic/0.0.3` or
+  `eidetic-browsing/0.0.3`, and the fixtures README rules out regenerating.
+  Two consts in `schema.rs` now hold those strings (`SEED_TOOLING`,
+  `BROWSING_TOOLING`), so 0.0.3 stores rewrite byte-identically, no store ends
+  up mixed, and a bump never touches stored bytes. The stamp no longer says
+  which release wrote a record; nothing reads `tooling`. `eidetic-search`
+  (`spec.rs:86`, `:173`) still stamps its own workspace version and was not
+  part of the ruling.
+
+  Links: area recall · draws on memory_gates D17 · plans S6 · summary The tooling stamp on schema seeds and browsing segments is frozen at the 0.0.3 strings so version bumps leave stored manifest bytes unchanged.
+
 ## Findings
 
 Verified 2026-11-01 against the current tree unless marked otherwise.

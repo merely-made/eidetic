@@ -61,7 +61,7 @@ version = "0.1.0"
 path = "crates/fieldbook"
 
 [workspace.dependencies.eidetic]
-version = "0.0.3"
+version = "0.0.4"
 path = "crates/eidetic-core"
 default-features = false
 

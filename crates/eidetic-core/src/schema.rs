@@ -386,6 +386,16 @@ pub enum ProvenanceOrigin {
     Generated,
 }
 
+/// Tooling stamp on the schema seeds Eidetic writes. Frozen at the release
+/// that first wrote them: a stamp that followed the crate version would give
+/// the same content-addressed schema different manifest bytes in every
+/// release (memory_gates D24).
+pub(crate) const SEED_TOOLING: &str = "eidetic/0.0.3";
+
+/// Tooling stamp on the browsing-trace segments Eidetic writes, frozen like
+/// [`SEED_TOOLING`] (memory_gates D24).
+pub(crate) const BROWSING_TOOLING: &str = "eidetic-browsing/0.0.3";
+
 /// Provenance axis — origin, ancestry, generation context. Independent of
 /// privacy and trust; provenance enables payout/audit/lineage tracking.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
