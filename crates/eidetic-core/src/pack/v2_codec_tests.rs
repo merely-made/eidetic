@@ -10,7 +10,7 @@
 
 use std::collections::BTreeMap;
 
-use ciborium::value::Value;
+use cbor_core::{DecodeOptions, Value};
 use serde::{Deserialize, Serialize};
 
 use super::*;
@@ -75,25 +75,48 @@ fn hex(bytes: &[u8]) -> String {
     bytes.iter().map(|b| format!("{b:02x}")).collect()
 }
 
-fn raw(value: &Value) -> Vec<u8> {
-    let mut out = Vec::new();
-    ciborium::ser::into_writer(value, &mut out).unwrap();
+type Pairs = Vec<(Value<'static>, Value<'static>)>;
+
+/// Map entries written in the order given, sorted or not, unique or not.
+fn raw(pairs: &Pairs) -> Vec<u8> {
+    let n = u8::try_from(pairs.len()).ok().filter(|n| *n < 24).unwrap();
+    let mut out = vec![0xa0 + n];
+    for (key, value) in pairs {
+        out.extend(key.encode());
+        out.extend(value.encode());
+    }
     out
 }
 
-/// The fixture as a raw ciborium map, in canonical order, to tamper with.
-fn fixture_map() -> Vec<(Value, Value)> {
+/// The fixture's top-level entries in wire order, read item by item, to
+/// tamper with.
+fn fixture_map() -> Pairs {
     let bytes = fixture().to_canonical().unwrap();
-    let value: Value = ciborium::de::from_reader(bytes.as_slice()).unwrap();
-    value.into_map().unwrap()
+    assert!((0xa0..0xb8).contains(&bytes[0]), "a short map head");
+    let items: Vec<Value> = DecodeOptions::new()
+        .sequence_decoder(&bytes[1..])
+        .map(|item| item.unwrap().into_owned())
+        .collect();
+    assert_eq!(items.len(), 2 * usize::from(bytes[0] - 0xa0));
+    items
+        .chunks(2)
+        .map(|kv| (kv[0].clone(), kv[1].clone()))
+        .collect()
 }
 
-fn entry<'a>(map: &'a mut [(Value, Value)], key: &str) -> &'a mut Value {
+fn entry<'a>(map: &'a mut Pairs, key: &str) -> &'a mut Value<'static> {
     &mut map
         .iter_mut()
-        .find(|(k, _)| k.as_text() == Some(key))
+        .find(|(k, _)| k.as_str() == Ok(key))
         .unwrap()
         .1
+}
+
+fn array<'a>(value: &'a mut Value<'static>) -> &'a mut Vec<Value<'static>> {
+    match value {
+        Value::Array(items) => items,
+        other => panic!("not an array: {other:?}"),
+    }
 }
 
 #[test]
@@ -121,7 +144,7 @@ fn a_header_round_trips_byte_identical() {
 fn top_level_keys_are_in_canonical_order() {
     let keys: Vec<String> = fixture_map()
         .into_iter()
-        .map(|(k, _)| k.into_text().unwrap())
+        .map(|(k, _)| k.into_string().unwrap())
         .collect();
     assert_eq!(
         keys,
@@ -245,8 +268,9 @@ fn each_deterministic_encoding_rule_is_refused() {
         ("float", "a26161f93c00626262816178", |e| {
             matches!(e, Malformed(_))
         }),
+        // cbor-core's strict decoder refuses a repeated key (D209).
         ("duplicate key", "a3616101616101626262816178", |e| {
-            matches!(e, Malformed(_))
+            *e == NotCanonical
         }),
         ("unknown key", "a3616101616301626262816178", |e| {
             matches!(e, Malformed(_))
@@ -265,29 +289,32 @@ fn each_deterministic_encoding_rule_is_refused() {
 
 #[test]
 fn the_encoder_refuses_what_the_profile_excludes() {
-    let map = |k: Value, v: Value| Value::Map(vec![(k, v)]);
-    let text = |s: &str| Value::Text(s.to_string());
+    let map = |k: Value<'static>, v: Value<'static>| Value::map([(k, v)]);
+    let text = |s: &str| Value::from(s.to_string());
+    // Positive control: a plain text-keyed map encodes.
     assert_eq!(
-        to_canonical(&map(text("a"), Value::Float(1.0))),
-        Err(CanonicalError::Float)
+        to_canonical(&map(text("a"), text("x"))),
+        Ok(vec![0xa1, 0x61, 0x61, 0x61, 0x78])
     );
     assert_eq!(
-        to_canonical(&map(text("a"), Value::Tag(32, Box::new(text("x"))))),
+        to_canonical(&map(text("a"), Value::from(1.0))),
+        Err(CanonicalError::Float)
+    );
+    // serde carries no tags, so the one a value can reach is a bignum's.
+    assert_eq!(
+        to_canonical(&BTreeMap::from([("a", u128::MAX)])),
         Err(CanonicalError::Tag)
     );
     assert_eq!(
-        to_canonical(&map(text("a"), Value::Null)),
+        to_canonical(&map(text("a"), Value::null())),
         Err(CanonicalError::Null)
     );
     assert_eq!(
-        to_canonical(&map(Value::Integer(1.into()), text("x"))),
+        to_canonical(&map(Value::from(1), text("x"))),
         Err(CanonicalError::NonTextKey)
     );
-    let dup = Value::Map(vec![(text("a"), text("x")), (text("a"), text("y"))]);
-    assert!(matches!(
-        to_canonical(&dup),
-        Err(CanonicalError::DuplicateKey(_))
-    ));
+    // A repeated key cannot be built: a cbor-core map holds each key once,
+    // and the decoder refuses one on the wire (the rule table above).
 }
 
 // ---- the same refusals on a real header -------------------------------------
@@ -311,7 +338,7 @@ fn header_level_refusals() {
     let mut swapped = fixture_map();
     swapped.swap(0, 1);
     assert!(
-        not_canonical(&raw(&Value::Map(swapped))),
+        not_canonical(&raw(&swapped)),
         "non-canonical key order"
     );
 
@@ -321,8 +348,8 @@ fn header_level_refusals() {
 
     let mut tagged = fixture_map();
     let id = entry(&mut tagged, "id");
-    *id = Value::Tag(32, Box::new(id.clone()));
-    assert!(not_canonical(&raw(&Value::Map(tagged))), "a tag on the id");
+    *id = Value::tag(32, id.clone());
+    assert!(not_canonical(&raw(&tagged)), "a tag on the id");
     let self_described = [&[0xd9, 0xd9, 0xf7][..], &canonical].concat();
     assert!(
         not_canonical(&self_described),
@@ -330,23 +357,16 @@ fn header_level_refusals() {
     );
 
     let mut floated = fixture_map();
-    let parts = entry(&mut floated, "parts").as_array_mut().unwrap();
-    let part = parts[0].as_map_mut().unwrap();
-    *entry(part, "bytes") = Value::Float(4.0);
+    let part = &mut array(entry(&mut floated, "parts"))[0];
+    *part.get_mut("bytes").unwrap() = Value::from(4.0);
     assert!(
-        malformed(&raw(&Value::Map(floated))),
+        malformed(&raw(&floated)),
         "a float in parts.bytes"
     );
 
     let mut doubled = fixture_map();
-    doubled.insert(
-        1,
-        (
-            Value::Text("id".into()),
-            Value::Text("https://x.example/".into()),
-        ),
-    );
-    assert!(malformed(&raw(&Value::Map(doubled))), "a duplicate key");
+    doubled.insert(1, (Value::from("id"), Value::from("https://x.example/")));
+    assert!(not_canonical(&raw(&doubled)), "a duplicate key");
 
     let trailing = [&canonical[..], &[0x00]].concat();
     assert_eq!(
@@ -355,20 +375,17 @@ fn header_level_refusals() {
     );
 
     let mut unsorted_set = fixture_map();
-    entry(&mut unsorted_set, "scopes")
-        .as_array_mut()
-        .unwrap()
-        .reverse();
+    array(entry(&mut unsorted_set, "scopes")).reverse();
     assert!(
-        not_canonical(&raw(&Value::Map(unsorted_set))),
+        not_canonical(&raw(&unsorted_set)),
         "an unsorted set"
     );
 
     let mut float_body = fixture_map();
-    let body = entry(&mut float_body, "body").as_map_mut().unwrap();
-    *entry(body, "participant") = Value::Float(0.5);
+    let body = entry(&mut float_body, "body");
+    *body.get_mut("participant").unwrap() = Value::from(0.5);
     assert!(
-        malformed(&raw(&Value::Map(float_body))),
+        malformed(&raw(&float_body)),
         "a float in the body"
     );
 }
@@ -530,14 +547,17 @@ fn the_canonical_bytes_validate_against_the_cddl() {
     );
     // Negative controls: the validator refuses what the schema excludes.
     let mut wrong_format = fixture_map();
-    *entry(&mut wrong_format, "format") = Value::Text("mere.pack/3".into());
-    assert!(!cddl_accepts(PACK2_CDDL, &raw(&Value::Map(wrong_format))));
+    *entry(&mut wrong_format, "format") = Value::from("mere.pack/3");
+    assert!(!cddl_accepts(PACK2_CDDL, &raw(&wrong_format)));
     let mut floated = fixture_map();
-    let parts = entry(&mut floated, "parts").as_array_mut().unwrap();
-    *entry(parts[0].as_map_mut().unwrap(), "bytes") = Value::Float(4.0);
-    assert!(!cddl_accepts(PACK2_CDDL, &raw(&Value::Map(floated))));
+    let part = &mut array(entry(&mut floated, "parts"))[0];
+    *part.get_mut("bytes").unwrap() = Value::from(4.0);
+    assert!(!cddl_accepts(PACK2_CDDL, &raw(&floated)));
     let mut unknown_kind = fixture_map();
-    let body = entry(&mut unknown_kind, "body").as_map_mut().unwrap();
-    body[0].0 = Value::Text("vocabularz".into());
-    assert!(!cddl_accepts(PACK2_CDDL, &raw(&Value::Map(unknown_kind))));
+    let Value::Map(body) = entry(&mut unknown_kind, "body") else {
+        panic!("the body is a map");
+    };
+    let (_, first) = body.pop_first().unwrap();
+    body.insert(Value::from("vocabularz"), first);
+    assert!(!cddl_accepts(PACK2_CDDL, &raw(&unknown_kind)));
 }

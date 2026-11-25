@@ -10,7 +10,7 @@
 
 use std::collections::BTreeMap;
 
-use ciborium::value::Value;
+use cbor_core::{DecodeOptions, Value};
 
 use super::*;
 
@@ -96,29 +96,41 @@ fn header() -> PackHeader {
     h
 }
 
-fn raw(value: &Value) -> Vec<u8> {
-    let mut out = Vec::new();
-    ciborium::ser::into_writer(value, &mut out).unwrap();
-    out
-}
+type Map = BTreeMap<Value<'static>, Value<'static>>;
 
-/// The header's body map as raw ciborium values, to tamper with.
-fn tamper_body(kind: &str, f: impl FnOnce(&mut Vec<(Value, Value)>)) -> Vec<u8> {
+/// The header's body map as cbor-core values, to tamper with. Tampering here
+/// never needs an unsorted map; `v2_codec_tests` writes those by hand.
+fn tamper_body(kind: &str, f: impl FnOnce(&mut Map)) -> Vec<u8> {
     let bytes = header().to_canonical().unwrap();
-    let mut doc: Value = ciborium::de::from_reader(bytes.as_slice()).unwrap();
-    let body = field(doc.as_map_mut().unwrap(), "body")
-        .as_map_mut()
-        .unwrap();
-    f(field(body, kind).as_map_mut().unwrap());
-    raw(&doc)
+    let mut doc: Value<'static> = DecodeOptions::new().decode_owned(&bytes).unwrap();
+    let body = doc.get_mut("body").unwrap().get_mut(kind).unwrap();
+    f(map(body));
+    doc.encode()
 }
 
-fn field<'a>(map: &'a mut [(Value, Value)], key: &str) -> &'a mut Value {
-    &mut map
-        .iter_mut()
-        .find(|(k, _)| k.as_text() == Some(key))
-        .unwrap()
-        .1
+fn map<'a>(value: &'a mut Value<'static>) -> &'a mut Map {
+    match value {
+        Value::Map(entries) => entries,
+        other => panic!("not a map: {other:?}"),
+    }
+}
+
+fn array<'a>(value: &'a mut Value<'static>) -> &'a mut Vec<Value<'static>> {
+    match value {
+        Value::Array(items) => items,
+        other => panic!("not an array: {other:?}"),
+    }
+}
+
+fn field<'a>(map: &'a mut Map, key: &str) -> &'a mut Value<'static> {
+    map.get_mut(&Value::from(key.to_string())).unwrap()
+}
+
+/// The first term's first axis chain.
+fn first_axis(v: &mut Map) -> &mut Value<'static> {
+    let terms = array(field(v, "terms"));
+    let axes = map(field(map(&mut terms[0]), "axes"));
+    axes.values_mut().next().unwrap()
 }
 
 fn body_error(bytes: &[u8]) -> Option<BodyError> {
@@ -239,7 +251,7 @@ fn each_body_rule_is_refused() {
 #[test]
 fn strict_decoding_refuses_malformed_bodies() {
     let unsorted = tamper_body("vocabulary", |v| {
-        field(v, "terms").as_array_mut().unwrap().reverse();
+        array(field(v, "terms")).reverse();
     });
     assert_eq!(
         PackHeader::from_canonical(&unsorted),
@@ -247,37 +259,35 @@ fn strict_decoding_refuses_malformed_bodies() {
         "an unsorted term set"
     );
     let unknown = tamper_body("vocabulary", |v| {
-        v.push((Value::Text("prefixes".into()), Value::Map(vec![])));
+        v.insert(Value::from("prefixes"), Value::map(()));
     });
     assert!(
         matches!(body_error(&unknown), Some(BodyError::Shape(_))),
         "prefixes are authored-form only"
     );
-    let missing = tamper_body("lens", |l| l.retain(|(k, _)| k.as_text() != Some("entail")));
+    let missing = tamper_body("lens", |l| {
+        l.remove(&Value::from("entail"));
+    });
     assert!(
         matches!(body_error(&missing), Some(BodyError::Shape(_))),
         "no entail"
     );
     let wrong = tamper_body("lens", |l| {
-        *field(l, "rules") = Value::Integer(3.into());
+        *field(l, "rules") = Value::from(3);
     });
     assert!(
         matches!(body_error(&wrong), Some(BodyError::Shape(_))),
         "rules not an array"
     );
     let one = tamper_body("vocabulary", |v| {
-        let terms = field(v, "terms").as_array_mut().unwrap();
-        let axes = field(terms[0].as_map_mut().unwrap(), "axes")
-            .as_map_mut()
-            .unwrap();
-        axes[0].1 = Value::Text(format!("{NS}stratum#resource"));
+        *first_axis(v) = Value::from(format!("{NS}stratum#resource"));
     });
     assert!(
         matches!(body_error(&one), Some(BodyError::Shape(_))),
         "a bare value where the canonical form has a chain"
     );
     let float = tamper_body("lens", |l| {
-        *field(l, "entail") = Value::Float(1.0);
+        *field(l, "entail") = Value::from(1.0);
     });
     assert!(
         PackHeader::from_canonical(&float).is_err(),
@@ -303,17 +313,15 @@ fn the_typed_bodies_validate_against_the_cddl() {
     assert!(accepts(&empty.to_canonical().unwrap()), "empty bodies");
     // Negative controls: shapes the encoder never writes.
     let untyped = tamper_body("vocabulary", |v| {
-        *field(v, "terms") = Value::Array(vec![Value::Integer((-3).into())]);
+        *field(v, "terms") = Value::array([Value::from(-3)]);
     });
     assert!(!accepts(&untyped), "an integer term row");
     let bare = tamper_body("vocabulary", |v| {
-        let terms = field(v, "terms").as_array_mut().unwrap();
-        let axes = field(terms[0].as_map_mut().unwrap(), "axes")
-            .as_map_mut()
-            .unwrap();
-        axes[0].1 = Value::Array(vec![]);
+        *first_axis(v) = Value::array(Vec::<Value>::new());
     });
     assert!(!accepts(&bare), "an empty chain");
-    let no_entail = tamper_body("lens", |l| l.retain(|(k, _)| k.as_text() != Some("entail")));
+    let no_entail = tamper_body("lens", |l| {
+        l.remove(&Value::from("entail"));
+    });
     assert!(!accepts(&no_entail), "a lens without entail");
 }

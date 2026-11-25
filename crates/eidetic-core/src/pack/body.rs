@@ -12,7 +12,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use ciborium::value::Value;
+use cbor_core::Value;
 use serde::{Deserialize, Serialize};
 
 use super::canonical::{CanonicalError, sort_set};

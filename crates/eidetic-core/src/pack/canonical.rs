@@ -5,17 +5,16 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! The canonical CBOR codec (declared-lens D5): RFC 8949 §4.2.1 core
-//! deterministic encoding over `ciborium`, text keys only, no tags, no floats,
-//! no null, and strict decoding by re-encoding and comparing bytes.
+//! deterministic encoding through `cbor-core` (engine split D209), text keys
+//! only, no tags, no floats, no null, and strict decoding.
 //!
-//! `ciborium` writes integers and lengths in shortest form and every length
-//! definite; map keys are put in order with its own `CanonicalValue` ordering
-//! (RFC 8949 §4.2.3's length-first rule, which equals §4.2.1's bytewise rule
-//! when every key is a text string).
+//! `cbor-core` writes CBOR::Core: shortest integers and lengths, definite
+//! lengths, and map keys in bytewise order of their encodings, which is
+//! §4.2.3's length-first order too when every key is a text string. Its
+//! decoder refuses any other encoding, and the decoded value is re-encoded
+//! and compared as before, which also refuses tags the decoder would drop.
 
-use std::cmp::Ordering;
-
-use ciborium::value::{CanonicalValue, Value};
+use cbor_core::{DecodeOptions, Value};
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
@@ -64,31 +63,35 @@ impl std::error::Error for CanonicalError {}
 ///
 /// # Errors
 ///
-/// Refuses a value whose data model holds a float, tag, null, non-text map
-/// key or duplicate key.
+/// Refuses a value whose data model holds a float, tag, null or non-text map
+/// key.
 pub fn to_canonical<T: Serialize + ?Sized>(value: &T) -> Result<Vec<u8>, CanonicalError> {
-    let mut tree =
-        Value::serialized(value).map_err(|e| CanonicalError::Malformed(e.to_string()))?;
-    canonicalize(&mut tree)?;
-    let mut out = Vec::new();
-    ciborium::ser::into_writer(&tree, &mut out)
-        .map_err(|e| CanonicalError::Malformed(e.to_string()))?;
-    Ok(out)
+    let tree = Value::serialized(value).map_err(|e| CanonicalError::Malformed(e.to_string()))?;
+    check(&tree)?;
+    Ok(tree.encode())
 }
 
-/// Decode `bytes` strictly: one data item, then re-encoded and compared.
+/// Decode `bytes` strictly: one canonical data item, then re-encoded and
+/// compared.
 ///
 /// # Errors
 ///
 /// Refuses malformed CBOR, trailing bytes, and any document whose canonical
 /// re-encoding differs from `bytes`.
 pub fn from_canonical<T: Serialize + DeserializeOwned>(bytes: &[u8]) -> Result<T, CanonicalError> {
-    let mut rest = bytes;
-    let value: T = ciborium::de::from_reader(&mut rest)
-        .map_err(|e| CanonicalError::Malformed(e.to_string()))?;
-    if !rest.is_empty() {
+    let mut items = DecodeOptions::new().sequence_decoder(bytes);
+    let tree = match items.next() {
+        Some(Ok(tree)) => tree,
+        Some(Err(cbor_core::Error::NonDeterministic)) => return Err(CanonicalError::NotCanonical),
+        Some(Err(e)) => return Err(CanonicalError::Malformed(e.to_string())),
+        None => return Err(CanonicalError::Malformed("no data item".to_string())),
+    };
+    if items.next().is_some() {
         return Err(CanonicalError::TrailingBytes);
     }
+    let value: T = tree
+        .deserialized()
+        .map_err(|e| CanonicalError::Malformed(e.to_string()))?;
     if to_canonical(&value)? != bytes {
         return Err(CanonicalError::NotCanonical);
     }
@@ -110,37 +113,24 @@ pub(crate) fn sort_set<T: Serialize>(items: &mut Vec<T>) -> Result<(), Canonical
     Ok(())
 }
 
-fn canonicalize(value: &mut Value) -> Result<(), CanonicalError> {
+/// The profile: no floats, tags, null or undefined, and text map keys.
+/// `cbor-core` maps hold each key once, so duplicates cannot reach here.
+fn check(value: &Value) -> Result<(), CanonicalError> {
     match value {
         Value::Float(_) => Err(CanonicalError::Float),
         Value::Tag(..) => Err(CanonicalError::Tag),
-        Value::Null => Err(CanonicalError::Null),
-        Value::Array(items) => items.iter_mut().try_for_each(canonicalize),
-        Value::Map(entries) => {
-            for (key, item) in entries.iter_mut() {
-                if !matches!(key, Value::Text(_)) {
-                    return Err(CanonicalError::NonTextKey);
-                }
-                canonicalize(item)?;
+        Value::SimpleValue(simple) if simple.to_bool().is_err() => Err(CanonicalError::Null),
+        Value::Array(items) => items.iter().try_for_each(check),
+        Value::Map(entries) => entries.iter().try_for_each(|(key, item)| {
+            if !matches!(key, Value::TextString(_)) {
+                return Err(CanonicalError::NonTextKey);
             }
-            entries.sort_by(|a, b| key_order(&a.0, &b.0));
-            if let Some(w) = entries
-                .windows(2)
-                .find(|w| key_order(&w[0].0, &w[1].0) == Ordering::Equal)
-            {
-                let key = w[0].0.as_text().unwrap_or_default().to_string();
-                return Err(CanonicalError::DuplicateKey(key));
-            }
-            Ok(())
-        }
-        Value::Integer(_) | Value::Bytes(_) | Value::Text(_) | Value::Bool(_) => Ok(()),
-        // `Value` is non-exhaustive; anything newer is refused, not guessed at.
-        _ => Err(CanonicalError::Malformed(
-            "an unsupported CBOR item".to_string(),
-        )),
+            check(item)
+        }),
+        Value::SimpleValue(_)
+        | Value::Unsigned(_)
+        | Value::Negative(_)
+        | Value::ByteString(_)
+        | Value::TextString(_) => Ok(()),
     }
-}
-
-fn key_order(a: &Value, b: &Value) -> Ordering {
-    CanonicalValue::from(a.clone()).cmp(&CanonicalValue::from(b.clone()))
 }
