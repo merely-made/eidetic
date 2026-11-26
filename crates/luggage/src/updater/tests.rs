@@ -184,6 +184,35 @@ fn a_signed_manifest_is_accepted() {
 }
 
 #[test]
+fn a_pinned_manifest_must_match_and_have_a_valid_signature() {
+    let dir = tempfile::tempdir().unwrap();
+    let pubkey = write_signed_manifest(dir.path(), "0.2.0", true);
+    let manifest = std::fs::read(dir.path().join(MANIFEST_NAME)).unwrap();
+    let digest = *blake3::hash(&manifest).as_bytes();
+    let check = |expected| {
+        UpdaterBuilder::new(
+            "0.1.0".parse().unwrap(),
+            Config {
+                feeds: vec![Feed::Directory(dir.path().to_path_buf())],
+                pubkey: pubkey.clone(),
+                require_signed_manifest: false,
+                ..Default::default()
+            },
+        )
+        .target("test-target")
+        .executable_path(std::env::temp_dir().join("luggage-test-exe"))
+        .expected_manifest_blake3(expected)
+        .build()
+        .unwrap()
+        .check()
+    };
+    assert_eq!(check(digest).unwrap().unwrap().version, "0.2.0");
+    assert!(matches!(check([0; 32]), Err(Error::ManifestDigestMismatch)));
+    std::fs::remove_file(dir.path().join(format!("{MANIFEST_NAME}.sig"))).unwrap();
+    assert!(matches!(check(digest), Err(Error::ManifestUnsigned)));
+}
+
+#[test]
 fn an_unsigned_manifest_is_refused_by_default() {
     let dir = tempfile::tempdir().unwrap();
     let pubkey = write_signed_manifest(dir.path(), "0.2.0", false);

@@ -8,8 +8,6 @@
 
 //! Minisign verification, shared by the artifact and manifest paths.
 
-use std::io::Read;
-
 use base64::Engine;
 use minisign_verify::{PublicKey, Signature};
 
@@ -29,15 +27,22 @@ pub(crate) fn verify_bytes(data: &[u8], release_signature: &str, pub_key: &str) 
     Ok(())
 }
 
-/// [`verify_bytes`] over a reader. NOTE: the reader position is not reset.
-pub(crate) fn verify_reader<R: Read>(
-    reader: &mut R,
-    release_signature: &str,
+pub(crate) fn verify_artifact(
+    data: &[u8],
+    signature: &str,
+    expected_digest: Option<&str>,
     pub_key: &str,
 ) -> Result<()> {
-    let mut data = Vec::new();
-    reader.read_to_end(&mut data)?;
-    verify_bytes(&data, release_signature, pub_key)
+    if let Some(expected) = expected_digest {
+        let actual = blake3::hash(data).to_hex().to_string();
+        if !expected.eq_ignore_ascii_case(&actual) {
+            return Err(Error::Blake3Mismatch {
+                expected: expected.to_owned(),
+                actual,
+            });
+        }
+    }
+    verify_bytes(data, signature, pub_key)
 }
 
 pub(crate) fn base64_to_string(base64_string: &str) -> Result<String> {

@@ -115,5 +115,13 @@ required-features = [
     "native",
 ]
 
+[[bin]]
+name = "luggage-ssh-update"
+required-features = ["native"]
+
+[[bin]]
+name = "luggage-ssh-publish"
+required-features = ["native"]
+
 [lints]
 workspace = true

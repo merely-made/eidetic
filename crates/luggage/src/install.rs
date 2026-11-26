@@ -14,7 +14,7 @@
 //! macOS. The staged-swap improvement is a planned divergence, not yet here.
 
 use std::{
-    io::{Cursor, Read},
+    io::Read,
     path::PathBuf,
     time::Duration,
 };
@@ -110,20 +110,12 @@ impl Update {
             on_download_finish();
         }
 
-        // BLAKE3 first when the manifest promises one: cheap, and a mismatch
-        // is a better error than a signature failure.
-        if let Some(expected) = &self.blake3 {
-            let actual = blake3::hash(&buffer).to_hex().to_string();
-            if !expected.eq_ignore_ascii_case(&actual) {
-                return Err(Error::Blake3Mismatch {
-                    expected: expected.clone(),
-                    actual,
-                });
-            }
-        }
-
-        let mut update_buffer = Cursor::new(&buffer);
-        crate::signing::verify_reader(&mut update_buffer, &self.signature, &self.config.pubkey)?;
+        crate::signing::verify_artifact(
+            &buffer,
+            &self.signature,
+            self.blake3.as_deref(),
+            &self.config.pubkey,
+        )?;
 
         Ok(buffer)
     }
@@ -188,6 +180,9 @@ impl Update {
 
     /// Install the update package downloaded by [`Update::download`].
     pub fn install(&self, bytes: Vec<u8>) -> Result<()> {
+        if self.format == UpdateFormat::External {
+            return Err(Error::UnsupportedUpdateFormat);
+        }
         self.install_inner(bytes)
     }
 
@@ -432,7 +427,7 @@ impl Update {
     fn install_inner(&self, bytes: Vec<u8>) -> Result<()> {
         use flate2::read::GzDecoder;
 
-        let cursor = Cursor::new(bytes);
+        let cursor = std::io::Cursor::new(bytes);
 
         // Temp directories for backup and extraction.
         let tmp_backup_dir = tempfile::Builder::new()

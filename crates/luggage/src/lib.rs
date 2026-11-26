@@ -87,6 +87,8 @@ mod install;
 #[cfg(feature = "native")]
 mod signing;
 #[cfg(feature = "native")]
+pub mod ssh;
+#[cfg(feature = "native")]
 mod staging;
 #[cfg(feature = "native")]
 mod updater;

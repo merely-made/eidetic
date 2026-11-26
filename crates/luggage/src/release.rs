@@ -86,6 +86,8 @@ pub enum UpdateFormat {
     AppImage,
     /// The macOS application bundle (.app).
     App,
+    /// A package handed to a separately configured platform installer.
+    External,
 }
 
 impl std::fmt::Display for UpdateFormat {
@@ -98,6 +100,7 @@ impl std::fmt::Display for UpdateFormat {
                 UpdateFormat::Wix => "wix",
                 UpdateFormat::AppImage => "appimage",
                 UpdateFormat::App => "app",
+                UpdateFormat::External => "external",
             }
         )
     }
@@ -114,8 +117,9 @@ impl<'de> Deserialize<'de> for UpdateFormat {
             "wix" => Ok(UpdateFormat::Wix),
             "app" => Ok(UpdateFormat::App),
             "appimage" => Ok(UpdateFormat::AppImage),
+            "external" => Ok(UpdateFormat::External),
             _ => Err(serde::de::Error::custom(
-                "Unknown updater format, expected one of 'nsis', 'wix', 'app' or 'appimage'",
+                "Unknown updater format, expected 'nsis', 'wix', 'app', 'appimage' or 'external'",
             )),
         }
     }

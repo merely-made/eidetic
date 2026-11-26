@@ -36,6 +36,9 @@ pub enum Error {
     /// The manifest signature did not verify against the configured key.
     #[error("the feed's manifest signature does not verify against the configured public key")]
     ManifestSignatureInvalid,
+    /// The feed served a different manifest from the exact one requested.
+    #[error("the feed's manifest BLAKE3 does not match the requested release")]
+    ManifestDigestMismatch,
     /// A directory feed has no manifest.
     #[error("no {manifest} in feed directory {dir}", manifest = crate::MANIFEST_NAME)]
     ManifestNotFound {

@@ -42,6 +42,7 @@ pub struct UpdaterBuilder {
     target: Option<String>,
     headers: HeaderMap,
     timeout: Option<Duration>,
+    expected_manifest_blake3: Option<[u8; 32]>,
 }
 
 impl UpdaterBuilder {
@@ -55,6 +56,7 @@ impl UpdaterBuilder {
             target: None,
             headers: Default::default(),
             timeout: None,
+            expected_manifest_blake3: None,
         }
     }
 
@@ -109,6 +111,13 @@ impl UpdaterBuilder {
     /// A timeout for HTTP feed requests.
     pub fn timeout(mut self, timeout: Duration) -> Self {
         self.timeout = Some(timeout);
+        self
+    }
+
+    /// Require these exact manifest bytes and a valid publisher signature.
+    /// An HTTP feed answering 204 still returns no update.
+    pub fn expected_manifest_blake3(mut self, digest: [u8; 32]) -> Self {
+        self.expected_manifest_blake3 = Some(digest);
         self
     }
 
@@ -174,6 +183,7 @@ impl UpdaterBuilder {
             json_target,
             headers: self.headers,
             extract_path,
+            expected_manifest_blake3: self.expected_manifest_blake3,
         })
     }
 }
@@ -191,6 +201,7 @@ pub struct Updater {
     json_target: String,
     headers: HeaderMap,
     extract_path: PathBuf,
+    expected_manifest_blake3: Option<[u8; 32]>,
 }
 
 impl Updater {
@@ -263,6 +274,11 @@ impl Updater {
     /// build under a new version number. `signature` is the contents of the
     /// feed's `luggage.json.sig`, or `None` when the feed had none.
     fn verify_manifest(&self, bytes: &[u8], signature: Option<&str>) -> Result<()> {
+        if let Some(expected) = self.expected_manifest_blake3 {
+            if blake3::hash(bytes).as_bytes() != &expected {
+                return Err(Error::ManifestDigestMismatch);
+            }
+        }
         match signature {
             Some(signature) => crate::signing::verify_bytes(
                 bytes,
@@ -270,7 +286,11 @@ impl Updater {
                 &self.config.pubkey,
             )
             .map_err(|_| Error::ManifestSignatureInvalid),
-            None if self.config.require_signed_manifest => Err(Error::ManifestUnsigned),
+            None if self.config.require_signed_manifest
+                || self.expected_manifest_blake3.is_some() =>
+            {
+                Err(Error::ManifestUnsigned)
+            }
             // Explicitly opted out: the caller accepted the downgrade risk.
             None => {
                 log::warn!("feed manifest is unsigned and verification is disabled");

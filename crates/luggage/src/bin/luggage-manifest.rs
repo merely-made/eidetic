@@ -205,11 +205,12 @@ fn run() -> Result<PathBuf, String> {
 
     let rendered = serde_json::to_string_pretty(&Value::Object(manifest))
         .map_err(|e| format!("render manifest: {e}"))?;
-    std::fs::write(&out, rendered).map_err(|e| format!("write {}: {e}", out.display()))?;
+    std::fs::write(&out, &rendered).map_err(|e| format!("write {}: {e}", out.display()))?;
 
     println!("  version:  {}", args.version);
     println!("  target:   {target}");
     println!("  blake3:   {digest}");
+    println!("  manifest blake3: {}", blake3::hash(rendered.as_bytes()));
 
     // The manifest must be signed too, or a feed controller can rewrite the
     // version around a genuinely-signed artifact and roll clients backwards.

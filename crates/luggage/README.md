@@ -40,7 +40,7 @@ a caller writes `luggage::Config`. The `Source` column names the source file;
 | `Update` | `install` | `native` | `download`, `download_extended`, `install`, `download_and_install`, `download_and_install_extended`, plus `stage` and `install_staged` |
 | `StagedUpdate` | `staging` | `native` | `load`, `take_verified`, `version`, `format`, `extract_path`, `discard` |
 | `ReleaseRefV1` | `release` | **core** | A reference naming one signed release: `manifest_blake3` + `publisher_key_id`, and nothing else. Needs no dependency, so it reaches wasm32. Display and lookup only — never an authorization |
-| `RemoteRelease`, `RemoteReleaseData`, `ReleaseManifestPlatform`, `UpdateFormat`, `MANIFEST_NAME` | `release` | **core** | Manifest types. `UpdateFormat` is `Nsis` / `Wix` / `AppImage` / `App`; `MANIFEST_NAME` is `"luggage.json"` |
+| `RemoteRelease`, `RemoteReleaseData`, `ReleaseManifestPlatform`, `UpdateFormat`, `MANIFEST_NAME` | `release` | **core** | Manifest types. `UpdateFormat` is `Nsis` / `Wix` / `AppImage` / `App` / `External`; `MANIFEST_NAME` is `"luggage.json"` |
 | `Error`, `Result` | `error` | **core** | `thiserror` enum and the crate alias |
 
 `semver` and `url` are re-exported in every build, and `http` and `reqwest`
@@ -84,6 +84,62 @@ verification entry point is a public-API decision, deliberately left open.
 | `github:owner/repo` | `Feed::GitHub` | Resolves to `https://github.com/owner/repo/releases/latest/download/luggage.json` |
 
 Feeds are checked in order; the first that yields a release wins.
+
+## Trigger an installed product update over OpenSSH
+
+Build with `cargo build -p luggage --release --bin luggage-ssh-update`.
+On a Linux target, give one product its own policy file:
+
+```json
+{
+  "feed": "/var/lib/luggage/djinn/feed",
+  "publisher_key": "<base64 minisign publisher public key>",
+  "target": "djinn-custodian-linux-x86_64",
+  "installer": "/usr/local/libexec/djinn-upgrade"
+}
+```
+
+The installer is a product-specific adapter. It implements `running-version`
+(one SemVer on stdout for the running installation) and `install VERSION`
+(the verified package on stdin). It owns the platform's health check and
+rollback. The receiver serializes runs for the policy and reports
+`installed` after the adapter reads the requested version back.
+
+For a privileged install, put the receiver, policy, feed, installer, and state
+under administrator-owned directories. Configure a dedicated public-key-only
+SSH account with an administrator-owned `AuthorizedKeysFile`. Give the
+account a sudoers rule for the exact receiver invocation below. Use a
+Personae-managed SSH public key dedicated to the update grant:
+
+```text
+restrict,command="/usr/bin/sudo -n /usr/local/libexec/luggage-ssh-update /etc/luggage/djinn.json" ssh-ed25519 <operator public key>
+```
+
+Build the sender with `cargo build -p luggage --release --bin luggage-ssh-publish`.
+Sign the artifact, then use `luggage-manifest --format external
+--target djinn-custodian-linux-x86_64` with the artifact's path and version.
+Set the signed artifact URL to a file directly in the target's configured
+feed. For example, use `file:///var/lib/luggage/djinn/feed/djinn-custodian.elf`.
+Sign the completed manifest as `luggage.json.sig`.
+
+Use an SSH alias for the dedicated account and identity. The sender streams
+the manifest, its detached signature, and the artifact over that connection.
+
+```sh
+luggage-ssh-publish luggage.json djinn-custodian.elf | ssh -T djinn-updates-s-pc
+```
+
+The receiver verifies the manifest and artifact before atomically publishing
+one release in the protected feed. It returns `published` with the manifest
+BLAKE3. Send that digest to the same account to install it.
+
+```sh
+printf '%s\n' "$manifest_blake3" | ssh -T djinn-updates-s-pc
+```
+
+The receiver rechecks signatures during install and refuses releases at or
+below the running version. While the protected feed has no uploaded bundle,
+digest requests can still use an administrator-preseeded directory feed.
 
 ## Manifest
 
