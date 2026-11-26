@@ -27,13 +27,12 @@
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
-use crate::manifest::{
-    BlobFetcher, BlobManifest, BlobSource, list_manifests, load_manifest, save_manifest,
-};
+use crate::manifest::{BlobFetcher, BlobManifest, BlobSource};
+use crate::payload::{list_payloads, load_payload_sealed, save_payload_sealed};
 use crate::schema::{
-    Hash, ManifestId, PrivacyClass, ProvenanceRecord, SchemaRef, Timestamp, TrustEnvelope,
+    ManifestId, PrivacyClass, ProvenanceRecord, SchemaRef, Timestamp, TrustEnvelope,
 };
-use crate::seal::{PayloadSealer, resolve_sealed_blob, seal_payload_for_store};
+use crate::seal::PayloadSealer;
 use crate::{Error, Result, Store};
 
 /// A Rust type that binds to a known schema.
@@ -116,45 +115,25 @@ pub async fn save_typed_sealed<T: TypedPayload>(
     created_at: Timestamp,
 ) -> Result<ManifestId> {
     let bytes = value.serialize_to_bytes()?;
-    let hash = Hash::of(&bytes);
-    let id = ManifestId::from_hash(hash);
-    let local_key = format!("blob:{}", hash.to_hex());
-
-    let mut sources = Vec::with_capacity(1 + additional_sources.len());
-    sources.push(BlobSource::Local {
-        key: local_key.clone(),
-    });
-    sources.extend(additional_sources);
-
-    let mut manifest = BlobManifest {
-        id,
-        schema: T::schema_ref(),
-        content_hash: hash,
-        byte_size: bytes.len() as u64,
-        created_at,
-        last_accessed: None,
-        sources,
+    save_payload_sealed(
+        store,
+        sealer,
+        T::schema_ref(),
+        &bytes,
+        additional_sources,
         privacy,
         provenance,
         trust,
-        schema_metadata: serde_json::Value::Null,
-        manifest_version: BlobManifest::CURRENT_VERSION,
-    };
-
-    // Seals + stamps the manifest marker for the private lane; passthrough
-    // otherwise. The stored bytes may be sealed; the manifest's content_hash
-    // stays the cleartext hash for the post-unseal integrity check.
-    let stored = seal_payload_for_store(sealer, &mut manifest, &bytes)?;
-    store.put(&local_key, &stored).await?;
-    save_manifest(store, &manifest).await?;
-    Ok(id)
+        created_at,
+    )
+    .await
 }
 
 /// Enumerate all manifests in the Store whose schema matches
 /// `T::schema_ref()`. Returns the manifest list (without resolving the
 /// payload bytes); use [`load_typed`] on each id to fetch.
 pub async fn list_typed<T: TypedPayload>(store: &mut dyn Store) -> Result<Vec<BlobManifest>> {
-    list_manifests(store, Some(T::schema_ref())).await
+    list_payloads(store, T::schema_ref()).await
 }
 
 /// Load a typed payload by manifest id.
@@ -184,35 +163,23 @@ pub async fn load_typed_sealed<T: TypedPayload>(
     sealer: Option<&dyn PayloadSealer>,
     id: ManifestId,
 ) -> Result<Option<T>> {
-    let Some(manifest) = load_manifest(store, id).await? else {
-        return Ok(None);
-    };
-
-    if manifest.schema != T::schema_ref() {
-        return Err(Error::new(format!(
-            "schema mismatch loading manifest {}: declared {}, requested {}",
-            id,
-            manifest.schema,
-            T::schema_ref()
-        )));
-    }
-
-    let bytes = resolve_sealed_blob(store, fetcher, sealer, &manifest).await?;
-    let value = T::deserialize_from_bytes(&bytes)?;
-    Ok(Some(value))
+    load_payload_sealed(store, fetcher, sealer, T::schema_ref(), id)
+        .await?
+        .map(|bytes| T::deserialize_from_bytes(&bytes))
+        .transpose()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::manifest::NoFetcher;
+    use crate::schema::Hash;
     use crate::schema::{
         ManifestId, ModerationState, ProvenanceOrigin, ProvenanceRecord, SchemaRef, Timestamp,
         TrustLevel,
     };
-    
+
     use serde::{Deserialize, Serialize};
-    
 
     // The in-memory test store is muniment's (2026-07-12): eidetic's
     // hand-rolled one was the same map behind the same seam.

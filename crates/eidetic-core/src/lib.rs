@@ -95,6 +95,7 @@ pub mod records;
 #[cfg(feature = "models")]
 pub mod models;
 pub mod pack;
+pub mod payload;
 pub mod schema;
 pub mod schema_def;
 pub mod seal;
@@ -157,6 +158,7 @@ pub use seal::{
     PayloadSealer, SealEpochId, SealedBlobRef, is_private_lane, resolve_sealed_blob, seal_marker,
     seal_payload_for_store,
 };
+pub use payload::{list_payloads, load_payload_sealed, save_payload_sealed};
 pub use typed::{
     TypedPayload, list_typed, load_typed, load_typed_sealed, save_typed, save_typed_sealed,
 };
